@@ -1,18 +1,18 @@
-Build:
+* Build:
 
-Type:
+* Type:
 
-Severity:
-[ ]Critical
-[ ]Major
-[ ]Minor
+* Severity:
+  - [ ] Critical
+  - [ ] Major
+  - [ ] Minor
 
-Priority:
-[ ]Urgent
-[ ]High
-[ ]Normal
-[ ]Low
+* Priority:
+  - [ ] Urgent
+  - [ ] High
+  - [ ] Normal
+  - [ ] Low
 
-Steps to reproduce:
+* Steps to reproduce:
 
-Frequency:
+* Frequency:
