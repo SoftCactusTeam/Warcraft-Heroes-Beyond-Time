@@ -87,6 +87,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
+    <Link />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -129,7 +130,6 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="p2Defs.h" />
-    <ClInclude Include="p2List.h" />
     <ClInclude Include="p2Log.h" />
     <ClInclude Include="p2Point.h" />
     <ClInclude Include="p2SString.h" />

@@ -3,8 +3,8 @@
 
 #include "Module.h"
 
-#include "p2List.h"
 #include "p2SString.h"
+#include <list>
 
 // Modules
 class Window;
@@ -72,7 +72,7 @@ public:
 
 private:
 
-	p2List<Module*>		modules;
+	std::list<Module*> modules;
 	int					argc;
 	char**				args;
 

@@ -34,12 +34,11 @@ Core::Core(int argc, char* args[]) : argc(argc), args(args)
 Core::~Core()
 {
 	// release modules
-	p2List_item<Module*>* item = modules.end;
+	std::list<Module*>::const_iterator item;
 
-	while (item != NULL)
+	for (item = modules.end(); item != modules.begin(); --item)
 	{
-		RELEASE(item->data);
-		item = item->prev;
+		delete (*item);
 	}
 
 	modules.clear();
@@ -48,7 +47,7 @@ Core::~Core()
 void Core::AddModule(Module* module)
 {
 	module->Init();
-	modules.add(module);
+	modules.push_back(module);
 }
 
 // Called before render is available
@@ -56,14 +55,13 @@ bool Core::Awake()
 {
 	bool ret = true;
 
-	p2List_item<Module*>* item;
-	item = modules.start;
+	std::list<Module*>::const_iterator item;
 
-	while (item != NULL && ret == true)
+	for (item = modules.begin(); item != modules.end() && ret == true; ++item)
 	{
-		ret = item->data->Awake();
-		item = item->next;
+		ret = (*item)->Awake();
 	}
+
 
 	return ret;
 }
@@ -72,15 +70,12 @@ bool Core::Awake()
 bool Core::Start()
 {
 	bool ret = true;
-	p2List_item<Module*>* item;
-	item = modules.start;
+	std::list<Module*>::const_iterator item;
 
-	while (item != NULL && ret == true)
+	for (item = modules.begin(); item != modules.end() && ret == true; ++item)
 	{
-		if (item->data->active)
-			ret = item->data->Start();
-
-		item = item->next;
+		if ((*item)->active)
+			ret = (*item)->Start();
 	}
 
 	return ret;
@@ -122,21 +117,20 @@ void Core::FinishUpdate()
 // Call modules before each loop iteration
 bool Core::PreUpdate()
 {
-
 	bool ret = true;
-	p2List_item<Module*>* item;
-	item = modules.start;
-	Module* pModule = NULL;
 
-	for(item = modules.start; item != NULL && ret == true; item = item->next)
+	std::list<Module*>::const_iterator item;
+	Module* pModule = nullptr;
+
+	for (item = modules.begin(); item != modules.end() && ret == true; ++item)
 	{
-		pModule = item->data;
+		pModule = (*item);
 
-		if(pModule->active == false) {
+		if (pModule->active == false) {
 			continue;
 		}
 
-		ret = item->data->PreUpdate();
+		ret = (*item)->PreUpdate();
 	}
 
 	return ret;
@@ -146,19 +140,19 @@ bool Core::PreUpdate()
 bool Core::DoUpdate()
 {
 	bool ret = true;
-	p2List_item<Module*>* item;
-	item = modules.start;
-	Module* pModule = NULL;
 
-	for (item = modules.start; item != NULL && ret == true; item = item->next)
+	std::list<Module*>::const_iterator item;
+	Module* pModule = nullptr;
+
+	for (item = modules.begin(); item != modules.end() && ret == true; ++item)
 	{
-		pModule = item->data;
+		pModule = (*item);
 
 		if (pModule->active == false) {
 			continue;
 		}
 
-		ret = item->data->Update();
+		ret = (*item)->Update();
 	}
 
 	return ret;
@@ -168,18 +162,19 @@ bool Core::DoUpdate()
 bool Core::PostUpdate()
 {
 	bool ret = true;
-	p2List_item<Module*>* item;
-	Module* pModule = NULL;
 
-	for(item = modules.start; item != NULL && ret == true; item = item->next)
+	std::list<Module*>::const_iterator item;
+	Module* pModule = nullptr;
+
+	for (item = modules.begin(); item != modules.end() && ret == true; ++item)
 	{
-		pModule = item->data;
+		pModule = (*item);
 
-		if(pModule->active == false) {
+		if (pModule->active == false) {
 			continue;
 		}
 
-		ret = item->data->PostUpdate();
+		ret = (*item)->PostUpdate();
 	}
 
 	return ret;
@@ -189,13 +184,13 @@ bool Core::PostUpdate()
 bool Core::CleanUp()
 {
 	bool ret = true;
-	p2List_item<Module*>* item;
-	item = modules.end;
 
-	while (item != NULL && ret == true)
+	std::list<Module*>::const_iterator item;
+
+	for (item = modules.end(); item != modules.begin() && ret == true; --item)
 	{
-		ret = item->data->CleanUp();
-		item = item->prev;
+		ret = (*item)->CleanUp();
+		
 	}
 
 	return ret;
