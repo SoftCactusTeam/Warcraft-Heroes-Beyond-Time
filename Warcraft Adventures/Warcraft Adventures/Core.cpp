@@ -212,11 +212,11 @@ const char* Core::GetArgv(int index) const
 // ---------------------------------------
 const char* Core::GetTitle() const
 {
-	return title.GetString();
+	return title.data();
 }
 
 // ---------------------------------------
 const char* Core::GetOrganization() const
 {
-	return organization.GetString();
+	return organization.data();
 }

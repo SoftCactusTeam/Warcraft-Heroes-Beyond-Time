@@ -11,7 +11,7 @@ Window::Window() : Module()
 {
 	window = NULL;
 	screen_surface = NULL;
-	name.create("window");
+	name = "window";
 }
 
 // Destructor
@@ -25,7 +25,7 @@ bool Window::Awake()
 	LOG("Init SDL window & surface");
 	bool ret = true;
 
-	icon_surface = SDL_LoadBMP(icon.GetString());
+	icon_surface = SDL_LoadBMP(icon.data());
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{

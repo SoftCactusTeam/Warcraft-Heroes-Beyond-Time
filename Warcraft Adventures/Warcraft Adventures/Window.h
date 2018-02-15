@@ -39,8 +39,8 @@ public:
 	SDL_Surface* icon_surface;
 
 private:
-	p2SString	title = nullptr;
-	p2SString	icon = nullptr;
+	std::string	title;
+	std::string	icon;
 
 	// Screen parameters
 	uint		width = 0;

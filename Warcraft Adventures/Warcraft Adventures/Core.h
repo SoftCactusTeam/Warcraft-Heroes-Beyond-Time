@@ -3,8 +3,8 @@
 
 #include "Module.h"
 
-#include "p2SString.h"
 #include <list>
+#include <string>
 
 // Modules
 class Window;
@@ -76,8 +76,8 @@ private:
 	int					argc;
 	char**				args;
 
-	p2SString			title;
-	p2SString			organization;
+	std::string			title;
+	std::string			organization;
 
 };
 

@@ -1,9 +1,9 @@
 #ifndef __MODULE_H__
 #define __MODULE_H__
 
-#include "p2SString.h"
-
 class Core;
+
+#include <string>
 
 class Module
 {
@@ -55,7 +55,7 @@ public:
 
 public:
 
-	p2SString	name;
+	std::string	name;
 	bool		active;
 
 };

@@ -56,9 +56,6 @@
     <ClInclude Include="p2Log.h">
       <Filter>Archivos de recursos</Filter>
     </ClInclude>
-    <ClInclude Include="p2SString.h">
-      <Filter>Archivos de recursos</Filter>
-    </ClInclude>
     <ClInclude Include="p2Point.h">
       <Filter>Archivos de recursos</Filter>
     </ClInclude>
