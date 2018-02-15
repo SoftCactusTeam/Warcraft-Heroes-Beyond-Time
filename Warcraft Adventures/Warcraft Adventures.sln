@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Zelda MC", "Zelda MC\Zelda MC.vcxproj", "{2781B1EC-1D8B-4816-86D8-8A9200ECBEFC}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Warcraft Adventures", "Warcraft Adventures\Warcraft Adventures.vcxproj", "{2781B1EC-1D8B-4816-86D8-8A9200ECBEFC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
