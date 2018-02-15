@@ -34,11 +34,10 @@ Core::Core(int argc, char* args[]) : argc(argc), args(args)
 Core::~Core()
 {
 	// release modules
-	std::list<Module*>::const_iterator item;
-
-	for (item = modules.end(); item != modules.begin(); --item)
+	std::list<Module*>::reverse_iterator it;
+	for (it = modules.rbegin(); it != modules.rend(); ++it)
 	{
-		delete (*item);
+		delete (*it);
 	}
 
 	modules.clear();
@@ -185,12 +184,11 @@ bool Core::CleanUp()
 {
 	bool ret = true;
 
-	std::list<Module*>::const_iterator item;
+	std::list<Module*>::reverse_iterator it;
 
-	for (item = modules.end(); item != modules.begin() && ret == true; --item)
+	for (it = modules.rbegin(); it != modules.rend(); ++it)
 	{
-		ret = (*item)->CleanUp();
-		
+		ret = (*it)->CleanUp();
 	}
 
 	return ret;
