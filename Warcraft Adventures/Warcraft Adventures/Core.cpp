@@ -13,16 +13,17 @@
 // Constructor
 Core::Core(int argc, char* args[]) : argc(argc), args(args)
 {
-	input = new Input();
 	window = new Window();
 	render = new Render();
+	input = new Input();
 	textures = new Textures();
 	//map = new Map();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
-	AddModule(input);
+
 	AddModule(window);
+	AddModule(input);
 	AddModule(textures);
 	//AddModule(map);
 
