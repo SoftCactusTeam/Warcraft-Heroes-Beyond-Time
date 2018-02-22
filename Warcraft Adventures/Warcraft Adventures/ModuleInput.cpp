@@ -18,13 +18,11 @@ Input::Input() : Module()
 	memset(mouse_buttons, KEY_IDLE, sizeof(KeyState) * NUM_MOUSE_BUTTONS);
 }
 
-// Destructor
 Input::~Input()
 {
 	delete[] keyboard;
 }
 
-// Called before render is available
 bool Input::Awake()
 {
 	LOG("Init SDL input event system");
@@ -40,7 +38,6 @@ bool Input::Awake()
 	return ret;
 }
 
-// Called before the first frame
 bool Input::Start()
 {
 	SDL_StopTextInput();
@@ -48,7 +45,6 @@ bool Input::Start()
 	return true;
 }
 
-// Called each loop iteration
 bool Input::PreUpdate()
 {
 	key_pressed = false;
@@ -116,12 +112,10 @@ bool Input::PreUpdate()
 
 		case SDL_MOUSEBUTTONDOWN:
 			mouse_buttons[event.button.button - 1] = KEY_DOWN;
-			//LOG("Mouse button %d down", event.button.button-1);
 			break;
 
 		case SDL_MOUSEBUTTONUP:
 			mouse_buttons[event.button.button - 1] = KEY_UP;
-			//LOG("Mouse button %d up", event.button.button-1);
 			break;
 
 		case SDL_MOUSEMOTION:
@@ -130,7 +124,6 @@ bool Input::PreUpdate()
 			mouse_motion_y = event.motion.yrel / scale;
 			mouse_x = event.motion.x / scale;
 			mouse_y = event.motion.y / scale;
-			//LOG("Mouse motion x %d y %d", mouse_motion_x, mouse_motion_y);
 			break;
 		}
 	}
@@ -138,7 +131,6 @@ bool Input::PreUpdate()
 	return true;
 }
 
-// Called before quitting
 bool Input::CleanUp()
 {
 	LOG("Quitting SDL event subsystem");
@@ -147,7 +139,6 @@ bool Input::CleanUp()
 	return true;
 }
 
-// ---------
 bool Input::GetWindowEvent(EventWindow ev)
 {
 	return windowEvents[ev];

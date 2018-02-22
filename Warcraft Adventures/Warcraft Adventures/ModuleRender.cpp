@@ -57,17 +57,14 @@ bool Render::Awake()
 	return ret;
 }
 
-// Called before the first frame
 bool Render::Start()
 {
 	LOG("render start");
-	// back background
 	SDL_RenderGetViewport(renderer, &viewport);
 
 	return true;
 }
 
-// Called each loop iteration
 bool Render::PreUpdate()
 {
 	SDL_RenderClear(renderer);
@@ -87,7 +84,6 @@ bool Render::PostUpdate()
 	return true;
 }
 
-// Called before quitting
 bool Render::CleanUp()
 {
 	LOG("Destroying SDL render");
@@ -110,7 +106,6 @@ void Render::ResetViewPort()
 	SDL_RenderSetViewport(renderer, &viewport);
 }
 
-// Blit to screen
 bool Render::Blit(const SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, int pivot_x, int pivot_y) const
 {
 	bool ret = true;

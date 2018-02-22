@@ -14,12 +14,8 @@ Window::Window() : Module()
 	name = "window";
 }
 
-// Destructor
-Window::~Window()
-{
-}
+Window::~Window() {}
 
-// Called before render is available
 bool Window::Awake()
 {
 	LOG("Init SDL window & surface");
@@ -34,7 +30,6 @@ bool Window::Awake()
 	}
 	else
 	{
-		//Create window
 		Uint32 flags = SDL_WINDOW_SHOWN;
 		bool fullscreen = false;
 		bool borderless = false;
@@ -75,7 +70,6 @@ bool Window::Awake()
 		}
 		else
 		{
-			//Get window surface
 			screen_surface = SDL_GetWindowSurface(window);
 		}
 	}
@@ -83,23 +77,19 @@ bool Window::Awake()
 	return ret;
 }
 
-// Called before quitting
 bool Window::CleanUp()
 {
 	LOG("Destroying SDL window and quitting all SDL systems");
 
-	//Destroy window
 	if(window != NULL)
 	{
 		SDL_DestroyWindow(window);
 	}
 
-	//Quit SDL subsystems
 	SDL_Quit();
 	return true;
 }
 
-// Set new window title
 void Window::SetTitle(const char* new_title)
 {
 	SDL_SetWindowTitle(window, new_title);

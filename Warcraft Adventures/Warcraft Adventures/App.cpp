@@ -9,7 +9,6 @@
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
 
-// Constructor
 App::App(int argc, char* args[]) : argc(argc), args(args)
 {
 	window = new Window();
@@ -30,10 +29,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(render);
 }
 
-// Destructor
 App::~App()
 {
-	// release modules
 	std::list<Module*>::reverse_iterator it;
 	for (it = modules.rbegin(); it != modules.rend(); ++it)
 	{
@@ -49,7 +46,6 @@ void App::AddModule(Module* module)
 	modules.push_back(module);
 }
 
-// Called before render is available
 bool App::Awake()
 {
 	bool ret = true;
@@ -65,7 +61,6 @@ bool App::Awake()
 	return ret;
 }
 
-// Called before the first frame
 bool App::Start()
 {
 	bool ret = true;
@@ -80,7 +75,6 @@ bool App::Start()
 	return ret;
 }
 
-// Called each loop iteration
 bool App::Update()
 {
 	bool ret = true;
@@ -102,18 +96,10 @@ bool App::Update()
 	return ret;
 }
 
-// ---------------------------------------------
-void App::PrepareUpdate()
-{
-}
+void App::PrepareUpdate() {}
 
-// ---------------------------------------------
-void App::FinishUpdate()
-{
+void App::FinishUpdate() {}
 
-}
-
-// Call modules before each loop iteration
 bool App::PreUpdate()
 {
 	bool ret = true;
@@ -135,7 +121,6 @@ bool App::PreUpdate()
 	return ret;
 }
 
-// Call modules on each loop iteration
 bool App::DoUpdate()
 {
 	bool ret = true;
@@ -157,7 +142,6 @@ bool App::DoUpdate()
 	return ret;
 }
 
-// Call modules after each loop iteration
 bool App::PostUpdate()
 {
 	bool ret = true;
@@ -179,7 +163,6 @@ bool App::PostUpdate()
 	return ret;
 }
 
-// Called before quitting
 bool App::CleanUp()
 {
 	bool ret = true;
@@ -194,13 +177,11 @@ bool App::CleanUp()
 	return ret;
 }
 
-// ---------------------------------------
 int App::GetArgc() const
 {
 	return argc;
 }
 
-// ---------------------------------------
 const char* App::GetArgv(int index) const
 {
 	if(index < argc)
@@ -209,13 +190,11 @@ const char* App::GetArgv(int index) const
 		return NULL;
 }
 
-// ---------------------------------------
 const char* App::GetTitle() const
 {
 	return title.data();
 }
 
-// ---------------------------------------
 const char* App::GetOrganization() const
 {
 	return organization.data();

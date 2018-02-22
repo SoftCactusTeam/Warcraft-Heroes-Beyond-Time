@@ -6,7 +6,6 @@
 #include <list>
 #include <string>
 
-// Modules
 class Window;
 class Input;
 class Render;
