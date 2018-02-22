@@ -5,7 +5,7 @@ _Describe main goal of the project here._
 This project has been done by seven students of CITM - UPC (Terrasa, Spain).  
 
 * [Github repository](https://github.com/SoftCactusTeam/Warcraft_Adventures)  
-* [Website](link here)
+* [Website](https://softcactusteam.github.io/Warcraft_Adventures/)
 
 ## About the game
 
