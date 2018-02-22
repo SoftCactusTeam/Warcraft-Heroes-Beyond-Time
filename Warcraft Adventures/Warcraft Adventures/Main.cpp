@@ -107,8 +107,7 @@ int main(int argc, char* args[])
 		}
 	}
 
-	LOG("... Bye! :)\n");
+	LOG("Closing Game\n");
 
-	// Dump memory leaks
 	return result;
 }

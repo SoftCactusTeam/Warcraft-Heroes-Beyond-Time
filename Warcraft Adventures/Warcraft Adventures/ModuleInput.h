@@ -34,26 +34,15 @@ class Input : public Module
 public:
 
 	Input();
-
-	// Destructor
 	virtual ~Input();
 
-	// Called before render is available
 	bool Awake();
-
-	// Called before the first frame
 	bool Start();
-
-	// Called each loop iteration
 	bool PreUpdate();
-
-	// Called before quitting
 	bool CleanUp();
 
-	// Gather relevant win events
 	bool GetWindowEvent(EventWindow ev);
 
-	// Check key states (includes mouse and joy buttons)
 	KeyState GetKey(int id) const
 	{
 		return keyboard[id];
@@ -64,10 +53,8 @@ public:
 		return mouse_buttons[id - 1];
 	}
 
-	// Check if a certain window event happened
 	bool GetWindowEvent(int code);
 
-	// Get mouse / axis position
 	void GetMousePosition(int &x, int &y);
 	void GetMouseMotion(int& x, int& y);
 
@@ -85,4 +72,4 @@ private:
 	bool		key_pressed = false;
 };
 
-#endif // __INPUT_H__
+#endif

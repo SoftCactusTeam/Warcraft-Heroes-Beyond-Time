@@ -18,11 +18,8 @@ Render::Render() : Module()
 	background.a = 0;
 }
 
-// Destructor
-Render::~Render()
-{}
+Render::~Render() {}
 
-// Called before render is available
 bool Render::Awake()
 {
 	LOG("Create SDL rendering context");

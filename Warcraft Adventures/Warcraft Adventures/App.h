@@ -17,28 +17,16 @@ class App
 {
 public:
 
-	// Constructor
 	App(int argc, char* args[]);
-
-	// Destructor
 	virtual ~App();
 
-	// Called before render is available
 	bool Awake();
-
-	// Called before the first frame
 	bool Start();
-
-	// Called each loop iteration
 	bool Update();
-
-	// Called before quitting
 	bool CleanUp();
 
-	// Add a new module to handle
 	void AddModule(Module* module);
 
-	// Exposing some properties for reading
 	int GetArgc() const;
 	const char* GetArgv(int index) const;
 	const char* GetTitle() const;
@@ -46,24 +34,14 @@ public:
 
 private:
 
-	// Call modules before each loop iteration
 	void PrepareUpdate();
-
-	// Call modules before each loop iteration
 	void FinishUpdate();
-
-	// Call modules before each loop iteration
 	bool PreUpdate();
-
-	// Call modules on each loop iteration
 	bool DoUpdate();
-
-	// Call modules after each loop iteration
 	bool PostUpdate();
 
 public:
 
-	// Modules
 	Window*					window = nullptr;
 	Input*					input = nullptr;
 	Render*					render = nullptr;
@@ -81,6 +59,6 @@ private:
 
 };
 
-extern App* core; // No student is asking me about that ... odd :-S
+extern App* core;
 
 #endif
