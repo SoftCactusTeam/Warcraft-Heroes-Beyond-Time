@@ -68,5 +68,8 @@
     <ClInclude Include="Input.h">
       <Filter>Archivos de recursos</Filter>
     </ClInclude>
+    <ClInclude Include="Globlas.h">
+      <Filter>Archivos de recursos</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
