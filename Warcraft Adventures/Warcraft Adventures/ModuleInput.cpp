@@ -1,10 +1,10 @@
 #include "p2Defs.h"
-#include "p2Log.h"
+#include "Log.h"
 
-#include "Core.h"
+#include "App.h"
 
-#include "Input.h"
-#include "Window.h"
+#include "ModuleInput.h"
+#include "ModuleWindow.h"
 
 #include "SDL/include/SDL.h"
 #define MAX_KEYS 300

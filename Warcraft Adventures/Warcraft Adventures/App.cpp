@@ -1,17 +1,16 @@
 #include <iostream> 
 
 #include "p2Defs.h"
-#include "p2Log.h"
+#include "Log.h"
+#include "App.h"
 
-#include "Window.h"
-#include "Input.h"
-#include "Render.h"
-#include "Textures.h"
-
-#include "Core.h"
+#include "ModuleWindow.h"
+#include "ModuleInput.h"
+#include "ModuleRender.h"
+#include "ModuleTextures.h"
 
 // Constructor
-Core::Core(int argc, char* args[]) : argc(argc), args(args)
+App::App(int argc, char* args[]) : argc(argc), args(args)
 {
 	window = new Window();
 	render = new Render();
@@ -32,7 +31,7 @@ Core::Core(int argc, char* args[]) : argc(argc), args(args)
 }
 
 // Destructor
-Core::~Core()
+App::~App()
 {
 	// release modules
 	std::list<Module*>::reverse_iterator it;
@@ -44,14 +43,14 @@ Core::~Core()
 	modules.clear();
 }
 
-void Core::AddModule(Module* module)
+void App::AddModule(Module* module)
 {
 	module->Init();
 	modules.push_back(module);
 }
 
 // Called before render is available
-bool Core::Awake()
+bool App::Awake()
 {
 	bool ret = true;
 
@@ -67,7 +66,7 @@ bool Core::Awake()
 }
 
 // Called before the first frame
-bool Core::Start()
+bool App::Start()
 {
 	bool ret = true;
 	std::list<Module*>::const_iterator item;
@@ -82,7 +81,7 @@ bool Core::Start()
 }
 
 // Called each loop iteration
-bool Core::Update()
+bool App::Update()
 {
 	bool ret = true;
 	PrepareUpdate();
@@ -104,18 +103,18 @@ bool Core::Update()
 }
 
 // ---------------------------------------------
-void Core::PrepareUpdate()
+void App::PrepareUpdate()
 {
 }
 
 // ---------------------------------------------
-void Core::FinishUpdate()
+void App::FinishUpdate()
 {
 
 }
 
 // Call modules before each loop iteration
-bool Core::PreUpdate()
+bool App::PreUpdate()
 {
 	bool ret = true;
 
@@ -137,7 +136,7 @@ bool Core::PreUpdate()
 }
 
 // Call modules on each loop iteration
-bool Core::DoUpdate()
+bool App::DoUpdate()
 {
 	bool ret = true;
 
@@ -159,7 +158,7 @@ bool Core::DoUpdate()
 }
 
 // Call modules after each loop iteration
-bool Core::PostUpdate()
+bool App::PostUpdate()
 {
 	bool ret = true;
 
@@ -181,7 +180,7 @@ bool Core::PostUpdate()
 }
 
 // Called before quitting
-bool Core::CleanUp()
+bool App::CleanUp()
 {
 	bool ret = true;
 
@@ -196,13 +195,13 @@ bool Core::CleanUp()
 }
 
 // ---------------------------------------
-int Core::GetArgc() const
+int App::GetArgc() const
 {
 	return argc;
 }
 
 // ---------------------------------------
-const char* Core::GetArgv(int index) const
+const char* App::GetArgv(int index) const
 {
 	if(index < argc)
 		return args[index];
@@ -211,13 +210,13 @@ const char* Core::GetArgv(int index) const
 }
 
 // ---------------------------------------
-const char* Core::GetTitle() const
+const char* App::GetTitle() const
 {
 	return title.data();
 }
 
 // ---------------------------------------
-const char* Core::GetOrganization() const
+const char* App::GetOrganization() const
 {
 	return organization.data();
 }

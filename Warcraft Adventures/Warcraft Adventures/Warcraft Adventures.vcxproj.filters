@@ -13,63 +13,72 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Archivos de recursos\Core">
+      <UniqueIdentifier>{35dfe981-1658-42b4-86f9-53bb326d6079}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de recursos\BasicModules">
+      <UniqueIdentifier>{00320b28-b392-44a1-99ae-0e25ec483e3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de recursos\Auxiliar Code">
+      <UniqueIdentifier>{f3eea64d-ef25-40df-ab7b-b926a3a0d3d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
-      <Filter>Archivos de recursos</Filter>
+      <Filter>Archivos de recursos\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Core.cpp">
-      <Filter>Archivos de recursos</Filter>
+    <ClCompile Include="ModuleInput.cpp">
+      <Filter>Archivos de recursos\BasicModules</Filter>
     </ClCompile>
-    <ClCompile Include="p2Log.cpp">
-      <Filter>Archivos de recursos</Filter>
+    <ClCompile Include="ModuleRender.cpp">
+      <Filter>Archivos de recursos\BasicModules</Filter>
     </ClCompile>
-    <ClCompile Include="Window.cpp">
-      <Filter>Archivos de recursos</Filter>
+    <ClCompile Include="ModuleTextures.cpp">
+      <Filter>Archivos de recursos\BasicModules</Filter>
     </ClCompile>
-    <ClCompile Include="Render.cpp">
-      <Filter>Archivos de recursos</Filter>
+    <ClCompile Include="ModuleWindow.cpp">
+      <Filter>Archivos de recursos\BasicModules</Filter>
     </ClCompile>
-    <ClCompile Include="Textures.cpp">
-      <Filter>Archivos de recursos</Filter>
+    <ClCompile Include="Log.cpp">
+      <Filter>Archivos de recursos\Auxiliar Code</Filter>
     </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>Archivos de recursos</Filter>
+    <ClCompile Include="App.cpp">
+      <Filter>Archivos de recursos\Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Module.h">
-      <Filter>Archivos de recursos</Filter>
+    <ClInclude Include="Globlas.h">
+      <Filter>Archivos de recursos\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Core.h">
-      <Filter>Archivos de recursos</Filter>
+    <ClInclude Include="Module.h">
+      <Filter>Archivos de recursos\BasicModules</Filter>
     </ClInclude>
     <ClInclude Include="Animation.h">
-      <Filter>Archivos de recursos</Filter>
+      <Filter>Archivos de recursos\Auxiliar Code</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleInput.h">
+      <Filter>Archivos de recursos\BasicModules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleRender.h">
+      <Filter>Archivos de recursos\BasicModules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleTextures.h">
+      <Filter>Archivos de recursos\BasicModules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleWindow.h">
+      <Filter>Archivos de recursos\BasicModules</Filter>
     </ClInclude>
     <ClInclude Include="p2Defs.h">
-      <Filter>Archivos de recursos</Filter>
-    </ClInclude>
-    <ClInclude Include="Window.h">
-      <Filter>Archivos de recursos</Filter>
-    </ClInclude>
-    <ClInclude Include="p2Log.h">
-      <Filter>Archivos de recursos</Filter>
+      <Filter>Archivos de recursos\Auxiliar Code</Filter>
     </ClInclude>
     <ClInclude Include="p2Point.h">
-      <Filter>Archivos de recursos</Filter>
+      <Filter>Archivos de recursos\Auxiliar Code</Filter>
     </ClInclude>
-    <ClInclude Include="Render.h">
-      <Filter>Archivos de recursos</Filter>
+    <ClInclude Include="Log.h">
+      <Filter>Archivos de recursos\Auxiliar Code</Filter>
     </ClInclude>
-    <ClInclude Include="Textures.h">
-      <Filter>Archivos de recursos</Filter>
-    </ClInclude>
-    <ClInclude Include="Input.h">
-      <Filter>Archivos de recursos</Filter>
-    </ClInclude>
-    <ClInclude Include="Globlas.h">
-      <Filter>Archivos de recursos</Filter>
+    <ClInclude Include="App.h">
+      <Filter>Archivos de recursos\Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

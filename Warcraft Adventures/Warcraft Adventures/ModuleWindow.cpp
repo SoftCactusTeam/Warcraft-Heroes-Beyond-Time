@@ -1,8 +1,8 @@
 #include "p2Defs.h"
-#include "p2Log.h"
+#include "Log.h"
 
-#include "Core.h"
-#include "Window.h"
+#include "App.h"
+#include "ModuleWindow.h"
 
 #include "SDL/include/SDL.h"
 

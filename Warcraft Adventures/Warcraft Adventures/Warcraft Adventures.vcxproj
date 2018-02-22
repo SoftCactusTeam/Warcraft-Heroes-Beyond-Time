@@ -123,26 +123,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Core.cpp" />
-    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="App.cpp" />
+    <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="p2Log.cpp" />
-    <ClCompile Include="Render.cpp" />
-    <ClCompile Include="Textures.cpp" />
-    <ClCompile Include="Window.cpp" />
+    <ClCompile Include="Log.cpp" />
+    <ClCompile Include="ModuleRender.cpp" />
+    <ClCompile Include="ModuleTextures.cpp" />
+    <ClCompile Include="ModuleWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
-    <ClInclude Include="Core.h" />
+    <ClInclude Include="App.h" />
     <ClInclude Include="Globlas.h" />
-    <ClInclude Include="Input.h" />
+    <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="p2Defs.h" />
-    <ClInclude Include="p2Log.h" />
+    <ClInclude Include="Log.h" />
     <ClInclude Include="p2Point.h" />
-    <ClInclude Include="Render.h" />
-    <ClInclude Include="Textures.h" />
-    <ClInclude Include="Window.h" />
+    <ClInclude Include="ModuleRender.h" />
+    <ClInclude Include="ModuleTextures.h" />
+    <ClInclude Include="ModuleWindow.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

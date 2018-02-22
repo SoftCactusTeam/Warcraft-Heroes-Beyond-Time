@@ -1,11 +1,11 @@
 #include "p2Defs.h"
-#include "p2Log.h"
+#include "Log.h"
 
-#include "Core.h"
+#include "App.h"
 
-#include "Window.h"
-#include "Render.h"
-#include "Input.h"
+#include "ModuleWindow.h"
+#include "ModuleRender.h"
+#include "ModuleInput.h"
 
 #define VSYNC true
 

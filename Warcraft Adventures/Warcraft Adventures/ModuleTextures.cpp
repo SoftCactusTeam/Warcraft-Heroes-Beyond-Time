@@ -1,10 +1,10 @@
 #include "p2Defs.h"
-#include "p2Log.h"
+#include "Log.h"
 
-#include "Core.h"
+#include "App.h"
 
-#include "Render.h"
-#include "Textures.h"
+#include "ModuleRender.h"
+#include "ModuleTextures.h"
 
 #include "SDL_image/include/SDL_image.h"
 #pragma comment( lib, "SDL_image/libx86/SDL2_image.lib" )

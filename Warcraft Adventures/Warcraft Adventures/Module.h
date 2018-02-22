@@ -1,7 +1,7 @@
 #ifndef __MODULE_H__
 #define __MODULE_H__
 
-class Core;
+class App;
 
 #include <string>
 

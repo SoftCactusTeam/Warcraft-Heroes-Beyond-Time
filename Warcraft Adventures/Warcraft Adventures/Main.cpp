@@ -1,8 +1,8 @@
 #include <stdlib.h>
 
 #include "p2Defs.h"
-#include "p2Log.h"
-#include "Core.h"
+#include "Log.h"
+#include "App.h"
 // This is needed here because SDL redefines main function
 // do not add any other libraries here, instead put them in their modules
 #include "SDL/include/SDL.h"
@@ -21,7 +21,7 @@ enum MainState
 	EXIT
 };
 
-Core* core = NULL;
+App* core = NULL;
 
 int main(int argc, char* args[])
 {
@@ -39,7 +39,7 @@ int main(int argc, char* args[])
 			case CREATE:
 			LOG("CREATION PHASE ===============================");
 
-			core = new Core(argc, args);
+			core = new App(argc, args);
 
 			if(core != NULL)
 				state = AWAKE;

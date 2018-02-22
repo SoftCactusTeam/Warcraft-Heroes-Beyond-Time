@@ -1,5 +1,5 @@
-#ifndef __CORE_H__
-#define __CORE_H__
+#ifndef __APP_H__
+#define __APP_H__
 
 #include "Module.h"
 
@@ -13,15 +13,15 @@ class Render;
 class Textures;
 class Map;
 
-class Core
+class App
 {
 public:
 
 	// Constructor
-	Core(int argc, char* args[]);
+	App(int argc, char* args[]);
 
 	// Destructor
-	virtual ~Core();
+	virtual ~App();
 
 	// Called before render is available
 	bool Awake();
@@ -81,6 +81,6 @@ private:
 
 };
 
-extern Core* core; // No student is asking me about that ... odd :-S
+extern App* core; // No student is asking me about that ... odd :-S
 
 #endif
