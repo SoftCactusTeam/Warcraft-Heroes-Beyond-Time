@@ -92,7 +92,7 @@ bool Textures::UnLoad(SDL_Texture* texture)
 
 SDL_Texture* const Textures::LoadSurface(SDL_Surface* surface)
 {
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(core->render->renderer, surface);
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(Application->render->renderer, surface);
 
 	if(texture == NULL)
 	{

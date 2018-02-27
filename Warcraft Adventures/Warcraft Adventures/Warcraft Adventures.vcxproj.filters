@@ -51,14 +51,11 @@
     <ClCompile Include="PugiXml\src\pugixml.cpp">
       <Filter>External Libraries</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleGUI.cpp">
+      <Filter>GameCode\BasicModules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Globlas.h">
-      <Filter>GameCode\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Module.h">
-      <Filter>GameCode\BasicModules</Filter>
-    </ClInclude>
     <ClInclude Include="Animation.h">
       <Filter>GameCode\Auxiliar Code</Filter>
     </ClInclude>
@@ -94,6 +91,15 @@
     </ClInclude>
     <ClInclude Include="PugiXml\src\pugixml.hpp">
       <Filter>External Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="Globals.h">
+      <Filter>GameCode\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleGUI.h">
+      <Filter>GameCode\BasicModules</Filter>
+    </ClInclude>
+    <ClInclude Include="Module.h">
+      <Filter>GameCode\Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
