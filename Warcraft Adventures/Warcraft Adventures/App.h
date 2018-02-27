@@ -47,6 +47,10 @@ public:
 	Textures*				textures = nullptr;
 	Map*					map = nullptr;
 
+public:
+
+	float dt = 0.0f;
+
 private:
 
 	std::list<Module*> modules;
@@ -58,6 +62,6 @@ private:
 
 };
 
-extern App* core;
+extern App* Application;
 
 #endif

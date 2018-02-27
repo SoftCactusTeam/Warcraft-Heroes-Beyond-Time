@@ -136,7 +136,7 @@ bool App::DoUpdate()
 			continue;
 		}
 
-		ret = (*item)->Update();
+		ret = (*item)->Update(dt);
 	}
 
 	return ret;

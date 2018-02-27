@@ -21,7 +21,7 @@ enum MainState
 	EXIT
 };
 
-App* core = NULL;
+App* Application = nullptr;
 
 int main(int argc, char* args[])
 {
@@ -39,9 +39,9 @@ int main(int argc, char* args[])
 			case CREATE:
 			LOG("CREATION PHASE ===============================");
 
-			core = new App(argc, args);
+			Application = new App(argc, args);
 
-			if(core != NULL)
+			if(Application != NULL)
 				state = AWAKE;
 			else
 				state = FAIL;
@@ -51,7 +51,7 @@ int main(int argc, char* args[])
 			// Awake all modules -----------------------------------------------
 			case AWAKE:
 			LOG("AWAKE PHASE ===============================");
-			if(core->Awake() == true)
+			if(Application->Awake() == true)
 				state = START;
 			else
 			{
@@ -64,7 +64,7 @@ int main(int argc, char* args[])
 			// Call all modules before first frame  ----------------------------
 			case START:
 			LOG("START PHASE ===============================");
-			if(core->Start() == true)
+			if(Application->Start() == true)
 			{
 				state = LOOP;
 				LOG("UPDATE PHASE ===============================");
@@ -79,7 +79,7 @@ int main(int argc, char* args[])
 			// Loop all modules until we are asked to leave ---------------------
 			case LOOP:
 			{
-				if (core->Update() == false)
+				if (Application->Update() == false)
 					state = CLEAN;
 			}
 			break;
@@ -87,9 +87,9 @@ int main(int argc, char* args[])
 			// Cleanup allocated memory -----------------------------------------
 			case CLEAN:
 			LOG("CLEANUP PHASE ===============================");
-			if(core->CleanUp() == true)
+			if(Application->CleanUp() == true)
 			{
-				RELEASE(core);
+				RELEASE(Application);
 				result = EXIT_SUCCESS;
 				state = EXIT;
 			}
