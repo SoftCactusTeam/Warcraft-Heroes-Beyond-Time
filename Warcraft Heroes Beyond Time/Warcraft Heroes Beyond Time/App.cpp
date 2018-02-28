@@ -9,6 +9,7 @@
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
 #include "FileSystem.h"
+#include "ModuleAudio.h"
 
 #include "Fonts.h"
 
@@ -20,6 +21,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	textures = new Textures();
   fonts = new Fonts();
 	fs = new FileSystem();
+	audio = new Audio();
 
 	//map = new Map();
 
@@ -29,6 +31,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(window);
 	AddModule(input);
 	AddModule(textures);
+	AddModule(audio);
 	AddModule(fonts);
 	AddModule(fs);
 
