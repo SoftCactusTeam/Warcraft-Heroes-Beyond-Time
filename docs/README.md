@@ -1,4 +1,4 @@
-# Warcraft Adventures
+# Warcraft: Heroes Beyond Time
 
 _Describe main goal of the project here._
 
