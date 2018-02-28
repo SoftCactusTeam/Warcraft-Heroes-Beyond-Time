@@ -12,7 +12,6 @@
     <ClCompile Include="ModuleTextures.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
-    <ClCompile Include="XMLreader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -31,6 +30,5 @@
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
-    <ClInclude Include="XMLreader.h" />
   </ItemGroup>
 </Project>
