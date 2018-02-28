@@ -11,6 +11,7 @@ class Input;
 class Render;
 class Textures;
 class Map;
+class FileSystem;
 
 class App
 {
@@ -46,6 +47,7 @@ public:
 	Render*					render = nullptr;
 	Textures*				textures = nullptr;
 	Map*					map = nullptr;
+	FileSystem*				fs = nullptr;
 
 public:
 

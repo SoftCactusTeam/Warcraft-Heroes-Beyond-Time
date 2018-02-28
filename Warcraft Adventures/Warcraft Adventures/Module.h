@@ -4,6 +4,7 @@
 class App;
 
 #include <string>
+#include "PugiXml/src/pugixml.hpp"
 
 class Module
 {
