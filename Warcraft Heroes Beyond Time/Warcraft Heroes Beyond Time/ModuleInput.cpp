@@ -8,6 +8,7 @@
 
 #include "SDL/include/SDL.h"
 #define MAX_KEYS 300
+#define J_DEAD_ZONE 0
 
 Input::Input() : Module()
 {
@@ -33,6 +34,17 @@ bool Input::Awake()
 	{
 		LOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
+	}
+
+	if (SDL_NumJoysticks() < 1)
+		LOG("Warning: No joystick detected");
+	else
+	{
+		controller = SDL_JoystickOpen(0);
+		if (controller == NULL)
+		{
+			LOG("Warning: Unable to open game controller! SDL Error: %s\n", SDL_GetError());
+		}
 	}
 
 	return ret;
@@ -119,11 +131,33 @@ bool Input::PreUpdate()
 			break;
 
 		case SDL_MOUSEMOTION:
+			{   
 			int scale = Application->window->GetScale();
 			mouse_motion_x = event.motion.xrel / scale;
 			mouse_motion_y = event.motion.yrel / scale;
 			mouse_x = event.motion.x / scale;
 			mouse_y = event.motion.y / scale;
+			}
+			break;
+
+		case SDL_JOYAXISMOTION:
+			if (event.jaxis.which == 0)
+			{
+				if (event.jaxis.axis == 0)
+				{
+					if (event.jaxis.value < -J_DEAD_ZONE || event.jaxis.value > J_DEAD_ZONE)
+						xAxis = event.jaxis.value;
+					else
+						xAxis = 0;
+				}
+				else if (event.jaxis.axis == 1)
+				{
+					if (event.jaxis.value < -J_DEAD_ZONE || event.jaxis.value > J_DEAD_ZONE)
+						yAxis = event.jaxis.value;
+					else
+						yAxis = 0;
+				}
+			}
 			break;
 		}
 	}
@@ -133,6 +167,10 @@ bool Input::PreUpdate()
 
 bool Input::CleanUp()
 {
+	LOG("Quitting game controller");
+	SDL_JoystickClose(controller);
+	controller = NULL;
+
 	LOG("Quitting SDL event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 

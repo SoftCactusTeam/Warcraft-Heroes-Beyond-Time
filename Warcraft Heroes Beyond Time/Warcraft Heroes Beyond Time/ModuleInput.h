@@ -70,6 +70,10 @@ private:
 	int			mouse_y;
 
 	bool		key_pressed = false;
+
+	SDL_Joystick* controller = NULL;
+	float xAxis = 0;
+	float yAxis = 0;
 };
 
 #endif
