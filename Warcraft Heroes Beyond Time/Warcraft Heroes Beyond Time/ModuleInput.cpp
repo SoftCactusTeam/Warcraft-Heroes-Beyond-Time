@@ -8,7 +8,6 @@
 
 #include "SDL/include/SDL.h"
 #define MAX_KEYS 300
-#define J_DEAD_ZONE 0
 
 Input::Input() : Module()
 {
@@ -17,6 +16,7 @@ Input::Input() : Module()
 	keyboard = new KeyState[MAX_KEYS];
 	memset(keyboard, KEY_IDLE, sizeof(KeyState) * MAX_KEYS);
 	memset(mouse_buttons, KEY_IDLE, sizeof(KeyState) * NUM_MOUSE_BUTTONS);
+	memset(jButtons, KEY_IDLE, sizeof(KeyState) * NUM_J_BUTTONS);
 }
 
 Input::~Input()
@@ -94,6 +94,16 @@ bool Input::PreUpdate()
 			mouse_buttons[i] = KEY_IDLE;
 	}
 
+	for (int i = 0; i < NUM_J_BUTTONS; ++i)
+	{
+		if (jButtons[i] == KEY_DOWN)
+			jButtons[i] = KEY_REPEAT;
+
+		if (jButtons[i] == KEY_UP)
+			jButtons[i] = KEY_IDLE;
+	}
+
+	SDL_GameControllerButton button = SDL_CONTROLLER_BUTTON_A;
 	while (SDL_PollEvent(&event) != 0)
 	{
 		switch (event.type)
@@ -158,6 +168,14 @@ bool Input::PreUpdate()
 						yAxis = 0;
 				}
 			}
+			break;
+
+		case SDL_JOYBUTTONDOWN:
+			jButtons[event.jbutton.button - 1] = KEY_DOWN;
+			break;
+
+		case SDL_JOYBUTTONUP:
+			jButtons[event.jbutton.button - 1] = KEY_UP;
 			break;
 		}
 	}

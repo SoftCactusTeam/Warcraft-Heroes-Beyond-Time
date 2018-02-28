@@ -6,9 +6,9 @@
 #include "SDL\include\SDL_gamecontroller.h"
 #include "SDL\include\SDL_scancode.h"
 
-//#define NUM_KEYS 352
 #define NUM_MOUSE_BUTTONS 5
-//#define LAST_KEYS_PRESSED_BUFFER 50
+#define J_DEAD_ZONE 0
+#define NUM_J_BUTTONS 17
 
 struct SDL_Rect;
 
@@ -64,6 +64,7 @@ private:
 	bool		windowEvents[WE_COUNT];
 	KeyState*	keyboard;
 	KeyState	mouse_buttons[NUM_MOUSE_BUTTONS];
+	KeyState	jButtons[NUM_J_BUTTONS];
 	int			mouse_motion_x;
 	int			mouse_motion_y;
 	int			mouse_x;
