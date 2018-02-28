@@ -4,7 +4,7 @@
 #include "Module.h"
 #include "SDL\include\SDL_pixels.h"
 
-#include "SDL_TTF\include\SDL_ttf.h"
+#include "SDL_ttf\include\SDL_ttf.h"
 
 #define DEFAULT_FONT "Resources/fonts/open_sans/OpenSans-Regular.ttf"
 #define DEFAULT_FONT_SIZE 12
