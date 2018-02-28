@@ -2,7 +2,7 @@
 #define __APP_H__
 
 #include "Module.h"
-
+#include "Globals.h"
 #include <list>
 #include <string>
 

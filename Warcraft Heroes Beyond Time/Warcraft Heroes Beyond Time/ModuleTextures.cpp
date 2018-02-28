@@ -5,6 +5,7 @@
 
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
+#include "FileSystem.h"
 
 #include "SDL_image/include/SDL_image.h"
 #pragma comment( lib, "SDL_image/libx86/SDL2_image.lib" )
@@ -58,7 +59,7 @@ bool Textures::CleanUp()
 SDL_Texture* const Textures::Load(const char* path)
 {
 	SDL_Texture* texture = NULL;
-	SDL_Surface* surface = IMG_Load(path);
+	SDL_Surface* surface = IMG_Load_RW(Application->fs->Load(path), 1);
 
 	if(surface == NULL)
 	{
