@@ -12,6 +12,7 @@ class Render;
 class Textures;
 class Map;
 class FileSystem;
+class EntitySystem;
 
 class Fonts;
 
@@ -51,6 +52,7 @@ public:
 	Map*					map = nullptr;
 	Fonts*					fonts = nullptr;
 	FileSystem*				fs = nullptr;
+	EntitySystem*			entitySystem = nullptr;
 
 public:
 

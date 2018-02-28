@@ -9,6 +9,7 @@
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
 #include "FileSystem.h"
+#include "ModuleEntitySystem.h"
 
 #include "Fonts.h"
 
@@ -18,9 +19,9 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	render = new Render();
 	input = new Input();
 	textures = new Textures();
-  fonts = new Fonts();
+	fonts = new Fonts();
 	fs = new FileSystem();
-
+	entitySystem = new EntitySystem();
 	//map = new Map();
 
 	// Ordered for awake / Start / Update
@@ -31,7 +32,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(textures);
 	AddModule(fonts);
 	AddModule(fs);
-
+	AddModule(entitySystem);
 	//AddModule(map);
 
 	// render last to swap buffer
