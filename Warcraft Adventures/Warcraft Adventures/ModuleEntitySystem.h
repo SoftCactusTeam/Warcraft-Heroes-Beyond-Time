@@ -1,8 +1,11 @@
 #ifndef  __ModuleEntitySystem_H__
 #define	 __ModuleEntitySystem_H__
 
+#include <list>
+
 #include "App.h"
-class App;
+#include "p2Point.h"
+#include "Entity.h"
 
 class EntitySystem
 {
@@ -11,45 +14,28 @@ public:
 	EntitySystem()
 	{}
 
-	void Init()
-	{
-		active = true;
-	}
+	void Init();
+	bool Start();
+	bool PreUpdate();
+	bool Update(float dt);
+	bool PostUpdate();
+	bool CleanUp();
 
-	virtual bool Awake()
-	{
-		return true;
-	}
-
-	virtual bool Start()
-	{
-		return true;
-	}
-
-	virtual bool PreUpdate()
-	{
-		return true;
-	}
-
-	virtual bool Update(float dt)
-	{
-		return true;
-	}
-
-	virtual bool PostUpdate()
-	{
-		return true;
-	}
-
-	virtual bool CleanUp()
-	{
-		return true;
-	}
+	void ClearEntitiesList();
+	void AddEnemie(iPoint coor, ENEMY_TYPE type);
+	void AddBoss(iPoint coor, BOSS_TYPE type);
+	void AddPlayer(iPoint coor, PLAYER_TYPE type);
+	void AddItem(iPoint coor, ITEM_TYPE type);
+	void AddChest(iPoint coor, CHEST_TYPE type);
+	void AddStaticObject(iPoint coor, STATIC_OBJECT_TYPE type);
 
 public:
-
 	std::string	name;
-	bool		active;
+	bool		active = true;;
+	bool		pauseAllEntities = false;
+
+private:
+	std::list<Entity> entities;
 
 };
 
