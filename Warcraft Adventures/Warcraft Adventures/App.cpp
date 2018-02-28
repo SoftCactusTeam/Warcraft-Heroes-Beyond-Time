@@ -8,6 +8,7 @@
 #include "ModuleInput.h"
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
+#include "FileSystem.h"
 
 App::App(int argc, char* args[]) : argc(argc), args(args)
 {
@@ -15,6 +16,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	render = new Render();
 	input = new Input();
 	textures = new Textures();
+	fs = new FileSystem();
 	//map = new Map();
 
 	// Ordered for awake / Start / Update
@@ -23,6 +25,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(window);
 	AddModule(input);
 	AddModule(textures);
+	AddModule(fs);
 	//AddModule(map);
 
 	// render last to swap buffer
