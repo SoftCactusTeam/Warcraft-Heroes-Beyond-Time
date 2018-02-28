@@ -9,12 +9,16 @@
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
 
+#include "Fonts.h"
+
 App::App(int argc, char* args[]) : argc(argc), args(args)
 {
 	window = new Window();
 	render = new Render();
 	input = new Input();
 	textures = new Textures();
+
+	fonts = new Fonts();
 	//map = new Map();
 
 	// Ordered for awake / Start / Update
@@ -23,6 +27,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(window);
 	AddModule(input);
 	AddModule(textures);
+
+	AddModule(fonts);
 	//AddModule(map);
 
 	// render last to swap buffer

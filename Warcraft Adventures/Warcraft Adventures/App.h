@@ -12,6 +12,8 @@ class Render;
 class Textures;
 class Map;
 
+class Fonts;
+
 class App
 {
 public:
@@ -46,6 +48,7 @@ public:
 	Render*					render = nullptr;
 	Textures*				textures = nullptr;
 	Map*					map = nullptr;
+	Fonts*					fonts = nullptr;
 
 public:
 
