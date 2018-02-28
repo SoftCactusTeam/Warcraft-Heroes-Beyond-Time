@@ -55,6 +55,7 @@
       <Filter>GameCode\BasicModules</Filter>
     </ClCompile>
     <ClCompile Include="Fonts.cpp">
+    <ClCompile Include="FileSystem.cpp">
       <Filter>GameCode\BasicModules</Filter>
     </ClCompile>
   </ItemGroup>
@@ -105,6 +106,7 @@
       <Filter>GameCode\Core</Filter>
     </ClInclude>
     <ClInclude Include="Fonts.h">
+    <ClInclude Include="FileSystem.h">
       <Filter>GameCode\BasicModules</Filter>
     </ClInclude>
   </ItemGroup>
