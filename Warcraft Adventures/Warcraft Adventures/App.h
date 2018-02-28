@@ -13,6 +13,8 @@ class Textures;
 class Map;
 class FileSystem;
 
+class Fonts;
+
 class App
 {
 public:
@@ -47,6 +49,7 @@ public:
 	Render*					render = nullptr;
 	Textures*				textures = nullptr;
 	Map*					map = nullptr;
+	Fonts*					fonts = nullptr;
 	FileSystem*				fs = nullptr;
 
 public:

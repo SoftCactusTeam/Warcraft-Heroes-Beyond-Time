@@ -54,6 +54,7 @@
     <ClCompile Include="ModuleGUI.cpp">
       <Filter>GameCode\BasicModules</Filter>
     </ClCompile>
+    <ClCompile Include="Fonts.cpp">
     <ClCompile Include="FileSystem.cpp">
       <Filter>GameCode\BasicModules</Filter>
     </ClCompile>
@@ -104,6 +105,7 @@
     <ClInclude Include="Module.h">
       <Filter>GameCode\Core</Filter>
     </ClInclude>
+    <ClInclude Include="Fonts.h">
     <ClInclude Include="FileSystem.h">
       <Filter>GameCode\BasicModules</Filter>
     </ClInclude>
