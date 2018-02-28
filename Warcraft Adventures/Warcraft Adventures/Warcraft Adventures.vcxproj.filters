@@ -1,113 +1,120 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Archivos de código fuente">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="GameCode">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="GameCode\Core">
-      <UniqueIdentifier>{35dfe981-1658-42b4-86f9-53bb326d6079}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameCode\BasicModules">
-      <UniqueIdentifier>{00320b28-b392-44a1-99ae-0e25ec483e3e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameCode\Auxiliar Code">
-      <UniqueIdentifier>{f3eea64d-ef25-40df-ab7b-b926a3a0d3d1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="External Libraries">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>GameCode\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleInput.cpp">
-      <Filter>GameCode\BasicModules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleRender.cpp">
-      <Filter>GameCode\BasicModules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleTextures.cpp">
-      <Filter>GameCode\BasicModules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleWindow.cpp">
-      <Filter>GameCode\BasicModules</Filter>
-    </ClCompile>
-    <ClCompile Include="Log.cpp">
-      <Filter>GameCode\Auxiliar Code</Filter>
-    </ClCompile>
     <ClCompile Include="App.cpp">
-      <Filter>GameCode\Core</Filter>
+      <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="XMLreader.cpp">
-      <Filter>GameCode\Auxiliar Code</Filter>
-    </ClCompile>
-    <ClCompile Include="PugiXml\src\pugixml.cpp">
-      <Filter>External Libraries</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleGUI.cpp">
-      <Filter>GameCode\BasicModules</Filter>
+    <ClCompile Include="FileSystem.cpp">
+      <Filter>BasicModules</Filter>
     </ClCompile>
     <ClCompile Include="Fonts.cpp">
-    <ClCompile Include="FileSystem.cpp">
-      <Filter>GameCode\BasicModules</Filter>
+      <Filter>BasicModules</Filter>
+    </ClCompile>
+    <ClCompile Include="Log.cpp">
+      <Filter>AuxiliarHelpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleInput.cpp">
+      <Filter>BasicModules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleRender.cpp">
+      <Filter>BasicModules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleTextures.cpp">
+      <Filter>BasicModules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleWindow.cpp">
+      <Filter>BasicModules</Filter>
+    </ClCompile>
+    <ClCompile Include="PugiXml\src\pugixml.cpp">
+      <Filter>External Code</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleGUI.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleEntitySystem.cpp">
+      <Filter>EntitySystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>EntitySystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
-      <Filter>GameCode\Auxiliar Code</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleInput.h">
-      <Filter>GameCode\BasicModules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleRender.h">
-      <Filter>GameCode\BasicModules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleTextures.h">
-      <Filter>GameCode\BasicModules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleWindow.h">
-      <Filter>GameCode\BasicModules</Filter>
-    </ClInclude>
-    <ClInclude Include="p2Defs.h">
-      <Filter>GameCode\Auxiliar Code</Filter>
-    </ClInclude>
-    <ClInclude Include="p2Point.h">
-      <Filter>GameCode\Auxiliar Code</Filter>
-    </ClInclude>
-    <ClInclude Include="Log.h">
-      <Filter>GameCode\Auxiliar Code</Filter>
+      <Filter>BasicModules</Filter>
     </ClInclude>
     <ClInclude Include="App.h">
-      <Filter>GameCode\Core</Filter>
+      <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="XMLreader.h">
-      <Filter>GameCode\Auxiliar Code</Filter>
-    </ClInclude>
-    <ClInclude Include="PugiXml\src\pugiconfig.hpp">
-      <Filter>External Libraries</Filter>
-    </ClInclude>
-    <ClInclude Include="PugiXml\src\pugixml.hpp">
-      <Filter>External Libraries</Filter>
-    </ClInclude>
-    <ClInclude Include="Globals.h">
-      <Filter>GameCode\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleGUI.h">
-      <Filter>GameCode\BasicModules</Filter>
-    </ClInclude>
-    <ClInclude Include="Module.h">
-      <Filter>GameCode\Core</Filter>
+    <ClInclude Include="FileSystem.h">
+      <Filter>BasicModules</Filter>
     </ClInclude>
     <ClInclude Include="Fonts.h">
-    <ClInclude Include="FileSystem.h">
-      <Filter>GameCode\BasicModules</Filter>
+      <Filter>BasicModules</Filter>
     </ClInclude>
+    <ClInclude Include="Globals.h">
+      <Filter>AuxiliarHelpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Log.h">
+      <Filter>AuxiliarHelpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Module.h">
+      <Filter>BasicModules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleInput.h">
+      <Filter>BasicModules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleRender.h">
+      <Filter>BasicModules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleTextures.h">
+      <Filter>BasicModules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleWindow.h">
+      <Filter>BasicModules</Filter>
+    </ClInclude>
+    <ClInclude Include="PugiXml\src\pugixml.hpp">
+      <Filter>External Code</Filter>
+    </ClInclude>
+    <ClInclude Include="PugiXml\src\pugiconfig.hpp">
+      <Filter>External Code</Filter>
+    </ClInclude>
+    <ClInclude Include="p2Point.h">
+      <Filter>AuxiliarHelpers</Filter>
+    </ClInclude>
+    <ClInclude Include="p2Defs.h">
+      <Filter>AuxiliarHelpers</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleGUI.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleEntitySystem.h">
+      <Filter>EntitySystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>EntitySystem</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="BasicModules">
+      <UniqueIdentifier>{cea393e5-7cb0-454d-b1a0-57842410c713}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AuxiliarHelpers">
+      <UniqueIdentifier>{cbef1bfa-dbc0-4e0e-8d08-b61b46551449}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{ce2d2989-b239-43fa-8769-563cb4af6259}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External Code">
+      <UniqueIdentifier>{46f2c179-163e-463f-89f7-fc1cefe3edd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI">
+      <UniqueIdentifier>{4bfaa8ba-1caf-4356-8fb5-820ae5275069}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EntitySystem">
+      <UniqueIdentifier>{510ed7be-0d6a-4ae0-8fc9-29a85af0f5cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

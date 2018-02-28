@@ -50,7 +50,7 @@ void EntitySystem::AddPlayer(iPoint coor, PLAYER_TYPE type)
 
 }
 
-void EntitySystem::AddItem(iPoint coor, ITEM_TYPE type)
+void EntitySystem::AddItem(iPoint coor, CONSUMABLE_TYPE type)
 {
 
 }

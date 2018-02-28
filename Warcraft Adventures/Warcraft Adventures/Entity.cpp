@@ -3,20 +3,34 @@
 FIXED_ANGLE DinamicEntity::CaculateAngle(iPoint objectiveCoor)
 {
 	FIXED_ANGLE angleToReturn;
-	if (this->coor.x - objectiveCoor.x >= 0) {
-		if (this->coor.y - objectiveCoor.y >= 0) {
+	if (this->coor.x - objectiveCoor.x >= 0)
+	{
+		if (this->coor.y - objectiveCoor.y >= 0)
 			angleToReturn = FIXED_ANGLE::UP_LEFT;
-		}
-		else {
+		else
 			angleToReturn = FIXED_ANGLE::DOWN_LEFT;
-		}
 	}
-	else {
-		if (this->coor.y - objectiveCoor.y >= 0) {
+	else
+	{
+		if (this->coor.y - objectiveCoor.y >= 0)
 			angleToReturn = FIXED_ANGLE::UP_RIGHT;
-		}
-		else {
+		else
 			angleToReturn = FIXED_ANGLE::DOWN_RIGHT;
-		}
+	}
+
+	switch (angleToReturn) 
+	{
+	case FIXED_ANGLE::UP_RIGHT:
+
+		break;
+	case FIXED_ANGLE::UP_LEFT:
+
+		break;
+	case FIXED_ANGLE::DOWN_RIGHT:
+
+		break;
+	case FIXED_ANGLE::DOWN_LEFT:
+
+		break;
 	}
 }
