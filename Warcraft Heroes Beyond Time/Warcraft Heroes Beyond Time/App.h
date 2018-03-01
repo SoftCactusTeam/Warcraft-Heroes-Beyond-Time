@@ -13,8 +13,10 @@ class Textures;
 class Map;
 class FileSystem;
 class Audio;
-
+class Scene;
 class Fonts;
+
+
 
 class App
 {
@@ -53,6 +55,7 @@ public:
 	Fonts*					fonts = nullptr;
 	FileSystem*				fs = nullptr;
 	Audio*					audio = nullptr;
+	Scene*					scene = nullptr;
 
 public:
 
