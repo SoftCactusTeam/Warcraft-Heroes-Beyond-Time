@@ -141,6 +141,7 @@
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Fonts.h" />
     <ClInclude Include="FileSystem.h" />
+    <ClInclude Include="Label.h" />
     <ClInclude Include="ModuleGUI.h" />
     <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="Module.h" />

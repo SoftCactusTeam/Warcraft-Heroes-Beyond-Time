@@ -30,5 +30,13 @@
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
+    <ClInclude Include="Label.h">
+      <Filter>GUIElems</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="GUIElems">
+      <UniqueIdentifier>{c7bfe429-55e0-41e7-abd3-d99d2a69a0a0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

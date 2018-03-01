@@ -12,8 +12,8 @@ class Render;
 class Textures;
 class Map;
 class FileSystem;
-
 class Fonts;
+class ModuleGUI;
 
 class App
 {
@@ -51,6 +51,7 @@ public:
 	Map*					map = nullptr;
 	Fonts*					fonts = nullptr;
 	FileSystem*				fs = nullptr;
+	ModuleGUI*				gui = nullptr;
 
 public:
 

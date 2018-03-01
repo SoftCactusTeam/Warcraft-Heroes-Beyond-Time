@@ -6,6 +6,7 @@
 #include <string>
 #include "p2Point.h"
 #include "SDL/include/SDL.h"
+#include "Fonts.h"
 
 class Label;
 
@@ -13,6 +14,9 @@ class Label;
 class GUIElem
 {
 	friend class ModuleGUI;
+
+public:
+
 	enum GUIElemType
 	{
 		NO_ELEM_TYPE = -1,
@@ -27,12 +31,18 @@ protected:
 
 	GUIElemType type = GUIElemType::NO_ELEM_TYPE;
 	GUIElem* parent = nullptr;
-	std::string name = "Default";
 	fPoint position;
 
 public:
+	GUIElem() {}
+	GUIElem(GUIElemType type, fPoint position, GUIElem* parent) : type(type), position(position), parent(parent) {}
 
-	//Methods here
+	virtual ~GUIElem() {}
+
+	virtual bool Update(float dt)
+	{
+		return true;
+	}
 
 };
 
@@ -52,15 +62,15 @@ public:
 
 public:
 
-	GUIElem* createWindow(std::string tag, fPoint position, Label* title = nullptr, std::list<GUIElem*>* childs = nullptr, GUIElem* parent = nullptr);
-	GUIElem* createButton(std::string tag, fPoint position, Label* Text, GUIElem* parent = nullptr);
-	GUIElem* createImage(std::string tag, fPoint position, SDL_Rect atlasRec, GUIElem* parent = nullptr);
-	GUIElem* createLabel(std::string tag, fPoint position, std::string text, GUIElem* parent = nullptr/*, font*/);
+	GUIElem* createWindow(fPoint position, Label* title = nullptr, std::list<GUIElem*>* childs = nullptr, GUIElem* parent = nullptr);
+	GUIElem* createButton(fPoint position, Label* Text, GUIElem* parent = nullptr);
+	GUIElem* createImage(fPoint position, SDL_Rect atlasRec, GUIElem* parent = nullptr);
+	GUIElem* createLabel(fPoint position, std::string text, TTF_Font* font, GUIElem* parent = nullptr);
 
-private:
+public:
 
 	std::list<GUIElem*> GUIElemList;
-
+	bool spawned = false;
 };
 
 

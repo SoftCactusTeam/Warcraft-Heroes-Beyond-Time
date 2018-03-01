@@ -9,8 +9,8 @@
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
 #include "FileSystem.h"
-
 #include "Fonts.h"
+#include "ModuleGUI.h"
 
 App::App(int argc, char* args[]) : argc(argc), args(args)
 {
@@ -18,8 +18,9 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	render = new Render();
 	input = new Input();
 	textures = new Textures();
-  fonts = new Fonts();
+	fonts = new Fonts();
 	fs = new FileSystem();
+	gui = new ModuleGUI();
 
 	//map = new Map();
 
@@ -31,7 +32,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(textures);
 	AddModule(fonts);
 	AddModule(fs);
-
+	AddModule(gui);
 	//AddModule(map);
 
 	// render last to swap buffer
