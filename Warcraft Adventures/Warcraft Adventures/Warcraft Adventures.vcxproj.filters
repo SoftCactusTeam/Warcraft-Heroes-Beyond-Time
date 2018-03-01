@@ -37,8 +37,11 @@
     <ClCompile Include="ModuleEntitySystem.cpp">
       <Filter>EntitySystem</Filter>
     </ClCompile>
+    <ClCompile Include="Player_Entity.cpp">
+      <Filter>EntitySystem\Entity\Player</Filter>
+    </ClCompile>
     <ClCompile Include="Entity.cpp">
-      <Filter>EntitySystem</Filter>
+      <Filter>EntitySystem\Entity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -93,8 +96,14 @@
     <ClInclude Include="ModuleEntitySystem.h">
       <Filter>EntitySystem</Filter>
     </ClInclude>
+    <ClInclude Include="Player_Entity.h">
+      <Filter>EntitySystem\Entity\Player</Filter>
+    </ClInclude>
     <ClInclude Include="Entity.h">
-      <Filter>EntitySystem</Filter>
+      <Filter>EntitySystem\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="EntitiesEnums.h">
+      <Filter>EntitySystem\Entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -115,6 +124,18 @@
     </Filter>
     <Filter Include="EntitySystem">
       <UniqueIdentifier>{510ed7be-0d6a-4ae0-8fc9-29a85af0f5cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EntitySystem\Entity">
+      <UniqueIdentifier>{791a5e9e-c547-4e1f-aee7-35c6e0fdaa9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EntitySystem\Entity\Enemies">
+      <UniqueIdentifier>{fa2b5aa4-a8ab-4d40-8851-a34a2dd4962a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EntitySystem\Entity\Boss">
+      <UniqueIdentifier>{9138b015-38e6-4579-b004-907cc9bb2569}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EntitySystem\Entity\Player">
+      <UniqueIdentifier>{528c49f1-892b-4324-a961-fb4eaa0bafe9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

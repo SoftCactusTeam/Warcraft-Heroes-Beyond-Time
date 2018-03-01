@@ -7,12 +7,19 @@
 #include "p2Point.h"
 #include "Entity.h"
 
-class EntitySystem
+class PlayerPJ;
+class Boss;
+class Enemy;
+
+class Consumable;
+class Chest;
+class StaticObject;
+
+class EntitySystem : public Module
 {
 public:
 
-	EntitySystem()
-	{}
+	EntitySystem();
 
 	void Init();
 	bool Start();
@@ -21,13 +28,14 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
-	void ClearEntitiesList();
+	void AddPlayer(iPoint coor, PLAYER_TYPE type);
 	void AddEnemie(iPoint coor, ENEMY_TYPE type);
 	void AddBoss(iPoint coor, BOSS_TYPE type);
-	void AddPlayer(iPoint coor, PLAYER_TYPE type);
-	void AddItem(iPoint coor, CONSUMABLE_TYPE type);
+	void AddConsumable(iPoint coor, CONSUMABLE_TYPE type);
 	void AddChest(iPoint coor, CHEST_TYPE type);
 	void AddStaticObject(iPoint coor, STATIC_OBJECT_TYPE type);
+
+	void ClearEntitiesList();
 
 public:
 	std::string	name;
@@ -35,7 +43,7 @@ public:
 	bool		pauseAllEntities = false;
 
 private:
-	std::list<Entity> entities;
+	std::list<Entity*> entities;
 
 };
 
