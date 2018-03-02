@@ -3,11 +3,13 @@
 
 #include <list>
 
+#include "SDL_image\include\SDL_image.h"
+
 #include "App.h"
 #include "p2Point.h"
 #include "Entity.h"
 
-class PlayerPJ;
+class PlayerPJ_Entity;
 class Boss;
 class Enemy;
 
@@ -45,6 +47,23 @@ public:
 private:
 	std::list<Entity*> entities;
 
+	// Les textures es carregaran aquí
+	//	--------------------------------------------||
+	SDL_Texture* ThrallSprite = nullptr;
+	SDL_Texture* ValeeraSprite = nullptr;
+	SDL_Texture* SylvanasSprite = nullptr;
+
+	SDL_Texture* GulDanSprite = nullptr;
+	SDL_Texture* LichKingSprite = nullptr;
+	SDL_Texture* IllidanSprite = nullptr;
+
+	SDL_Texture* FootManSprite = nullptr;
+	SDL_Texture* ArcherSprite = nullptr;
+	SDL_Texture* MageSprite = nullptr;
+	SDL_Texture* DeathKingSprite = nullptr;
+	SDL_Texture* GoblinSprite = nullptr;
+	SDL_Texture* SkeletonSprite = nullptr;	
+	//	--------------------------------------------||
 };
 
 #endif

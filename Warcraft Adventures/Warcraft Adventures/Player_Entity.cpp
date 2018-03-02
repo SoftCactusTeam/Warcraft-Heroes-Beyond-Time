@@ -1,34 +1,34 @@
 #include "Player_Entity.h"
 
-PlayerPJ::PlayerPJ(iPoint coor, ENTITY_TYPE type, SDL_Texture* texture, PLAYER_TYPE character) : DinamicEntity (coor, type, texture)
+PlayerPJ_Entity::PlayerPJ_Entity(iPoint coor, ENTITY_TYPE type, SDL_Texture* texture, PLAYER_TYPE character) : DinamicEntity (coor, type, texture)
 {
-	character_name = character;
+	characterPJ_type = character;
 }
 
-void PlayerPJ::DoAction(PLAYER_ACTIONS action, FIXED_ANGLE angle) {
-
-}
-
-void PlayerPJ::UseConsumable() {
+void PlayerPJ_Entity::DoAction(PLAYER_ACTIONS action, FIXED_ANGLE angle) {
 
 }
 
-void PlayerPJ::Start() {
+void PlayerPJ_Entity::UseConsumable() {
 
 }
 
-void PlayerPJ::Finish() {
+void PlayerPJ_Entity::Start() {
 
 }
 
-void PlayerPJ::Draw() {
+void PlayerPJ_Entity::Finish() {
 
 }
 
-void PlayerPJ::Update() {
+void PlayerPJ_Entity::Draw() {
 
 }
 
-void PlayerPJ::Move() {
+void PlayerPJ_Entity::Update() {
+
+}
+
+void PlayerPJ_Entity::Move() {
 
 }

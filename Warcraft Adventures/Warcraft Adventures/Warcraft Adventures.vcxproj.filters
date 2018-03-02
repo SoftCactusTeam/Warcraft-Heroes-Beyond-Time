@@ -43,6 +43,9 @@
     <ClCompile Include="Entity.cpp">
       <Filter>EntitySystem\Entity</Filter>
     </ClCompile>
+    <ClCompile Include="Boss_Entity.cpp">
+      <Filter>EntitySystem\Entity\Boss</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -104,6 +107,9 @@
     </ClInclude>
     <ClInclude Include="EntitiesEnums.h">
       <Filter>EntitySystem\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss_Entity.h">
+      <Filter>EntitySystem\Entity\Boss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

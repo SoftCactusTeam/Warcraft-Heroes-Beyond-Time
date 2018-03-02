@@ -1,3 +1,6 @@
+#ifndef __PlayerEntity_H__
+#define __PlayerEntity_H__
+
 #include "Entity.h"
 
 enum PLAYER_STATES {
@@ -8,9 +11,9 @@ enum PLAYER_ACTIONS {
 
 };
 
-class PlayerPJ : public DinamicEntity {
+class PlayerPJ_Entity : public DinamicEntity {
 public:
-	PlayerPJ(iPoint coor, ENTITY_TYPE type, SDL_Texture* texture, PLAYER_TYPE character);
+	PlayerPJ_Entity(iPoint coor, ENTITY_TYPE type, SDL_Texture* texture, PLAYER_TYPE character);
 	void DoAction(PLAYER_ACTIONS action, FIXED_ANGLE angle);
 	void UseConsumable();
 
@@ -24,7 +27,9 @@ public:
 public:
 	PLAYER_STATES state;
 	CONSUMABLE_TYPE consumable;
-	PLAYER_TYPE character_name;
+	PLAYER_TYPE characterPJ_type;
 	
 	int skillCooldown;
 };
+
+#endif
