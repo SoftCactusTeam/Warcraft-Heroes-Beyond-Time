@@ -71,6 +71,10 @@ private:
 	SDL_Texture* ConsumableLiveSprite			= nullptr;
 	SDL_Texture* ConsumableMovementSpeedSprite	= nullptr;
 
+	SDL_Texture* StaticSceneObjectTree			= nullptr;
+	SDL_Texture* StaticSceneObjectRock			= nullptr;
+
+
 	//	--------------------------------------------||
 };
 

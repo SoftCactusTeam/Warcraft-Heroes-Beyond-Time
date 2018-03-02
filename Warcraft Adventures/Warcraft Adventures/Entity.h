@@ -14,13 +14,11 @@ public:
 	virtual void Finish() = 0;
 	virtual void Draw() = 0;
 
-private:
-	bool destroy = false;
-
 public:
 	iPoint coor;
 	SDL_Texture* texture;
 	ENTITY_TYPE entityType;
+	bool destroy = false;
 
 };
 

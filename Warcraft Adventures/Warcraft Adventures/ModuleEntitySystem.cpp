@@ -1,4 +1,6 @@
 #include "ModuleEntitySystem.h"
+#include "App.h"
+#include "ModuleTextures.h"
 
 #include "Player_Entity.h"
 #include "Boss_Entity.h"
@@ -14,39 +16,85 @@ EntitySystem::EntitySystem() : Module()
 
 void EntitySystem::Init()
 {
+	// CARREGAR TEXTURES
+
+		//ThrallSprite = Application->textures->Load("");
+		//ValeeraSprite = Application->textures->Load("");
+		//SylvanasSprite = Application->textures->Load("");
+
+		//GulDanSprite = Application->textures->Load("");
+		//LichKingSprite = Application->textures->Load("");
+		//IllidanSprite = Application->textures->Load("");
+
+		//FootManSprite = Application->textures->Load("");
+		//ArcherSprite = Application->textures->Load("");
+		//MageSprite = Application->textures->Load("");
+		//DeathKingSprite = Application->textures->Load("");
+		//GoblinSprite = Application->textures->Load("");
+		//ZombieSprite = Application->textures->Load("");
+
+		//ChestSprite = Application->textures->Load("");
+
+		//ConsumableAtacSprite = Application->textures->Load("");
+		//ConsumableLiveSprite = Application->textures->Load("");
+		//ConsumableMovementSpeedSprite = Application->textures->Load("");
+
+		//StaticSceneObjectTree = Application->textures->Load("");
+		//StaticSceneObjectRock = Application->textures->Load("");
+
 	active = true;
 }
 
 bool EntitySystem::Start()
 {
 	ClearEntitiesList();
+
+	for (std::list<Entity*>::iterator iterator = entities.begin(); iterator != entities.end(); iterator++) {
+		(*iterator)->Start();
+	}
 	return true;
 }
 
 bool EntitySystem::PreUpdate()
 {
+	for (std::list<Entity*>::iterator iterator = entities.begin(); iterator != entities.end(); iterator++) {
+		(*iterator)->Draw();
+	}
 	return true;
 }
 
 bool EntitySystem::Update(float dt)
 {
+	for (std::list<Entity*>::iterator iterator = entities.begin(); iterator != entities.end(); iterator++) {
+		// AQUI S'HA DE FER EL UPDATE
+	}
 	return true;
 }
 
 bool EntitySystem::PostUpdate()
 {
+	for (std::list<Entity*>::iterator iterator = entities.begin(); iterator != entities.end(); iterator++) {
+		if ((*iterator)->destroy == true) {
+			delete (*iterator);
+			entities.remove((*iterator));
+		}
+	}
 	return true;
 }
 
 bool EntitySystem::CleanUp()
 {
+	for (std::list<Entity*>::iterator iterator = entities.begin(); iterator != entities.end(); iterator++) {
+		(*iterator)->Finish();
+	}
 	ClearEntitiesList();
 	return true;
 }
 
 void EntitySystem::ClearEntitiesList()
 {
-	for (std::list<Entity*>::iterator iterador = entities.begin(); iterador != entities.end(); iterador++) {
+	for (std::list<Entity*>::iterator iterator = entities.begin(); iterator != entities.end(); iterator++) {
+		delete ((*iterator));
 		entities.pop_back();
 	}
 	entities.clear();
@@ -151,10 +199,10 @@ void EntitySystem::AddStaticObject(iPoint coor, STATIC_OBJECT_TYPE type)
 	Entity* newEntity;
 	switch (type) {
 	case STATIC_OBJECT_TYPE::TREE:
-		newEntity = new StaticObject_Entity(coor, ENTITY_TYPE::STATIC_ESCENE_ITEM, ChestSprite, type);
+		newEntity = new StaticObject_Entity(coor, ENTITY_TYPE::STATIC_ESCENE_ITEM, StaticSceneObjectTree, type);
 		break;
 	case STATIC_OBJECT_TYPE::ROCK:
-		newEntity = new StaticObject_Entity(coor, ENTITY_TYPE::STATIC_ESCENE_ITEM, ChestSprite, type);
+		newEntity = new StaticObject_Entity(coor, ENTITY_TYPE::STATIC_ESCENE_ITEM, StaticSceneObjectRock, type);
 		break;
 
 	}
