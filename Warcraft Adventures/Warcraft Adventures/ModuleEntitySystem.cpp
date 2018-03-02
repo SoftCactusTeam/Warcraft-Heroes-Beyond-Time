@@ -3,6 +3,9 @@
 #include "Player_Entity.h"
 #include "Boss_Entity.h"
 #include "Enemy_Entity.h"
+#include "Consumable_Entity.h"
+#include "Chest_Entity.h"
+#include "StaticObject_Entity.h"
 
 EntitySystem::EntitySystem() : Module()
 {
@@ -111,7 +114,19 @@ void EntitySystem::AddPlayer(iPoint coor, PLAYER_TYPE type)
 
 void EntitySystem::AddConsumable(iPoint coor, CONSUMABLE_TYPE type)
 {
-
+	Entity* newEntity;
+	switch (type) {
+	case CONSUMABLE_TYPE::ATACK_POTION:
+		newEntity = new Consumable_Entity(coor, ENTITY_TYPE::STATIC_CONSUMABLE, ConsumableAtacSprite, type);
+		break;
+	case CONSUMABLE_TYPE::LIVE_POTION:
+		newEntity = new Consumable_Entity(coor, ENTITY_TYPE::STATIC_CONSUMABLE, ConsumableLiveSprite, type);
+		break;
+	case CONSUMABLE_TYPE::MOVEMENT_SPEED_POTION:
+		newEntity = new Consumable_Entity(coor, ENTITY_TYPE::STATIC_CONSUMABLE, ConsumableMovementSpeedSprite, type);
+		break;
+	}
+	entities.push_front(newEntity);
 }
 
 void EntitySystem::AddChest(iPoint coor, CHEST_TYPE type) 

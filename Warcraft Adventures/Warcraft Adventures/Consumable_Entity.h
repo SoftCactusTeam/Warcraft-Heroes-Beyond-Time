@@ -5,13 +5,16 @@
 
 class Consumable_Entity : public StaticEntity {
 public:
-	Consumable_Entity(iPoint coor, ENTITY_TYPE type, SDL_Texture* texture);
+	Consumable_Entity(iPoint coor, ENTITY_TYPE type, SDL_Texture* texture, CONSUMABLE_TYPE consumableType);
 
 	void Start();
 	void Finish();
 	void Draw();
 
 	void Interaction();
+
+public:
+	CONSUMABLE_TYPE consumableType;
 };
 
 #endif

@@ -49,20 +49,28 @@ private:
 
 	// Les textures es carregaran aquí
 	//	--------------------------------------------||
-	SDL_Texture* ThrallSprite = nullptr;
-	SDL_Texture* ValeeraSprite = nullptr;
-	SDL_Texture* SylvanasSprite = nullptr;
+	SDL_Texture* ThrallSprite					= nullptr;
+	SDL_Texture* ValeeraSprite					= nullptr;
+	SDL_Texture* SylvanasSprite					= nullptr;
 
-	SDL_Texture* GulDanSprite = nullptr;
-	SDL_Texture* LichKingSprite = nullptr;
-	SDL_Texture* IllidanSprite = nullptr;
+	SDL_Texture* GulDanSprite					= nullptr;
+	SDL_Texture* LichKingSprite					= nullptr;
+	SDL_Texture* IllidanSprite					= nullptr;
 
-	SDL_Texture* FootManSprite = nullptr;
-	SDL_Texture* ArcherSprite = nullptr;
-	SDL_Texture* MageSprite = nullptr;
-	SDL_Texture* DeathKingSprite = nullptr;
-	SDL_Texture* GoblinSprite = nullptr;
-	SDL_Texture* ZombieSprite = nullptr;	
+	SDL_Texture* FootManSprite					= nullptr;
+	SDL_Texture* ArcherSprite					= nullptr;
+	SDL_Texture* MageSprite						= nullptr;
+	SDL_Texture* DeathKingSprite				= nullptr;
+	SDL_Texture* GoblinSprite					= nullptr;
+	SDL_Texture* ZombieSprite					= nullptr;	
+
+
+	SDL_Texture* ChestSprite					= nullptr;
+
+	SDL_Texture* ConsumableAtacSprite			= nullptr;
+	SDL_Texture* ConsumableLiveSprite			= nullptr;
+	SDL_Texture* ConsumableMovementSpeedSprite	= nullptr;
+
 	//	--------------------------------------------||
 };
 
