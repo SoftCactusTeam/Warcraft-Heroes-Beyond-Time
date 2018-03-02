@@ -2,6 +2,7 @@
 #define __LABEL_H__
 
 #include <string>
+#include "ModuleRender.h"
 
 class Label : public GUIElem
 {
@@ -13,10 +14,7 @@ public:
 	
 	virtual ~Label() {}
 
-	bool Update(float dt)
-	{
-		return true;
-	}
+	bool Update(float dt);
 
 
 
@@ -24,10 +22,20 @@ private:
 
 	std::string text;
 	TTF_Font* font;
-
-
-
 };
+
+
+bool Label::Update(float dt)
+{
+	bool result = false;
+
+	SDL_Texture* textBlitting = Application->fonts->Print(text.data, { 255,255,255,255 }, font);
+	result = Application->render->Blit(textBlitting, position.x, position.y);
+
+	return result;
+}
+
+
 
 
 #endif
