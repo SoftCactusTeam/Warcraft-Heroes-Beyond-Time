@@ -125,6 +125,7 @@
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Boss_Entity.cpp" />
+    <ClCompile Include="Enemy_Entiy.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Fonts.cpp" />
     <ClCompile Include="FileSystem.cpp" />
@@ -143,6 +144,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="App.h" />
     <ClInclude Include="Boss_Entity.h" />
+    <ClInclude Include="Enemy_Entity.h" />
     <ClInclude Include="EntitiesEnums.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Globals.h" />

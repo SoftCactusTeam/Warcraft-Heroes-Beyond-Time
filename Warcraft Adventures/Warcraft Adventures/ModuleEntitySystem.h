@@ -62,7 +62,7 @@ private:
 	SDL_Texture* MageSprite = nullptr;
 	SDL_Texture* DeathKingSprite = nullptr;
 	SDL_Texture* GoblinSprite = nullptr;
-	SDL_Texture* SkeletonSprite = nullptr;	
+	SDL_Texture* ZombieSprite = nullptr;	
 	//	--------------------------------------------||
 };
 

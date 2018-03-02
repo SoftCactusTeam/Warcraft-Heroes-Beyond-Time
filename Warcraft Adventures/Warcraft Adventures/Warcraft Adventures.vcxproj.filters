@@ -46,6 +46,9 @@
     <ClCompile Include="Boss_Entity.cpp">
       <Filter>EntitySystem\Entity\Boss</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy_Entiy.cpp">
+      <Filter>EntitySystem\Entity\Enemies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -110,6 +113,9 @@
     </ClInclude>
     <ClInclude Include="Boss_Entity.h">
       <Filter>EntitySystem\Entity\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy_Entity.h">
+      <Filter>EntitySystem\Entity\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

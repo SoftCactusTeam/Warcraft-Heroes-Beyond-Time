@@ -2,6 +2,7 @@
 
 #include "Player_Entity.h"
 #include "Boss_Entity.h"
+#include "Enemy_Entity.h"
 
 EntitySystem::EntitySystem() : Module()
 {
@@ -50,7 +51,28 @@ void EntitySystem::ClearEntitiesList()
 
 void EntitySystem::AddEnemie(iPoint coor, ENEMY_TYPE type)
 {
-
+	Entity* newEntity;
+	switch (type) {
+	case ENEMY_TYPE::FOOTMAN:
+		newEntity = new Enemy_Entity(coor, ENTITY_TYPE::DINAMIC_PLAYER, FootManSprite, type);
+		break;
+	case ENEMY_TYPE::ARCHER:
+		newEntity = new Enemy_Entity(coor, ENTITY_TYPE::DINAMIC_PLAYER, ArcherSprite, type);
+		break;
+	case ENEMY_TYPE::MAGE:
+		newEntity = new Enemy_Entity(coor, ENTITY_TYPE::DINAMIC_PLAYER, MageSprite, type);
+		break;
+	case ENEMY_TYPE::DEATH_KNIGHT:
+		newEntity = new Enemy_Entity(coor, ENTITY_TYPE::DINAMIC_PLAYER, DeathKingSprite, type);
+		break;
+	case ENEMY_TYPE::GOBLIN:
+		newEntity = new Enemy_Entity(coor, ENTITY_TYPE::DINAMIC_PLAYER, GoblinSprite, type);
+		break;
+	case ENEMY_TYPE::ZOMBIE:
+		newEntity = new Enemy_Entity(coor, ENTITY_TYPE::DINAMIC_PLAYER, ZombieSprite, type);
+		break;
+	}
+	entities.push_front(newEntity);
 }
 
 void EntitySystem::AddBoss(iPoint coor, BOSS_TYPE type)
