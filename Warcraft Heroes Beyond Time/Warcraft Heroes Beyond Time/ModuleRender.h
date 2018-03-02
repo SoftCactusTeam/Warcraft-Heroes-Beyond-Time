@@ -7,6 +7,8 @@
 
 #include "SDL/include/SDL.h"
 
+class SDL_Texture;
+
 class Render : public Module
 {
 public:
@@ -36,6 +38,8 @@ public:
 	SDL_Rect		viewport;
 	SDL_Color		background;
 	bool			vsync = false;
+	
+	SDL_Rect position = { 0,0,64,64 };
 	
 };
 

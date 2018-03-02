@@ -36,6 +36,12 @@ bool Input::Awake()
 		ret = false;
 	}
 
+	if (SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER) < 0)
+	{
+		LOG("SDL_GAMECONTROLLER could not initialize! SDL_Error: %s\n", SDL_GetError());
+		ret = false;
+	}
+
 	if (SDL_NumJoysticks() < 1)
 		LOG("Warning: No joystick detected");
 	else
@@ -103,7 +109,6 @@ bool Input::PreUpdate()
 			jButtons[i] = KEY_IDLE;
 	}
 
-	SDL_GameControllerButton button = SDL_CONTROLLER_BUTTON_A;
 	while (SDL_PollEvent(&event) != 0)
 	{
 		switch (event.type)
@@ -171,11 +176,13 @@ bool Input::PreUpdate()
 			break;
 
 		case SDL_JOYBUTTONDOWN:
-			jButtons[event.jbutton.button - 1] = KEY_DOWN;
+			if (event.jbutton.which == 0)
+				jButtons[event.jbutton.button - 1] = KEY_DOWN;
 			break;
 
 		case SDL_JOYBUTTONUP:
-			jButtons[event.jbutton.button - 1] = KEY_UP;
+			if (event.jbutton.which == 0)
+				jButtons[event.jbutton.button - 1] = KEY_UP;
 			break;
 		}
 	}
