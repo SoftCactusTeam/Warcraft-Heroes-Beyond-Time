@@ -57,22 +57,22 @@ void EntitySystem::AddEnemie(iPoint coor, ENEMY_TYPE type)
 	Entity* newEntity;
 	switch (type) {
 	case ENEMY_TYPE::FOOTMAN:
-		newEntity = new Enemy_Entity(coor, ENTITY_TYPE::DINAMIC_PLAYER, FootManSprite, type);
+		newEntity = new Enemy_Entity(coor, ENTITY_TYPE::DINAMIC_ENEMIES, FootManSprite, type);
 		break;
 	case ENEMY_TYPE::ARCHER:
-		newEntity = new Enemy_Entity(coor, ENTITY_TYPE::DINAMIC_PLAYER, ArcherSprite, type);
+		newEntity = new Enemy_Entity(coor, ENTITY_TYPE::DINAMIC_ENEMIES, ArcherSprite, type);
 		break;
 	case ENEMY_TYPE::MAGE:
-		newEntity = new Enemy_Entity(coor, ENTITY_TYPE::DINAMIC_PLAYER, MageSprite, type);
+		newEntity = new Enemy_Entity(coor, ENTITY_TYPE::DINAMIC_ENEMIES, MageSprite, type);
 		break;
 	case ENEMY_TYPE::DEATH_KNIGHT:
-		newEntity = new Enemy_Entity(coor, ENTITY_TYPE::DINAMIC_PLAYER, DeathKingSprite, type);
+		newEntity = new Enemy_Entity(coor, ENTITY_TYPE::DINAMIC_ENEMIES, DeathKingSprite, type);
 		break;
 	case ENEMY_TYPE::GOBLIN:
-		newEntity = new Enemy_Entity(coor, ENTITY_TYPE::DINAMIC_PLAYER, GoblinSprite, type);
+		newEntity = new Enemy_Entity(coor, ENTITY_TYPE::DINAMIC_ENEMIES, GoblinSprite, type);
 		break;
 	case ENEMY_TYPE::ZOMBIE:
-		newEntity = new Enemy_Entity(coor, ENTITY_TYPE::DINAMIC_PLAYER, ZombieSprite, type);
+		newEntity = new Enemy_Entity(coor, ENTITY_TYPE::DINAMIC_ENEMIES, ZombieSprite, type);
 		break;
 	}
 	entities.push_front(newEntity);
@@ -83,13 +83,13 @@ void EntitySystem::AddBoss(iPoint coor, BOSS_TYPE type)
 	Entity* newEntity;
 	switch (type) {
 	case BOSS_TYPE::GULDAN:
-		newEntity = new Boss_Entity(coor, ENTITY_TYPE::DINAMIC_PLAYER, GulDanSprite, type);
+		newEntity = new Boss_Entity(coor, ENTITY_TYPE::DINAMIC_BOSS, GulDanSprite, type);
 		break;
 	case BOSS_TYPE::LICH_KING:
-		newEntity = new Boss_Entity(coor, ENTITY_TYPE::DINAMIC_PLAYER, LichKingSprite, type);
+		newEntity = new Boss_Entity(coor, ENTITY_TYPE::DINAMIC_BOSS, LichKingSprite, type);
 		break;
 	case BOSS_TYPE::ILLIDAN:
-		newEntity = new Boss_Entity(coor, ENTITY_TYPE::DINAMIC_PLAYER, IllidanSprite, type);
+		newEntity = new Boss_Entity(coor, ENTITY_TYPE::DINAMIC_BOSS, IllidanSprite, type);
 		break;
 	}
 	entities.push_front(newEntity);
@@ -134,13 +134,13 @@ void EntitySystem::AddChest(iPoint coor, CHEST_TYPE type)
 	Entity* newEntity;
 	switch (type) {
 	case CHEST_TYPE::LOW_CHEST:
-		newEntity = new Chest_Entiy(coor, ENTITY_TYPE::STATIC_CONSUMABLE, ChestSprite, type);
+		newEntity = new Chest_Entiy(coor, ENTITY_TYPE::STATIC_CHEST, ChestSprite, type);
 		break;
 	case CHEST_TYPE::MID_CHEST:
-		newEntity = new Chest_Entiy(coor, ENTITY_TYPE::STATIC_CONSUMABLE, ChestSprite, type);
+		newEntity = new Chest_Entiy(coor, ENTITY_TYPE::STATIC_CHEST, ChestSprite, type);
 		break;
 	case CHEST_TYPE::HIGH_CHEST:
-		newEntity = new Chest_Entiy(coor, ENTITY_TYPE::STATIC_CONSUMABLE, ChestSprite, type);
+		newEntity = new Chest_Entiy(coor, ENTITY_TYPE::STATIC_CHEST, ChestSprite, type);
 		break;
 	}
 	entities.push_front(newEntity);
@@ -148,5 +148,15 @@ void EntitySystem::AddChest(iPoint coor, CHEST_TYPE type)
 
 void EntitySystem::AddStaticObject(iPoint coor, STATIC_OBJECT_TYPE type) 
 {
+	Entity* newEntity;
+	switch (type) {
+	case STATIC_OBJECT_TYPE::TREE:
+		newEntity = new StaticObject_Entity(coor, ENTITY_TYPE::STATIC_ESCENE_ITEM, ChestSprite, type);
+		break;
+	case STATIC_OBJECT_TYPE::ROCK:
+		newEntity = new StaticObject_Entity(coor, ENTITY_TYPE::STATIC_ESCENE_ITEM, ChestSprite, type);
+		break;
 
+	}
+	entities.push_front(newEntity);
 }

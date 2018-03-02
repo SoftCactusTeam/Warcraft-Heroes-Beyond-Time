@@ -5,13 +5,16 @@
 
 class StaticObject_Entity : public StaticEntity {
 public:
-	StaticObject_Entity(iPoint coor, ENTITY_TYPE type, SDL_Texture* texture);
+	StaticObject_Entity(iPoint coor, ENTITY_TYPE type, SDL_Texture* texture, STATIC_OBJECT_TYPE staticObjectType);
 
 	void Start();
 	void Finish();
 	void Draw();
 
 	void Interaction();
+
+public:
+	STATIC_OBJECT_TYPE staticObjectType;
 };
 
 #endif
