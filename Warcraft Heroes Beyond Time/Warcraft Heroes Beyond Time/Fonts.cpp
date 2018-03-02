@@ -115,3 +115,4 @@ TTF_Font* Fonts::getFontbyName(char* name) const
 {
 	return named_fonts.at(name);
 }
+

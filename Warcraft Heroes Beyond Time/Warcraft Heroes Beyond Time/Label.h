@@ -12,7 +12,10 @@ public:
 
 	Label(fPoint position, GUIElem* parent) : GUIElem(GUIElemType::LABEL, position, parent) {}
 	
-	virtual ~Label() {}
+	virtual ~Label() 
+	{
+		text.clear();
+	}
 
 	bool Update(float dt);
 
@@ -29,7 +32,7 @@ bool Label::Update(float dt)
 {
 	bool result = false;
 
-	SDL_Texture* textBlitting = Application->fonts->Print(text.data, { 255,255,255,255 }, font);
+	SDL_Texture* textBlitting = Application->fonts->Print(text.c_str(), { 255,255,255,255 }, font);
 	result = Application->render->Blit(textBlitting, position.x, position.y);
 
 	return result;
