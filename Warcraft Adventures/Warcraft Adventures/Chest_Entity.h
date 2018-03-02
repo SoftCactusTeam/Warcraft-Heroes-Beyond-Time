@@ -5,13 +5,16 @@
 
 class Chest_Entiy : public StaticEntity {
 public:
-	Chest_Entiy(iPoint coor, ENTITY_TYPE type, SDL_Texture* texture);
+	Chest_Entiy(iPoint coor, ENTITY_TYPE type, SDL_Texture* texture, CHEST_TYPE chestType);
 
 	void Start();
 	void Finish();
 	void Draw();
 
 	void Interaction();
+
+public:
+	CHEST_TYPE chestType;
 };
 
 #endif

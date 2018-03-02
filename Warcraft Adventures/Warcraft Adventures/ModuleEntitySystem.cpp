@@ -131,7 +131,19 @@ void EntitySystem::AddConsumable(iPoint coor, CONSUMABLE_TYPE type)
 
 void EntitySystem::AddChest(iPoint coor, CHEST_TYPE type) 
 {
-
+	Entity* newEntity;
+	switch (type) {
+	case CHEST_TYPE::LOW_CHEST:
+		newEntity = new Chest_Entiy(coor, ENTITY_TYPE::STATIC_CONSUMABLE, ChestSprite, type);
+		break;
+	case CHEST_TYPE::MID_CHEST:
+		newEntity = new Chest_Entiy(coor, ENTITY_TYPE::STATIC_CONSUMABLE, ChestSprite, type);
+		break;
+	case CHEST_TYPE::HIGH_CHEST:
+		newEntity = new Chest_Entiy(coor, ENTITY_TYPE::STATIC_CONSUMABLE, ChestSprite, type);
+		break;
+	}
+	entities.push_front(newEntity);
 }
 
 void EntitySystem::AddStaticObject(iPoint coor, STATIC_OBJECT_TYPE type) 
