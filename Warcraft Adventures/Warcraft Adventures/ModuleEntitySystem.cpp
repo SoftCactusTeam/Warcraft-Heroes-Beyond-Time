@@ -49,55 +49,57 @@ bool EntitySystem::Start()
 {
 	ClearEntitiesList();
 
-	for (std::list<Entity*>::iterator iterator = entities.begin(); iterator != entities.end(); iterator++) {
+	for (std::list<Entity*>::iterator iterator = entities.begin(); iterator != entities.end(); iterator++)
 		(*iterator)->Start();
-	}
+	
 	return true;
 }
 
 bool EntitySystem::PreUpdate()
 {
-	for (std::list<Entity*>::iterator iterator = entities.begin(); iterator != entities.end(); iterator++) {
+	for (std::list<Entity*>::iterator iterator = entities.begin(); iterator != entities.end(); iterator++)
 		(*iterator)->Draw();
-	}
+	
 	return true;
 }
 
 bool EntitySystem::Update(float dt)
 {
-	for (std::list<Entity*>::iterator iterator = entities.begin(); iterator != entities.end(); iterator++) {
-		// AQUI S'HA DE FER EL UPDATE
-	}
+	for (std::list<Entity*>::iterator iterator = entities.begin(); iterator != entities.end(); iterator++)
+			(*iterator)->Update();
+	
 	return true;
 }
 
 bool EntitySystem::PostUpdate()
 {
-	for (std::list<Entity*>::iterator iterator = entities.begin(); iterator != entities.end(); iterator++) {
-		if ((*iterator)->destroy == true) {
-			delete (*iterator);
+	for (std::list<Entity*>::iterator iterator = entities.begin(); iterator != entities.end(); iterator++)
+		if ((*iterator)->destroy == true)
 			entities.remove((*iterator));
-		}
-	}
+
 	return true;
 }
 
 bool EntitySystem::CleanUp()
 {
-	for (std::list<Entity*>::iterator iterator = entities.begin(); iterator != entities.end(); iterator++) {
+	for (std::list<Entity*>::iterator iterator = entities.begin(); iterator != entities.end(); iterator++)
 		(*iterator)->Finish();
-	}
+	
 	ClearEntitiesList();
 	return true;
 }
 
 void EntitySystem::ClearEntitiesList()
 {
-	for (std::list<Entity*>::iterator iterator = entities.begin(); iterator != entities.end(); iterator++) {
-		delete ((*iterator));
-		entities.pop_back();
-	}
-	entities.clear();
+	//for (std::list<Entity*>::iterator iterator = entities.begin(); iterator != entities.end(); iterator++) {
+	//	delete ((*iterator));
+	//	entities.pop_back();
+	//}
+	//entities.clear();
+
+
+	//std::list<Entity*>::iterator iterator = entities.begin;
+	//entities.erase(remove(entities.begin(), entities.end(), iterator), entities.end());
 }
 
 void EntitySystem::AddEnemie(iPoint coor, ENEMY_TYPE type)

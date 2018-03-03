@@ -11,6 +11,7 @@ public:
 	Entity(iPoint coor, ENTITY_TYPE type, SDL_Texture* texture);
 
 	virtual void Start() = 0;
+	virtual void Update() = 0;
 	virtual void Finish() = 0;
 	virtual void Draw() = 0;
 
@@ -22,15 +23,17 @@ public:
 
 };
 
+
+
 class DinamicEntity : public Entity {
 public:
 	DinamicEntity(iPoint coor, ENTITY_TYPE type, SDL_Texture* texture);
 
 	virtual void Start() = 0;
+	virtual void Update() = 0;
 	virtual void Finish() = 0;
 	virtual void Draw() = 0;
 
-	virtual void Update() = 0;
 	virtual void Move() = 0;
 	FIXED_ANGLE CaculateAngle(iPoint objectiveCoor);
 	void ReceivAtac(int damage, FIXED_ANGLE angle);
@@ -42,6 +45,8 @@ public:
 	int accountantPrincipal = -1;
 };
 
+
+
 class StaticEntity : public Entity {
 public:
 	StaticEntity(iPoint coor, ENTITY_TYPE type, SDL_Texture* texture);
@@ -49,6 +54,8 @@ public:
 	virtual void Start() = 0;
 	virtual void Finish() = 0;
 	virtual void Draw() = 0;
+
+	void Update() {};
 
 	virtual void Interaction() = 0;
 };
