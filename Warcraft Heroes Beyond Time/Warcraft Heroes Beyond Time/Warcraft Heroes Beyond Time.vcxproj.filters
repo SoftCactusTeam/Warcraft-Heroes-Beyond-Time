@@ -12,6 +12,12 @@
     <ClCompile Include="ModuleTextures.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
+    <ClCompile Include="Label.cpp">
+      <Filter>GUIElems</Filter>
+    </ClCompile>
+    <ClCompile Include="InputBox.cpp">
+      <Filter>GUIElems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -33,10 +39,21 @@
     <ClInclude Include="Label.h">
       <Filter>GUIElems</Filter>
     </ClInclude>
+    <ClInclude Include="GUIElem.h">
+      <Filter>GUIElems</Filter>
+    </ClInclude>
+    <ClInclude Include="InputBox.h">
+      <Filter>GUIElems</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GUIElems">
       <UniqueIdentifier>{c7bfe429-55e0-41e7-abd3-d99d2a69a0a0}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GUIElem.cpp">
+      <Filter>GUIElems</Filter>
+    </None>
   </ItemGroup>
 </Project>

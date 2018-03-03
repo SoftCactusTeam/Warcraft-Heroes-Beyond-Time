@@ -1,9 +1,8 @@
 #include "ModuleGUI.h"
 #include "App.h"
+#include "Fonts.h"
 
 #include "Label.h"
-
-
 
 ModuleGUI::ModuleGUI() : Module()
 {
@@ -15,7 +14,6 @@ ModuleGUI::~ModuleGUI() {}
 
 bool ModuleGUI::Awake()
 {
-	
 	return true;
 }
 
@@ -58,33 +56,11 @@ bool ModuleGUI::CleanUp()
 	return true;
 }
 
-
-
-//------------------------------------------------------
-
-GUIElem* ModuleGUI::createWindow(fPoint position, Label* title, std::list<GUIElem*>* childs, GUIElem* parent)
+Label* ModuleGUI::CreateLabel(iPoint position, LabelInfo& info, GUIElem* parent, Module* listener)
 {
-	return &GUIElem();
-}
-
-GUIElem* ModuleGUI::createButton(fPoint position, Label* Text, GUIElem* parent)
-{
-	return &GUIElem();
-}
-
-GUIElem* ModuleGUI::createImage(fPoint position, SDL_Rect atlasRec, GUIElem* parent)
-{
-	return &GUIElem();
-}
-
-GUIElem* ModuleGUI::createLabel(fPoint position, std::string text, TTF_Font* font, GUIElem* parent)
-{
-	Label* label = new Label(position, parent);
-	label->text = text;
-	label->font = font;
+	Label* label = new Label(position, info, parent, listener);
 
 	GUIElemList.push_back(label);
+
 	return label;
-
-
 }
