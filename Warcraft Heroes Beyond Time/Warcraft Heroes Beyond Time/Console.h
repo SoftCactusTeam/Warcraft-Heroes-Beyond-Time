@@ -10,7 +10,7 @@ public:
 	Console();
 
 	bool Awake();
-	bool Update();
+	bool Update(float dt);
 	bool CleanUp();
 
 private:

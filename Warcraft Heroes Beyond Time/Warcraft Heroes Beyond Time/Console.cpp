@@ -3,24 +3,22 @@
 #include "ModuleInput.h"
 
 Console::Console() {
-
+	name = "console";
 }
 
 bool Console::Awake() {
-
+	active = false;
+	return true;
 }
 
-bool Console::Update() {
-	if (Application->input->GetKey(SDL_SCANCODE_EXECUTE) == KeyState::KEY_DOWN)
-		listOfActions();
-	if (Application->input->GetKey(SDL_SCANCODE_ESCAPE) == KeyState::KEY_DOWN || Application->input->GetKey(SDL_SCANCODE_F12) == KeyState::KEY_DOWN) {
-		CleanUp();
-		active = false;
-	}
+bool Console::Update(float dt) {
+
+	return true;
 }
 
 bool Console::CleanUp(){
 
+	return true;
 }
 
 bool Console::listOfActions() {
@@ -36,4 +34,6 @@ bool Console::listOfActions() {
 	else {	// EN CAS DE QUE CAP DE LES OPCIONS SIGUI BONA, ES MANTINDRA EL TEXT PER ARRECLARHO
 		actualConsoleTextOrder = order;
 	}
+
+	return true;
 }

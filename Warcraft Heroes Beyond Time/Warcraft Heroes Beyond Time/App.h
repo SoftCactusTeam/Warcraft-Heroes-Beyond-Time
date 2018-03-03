@@ -15,6 +15,7 @@ class FileSystem;
 class Audio;
 class Scene;
 class Fonts;
+class Console;
 
 
 
@@ -56,6 +57,7 @@ public:
 	FileSystem*				fs = nullptr;
 	Audio*					audio = nullptr;
 	Scene*					scene = nullptr;
+	Console*				console = nullptr;
 
 public:
 

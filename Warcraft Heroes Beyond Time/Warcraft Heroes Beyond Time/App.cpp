@@ -11,6 +11,7 @@
 #include "FileSystem.h"
 #include "ModuleAudio.h"
 #include "Scene.h"
+#include "Console.h"
 
 #include "Fonts.h"
 
@@ -20,10 +21,11 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	render = new Render();
 	input = new Input();
 	textures = new Textures();
-  fonts = new Fonts();
+	fonts = new Fonts();
 	fs = new FileSystem();
 	audio = new Audio();
 	scene = new Scene();
+	console = new Console();
 
 	//map = new Map();
 
@@ -37,7 +39,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene);
 	AddModule(fonts);
 	AddModule(fs);
-
+	AddModule(console);
 	//AddModule(map);
 
 	// render last to swap buffer

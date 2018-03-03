@@ -14,6 +14,9 @@
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Console.cpp">
+      <Filter>Console</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -34,5 +37,13 @@
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
     <ClInclude Include="ModuleAudio.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="Console.h">
+      <Filter>Console</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Console">
+      <UniqueIdentifier>{0b32698c-f1a6-4360-989c-5d25f3a19cd5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

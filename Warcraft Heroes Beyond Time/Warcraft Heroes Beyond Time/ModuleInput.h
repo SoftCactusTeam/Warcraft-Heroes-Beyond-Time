@@ -60,6 +60,7 @@ public:
 
 	bool IsAnyKeyPressed();
 
+	void ExternActionsAtKeyInput(int key);
 private:
 	bool		windowEvents[WE_COUNT];
 	KeyState*	keyboard;
