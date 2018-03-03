@@ -1,4 +1,6 @@
 #include "Entity.h"
+#include "App.h"
+#include "ModuleRender.h"
 
 Entity::Entity(iPoint coor, ENTITY_TYPE type, SDL_Texture* texture) {
 	this->coor = coor;
@@ -7,6 +9,12 @@ Entity::Entity(iPoint coor, ENTITY_TYPE type, SDL_Texture* texture) {
 
 	destroy = false;
 }
+
+void Entity::Draw() {
+	Application->render->Blit(texture, coor.x, coor.y, &rectToPrint);
+}
+
+
 
 DinamicEntity::DinamicEntity(iPoint coor, ENTITY_TYPE type, SDL_Texture* texture) : Entity(coor, type, texture)
 {}

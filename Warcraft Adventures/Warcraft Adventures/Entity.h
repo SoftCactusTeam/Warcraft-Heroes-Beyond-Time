@@ -13,11 +13,12 @@ public:
 	virtual void Start() = 0;
 	virtual void Update() = 0;
 	virtual void Finish() = 0;
-	virtual void Draw() = 0;
+	void Draw();
 
 public:
 	iPoint coor;
 	SDL_Texture* texture;
+	SDL_Rect rectToPrint;
 	ENTITY_TYPE entityType;
 	bool destroy = false;
 
@@ -32,7 +33,6 @@ public:
 	virtual void Start() = 0;
 	virtual void Update() = 0;
 	virtual void Finish() = 0;
-	virtual void Draw() = 0;
 
 	virtual void Move() = 0;
 	FIXED_ANGLE CaculateAngle(iPoint objectiveCoor);
@@ -53,7 +53,6 @@ public:
 
 	virtual void Start() = 0;
 	virtual void Finish() = 0;
-	virtual void Draw() = 0;
 
 	void Update() {};
 

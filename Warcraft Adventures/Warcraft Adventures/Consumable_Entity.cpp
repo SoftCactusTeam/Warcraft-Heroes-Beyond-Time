@@ -7,6 +7,5 @@ Consumable_Entity::Consumable_Entity(iPoint coor, ENTITY_TYPE type, SDL_Texture*
 
 void Consumable_Entity::Start() {}
 void Consumable_Entity::Finish() {}
-void Consumable_Entity::Draw() {}
 
 void Consumable_Entity::Interaction() {}

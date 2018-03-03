@@ -19,7 +19,6 @@ public:
 
 	void Start();
 	void Finish();
-	void Draw();
 
 	void Update();
 	void Move();
