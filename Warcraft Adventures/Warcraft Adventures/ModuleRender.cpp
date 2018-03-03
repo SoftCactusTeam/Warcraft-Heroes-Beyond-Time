@@ -7,6 +7,9 @@
 #include "ModuleRender.h"
 #include "ModuleInput.h"
 
+
+#include "ModuleEntitySystem.h"
+
 #define VSYNC true
 
 Render::Render() : Module()

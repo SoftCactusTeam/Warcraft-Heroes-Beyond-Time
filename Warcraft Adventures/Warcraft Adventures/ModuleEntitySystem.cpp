@@ -17,30 +17,31 @@ EntitySystem::EntitySystem() : Module()
 void EntitySystem::Init()
 {
 	// CARREGAR TEXTURES
+	//{
+	//	ThrallSprite = Application->textures->Load("");
+	//	ValeeraSprite = Application->textures->Load("");
+	//	SylvanasSprite = Application->textures->Load("");
 
-		//ThrallSprite = Application->textures->Load("");
-		//ValeeraSprite = Application->textures->Load("");
-		//SylvanasSprite = Application->textures->Load("");
+	//	GulDanSprite = Application->textures->Load("");
+	//	LichKingSprite = Application->textures->Load("");
+	//	IllidanSprite = Application->textures->Load("");
 
-		//GulDanSprite = Application->textures->Load("");
-		//LichKingSprite = Application->textures->Load("");
-		//IllidanSprite = Application->textures->Load("");
+	//	FootManSprite = Application->textures->Load("");
+	//	ArcherSprite = Application->textures->Load("");
+	//	MageSprite = Application->textures->Load("");
+	//	DeathKingSprite = Application->textures->Load("");
+	//	GoblinSprite = Application->textures->Load("");
+	//	ZombieSprite = Application->textures->Load("");
 
-		//FootManSprite = Application->textures->Load("");
-		//ArcherSprite = Application->textures->Load("");
-		//MageSprite = Application->textures->Load("");
-		//DeathKingSprite = Application->textures->Load("");
-		//GoblinSprite = Application->textures->Load("");
-		//ZombieSprite = Application->textures->Load("");
+	//	ChestSprite = Application->textures->Load("");
 
-		//ChestSprite = Application->textures->Load("");
+	//	ConsumableAtacSprite = Application->textures->Load("");
+	//	ConsumableLiveSprite = Application->textures->Load("");
+	//	ConsumableMovementSpeedSprite = Application->textures->Load("");
 
-		//ConsumableAtacSprite = Application->textures->Load("");
-		//ConsumableLiveSprite = Application->textures->Load("");
-		//ConsumableMovementSpeedSprite = Application->textures->Load("");
-
-		//StaticSceneObjectTree = Application->textures->Load("");
-		//StaticSceneObjectRock = Application->textures->Load("");
+	//	StaticSceneObjectTree = Application->textures->Load("");
+	//	StaticSceneObjectRock = Application->textures->Load("");
+	//}
 
 	active = true;
 }
@@ -65,9 +66,10 @@ bool EntitySystem::PreUpdate()
 
 bool EntitySystem::Update(float dt)
 {
-	for (std::list<Entity*>::iterator iterator = entities.begin(); iterator != entities.end(); iterator++)
+	if (pauseAllEntities == false)
+		for (std::list<Entity*>::iterator iterator = entities.begin(); iterator != entities.end(); iterator++)
 			(*iterator)->Update();
-	
+
 	return true;
 }
 
@@ -94,10 +96,10 @@ void EntitySystem::ClearEntitiesList()
 	//for (std::list<Entity*>::iterator iterator = entities.begin(); iterator != entities.end(); iterator++) {
 	//	delete ((*iterator));
 	//	entities.pop_back();
+	//	entities.remove(*iterator);
 	//}
-	//entities.clear();
-
-
+	entities.clear();
+	// NOSE EXACAMENT FINS A QUIN PUNT AIXO FA DELETE O NOMES BUIDA LA LLISTA !!! REVISAR !!!
 	//std::list<Entity*>::iterator iterator = entities.begin;
 	//entities.erase(remove(entities.begin(), entities.end(), iterator), entities.end());
 }

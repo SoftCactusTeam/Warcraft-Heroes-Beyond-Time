@@ -9,15 +9,15 @@ void PlayerPJ_Entity::Start() {
 
 }
 
-void PlayerPJ_Entity::Move() {
-
+void PlayerPJ_Entity::Update() {
+	Move();
 }
 
 void PlayerPJ_Entity::Finish() {
 
 }
 
-void PlayerPJ_Entity::Update() {
+void PlayerPJ_Entity::Move() {
 
 }
 
