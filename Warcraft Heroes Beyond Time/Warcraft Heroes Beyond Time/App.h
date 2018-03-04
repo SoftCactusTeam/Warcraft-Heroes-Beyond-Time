@@ -12,12 +12,12 @@ class Render;
 class Textures;
 class Map;
 class FileSystem;
+class Fonts;
+class ModuleGUI;
 class Audio;
 class Scene;
 class Fonts;
 class Console;
-
-
 
 class App
 {
@@ -55,6 +55,7 @@ public:
 	Map*					map = nullptr;
 	Fonts*					fonts = nullptr;
 	FileSystem*				fs = nullptr;
+	ModuleGUI*				gui = nullptr;
 	Audio*					audio = nullptr;
 	Scene*					scene = nullptr;
 	Console*				console = nullptr;

@@ -59,6 +59,9 @@ public:
 	void GetMouseMotion(int& x, int& y);
 
 	bool IsAnyKeyPressed();
+	bool IsTextReady() { return textReady; };
+	void SetTextReadyFalse() { textReady = false; };
+	char* GetText() { return inputText; };
 
 	void ExternActionsAtKeyInput(int key);
 private:
@@ -70,6 +73,8 @@ private:
 	int			mouse_x;
 	int			mouse_y;
 
+	char*		inputText = nullptr;
+	bool		textReady = false;
 	bool		key_pressed = false;
 };
 

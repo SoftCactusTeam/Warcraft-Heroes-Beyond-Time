@@ -43,7 +43,7 @@ public:
 
 	std::map<char*, _TTF_Font*> named_fonts;
 
-	_TTF_Font*			default;
+	TTF_Font*			default;
 };
 
 

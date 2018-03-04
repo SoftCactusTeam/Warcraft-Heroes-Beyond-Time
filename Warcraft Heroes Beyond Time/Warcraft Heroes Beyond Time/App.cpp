@@ -9,11 +9,13 @@
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
 #include "FileSystem.h"
+
 #include "ModuleAudio.h"
 #include "Scene.h"
 #include "Console.h"
 
 #include "Fonts.h"
+#include "ModuleGUI.h"
 
 App::App(int argc, char* args[]) : argc(argc), args(args)
 {
@@ -23,6 +25,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	textures = new Textures();
 	fonts = new Fonts();
 	fs = new FileSystem();
+	gui = new ModuleGUI();
 	audio = new Audio();
 	scene = new Scene();
 	console = new Console();
@@ -39,6 +42,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene);
 	AddModule(fonts);
 	AddModule(fs);
+	AddModule(gui);
 	AddModule(console);
 	//AddModule(map);
 

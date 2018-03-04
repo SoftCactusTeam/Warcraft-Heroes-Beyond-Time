@@ -124,11 +124,18 @@ bool Input::PreUpdate()
 			break;
 
 		case SDL_MOUSEMOTION:
+			{
 			int scale = Application->window->GetScale();
 			mouse_motion_x = event.motion.xrel / scale;
 			mouse_motion_y = event.motion.yrel / scale;
 			mouse_x = event.motion.x / scale;
 			mouse_y = event.motion.y / scale;
+			}
+			break;
+
+		case SDL_TEXTINPUT:
+			inputText = event.text.text;
+			textReady = true;
 			break;
 		}
 	}
