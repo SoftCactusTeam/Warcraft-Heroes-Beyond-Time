@@ -18,6 +18,9 @@
     <ClCompile Include="InputBox.cpp">
       <Filter>GUIElems</Filter>
     </ClCompile>
+    <ClCompile Include="GUIElem.cpp">
+      <Filter>GUIElems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -50,10 +53,5 @@
     <Filter Include="GUIElems">
       <UniqueIdentifier>{c7bfe429-55e0-41e7-abd3-d99d2a69a0a0}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="GUIElem.cpp">
-      <Filter>GUIElems</Filter>
-    </None>
   </ItemGroup>
 </Project>

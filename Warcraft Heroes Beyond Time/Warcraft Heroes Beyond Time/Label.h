@@ -15,7 +15,7 @@ class Label : public GUIElem
 {
 public:
 	Label() {};
-	Label(iPoint position, LabelInfo& info, GUIElem* parent = nullptr, Module* listener = nullptr);
+	Label(iPoint position, LabelInfo& info, GUIElem* parent, Module* listener);
 	~Label();
 	bool Update(float dt);
 	void EditText(char* text, SDL_Color color);

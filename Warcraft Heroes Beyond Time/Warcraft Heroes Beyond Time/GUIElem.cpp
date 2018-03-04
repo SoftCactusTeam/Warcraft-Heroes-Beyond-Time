@@ -20,7 +20,7 @@ bool GUIElem::MouseHover() const //In progress
 {
 	int x, y;
 	Application->input->GetMousePosition(x, y);
-	uint scale = Application->window->GetScale();
+	//uint scale = Application->window->GetScale();
 
 	return true;
 }

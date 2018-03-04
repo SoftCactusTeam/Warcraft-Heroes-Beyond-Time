@@ -10,7 +10,9 @@
 
 class GUIElem;
 class Label;
+class InputBox;
 class LabelInfo;
+class InputBoxInfo;
 
 class ModuleGUI : public Module
 {
@@ -28,10 +30,12 @@ public:
 
 public:
 	Label* CreateLabel(iPoint position, LabelInfo& info, GUIElem* parent = nullptr, Module* listener = nullptr);
+	InputBox* CreateInputBox(iPoint position, InputBoxInfo& info, GUIElem* parent = nullptr, Module* listener = nullptr);
 
 public:
 	std::list<GUIElem*> GUIElemList;
-	bool spawned = false;
+	std::list<GUIElem*> elementsToSpawn;
+	std::list<GUIElem*> elementsToKill;
 };
 
 

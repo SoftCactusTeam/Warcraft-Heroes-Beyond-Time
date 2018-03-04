@@ -9,11 +9,11 @@ struct InputBoxInfo
 	char* fontName = nullptr;
 };
 
-class InputBox : GUIElem
+class InputBox : public GUIElem
 {
 public:
 	InputBox() {};
-	InputBox(iPoint position, InputBoxInfo& info, GUIElem* parent = nullptr, Module* listener = nullptr);
+	InputBox(iPoint position, InputBoxInfo& info, GUIElem* parent, Module* listener);
 	~InputBox();
 	bool Update(float dt);
 	void EnableInput();

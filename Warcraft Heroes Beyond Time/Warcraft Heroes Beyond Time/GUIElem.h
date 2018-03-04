@@ -1,12 +1,14 @@
 #ifndef __GUIELEM_H__
 #define __GUIELEM_H__
 
-#include "SDL\include\SDL.h"
+#include "SDL\include\SDL_events.h"
+#include "SDL\include\SDL_mouse.h"
 // Discover where sdl_pressed is defined in sdl.h xd
 
 #include "p2Point.h"
 #include "ModuleGUI.h"
-#include "Module.h"
+
+class Module;
 
 enum UIEvents {
 	NO_EVENT,
