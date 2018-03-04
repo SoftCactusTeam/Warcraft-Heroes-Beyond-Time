@@ -5,6 +5,7 @@
 
 #include "ModuleInput.h"
 #include "ModuleWindow.h"
+#include "ModuleGUI.h"
 
 #include "Console.h"
 

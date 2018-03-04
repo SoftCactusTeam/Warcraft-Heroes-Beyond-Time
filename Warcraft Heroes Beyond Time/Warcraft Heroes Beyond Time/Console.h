@@ -2,6 +2,7 @@
 #define __Console_H__
 
 #include "Module.h"
+#include "Globals.h"
 
 class Console : public Module
 {
@@ -13,12 +14,14 @@ public:
 	bool Update(float dt);
 	bool CleanUp();
 
+	void PrintAtConsole(std::string textToPrint);
+
 private:
-	char* actualConsoleTextOrder;
+	std::string actualConsoleTextOrder;
 
 private:
 	bool listOfActions();
-
+	Label* text = nullptr;
 };
 
 #endif

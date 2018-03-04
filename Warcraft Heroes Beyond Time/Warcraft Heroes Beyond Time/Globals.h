@@ -3,5 +3,7 @@
 
 typedef unsigned int uint;
 
+class Label;
+
 
 #endif 

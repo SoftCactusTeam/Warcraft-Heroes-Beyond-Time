@@ -1,6 +1,8 @@
 #include "Console.h"
 #include "App.h"
 #include "ModuleInput.h"
+#include "ModuleGUI.h"
+#include "Label.h"
 
 Console::Console() {
 	name = "console";
@@ -17,12 +19,15 @@ bool Console::Update(float dt) {
 }
 
 bool Console::CleanUp(){
-
 	return true;
 }
 
+void Console::PrintAtConsole(std::string textToPrint) {
+
+}
+
 bool Console::listOfActions() {
-	char* order = actualConsoleTextOrder;
+	std::string order = actualConsoleTextOrder;
 	actualConsoleTextOrder = "";
 
 	if (order == "pause_entities") {
