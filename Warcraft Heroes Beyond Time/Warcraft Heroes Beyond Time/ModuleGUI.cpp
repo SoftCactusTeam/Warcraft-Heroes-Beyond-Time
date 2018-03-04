@@ -57,10 +57,10 @@ bool ModuleGUI::PostUpdate()
 		std::list<GUIElem*>::iterator it;
 		for (it = elementsToKill.begin(); it != elementsToKill.end(); ++it)
 		{
-			delete *it;
+			GUIElemList.remove(*it);
 		}
+		elementsToKill.clear();
 	}
-	
 	return elementsToKill.size() <= 0;
 }
 
