@@ -13,7 +13,6 @@ ModuleGUI::ModuleGUI() : Module()
 
 ModuleGUI::~ModuleGUI() {}
 
-
 bool ModuleGUI::Awake()
 {
 	return true;
@@ -28,9 +27,14 @@ bool ModuleGUI::PreUpdate()
 {
 	if (elementsToSpawn.size() > 0)
 	{
-		//TODO switch from one list to the other list
+		std::list<GUIElem*>::iterator it;
+		for (it = elementsToSpawn.begin(); it != elementsToSpawn.end(); ++it)
+		{
+			GUIElemList.push_back(*it);
+		}
+		elementsToSpawn.clear();
 	}
-	return true;
+	return elementsToSpawn.size() <= 0;
 }
 
 bool ModuleGUI::Update(float dt)
@@ -50,10 +54,14 @@ bool ModuleGUI::PostUpdate()
 {
 	if (elementsToKill.size() > 0)
 	{
-		//TODO kill it baby
+		std::list<GUIElem*>::iterator it;
+		for (it = elementsToKill.begin(); it != elementsToKill.end(); ++it)
+		{
+			delete *it;
+		}
 	}
 	
-	return true;
+	return elementsToKill.size() <= 0;
 }
 
 bool ModuleGUI::CleanUp()
@@ -64,6 +72,16 @@ bool ModuleGUI::CleanUp()
 		delete (*it);
 	}
 	GUIElemList.clear();
+
+	return GUIElemList.size() <= 0;
+}
+
+//----------------------------------------------------------------------------------------------------//
+
+bool ModuleGUI::DestroyElem(GUIElem* element) //TODO daughters and pointers to parents, etc
+{
+	elementsToKill.push_back(element);
+
 	return true;
 }
 
@@ -75,7 +93,6 @@ Label* ModuleGUI::CreateLabel(iPoint position, LabelInfo& info, GUIElem* parent,
 
 	return label;
 }
-
 
 InputBox* ModuleGUI::CreateInputBox(iPoint position, InputBoxInfo& info, GUIElem* parent, Module* listener)
 {

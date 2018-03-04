@@ -3,7 +3,6 @@
 
 #include "SDL\include\SDL_events.h"
 #include "SDL\include\SDL_mouse.h"
-// Discover where sdl_pressed is defined in sdl.h xd
 
 #include "p2Point.h"
 #include "ModuleGUI.h"

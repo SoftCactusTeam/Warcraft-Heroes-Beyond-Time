@@ -31,6 +31,7 @@ public:
 public:
 	Label* CreateLabel(iPoint position, LabelInfo& info, GUIElem* parent = nullptr, Module* listener = nullptr);
 	InputBox* CreateInputBox(iPoint position, InputBoxInfo& info, GUIElem* parent = nullptr, Module* listener = nullptr);
+	bool DestroyElem(GUIElem* element);
 
 public:
 	std::list<GUIElem*> GUIElemList;
