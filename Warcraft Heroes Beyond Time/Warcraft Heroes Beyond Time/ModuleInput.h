@@ -63,6 +63,7 @@ public:
 	void SetTextReadyFalse() { textReady = false; };
 	char* GetText() { return inputText; };
 
+	void ExternActionsAtKeyInput(int key);
 private:
 	bool		windowEvents[WE_COUNT];
 	KeyState*	keyboard;

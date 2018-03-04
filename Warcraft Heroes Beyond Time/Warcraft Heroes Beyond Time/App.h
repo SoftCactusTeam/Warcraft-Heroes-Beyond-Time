@@ -2,7 +2,7 @@
 #define __APP_H__
 
 #include "Module.h"
-
+#include "Globals.h"
 #include <list>
 #include <string>
 
@@ -14,6 +14,10 @@ class Map;
 class FileSystem;
 class Fonts;
 class ModuleGUI;
+class Audio;
+class Scene;
+class Fonts;
+class Console;
 
 class App
 {
@@ -52,6 +56,9 @@ public:
 	Fonts*					fonts = nullptr;
 	FileSystem*				fs = nullptr;
 	ModuleGUI*				gui = nullptr;
+	Audio*					audio = nullptr;
+	Scene*					scene = nullptr;
+	Console*				console = nullptr;
 
 public:
 

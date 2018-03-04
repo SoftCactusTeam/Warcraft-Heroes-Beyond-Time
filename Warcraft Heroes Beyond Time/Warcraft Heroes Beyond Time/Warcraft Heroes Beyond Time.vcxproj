@@ -84,7 +84,7 @@
     </ClCompile>
     <Link />
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -124,10 +124,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="Console.cpp" />
     <ClCompile Include="Fonts.cpp" />
     <ClCompile Include="FileSystem.cpp" />
     <ClCompile Include="InputBox.cpp" />
     <ClCompile Include="Label.cpp" />
+    <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleGUI.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -136,16 +138,19 @@
     <ClCompile Include="ModuleTextures.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
+    <ClCompile Include="Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="App.h" />
+    <ClInclude Include="Console.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Fonts.h" />
     <ClInclude Include="FileSystem.h" />
     <ClInclude Include="GUIElem.h" />
     <ClInclude Include="InputBox.h" />
     <ClInclude Include="Label.h" />
+    <ClInclude Include="ModuleAudio.h" />
     <ClInclude Include="ModuleGUI.h" />
     <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="Module.h" />
@@ -157,6 +162,7 @@
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
+    <ClInclude Include="Scene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GUIElem.cpp" />
