@@ -8,8 +8,8 @@
 class ConsoleOrder {
 public:
 	char* retName = "";
-	virtual void Exec() = 0;
-	virtual void callHelp() = 0;
+	virtual char* Exec() = 0;
+	virtual char* callHelp() = 0;
 private:
 	bool isActive = false;
 };
@@ -25,13 +25,14 @@ public:
 	bool CleanUp();
 
 	void PrintAtConsole(std::string textToPrint);
+	void AddConsoleOrderToList(ConsoleOrder* consoleOrder);
 
 private:
 	std::string actualConsoleTextOrder;
 	bool listOfActions();
 	Label* text = nullptr;
 
-	std::vector<ConsoleOrder> orderList;
+	std::vector<ConsoleOrder*> consoleOrderList;
 };
 
 #endif

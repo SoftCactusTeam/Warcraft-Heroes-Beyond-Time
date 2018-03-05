@@ -42,3 +42,7 @@ bool Console::listOfActions() {
 
 	return true;
 }
+
+void Console::AddConsoleOrderToList(ConsoleOrder* consoleOrder) {
+	consoleOrderList.push_back(consoleOrder);
+}
