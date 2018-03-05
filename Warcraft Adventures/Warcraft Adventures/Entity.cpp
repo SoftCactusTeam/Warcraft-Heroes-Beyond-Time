@@ -4,12 +4,9 @@
 
 // ----------------------------------- ENTITY FUNCTIONS -----------------------------------
 
-Entity::Entity(iPoint coor, ENTITY_TYPE type, SDL_Texture* texture) {
-	this->coor = coor;
-	this->entityType = type;
-	this->texture = texture;
+Entity::Entity(iPoint coor, ENTITY_TYPE type, SDL_Texture* texture) : coor(coor), entityType(type), texture(texture) 
+{
 
-	destroy = false;
 }
 
 void Entity::Draw() {
@@ -18,9 +15,9 @@ void Entity::Draw() {
 
 // ----------------------------------- DINAMIC FUNCTIONS ----------------------------------
 
-DinamicEntity::DinamicEntity(iPoint coor, ENTITY_TYPE type, SDL_Texture* texture) : Entity(coor, type, texture) {}
+DynamicEntity::DynamicEntity(iPoint coor, ENTITY_TYPE type, SDL_Texture* texture) : Entity(coor, type, texture) {}
 
-FIXED_ANGLE DinamicEntity::CaculateAngle(iPoint objectiveCoor)
+FIXED_ANGLE DynamicEntity::CaculateAngle(iPoint objectiveCoor)
 {
 	FIXED_ANGLE angleToReturn;
 	if (this->coor.x - objectiveCoor.x >= 0)
@@ -78,15 +75,6 @@ FIXED_ANGLE DinamicEntity::CaculateAngle(iPoint objectiveCoor)
 	}
 
 	return angleToReturn;
-}
-
-void DinamicEntity::ReceivAtac(int damage, FIXED_ANGLE angle) {
-	live -= damage;
-	if (live <= 0)
-		Finish();
-	else {	// AQUI POSAREM LA DISTANCIA QUE TEMPUTXEN AL REBRE UN COP
-
-	}
 }
 
 // ----------------------------------- STATIC FUNCTIONS -----------------------------------

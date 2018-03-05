@@ -10,33 +10,31 @@ public:
 	Entity() {}
 	Entity(iPoint coor, ENTITY_TYPE type, SDL_Texture* texture);
 
-	virtual void Start() = 0;
-	virtual void Update() = 0;
-	virtual void Finish() = 0;
+	virtual void Start();
+	virtual void Update(float dt);
+	virtual void Finish();
 	void Draw();
 
 public:
-	iPoint coor;
-	SDL_Texture* texture;
-	SDL_Rect rectToPrint;
-	ENTITY_TYPE entityType;
+	iPoint coor = { 0,0 };
+	SDL_Texture* texture = nullptr;
+	SDL_Rect rectToPrint = { 0,0,0,0 };
+	ENTITY_TYPE entityType = ENTITY_TYPE::
 	bool destroy = false;
 
 };
 
 
 
-class DinamicEntity : public Entity {
+class DynamicEntity : public Entity {
 public:
-	DinamicEntity(iPoint coor, ENTITY_TYPE type, SDL_Texture* texture);
+	DynamicEntity(iPoint coor, ENTITY_TYPE type, SDL_Texture* texture);
 
-	virtual void Start() = 0;
-	virtual void Update() = 0;
-	virtual void Finish() = 0;
+	virtual bool Start();
+	virtual bool Update(float dt);
+	virtual bool Finish();
 
-	virtual void Move() = 0;
 	FIXED_ANGLE CaculateAngle(iPoint objectiveCoor);
-	void ReceivAtac(int damage, FIXED_ANGLE angle);
 
 public:
 	int live = -1;
@@ -51,12 +49,12 @@ class StaticEntity : public Entity {
 public:
 	StaticEntity(iPoint coor, ENTITY_TYPE type, SDL_Texture* texture);
 
-	virtual void Start() = 0;
-	virtual void Finish() = 0;
+	virtual void Start();
+	virtual void Finish();
 
 	void Update() {};
 
-	virtual void Interaction() = 0;
+	virtual void Interaction();
 };
 
 #endif
