@@ -7,9 +7,9 @@
 
 class ConsoleOrder {
 public:
-	char* retName = "";
-	virtual char* Exec() = 0;
-	virtual char* callHelp() = 0;
+	std::string orderName = "";
+	virtual std::string Exec() = 0;
+	//virtual std::string callHelp() = 0;
 private:
 	bool isActive = false;
 };
@@ -24,12 +24,14 @@ public:
 	bool Update(float dt);
 	bool CleanUp();
 
+	bool ExecConsoleOrder(std::string name);
 	void PrintAtConsole(std::string textToPrint);
 	void AddConsoleOrderToList(ConsoleOrder* consoleOrder);
 
 private:
 	std::string actualConsoleTextOrder;
-	bool listOfActions();
+
+
 	Label* text = nullptr;
 
 	std::vector<ConsoleOrder*> consoleOrderList;
