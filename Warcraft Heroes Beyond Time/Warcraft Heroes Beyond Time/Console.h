@@ -3,6 +3,16 @@
 
 #include "Module.h"
 #include "Globals.h"
+#include <vector>
+
+class ConsoleOrder {
+public:
+	char* retName = "";
+	virtual void Exec() = 0;
+	virtual void callHelp() = 0;
+private:
+	bool isActive = false;
+};
 
 class Console : public Module
 {
@@ -18,10 +28,10 @@ public:
 
 private:
 	std::string actualConsoleTextOrder;
-
-private:
 	bool listOfActions();
 	Label* text = nullptr;
+
+	std::vector<ConsoleOrder> orderList;
 };
 
 #endif
