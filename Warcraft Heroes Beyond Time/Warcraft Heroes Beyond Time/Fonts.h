@@ -6,8 +6,8 @@
 
 #include "SDL_ttf\include\SDL_ttf.h"
 
-#define DEFAULT_FONT "Resources/fonts/open_sans/OpenSans-Regular.ttf"
-#define DEFAULT_FONT_SIZE 12
+#define DEFAULT_FONT "arial.ttf"
+#define DEFAULT_FONT_SIZE 16
 
 #include <map>
 #include <iostream>
@@ -24,7 +24,7 @@ public:
 	virtual ~Fonts();
 
 	// Called before render is available
-	bool Awake(pugi::xml_node&);
+	bool Awake(/*pugi::xml_node&*/);
 
 	// Called before quitting
 	bool CleanUp();

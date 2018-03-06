@@ -23,7 +23,7 @@ public:
 	void EditText(char* text, SDL_Color color);
 
 private:
-	std::string text = nullptr;
+	std::string text;
 	TTF_Font* font = nullptr;
 	SDL_Texture* texturetoBlit = nullptr;
 };

@@ -55,7 +55,6 @@ public:
 	virtual ~GUIElem();
 
 	virtual bool Update(float dt);
-	virtual bool Draw() const;
 	virtual bool MouseHover() const;
 	virtual void DebugDraw();
 	virtual void HandleInput();

@@ -39,7 +39,7 @@ bool InputBox::Update(float dt)
 	UpdateChilds(dt);
 
 
-
+	ret = true;
 	return ret;
 }
 

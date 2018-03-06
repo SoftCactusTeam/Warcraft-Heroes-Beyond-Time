@@ -20,6 +20,7 @@ FileSystem::FileSystem() : Module()
 	// By default we include executable's own directory
 	// without this we won't be able to find config.xml :-(
 	AddPath(".");
+	AddPath("../Game/Resources.zip");
 }
 
 // Destructor

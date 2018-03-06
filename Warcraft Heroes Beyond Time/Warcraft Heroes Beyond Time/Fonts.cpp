@@ -18,7 +18,7 @@ Fonts::~Fonts()
 {}
 
 // Called before render is available
-bool Fonts::Awake(pugi::xml_node& conf)
+bool Fonts::Awake(/*pugi::xml_node& conf*/)
 {
 	LOG("Init True Type Font library");
 	bool ret = true;
@@ -30,14 +30,12 @@ bool Fonts::Awake(pugi::xml_node& conf)
 	}
 	else
 	{
-		const char* path = conf.child("default_font").attribute("file").as_string(DEFAULT_FONT);
-		int size = conf.child("default_font").attribute("size").as_int(DEFAULT_FONT_SIZE);
-		//default = Load(path, "OpenSans-Regular", size);
+	//	const char* path = conf.child("default_font").attribute("file").as_string(DEFAULT_FONT);
+	//	int size = conf.child("default_font").attribute("size").as_int(DEFAULT_FONT_SIZE);
+	//	//default = Load(path, "OpenSans-Regular", size);
 
-		//Load all Fonts
-		default = Load("Resources/gui/fonts/kenvector_future.ttf", "kenvector_future", 20);
-		Load("Resources/gui/fonts/zorque.ttf", "zorque", 30);
-		Load("Resources/gui/fonts/zorque.ttf", "zorque_mini", 20);
+	//	//Load all Fonts
+		default = Load("Resources/Fonts/arial.ttf", "Arial16", 16);
 	}
 
 	return ret;
