@@ -1,8 +1,9 @@
-#include "App.h"
 #include "ModuleRender.h"
 #include "Label.h"
 #include "Fonts.h"
 #include "GUIElem.h"
+#include "App.h"
+#include "ModuleInput.h"
 
 Label::Label(fPoint position, LabelInfo& info, GUIElem* parent, Module* listener) : GUIElem(position, listener, {}, GUIElemType::LABEL, parent)
 {
@@ -25,9 +26,34 @@ bool Label::Update(float dt)
 	return result;
 }
 
+bool Label::MouseHover() const
+{
+	int x, y;
+	Application->input->GetMousePosition(x, y);
+
+	bool result = false;
+
+	fPoint worldPos = { screenPos.x + Application->render->camera.x, screenPos.y + Application->render->camera.y };
+
+	int w, h;
+	SDL_QueryTexture(texturetoBlit, nullptr, nullptr, &w, &h);
+
+	//if collides
+	if (!(x < worldPos.x ||
+		x > worldPos.x + w ||
+		y < worldPos.y ||
+		y > worldPos.y + h))
+	{
+		result = true;
+	}
+	return result;
+}
+
 void Label::EditText(char* text, SDL_Color color)
 {
 	this->text = text;
 	SDL_DestroyTexture(texturetoBlit);
 	texturetoBlit = Application->fonts->Print(text, color, font);
 }
+
+

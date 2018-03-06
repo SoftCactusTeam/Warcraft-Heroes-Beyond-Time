@@ -3,6 +3,7 @@
 #include "ModuleWindow.h"
 #include "GUIElem.h"
 #include "Log.h"
+#include "ModuleRender.h"
 
 GUIElem::GUIElem(fPoint localPos, Module* listener, SDL_Rect atlasRect, GUIElemType type, GUIElem* parent) : localPos(localPos), listener(listener), atlasRect(atlasRect), type(type), parent(parent)
 {
@@ -19,13 +20,25 @@ bool GUIElem::Update(float dt)
 	return true;
 }
 
-bool GUIElem::MouseHover() const //In progress
+bool GUIElem::MouseHover() const
 {
 	int x, y;
 	Application->input->GetMousePosition(x, y);
 	uint scale = Application->window->GetScale();
 
-	return true;
+	bool result = false;
+
+	fPoint worldPos = { screenPos.x + Application->render->camera.x, screenPos.y + Application->render->camera.y };
+
+	//if collides
+	if (!(x < worldPos.x ||
+		x > worldPos.x + atlasRect.w ||
+		y < worldPos.y ||
+		y > worldPos.y + atlasRect.h))
+	{
+		result = true;
+	}
+	return result;
 }
 
 void GUIElem::HandleInput()

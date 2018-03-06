@@ -32,11 +32,15 @@ public:
 	Label* CreateLabel(fPoint position, LabelInfo& info, GUIElem* parent = nullptr, Module* listener = nullptr);
 	InputBox* CreateInputBox(fPoint localPos, InputBoxInfo& info, Module* listener = nullptr, GUIElem* parent = nullptr);
 	bool DestroyElem(GUIElem* element);
+	SDL_Texture* getAtlas() const;
 
 public:
 	std::list<GUIElem*> GUIElemList;
 	std::list<GUIElem*> elementsToSpawn;
 	std::list<GUIElem*> elementsToKill;
+
+private:
+	SDL_Texture* atlas = nullptr;
 };
 
 

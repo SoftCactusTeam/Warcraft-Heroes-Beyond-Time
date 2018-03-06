@@ -3,6 +3,12 @@
 
 #include "GUIElem.h"
 
+//atlasRect defines---------------------------
+
+#define InputBox1 {0,0,0,0}
+
+//----------------------------------
+
 struct InputBoxInfo
 {
 	SDL_Color color = Black;

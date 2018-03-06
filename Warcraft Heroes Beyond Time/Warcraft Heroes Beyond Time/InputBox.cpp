@@ -5,7 +5,7 @@
 #include "Fonts.h"
 #include "InputBox.h"
 
-InputBox::InputBox(fPoint localPos, InputBoxInfo& info, Module* listener, GUIElem* parent) : GUIElem(localPos, listener, {}, GUIElemType::INPUTBOX, parent)
+InputBox::InputBox(fPoint localPos, InputBoxInfo& info, Module* listener, GUIElem* parent) : GUIElem(localPos, listener, InputBox1, GUIElemType::INPUTBOX, parent)
 {
 	font = Application->fonts->getFontbyName(info.fontName);
 	color = info.color;
@@ -46,13 +46,13 @@ bool InputBox::Update(float dt)
 void InputBox::EnableInput()
 {
 	ReadyToWrite = true;
-	SDL_StartTextInput;
+	SDL_StartTextInput();
 }
 
 void InputBox::DisableInput()
 {
 	ReadyToWrite = false;
-	SDL_StopTextInput;
+	SDL_StopTextInput();
 }
 
 void InputBox::ClearBox()

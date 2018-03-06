@@ -81,7 +81,7 @@ bool ModuleGUI::CleanUp()
 
 //----------------------------------------------------------------------------------------------------//
 
-bool ModuleGUI::DestroyElem(GUIElem* element) //TODO daughters and pointers to parents, etc
+bool ModuleGUI::DestroyElem(GUIElem* element)
 {
 	elementsToKill.push_back(element);
 	return true;
@@ -103,4 +103,9 @@ InputBox* ModuleGUI::CreateInputBox(fPoint localPos, InputBoxInfo& info, Module*
 	elementsToSpawn.push_back((GUIElem*)inputBox);
 
 	return inputBox;
+}
+
+SDL_Texture* ModuleGUI::getAtlas() const
+{
+	return atlas;
 }
