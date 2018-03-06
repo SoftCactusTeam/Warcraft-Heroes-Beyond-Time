@@ -130,8 +130,12 @@
     <ClCompile Include="DynamicEntity.cpp" />
     <ClCompile Include="EnemyEntity.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Color.cpp" />
+    <ClCompile Include="Console.cpp" />
     <ClCompile Include="Fonts.cpp" />
     <ClCompile Include="FileSystem.cpp" />
+    <ClCompile Include="InputBox.cpp" />
+    <ClCompile Include="Label.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleEntitySystem.cpp" />
     <ClCompile Include="ModuleGUI.cpp" />
@@ -157,9 +161,13 @@
     <ClInclude Include="EnemyEntity.h" />
     <ClInclude Include="EntitiesEnums.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="Console.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Fonts.h" />
     <ClInclude Include="FileSystem.h" />
+    <ClInclude Include="GUIElem.h" />
+    <ClInclude Include="InputBox.h" />
+    <ClInclude Include="Label.h" />
     <ClInclude Include="ModuleAudio.h" />
     <ClInclude Include="ModuleEntitySystem.h" />
     <ClInclude Include="ModuleGUI.h" />
@@ -177,6 +185,9 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="StaticEntity.h" />
     <ClInclude Include="StaticObjectEntity.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GUIElem.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -6,6 +6,8 @@
 #include "ModuleInput.h"
 #include "ModuleWindow.h"
 
+#include "Console.h"
+
 #include "SDL/include/SDL.h"
 #define MAX_KEYS 300
 
@@ -77,8 +79,11 @@ bool Input::PreUpdate()
 		{
 			key_pressed = true;
 
-			if (keyboard[i] == KEY_IDLE)
+			if (keyboard[i] == KEY_IDLE) { 
+				// AQUI CADA COP QUE ES CLIQUI UNA TECLA NOVA, S'EXECUTARA UNA FUNCIÓ ON POSAR COSES EXTERNES, COM OBRIRLA CONSOLA
 				keyboard[i] = KEY_DOWN;
+				ExternActionsAtKeyInput(i);
+			}	// ---------------------------------------------------------------------------------------------------------------
 			else
 				keyboard[i] = KEY_REPEAT;
 		}
@@ -146,13 +151,14 @@ bool Input::PreUpdate()
 			break;
 
 		case SDL_MOUSEMOTION:
-			{   
+		{
+
 			int scale = Application->window->GetScale();
 			mouse_motion_x = event.motion.xrel / scale;
 			mouse_motion_y = event.motion.yrel / scale;
 			mouse_x = event.motion.x / scale;
 			mouse_y = event.motion.y / scale;
-			}
+		}
 			break;
 
 		case SDL_JOYAXISMOTION:
@@ -183,6 +189,11 @@ bool Input::PreUpdate()
 		case SDL_JOYBUTTONUP:
 			if (event.jbutton.which == 0)
 				jButtons[event.jbutton.button - 1] = KEY_UP;
+
+		case SDL_TEXTINPUT:
+			inputText = event.text.text;
+			textReady = true;
+
 			break;
 		}
 	}
@@ -224,4 +235,17 @@ bool Input::IsAnyKeyPressed()
 	bool is_any_key_pressed = key_pressed;
 	key_pressed = false;
 	return is_any_key_pressed;
+}
+
+void Input::ExternActionsAtKeyInput(const int key) {
+	// NOMES FER SERVIR EN CASOS MOLT CONCRETS I OPTIMS !!!!!!!!
+	// printf_s("%i\n", key);		// PER TROBAR EL NUMERO DE LES TECLES
+	switch (key) {
+	case 53:	// º button -> OpenConsole
+		if (Application->console->active == false)
+			Application->console->active = true;
+		else
+			Application->console->active = false;
+		break;
+	}
 }

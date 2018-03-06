@@ -13,9 +13,12 @@ class Textures;
 class Map;
 class EntitySystem;
 class FileSystem;
+class Fonts;
+class ModuleGUI;
 class Audio;
 class Scene;
 class Fonts;
+class Console;
 
 
 class App
@@ -55,8 +58,10 @@ public:
 	Fonts*					fonts = nullptr;
 	EntitySystem*			entities = nullptr;
 	FileSystem*				fs = nullptr;
+	ModuleGUI*				gui = nullptr;
 	Audio*					audio = nullptr;
 	Scene*					scene = nullptr;
+	Console*				console = nullptr;
 
 public:
 

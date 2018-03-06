@@ -1,10 +1,12 @@
 #ifndef __MODULE_H__
 #define __MODULE_H__
 
-class App;
-
 #include <string>
 #include "PugiXml/src/pugixml.hpp"
+
+class App;
+class GUIElem;
+enum class UIEvents;
 
 class Module
 {
@@ -47,6 +49,8 @@ public:
 	{
 		return true;
 	}
+
+	virtual void OnUIEvent(GUIElem* UIelem, UIEvents _event) {}
 
 public:
 
