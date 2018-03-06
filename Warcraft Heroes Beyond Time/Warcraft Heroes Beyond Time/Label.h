@@ -2,43 +2,27 @@
 #define __LABEL_H__
 
 #include <string>
-#include "ModuleRender.h"
+#include "GUIElem.h"
+
+struct LabelInfo 
+{
+	char* text = nullptr;
+	char* fontName = nullptr;
+	SDL_Color color = { 255,255,255,255 };
+};
 
 class Label : public GUIElem
 {
-	friend class ModuleGUI;
-
 public:
-
-	Label(fPoint position, GUIElem* parent) : GUIElem(GUIElemType::LABEL, position, parent) {}
-	
-	virtual ~Label() 
-	{
-		text.clear();
-	}
-
+	Label() {};
+	Label(iPoint position, LabelInfo& info, GUIElem* parent, Module* listener);
+	~Label();
 	bool Update(float dt);
-
-
+	void EditText(char* text, SDL_Color color);
 
 private:
-
-	std::string text;
-	TTF_Font* font;
+	std::string text = nullptr;
+	TTF_Font* font = nullptr;
 };
-
-
-bool Label::Update(float dt)
-{
-	bool result = false;
-
-	SDL_Texture* textBlitting = Application->fonts->Print(text.c_str(), { 255,255,255,255 }, font);
-	result = Application->render->Blit(textBlitting, position.x, position.y);
-
-	return result;
-}
-
-
-
 
 #endif

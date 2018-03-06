@@ -12,6 +12,19 @@
     <ClCompile Include="ModuleTextures.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
+    <ClCompile Include="Label.cpp">
+      <Filter>GUIElems</Filter>
+    </ClCompile>
+    <ClCompile Include="InputBox.cpp">
+      <Filter>GUIElems</Filter>
+    </ClCompile>
+    <ClCompile Include="GUIElem.cpp">
+      <Filter>GUIElems</Filter>
+    <ClCompile Include="ModuleAudio.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Console.cpp">
+      <Filter>Console</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -33,10 +46,25 @@
     <ClInclude Include="Label.h">
       <Filter>GUIElems</Filter>
     </ClInclude>
+    <ClInclude Include="GUIElem.h">
+      <Filter>GUIElems</Filter>
+    </ClInclude>
+    <ClInclude Include="InputBox.h">
+      <Filter>GUIElems</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GUIElems">
       <UniqueIdentifier>{c7bfe429-55e0-41e7-abd3-d99d2a69a0a0}</UniqueIdentifier>
+    <ClInclude Include="ModuleAudio.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="Console.h">
+      <Filter>Console</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Console">
+      <UniqueIdentifier>{0b32698c-f1a6-4360-989c-5d25f3a19cd5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

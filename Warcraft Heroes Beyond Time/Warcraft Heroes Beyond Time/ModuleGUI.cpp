@@ -1,9 +1,10 @@
 #include "ModuleGUI.h"
 #include "App.h"
+#include "Fonts.h"
 
 #include "Label.h"
-
-
+#include "InputBox.h"
+#include "GUIElem.h"
 
 ModuleGUI::ModuleGUI() : Module()
 {
@@ -12,10 +13,8 @@ ModuleGUI::ModuleGUI() : Module()
 
 ModuleGUI::~ModuleGUI() {}
 
-
 bool ModuleGUI::Awake()
 {
-	
 	return true;
 }
 
@@ -26,7 +25,16 @@ bool ModuleGUI::Start()
 
 bool ModuleGUI::PreUpdate()
 {
-	return true;
+	if (elementsToSpawn.size() > 0)
+	{
+		std::list<GUIElem*>::iterator it;
+		for (it = elementsToSpawn.begin(); it != elementsToSpawn.end(); ++it)
+		{
+			GUIElemList.push_back(*it);
+		}
+		elementsToSpawn.clear();
+	}
+	return elementsToSpawn.size() <= 0;
 }
 
 bool ModuleGUI::Update(float dt)
@@ -44,7 +52,16 @@ bool ModuleGUI::Update(float dt)
 
 bool ModuleGUI::PostUpdate()
 {
-	return true;
+	if (elementsToKill.size() > 0)
+	{
+		std::list<GUIElem*>::iterator it;
+		for (it = elementsToKill.begin(); it != elementsToKill.end(); ++it)
+		{
+			GUIElemList.remove(*it);
+		}
+		elementsToKill.clear();
+	}
+	return elementsToKill.size() <= 0;
 }
 
 bool ModuleGUI::CleanUp()
@@ -55,36 +72,33 @@ bool ModuleGUI::CleanUp()
 		delete (*it);
 	}
 	GUIElemList.clear();
+
+	return GUIElemList.size() <= 0;
+}
+
+//----------------------------------------------------------------------------------------------------//
+
+bool ModuleGUI::DestroyElem(GUIElem* element) //TODO daughters and pointers to parents, etc
+{
+	elementsToKill.push_back(element);
+
 	return true;
 }
 
-
-
-//------------------------------------------------------
-
-GUIElem* ModuleGUI::createWindow(fPoint position, Label* title, std::list<GUIElem*>* childs, GUIElem* parent)
+Label* ModuleGUI::CreateLabel(iPoint position, LabelInfo& info, GUIElem* parent, Module* listener)
 {
-	return &GUIElem();
-}
+	Label* label = new Label(position, info, parent, listener);
 
-GUIElem* ModuleGUI::createButton(fPoint position, Label* Text, GUIElem* parent)
-{
-	return &GUIElem();
-}
+	elementsToSpawn.push_back((GUIElem*)label);
 
-GUIElem* ModuleGUI::createImage(fPoint position, SDL_Rect atlasRec, GUIElem* parent)
-{
-	return &GUIElem();
-}
-
-GUIElem* ModuleGUI::createLabel(fPoint position, std::string text, TTF_Font* font, GUIElem* parent)
-{
-	Label* label = new Label(position, parent);
-	label->text = text;
-	label->font = font;
-
-	GUIElemList.push_back(label);
 	return label;
+}
 
+InputBox* ModuleGUI::CreateInputBox(iPoint position, InputBoxInfo& info, GUIElem* parent, Module* listener)
+{
+	InputBox* inputBox = new InputBox(position, info, parent, listener);
 
+	elementsToSpawn.push_back((GUIElem*)inputBox);
+
+	return inputBox;
 }

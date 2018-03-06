@@ -1,7 +1,7 @@
 #ifndef __GLOBALS_H__
 #define __GLOBALS_H__
 
-#define uint unsigned int
+typedef unsigned int uint;
 
 
 #endif 

@@ -2,6 +2,7 @@
 #define __WINDOW_H__
 
 #include "Module.h"
+#include "p2Defs.h"
 
 struct SDL_Window;
 struct SDL_Surface;
