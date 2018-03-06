@@ -1,5 +1,6 @@
 #include "App.h"
 #include "Scene.h"
+#include "ModuleEntitySystem.h"
 
 Scene::Scene()
 {

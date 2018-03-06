@@ -14,6 +14,8 @@ bool Entity::Draw(float dt)
 
 	ret = Application->render->Blit(texture, coor.x, coor.y, &rectToPrint);
 
+	ret = true; //no texture at the moment
+
 	return ret;
 }
 

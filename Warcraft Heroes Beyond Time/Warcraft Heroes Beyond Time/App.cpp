@@ -75,7 +75,6 @@ bool App::Awake()
 		ret = (*item)->Awake();
 	}
 
-
 	return ret;
 }
 

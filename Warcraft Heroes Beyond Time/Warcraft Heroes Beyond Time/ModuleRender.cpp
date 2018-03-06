@@ -74,10 +74,6 @@ bool Render::PreUpdate()
 
 bool Render::Update(float dt)
 {
-	if (Application->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_START) == KEY_REPEAT)
-		position.x += 1;
-
-	DrawQuad(position,255,255,255,255);
 	return true;
 }
 
