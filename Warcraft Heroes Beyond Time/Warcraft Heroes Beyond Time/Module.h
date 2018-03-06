@@ -6,8 +6,7 @@
 
 class App;
 class GUIElem;
-enum UIEvents;
-
+enum class UIEvents;
 
 class Module
 {
@@ -51,7 +50,7 @@ public:
 		return true;
 	}
 
-	virtual void OnUIEvent(GUIElem* UIelem, UIEvents UIevent) {}
+	virtual void OnUIEvent(GUIElem* UIelem, UIEvents _event) {}
 
 public:
 

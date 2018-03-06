@@ -4,12 +4,15 @@
 #include "GUIElem.h"
 #include "Log.h"
 
-GUIElem::GUIElem(iPoint position, GUIElem* parent, Module* listener) : position(position), parent(parent), listener(listener)
+GUIElem::GUIElem(fPoint localPos, Module* listener, SDL_Rect atlasRect, GUIElemType type, GUIElem* parent) : localPos(localPos), listener(listener), atlasRect(atlasRect), type(type), parent(parent)
 {
-
+	calculateScreenPos();
 }
 
-GUIElem::~GUIElem() {}
+GUIElem::~GUIElem() 
+{
+	DestroyChilds();
+}
 
 bool GUIElem::Update(float dt)
 {
@@ -27,10 +30,12 @@ bool GUIElem::MouseHover() const //In progress
 
 void GUIElem::HandleInput()
 {
-	switch (UIevent) {
+	switch (UIevent) 
+	{
 
 	case UIEvents::NO_EVENT:
-		if (MouseHover()) {
+		if (MouseHover()) 
+		{
 			UIevent = UIEvents::MOUSE_ENTER;
 			listener->OnUIEvent((GUIElem*)this, UIevent);
 			break;
@@ -80,7 +85,7 @@ void GUIElem::HandleInput()
 		{
 			LOG("Mouse left click released");
 			listener->OnUIEvent((GUIElem*)this, UIevent);
-			UIevent = MOUSE_ENTER;
+			UIevent = UIEvents::MOUSE_ENTER;
 			break;
 		}
 
@@ -95,4 +100,63 @@ void GUIElem::HandleInput()
 void GUIElem::DebugDraw() //In progress
 {
 	
+}
+
+bool GUIElem::hasParent() const
+{
+	return parent != nullptr;
+}
+
+GUIElem* GUIElem::getParent() const
+{
+	return parent;
+}
+
+void GUIElem::addChild(GUIElem* child)
+{
+	childs.push_back(child);
+}
+
+bool GUIElem::UpdateChilds(float dt)
+{
+	bool result = true;
+
+	if (childs.size() > 0)
+	{
+		std::list<GUIElem*>::iterator it;
+		
+		for (it = childs.begin(); it != childs.end() && result; ++it)
+		{
+			result = (*it)->Update(dt);
+		}
+	}
+
+	return result;
+}
+
+bool GUIElem::DestroyChilds()
+{
+	if (childs.size() > 0)
+	{
+		std::list<GUIElem*>::iterator it;
+		for (it = childs.begin(); it != childs.end(); ++it)
+		{
+			delete *it;
+		}
+		childs.clear();
+	}
+	return childs.size() <= 0;
+}
+
+fPoint GUIElem::calculateScreenPos()
+{
+	fPoint screenPos = {0.0f, 0.0f};
+
+	for (GUIElem* elem = this; elem != nullptr; elem = elem->parent)
+	{
+		screenPos += elem->localPos;
+	}
+	this->screenPos = screenPos;
+
+	return screenPos;
 }

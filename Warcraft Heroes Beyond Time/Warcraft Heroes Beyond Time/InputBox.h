@@ -5,7 +5,7 @@
 
 struct InputBoxInfo
 {
-	SDL_Color color = { 255,255,255,255 };
+	SDL_Color color = Black;
 	char* fontName = nullptr;
 };
 
@@ -13,7 +13,7 @@ class InputBox : public GUIElem
 {
 public:
 	InputBox() {};
-	InputBox(iPoint position, InputBoxInfo& info, GUIElem* parent, Module* listener);
+	InputBox(fPoint localPos, InputBoxInfo& info, Module* listener, GUIElem* parent = nullptr);
 	~InputBox();
 	bool Update(float dt);
 	void EnableInput();
@@ -24,7 +24,8 @@ private:
 	bool ReadyToWrite = false;
 	std::string text = nullptr;
 	TTF_Font* font = nullptr;
-	SDL_Color color = { 255,255,255,255 };
+	SDL_Color color = Black;
+	SDL_Texture* texturetoBlit = nullptr;
 };
 
 #endif

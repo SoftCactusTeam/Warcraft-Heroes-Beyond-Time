@@ -24,6 +24,7 @@ public:
 private:
 	std::string text = nullptr;
 	TTF_Font* font = nullptr;
+	SDL_Texture* texturetoBlit = nullptr;
 };
 
 #endif

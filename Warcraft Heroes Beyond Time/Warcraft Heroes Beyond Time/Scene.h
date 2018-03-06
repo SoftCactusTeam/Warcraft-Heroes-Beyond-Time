@@ -20,6 +20,7 @@ public:
 
 public:
 
+	virtual void OnUIEvent(GUIElem* UIelem, UIEvents _event);
 	
 
 private:

@@ -36,3 +36,9 @@ bool Scene::CleanUp()
 {
 	return true;
 }
+
+//-----------------------------------
+void Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
+{
+
+}

@@ -29,8 +29,8 @@ public:
 	bool CleanUp();
 
 public:
-	Label* CreateLabel(iPoint position, LabelInfo& info, GUIElem* parent = nullptr, Module* listener = nullptr);
-	InputBox* CreateInputBox(iPoint position, InputBoxInfo& info, GUIElem* parent = nullptr, Module* listener = nullptr);
+	Label* CreateLabel(fPoint position, LabelInfo& info, GUIElem* parent = nullptr, Module* listener = nullptr);
+	InputBox* CreateInputBox(fPoint localPos, InputBoxInfo& info, Module* listener = nullptr, GUIElem* parent = nullptr);
 	bool DestroyElem(GUIElem* element);
 
 public:
