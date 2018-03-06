@@ -6,9 +6,9 @@
 #include "SDL\include\SDL_gamecontroller.h"
 #include "SDL\include\SDL_scancode.h"
 
-//#define NUM_KEYS 352
 #define NUM_MOUSE_BUTTONS 5
-//#define LAST_KEYS_PRESSED_BUFFER 50
+#define J_DEAD_ZONE 10000
+#define NUM_J_BUTTONS 16
 
 struct SDL_Rect;
 
@@ -53,7 +53,20 @@ public:
 		return mouse_buttons[id - 1];
 	}
 
-	bool GetWindowEvent(int code);
+	KeyState GetPadButtonDown(int id) const
+	{
+		return jButtons[id - 1];
+	}
+
+	float GetXAxis() const
+	{
+		return xAxis;
+	}
+
+	float GetYAxis() const
+	{
+		return yAxis;
+	}
 
 	void GetMousePosition(int &x, int &y);
 	void GetMouseMotion(int& x, int& y);
@@ -64,12 +77,18 @@ private:
 	bool		windowEvents[WE_COUNT];
 	KeyState*	keyboard;
 	KeyState	mouse_buttons[NUM_MOUSE_BUTTONS];
+	KeyState	jButtons[NUM_J_BUTTONS];
 	int			mouse_motion_x;
 	int			mouse_motion_y;
 	int			mouse_x;
 	int			mouse_y;
 
 	bool		key_pressed = false;
+
+	SDL_Joystick* controller = NULL;
+
+	float xAxis = 0;
+	float yAxis = 0;
 };
 
 #endif

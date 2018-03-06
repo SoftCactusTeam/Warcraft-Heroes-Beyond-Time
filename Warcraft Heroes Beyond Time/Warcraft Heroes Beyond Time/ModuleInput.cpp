@@ -16,6 +16,7 @@ Input::Input() : Module()
 	keyboard = new KeyState[MAX_KEYS];
 	memset(keyboard, KEY_IDLE, sizeof(KeyState) * MAX_KEYS);
 	memset(mouse_buttons, KEY_IDLE, sizeof(KeyState) * NUM_MOUSE_BUTTONS);
+	memset(jButtons, KEY_IDLE, sizeof(KeyState) * NUM_J_BUTTONS);
 }
 
 Input::~Input()
@@ -33,6 +34,23 @@ bool Input::Awake()
 	{
 		LOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
+	}
+
+	if (SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER) < 0)
+	{
+		LOG("SDL_GAMECONTROLLER could not initialize! SDL_Error: %s\n", SDL_GetError());
+		ret = false;
+	}
+
+	if (SDL_NumJoysticks() < 1)
+		LOG("Warning: No joystick detected");
+	else
+	{
+		controller = SDL_JoystickOpen(0);
+		if (controller == NULL)
+		{
+			LOG("Warning: Unable to open game controller! SDL Error: %s\n", SDL_GetError());
+		}
 	}
 
 	return ret;
@@ -82,6 +100,15 @@ bool Input::PreUpdate()
 			mouse_buttons[i] = KEY_IDLE;
 	}
 
+	for (int i = 0; i < NUM_J_BUTTONS; ++i)
+	{
+		if (jButtons[i] == KEY_DOWN)
+			jButtons[i] = KEY_REPEAT;
+
+		if (jButtons[i] == KEY_UP)
+			jButtons[i] = KEY_IDLE;
+	}
+
 	while (SDL_PollEvent(&event) != 0)
 	{
 		switch (event.type)
@@ -119,11 +146,43 @@ bool Input::PreUpdate()
 			break;
 
 		case SDL_MOUSEMOTION:
+			{   
 			int scale = Application->window->GetScale();
 			mouse_motion_x = event.motion.xrel / scale;
 			mouse_motion_y = event.motion.yrel / scale;
 			mouse_x = event.motion.x / scale;
 			mouse_y = event.motion.y / scale;
+			}
+			break;
+
+		case SDL_JOYAXISMOTION:
+			if (event.jaxis.which == 0)
+			{
+				if (event.jaxis.axis == 0)
+				{
+					if (event.jaxis.value < -J_DEAD_ZONE || event.jaxis.value > J_DEAD_ZONE)
+						xAxis = event.jaxis.value;
+					else
+						xAxis = 0;
+				}
+				else if (event.jaxis.axis == 1)
+				{
+					if (event.jaxis.value < -J_DEAD_ZONE || event.jaxis.value > J_DEAD_ZONE)
+						yAxis = event.jaxis.value;
+					else
+						yAxis = 0;
+				}
+			}
+			break;
+
+		case SDL_JOYBUTTONDOWN:
+			if (event.jbutton.which == 0)
+				jButtons[event.jbutton.button - 1] = KEY_DOWN;
+			break;
+
+		case SDL_JOYBUTTONUP:
+			if (event.jbutton.which == 0)
+				jButtons[event.jbutton.button - 1] = KEY_UP;
 			break;
 		}
 	}
@@ -133,6 +192,10 @@ bool Input::PreUpdate()
 
 bool Input::CleanUp()
 {
+	LOG("Quitting game controller");
+	SDL_JoystickClose(controller);
+	controller = NULL;
+
 	LOG("Quitting SDL event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 
