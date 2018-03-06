@@ -124,9 +124,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="BossEntity.cpp" />
+    <ClCompile Include="ChestEntity.cpp" />
+    <ClCompile Include="ConsumableEntity.cpp" />
+    <ClCompile Include="DynamicEntity.cpp" />
+    <ClCompile Include="EnemyEntity.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Fonts.cpp" />
     <ClCompile Include="FileSystem.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
+    <ClCompile Include="ModuleEntitySystem.cpp" />
     <ClCompile Include="ModuleGUI.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -134,16 +141,27 @@
     <ClCompile Include="ModuleRender.cpp" />
     <ClCompile Include="ModuleTextures.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
+    <ClCompile Include="PlayerEntity.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="StaticEntity.cpp" />
+    <ClCompile Include="StaticObjectEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="App.h" />
+    <ClInclude Include="BossEntity.h" />
+    <ClInclude Include="ChestEntity.h" />
+    <ClInclude Include="ConsumableEntity.h" />
+    <ClInclude Include="DynamicEntity.h" />
+    <ClInclude Include="EnemyEntity.h" />
+    <ClInclude Include="EntitiesEnums.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Fonts.h" />
     <ClInclude Include="FileSystem.h" />
     <ClInclude Include="ModuleAudio.h" />
+    <ClInclude Include="ModuleEntitySystem.h" />
     <ClInclude Include="ModuleGUI.h" />
     <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="Module.h" />
@@ -153,9 +171,12 @@
     <ClInclude Include="ModuleRender.h" />
     <ClInclude Include="ModuleTextures.h" />
     <ClInclude Include="ModuleWindow.h" />
+    <ClInclude Include="PlayerEntity.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="StaticEntity.h" />
+    <ClInclude Include="StaticObjectEntity.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

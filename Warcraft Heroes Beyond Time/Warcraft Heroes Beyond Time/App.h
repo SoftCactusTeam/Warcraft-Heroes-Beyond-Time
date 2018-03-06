@@ -11,11 +11,11 @@ class Input;
 class Render;
 class Textures;
 class Map;
+class EntitySystem;
 class FileSystem;
 class Audio;
 class Scene;
 class Fonts;
-
 
 
 class App
@@ -53,6 +53,7 @@ public:
 	Textures*				textures = nullptr;
 	Map*					map = nullptr;
 	Fonts*					fonts = nullptr;
+	EntitySystem*			entities = nullptr;
 	FileSystem*				fs = nullptr;
 	Audio*					audio = nullptr;
 	Scene*					scene = nullptr;

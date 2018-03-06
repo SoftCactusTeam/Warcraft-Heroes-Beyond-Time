@@ -14,6 +14,34 @@
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="ModuleEntitySystem.cpp" />
+    <ClCompile Include="BossEntity.cpp">
+      <Filter>Entities\Dynamic Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="ChestEntity.cpp">
+      <Filter>Entities\Static Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsumableEntity.cpp">
+      <Filter>Entities\Static Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamicEntity.cpp">
+      <Filter>Entities\Dynamic Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerEntity.cpp">
+      <Filter>Entities\Dynamic Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticEntity.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticObjectEntity.cpp">
+      <Filter>Entities\Static Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyEntity.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -34,5 +62,47 @@
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
     <ClInclude Include="ModuleAudio.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="ModuleEntitySystem.h" />
+    <ClInclude Include="BossEntity.h">
+      <Filter>Entities\Dynamic Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="ChestEntity.h">
+      <Filter>Entities\Static Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsumableEntity.h">
+      <Filter>Entities\Static Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicEntity.h">
+      <Filter>Entities\Dynamic Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyEntity.h">
+      <Filter>Entities\Dynamic Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="EntitiesEnums.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerEntity.h">
+      <Filter>Entities\Dynamic Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticEntity.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticObjectEntity.h">
+      <Filter>Entities\Static Entities</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Entities">
+      <UniqueIdentifier>{590bbb91-4bf6-478e-952b-45a8fe4fe03c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Dynamic Entities">
+      <UniqueIdentifier>{0aac2902-43c3-4e80-82fc-9c25104388ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Static Entities">
+      <UniqueIdentifier>{1bfbf667-b19d-49f5-816c-83b78491c311}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
