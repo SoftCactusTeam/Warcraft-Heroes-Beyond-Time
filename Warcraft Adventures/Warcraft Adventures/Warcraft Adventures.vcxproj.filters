@@ -34,29 +34,35 @@
     <ClCompile Include="ModuleGUI.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleEntitySystem.cpp">
-      <Filter>EntitySystem</Filter>
-    </ClCompile>
-    <ClCompile Include="Player_Entity.cpp">
-      <Filter>EntitySystem\Entity\Dinamic Entities\Player</Filter>
-    </ClCompile>
     <ClCompile Include="Entity.cpp">
-      <Filter>EntitySystem\Entity</Filter>
+      <Filter>BasicModules\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="Boss_Entity.cpp">
-      <Filter>EntitySystem\Entity\Dinamic Entities\Boss</Filter>
+    <ClCompile Include="DynamicEntity.cpp">
+      <Filter>BasicModules\Entities\Dynamic Entities</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy_Entiy.cpp">
-      <Filter>EntitySystem\Entity\Dinamic Entities\Enemies</Filter>
+    <ClCompile Include="StaticEntity.cpp">
+      <Filter>BasicModules\Entities\Static Entities</Filter>
     </ClCompile>
-    <ClCompile Include="Chest_Entity.cpp">
-      <Filter>EntitySystem\Entity\Static Entities\Chest</Filter>
+    <ClCompile Include="BossEntity.cpp">
+      <Filter>BasicModules\Entities\Dynamic Entities\Boss</Filter>
     </ClCompile>
-    <ClCompile Include="Consumable_Entity.cpp">
-      <Filter>EntitySystem\Entity\Static Entities\Consumable</Filter>
+    <ClCompile Include="PlayerEntity.cpp">
+      <Filter>BasicModules\Entities\Dynamic Entities\Player</Filter>
     </ClCompile>
-    <ClCompile Include="StaticObject_Entity.cpp">
-      <Filter>EntitySystem\Entity\Static Entities\StaticObject</Filter>
+    <ClCompile Include="EnemyEntiy.cpp">
+      <Filter>BasicModules\Entities\Dynamic Entities\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="ChestEntity.cpp">
+      <Filter>BasicModules\Entities\Static Entities\Chest</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsumableEntity.cpp">
+      <Filter>BasicModules\Entities\Static Entities\Consumable</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticObjectEntity.cpp">
+      <Filter>BasicModules\Entities\Static Entities\StaticObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleEntitySystem.cpp">
+      <Filter>BasicModules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -108,32 +114,38 @@
     <ClInclude Include="ModuleGUI.h">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleEntitySystem.h">
-      <Filter>EntitySystem</Filter>
-    </ClInclude>
-    <ClInclude Include="Player_Entity.h">
-      <Filter>EntitySystem\Entity\Dinamic Entities\Player</Filter>
-    </ClInclude>
     <ClInclude Include="Entity.h">
-      <Filter>EntitySystem\Entity</Filter>
+      <Filter>BasicModules\Entities</Filter>
     </ClInclude>
     <ClInclude Include="EntitiesEnums.h">
-      <Filter>EntitySystem\Entity</Filter>
+      <Filter>BasicModules\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="Boss_Entity.h">
-      <Filter>EntitySystem\Entity\Dinamic Entities\Boss</Filter>
+    <ClInclude Include="DynamicEntity.h">
+      <Filter>BasicModules\Entities\Dynamic Entities</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy_Entity.h">
-      <Filter>EntitySystem\Entity\Dinamic Entities\Enemies</Filter>
+    <ClInclude Include="StaticEntity.h">
+      <Filter>BasicModules\Entities\Static Entities</Filter>
     </ClInclude>
-    <ClInclude Include="Chest_Entity.h">
-      <Filter>EntitySystem\Entity\Static Entities\Chest</Filter>
+    <ClInclude Include="BossEntity.h">
+      <Filter>BasicModules\Entities\Dynamic Entities\Boss</Filter>
     </ClInclude>
-    <ClInclude Include="Consumable_Entity.h">
-      <Filter>EntitySystem\Entity\Static Entities\Consumable</Filter>
+    <ClInclude Include="PlayerEntity.h">
+      <Filter>BasicModules\Entities\Dynamic Entities\Player</Filter>
     </ClInclude>
-    <ClInclude Include="StaticObject_Entity.h">
-      <Filter>EntitySystem\Entity\Static Entities\StaticObject</Filter>
+    <ClInclude Include="EnemyEntity.h">
+      <Filter>BasicModules\Entities\Dynamic Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="ChestEntity.h">
+      <Filter>BasicModules\Entities\Static Entities\Chest</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsumableEntity.h">
+      <Filter>BasicModules\Entities\Static Entities\Consumable</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticObjectEntity.h">
+      <Filter>BasicModules\Entities\Static Entities\StaticObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleEntitySystem.h">
+      <Filter>BasicModules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -152,34 +164,31 @@
     <Filter Include="GUI">
       <UniqueIdentifier>{4bfaa8ba-1caf-4356-8fb5-820ae5275069}</UniqueIdentifier>
     </Filter>
-    <Filter Include="EntitySystem">
-      <UniqueIdentifier>{510ed7be-0d6a-4ae0-8fc9-29a85af0f5cb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="EntitySystem\Entity">
+    <Filter Include="BasicModules\Entities">
       <UniqueIdentifier>{791a5e9e-c547-4e1f-aee7-35c6e0fdaa9d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="EntitySystem\Entity\Dinamic Entities">
+    <Filter Include="BasicModules\Entities\Dynamic Entities">
       <UniqueIdentifier>{e7237daa-ecaf-446b-8f57-ec0d73743d64}</UniqueIdentifier>
     </Filter>
-    <Filter Include="EntitySystem\Entity\Dinamic Entities\Player">
+    <Filter Include="BasicModules\Entities\Dynamic Entities\Player">
       <UniqueIdentifier>{528c49f1-892b-4324-a961-fb4eaa0bafe9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="EntitySystem\Entity\Dinamic Entities\Enemies">
+    <Filter Include="BasicModules\Entities\Dynamic Entities\Enemies">
       <UniqueIdentifier>{fa2b5aa4-a8ab-4d40-8851-a34a2dd4962a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="EntitySystem\Entity\Dinamic Entities\Boss">
+    <Filter Include="BasicModules\Entities\Dynamic Entities\Boss">
       <UniqueIdentifier>{9138b015-38e6-4579-b004-907cc9bb2569}</UniqueIdentifier>
     </Filter>
-    <Filter Include="EntitySystem\Entity\Static Entities">
+    <Filter Include="BasicModules\Entities\Static Entities">
       <UniqueIdentifier>{5820d6d7-6333-4a1a-88ee-7fddf71bec3b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="EntitySystem\Entity\Static Entities\Consumable">
+    <Filter Include="BasicModules\Entities\Static Entities\Consumable">
       <UniqueIdentifier>{b40cfa95-dbee-4b00-9e47-da318d5d5779}</UniqueIdentifier>
     </Filter>
-    <Filter Include="EntitySystem\Entity\Static Entities\Chest">
+    <Filter Include="BasicModules\Entities\Static Entities\Chest">
       <UniqueIdentifier>{fa4a7c44-b070-4ff4-9c44-1b1bcaad75e8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="EntitySystem\Entity\Static Entities\StaticObject">
+    <Filter Include="BasicModules\Entities\Static Entities\StaticObject">
       <UniqueIdentifier>{ce9fcb22-0830-4ae2-8616-ba6c77933d80}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

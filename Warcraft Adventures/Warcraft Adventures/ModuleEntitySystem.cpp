@@ -4,12 +4,12 @@
 #include "ModuleTextures.h"
 
 #include "Entity.h"
-#include "Player_Entity.h"
-#include "Boss_Entity.h"
-#include "Enemy_Entity.h"
-#include "Consumable_Entity.h"
-#include "Chest_Entity.h"
-#include "StaticObject_Entity.h"
+#include "PlayerEntity.h"
+#include "BossEntity.h"
+#include "EnemyEntity.h"
+#include "ConsumableEntity.h"
+#include "ChestEntity.h"
+#include "StaticObjectEntity.h"
 
 EntitySystem::EntitySystem() : Module()
 {
@@ -18,30 +18,40 @@ EntitySystem::EntitySystem() : Module()
 
 bool EntitySystem::Start()
 {
-	LOG("Starting Entities Factory module");
+	LOG("Loading textures");
+	//vector[THRALLSHEET] = load etc
 	
 	return true;
 }
 
 bool EntitySystem::PreUpdate()
 {	
-	return true;
+	if (toSpawn.size() >= 0)
+	{
+		for(std::list<Entity*>::iterator it = toSpawn.begin(); it != toSpawn.end(); ++it)
+		{
+			entities.push_back(*it);
+		}
+		toSpawn.clear();
+	}
+
+	return toSpawn.size() <= 0;
 }
 
 bool EntitySystem::Update(float dt)
 {
 	bool ret = true;
 
-	for (std::list<Entity*>::iterator iterator = entities.begin(); iterator != entities.end() && ret; ++iterator)
+	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end() && ret; ++it)
 	{
-		ret = (*iterator)->Update(dt);
+		ret = (*it)->Update(dt);
 	}
 
 	if (ret)
 	{
-		for (std::list<Entity*>::iterator iterator = entities.begin(); iterator != entities.end(); ++iterator)
+		for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); ++it)
 		{
-			ret = (*iterator)->Draw(dt);
+			ret = (*it)->Draw(dt);
 		}
 	}
 	return ret;
@@ -49,16 +59,22 @@ bool EntitySystem::Update(float dt)
 
 bool EntitySystem::PostUpdate()
 {
-	for (std::list<Entity*>::iterator iterator = entities.begin(); iterator != entities.end(); iterator++)
-		if ((*iterator)->destroy == true)
-			entities.remove((*iterator));
+	bool ret = true;
 
-	return true;
+	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); ++it)
+	{
+		if ((*it)->destroy)
+			entities.remove((*it));
+	}
+
+	return ret;
 }
 
 bool EntitySystem::CleanUp()
 {
 	bool ret = true;
+
+	LOG("Entity System: CleanUp...");
 
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end() && ret; ++it)
 		ret = (*it)->Finish();
@@ -66,12 +82,17 @@ bool EntitySystem::CleanUp()
 	if (ret)
 		ret = ClearEntitiesList();
 
+	if (ret)
+		ret = UnloadTexturesVector();
+
 	return ret;
 }
 
 bool EntitySystem::ClearEntitiesList()
 {
 	bool ret = true;
+
+	LOG("Entity System: Releasing entities...");
 
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end() && ret; ++it)
 	{
@@ -83,112 +104,129 @@ bool EntitySystem::ClearEntitiesList()
 	return entities.size() <= 0;
 }
 
+bool EntitySystem::UnloadTexturesVector()
+{
+	bool ret = true;
+
+	LOG("Entity System: Unloading textures...");
+
+	for (int i = 0; i < spritesheetsEntities.size() && ret; ++i)
+	{
+		ret = Application->textures->UnLoad(spritesheetsEntities[i]);
+	}
+
+	if (ret)
+		spritesheetsEntities.clear();
+
+	return spritesheetsEntities.size() <= 0;
+}
+
 void EntitySystem::AddEnemy(iPoint coor, ENEMY_TYPE type)
 {
-	Entity* newEntity;
+	EnemyEntity* newEntity = nullptr;
 	switch (type) {
 	case ENEMY_TYPE::FOOTMAN:
-		newEntity = new Enemy_Entity(coor, ENTITY_TYPE::DINAMIC_ENEMIES, nullptr, type);
+		newEntity = new EnemyEntity(coor, ENEMY_TYPE::FOOTMAN, nullptr);
 		break;
 	case ENEMY_TYPE::ARCHER:
-		newEntity = new Enemy_Entity(coor, ENTITY_TYPE::DINAMIC_ENEMIES, nullptr, type);
+		newEntity = new EnemyEntity(coor, ENEMY_TYPE::ARCHER, nullptr);
 		break;
 	case ENEMY_TYPE::MAGE:
-		newEntity = new Enemy_Entity(coor, ENTITY_TYPE::DINAMIC_ENEMIES, nullptr, type);
+		newEntity = new EnemyEntity(coor, ENEMY_TYPE::MAGE, nullptr);
 		break;
 	case ENEMY_TYPE::DEATH_KNIGHT:
-		newEntity = new Enemy_Entity(coor, ENTITY_TYPE::DINAMIC_ENEMIES, nullptr, type);
+		newEntity = new EnemyEntity(coor, ENEMY_TYPE::DEATH_KNIGHT, nullptr);
 		break;
 	case ENEMY_TYPE::GOBLIN:
-		newEntity = new Enemy_Entity(coor, ENTITY_TYPE::DINAMIC_ENEMIES, nullptr, type);
+		newEntity = new EnemyEntity(coor, ENEMY_TYPE::GOBLIN, nullptr);
 		break;
-	case ENEMY_TYPE::ZOMBIE:
-		newEntity = new Enemy_Entity(coor, ENTITY_TYPE::DINAMIC_ENEMIES, nullptr, type);
+	case ENEMY_TYPE::SKELETON:
+		newEntity = new EnemyEntity(coor, ENEMY_TYPE::SKELETON, nullptr);
 		break;
 	}
-	entities.push_front(newEntity);
+	toSpawn.push_back((Entity*)newEntity);
 }
 
 void EntitySystem::AddBoss(iPoint coor, BOSS_TYPE type)
 {
-	Entity* newEntity;
+	BossEntity* newEntity = nullptr;
 	switch (type) {
 	case BOSS_TYPE::GULDAN:
-		newEntity = new Boss_Entity(coor, ENTITY_TYPE::DINAMIC_BOSS, nullptr, type);
+		newEntity = new BossEntity(coor, BOSS_TYPE::GULDAN, nullptr);
 		break;
 	case BOSS_TYPE::LICH_KING:
-		newEntity = new Boss_Entity(coor, ENTITY_TYPE::DINAMIC_BOSS, nullptr, type);
+		newEntity = new BossEntity(coor, BOSS_TYPE::LICH_KING, nullptr);
 		break;
 	case BOSS_TYPE::ILLIDAN:
-		newEntity = new Boss_Entity(coor, ENTITY_TYPE::DINAMIC_BOSS, nullptr, type);
+		newEntity = new BossEntity(coor, BOSS_TYPE::ILLIDAN, nullptr);
 		break;
 	}
-	entities.push_front(newEntity);
+	toSpawn.push_back((Entity*)newEntity);
 }
 
 void EntitySystem::AddPlayer(iPoint coor, PLAYER_TYPE type)
 {
-	Entity* newEntity;
+	PlayerEntity* newEntity = nullptr;
 	switch (type)
 	{
 	case PLAYER_TYPE::THRALL:
-		newEntity = new PlayerPJ_Entity(coor, ENTITY_TYPE::DINAMIC_PLAYER, nullptr, type);
+		newEntity = new PlayerEntity(coor, PLAYER_TYPE::THRALL, nullptr);
 		break;
 	case PLAYER_TYPE::VALEERA:
-		newEntity = new PlayerPJ_Entity(coor, ENTITY_TYPE::DINAMIC_PLAYER, nullptr, type);
+		newEntity = new PlayerEntity(coor, PLAYER_TYPE::VALEERA, nullptr);
 		break;
 	case PLAYER_TYPE::SYLVANAS:
-		newEntity = new PlayerPJ_Entity(coor, ENTITY_TYPE::DINAMIC_PLAYER, nullptr, type);
+		newEntity = new PlayerEntity(coor, PLAYER_TYPE::SYLVANAS, nullptr);
 		break;
 	}
-	entities.push_front(newEntity);
+	toSpawn.push_back((Entity*)newEntity);
 }
 
 void EntitySystem::AddConsumable(iPoint coor, CONSUMABLE_TYPE type)
 {
-	Entity* newEntity;
+	ConsumableEntity* newEntity = nullptr;
 	switch (type) {
 	case CONSUMABLE_TYPE::ATACK_POTION:
-		newEntity = new Consumable_Entity(coor, ENTITY_TYPE::STATIC_CONSUMABLE, nullptr, type);
+		newEntity = new ConsumableEntity(coor, CONSUMABLE_TYPE::ATACK_POTION, nullptr);
 		break;
 	case CONSUMABLE_TYPE::LIVE_POTION:
-		newEntity = new Consumable_Entity(coor, ENTITY_TYPE::STATIC_CONSUMABLE, nullptr, type);
+		newEntity = new ConsumableEntity(coor, CONSUMABLE_TYPE::LIVE_POTION, nullptr);
 		break;
 	case CONSUMABLE_TYPE::MOVEMENT_SPEED_POTION:
-		newEntity = new Consumable_Entity(coor, ENTITY_TYPE::STATIC_CONSUMABLE, nullptr, type);
+		newEntity = new ConsumableEntity(coor, CONSUMABLE_TYPE::MOVEMENT_SPEED_POTION, nullptr);
 		break;
 	}
-	entities.push_front(newEntity);
+	toSpawn.push_back((Entity*)newEntity);
 }
 
 void EntitySystem::AddChest(iPoint coor, CHEST_TYPE type) 
 {
-	Entity* newEntity;
+	ChestEntiy* newEntity = nullptr;
 	switch (type) {
 	case CHEST_TYPE::LOW_CHEST:
-		newEntity = new Chest_Entiy(coor, ENTITY_TYPE::STATIC_CHEST, nullptr, type);
+		newEntity = new ChestEntiy(coor, CHEST_TYPE::LOW_CHEST, nullptr);
 		break;
 	case CHEST_TYPE::MID_CHEST:
-		newEntity = new Chest_Entiy(coor, ENTITY_TYPE::STATIC_CHEST, nullptr, type);
+		newEntity = new ChestEntiy(coor, CHEST_TYPE::MID_CHEST, nullptr);
 		break;
 	case CHEST_TYPE::HIGH_CHEST:
-		newEntity = new Chest_Entiy(coor, ENTITY_TYPE::STATIC_CHEST, nullptr, type);
+		newEntity = new ChestEntiy(coor, CHEST_TYPE::HIGH_CHEST, nullptr);
 		break;
 	}
-	entities.push_front(newEntity);
+	toSpawn.push_back((Entity*)newEntity);
 }
 
 void EntitySystem::AddStaticObject(iPoint coor, STATIC_OBJECT_TYPE type) 
 {
-	Entity* newEntity;
+	StaticObjectEntity* newEntity = nullptr;
 	switch (type) 
 	{
 	case STATIC_OBJECT_TYPE::TREE:
-		newEntity = new StaticObject_Entity(coor, ENTITY_TYPE::STATIC_ESCENE_ITEM, nullptr, type);
+		newEntity = new StaticObjectEntity(coor, STATIC_OBJECT_TYPE::TREE, nullptr);
 		break;
 	case STATIC_OBJECT_TYPE::ROCK:
-		newEntity = new StaticObject_Entity(coor, ENTITY_TYPE::STATIC_ESCENE_ITEM, nullptr, type);
+		newEntity = new StaticObjectEntity(coor, STATIC_OBJECT_TYPE::ROCK, nullptr);
 		break;
 	}
-	entities.push_front(newEntity);
+	toSpawn.push_back((Entity*)newEntity);
 }

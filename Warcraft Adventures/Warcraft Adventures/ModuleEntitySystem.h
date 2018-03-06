@@ -2,18 +2,14 @@
 #define	 __MODULEENTITYSYSTEM_H__
 
 #include <list>
+#include <vector>
 
 #include "SDL_image\include\SDL_image.h"
 
 #include "p2Point.h"
+#include "EntitiesEnums.h"
 
-class PlayerPJ_Entity;
-class Boss;
-class Enemy;
-
-class Consumable;
-class Chest;
-class StaticObject;
+class Entity;
 
 class EntitySystem : public Module
 {
@@ -27,6 +23,9 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
+	bool ClearEntitiesList();
+	bool UnloadTexturesVector();
+
 	void AddPlayer(iPoint coor, PLAYER_TYPE type);
 	void AddEnemy(iPoint coor, ENEMY_TYPE type);
 	void AddBoss(iPoint coor, BOSS_TYPE type);
@@ -34,15 +33,13 @@ public:
 	void AddChest(iPoint coor, CHEST_TYPE type);
 	void AddStaticObject(iPoint coor, STATIC_OBJECT_TYPE type);
 
-	bool ClearEntitiesList();
-
 public:
 	std::string				name;
-	bool					active = true;
 
 private:
 	std::list<Entity*>		entities;
-	std::list<Entity*>		toSpawn;
+	std::list<Entity*>		toSpawn; 
+	std::vector<SDL_Texture*> spritesheetsEntities;
 };
 
 #endif

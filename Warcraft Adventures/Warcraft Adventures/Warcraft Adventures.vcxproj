@@ -84,7 +84,7 @@
     </ClCompile>
     <Link />
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -124,10 +124,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
-    <ClCompile Include="Boss_Entity.cpp" />
-    <ClCompile Include="Chest_Entity.cpp" />
-    <ClCompile Include="Consumable_Entity.cpp" />
-    <ClCompile Include="Enemy_Entiy.cpp" />
+    <ClCompile Include="BossEntity.cpp" />
+    <ClCompile Include="ChestEntity.cpp" />
+    <ClCompile Include="ConsumableEntity.cpp" />
+    <ClCompile Include="DynamicEntity.cpp" />
+    <ClCompile Include="EnemyEntiy.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Fonts.cpp" />
     <ClCompile Include="FileSystem.cpp" />
@@ -139,17 +140,19 @@
     <ClCompile Include="ModuleRender.cpp" />
     <ClCompile Include="ModuleTextures.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
-    <ClCompile Include="Player_Entity.cpp" />
+    <ClCompile Include="PlayerEntity.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
-    <ClCompile Include="StaticObject_Entity.cpp" />
+    <ClCompile Include="StaticEntity.cpp" />
+    <ClCompile Include="StaticObjectEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="App.h" />
-    <ClInclude Include="Boss_Entity.h" />
-    <ClInclude Include="Chest_Entity.h" />
-    <ClInclude Include="Consumable_Entity.h" />
-    <ClInclude Include="Enemy_Entity.h" />
+    <ClInclude Include="BossEntity.h" />
+    <ClInclude Include="ChestEntity.h" />
+    <ClInclude Include="ConsumableEntity.h" />
+    <ClInclude Include="DynamicEntity.h" />
+    <ClInclude Include="EnemyEntity.h" />
     <ClInclude Include="EntitiesEnums.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Globals.h" />
@@ -165,10 +168,11 @@
     <ClInclude Include="ModuleRender.h" />
     <ClInclude Include="ModuleTextures.h" />
     <ClInclude Include="ModuleWindow.h" />
-    <ClInclude Include="Player_Entity.h" />
+    <ClInclude Include="PlayerEntity.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
-    <ClInclude Include="StaticObject_Entity.h" />
+    <ClInclude Include="StaticEntity.h" />
+    <ClInclude Include="StaticObjectEntity.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
