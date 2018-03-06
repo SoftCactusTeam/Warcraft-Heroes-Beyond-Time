@@ -28,7 +28,7 @@ bool Scene::Start()
 
 
 	InputBoxInfo defInputBox;
-	defInputBox.color = Red;
+	defInputBox.color = Green;
 	defInputBox.fontName = "Arial16";
 
 	InputBox* box = Application->gui->CreateInputBox({ 0, 200 }, defInputBox, nullptr, nullptr);
