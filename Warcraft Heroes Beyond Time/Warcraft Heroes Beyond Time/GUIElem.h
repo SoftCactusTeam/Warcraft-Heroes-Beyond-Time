@@ -3,39 +3,39 @@
 
 #include "SDL\include\SDL_events.h"
 #include "SDL\include\SDL_mouse.h"
-
 #include "p2Point.h"
 #include "ModuleGUI.h"
 
 class Module;
 
-enum UIEvents {
-	NO_EVENT,
-	MOUSE_ENTER,
-	MOUSE_LEAVE,
-	MOUSE_RIGHT_CLICK,
-	MOUSE_LEFT_CLICK,
-	MOUSE_RIGHT_UP,
-	MOUSE_LEFT_UP,
-	MAX_EVENTS
-};
-
-enum ElementCentered //In progress
-{
-	NON_DEFINED,
-	LEFT,
-	CENTERED,
-	RIGHT,
-	MAX_DEFINED
-};
-
 class GUIElem
 {
+public:
+	enum UIEvents {
+		NO_EVENT,
+		MOUSE_ENTER,
+		MOUSE_LEAVE,
+		MOUSE_RIGHT_CLICK,
+		MOUSE_LEFT_CLICK,
+		MOUSE_RIGHT_UP,
+		MOUSE_LEFT_UP,
+		MAX_EVENTS
+	};
+
+	enum ElementCentered //In progress
+	{
+		NON_DEFINED,
+		LEFT,
+		CENTERED,
+		RIGHT,
+		MAX_DEFINED
+	};
+
 protected:
 	GUIElem* parent = nullptr;
 	Module* listener = nullptr;
-	iPoint position = { 0,0 };
-	SDL_Texture* textureToBlit = nullptr;
+	fPoint position = { 0, 0 };
+	SDL_Rect atlasRect = { 0, 0, 0, 0 };
 	UIEvents UIevent;
 
 public:
