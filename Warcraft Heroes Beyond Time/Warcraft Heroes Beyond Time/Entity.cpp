@@ -2,7 +2,7 @@
 #include "Entity.h"
 #include "ModuleRender.h"
 
-Entity::Entity(iPoint coor, SDL_Texture* texture) : coor(coor), texture(texture) {}
+Entity::Entity(iPoint coor, SDL_Texture* texture) : pos(coor), texture(texture) {}
 
 bool Entity::Start() { return true; }
 
@@ -12,7 +12,7 @@ bool Entity::Draw(float dt)
 {
 	bool ret = true;
 
-	ret = Application->render->Blit(texture, coor.x, coor.y, &rectToPrint);
+	ret = Application->render->Blit(texture, pos.x, pos.y, &rectToPrint);
 
 	ret = true; //no texture at the moment
 

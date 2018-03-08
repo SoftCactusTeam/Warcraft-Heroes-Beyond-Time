@@ -4,15 +4,15 @@
 #include "DynamicEntity.h"
 
 class PlayerEntity : public DynamicEntity {
+protected:
+	PLAYER_TYPE type = PLAYER_TYPE::NON_PLAYER;
+
 public:
 	PlayerEntity(iPoint coor, PLAYER_TYPE type, SDL_Texture* texture);
 
-	bool Start();
-	bool Update();
-	bool Finish();
-
-private:
-	PLAYER_TYPE type = PLAYER_TYPE::NON_PLAYER;
+	virtual bool Start();
+	virtual bool Update(float dt);
+	virtual bool Finish();
 };
 
 #endif

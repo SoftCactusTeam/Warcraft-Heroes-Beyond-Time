@@ -30,9 +30,6 @@
     <ClCompile Include="Entity.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerEntity.cpp">
-      <Filter>Entities\Dynamic Entities</Filter>
-    </ClCompile>
     <ClCompile Include="StaticEntity.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
@@ -41,6 +38,17 @@
     </ClCompile>
     <ClCompile Include="EnemyEntity.cpp">
       <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Color.cpp" />
+    <ClCompile Include="Console.cpp" />
+    <ClCompile Include="InputBox.cpp" />
+    <ClCompile Include="Label.cpp" />
+    <ClCompile Include="GUIElem.cpp" />
+    <ClCompile Include="PlayerEntity.cpp">
+      <Filter>Entities\Dynamic Entities\Playable Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Thrall.cpp">
+      <Filter>Entities\Dynamic Entities\Playable Characters</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -84,14 +92,21 @@
     <ClInclude Include="Entity.h">
       <Filter>Entities</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerEntity.h">
-      <Filter>Entities\Dynamic Entities</Filter>
-    </ClInclude>
     <ClInclude Include="StaticEntity.h">
       <Filter>Entities</Filter>
     </ClInclude>
     <ClInclude Include="StaticObjectEntity.h">
       <Filter>Entities\Static Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Console.h" />
+    <ClInclude Include="GUIElem.h" />
+    <ClInclude Include="InputBox.h" />
+    <ClInclude Include="Label.h" />
+    <ClInclude Include="PlayerEntity.h">
+      <Filter>Entities\Dynamic Entities\Playable Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Thrall.h">
+      <Filter>Entities\Dynamic Entities\Playable Characters</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +118,9 @@
     </Filter>
     <Filter Include="Entities\Static Entities">
       <UniqueIdentifier>{1bfbf667-b19d-49f5-816c-83b78491c311}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Dynamic Entities\Playable Characters">
+      <UniqueIdentifier>{bdd5d26f-7e95-4c76-b2e8-35e0ebe41d2d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -177,12 +177,3 @@ bool Audio::PlayFx(unsigned int id, int repeat)
 
 	return ret;
 }
-
-//bool Audio::UI_Do(const UI_Elem* elem, Events* event)
-//{
-//	
-//
-//	
-//
-//	return true;
-//}

@@ -4,6 +4,6 @@ PlayerEntity::PlayerEntity(iPoint coor, PLAYER_TYPE type, SDL_Texture* texture) 
 
 bool PlayerEntity::Start() { return true; }
 
-bool PlayerEntity::Update() { return true; }
+bool PlayerEntity::Update(float dt) { return true; }
 
 bool PlayerEntity::Finish() { return true; }
