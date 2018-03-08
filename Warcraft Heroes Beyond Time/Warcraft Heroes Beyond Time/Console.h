@@ -3,13 +3,13 @@
 
 #include "Module.h"
 #include "Globals.h"
-#include <vector>
-
 #include "InputBox.h"
+#include <vector>
 
 class ConsoleOrder {
 public:
-	std::string orderName = 0;
+	//std::string orderName = 0;
+	virtual std::string orderName() = 0;
 	virtual void Exec() = 0;		// FER QUE RETORNI UN STRING
 private:
 	bool isActive = false;
@@ -31,6 +31,7 @@ public:
 	void AddConsoleOrderToList(ConsoleOrder* consoleOrder);
 
 private:
+
 	std::vector<ConsoleOrder*> consoleOrderList;
 	InputBox* box = nullptr;
 };

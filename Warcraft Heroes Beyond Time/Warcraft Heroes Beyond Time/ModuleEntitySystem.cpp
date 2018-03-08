@@ -14,9 +14,9 @@
 #include "Console.h"
 
 class InvoqueFootman_ConsoleOrder : public ConsoleOrder {
-	std::string orderName = "InvoqueFootman";
+	std::string orderName() { return "txell timu"; }
 	void Exec() {
-		printf_s("S'ha invocat un Footman");
+		printf_s("Txell SEXYYYY");
 	}
 };
 

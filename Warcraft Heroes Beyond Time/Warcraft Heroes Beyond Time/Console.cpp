@@ -2,9 +2,6 @@
 #include "App.h"
 #include "ModuleInput.h"
 #include "ModuleGUI.h"
-#include "Label.h"
-
-
 
 Console::Console() {
 	name = "console";
@@ -45,7 +42,7 @@ void Console::PrintAtConsole(std::string textToPrint) {
 
 bool Console::ExecConsoleOrder(std::string name){
 	for (int i = 0; i < consoleOrderList.size(); i++) {
-		if (consoleOrderList[i]->orderName == name) {
+		if (consoleOrderList[i]->orderName() == name) {
 			consoleOrderList[i]->Exec();
 			i = consoleOrderList.size() + 1;	// SURTI DEL BUCLE, POSAR UN break o continue
 		}
