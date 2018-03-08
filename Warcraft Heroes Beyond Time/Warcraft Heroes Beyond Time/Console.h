@@ -2,6 +2,17 @@
 #define __Console_H__
 
 #include "Module.h"
+#include "Globals.h"
+#include <vector>
+
+class ConsoleOrder {
+public:
+	std::string orderName = "";
+	virtual std::string Exec() = 0;
+	//virtual std::string callHelp() = 0;
+private:
+	bool isActive = false;
+};
 
 class Console : public Module
 {
@@ -13,12 +24,17 @@ public:
 	bool Update(float dt);
 	bool CleanUp();
 
-private:
-	char* actualConsoleTextOrder;
+	bool ExecConsoleOrder(std::string name);
+	void PrintAtConsole(std::string textToPrint);
+	void AddConsoleOrderToList(ConsoleOrder* consoleOrder);
 
 private:
-	bool listOfActions();
+	std::string actualConsoleTextOrder;
 
+
+	Label* text = nullptr;
+
+	std::vector<ConsoleOrder*> consoleOrderList;
 };
 
 #endif

@@ -1,6 +1,8 @@
 #include "Console.h"
 #include "App.h"
 #include "ModuleInput.h"
+#include "ModuleGUI.h"
+#include "Label.h"
 
 Console::Console() {
 	name = "console";
@@ -17,23 +19,24 @@ bool Console::Update(float dt) {
 }
 
 bool Console::CleanUp(){
-
 	return true;
 }
 
-bool Console::listOfActions() {
-	char* order = actualConsoleTextOrder;
+void Console::PrintAtConsole(std::string textToPrint) {
+
+}
+
+bool Console::ExecConsoleOrder(std::string name){
+	for (int i = 0; i <= consoleOrderList.size(); i++) {
+		if (consoleOrderList[i]->orderName == name) {
+			i = consoleOrderList.size() + 1;
+			consoleOrderList[i]->Exec();
+		}
+	}
 	actualConsoleTextOrder = "";
-
-	if (order == "pause_entities") {
-
-	}
-	else if (order == "exit_game") {
-
-	}
-	else {	// EN CAS DE QUE CAP DE LES OPCIONS SIGUI BONA, ES MANTINDRA EL TEXT PER ARRECLARHO
-		actualConsoleTextOrder = order;
-	}
-
 	return true;
+}
+
+void Console::AddConsoleOrderToList(ConsoleOrder* consoleOrder) {
+	consoleOrderList.push_back(consoleOrder);
 }
