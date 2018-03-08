@@ -15,8 +15,13 @@
 
 class InvoqueFootman_ConsoleOrder : public ConsoleOrder {
 	std::string orderName() { return "txell"; }
-	void Exec() {
-
+	void Exec(std::string parametre) {
+		if (parametre == "sexy")
+			printf_s("Txell sexy\n");
+		else if (parametre == "pesada")
+			printf_s("Txell pesada\n");
+		else if (parametre == "not")
+			printf_s("not parametre\n");
 	}
 };
 

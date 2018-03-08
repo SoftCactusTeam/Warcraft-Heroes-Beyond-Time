@@ -5,6 +5,14 @@
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
 
+
+// ======================================================================================
+// ===================== INSTRUCCIONS CONSOLA ===========================================
+// ====== TU LI PASSES UN STRING, ON LA PRIMERA PARAULA ES L'ORDRE,======================
+// =======I ACOMPANYADA D'UNA _ POTS POSAR-LI UN PARAMTETRE (NO OBLIGATORI)==============
+// ======================================================================================
+
+
 Console::Console() {
 	name = "console";
 }
@@ -53,9 +61,28 @@ void Console::PrintAtConsole(std::string textToPrint) {
 }
 
 bool Console::ExecConsoleOrder(std::string name){
+	std::string nom_ordre;
+	std::string parametre_ordre;
+
+	for (int i = 0; i < name.size(); i++) {
+		if (name.at(i) == '_') {
+			for (int o = 0; o < i; o++) {	//AQUI ES GENERA EL nom_ordre
+				nom_ordre += name.at(o);
+			}
+			for (int e = i + 1; e < name.size(); e++) {	//AQUI ES GENERA EL parametre_ordre
+				parametre_ordre += name.at(e);
+			}
+			i = name.size();
+		}
+	}
+	if (parametre_ordre.size() == 0) {
+		nom_ordre = name;
+		parametre_ordre = "not";
+	}
+
 	for (int i = 0; i < consoleOrderList.size(); i++) {
-		if (consoleOrderList[i]->orderName() == name) {
-			consoleOrderList[i]->Exec();
+		if (consoleOrderList[i]->orderName() == nom_ordre) {
+			consoleOrderList[i]->Exec(parametre_ordre);
 			i = consoleOrderList.size() + 1;	// SURTI DEL BUCLE, POSAR UN break o continue
 		}
 	}
