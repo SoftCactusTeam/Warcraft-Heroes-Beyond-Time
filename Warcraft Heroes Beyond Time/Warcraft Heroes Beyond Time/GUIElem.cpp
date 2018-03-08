@@ -1,4 +1,4 @@
-#include "App.h"
+#include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleWindow.h"
 #include "GUIElem.h"
@@ -23,12 +23,12 @@ bool GUIElem::Update(float dt)
 bool GUIElem::MouseHover() const
 {
 	int x, y;
-	Application->input->GetMousePosition(x, y);
-	uint scale = Application->window->GetScale();
+	App->input->GetMousePosition(x, y);
+	uint scale = App->window->GetScale();
 
 	bool result = false;
 
-	fPoint worldPos = { screenPos.x + Application->render->camera.x, screenPos.y + Application->render->camera.y };
+	fPoint worldPos = { screenPos.x + App->render->camera.x, screenPos.y + App->render->camera.y };
 
 	//if collides
 	if (!(x < worldPos.x ||
@@ -61,14 +61,14 @@ void GUIElem::HandleInput()
 			UIevent = UIEvents::MOUSE_LEAVE;
 			break;
 		}
-		else if (Application->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED)
+		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED)
 		{
 			LOG("Mouse left cLick pressed");
 			UIevent = UIEvents::MOUSE_LEFT_CLICK;
 			listener->OnUIEvent((GUIElem*)this, UIevent);
 			break;
 		}
-		else if (Application->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_PRESSED)
+		else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_PRESSED)
 		{
 			LOG("Mouse right click pressed");
 			UIevent = UIEvents::MOUSE_RIGHT_CLICK;
@@ -78,7 +78,7 @@ void GUIElem::HandleInput()
 		break;
 
 	case UIEvents::MOUSE_RIGHT_CLICK:
-		if (Application->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_RELEASED)
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_RELEASED)
 		{
 			LOG("Mourse right click released");
 			listener->OnUIEvent((GUIElem*)this, UIevent);
@@ -94,7 +94,7 @@ void GUIElem::HandleInput()
 			UIevent = UIEvents::MOUSE_LEAVE;
 			break;
 		}
-		else if (Application->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_RELEASED)
+		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_RELEASED)
 		{
 			LOG("Mouse left click released");
 			listener->OnUIEvent((GUIElem*)this, UIevent);

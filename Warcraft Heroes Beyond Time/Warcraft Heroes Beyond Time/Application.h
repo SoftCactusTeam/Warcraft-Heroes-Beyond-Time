@@ -1,5 +1,5 @@
-#ifndef __APP_H__
-#define __APP_H__
+#ifndef __APPLICATION_H__
+#define __APPLICATION_H__
 
 #include "Module.h"
 #include "Globals.h"
@@ -21,12 +21,12 @@ class Fonts;
 class Console;
 
 
-class App
+class Application
 {
 public:
 
-	App(int argc, char* args[]);
-	virtual ~App();
+	Application(int argc, char* args[]);
+	virtual ~Application();
 
 	bool Awake();
 	bool Start();
@@ -78,6 +78,6 @@ private:
 
 };
 
-extern App* Application;
+extern Application* App;
 
 #endif

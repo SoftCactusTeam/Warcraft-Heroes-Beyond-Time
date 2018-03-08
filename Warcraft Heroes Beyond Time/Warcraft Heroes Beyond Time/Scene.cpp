@@ -1,4 +1,4 @@
-#include "App.h"
+#include "Application.h"
 #include "Scene.h"
 #include "ModuleEntitySystem.h"
 #include  "ModuleGUI.h"
@@ -23,7 +23,7 @@ bool Scene::Start()
 	defLabel.fontName = "Arial16";
 	defLabel.text = "Hey bitches im here";
 	
-	Application->gui->CreateLabel({0,0}, defLabel, nullptr, nullptr);
+	App->gui->CreateLabel({0,0}, defLabel, nullptr, nullptr);
 
 
 
@@ -31,7 +31,7 @@ bool Scene::Start()
 	defInputBox.color = Green;
 	defInputBox.fontName = "Arial16";
 
-	InputBox* box = Application->gui->CreateInputBox({ 0, 200 }, defInputBox, nullptr, nullptr);
+	InputBox* box = App->gui->CreateInputBox({ 0, 200 }, defInputBox, nullptr, nullptr);
 	box->EnableInput();
 
 	return true;

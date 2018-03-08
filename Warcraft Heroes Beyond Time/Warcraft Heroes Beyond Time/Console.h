@@ -5,6 +5,8 @@
 #include "Globals.h"
 #include <vector>
 
+class Label;
+
 class ConsoleOrder {
 public:
 	std::string orderName = "";
@@ -20,6 +22,7 @@ public:
 
 	Console();
 
+	void Init();
 	bool Awake();
 	bool Update(float dt);
 	bool CleanUp();

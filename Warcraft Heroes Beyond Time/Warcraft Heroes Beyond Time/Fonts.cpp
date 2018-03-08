@@ -1,6 +1,6 @@
 #include "p2Defs.h"
 #include "Log.h"
-#include "App.h"
+#include "Application.h"
 #include "ModuleTextures.h"
 #include "Fonts.h"
 #include "FileSystem.h"
@@ -61,7 +61,7 @@ bool Fonts::CleanUp()
 TTF_Font* const Fonts::Load(const char* path, char* name, int size)
 {
 	
-	SDL_RWops* buffer = Application->fs->Load(path);
+	SDL_RWops* buffer = App->fs->Load(path);
 	TTF_Font* font = TTF_OpenFontRW(buffer, 1, size); //That closes the buffer automatically
 
 	if(font == NULL)
@@ -89,7 +89,7 @@ SDL_Texture* Fonts::Print(const char* text, SDL_Color color, _TTF_Font* font)
 	}
 	else
 	{
-		ret = Application->textures->LoadSurface(surface);
+		ret = App->textures->LoadSurface(surface);
 		SDL_FreeSurface(surface);
 	}
 

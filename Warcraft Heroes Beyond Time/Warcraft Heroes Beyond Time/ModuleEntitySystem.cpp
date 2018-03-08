@@ -1,4 +1,4 @@
-#include "App.h"
+#include "Application.h"
 #include "Log.h"
 #include "ModuleEntitySystem.h"
 #include "ModuleTextures.h"
@@ -14,6 +14,11 @@
 EntitySystem::EntitySystem() : Module()
 {
 	name = "entitySystem";
+}
+
+void EntitySystem::Init()
+{
+	active = false;
 }
 
 bool EntitySystem::Start()
@@ -112,7 +117,7 @@ bool EntitySystem::UnloadTexturesVector()
 
 	for (int i = 0; i < spritesheetsEntities.size() && ret; ++i)
 	{
-		ret = Application->textures->UnLoad(spritesheetsEntities[i]);
+		ret = App->textures->UnLoad(spritesheetsEntities[i]);
 	}
 
 	if (ret)

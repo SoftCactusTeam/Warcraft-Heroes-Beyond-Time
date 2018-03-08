@@ -2,14 +2,14 @@
 #include "Label.h"
 #include "Fonts.h"
 #include "GUIElem.h"
-#include "App.h"
+#include "Application.h"
 #include "ModuleInput.h"
 
 Label::Label(fPoint position, LabelInfo& info, GUIElem* parent, Module* listener) : GUIElem(position, listener, {}, GUIElemType::LABEL, parent)
 {
 	text = info.text;
-	font = Application->fonts->getFontbyName(info.fontName);
-	texturetoBlit = Application->fonts->Print(text.c_str(), info.color, font);
+	font = App->fonts->getFontbyName(info.fontName);
+	texturetoBlit = App->fonts->Print(text.c_str(), info.color, font);
 }
 
 Label::~Label() {}
@@ -19,7 +19,7 @@ bool Label::Update(float dt)
 	bool result = false;
 
 	
-	result = Application->render->Blit(texturetoBlit, (int)(this->screenPos.x + Application->render->camera.x), (int)(this->screenPos.y + Application->render->camera.y));
+	result = App->render->Blit(texturetoBlit, (int)(this->screenPos.x + App->render->camera.x), (int)(this->screenPos.y + App->render->camera.y));
 
 	UpdateChilds(dt);
 
@@ -29,11 +29,11 @@ bool Label::Update(float dt)
 bool Label::MouseHover() const
 {
 	int x, y;
-	Application->input->GetMousePosition(x, y);
+	App->input->GetMousePosition(x, y);
 
 	bool result = false;
 
-	fPoint worldPos = { screenPos.x + Application->render->camera.x, screenPos.y + Application->render->camera.y };
+	fPoint worldPos = { screenPos.x + App->render->camera.x, screenPos.y + App->render->camera.y };
 
 	int w, h;
 	SDL_QueryTexture(texturetoBlit, nullptr, nullptr, &w, &h);
@@ -53,7 +53,7 @@ void Label::EditText(char* text, SDL_Color color)
 {
 	this->text = text;
 	SDL_DestroyTexture(texturetoBlit);
-	texturetoBlit = Application->fonts->Print(text, color, font);
+	texturetoBlit = App->fonts->Print(text, color, font);
 }
 
 

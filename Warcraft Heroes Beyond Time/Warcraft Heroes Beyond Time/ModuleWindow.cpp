@@ -1,7 +1,7 @@
 #include "p2Defs.h"
 #include "Log.h"
 
-#include "App.h"
+#include "Application.h"
 #include "ModuleWindow.h"
 
 #include "SDL/include/SDL.h"
@@ -60,7 +60,7 @@ bool Window::Awake()
 			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 		}
 
-		window = SDL_CreateWindow(Application->GetTitle(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+		window = SDL_CreateWindow(App->GetTitle(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 		SDL_SetWindowIcon(window, icon_surface);
 
 		if(window == NULL)

@@ -1,5 +1,5 @@
 #include "ModuleGUI.h"
-#include "App.h"
+#include "Application.h"
 #include "Fonts.h"
 
 #include "Label.h"

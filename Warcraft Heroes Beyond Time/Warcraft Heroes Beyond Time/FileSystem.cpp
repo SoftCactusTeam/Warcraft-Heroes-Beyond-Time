@@ -1,5 +1,5 @@
 #include "p2Defs.h"
-#include "App.h"
+#include "Application.h"
 #include "Log.h"
 #include "FileSystem.h"
 #include "PhysFS/include/physfs.h"
@@ -42,7 +42,7 @@ bool FileSystem::Awake(pugi::xml_node& config)
 	}
 
 	// Ask SDL for a write dir
-	char* write_path = SDL_GetPrefPath(Application->GetOrganization(), Application->GetTitle());
+	char* write_path = SDL_GetPrefPath(App->GetOrganization(), App->GetTitle());
 
 	if(PHYSFS_setWriteDir(write_path) == 0)
 		LOG("File System error while creating write dir: %s\n", PHYSFS_getLastError());
