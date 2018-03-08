@@ -11,6 +11,15 @@
 #include "ChestEntity.h"
 #include "StaticObjectEntity.h"
 
+#include "Console.h"
+
+class InvoqueFootman_ConsoleOrder : public ConsoleOrder {
+	std::string orderName = "InvoqueFootman";
+	void Exec() {
+		printf_s("S'ha invocat un Footman");
+	}
+};
+
 EntitySystem::EntitySystem() : Module()
 {
 	name = "entitySystem";
@@ -20,7 +29,8 @@ bool EntitySystem::Start()
 {
 	LOG("Loading textures");
 	//vector[THRALLSHEET] = load etc
-	
+	ConsoleOrder* invoqueFootmanOrder = new InvoqueFootman_ConsoleOrder;
+	Application->console->AddConsoleOrderToList(invoqueFootmanOrder);
 	return true;
 }
 

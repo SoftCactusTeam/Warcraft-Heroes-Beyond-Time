@@ -61,5 +61,3 @@ void InputBox::ClearBox()
 	SDL_DestroyTexture(texturetoBlit);
 	texturetoBlit = Application->fonts->Print(text.data(), color, font);
 }
-
-

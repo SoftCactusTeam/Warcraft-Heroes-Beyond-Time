@@ -5,11 +5,12 @@
 #include "Globals.h"
 #include <vector>
 
+#include "InputBox.h"
+
 class ConsoleOrder {
 public:
-	std::string orderName = "";
-	virtual std::string Exec() = 0;
-	//virtual std::string callHelp() = 0;
+	std::string orderName = 0;
+	virtual void Exec() = 0;		// FER QUE RETORNI UN STRING
 private:
 	bool isActive = false;
 };
@@ -21,6 +22,7 @@ public:
 	Console();
 
 	bool Awake();
+	bool Start();
 	bool Update(float dt);
 	bool CleanUp();
 
@@ -29,12 +31,8 @@ public:
 	void AddConsoleOrderToList(ConsoleOrder* consoleOrder);
 
 private:
-	std::string actualConsoleTextOrder;
-
-
-	Label* text = nullptr;
-
 	std::vector<ConsoleOrder*> consoleOrderList;
+	InputBox* box = nullptr;
 };
 
 #endif

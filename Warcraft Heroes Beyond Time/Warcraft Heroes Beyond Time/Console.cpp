@@ -4,21 +4,38 @@
 #include "ModuleGUI.h"
 #include "Label.h"
 
+
+
 Console::Console() {
 	name = "console";
 }
 
 bool Console::Awake() {
+	InputBoxInfo defInputBox;
+	defInputBox.color = Blue;
+	defInputBox.fontName = "Arial16";
+
+	box = Application->gui->CreateInputBox({ 0, 50 }, defInputBox, nullptr, nullptr);
+	box->DisableInput();
+
 	active = false;
 	return true;
 }
 
-bool Console::Update(float dt) {
+bool Console::Start() {
+	box->EnableInput();
+	return true;
+}
 
+bool Console::Update(float dt) {
+	if (Application->input->GetKey(SDL_SCANCODE_RETURN) == KeyState::KEY_DOWN)
+		ExecConsoleOrder(box->text);
 	return true;
 }
 
 bool Console::CleanUp(){
+	box->ClearBox();
+	box->DisableInput();
 	return true;
 }
 
@@ -27,13 +44,13 @@ void Console::PrintAtConsole(std::string textToPrint) {
 }
 
 bool Console::ExecConsoleOrder(std::string name){
-	for (int i = 0; i <= consoleOrderList.size(); i++) {
+	for (int i = 0; i < consoleOrderList.size(); i++) {
 		if (consoleOrderList[i]->orderName == name) {
-			i = consoleOrderList.size() + 1;
 			consoleOrderList[i]->Exec();
+			i = consoleOrderList.size() + 1;	// SURTI DEL BUCLE, POSAR UN break o continue
 		}
 	}
-	actualConsoleTextOrder = "";
+	box->ClearBox();
 	return true;
 }
 
