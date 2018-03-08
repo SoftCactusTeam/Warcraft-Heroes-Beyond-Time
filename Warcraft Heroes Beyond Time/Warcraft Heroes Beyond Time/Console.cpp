@@ -63,6 +63,7 @@ void Console::PrintAtConsole(std::string textToPrint) {
 bool Console::ExecConsoleOrder(std::string name){
 	std::string nom_ordre;
 	std::string parametre_ordre;
+	int			numeric_parametre_ordre = 0;
 
 	for (int i = 0; i < name.size(); i++) {
 		if (name.at(i) == '_') {
@@ -70,7 +71,16 @@ bool Console::ExecConsoleOrder(std::string name){
 				nom_ordre += name.at(o);
 			}
 			for (int e = i + 1; e < name.size(); e++) {	//AQUI ES GENERA EL parametre_ordre
-				parametre_ordre += name.at(e);
+				if (name.at(e) == '_') {
+					std::string auxiliarStringNumber = "";
+					for (int u = e + 1; u < name.size(); u++)
+						auxiliarStringNumber += name.at(u);
+					numeric_parametre_ordre = atoi(auxiliarStringNumber.c_str());
+					e = name.size();
+				}
+				else
+					parametre_ordre += name.at(e);
+				
 			}
 			i = name.size();
 		}
@@ -78,11 +88,12 @@ bool Console::ExecConsoleOrder(std::string name){
 	if (parametre_ordre.size() == 0) {
 		nom_ordre = name;
 		parametre_ordre = "not";
+		numeric_parametre_ordre = -1;
 	}
 
 	for (int i = 0; i < consoleOrderList.size(); i++) {
 		if (consoleOrderList[i]->orderName() == nom_ordre) {
-			consoleOrderList[i]->Exec(parametre_ordre);
+			consoleOrderList[i]->Exec(parametre_ordre, numeric_parametre_ordre);
 			i = consoleOrderList.size() + 1;	// SURTI DEL BUCLE, POSAR UN break o continue
 		}
 	}

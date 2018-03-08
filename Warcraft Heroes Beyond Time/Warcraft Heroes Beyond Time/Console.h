@@ -10,7 +10,7 @@
 class ConsoleOrder {
 public:
 	virtual std::string orderName() = 0;
-	virtual void Exec(std::string parametre) = 0;		// FER QUE RETORNI UN STRING
+	virtual void Exec(std::string parametre, int parametreNumeric) = 0;		// FER QUE RETORNI UN STRING
 private:
 	bool isActive = false;
 };
