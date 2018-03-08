@@ -5,11 +5,14 @@
 #include "Globals.h"
 #include <vector>
 
+class Label;
+
 class ConsoleOrder {
 public:
 	std::string orderName = "";
 	virtual std::string Exec() = 0;
 	//virtual std::string callHelp() = 0;
+
 private:
 	bool isActive = false;
 };
@@ -20,7 +23,8 @@ public:
 
 	Console();
 
-	bool Awake();
+	void Init();
+	bool Awake(pugi::xml_node&);
 	bool Update(float dt);
 	bool CleanUp();
 

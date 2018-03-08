@@ -2,7 +2,7 @@
 #include "Log.h"
 #include "ModuleAudio.h"
 #include <list>
-#include "App.h"
+#include "Application.h"
 #include "FileSystem.h"
 #include "Scene.h"
 
@@ -21,7 +21,7 @@ Audio::~Audio()
 {}
 
 // Called before render is available
-bool Audio::Awake(pugi::xml_node& config)
+bool Audio::Awake(pugi::xml_node& audioNode)
 {
 
 	LOG("Loading Audio Mixer");
@@ -32,7 +32,7 @@ bool Audio::Awake(pugi::xml_node& config)
 	{
 		LOG("SDL_INIT_AUDIO could not initialize! SDL_Error: %s\n", SDL_GetError());
 		active = false;
-		ret = true;
+		ret = false;
 	}
 
 	// load support for the JPG and PNG image formats
@@ -43,7 +43,7 @@ bool Audio::Awake(pugi::xml_node& config)
 	{
 		LOG("Could not initialize Mixer lib. Mix_Init: %s", Mix_GetError());
 		active = false;
-		ret = true;
+		ret = false;
 	}
 
 	//Initialize SDL_mixer
@@ -51,7 +51,7 @@ bool Audio::Awake(pugi::xml_node& config)
 	{
 		LOG("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
 		active = false;
-		ret = true;
+		ret = false;
 	}
 	
 	//----------------------------------------------Load fx-------------------------------
@@ -108,7 +108,7 @@ bool Audio::PlayMusic(const char* path, float fade_time)
 		Mix_FreeMusic(music);
 	}
 
-	music = Mix_LoadMUS_RW(Application->fs->Load(path), 1);
+	music = Mix_LoadMUS_RW(App->fs->Load(path), 1);
 
 	if(music == NULL)
 	{
@@ -147,7 +147,7 @@ unsigned int Audio::LoadFx(const char* path)
 	if(!active)
 		return 0;
 
-	Mix_Chunk* chunk = Mix_LoadWAV_RW(Application->fs->Load(path), 1);
+	Mix_Chunk* chunk = Mix_LoadWAV_RW(App->fs->Load(path), 1);
 
 	if(chunk == NULL)
 	{
@@ -165,7 +165,7 @@ unsigned int Audio::LoadFx(const char* path)
 // Play WAV
 bool Audio::PlayFx(unsigned int id, int repeat)
 {
-	bool ret = false;
+	bool ret = true;
 
 	if(!active)
 		return false;
@@ -177,12 +177,3 @@ bool Audio::PlayFx(unsigned int id, int repeat)
 
 	return ret;
 }
-
-//bool Audio::UI_Do(const UI_Elem* elem, Events* event)
-//{
-//	
-//
-//	
-//
-//	return true;
-//}

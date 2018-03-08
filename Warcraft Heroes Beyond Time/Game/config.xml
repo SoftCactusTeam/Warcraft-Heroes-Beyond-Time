@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Game>
+
+  <App>
+
+  </App>
+
+  <console>
+
+  </console>
+
+  <file_system>
+    
+  </file_system>
+
+  <fonts>
+    
+  </fonts>
+
+  <audio>
+
+  </audio>
+
+  <entitySystem>
+
+  </entitySystem>
+  
+  <GUI>
+    
+  </GUI>
+
+  <input>
+
+  </input>
+
+  <renderer>
+
+  </renderer>
+
+  <textures>
+
+  </textures>
+  
+  <window>
+    
+  </window>
+
+</Game> 

@@ -15,7 +15,7 @@ public:
 	Textures();
 	virtual ~Textures();
 
-	bool Awake();
+	bool Awake(pugi::xml_node&);
 	bool Start();
 	bool CleanUp();
 

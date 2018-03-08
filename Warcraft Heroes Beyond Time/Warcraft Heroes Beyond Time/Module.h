@@ -15,12 +15,12 @@ public:
 	Module() : active(false)
 	{}
 	
-	void Init()
+	virtual void Init()
 	{
 		active = true;
 	}
 
-	virtual bool Awake()
+	virtual bool Awake(pugi::xml_node&)
 	{
 		return true;
 	}
@@ -52,10 +52,40 @@ public:
 
 	virtual void OnUIEvent(GUIElem* UIelem, UIEvents _event) {}
 
+	bool Activate()
+	{
+		bool ret = true;
+		if (!active)
+		{
+			ret = Start();
+			active = true;
+		}	
+		return ret;
+	}
+
+	bool DeActivate()
+	{
+		bool ret = true;
+		if (active)
+		{
+			ret = CleanUp();
+			active = false;
+		}
+		return ret;
+	}
+
+	bool isActive()
+	{
+		return active;
+	}
+
 public:
 
 	std::string	name;
-	bool		active;
+
+protected:
+
+	bool active;
 
 };
 

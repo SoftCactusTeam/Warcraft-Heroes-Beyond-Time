@@ -1,7 +1,7 @@
 #include "p2Defs.h"
 #include "Log.h"
 
-#include "App.h"
+#include "Application.h"
 
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
@@ -18,7 +18,7 @@ Textures::Textures() : Module()
 Textures::~Textures()
 {}
 
-bool Textures::Awake()
+bool Textures::Awake(pugi::xml_node& texturesNode)
 {
 	LOG("Init Image library");
 	bool ret = true;
@@ -59,7 +59,7 @@ bool Textures::CleanUp()
 SDL_Texture* const Textures::Load(const char* path)
 {
 	SDL_Texture* texture = NULL;
-	SDL_Surface* surface = IMG_Load_RW(Application->fs->Load(path), 1);
+	SDL_Surface* surface = IMG_Load_RW(App->fs->Load(path), 1);
 
 	if(surface == NULL)
 	{
@@ -93,7 +93,7 @@ bool Textures::UnLoad(SDL_Texture* texture)
 
 SDL_Texture* const Textures::LoadSurface(SDL_Surface* surface)
 {
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(Application->render->renderer, surface);
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(App->render->renderer, surface);
 
 	if(texture == NULL)
 	{

@@ -1,5 +1,5 @@
 #include "p2Defs.h"
-#include "App.h"
+#include "Application.h"
 #include "Log.h"
 #include "FileSystem.h"
 #include "PhysFS/include/physfs.h"
@@ -21,6 +21,7 @@ FileSystem::FileSystem() : Module()
 	// without this we won't be able to find config.xml :-(
 	AddPath(".");
 	AddPath("../Game/Resources.zip");
+	AddPath("../Game");
 }
 
 // Destructor
@@ -30,19 +31,19 @@ FileSystem::~FileSystem()
 }
 
 // Called before render is available
-bool FileSystem::Awake(pugi::xml_node& config)
+bool FileSystem::Awake(pugi::xml_node& fsNode)
 {
 	LOG("Loading File System");
 	bool ret = true;
 
 	// Add all paths in configuration in order
-	for(pugi::xml_node path = config.child("path"); path; path = path.next_sibling("path"))
+	for(pugi::xml_node path = fsNode.child("path"); path; path = path.next_sibling("path"))
 	{
 		AddPath(path.child_value());
 	}
 
 	// Ask SDL for a write dir
-	char* write_path = SDL_GetPrefPath(Application->GetOrganization(), Application->GetTitle());
+	char* write_path = SDL_GetPrefPath(App->GetOrganization(), App->GetTitle());
 
 	if(PHYSFS_setWriteDir(write_path) == 0)
 		LOG("File System error while creating write dir: %s\n", PHYSFS_getLastError());

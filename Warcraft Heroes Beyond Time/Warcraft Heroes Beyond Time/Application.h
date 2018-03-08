@@ -1,10 +1,13 @@
-#ifndef __APP_H__
-#define __APP_H__
+#ifndef __APPLICATION_H__
+#define __APPLICATION_H__
 
 #include "Module.h"
 #include "Globals.h"
 #include <list>
 #include <string>
+#include "PugiXml/src/pugixml.hpp"
+#include "Timer.h"
+
 
 class Window;
 class Input;
@@ -21,12 +24,12 @@ class Fonts;
 class Console;
 
 
-class App
+class Application
 {
 public:
 
-	App(int argc, char* args[]);
-	virtual ~App();
+	Application(int argc, char* args[]);
+	virtual ~Application();
 
 	bool Awake();
 	bool Start();
@@ -39,6 +42,10 @@ public:
 	const char* GetArgv(int index) const;
 	const char* GetTitle() const;
 	const char* GetOrganization() const;
+
+private:
+
+	bool LoadConfig(pugi::xml_document&);
 
 private:
 
@@ -69,15 +76,23 @@ public:
 
 private:
 
-	std::list<Module*> modules;
+	std::list<Module*>	modules;
 	int					argc;
 	char**				args;
 
 	std::string			title;
 	std::string			organization;
 
+	Timer				frame_time;
+	Timer				last_sec_frame_time;
+	Timer				startup_time;
+
+	uint				prev_last_sec_frame_count = 0;
+	uint				last_sec_frame_count = 0;
+	uint				frame_count = 0;
+	float				capped_ms = 1/60;
 };
 
-extern App* Application;
+extern Application* App;
 
 #endif

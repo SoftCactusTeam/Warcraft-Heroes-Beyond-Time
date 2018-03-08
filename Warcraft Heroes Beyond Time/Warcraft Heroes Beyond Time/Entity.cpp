@@ -1,4 +1,4 @@
-#include "App.h"
+#include "Application.h"
 #include "Entity.h"
 #include "ModuleRender.h"
 
@@ -12,7 +12,7 @@ bool Entity::Draw(float dt)
 {
 	bool ret = true;
 
-	ret = Application->render->Blit(texture, coor.x, coor.y, &rectToPrint);
+	ret = App->render->Blit(texture, coor.x, coor.y, &rectToPrint);
 
 	ret = true; //no texture at the moment
 

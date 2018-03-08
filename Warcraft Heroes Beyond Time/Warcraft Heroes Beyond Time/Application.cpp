@@ -2,7 +2,7 @@
 
 #include "p2Defs.h"
 #include "Log.h"
-#include "App.h"
+#include "Application.h"
 
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
@@ -18,7 +18,7 @@
 #include "Fonts.h"
 #include "ModuleGUI.h"
 
-App::App(int argc, char* args[]) : argc(argc), args(args)
+Application::Application(int argc, char* args[]) : argc(argc), args(args)
 {
 	window = new Window();
 	render = new Render();
@@ -51,9 +51,12 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 
 	// render last to swap buffer
 	AddModule(render);
+
+	organization = "SoftCactus";
+	title = "Warcraft: Heroes Beyond Time";
 }
 
-App::~App()
+Application::~Application()
 {
 	std::list<Module*>::reverse_iterator it;
 	for (it = modules.rbegin(); it != modules.rend(); ++it)
@@ -64,41 +67,50 @@ App::~App()
 	modules.clear();
 }
 
-void App::AddModule(Module* module)
+void Application::AddModule(Module* module)
 {
 	module->Init();
 	modules.push_back(module);
 }
 
-bool App::Awake()
+bool Application::Awake()
 {
 	bool ret = true;
+
+	pugi::xml_document doc;
+	ret = LoadConfig(doc);
+
+	pugi::xml_node gameConfig = doc.first_child();
+
+	//Here goes App configuration
 
 	std::list<Module*>::const_iterator item;
 
 	for (item = modules.begin(); item != modules.end() && ret == true; ++item)
 	{
-		ret = (*item)->Awake();
+		ret = (*item)->Awake(gameConfig.child((*item)->name.data()));
 	}
 
 	return ret;
 }
 
-bool App::Start()
+bool Application::Start()
 {
 	bool ret = true;
 	std::list<Module*>::const_iterator item;
 
 	for (item = modules.begin(); item != modules.end() && ret == true; ++item)
 	{
-		if ((*item)->active)
+		if ((*item)->isActive())
 			ret = (*item)->Start();
 	}
 
+	startup_time.Start();
+
 	return ret;
 }
 
-bool App::Update()
+bool Application::Update()
 {
 	bool ret = true;
 	PrepareUpdate();
@@ -119,11 +131,44 @@ bool App::Update()
 	return ret;
 }
 
-void App::PrepareUpdate() {}
+void Application::PrepareUpdate() 
+{
+	frame_count++;
+	last_sec_frame_count++;
 
-void App::FinishUpdate() {}
+	dt = frame_time.ReadSec();
+	frame_time.Start();
+}
 
-bool App::PreUpdate()
+void Application::FinishUpdate() 
+{
+	// Framerate calculations --
+
+	if (last_sec_frame_time.Read() > 1000)
+	{
+		last_sec_frame_time.Start();
+		prev_last_sec_frame_count = last_sec_frame_count;
+		last_sec_frame_count = 0;
+	}
+
+	float avg_fps = float(frame_count) / startup_time.ReadSec();
+	float seconds_since_startup = startup_time.ReadSec();
+	uint32 last_frame_ms = frame_time.Read();
+	uint32 frames_on_last_update = prev_last_sec_frame_count;
+
+	static char title[256];
+	sprintf_s(title, 256, "Warcraft: Heroes Beyond Time   Av.FPS: %.2f"/*Last Frame Ms: %u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %lu */,
+		avg_fps, last_frame_ms, frames_on_last_update, dt, seconds_since_startup, frame_count);
+	App->window->SetTitle(title);
+	
+
+	if (capped_ms > 0 && last_frame_ms < capped_ms)
+	{
+		SDL_Delay(capped_ms - last_frame_ms);
+	}
+}
+
+bool Application::PreUpdate()
 {
 	bool ret = true;
 
@@ -134,7 +179,8 @@ bool App::PreUpdate()
 	{
 		pModule = (*item);
 
-		if (pModule->active == false) {
+		if (pModule->isActive() == false) 
+		{
 			continue;
 		}
 
@@ -144,7 +190,7 @@ bool App::PreUpdate()
 	return ret;
 }
 
-bool App::DoUpdate()
+bool Application::DoUpdate()
 {
 	bool ret = true;
 
@@ -155,7 +201,8 @@ bool App::DoUpdate()
 	{
 		pModule = (*item);
 
-		if (pModule->active == false) {
+		if (pModule->isActive() == false) 
+		{
 			continue;
 		}
 
@@ -165,7 +212,7 @@ bool App::DoUpdate()
 	return ret;
 }
 
-bool App::PostUpdate()
+bool Application::PostUpdate()
 {
 	bool ret = true;
 
@@ -176,7 +223,8 @@ bool App::PostUpdate()
 	{
 		pModule = (*item);
 
-		if (pModule->active == false) {
+		if (pModule->isActive() == false) 
+		{
 			continue;
 		}
 
@@ -186,7 +234,7 @@ bool App::PostUpdate()
 	return ret;
 }
 
-bool App::CleanUp()
+bool Application::CleanUp()
 {
 	bool ret = true;
 
@@ -200,12 +248,12 @@ bool App::CleanUp()
 	return ret;
 }
 
-int App::GetArgc() const
+int Application::GetArgc() const
 {
 	return argc;
 }
 
-const char* App::GetArgv(int index) const
+const char* Application::GetArgv(int index) const
 {
 	if(index < argc)
 		return args[index];
@@ -213,12 +261,24 @@ const char* App::GetArgv(int index) const
 		return NULL;
 }
 
-const char* App::GetTitle() const
+const char* Application::GetTitle() const
 {
 	return title.data();
 }
 
-const char* App::GetOrganization() const
+const char* Application::GetOrganization() const
 {
 	return organization.data();
+}
+
+bool Application::LoadConfig(pugi::xml_document& doc)
+{
+	bool result = false;
+	
+	char* buffer;
+	uint size = App->fs->Load("config.xml", &buffer);
+	result = doc.load_buffer(buffer, size);
+	delete[] buffer;
+
+	return result;
 }

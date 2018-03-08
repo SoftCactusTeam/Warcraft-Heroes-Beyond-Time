@@ -1,5 +1,5 @@
 #include "ModuleGUI.h"
-#include "App.h"
+#include "Application.h"
 #include "Fonts.h"
 
 #include "Label.h"
@@ -13,7 +13,7 @@ ModuleGUI::ModuleGUI() : Module()
 
 ModuleGUI::~ModuleGUI() {}
 
-bool ModuleGUI::Awake()
+bool ModuleGUI::Awake(pugi::xml_node& guiNode)
 {
 	return true;
 }

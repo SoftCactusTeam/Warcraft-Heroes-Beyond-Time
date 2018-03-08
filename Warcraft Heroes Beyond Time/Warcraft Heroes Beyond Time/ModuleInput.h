@@ -36,7 +36,7 @@ public:
 	Input();
 	virtual ~Input();
 
-	bool Awake();
+	bool Awake(pugi::xml_node&);
 	bool Start();
 	bool PreUpdate();
 	bool CleanUp();

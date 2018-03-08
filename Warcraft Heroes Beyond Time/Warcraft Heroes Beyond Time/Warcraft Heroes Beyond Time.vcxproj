@@ -123,7 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="App.cpp" />
+    <ClCompile Include="Application.cpp" />
     <ClCompile Include="BossEntity.cpp" />
     <ClCompile Include="ChestEntity.cpp" />
     <ClCompile Include="ConsumableEntity.cpp" />
@@ -135,6 +135,7 @@
     <ClCompile Include="Fonts.cpp" />
     <ClCompile Include="FileSystem.cpp" />
     <ClCompile Include="InputBox.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleEntitySystem.cpp" />
@@ -153,7 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
-    <ClInclude Include="App.h" />
+    <ClInclude Include="Application.h" />
     <ClInclude Include="BossEntity.h" />
     <ClInclude Include="ChestEntity.h" />
     <ClInclude Include="ConsumableEntity.h" />
@@ -167,6 +168,7 @@
     <ClInclude Include="FileSystem.h" />
     <ClInclude Include="GUIElem.h" />
     <ClInclude Include="InputBox.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="ModuleAudio.h" />
     <ClInclude Include="ModuleEntitySystem.h" />
@@ -188,6 +190,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GUIElem.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\Game\config.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
