@@ -105,6 +105,8 @@ bool Application::Start()
 			ret = (*item)->Start();
 	}
 
+	startup_time.Start();
+
 	return ret;
 }
 
@@ -129,9 +131,42 @@ bool Application::Update()
 	return ret;
 }
 
-void Application::PrepareUpdate() {}
+void Application::PrepareUpdate() 
+{
+	frame_count++;
+	last_sec_frame_count++;
 
-void Application::FinishUpdate() {}
+	dt = frame_time.ReadSec();
+	frame_time.Start();
+}
+
+void Application::FinishUpdate() 
+{
+	// Framerate calculations --
+
+	if (last_sec_frame_time.Read() > 1000)
+	{
+		last_sec_frame_time.Start();
+		prev_last_sec_frame_count = last_sec_frame_count;
+		last_sec_frame_count = 0;
+	}
+
+	float avg_fps = float(frame_count) / startup_time.ReadSec();
+	float seconds_since_startup = startup_time.ReadSec();
+	uint32 last_frame_ms = frame_time.Read();
+	uint32 frames_on_last_update = prev_last_sec_frame_count;
+
+	static char title[256];
+	sprintf_s(title, 256, "Warcraft: Heroes Beyond Time   Av.FPS: %.2f"/*Last Frame Ms: %u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %lu */,
+		avg_fps, last_frame_ms, frames_on_last_update, dt, seconds_since_startup, frame_count);
+	App->window->SetTitle(title);
+	
+
+	if (capped_ms > 0 && last_frame_ms < capped_ms)
+	{
+		SDL_Delay(capped_ms - last_frame_ms);
+	}
+}
 
 bool Application::PreUpdate()
 {

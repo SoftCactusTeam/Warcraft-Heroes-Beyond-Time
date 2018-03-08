@@ -79,6 +79,9 @@
     <ClCompile Include="PugiXml\src\pugixml.cpp">
       <Filter>Helpers</Filter>
     </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene.h" />
@@ -175,6 +178,9 @@
     </ClInclude>
     <ClInclude Include="Module.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

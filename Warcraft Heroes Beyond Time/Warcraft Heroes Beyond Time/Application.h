@@ -6,7 +6,7 @@
 #include <list>
 #include <string>
 #include "PugiXml/src/pugixml.hpp"
-
+#include "Timer.h"
 
 
 class Window;
@@ -76,13 +76,21 @@ public:
 
 private:
 
-	std::list<Module*> modules;
+	std::list<Module*>	modules;
 	int					argc;
 	char**				args;
 
 	std::string			title;
 	std::string			organization;
 
+	Timer				frame_time;
+	Timer				last_sec_frame_time;
+	Timer				startup_time;
+
+	uint				prev_last_sec_frame_count = 0;
+	uint				last_sec_frame_count = 0;
+	uint				frame_count = 0;
+	float				capped_ms = 1/60;
 };
 
 extern Application* App;
