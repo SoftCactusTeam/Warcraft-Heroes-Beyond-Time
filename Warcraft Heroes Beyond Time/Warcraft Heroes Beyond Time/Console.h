@@ -12,6 +12,7 @@ public:
 	std::string orderName = "";
 	virtual std::string Exec() = 0;
 	//virtual std::string callHelp() = 0;
+
 private:
 	bool isActive = false;
 };
