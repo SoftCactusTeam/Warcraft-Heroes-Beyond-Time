@@ -2,17 +2,28 @@
 #include "App.h"
 #include "ModuleInput.h"
 #include "ModuleGUI.h"
+#include "ModuleWindow.h"
+#include "ModuleRender.h"
 
 Console::Console() {
 	name = "console";
 }
 
+Console::~Console() {
+
+}
+
 bool Console::Awake() {
+	uint windowsWidth;
+	uint windowHeight;
+	Application->window->GetWindowSize(windowsWidth, windowHeight);
+	rectConsoleQuad = { 0,0, (int)windowsWidth, 20 };
+	
 	InputBoxInfo defInputBox;
-	defInputBox.color = Blue;
+	defInputBox.color = Black;
 	defInputBox.fontName = "Arial16";
 
-	box = Application->gui->CreateInputBox({ 0, 50 }, defInputBox, nullptr, nullptr);
+	box = Application->gui->CreateInputBox({ 0, 0 }, defInputBox, nullptr, nullptr);
 	box->DisableInput();
 
 	active = false;
@@ -25,6 +36,7 @@ bool Console::Start() {
 }
 
 bool Console::Update(float dt) {
+	Application->render->DrawQuad(rectConsoleQuad, 255, 255, 255, 120);
 	if (Application->input->GetKey(SDL_SCANCODE_RETURN) == KeyState::KEY_DOWN)
 		ExecConsoleOrder(box->text);
 	return true;

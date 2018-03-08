@@ -5,10 +5,10 @@
 #include "Globals.h"
 #include "InputBox.h"
 #include <vector>
+#include "SDL_image\include\SDL_image.h"
 
 class ConsoleOrder {
 public:
-	//std::string orderName = 0;
 	virtual std::string orderName() = 0;
 	virtual void Exec() = 0;		// FER QUE RETORNI UN STRING
 private:
@@ -20,6 +20,7 @@ class Console : public Module
 public:
 
 	Console();
+	~Console();
 
 	bool Awake();
 	bool Start();
@@ -34,6 +35,8 @@ private:
 
 	std::vector<ConsoleOrder*> consoleOrderList;
 	InputBox* box = nullptr;
+
+	SDL_Rect rectConsoleQuad = {0,0,0,0};
 };
 
 #endif
