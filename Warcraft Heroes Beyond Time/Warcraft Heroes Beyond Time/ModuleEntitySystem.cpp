@@ -21,6 +21,11 @@ void EntitySystem::Init()
 	active = false;
 }
 
+bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
+{
+	return true;
+}
+
 bool EntitySystem::Start()
 {
 	LOG("Loading textures");

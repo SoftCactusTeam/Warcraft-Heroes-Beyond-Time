@@ -5,6 +5,9 @@
 #include "Globals.h"
 #include <list>
 #include <string>
+#include "PugiXml/src/pugixml.hpp"
+
+
 
 class Window;
 class Input;
@@ -42,6 +45,10 @@ public:
 
 private:
 
+	bool LoadConfig();
+
+private:
+
 	void PrepareUpdate();
 	void FinishUpdate();
 	bool PreUpdate();
@@ -75,6 +82,8 @@ private:
 
 	std::string			title;
 	std::string			organization;
+
+	pugi::xml_node gameConfig;
 
 };
 

@@ -13,7 +13,7 @@ void Console::Init()
 	active = false;
 }
 
-bool Console::Awake() 
+bool Console::Awake(pugi::xml_node& AwakeNode)
 {
 	return true;
 }

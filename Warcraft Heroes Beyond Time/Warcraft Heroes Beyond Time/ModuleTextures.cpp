@@ -18,7 +18,7 @@ Textures::Textures() : Module()
 Textures::~Textures()
 {}
 
-bool Textures::Awake()
+bool Textures::Awake(pugi::xml_node& texturesNode)
 {
 	LOG("Init Image library");
 	bool ret = true;

@@ -18,7 +18,7 @@ Fonts::~Fonts()
 {}
 
 // Called before render is available
-bool Fonts::Awake(/*pugi::xml_node& conf*/)
+bool Fonts::Awake(pugi::xml_node& fontsNode)
 {
 	LOG("Init True Type Font library");
 	bool ret = true;

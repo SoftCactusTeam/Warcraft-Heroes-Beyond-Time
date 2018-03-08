@@ -77,11 +77,15 @@ bool Application::Awake()
 {
 	bool ret = true;
 
+	ret = LoadConfig();
+
+	//Here goes App configuration
+
 	std::list<Module*>::const_iterator item;
 
 	for (item = modules.begin(); item != modules.end() && ret == true; ++item)
 	{
-		ret = (*item)->Awake();
+		ret = (*item)->Awake(gameConfig.child((*item)->name.data()));
 	}
 
 	return ret;
@@ -227,4 +231,18 @@ const char* Application::GetTitle() const
 const char* Application::GetOrganization() const
 {
 	return organization.data();
+}
+
+bool Application::LoadConfig()
+{
+	bool result = false;
+
+	pugi::xml_document doc;
+	SDL_RWops* config = App->fs->Load("config.xml");
+	result = doc.load_buffer(config, sizeof(config));
+	SDL_RWclose(config);
+	
+	gameConfig = doc.child("Game");
+
+	return result;
 }

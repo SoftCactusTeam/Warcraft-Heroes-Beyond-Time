@@ -24,7 +24,7 @@ public:
 	Console();
 
 	void Init();
-	bool Awake();
+	bool Awake(pugi::xml_node&);
 	bool Update(float dt);
 	bool CleanUp();
 

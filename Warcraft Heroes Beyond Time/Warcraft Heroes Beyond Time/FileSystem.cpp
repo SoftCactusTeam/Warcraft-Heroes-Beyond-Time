@@ -30,13 +30,13 @@ FileSystem::~FileSystem()
 }
 
 // Called before render is available
-bool FileSystem::Awake(pugi::xml_node& config)
+bool FileSystem::Awake(pugi::xml_node& fsNode)
 {
 	LOG("Loading File System");
 	bool ret = true;
 
 	// Add all paths in configuration in order
-	for(pugi::xml_node path = config.child("path"); path; path = path.next_sibling("path"))
+	for(pugi::xml_node path = fsNode.child("path"); path; path = path.next_sibling("path"))
 	{
 		AddPath(path.child_value());
 	}

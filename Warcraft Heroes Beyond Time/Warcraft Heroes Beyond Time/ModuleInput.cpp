@@ -27,7 +27,7 @@ Input::~Input()
 	delete[] keyboard;
 }
 
-bool Input::Awake()
+bool Input::Awake(pugi::xml_node& inputNode)
 {
 	LOG("Init SDL input event system");
 	bool ret = true;

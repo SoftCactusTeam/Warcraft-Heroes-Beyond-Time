@@ -197,4 +197,7 @@
       <UniqueIdentifier>{40d1c3b8-72bb-40e8-9504-723a3c09686b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\Game\config.xml" />
+  </ItemGroup>
 </Project>

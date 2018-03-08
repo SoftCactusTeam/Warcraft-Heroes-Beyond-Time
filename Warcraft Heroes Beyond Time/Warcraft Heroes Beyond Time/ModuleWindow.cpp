@@ -16,7 +16,7 @@ Window::Window() : Module()
 
 Window::~Window() {}
 
-bool Window::Awake()
+bool Window::Awake(pugi::xml_node& windowNode)
 {
 	LOG("Init SDL window & surface");
 	bool ret = true;

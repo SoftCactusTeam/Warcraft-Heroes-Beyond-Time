@@ -20,7 +20,7 @@ Render::Render() : Module()
 
 Render::~Render() {}
 
-bool Render::Awake()
+bool Render::Awake(pugi::xml_node& renderNode)
 {
 	LOG("Create SDL rendering context");
 	bool ret = true;

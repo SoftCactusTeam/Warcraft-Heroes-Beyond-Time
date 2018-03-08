@@ -20,7 +20,7 @@ public:
 		active = true;
 	}
 
-	virtual bool Awake()
+	virtual bool Awake(pugi::xml_node&)
 	{
 		return true;
 	}

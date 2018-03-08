@@ -13,7 +13,7 @@ ModuleGUI::ModuleGUI() : Module()
 
 ModuleGUI::~ModuleGUI() {}
 
-bool ModuleGUI::Awake()
+bool ModuleGUI::Awake(pugi::xml_node& guiNode)
 {
 	return true;
 }

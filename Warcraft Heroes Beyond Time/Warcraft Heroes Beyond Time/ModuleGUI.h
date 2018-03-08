@@ -21,7 +21,7 @@ public:
 	ModuleGUI();
 	virtual ~ModuleGUI();
 
-	bool Awake();
+	bool Awake(pugi::xml_node&);
 	bool Start();
 	bool PreUpdate();
 	bool Update(float dt);
