@@ -21,6 +21,7 @@ FileSystem::FileSystem() : Module()
 	// without this we won't be able to find config.xml :-(
 	AddPath(".");
 	AddPath("../Game/Resources.zip");
+	AddPath("../Game");
 }
 
 // Destructor

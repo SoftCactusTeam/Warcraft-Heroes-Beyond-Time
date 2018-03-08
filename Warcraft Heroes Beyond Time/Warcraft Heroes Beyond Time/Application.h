@@ -45,7 +45,7 @@ public:
 
 private:
 
-	bool LoadConfig();
+	bool LoadConfig(pugi::xml_document&);
 
 private:
 
@@ -82,8 +82,6 @@ private:
 
 	std::string			title;
 	std::string			organization;
-
-	pugi::xml_node gameConfig;
 
 };
 

@@ -77,7 +77,10 @@ bool Application::Awake()
 {
 	bool ret = true;
 
-	ret = LoadConfig();
+	pugi::xml_document doc;
+	ret = LoadConfig(doc);
+
+	pugi::xml_node gameConfig = doc.first_child();
 
 	//Here goes App configuration
 
@@ -233,16 +236,14 @@ const char* Application::GetOrganization() const
 	return organization.data();
 }
 
-bool Application::LoadConfig()
+bool Application::LoadConfig(pugi::xml_document& doc)
 {
 	bool result = false;
-
-	pugi::xml_document doc;
-	SDL_RWops* config = App->fs->Load("config.xml");
-	result = doc.load_buffer(config, sizeof(config));
-	SDL_RWclose(config);
 	
-	gameConfig = doc.child("Game");
+	char* buffer;
+	uint size = App->fs->Load("config.xml", &buffer);
+	result = doc.load_buffer(buffer, size);
+	delete[] buffer;
 
 	return result;
 }
