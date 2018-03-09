@@ -43,14 +43,20 @@ public:
 	const char* GetTitle() const;
 	const char* GetOrganization() const;
 
+	void Save();
+	void Load();
+
 private:
 
 	bool LoadConfig(pugi::xml_document&);
 
+	bool SaveNow() const;
+	bool LoadNow();
+
 private:
 
-	void PrepareUpdate();
-	void FinishUpdate();
+	bool PrepareUpdate();
+	bool FinishUpdate();
 	bool PreUpdate();
 	bool DoUpdate();
 	bool PostUpdate();
@@ -91,6 +97,9 @@ private:
 	uint				last_sec_frame_count = 0;
 	uint				frame_count = 0;
 	float				capped_ms = 1/60;
+
+	bool savegame = false;
+	bool loadgame = false;
 };
 
 extern Application* App;

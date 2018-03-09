@@ -4,6 +4,7 @@
 #include  "ModuleGUI.h"
 #include "Label.h"
 #include "InputBox.h"
+#include "ModuleInput.h"
 
 Scene::Scene()
 {
@@ -34,6 +35,10 @@ bool Scene::Start()
 	//InputBox* box = Application->gui->CreateInputBox({ 0, 200 }, defInputBox, nullptr, nullptr);
 	//box->EnableInput();
 
+	
+
+
+
 	return true;
 }
 
@@ -44,6 +49,11 @@ bool Scene::PreUpdate()
 
 bool Scene::Update(float dt)
 {
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	{
+		App->Save();
+
+	}
 	return true;
 }
 

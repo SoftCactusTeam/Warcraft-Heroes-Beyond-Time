@@ -22,13 +22,6 @@ FileSystem::FileSystem() : Module()
 	
 	AddPath("../Game");
 	AddPath("Resources.zip");
-	AddPath("Resources");
-
-	AddPath("../Game\\Resources.zip\\fonts", "FONTS");
-	AddPath("../Game\\Resources.zip\\GUI", "GUI");
-	AddPath("../Game\\Resources.zip\\audio", "AUDIO");
-	AddPath("../Game\\Resources.zip\\images", "IMAGES");
-	AddPath("../Game\\Resources.zip\\maps", "MAPS");
 }
 
 // Destructor
@@ -58,7 +51,7 @@ bool FileSystem::Awake(pugi::xml_node& fsNode)
 	{
 		// We add the writing directory as a reading directory too with speacial mount point
 		LOG("Writing directory is %s\n", write_path);
-		AddPath(write_path, GetSaveDirectory());
+		AddPath(write_path, "Saves");
 	}
 
 	SDL_free(write_path);
@@ -66,10 +59,10 @@ bool FileSystem::Awake(pugi::xml_node& fsNode)
 	return ret;
 }
 
-bool FileSystem::FreeFile(char* path)
+//Frees a file from the writting directory
+bool FileSystem::FreeFile(char* file)
 {
-	Save(path, "", 0);
-	return true;
+	return PHYSFS_openWrite(file);
 }
 
 bool FileSystem::IsFileEmpty(const char* path) const

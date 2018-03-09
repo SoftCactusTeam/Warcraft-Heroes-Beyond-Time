@@ -35,7 +35,7 @@ bool Fonts::Awake(pugi::xml_node& fontsNode)
 	//	//default = Load(path, "OpenSans-Regular", size);
 
 	//	//Load all Fonts
-		default = Load("Resources/Fonts/arial.ttf", "Arial16", 16);
+		default = Load("fonts/arial.ttf", "Arial16", 16);
 	}
 
 	return ret;

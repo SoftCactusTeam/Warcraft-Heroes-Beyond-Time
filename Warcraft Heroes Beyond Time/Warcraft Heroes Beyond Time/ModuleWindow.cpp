@@ -105,3 +105,4 @@ uint Window::GetScale() const
 {
 	return scale;
 }
+

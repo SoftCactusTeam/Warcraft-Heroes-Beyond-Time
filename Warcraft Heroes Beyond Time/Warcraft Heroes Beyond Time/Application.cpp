@@ -1,4 +1,6 @@
 #include <iostream> 
+#include <fstream>
+#include <sstream>
 
 #include "p2Defs.h"
 #include "Log.h"
@@ -53,7 +55,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(render);
 
 	organization = "SoftCactus";
-	title = "Warcraft: Heroes Beyond Time";
+	title = "Warcraft Heroes Beyond Time";
 }
 
 Application::~Application()
@@ -113,10 +115,12 @@ bool Application::Start()
 bool Application::Update()
 {
 	bool ret = true;
-	PrepareUpdate();
 
 	if (input->GetWindowEvent(WE_QUIT))
 		ret = false;
+
+	if(ret == true)
+		ret = PrepareUpdate();
 
 	if (ret == true)
 		ret = PreUpdate();
@@ -127,23 +131,35 @@ bool Application::Update()
 	if (ret == true)
 		ret = PostUpdate();
 
-	FinishUpdate();
+	if(ret == true)
+		ret = FinishUpdate();
+
 	return ret;
 }
 
-void Application::PrepareUpdate() 
+bool Application::PrepareUpdate() 
 {
 	frame_count++;
 	last_sec_frame_count++;
 
 	dt = frame_time.ReadSec();
 	frame_time.Start();
+
+	return true;
 }
 
-void Application::FinishUpdate() 
+bool Application::FinishUpdate() 
 {
-	// Framerate calculations --
+	bool ret = true;
 
+	if (savegame && ret == true)
+		ret = SaveNow();
+
+	if (loadgame && ret == true)
+		ret = LoadNow();
+
+
+	// Framerate calculations --
 	if (last_sec_frame_time.Read() > 1000)
 	{
 		last_sec_frame_time.Start();
@@ -166,6 +182,8 @@ void Application::FinishUpdate()
 	{
 		SDL_Delay(capped_ms - last_frame_ms);
 	}
+
+	return ret;
 }
 
 bool Application::PreUpdate()
@@ -278,7 +296,44 @@ bool Application::LoadConfig(pugi::xml_document& doc)
 	char* buffer;
 	uint size = App->fs->Load("config.xml", &buffer);
 	result = doc.load_buffer(buffer, size);
-	delete[] buffer;
+	RELEASE(buffer);
 
 	return result;
+}
+
+void Application::Save()
+{
+	savegame = true;
+}
+
+void Application::Load()
+{
+	loadgame = true;
+}
+
+bool Application::SaveNow() const
+{
+	pugi::xml_document savedgame;
+	pugi::xml_node game = savedgame.append_child("Game");
+
+	std::list<Module*>::const_iterator it;
+	for (it = modules.begin(); it != modules.end(); ++it)
+	{
+		(*it)->Save(game.append_child((*it)->name.data()));
+	}
+
+
+	std::ostringstream os;
+	savedgame.save(os, "\r\n\r\n");
+	
+
+	fs->Save("savedgame.xml", os.str().data(), os.str().size());
+
+
+	return true;
+}
+
+bool Application::LoadNow()
+{
+	return true;
 }
