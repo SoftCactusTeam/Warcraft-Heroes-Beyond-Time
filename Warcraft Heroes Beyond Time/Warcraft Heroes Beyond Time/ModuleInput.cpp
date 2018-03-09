@@ -243,14 +243,11 @@ void Input::ExternActionsAtKeyInput(const int key) {
 	// printf_s("%i\n", key);		// PER TROBAR EL NUMERO DE LES TECLES
 	switch (key) {
 	case 53:	// º button -> OpenConsole
-		if (Application->console->active == false) {
-			Application->console->active = true;
-			Application->console->Start();
-		}
-		else {
-			Application->console->active = false;
-			Application->console->CleanUp();
-		}
+		if (App->console->isActive() == false)
+			App->console->Start();
+		else
+			App->console->CleanUp();
+
 		break;
 	}
 }

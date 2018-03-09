@@ -15,6 +15,7 @@
 // ====================================================================================== //
 
 Console::Console() {
+	
 	name = "console";
 }
 
@@ -23,48 +24,47 @@ Console::~Console() {
 		delete consoleOrderList[i];
 }
 
-bool Console::Awake() {
+bool Console::Awake(pugi::xml_node& consoleNode) {
 	uint windowsWidth;
 	uint windowHeight;
-	Application->window->GetWindowSize(windowsWidth, windowHeight);
+	App->window->GetWindowSize(windowsWidth, windowHeight);
 	rectConsoleQuad = { 0,0, (int)windowsWidth, 20 };
 	
 	InputBoxInfo defInputBox;
 	defInputBox.color = Black;
 	defInputBox.fontName = "Arial16";
 
-	box = Application->gui->CreateInputBox({ 0, 0 }, defInputBox, nullptr, nullptr);
+	box = App->gui->CreateInputBox({ 0, 0 }, defInputBox, nullptr, nullptr);
 	box->DisableInput();
 
 	active = false;
-}
-
-bool Console::Awake(pugi::xml_node& AwakeNode)
-{
+	
 	return true;
 }
 
-
 bool Console::Start() {
+	active = true;
 	box->EnableInput();
 	return true;
 }
 
 bool Console::Update(float dt) {
-	Application->render->DrawQuad(rectConsoleQuad, 255, 255, 255, 120);
-	if (Application->input->GetKey(SDL_SCANCODE_RETURN) == KeyState::KEY_DOWN)
+	App->render->DrawQuad(rectConsoleQuad, 255, 255, 255, 120);
+	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KeyState::KEY_DOWN) {
 		ExecConsoleOrder(box->text);
+	}
 	return true;
 }
 
 
 bool Console::CleanUp(){
+	active = false;
 	box->ClearBox();
 	box->DisableInput();
 	return true;
 }
 
-bool Console::ExecConsoleOrder(std::string name){
+bool Console::ExecConsoleOrder(std::string name) {
 	std::string nom_ordre;
 	std::string parametre_ordre;
 	int			numeric_parametre_ordre = 0;
@@ -84,7 +84,7 @@ bool Console::ExecConsoleOrder(std::string name){
 				}
 				else
 					parametre_ordre += name.at(e);
-				
+
 			}
 			i = name.size();
 		}
@@ -95,14 +95,6 @@ bool Console::ExecConsoleOrder(std::string name){
 		numeric_parametre_ordre = -1;
 	}
 
-bool Console::ExecConsoleOrder(std::string name)
-{
-	for (int i = 0; i <= consoleOrderList.size(); i++) 
-	{
-		if (consoleOrderList[i]->orderName == name) 
-		{
-			i = consoleOrderList.size() + 1;
-			consoleOrderList[i]->Exec();
 	for (int i = 0; i < consoleOrderList.size(); i++) {
 		if (consoleOrderList[i]->orderName() == nom_ordre) {
 			consoleOrderList[i]->Exec(parametre_ordre, numeric_parametre_ordre);
@@ -113,7 +105,7 @@ bool Console::ExecConsoleOrder(std::string name)
 	return true;
 }
 
-void Console::AddConsoleOrderToList(ConsoleOrder* consoleOrder) 
-{
+
+void Console::AddConsoleOrderToList(ConsoleOrder* consoleOrder) {
 	consoleOrderList.push_back(consoleOrder);
 }

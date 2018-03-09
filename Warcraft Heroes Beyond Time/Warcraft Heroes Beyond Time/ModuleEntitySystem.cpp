@@ -38,6 +38,8 @@ void EntitySystem::Init()
 
 bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 {
+	ConsoleOrder* txell_consoleOrder = new Txell_ConsoleOrder;
+	App->console->AddConsoleOrderToList(txell_consoleOrder);
 	return true;
 }
 
@@ -45,8 +47,7 @@ bool EntitySystem::Start()
 {
 	LOG("Loading textures");
 	//vector[THRALLSHEET] = load etc
-	ConsoleOrder* invoqueFootmanOrder = new Txell_ConsoleOrder;
-	Application->console->AddConsoleOrderToList(invoqueFootmanOrder);
+
 	return true;
 }
 
