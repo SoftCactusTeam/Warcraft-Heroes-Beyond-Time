@@ -98,7 +98,7 @@ private:
 	uint				frame_count = 0;
 	float				capped_ms = 1/60;
 
-	bool savegame = false;
+	mutable bool savegame = false;
 	bool loadgame = false;
 };
 

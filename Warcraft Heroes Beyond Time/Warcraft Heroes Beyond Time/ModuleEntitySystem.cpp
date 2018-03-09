@@ -264,4 +264,7 @@ void EntitySystem::Save(pugi::xml_node& eSystemNode)
 }
 
 void EntitySystem::Load(const pugi::xml_node& eSystemNode)
-{}
+{
+
+	return;
+}

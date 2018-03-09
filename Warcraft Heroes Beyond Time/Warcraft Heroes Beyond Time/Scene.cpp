@@ -49,11 +49,19 @@ bool Scene::PreUpdate()
 
 bool Scene::Update(float dt)
 {
+	//TESTING SAVES
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
 		App->Save();
 
 	}
+
+	//TESTING LOAD
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+	{
+		App->Load();
+	}
+
 	return true;
 }
 

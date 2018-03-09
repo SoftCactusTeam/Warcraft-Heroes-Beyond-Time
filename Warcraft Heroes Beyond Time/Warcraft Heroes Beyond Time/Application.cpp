@@ -313,6 +313,8 @@ void Application::Load()
 
 bool Application::SaveNow() const
 {
+	savegame = false;
+
 	pugi::xml_document savedgame;
 	pugi::xml_node game = savedgame.append_child("Game");
 
@@ -322,18 +324,35 @@ bool Application::SaveNow() const
 		(*it)->Save(game.append_child((*it)->name.data()));
 	}
 
-
 	std::ostringstream os;
 	savedgame.save(os, "\r\n\r\n");
 	
-
-	fs->Save("savedgame.xml", os.str().data(), os.str().size());
-
-
-	return true;
+	return fs->Save("savedgame.xml", os.str().data(), os.str().size()) == 1;
 }
 
 bool Application::LoadNow()
 {
+	loadgame = false;
+	char* buffer;
+	uint size;
+	size = fs->Load("Saves/savedgame.xml", &buffer);
+
+	pugi::xml_document doc;
+	if (!doc.load_buffer(buffer, size))
+	{
+		LOG("Error loading xmldocument from buffer\n");
+		return false;
+	}
+
+	pugi::xml_node game = doc.first_child();
+
+	std::list<Module*>::const_iterator it;
+	for (it = modules.begin(); it != modules.end(); ++it)
+	{
+		(*it)->Load(game.child((*it)->name.data()));
+	}
+	
+	RELEASE(buffer);
+
 	return true;
 }

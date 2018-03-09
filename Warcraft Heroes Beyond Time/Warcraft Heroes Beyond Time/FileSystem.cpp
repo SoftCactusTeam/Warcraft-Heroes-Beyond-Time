@@ -183,5 +183,5 @@ unsigned int FileSystem::Save(const char* file, const char* buffer, unsigned int
 	else
 		LOG("File System error while opening file %s: %s\n", file, PHYSFS_getLastError());
 
-	return ret;
+	return ret == size;
 }
