@@ -257,3 +257,14 @@ void EntitySystem::AddStaticObject(iPoint coor, STATIC_OBJECT_TYPE type)
 	}
 	toSpawn.push_back((Entity*)newEntity);
 }
+
+void EntitySystem::Save(pugi::xml_node& eSystemNode)
+{
+	eSystemNode.append_attribute("Testing") = "True";
+}
+
+void EntitySystem::Load(const pugi::xml_node& eSystemNode)
+{
+
+	return;
+}

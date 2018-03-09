@@ -27,6 +27,9 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
+	void Save(pugi::xml_node&);
+	void Load(const pugi::xml_node&);
+
 	bool ClearEntitiesList();
 	bool UnloadTexturesVector();
 
@@ -36,9 +39,6 @@ public:
 	void AddConsumable(iPoint coor, CONSUMABLE_TYPE type);
 	void AddChest(iPoint coor, CHEST_TYPE type);
 	void AddStaticObject(iPoint coor, STATIC_OBJECT_TYPE type);
-
-public:
-	std::string				name;
 
 private:
 	std::list<Entity*>		entities;

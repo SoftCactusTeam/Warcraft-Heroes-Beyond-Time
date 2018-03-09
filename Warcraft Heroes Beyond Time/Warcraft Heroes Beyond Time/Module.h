@@ -50,7 +50,14 @@ public:
 		return true;
 	}
 
-	virtual void OnUIEvent(GUIElem* UIelem, UIEvents _event) {}
+	virtual void Save(pugi::xml_node&) 
+	{}
+
+	virtual void Load(const pugi::xml_node&) 
+	{}
+
+	virtual void OnUIEvent(GUIElem* UIelem, UIEvents _event) 
+{}
 
 	bool Activate()
 	{

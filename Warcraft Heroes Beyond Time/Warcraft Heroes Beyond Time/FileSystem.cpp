@@ -19,9 +19,9 @@ FileSystem::FileSystem() : Module()
 
 	// By default we include executable's own directory
 	// without this we won't be able to find config.xml :-(
-	AddPath(".");
-	AddPath("../Game/Resources.zip");
+	
 	AddPath("../Game");
+	AddPath("Resources.zip");
 }
 
 // Destructor
@@ -51,7 +51,7 @@ bool FileSystem::Awake(pugi::xml_node& fsNode)
 	{
 		// We add the writing directory as a reading directory too with speacial mount point
 		LOG("Writing directory is %s\n", write_path);
-		AddPath(write_path, GetSaveDirectory());
+		AddPath(write_path, "Saves");
 	}
 
 	SDL_free(write_path);
@@ -59,10 +59,10 @@ bool FileSystem::Awake(pugi::xml_node& fsNode)
 	return ret;
 }
 
-bool FileSystem::FreeFile(char* path)
+//Frees a file from the writting directory
+bool FileSystem::FreeFile(char* file)
 {
-	Save(path, "", 0);
-	return true;
+	return PHYSFS_openWrite(file);
 }
 
 bool FileSystem::IsFileEmpty(const char* path) const
@@ -85,6 +85,7 @@ bool FileSystem::AddPath(const char* path_or_zip, const char* mount_point)
 
 	if(PHYSFS_mount(path_or_zip, mount_point, 1) == 0)
 		LOG("File System error while adding a path or zip(%s): %s\n", path_or_zip, PHYSFS_getLastError());
+
 	else
 		ret = true;
 
@@ -182,5 +183,5 @@ unsigned int FileSystem::Save(const char* file, const char* buffer, unsigned int
 	else
 		LOG("File System error while opening file %s: %s\n", file, PHYSFS_getLastError());
 
-	return ret;
+	return ret == size;
 }
