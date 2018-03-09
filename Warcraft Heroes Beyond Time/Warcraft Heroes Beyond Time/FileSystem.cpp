@@ -21,11 +21,14 @@ FileSystem::FileSystem() : Module()
 	// without this we won't be able to find config.xml :-(
 	
 	AddPath("../Game");
-	AddPath("../Game/Resources.zip/Resources/fonts", "FONTS");
-	AddPath("../Game/Resources.zip/Resources/GUI", "GUI");
-	AddPath("../Game/Resources.zip/Resources/audio", "AUDIO");
-	AddPath("../Game/Resources.zip/Resources/images", "IMAGES");
-	AddPath("../Game/Resources.zip/Resources/maps", "MAPS");
+	AddPath("Resources.zip");
+	AddPath("Resources");
+
+	AddPath("../Game\\Resources.zip\\fonts", "FONTS");
+	AddPath("../Game\\Resources.zip\\GUI", "GUI");
+	AddPath("../Game\\Resources.zip\\audio", "AUDIO");
+	AddPath("../Game\\Resources.zip\\images", "IMAGES");
+	AddPath("../Game\\Resources.zip\\maps", "MAPS");
 }
 
 // Destructor
@@ -89,6 +92,7 @@ bool FileSystem::AddPath(const char* path_or_zip, const char* mount_point)
 
 	if(PHYSFS_mount(path_or_zip, mount_point, 1) == 0)
 		LOG("File System error while adding a path or zip(%s): %s\n", path_or_zip, PHYSFS_getLastError());
+
 	else
 		ret = true;
 
