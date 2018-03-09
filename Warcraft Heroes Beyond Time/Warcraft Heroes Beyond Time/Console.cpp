@@ -6,19 +6,21 @@
 #include "ModuleRender.h"
 
 
-// ======================================================================================
-// ===================== INSTRUCCIONS CONSOLA ===========================================
-// ====== TU LI PASSES UN STRING, ON LA PRIMERA PARAULA ES L'ORDRE,======================
-// =======I ACOMPANYADA D'UNA _ POTS POSAR-LI UN PARAMTETRE (NO OBLIGATORI)==============
-// ======================================================================================
-
+// ====================================================================================== //
+// ===================== INSTRUCCIONS CONSOLA =========================================== //
+// ====== TU LI PASSES UN STRING, ON LA PRIMERA PARAULA ES L'ORDRE, I =================== //
+// ====== ACOMPANYADA D'UNA _ POTS POSAR-LI UN PARAMTETRE (NO OBLIGATORI)================ //
+// ====== DESPRES POTS POSSAR UNA SEGONA _ DESPRES DEL PARAMETRE I PASAR-LI============== //
+// ====== UN VALOR NUMERIC, QUE REBRA LA FUNCIO COM A ENTER (int) ======================= //
+// ====================================================================================== //
 
 Console::Console() {
 	name = "console";
 }
 
 Console::~Console() {
-
+	for (int i = 0; i < consoleOrderList.size(); i++)
+		delete consoleOrderList[i];
 }
 
 bool Console::Awake() {
@@ -54,10 +56,6 @@ bool Console::CleanUp(){
 	box->ClearBox();
 	box->DisableInput();
 	return true;
-}
-
-void Console::PrintAtConsole(std::string textToPrint) {
-
 }
 
 bool Console::ExecConsoleOrder(std::string name){

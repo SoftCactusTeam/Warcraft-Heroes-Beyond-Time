@@ -13,7 +13,8 @@
 
 #include "Console.h"
 
-class InvoqueFootman_ConsoleOrder : public ConsoleOrder {
+
+class Txell_ConsoleOrder : public ConsoleOrder {
 	std::string orderName() { return "txell"; }
 	void Exec(std::string parametre, int parametreNumeric) {
 		if (parametre == "sexy")
@@ -34,7 +35,7 @@ bool EntitySystem::Start()
 {
 	LOG("Loading textures");
 	//vector[THRALLSHEET] = load etc
-	ConsoleOrder* invoqueFootmanOrder = new InvoqueFootman_ConsoleOrder;
+	ConsoleOrder* invoqueFootmanOrder = new Txell_ConsoleOrder;
 	Application->console->AddConsoleOrderToList(invoqueFootmanOrder);
 	return true;
 }

@@ -28,7 +28,6 @@ public:
 	bool CleanUp();
 
 	bool ExecConsoleOrder(std::string name);
-	void PrintAtConsole(std::string textToPrint);
 	void AddConsoleOrderToList(ConsoleOrder* consoleOrder);
 
 private:
