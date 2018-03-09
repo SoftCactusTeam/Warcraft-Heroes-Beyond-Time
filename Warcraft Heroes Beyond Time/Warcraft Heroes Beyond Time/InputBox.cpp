@@ -62,4 +62,3 @@ void InputBox::ClearBox()
 	texturetoBlit = App->fonts->Print(text.data(), color, font);
 }
 
-

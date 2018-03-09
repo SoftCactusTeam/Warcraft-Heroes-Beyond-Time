@@ -45,8 +45,8 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene);
 	AddModule(fonts);
 	AddModule(fs);
-	AddModule(gui);
 	AddModule(console);
+	AddModule(gui);
 	//AddModule(map);
 
 	// render last to swap buffer

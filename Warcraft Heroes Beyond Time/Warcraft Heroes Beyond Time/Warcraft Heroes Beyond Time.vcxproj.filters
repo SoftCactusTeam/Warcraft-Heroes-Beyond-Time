@@ -82,6 +82,11 @@
     <ClCompile Include="Timer.cpp">
       <Filter>Helpers</Filter>
     </ClCompile>
+    <ClCompile Include="Color.cpp" />
+    <ClCompile Include="Console.cpp" />
+    <ClCompile Include="InputBox.cpp" />
+    <ClCompile Include="Label.cpp" />
+    <ClCompile Include="GUIElem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene.h" />
@@ -182,6 +187,10 @@
     <ClInclude Include="Timer.h">
       <Filter>Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="Console.h" />
+    <ClInclude Include="GUIElem.h" />
+    <ClInclude Include="InputBox.h" />
+    <ClInclude Include="Label.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Entities">

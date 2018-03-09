@@ -11,6 +11,21 @@
 #include "ChestEntity.h"
 #include "StaticObjectEntity.h"
 
+#include "Console.h"
+
+
+class Txell_ConsoleOrder : public ConsoleOrder {
+	std::string orderName() { return "txell"; }
+	void Exec(std::string parametre, int parametreNumeric) {
+		if (parametre == "sexy")
+			printf_s("Txell sexy %i\n", parametreNumeric);
+		else if (parametre == "pesada")
+			printf_s("Txell pesada %i\n", parametreNumeric);
+		else if (parametre == "not")
+			printf_s("not parametre %i\n", parametreNumeric);
+	}
+};
+
 EntitySystem::EntitySystem() : Module()
 {
 	name = "entitySystem";
@@ -30,7 +45,8 @@ bool EntitySystem::Start()
 {
 	LOG("Loading textures");
 	//vector[THRALLSHEET] = load etc
-	
+	ConsoleOrder* invoqueFootmanOrder = new Txell_ConsoleOrder;
+	Application->console->AddConsoleOrderToList(invoqueFootmanOrder);
 	return true;
 }
 

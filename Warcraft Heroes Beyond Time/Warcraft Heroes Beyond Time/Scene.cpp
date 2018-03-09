@@ -18,21 +18,21 @@ bool Scene::Awake()
 
 bool Scene::Start()
 {
-	LabelInfo defLabel;
-	defLabel.color = Red;
-	defLabel.fontName = "Arial16";
-	defLabel.text = "Hey bitches im here";
-	
-	App->gui->CreateLabel({0,0}, defLabel, nullptr, nullptr);
+	//LabelInfo defLabel;
+	//defLabel.color = Red;
+	//defLabel.fontName = "Arial16";
+	//defLabel.text = "Hey bitches im here";
+	//
+	//Application->gui->CreateLabel({0,0}, defLabel, nullptr, nullptr);
 
 
 
-	InputBoxInfo defInputBox;
-	defInputBox.color = Green;
-	defInputBox.fontName = "Arial16";
+	//InputBoxInfo defInputBox;
+	//defInputBox.color = Green;
+	//defInputBox.fontName = "Arial16";
 
-	InputBox* box = App->gui->CreateInputBox({ 0, 200 }, defInputBox, nullptr, nullptr);
-	box->EnableInput();
+	//InputBox* box = Application->gui->CreateInputBox({ 0, 200 }, defInputBox, nullptr, nullptr);
+	//box->EnableInput();
 
 	return true;
 }
