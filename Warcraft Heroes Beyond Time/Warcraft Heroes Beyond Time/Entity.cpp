@@ -12,7 +12,7 @@ bool Entity::Draw(float dt)
 {
 	bool ret = true;
 
-	ret = Application->render->Blit(texture, pos.x, pos.y, &rectToPrint);
+	ret = Application->render->Blit(texture, pos.x, pos.y, &anim->GetCurrentFrame());
 
 	ret = true; //no texture at the moment
 

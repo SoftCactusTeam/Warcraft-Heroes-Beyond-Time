@@ -181,7 +181,7 @@ void EntitySystem::AddPlayer(iPoint coor, PLAYER_TYPE type)
 		newEntity = new PlayerEntity(coor, PLAYER_TYPE::SYLVANAS, nullptr);
 		break;
 	}
-	toSpawn.push_back((Entity*)newEntity);
+	toSpawn.push_back(newEntity);
 }
 
 void EntitySystem::AddConsumable(iPoint coor, CONSUMABLE_TYPE type)
