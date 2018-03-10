@@ -27,7 +27,6 @@ for:
     prerelease: false
     on:
       branch: Releases
-      appveyor_repo_tag: true
 
   notifications:
       - provider: Email
