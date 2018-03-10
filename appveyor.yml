@@ -29,7 +29,7 @@ for:
     draft: false
     prerelease: false
     on:
-      branch: master
+      branch: releases
       appveyor_repo_tag: true
 
   notifications:
