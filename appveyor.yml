@@ -22,7 +22,10 @@ for:
 
   deploy:
   - provider: GitHub
+    release: Warcraft Heroes Beyond Time v$(appveyor_build_version)
     artifact: "Warcraft Heroes Beyond Time.zip"
+    auth_token:
+      secure: RmJh3KY08MINd/TWolIkLr04OXyj8QlMamglHUHHfHj1/ArjkWDbSoWNFd12JuA0
     draft: false
     prerelease: false
     on:
