@@ -48,6 +48,7 @@ for:
           secure: CG/bUw6LmV4j4bsJnPQrmt8Fa50rKLnattAUz6bbY2iHnn8ESMoAyUpVZo0rMSiBbczkuYOm4OJf+wKWmQz5nq+yEVU8DWl49TgJ7zhTc=
         channel: '#notificaciones'
         template: "Success Release {{buildVersion}}! Good Job!" 
+
 -
   branches:
     only:
