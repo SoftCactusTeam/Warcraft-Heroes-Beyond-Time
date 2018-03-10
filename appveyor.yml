@@ -30,8 +30,7 @@ for:
     draft: false
     prerelease: false
     on:
-      branch: releases
-      appveyor_repo_tag: false
+      appveyor_repo_tag: true
 
   notifications:
       - provider: Email
