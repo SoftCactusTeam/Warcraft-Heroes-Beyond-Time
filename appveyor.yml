@@ -42,6 +42,8 @@ for:
         - jony635molina@gmail.com
       subject: 'Success Warcraft Release {{buildVersion}}'
       message: "Good Job!"
+      on:
+        appveyor_repo_tag: false
 
     - provider: Slack
       on_build_success: true
@@ -51,6 +53,8 @@ for:
         secure: CG/bUw6LmV4j4bsJnPQrmt8Fa5/0rKLnattAUz6bbY3nnBJREgB/shaJO0xm8wvnM62GvnJVi+mM/ErL/pWUcbl0U10XudtYwn+EFEqVSXc=
       channel: '#notificaciones'
       template: "Success Release {{buildVersion}}! Good Job!" 
+      on:
+        appveyor_repo_tag: false
 
 -
   branches:
@@ -65,6 +69,8 @@ for:
           - '{{commitAuthorEmail}}'
         subject: 'Failed Warcraft Build {{buildVersion}}'
         message: "Check it!"
+        on:
+          appveyor_repo_tag: false
         
       - provider: Slack
         on_build_success: false
@@ -74,3 +80,5 @@ for:
           secure: CG/bUw6LmV4j4bsJnPQrmt8Fa5/0rKLnattAUz6bbY3nnBJREgB/shaJO0xm8wvnM62GvnJVi+mM/ErL/pWUcbl0U10XudtYwn+EFEqVSXc=
         channel: '#notificaciones'
         template: "Failed Release {{buildVersion}} committed by {{commitAuthor}}({{commitAuthorEmail}})" 
+        on:
+          appveyor_repo_tag: false
