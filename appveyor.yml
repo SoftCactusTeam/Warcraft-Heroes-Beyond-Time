@@ -12,6 +12,8 @@ for:
       - Releases
   configuration: Release
 
+  # 7zip here 
+
   artifacts:  
     - path: Warcraft Heroes Beyond Time.zip
 
@@ -23,3 +25,19 @@ for:
     on:
       branch: Releases
       appveyor_repo_tag: true
+
+  notifications:
+      - provider: Email
+        on_build_success: true
+        on_build_failure: false
+        on_build_status_changed: false
+        to:
+          - jony635molina@gmail.com
+        subject: 'Success Warcraft Release {{buildVersion}}'
+        message: "Good Job!"
+
+      - provider: Slack
+        auth_token:
+          secure: CG/bUw6LmV4j4bsJnPQrmt8Fa50rKLnattAUz6bbY2iHnn8ESMoAyUpVZo0rMSiBbczkuYOm4OJf+wKWmQz5nq+yEVU8DWl49TgJ7zhTc=
+        channel: '#notificaciones'
+        template: "Success Release {{buildVersion}}! Good Job!"
