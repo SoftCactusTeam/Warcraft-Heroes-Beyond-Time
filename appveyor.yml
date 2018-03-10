@@ -2,6 +2,7 @@ version: 0.{build}
 image: Visual Studio 2017
 platform: x86
 configuration: Release
+skip_tags: true
 build:
   verbosity: minimal
 
@@ -74,3 +75,4 @@ for:
           secure: CG/bUw6LmV4j4bsJnPQrmt8Fa5/0rKLnattAUz6bbY3nnBJREgB/shaJO0xm8wvnM62GvnJVi+mM/ErL/pWUcbl0U10XudtYwn+EFEqVSXc=
         channel: '#notificaciones'
         template: "Failed Release {{buildVersion}} committed by {{commitAuthor}}({{commitAuthorEmail}})" 
+
