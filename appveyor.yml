@@ -13,22 +13,24 @@ for:
   configuration: Release
 
   after_build:
-    - 7z a "Warcraft Heroes Beyond Time" "%APPVEYOR_BUILD_FOLDER%/Warcraft Heroes Beyond Time/Game/*"
-    - 7z a "Warcraft Heroes Beyond Time" "%APPVEYOR_BUILD_FOLDER%/Warcraft Heroes Beyond Time/Release/Warcraft Heroes Beyond Time.exe"
-    - 7z a "Warcraft Heroes Beyond Time" "%APPVEYOR_BUILD_FOLDER%/docs/README.md"
-    - 7z a "Warcraft Heroes Beyond Time.zip" "Warcraft Heroes Beyond Time"
+    - 7z a "Warcraft_Heroes_Beyond_Time" "%APPVEYOR_BUILD_FOLDER%/Warcraft Heroes Beyond Time/Game/*"
+    - 7z a "Warcraft_Heroes Beyond_Time" "%APPVEYOR_BUILD_FOLDER%/Warcraft Heroes Beyond Time/Release/Warcraft Heroes Beyond Time.exe"
+    - 7z a "Warcraft_Heroes Beyond_Time" "%APPVEYOR_BUILD_FOLDER%/docs/README.md"
+    - 7z a "Warcraft_Heroes_Beyond_Time.zip" "Warcraft Heroes Beyond Time"
 
   artifacts:  
-    - path: "Warcraft Heroes Beyond Time.zip"
+    - path: "Warcraft_Heroes_Beyond_Time.zip"
 
   deploy:
   - provider: GitHub
     release: Warcraft Heroes Beyond Time v$(appveyor_build_version)
-    artifact: "Warcraft Heroes Beyond Time.zip"
+    artifact: "Warcraft_Heroes_Beyond_Time.zip"
     auth_token:
       secure: RmJh3KY08MINd/TWolIkLr04OXyj8QlMamglHUHHfHj1/ArjkWDbSoWNFd12JuA0
     draft: false
     prerelease: false
+    on:
+      appveyor_repo_tag: false
 
   notifications:
       - provider: Email
