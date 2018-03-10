@@ -29,8 +29,6 @@ for:
       secure: RmJh3KY08MINd/TWolIkLr04OXyj8QlMamglHUHHfHj1/ArjkWDbSoWNFd12JuA0
     draft: false
     prerelease: false
-    on:
-      appveyor_repo_tag: false
 
   notifications:
       - provider: Email
