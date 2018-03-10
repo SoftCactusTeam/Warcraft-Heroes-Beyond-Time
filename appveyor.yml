@@ -41,3 +41,17 @@ for:
           secure: CG/bUw6LmV4j4bsJnPQrmt8Fa50rKLnattAUz6bbY2iHnn8ESMoAyUpVZo0rMSiBbczkuYOm4OJf+wKWmQz5nq+yEVU8DWl49TgJ7zhTc=
         channel: '#notificaciones'
         template: "Success Release {{buildVersion}}! Good Job!"
+        
+-
+  branches:
+    only:
+      - master
+  notifications:    
+      - provider: Email
+        on_build_success: true
+        on_build_failure: false
+        on_build_status_changed: false
+        to:
+          - jony635molina@gmail.com
+        subject: 'Success Warcraft Build {{buildVersion}}'
+        message: "Good Job!"
