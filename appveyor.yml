@@ -17,12 +17,10 @@ for:
     - cmd: copy "%APPVEYOR_BUILD_FOLDER%\Warcraft Heroes Beyond Time\Game\*.*" %APPVEYOR_BUILD_FOLDER%\Warcraft_Heroes_Beyond_Time
     - cmd: copy "%APPVEYOR_BUILD_FOLDER%\Warcraft Heroes Beyond Time\Release\Warcraft Heroes Beyond Time.exe" %APPVEYOR_BUILD_FOLDER%\Warcraft_Heroes_Beyond_Time
     - cmd: copy "%APPVEYOR_BUILD_FOLDER%\docs\README.md" %APPVEYOR_BUILD_FOLDER%\Warcraft_Heroes_Beyond_Time
-   #- 7z a "Warcraft_Heroes_Beyond_Time.zip" "%APPVEYOR_BUILD_FOLDER%/Warcraft Heroes Beyond Time/Game/*"
-   #- 7z a "Warcraft_Heroes_Beyond_Time.zip" "%APPVEYOR_BUILD_FOLDER%/Warcraft Heroes Beyond Time/Release/Warcraft Heroes Beyond Time.exe"
-   #- 7z a "Warcraft_Heroes_Beyond_Time.zip" "%APPVEYOR_BUILD_FOLDER%/docs/README.md"
     - 7z a Warcraft_Heroes_Beyond_Time.zip %APPVEYOR_BUILD_FOLDER%\Warcraft_Heroes_Beyond_Time
+    
   artifacts:  
-    - path: "Warcraft_Heroes_Beyond_Time.zip"
+  - path: "Warcraft_Heroes_Beyond_Time.zip"
 
   deploy:
   - provider: GitHub
@@ -36,20 +34,23 @@ for:
       appveyor_repo_tag: false
 
   notifications:
-      - provider: Email
-        on_build_success: true
-        on_build_failure: false
-        on_build_status_changed: false
-        to:
-          - jony635molina@gmail.com
-        subject: 'Success Warcraft Release {{buildVersion}}'
-        message: "Good Job!"
+    - provider: Email
+      on_build_success: true
+      on_build_failure: false
+      on_build_status_changed: false
+      to:
+        - jony635molina@gmail.com
+      subject: 'Success Warcraft Release {{buildVersion}}'
+      message: "Good Job!"
 
-      - provider: Slack
-        auth_token:
-          secure: CG/bUw6LmV4j4bsJnPQrmt8Fa50rKLnattAUz6bbY2iHnn8ESMoAyUpVZo0rMSiBbczkuYOm4OJf+wKWmQz5nq+yEVU8DWl49TgJ7zhTc=
-        channel: '#notificaciones'
-        template: "Success Release {{buildVersion}}! Good Job!" 
+    - provider: Slack
+      on_build_success: true
+      on_build_failure: false
+      on_build_status_changed: false
+      auth_token:
+        secure: CG/bUw6LmV4j4bsJnPQrmt8Fa5/0rKLnattAUz6bbY3nnBJREgB/shaJO0xm8wvnM62GvnJVi+mM/ErL/pWUcbl0U10XudtYwn+EFEqVSXc=
+      channel: '#notificaciones'
+      template: "Success Release {{buildVersion}}! Good Job!" 
 
 -
   branches:
@@ -57,10 +58,19 @@ for:
       - master
   notifications:    
       - provider: Email
-        on_build_success: true
-        on_build_failure: false
+        on_build_success: false
+        on_build_failure: true
         on_build_status_changed: false
         to:
-          - jony635molina@gmail.com
-        subject: 'Success Warcraft Build {{buildVersion}}'
-        message: "Good Job!"
+          - '{{commitAuthorEmail}}'
+        subject: 'Failed Warcraft Build {{buildVersion}}'
+        message: "Check it!"
+        
+      - provider: Slack
+        on_build_success: false
+        on_build_failure: true
+        on_build_status_changed: false
+        auth_token:
+          secure: CG/bUw6LmV4j4bsJnPQrmt8Fa5/0rKLnattAUz6bbY3nnBJREgB/shaJO0xm8wvnM62GvnJVi+mM/ErL/pWUcbl0U10XudtYwn+EFEqVSXc=
+        channel: '#notificaciones'
+        template: "Failed Release {{buildVersion}} committed by {{commitAuthor}}({{commitAuthorEmail}})" 
