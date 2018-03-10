@@ -1,6 +1,6 @@
-# Warcraft: Heroes Beyond Time
+﻿# Warcraft: Heroes Beyond Time
 
-_Describe main goal of the project here._
+_Describe main goal of the project here._.
 
 This project has been done by seven students of CITM - UPC (Terrasa, Spain).  
 
