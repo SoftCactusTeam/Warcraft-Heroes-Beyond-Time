@@ -14,9 +14,9 @@ for:
 
   after_build:
     - 7z a "Warcraft_Heroes_Beyond_Time" "%APPVEYOR_BUILD_FOLDER%/Warcraft Heroes Beyond Time/Game/*"
-    - 7z a "Warcraft_Heroes Beyond_Time" "%APPVEYOR_BUILD_FOLDER%/Warcraft Heroes Beyond Time/Release/Warcraft Heroes Beyond Time.exe"
-    - 7z a "Warcraft_Heroes Beyond_Time" "%APPVEYOR_BUILD_FOLDER%/docs/README.md"
-    - 7z a "Warcraft_Heroes_Beyond_Time.zip" "Warcraft Heroes Beyond Time"
+    - 7z a "Warcraft_Heroes_Beyond_Time" "%APPVEYOR_BUILD_FOLDER%/Warcraft Heroes Beyond Time/Release/Warcraft Heroes Beyond Time.exe"
+    - 7z a "Warcraft_Heroes_Beyond_Time" "%APPVEYOR_BUILD_FOLDER%/docs/README.md"
+    - 7z a "Warcraft_Heroes_Beyond_Time.zip" "Warcraft_Heroes_Beyond_Time"
 
   artifacts:  
     - path: "Warcraft_Heroes_Beyond_Time.zip"
