@@ -20,7 +20,7 @@ EntitySystem::EntitySystem() : Module()
 bool EntitySystem::Start()
 {
 	LOG("Loading textures");
-	spritesheetsEntities.push_back(Application->textures->Load("Example.png"));
+	spritesheetsEntities.push_back(Application->textures->Load("thrall_spritesheet.png"));
 	
 	return true;
 }

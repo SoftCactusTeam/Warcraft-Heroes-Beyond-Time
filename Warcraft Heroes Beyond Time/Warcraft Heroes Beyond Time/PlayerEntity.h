@@ -6,7 +6,8 @@
 class PlayerEntity : public DynamicEntity {
 protected:
 	PLAYER_TYPE type = PLAYER_TYPE::NON_PLAYER;
-	Animation idle, up, down, left, right, upLeft, upRight, downLeft, downRight;
+	Animation idleDown, idleUp, idleLeft, idleRight, idleUpRight, idleUpLeft, idleDownRight, idleDownLeft;
+	Animation up, down, left, right, upLeft, upRight, downLeft, downRight;
 	enum class states
 	{
 		PL_NON_STATE,
