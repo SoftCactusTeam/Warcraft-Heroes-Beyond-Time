@@ -1,73 +1,73 @@
-﻿# Warcraft: Heroes Beyond Time<br>
+﻿# Warcraft: Heroes Beyond Time
 
-_Describe main goal of the project here._.<br>
+_Describe main goal of the project here._.
 
-This project has been done by seven students of CITM - UPC (Terrasa, Spain).<br>
+This project has been done by seven students of CITM - UPC (Terrasa, Spain).  
 
-* [Github repository](https://github.com/SoftCactusTeam/Warcraft_Adventures)<br>  
-* [Website](https://softcactusteam.github.io/Warcraft_Adventures/)<br>
+* [Github repository](https://github.com/SoftCactusTeam/Warcraft_Adventures)  
+* [Website](https://softcactusteam.github.io/Warcraft_Adventures/)
 
-## About the game<br>
+## About the game
 
-_Description of the gameplay here_<br>
+_Description of the gameplay here_
 
-## Installation instructions<br>
+## Installation instructions
 
-Download the zip file and unzip it. Open the folder, execute the .exe and enjoy!<br>
+Download the zip file and unzip it. Open the folder, execute the .exe and enjoy!
 
-_IMPORTANT: do not modify, change or add any folder or file as you might not be able to execute the game._<br>
+_IMPORTANT: do not modify, change or add any folder or file as you might not be able to execute the game._
 
-## Controls<br>
-
-
-## Innovations<br>
+## Controls
 
 
-## Team members<br>
-
-_Masó Garcia, Víctor's responsability and Github account_<br>
-
-* Lead<br>
-* [Github account](https://github.com/nintervik)<br>
-
-_Costa Miquel, Guillem's responsability and Github account_<br>
-
-* Code<br>
-* [Github account](https://github.com/DatBeQuiet)<br>
-
-_Calvis Gil, Isaac's responsability and Github account_<br>
-
-* Management<br>
-* [Github account](https://github.com/isaaccalvis)<br>
-
-_de Dios Miranda, Oriol's responsability and Github account_<br>
-
-* Design<br>
-* [Github account](https://github.com/orioldedios)<br>
-
-_Lozano Sánchez, David's responsability and Github account_<br>
-
-* Art and audio<br>
-* [Github account](https://github.com/DavidTheMaaster)<br>
-
-_Molina-Prados Ciudad, Jonatahn's responsability and Github account_<br>
-
-* UI<br>
-* [Github account](https://github.com/Jony635)<br>
-
-_Morgado Expósito, Arnau's responsability and Github account_<br>
-
-* QA<br>
-* [Github account](https://github.com/morgadoCV)<br>
+## Innovations
 
 
-## Tools used<br>
-* IDE: Microsoft Visual Studio 2017<br>
-* Language: C++<br>
-* Graphics and audio: SDL 2.0<br>
-* Data: pugixml 1.8<br>
-* Profiler: Brofiler<br>
-* Code repository: GitHub<br>
-* Others: Adobe Photoshop CS6, Aseprite and MS Paint<br>
+## Team members
 
-## Credits for artwork, music/sound fx and fonts<br>
+_Masó Garcia, Víctor's responsability and Github account_
+
+* Lead
+* [Github account](https://github.com/nintervik)
+
+_Costa Miquel, Guillem's responsability and Github account_
+
+* Code
+* [Github account](https://github.com/DatBeQuiet)
+
+_Calvis Gil, Isaac's responsability and Github account_
+
+* Management
+* [Github account](https://github.com/isaaccalvis)
+
+_de Dios Miranda, Oriol's responsability and Github account_
+
+* Design
+* [Github account](https://github.com/orioldedios)
+
+_Lozano Sánchez, David's responsability and Github account_
+
+* Art and audio
+* [Github account](https://github.com/DavidTheMaaster)
+
+_Molina-Prados Ciudad, Jonatahn's responsability and Github account_
+
+* UI
+* [Github account](https://github.com/Jony635)
+
+_Morgado Expósito, Arnau's responsability and Github account_
+
+* QA
+* [Github account](https://github.com/morgadoCV)
+
+
+## Tools used
+* IDE: Microsoft Visual Studio 2017
+* Language: C++
+* Graphics and audio: SDL 2.0
+* Data: pugixml 1.8
+* Profiler: Brofiler
+* Code repository: GitHub
+* Others: Adobe Photoshop CS6, Aseprite and MS Paint
+
+## Credits for artwork, music/sound fx and fonts
