@@ -7,9 +7,9 @@ class EnemyEntity : public DynamicEntity {
 public:
 	EnemyEntity(iPoint coor, ENEMY_TYPE character, SDL_Texture* texture);
 
-	bool Start();
-	bool Update();
-	bool Finish();
+	virtual bool Start();
+	virtual bool Update();
+	virtual bool Finish();
 
 public:
 	ENEMY_TYPE type = ENEMY_TYPE::NON_ENEMY;

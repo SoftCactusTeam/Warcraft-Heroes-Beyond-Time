@@ -24,9 +24,6 @@
     <ClCompile Include="StaticObjectEntity.cpp">
       <Filter>Entities\Static Entities</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyEntity.cpp">
-      <Filter>Entities</Filter>
-    </ClCompile>
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="InputBox.cpp" />
@@ -47,6 +44,12 @@
     <ClCompile Include="PlayerEntity.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
     <ClCompile Include="Thrall.cpp" />
+    <ClCompile Include="EnemyEntity.cpp">
+      <Filter>Entities\Dynamic Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy_Footman.cpp">
+      <Filter>Entities\Dynamic Entities\Enemies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene.h" />
@@ -102,6 +105,9 @@
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
     <ClInclude Include="Thrall.h" />
+    <ClInclude Include="Enemy_Footman.h">
+      <Filter>Entities\Dynamic Entities\Enemies</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Entities">
@@ -112,6 +118,9 @@
     </Filter>
     <Filter Include="Entities\Static Entities">
       <UniqueIdentifier>{1bfbf667-b19d-49f5-816c-83b78491c311}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Dynamic Entities\Enemies">
+      <UniqueIdentifier>{864c4ea5-3003-4f62-9dff-5aa86a22e75e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
