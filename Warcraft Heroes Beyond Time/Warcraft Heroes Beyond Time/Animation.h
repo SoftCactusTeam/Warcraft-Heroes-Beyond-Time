@@ -6,7 +6,7 @@
 #include "SDL/include/SDL_timer.h"
 #include "SDL/include/SDL_rect.h"
 
-#include "Globlas.h"
+#include "Globals.h"
 
 #define MAX_FRAMES 45
 

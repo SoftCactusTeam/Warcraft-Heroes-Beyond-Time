@@ -5,6 +5,7 @@
 
 #include "Entity.h"
 #include "PlayerEntity.h"
+#include "Thrall.h"
 #include "BossEntity.h"
 #include "EnemyEntity.h"
 #include "ConsumableEntity.h"
@@ -46,7 +47,7 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 bool EntitySystem::Start()
 {
 	LOG("Loading textures");
-	//vector[THRALLSHEET] = load etc
+	spritesheetsEntities.push_back(Application->textures->Load("thrall_spritesheet.png"));
 
 	return true;
 }
@@ -57,6 +58,7 @@ bool EntitySystem::PreUpdate()
 	{
 		for(std::list<Entity*>::iterator it = toSpawn.begin(); it != toSpawn.end(); ++it)
 		{
+			(*it)->Start();
 			entities.push_back(*it);
 		}
 		toSpawn.clear();
@@ -197,7 +199,7 @@ void EntitySystem::AddPlayer(iPoint coor, PLAYER_TYPE type)
 	switch (type)
 	{
 	case PLAYER_TYPE::THRALL:
-		newEntity = new PlayerEntity(coor, PLAYER_TYPE::THRALL, nullptr);
+		newEntity = new Thrall(coor, PLAYER_TYPE::THRALL, spritesheetsEntities[THRALLSHEET]);
 		break;
 	case PLAYER_TYPE::VALEERA:
 		newEntity = new PlayerEntity(coor, PLAYER_TYPE::VALEERA, nullptr);
@@ -206,7 +208,7 @@ void EntitySystem::AddPlayer(iPoint coor, PLAYER_TYPE type)
 		newEntity = new PlayerEntity(coor, PLAYER_TYPE::SYLVANAS, nullptr);
 		break;
 	}
-	toSpawn.push_back((Entity*)newEntity);
+	toSpawn.push_back(newEntity);
 }
 
 void EntitySystem::AddConsumable(iPoint coor, CONSUMABLE_TYPE type)

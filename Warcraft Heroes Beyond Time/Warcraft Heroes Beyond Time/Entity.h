@@ -4,6 +4,7 @@
 #include "p2Point.h"
 #include "SDL_image\include\SDL_image.h"
 #include "EntitiesEnums.h"
+#include "Animation.h"
 
 class Entity {
 public:
@@ -16,9 +17,9 @@ public:
 	virtual bool Draw(float dt);
 
 public:
-	iPoint coor = { 0,0 };
+	iPoint pos = { 0,0 };
 	SDL_Texture* texture = nullptr;
-	SDL_Rect rectToPrint = { 0,0,0,0 };
+	Animation* anim;
 	bool destroy = false;
 
 };
