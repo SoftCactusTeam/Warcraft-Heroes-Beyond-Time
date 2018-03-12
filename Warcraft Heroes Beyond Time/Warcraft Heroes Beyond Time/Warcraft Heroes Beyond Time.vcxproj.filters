@@ -1,20 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="App.cpp" />
-    <ClCompile Include="Fonts.cpp" />
-    <ClCompile Include="FileSystem.cpp" />
-    <ClCompile Include="ModuleGUI.cpp" />
-    <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Log.cpp" />
-    <ClCompile Include="ModuleRender.cpp" />
-    <ClCompile Include="ModuleTextures.cpp" />
-    <ClCompile Include="ModuleWindow.cpp" />
-    <ClCompile Include="PugiXml\src\pugixml.cpp" />
-    <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="ModuleEntitySystem.cpp" />
     <ClCompile Include="BossEntity.cpp">
       <Filter>Entities\Dynamic Entities</Filter>
     </ClCompile>
@@ -39,38 +27,15 @@
     <ClCompile Include="EnemyEntity.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
+
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="InputBox.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="GUIElem.cpp" />
-    <ClCompile Include="PlayerEntity.cpp">
-      <Filter>Entities\Dynamic Entities\Playable Characters</Filter>
-    </ClCompile>
-    <ClCompile Include="Thrall.cpp">
-      <Filter>Entities\Dynamic Entities\Playable Characters</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Animation.h" />
-    <ClInclude Include="App.h" />
-    <ClInclude Include="Globals.h" />
-    <ClInclude Include="Fonts.h" />
-    <ClInclude Include="FileSystem.h" />
-    <ClInclude Include="ModuleGUI.h" />
-    <ClInclude Include="ModuleInput.h" />
-    <ClInclude Include="Module.h" />
-    <ClInclude Include="p2Defs.h" />
-    <ClInclude Include="Log.h" />
-    <ClInclude Include="p2Point.h" />
-    <ClInclude Include="ModuleRender.h" />
-    <ClInclude Include="ModuleTextures.h" />
-    <ClInclude Include="ModuleWindow.h" />
-    <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
-    <ClInclude Include="PugiXml\src\pugixml.hpp" />
-    <ClInclude Include="ModuleAudio.h" />
     <ClInclude Include="Scene.h" />
-    <ClInclude Include="ModuleEntitySystem.h" />
     <ClInclude Include="BossEntity.h">
       <Filter>Entities\Dynamic Entities</Filter>
     </ClInclude>
@@ -102,12 +67,6 @@
     <ClInclude Include="GUIElem.h" />
     <ClInclude Include="InputBox.h" />
     <ClInclude Include="Label.h" />
-    <ClInclude Include="PlayerEntity.h">
-      <Filter>Entities\Dynamic Entities\Playable Characters</Filter>
-    </ClInclude>
-    <ClInclude Include="Thrall.h">
-      <Filter>Entities\Dynamic Entities\Playable Characters</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Entities">
@@ -118,9 +77,6 @@
     </Filter>
     <Filter Include="Entities\Static Entities">
       <UniqueIdentifier>{1bfbf667-b19d-49f5-816c-83b78491c311}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Entities\Dynamic Entities\Playable Characters">
-      <UniqueIdentifier>{bdd5d26f-7e95-4c76-b2e8-35e0ebe41d2d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

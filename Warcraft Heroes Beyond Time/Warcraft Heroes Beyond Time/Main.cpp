@@ -2,7 +2,7 @@
 
 #include "p2Defs.h"
 #include "Log.h"
-#include "App.h"
+#include "Application.h"
 // This is needed here because SDL redefines main function
 // do not add any other libraries here, instead put them in their modules
 #include "SDL/include/SDL.h"
@@ -21,7 +21,7 @@ enum MainState
 	EXIT
 };
 
-App* Application = nullptr;
+Application* App = nullptr;
 
 int main(int argc, char* args[])
 {
@@ -39,9 +39,9 @@ int main(int argc, char* args[])
 			case CREATE:
 			LOG("CREATION PHASE ===============================");
 
-			Application = new App(argc, args);
+			App = new Application(argc, args);
 
-			if(Application != NULL)
+			if(App != NULL)
 				state = AWAKE;
 			else
 				state = FAIL;
@@ -51,7 +51,7 @@ int main(int argc, char* args[])
 			// Awake all modules -----------------------------------------------
 			case AWAKE:
 			LOG("AWAKE PHASE ===============================");
-			if(Application->Awake() == true)
+			if(App->Awake() == true)
 				state = START;
 			else
 			{
@@ -64,7 +64,7 @@ int main(int argc, char* args[])
 			// Call all modules before first frame  ----------------------------
 			case START:
 			LOG("START PHASE ===============================");
-			if(Application->Start() == true)
+			if(App->Start() == true)
 			{
 				state = LOOP;
 				LOG("UPDATE PHASE ===============================");
@@ -79,7 +79,7 @@ int main(int argc, char* args[])
 			// Loop all modules until we are asked to leave ---------------------
 			case LOOP:
 			{
-				if (Application->Update() == false)
+				if (App->Update() == false)
 					state = CLEAN;
 			}
 			break;
@@ -87,9 +87,9 @@ int main(int argc, char* args[])
 			// Cleanup allocated memory -----------------------------------------
 			case CLEAN:
 			LOG("CLEANUP PHASE ===============================");
-			if(Application->CleanUp() == true)
+			if(App->CleanUp() == true)
 			{
-				RELEASE(Application);
+				RELEASE(App);
 				result = EXIT_SUCCESS;
 				state = EXIT;
 			}

@@ -1,4 +1,4 @@
-#include "App.h"
+#include "Application.h"
 #include "Log.h"
 #include "ModuleEntitySystem.h"
 #include "ModuleTextures.h"
@@ -12,16 +12,43 @@
 #include "ChestEntity.h"
 #include "StaticObjectEntity.h"
 
+#include "Console.h"
+
+
+class Txell_ConsoleOrder : public ConsoleOrder {
+	std::string orderName() { return "txell"; }
+	void Exec(std::string parametre, int parametreNumeric) {
+		if (parametre == "sexy")
+			printf_s("Txell sexy %i\n", parametreNumeric);
+		else if (parametre == "pesada")
+			printf_s("Txell pesada %i\n", parametreNumeric);
+		else if (parametre == "not")
+			printf_s("not parametre %i\n", parametreNumeric);
+	}
+};
+
 EntitySystem::EntitySystem() : Module()
 {
 	name = "entitySystem";
+}
+
+void EntitySystem::Init()
+{
+	active = false;
+}
+
+bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
+{
+	ConsoleOrder* txell_consoleOrder = new Txell_ConsoleOrder;
+	App->console->AddConsoleOrderToList(txell_consoleOrder);
+	return true;
 }
 
 bool EntitySystem::Start()
 {
 	LOG("Loading textures");
 	spritesheetsEntities.push_back(Application->textures->Load("thrall_spritesheet.png"));
-	
+
 	return true;
 }
 
@@ -114,7 +141,7 @@ bool EntitySystem::UnloadTexturesVector()
 
 	for (int i = 0; i < spritesheetsEntities.size() && ret; ++i)
 	{
-		ret = Application->textures->UnLoad(spritesheetsEntities[i]);
+		ret = App->textures->UnLoad(spritesheetsEntities[i]);
 	}
 
 	if (ret)
@@ -231,4 +258,15 @@ void EntitySystem::AddStaticObject(iPoint coor, STATIC_OBJECT_TYPE type)
 		break;
 	}
 	toSpawn.push_back((Entity*)newEntity);
+}
+
+void EntitySystem::Save(pugi::xml_node& eSystemNode)
+{
+	eSystemNode.append_attribute("Testing") = "True";
+}
+
+void EntitySystem::Load(const pugi::xml_node& eSystemNode)
+{
+
+	return;
 }

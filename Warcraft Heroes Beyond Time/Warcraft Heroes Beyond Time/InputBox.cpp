@@ -1,4 +1,4 @@
-#include "App.h"
+#include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
@@ -7,7 +7,7 @@
 
 InputBox::InputBox(fPoint localPos, InputBoxInfo& info, Module* listener, GUIElem* parent) : GUIElem(localPos, listener, InputBox1, GUIElemType::INPUTBOX, parent)
 {
-	font = Application->fonts->getFontbyName(info.fontName);
+	font = App->fonts->getFontbyName(info.fontName);
 	color = info.color;
 }
 
@@ -19,22 +19,22 @@ bool InputBox::Update(float dt)
 
 	if (ReadyToWrite)
 	{
-		if (Application->input->IsTextReady())
+		if (App->input->IsTextReady())
 		{
-			text += Application->input->GetText();
+			text += App->input->GetText();
 			SDL_DestroyTexture(texturetoBlit);
-			texturetoBlit = Application->fonts->Print(text.data(), color, font);
-			Application->input->SetTextReadyFalse();
+			texturetoBlit = App->fonts->Print(text.data(), color, font);
+			App->input->SetTextReadyFalse();
 		}
-		else if (Application->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN && text.size() > 0)
+		else if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN && text.size() > 0)
 		{
 			text.pop_back();
 			SDL_DestroyTexture(texturetoBlit);
-			texturetoBlit = Application->fonts->Print(text.data(), color, font);
+			texturetoBlit = App->fonts->Print(text.data(), color, font);
 		}
 	}
 
-	ret = Application->render->Blit(texturetoBlit, (int)(this->screenPos.x + Application->render->camera.x), (int)(this->screenPos.y + Application->render->camera.y));
+	ret = App->render->Blit(texturetoBlit, (int)(this->screenPos.x + App->render->camera.x), (int)(this->screenPos.y + App->render->camera.y));
 
 	UpdateChilds(dt);
 
@@ -57,9 +57,12 @@ void InputBox::DisableInput()
 
 void InputBox::ClearBox()
 {
-	text.clear();
-	SDL_DestroyTexture(texturetoBlit);
-	texturetoBlit = Application->fonts->Print(text.data(), color, font);
-}
+	/*if(!text.empty())
+		text.clear();
 
+	if(texturetoBlit)
+		SDL_DestroyTexture(texturetoBlit);
+
+	texturetoBlit = App->fonts->Print(text.data(), color, font);*/
+}
 

@@ -1,10 +1,11 @@
 #include "p2Defs.h"
 #include "Log.h"
 
-#include "App.h"
+#include "Application.h"
 
 #include "ModuleInput.h"
 #include "ModuleWindow.h"
+#include "ModuleGUI.h"
 
 #include "Console.h"
 
@@ -26,7 +27,7 @@ Input::~Input()
 	delete[] keyboard;
 }
 
-bool Input::Awake()
+bool Input::Awake(pugi::xml_node& inputNode)
 {
 	LOG("Init SDL input event system");
 	bool ret = true;
@@ -153,7 +154,7 @@ bool Input::PreUpdate()
 		case SDL_MOUSEMOTION:
 		{
 
-			int scale = Application->window->GetScale();
+			int scale = App->window->GetScale();
 			mouse_motion_x = event.motion.xrel / scale;
 			mouse_motion_y = event.motion.yrel / scale;
 			mouse_x = event.motion.x / scale;
@@ -242,10 +243,11 @@ void Input::ExternActionsAtKeyInput(const int key) {
 	// printf_s("%i\n", key);		// PER TROBAR EL NUMERO DE LES TECLES
 	switch (key) {
 	case 53:	// º button -> OpenConsole
-		if (Application->console->active == false)
-			Application->console->active = true;
+		if (App->console->isActive() == false)
+			App->console->Start();
 		else
-			Application->console->active = false;
+			App->console->CleanUp();
+
 		break;
 	}
 }

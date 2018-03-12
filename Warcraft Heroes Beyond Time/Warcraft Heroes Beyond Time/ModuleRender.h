@@ -16,7 +16,7 @@ public:
 	Render();
 	virtual ~Render();
 
-	bool Awake();
+	bool Awake(pugi::xml_node&);
 	bool Start();
 	bool PreUpdate();
 	bool Update(float dt);

@@ -14,7 +14,7 @@ public:
 	Window();
 	virtual ~Window();
 
-	bool Awake();
+	bool Awake(pugi::xml_node&);
 	bool CleanUp();
 
 	void SetTitle(const char* new_title);

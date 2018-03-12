@@ -26,9 +26,11 @@ public:
 	void DisableInput();
 	void ClearBox();
 
+public:
+	std::string text;
+
 private:
 	bool ReadyToWrite = false;
-	std::string text;
 	TTF_Font* font = nullptr;
 	SDL_Color color = Black;
 	SDL_Texture* texturetoBlit = nullptr;

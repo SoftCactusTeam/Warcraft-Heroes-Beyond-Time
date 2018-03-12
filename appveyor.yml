@@ -1,0 +1,81 @@
+version: 0.{build}
+image: Visual Studio 2017
+platform: x86
+configuration: Release
+skip_tags: true
+build:
+  verbosity: minimal
+pull_requests:
+  do_not_increment_build_number: true
+  
+for:
+-
+  branches:
+    only:
+      - releases
+  configuration: Release
+
+  after_build:
+    - cmd: mkdir %APPVEYOR_BUILD_FOLDER%\Warcraft_Heroes_Beyond_Time
+    - cmd: copy "%APPVEYOR_BUILD_FOLDER%\Warcraft Heroes Beyond Time\Game\*.*" %APPVEYOR_BUILD_FOLDER%\Warcraft_Heroes_Beyond_Time
+    - cmd: copy "%APPVEYOR_BUILD_FOLDER%\Warcraft Heroes Beyond Time\Release\Warcraft Heroes Beyond Time.exe" %APPVEYOR_BUILD_FOLDER%\Warcraft_Heroes_Beyond_Time
+    - cmd: move %APPVEYOR_BUILD_FOLDER%\docs\README.md %APPVEYOR_BUILD_FOLDER%\Warcraft_Heroes_Beyond_Time
+    - cmd: move "%APPVEYOR_BUILD_FOLDER%\LICENSE" %APPVEYOR_BUILD_FOLDER%\Warcraft_Heroes_Beyond_Time
+    - 7z a Warcraft_Heroes_Beyond_Time.zip %APPVEYOR_BUILD_FOLDER%\Warcraft_Heroes_Beyond_Time
+    
+  artifacts:  
+  - path: "Warcraft_Heroes_Beyond_Time.zip"
+
+  deploy:
+  - provider: GitHub
+    release: Warcraft Heroes Beyond Time v$(appveyor_build_version)
+    artifact: "Warcraft_Heroes_Beyond_Time.zip"
+    auth_token:
+      secure: RmJh3KY08MINd/TWolIkLr04OXyj8QlMamglHUHHfHj1/ArjkWDbSoWNFd12JuA0
+    draft: false
+    prerelease: false
+    on:
+      appveyor_repo_tag: false
+
+  notifications:
+    - provider: Email
+      on_build_success: true
+      on_build_failure: false
+      on_build_status_changed: false
+      to:
+        - jony635molina@gmail.com
+      subject: 'Success Warcraft Release {{buildVersion}}'
+      message: "Good Job!"
+
+    - provider: Slack
+      on_build_success: true
+      on_build_failure: false
+      on_build_status_changed: false
+      auth_token:
+        secure: CG/bUw6LmV4j4bsJnPQrmt8Fa5/0rKLnattAUz6bbY3nnBJREgB/shaJO0xm8wvnM62GvnJVi+mM/ErL/pWUcbl0U10XudtYwn+EFEqVSXc=
+      channel: '#notificaciones'
+      template: "Success Release {{buildVersion}}! Good Job!" 
+
+-
+  branches:
+    only:
+      - master
+  notifications:    
+      - provider: Email
+        on_build_success: false
+        on_build_failure: true
+        on_build_status_changed: false
+        to:
+          - '{{commitAuthorEmail}}'
+        subject: 'Failed Warcraft Build {{buildVersion}}'
+        message: "Check it!"
+        
+      - provider: Slack
+        on_build_success: false
+        on_build_failure: true
+        on_build_status_changed: false
+        auth_token:
+          secure: CG/bUw6LmV4j4bsJnPQrmt8Fa5/0rKLnattAUz6bbY3nnBJREgB/shaJO0xm8wvnM62GvnJVi+mM/ErL/pWUcbl0U10XudtYwn+EFEqVSXc=
+        channel: '#notificaciones'
+        template: "Failed Release {{buildVersion}} committed by {{commitAuthor}}({{commitAuthorEmail}})" 
+
