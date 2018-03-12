@@ -19,36 +19,21 @@ bool Scene::Awake()
 
 bool Scene::Start()
 {
-	LabelInfo defLabel;
-	defLabel.color = Red;
-	defLabel.fontName = "Arial16";
-	defLabel.text = "Hey bitches im here";
-	
-	App->gui->CreateLabel({0,0}, defLabel, nullptr, nullptr);
+
 	App->entities->AddPlayer({0,0}, THRALL);
-
-
-
+	App->entities->AddEnemy({ 10,0 }, FOOTMAN);
 	//LabelInfo defLabel;
 	//defLabel.color = Red;
 	//defLabel.fontName = "Arial16";
 	//defLabel.text = "Hey bitches im here";
-	//
 	//Application->gui->CreateLabel({0,0}, defLabel, nullptr, nullptr);
-
-
 
 	//InputBoxInfo defInputBox;
 	//defInputBox.color = Green;
 	//defInputBox.fontName = "Arial16";
-
 	//InputBox* box = Application->gui->CreateInputBox({ 0, 200 }, defInputBox, nullptr, nullptr);
 	//box->EnableInput();
-
 	
-
-
-
 	return true;
 }
 

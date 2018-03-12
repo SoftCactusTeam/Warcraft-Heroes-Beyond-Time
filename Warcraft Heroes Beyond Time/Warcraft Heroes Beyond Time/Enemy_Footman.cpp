@@ -4,7 +4,8 @@ Enemy_Footman::Enemy_Footman(iPoint coor, ENEMY_TYPE character, SDL_Texture* tex
 
 bool Enemy_Footman::Start()
 {
-
+	baseAnm.PushBack({ 0,188,55,47 });	// TEMPORAL !!
+	anim = &baseAnm;					// TEMPORAL !!
 	return true;
 }
 

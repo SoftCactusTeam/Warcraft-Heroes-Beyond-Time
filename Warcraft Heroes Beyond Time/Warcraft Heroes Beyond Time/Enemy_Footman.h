@@ -5,13 +5,15 @@
 
 class Enemy_Footman : public EnemyEntity
 {
+public:
 	Enemy_Footman(iPoint coor, ENEMY_TYPE character, SDL_Texture* texture);
 
 	bool Start();
 	bool Update();
 	bool Finish();
 
-
+public:
+	Animation baseAnm;
 };
 
 #endif

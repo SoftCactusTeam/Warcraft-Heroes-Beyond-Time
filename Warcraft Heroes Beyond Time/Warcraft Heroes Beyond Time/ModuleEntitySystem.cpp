@@ -5,12 +5,15 @@
 
 #include "Entity.h"
 #include "PlayerEntity.h"
-#include "Thrall.h"
 #include "BossEntity.h"
 #include "EnemyEntity.h"
 #include "ConsumableEntity.h"
 #include "ChestEntity.h"
 #include "StaticObjectEntity.h"
+
+
+#include "Thrall.h"
+#include "Enemy_Footman.h"
 
 #include "Console.h"
 
@@ -49,6 +52,11 @@ bool EntitySystem::Start()
 	LOG("Loading textures");
 	spritesheetsEntities.push_back(App->textures->Load("images/thrall_spritesheet.png"));
 
+	bool ret = true;
+	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end() && ret; ++it)
+	{
+		ret = (*it)->Start();
+	}
 	return true;
 }
 
@@ -155,7 +163,7 @@ void EntitySystem::AddEnemy(iPoint coor, ENEMY_TYPE type)
 	EnemyEntity* newEntity = nullptr;
 	switch (type) {
 	case ENEMY_TYPE::FOOTMAN:
-		newEntity = new EnemyEntity(coor, ENEMY_TYPE::FOOTMAN, nullptr);
+		newEntity = new Enemy_Footman(coor, ENEMY_TYPE::FOOTMAN, spritesheetsEntities[THRALLSHEET] /*SHA DE CANVIAR !*/);
 		break;
 	case ENEMY_TYPE::ARCHER:
 		newEntity = new EnemyEntity(coor, ENEMY_TYPE::ARCHER, nullptr);
@@ -173,7 +181,7 @@ void EntitySystem::AddEnemy(iPoint coor, ENEMY_TYPE type)
 		newEntity = new EnemyEntity(coor, ENEMY_TYPE::SKELETON, nullptr);
 		break;
 	}
-	toSpawn.push_back((Entity*)newEntity);
+	toSpawn.push_back(newEntity);
 }
 
 void EntitySystem::AddBoss(iPoint coor, BOSS_TYPE type)

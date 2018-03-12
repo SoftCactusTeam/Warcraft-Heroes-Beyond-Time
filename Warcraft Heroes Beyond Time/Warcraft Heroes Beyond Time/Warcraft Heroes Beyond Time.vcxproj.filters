@@ -3,26 +3,8 @@
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="BossEntity.cpp">
-      <Filter>Entities\Dynamic Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="ChestEntity.cpp">
-      <Filter>Entities\Static Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="ConsumableEntity.cpp">
-      <Filter>Entities\Static Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="DynamicEntity.cpp">
-      <Filter>Entities\Dynamic Entities</Filter>
-    </ClCompile>
     <ClCompile Include="Entity.cpp">
       <Filter>Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="StaticEntity.cpp">
-      <Filter>Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="StaticObjectEntity.cpp">
-      <Filter>Entities\Static Entities</Filter>
     </ClCompile>
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Console.cpp" />
@@ -34,51 +16,54 @@
     <ClCompile Include="FileSystem.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
-    <ClCompile Include="ModuleEntitySystem.cpp" />
     <ClCompile Include="ModuleGUI.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="ModuleRender.cpp" />
     <ClCompile Include="ModuleTextures.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
-    <ClCompile Include="PlayerEntity.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
-    <ClCompile Include="Thrall.cpp" />
-    <ClCompile Include="EnemyEntity.cpp">
-      <Filter>Entities\Dynamic Entities</Filter>
-    </ClCompile>
     <ClCompile Include="Enemy_Footman.cpp">
       <Filter>Entities\Dynamic Entities\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleEntitySystem.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamicEntity.cpp">
+      <Filter>Entities\Dynamic Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="BossEntity.cpp">
+      <Filter>Entities\Dynamic Entities\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyEntity.cpp">
+      <Filter>Entities\Dynamic Entities\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerEntity.cpp">
+      <Filter>Entities\Dynamic Entities\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Thrall.cpp">
+      <Filter>Entities\Dynamic Entities\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="ChestEntity.cpp">
+      <Filter>Entities\Static Entities\Chest</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsumableEntity.cpp">
+      <Filter>Entities\Static Entities\Consumable</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticObjectEntity.cpp">
+      <Filter>Entities\Static Entities\ObjectStatc</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticEntity.cpp">
+      <Filter>Entities\Static Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene.h" />
-    <ClInclude Include="BossEntity.h">
-      <Filter>Entities\Dynamic Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="ChestEntity.h">
-      <Filter>Entities\Static Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="ConsumableEntity.h">
-      <Filter>Entities\Static Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="DynamicEntity.h">
-      <Filter>Entities\Dynamic Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyEntity.h">
-      <Filter>Entities\Dynamic Entities</Filter>
-    </ClInclude>
     <ClInclude Include="EntitiesEnums.h">
       <Filter>Entities</Filter>
     </ClInclude>
     <ClInclude Include="Entity.h">
       <Filter>Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="StaticEntity.h">
-      <Filter>Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="StaticObjectEntity.h">
-      <Filter>Entities\Static Entities</Filter>
     </ClInclude>
     <ClInclude Include="Console.h" />
     <ClInclude Include="GUIElem.h" />
@@ -91,7 +76,6 @@
     <ClInclude Include="FileSystem.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="ModuleAudio.h" />
-    <ClInclude Include="ModuleEntitySystem.h" />
     <ClInclude Include="ModuleGUI.h" />
     <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="Module.h" />
@@ -101,12 +85,40 @@
     <ClInclude Include="ModuleRender.h" />
     <ClInclude Include="ModuleTextures.h" />
     <ClInclude Include="ModuleWindow.h" />
-    <ClInclude Include="PlayerEntity.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
-    <ClInclude Include="Thrall.h" />
     <ClInclude Include="Enemy_Footman.h">
       <Filter>Entities\Dynamic Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleEntitySystem.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicEntity.h">
+      <Filter>Entities\Dynamic Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="BossEntity.h">
+      <Filter>Entities\Dynamic Entities\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyEntity.h">
+      <Filter>Entities\Dynamic Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerEntity.h">
+      <Filter>Entities\Dynamic Entities\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Thrall.h">
+      <Filter>Entities\Dynamic Entities\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="ChestEntity.h">
+      <Filter>Entities\Static Entities\Chest</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsumableEntity.h">
+      <Filter>Entities\Static Entities\Consumable</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticObjectEntity.h">
+      <Filter>Entities\Static Entities\ObjectStatc</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticEntity.h">
+      <Filter>Entities\Static Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -121,6 +133,21 @@
     </Filter>
     <Filter Include="Entities\Dynamic Entities\Enemies">
       <UniqueIdentifier>{864c4ea5-3003-4f62-9dff-5aa86a22e75e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Dynamic Entities\Player">
+      <UniqueIdentifier>{56b81685-c59a-4b57-afc3-a915471f3703}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Dynamic Entities\Boss">
+      <UniqueIdentifier>{f886f9d3-4e0a-4928-95b9-d5a388305316}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Static Entities\Chest">
+      <UniqueIdentifier>{727a0490-44db-4f55-a82f-cf5b4da2ddc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Static Entities\Consumable">
+      <UniqueIdentifier>{3f53adef-2a8f-40e6-b979-d2e85219a2ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Static Entities\ObjectStatc">
+      <UniqueIdentifier>{f5bf0063-e35f-4cd0-b913-8c5f0894b2f0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
