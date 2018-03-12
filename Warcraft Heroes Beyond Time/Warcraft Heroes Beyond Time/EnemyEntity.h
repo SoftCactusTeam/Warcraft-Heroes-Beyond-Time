@@ -3,6 +3,8 @@
 
 #include "DynamicEntity.h"
 
+#define NUMBER_OF_ORIENTATIONS 8
+
 class EnemyEntity : public DynamicEntity {
 public:
 	EnemyEntity(iPoint coor, ENEMY_TYPE character, SDL_Texture* texture);
@@ -11,9 +13,15 @@ public:
 	virtual bool Update(float dt);
 	virtual bool Finish();
 
-	//virtual bool Atac();
+	void LookAtPlayer();
+	uint DistanceToPlayer();
 public:
 	ENEMY_TYPE type = ENEMY_TYPE::NON_ENEMY;
+
+protected:
+	Animation animIdle[NUMBER_OF_ORIENTATIONS];
+	Animation animWalk[NUMBER_OF_ORIENTATIONS];
+	Animation animAtac[NUMBER_OF_ORIENTATIONS];
 
 };
 

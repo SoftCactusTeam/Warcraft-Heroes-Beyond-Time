@@ -1,4 +1,5 @@
 #include "DynamicEntity.h"
+#include <math.h>
 
 DynamicEntity::DynamicEntity(iPoint coor, SDL_Texture* texture) : Entity(coor, texture) {}
 
@@ -64,4 +65,13 @@ FIXED_ANGLE DynamicEntity::CaculateAngle(iPoint objectiveCoor)
 	}
 
 	return angleToReturn;
+}
+
+uint DynamicEntity::DistanceToObejective(iPoint objectiveCoor)
+{
+	uint totalX = this->pos.x + objectiveCoor.x;
+	uint totalY = this->pos.y + objectiveCoor.y;
+	uint distance =  sqrt((totalX * totalX) + (totalY * totalY));
+
+	return distance;
 }
