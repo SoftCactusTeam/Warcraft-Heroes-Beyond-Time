@@ -10,7 +10,7 @@ bool EnemyEntity::Update(float dt) { return true; }
 
 bool EnemyEntity::Finish() { return true; }
 
-void EnemyEntity::LookAtPlayer()
+FIXED_ANGLE EnemyEntity::LookAtPlayer()
 {
 	switch (CaculateAngle(App->entities->actualPlayer->pos))
 	{
@@ -39,6 +39,7 @@ void EnemyEntity::LookAtPlayer()
 		orientation = FIXED_ANGLE::UP_LEFT;
 		break;
 	}
+	return orientation;
 }
 
 uint EnemyEntity::DistanceToPlayer()

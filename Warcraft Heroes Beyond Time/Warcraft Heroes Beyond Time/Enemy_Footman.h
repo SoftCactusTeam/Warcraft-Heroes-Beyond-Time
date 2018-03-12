@@ -12,8 +12,10 @@ public:
 	bool Update(float dt);
 	bool Finish();
 
+	void ChargeAnimations();
+
 public:
-	Animation baseAnm;
+
 };
 
 #endif

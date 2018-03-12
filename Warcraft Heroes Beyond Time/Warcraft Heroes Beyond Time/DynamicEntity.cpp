@@ -36,7 +36,6 @@ FIXED_ANGLE DynamicEntity::CaculateAngle(iPoint objectiveCoor)
 			angleToReturn = FIXED_ANGLE::RIGHT;
 		else if (dY / 2.5f > dX)
 			angleToReturn = FIXED_ANGLE::UP;
-		// there could be an else angleToReturn = UpRight, but isn't necessary
 		break;
 	case FIXED_ANGLE::UP_LEFT:
 		dX = (float)pos.x - (float)objectiveCoor.x;
@@ -69,9 +68,7 @@ FIXED_ANGLE DynamicEntity::CaculateAngle(iPoint objectiveCoor)
 
 uint DynamicEntity::DistanceToObejective(iPoint objectiveCoor)
 {
-	uint totalX = this->pos.x + objectiveCoor.x;
-	uint totalY = this->pos.y + objectiveCoor.y;
-	uint distance =  sqrt((totalX * totalX) + (totalY * totalY));
-
-	return distance;
+	uint totalX = this->pos.x - objectiveCoor.x;
+	uint totalY = this->pos.y - objectiveCoor.y;
+	return sqrt((totalX * totalX) + (totalY * totalY));
 }

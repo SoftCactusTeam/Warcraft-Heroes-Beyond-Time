@@ -51,7 +51,7 @@ bool EntitySystem::Start()
 {
 	LOG("Loading textures");
 	spritesheetsEntities.push_back(App->textures->Load("images/thrall_spritesheet.png"));
-
+	spritesheetsEntities.push_back(App->textures->Load("Sprites/Footman/Footman.png"));
 	bool ret = true;
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end() && ret; ++it)
 	{
@@ -163,7 +163,7 @@ void EntitySystem::AddEnemy(iPoint coor, ENEMY_TYPE type)
 	EnemyEntity* newEntity = nullptr;
 	switch (type) {
 	case ENEMY_TYPE::FOOTMAN:
-		newEntity = new Enemy_Footman(coor, ENEMY_TYPE::FOOTMAN, spritesheetsEntities[THRALLSHEET] /*SHA DE CANVIAR !*/);
+		newEntity = new Enemy_Footman(coor, ENEMY_TYPE::FOOTMAN, spritesheetsEntities[FOOTMAN_SHEET] /*SHA DE CANVIAR !*/);
 		break;
 	case ENEMY_TYPE::ARCHER:
 		newEntity = new EnemyEntity(coor, ENEMY_TYPE::ARCHER, nullptr);
@@ -208,7 +208,7 @@ void EntitySystem::AddPlayer(iPoint coor, PLAYER_TYPE type)
 	switch (type)
 	{
 	case PLAYER_TYPE::THRALL:
-		newEntity = new Thrall(coor, PLAYER_TYPE::THRALL, spritesheetsEntities[THRALLSHEET]);
+		newEntity = new Thrall(coor, PLAYER_TYPE::THRALL, spritesheetsEntities[THRALL_SHEET]);
 		break;
 	case PLAYER_TYPE::VALEERA:
 		newEntity = new PlayerEntity(coor, PLAYER_TYPE::VALEERA, nullptr);

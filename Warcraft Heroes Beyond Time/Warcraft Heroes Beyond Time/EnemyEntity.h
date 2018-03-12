@@ -13,7 +13,7 @@ public:
 	virtual bool Update(float dt);
 	virtual bool Finish();
 
-	void LookAtPlayer();
+	FIXED_ANGLE LookAtPlayer();
 	uint DistanceToPlayer();
 public:
 	ENEMY_TYPE type = ENEMY_TYPE::NON_ENEMY;
