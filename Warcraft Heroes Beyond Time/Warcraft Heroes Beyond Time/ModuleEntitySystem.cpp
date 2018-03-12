@@ -150,7 +150,7 @@ bool EntitySystem::UnloadTexturesVector()
 	return spritesheetsEntities.size() <= 0;
 }
 
-void EntitySystem::AddEnemy(iPoint coor, ENEMY_TYPE type)
+void EntitySystem::AddEnemy(fPoint coor, ENEMY_TYPE type)
 {
 	EnemyEntity* newEntity = nullptr;
 	switch (type) {
@@ -176,7 +176,7 @@ void EntitySystem::AddEnemy(iPoint coor, ENEMY_TYPE type)
 	toSpawn.push_back((Entity*)newEntity);
 }
 
-void EntitySystem::AddBoss(iPoint coor, BOSS_TYPE type)
+void EntitySystem::AddBoss(fPoint coor, BOSS_TYPE type)
 {
 	BossEntity* newEntity = nullptr;
 	switch (type) {
@@ -193,7 +193,7 @@ void EntitySystem::AddBoss(iPoint coor, BOSS_TYPE type)
 	toSpawn.push_back((Entity*)newEntity);
 }
 
-void EntitySystem::AddPlayer(iPoint coor, PLAYER_TYPE type)
+void EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
 {
 	PlayerEntity* newEntity = nullptr;
 	switch (type)
@@ -211,7 +211,7 @@ void EntitySystem::AddPlayer(iPoint coor, PLAYER_TYPE type)
 	toSpawn.push_back(newEntity);
 }
 
-void EntitySystem::AddConsumable(iPoint coor, CONSUMABLE_TYPE type)
+void EntitySystem::AddConsumable(fPoint coor, CONSUMABLE_TYPE type)
 {
 	ConsumableEntity* newEntity = nullptr;
 	switch (type) {
@@ -228,7 +228,7 @@ void EntitySystem::AddConsumable(iPoint coor, CONSUMABLE_TYPE type)
 	toSpawn.push_back((Entity*)newEntity);
 }
 
-void EntitySystem::AddChest(iPoint coor, CHEST_TYPE type) 
+void EntitySystem::AddChest(fPoint coor, CHEST_TYPE type) 
 {
 	ChestEntiy* newEntity = nullptr;
 	switch (type) {
@@ -245,7 +245,7 @@ void EntitySystem::AddChest(iPoint coor, CHEST_TYPE type)
 	toSpawn.push_back((Entity*)newEntity);
 }
 
-void EntitySystem::AddStaticObject(iPoint coor, STATIC_OBJECT_TYPE type) 
+void EntitySystem::AddStaticObject(fPoint coor, STATIC_OBJECT_TYPE type) 
 {
 	StaticObjectEntity* newEntity = nullptr;
 	switch (type) 

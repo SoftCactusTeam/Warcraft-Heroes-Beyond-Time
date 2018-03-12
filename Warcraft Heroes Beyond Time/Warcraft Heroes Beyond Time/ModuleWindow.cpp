@@ -33,36 +33,35 @@ bool Window::Awake(pugi::xml_node& windowNode)
 		Uint32 flags = SDL_WINDOW_SHOWN;
 		bool fullscreen = false;
 		bool borderless = false;
-		bool resizable = false;
+		bool resizable = true;
 		bool fullscreen_window = false;
 
-		width = 720;
-		height = 480;
+		width = 1920;
+		height = 1080;
 		scale = 1;
 
-		if(fullscreen == true)
+		if (fullscreen == true)
 		{
 			flags |= SDL_WINDOW_FULLSCREEN;
 		}
 
-		if(borderless == true)
+		if (borderless == true)
 		{
 			flags |= SDL_WINDOW_BORDERLESS;
 		}
 
-		if(resizable == true)
+		if (resizable == true)
 		{
 			flags |= SDL_WINDOW_RESIZABLE;
 		}
 
-		if(fullscreen_window == true)
+		if (fullscreen_window == true)
 		{
 			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 		}
 
 		window = SDL_CreateWindow(App->GetTitle(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 		SDL_SetWindowIcon(window, icon_surface);
-
 		if(window == NULL)
 		{
 			LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());

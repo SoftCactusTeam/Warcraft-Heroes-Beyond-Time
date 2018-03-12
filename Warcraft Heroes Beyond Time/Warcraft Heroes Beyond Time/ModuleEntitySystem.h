@@ -33,12 +33,12 @@ public:
 	bool ClearEntitiesList();
 	bool UnloadTexturesVector();
 
-	void AddPlayer(iPoint coor, PLAYER_TYPE type);
-	void AddEnemy(iPoint coor, ENEMY_TYPE type);
-	void AddBoss(iPoint coor, BOSS_TYPE type);
-	void AddConsumable(iPoint coor, CONSUMABLE_TYPE type);
-	void AddChest(iPoint coor, CHEST_TYPE type);
-	void AddStaticObject(iPoint coor, STATIC_OBJECT_TYPE type);
+	void AddPlayer(fPoint coor, PLAYER_TYPE type);
+	void AddEnemy(fPoint coor, ENEMY_TYPE type);
+	void AddBoss(fPoint coor, BOSS_TYPE type);
+	void AddConsumable(fPoint coor, CONSUMABLE_TYPE type);
+	void AddChest(fPoint coor, CHEST_TYPE type);
+	void AddStaticObject(fPoint coor, STATIC_OBJECT_TYPE type);
 
 private:
 	std::list<Entity*>		entities;

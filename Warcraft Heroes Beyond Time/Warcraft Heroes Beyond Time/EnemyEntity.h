@@ -5,7 +5,7 @@
 
 class EnemyEntity : public DynamicEntity {
 public:
-	EnemyEntity(iPoint coor, ENEMY_TYPE character, SDL_Texture* texture);
+	EnemyEntity(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture);
 
 	bool Start();
 	bool Update();

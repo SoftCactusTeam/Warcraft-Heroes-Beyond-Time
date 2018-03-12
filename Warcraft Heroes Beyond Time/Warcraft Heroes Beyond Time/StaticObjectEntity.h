@@ -5,7 +5,7 @@
 
 class StaticObjectEntity : public StaticEntity {
 public:
-	StaticObjectEntity(iPoint coor, STATIC_OBJECT_TYPE type, SDL_Texture* texture);
+	StaticObjectEntity(fPoint coor, STATIC_OBJECT_TYPE type, SDL_Texture* texture);
 
 	bool Start();
 	bool Finish();

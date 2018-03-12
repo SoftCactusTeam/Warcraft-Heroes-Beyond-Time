@@ -1,12 +1,12 @@
 #include "DynamicEntity.h"
 
-DynamicEntity::DynamicEntity(iPoint coor, SDL_Texture* texture) : Entity(coor, texture) {}
+DynamicEntity::DynamicEntity(fPoint coor, SDL_Texture* texture) : Entity(coor, texture) {}
 
 bool DynamicEntity::Start() { return true; }
 bool DynamicEntity::Update(float dt) { return true; }
 bool DynamicEntity::Finish() { return true; }
 
-FIXED_ANGLE DynamicEntity::CaculateAngle(iPoint objectiveCoor)
+FIXED_ANGLE DynamicEntity::CaculateAngle(fPoint objectiveCoor)
 {
 	FIXED_ANGLE angleToReturn = FIXED_ANGLE::NON_ANGLE;
 	if (this->pos.x - objectiveCoor.x >= 0)

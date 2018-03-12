@@ -2,7 +2,7 @@
 #include "Thrall.h"
 #include "ModuleInput.h"
 
-Thrall::Thrall(iPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEntity(coor, type, texture) 
+Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEntity(coor, type, texture) 
 {
 	idleDown.PushBack({ 0,188,55,47 });
 	idleDown.PushBack({ 55,188,55,47 });

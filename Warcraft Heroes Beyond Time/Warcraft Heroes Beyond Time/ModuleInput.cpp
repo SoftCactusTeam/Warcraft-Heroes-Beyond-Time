@@ -78,6 +78,7 @@ bool Input::PreUpdate()
 	{
 		if (keys[i] == 1)
 		{
+			kbAvailable = true;
 			key_pressed = true;
 
 			if (keyboard[i] == KEY_IDLE) { 
@@ -153,7 +154,6 @@ bool Input::PreUpdate()
 
 		case SDL_MOUSEMOTION:
 		{
-
 			int scale = App->window->GetScale();
 			mouse_motion_x = event.motion.xrel / scale;
 			mouse_motion_y = event.motion.yrel / scale;
@@ -164,6 +164,7 @@ bool Input::PreUpdate()
 
 		case SDL_JOYAXISMOTION:
 			if (event.jaxis.which == 0)
+				kbAvailable = false;
 			{
 				if (event.jaxis.axis == 0)
 				{
@@ -184,7 +185,10 @@ bool Input::PreUpdate()
 
 		case SDL_JOYBUTTONDOWN:
 			if (event.jbutton.which == 0)
+			{
+				kbAvailable = false;
 				jButtons[event.jbutton.button - 1] = KEY_DOWN;
+			}
 			break;
 
 		case SDL_JOYBUTTONUP:

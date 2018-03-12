@@ -5,7 +5,7 @@
 
 class ChestEntiy : public StaticEntity {
 public:
-	ChestEntiy(iPoint coor, CHEST_TYPE type, SDL_Texture* texture);
+	ChestEntiy(fPoint coor, CHEST_TYPE type, SDL_Texture* texture);
 
 	bool Start();
 	bool Finish();

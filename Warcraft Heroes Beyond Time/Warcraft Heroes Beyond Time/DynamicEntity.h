@@ -5,13 +5,13 @@
 
 class DynamicEntity : public Entity {
 public:
-	DynamicEntity(iPoint coor, SDL_Texture* texture);
+	DynamicEntity(fPoint coor, SDL_Texture* texture);
 
 	virtual bool Start();
 	virtual bool Update(float dt);
 	virtual bool Finish();
 
-	FIXED_ANGLE CaculateAngle(iPoint objectiveCoor);
+	FIXED_ANGLE CaculateAngle(fPoint objectiveCoor);
 
 public:
 	int live = -1;

@@ -75,6 +75,7 @@ public:
 	bool IsTextReady() { return textReady; };
 	void SetTextReadyFalse() { textReady = false; };
 	char* GetText() { return inputText; };
+	bool IsKeyboardAvailable() { return kbAvailable; }
 
 	void ExternActionsAtKeyInput(int key);
 private:
@@ -95,6 +96,7 @@ private:
 
 	float xAxis = 0;
 	float yAxis = 0;
+	bool kbAvailable = false;
 };
 
 #endif

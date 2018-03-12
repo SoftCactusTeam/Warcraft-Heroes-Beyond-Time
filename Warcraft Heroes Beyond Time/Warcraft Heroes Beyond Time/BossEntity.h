@@ -5,7 +5,7 @@
 
 class BossEntity : public DynamicEntity {
 public:
-	BossEntity(iPoint coor, BOSS_TYPE type, SDL_Texture* texture);
+	BossEntity(fPoint coor, BOSS_TYPE type, SDL_Texture* texture);
 
 	bool Start();
 	bool Update();
