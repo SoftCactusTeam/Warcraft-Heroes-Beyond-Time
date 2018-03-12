@@ -27,12 +27,26 @@
     <ClCompile Include="EnemyEntity.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
-
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="InputBox.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="GUIElem.cpp" />
+    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Fonts.cpp" />
+    <ClCompile Include="FileSystem.cpp" />
+    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="ModuleAudio.cpp" />
+    <ClCompile Include="ModuleEntitySystem.cpp" />
+    <ClCompile Include="ModuleGUI.cpp" />
+    <ClCompile Include="ModuleInput.cpp" />
+    <ClCompile Include="Log.cpp" />
+    <ClCompile Include="ModuleRender.cpp" />
+    <ClCompile Include="ModuleTextures.cpp" />
+    <ClCompile Include="ModuleWindow.cpp" />
+    <ClCompile Include="PlayerEntity.cpp" />
+    <ClCompile Include="PugiXml\src\pugixml.cpp" />
+    <ClCompile Include="Thrall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene.h" />
@@ -67,6 +81,27 @@
     <ClInclude Include="GUIElem.h" />
     <ClInclude Include="InputBox.h" />
     <ClInclude Include="Label.h" />
+    <ClInclude Include="Animation.h" />
+    <ClInclude Include="Application.h" />
+    <ClInclude Include="Globals.h" />
+    <ClInclude Include="Fonts.h" />
+    <ClInclude Include="FileSystem.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="ModuleAudio.h" />
+    <ClInclude Include="ModuleEntitySystem.h" />
+    <ClInclude Include="ModuleGUI.h" />
+    <ClInclude Include="ModuleInput.h" />
+    <ClInclude Include="Module.h" />
+    <ClInclude Include="p2Defs.h" />
+    <ClInclude Include="Log.h" />
+    <ClInclude Include="p2Point.h" />
+    <ClInclude Include="ModuleRender.h" />
+    <ClInclude Include="ModuleTextures.h" />
+    <ClInclude Include="ModuleWindow.h" />
+    <ClInclude Include="PlayerEntity.h" />
+    <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
+    <ClInclude Include="PugiXml\src\pugixml.hpp" />
+    <ClInclude Include="Thrall.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Entities">
@@ -78,5 +113,8 @@
     <Filter Include="Entities\Static Entities">
       <UniqueIdentifier>{1bfbf667-b19d-49f5-816c-83b78491c311}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\Game\config.xml" />
   </ItemGroup>
 </Project>

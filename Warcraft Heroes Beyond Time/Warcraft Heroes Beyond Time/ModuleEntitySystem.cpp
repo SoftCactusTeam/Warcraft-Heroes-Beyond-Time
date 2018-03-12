@@ -34,7 +34,7 @@ EntitySystem::EntitySystem() : Module()
 
 void EntitySystem::Init()
 {
-	active = false;
+	active = true;
 }
 
 bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
@@ -47,7 +47,7 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 bool EntitySystem::Start()
 {
 	LOG("Loading textures");
-	spritesheetsEntities.push_back(Application->textures->Load("thrall_spritesheet.png"));
+	spritesheetsEntities.push_back(App->textures->Load("images/thrall_spritesheet.png"));
 
 	return true;
 }
