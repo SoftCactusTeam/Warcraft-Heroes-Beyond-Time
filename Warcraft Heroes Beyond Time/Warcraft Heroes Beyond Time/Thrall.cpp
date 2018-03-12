@@ -28,6 +28,30 @@ Thrall::Thrall(iPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	idleRight.PushBack({ 165,94,55,47 });
 	idleRight.speed = 0.2f;
 
+	idleUpRight.PushBack({ 0,47,55,47 });
+	idleUpRight.PushBack({ 55,47,55,47 });
+	idleUpRight.PushBack({ 110,47,55,47 });
+	idleUpRight.PushBack({ 165,47,55,47 });
+	idleUpRight.speed = 0.2f;
+
+	idleUpLeft.PushBack({ 0,329,55,47 });
+	idleUpLeft.PushBack({ 55,329,55,47 });
+	idleUpLeft.PushBack({ 110,329,55,47 });
+	idleUpLeft.PushBack({ 165,329,55,47 });
+	idleUpLeft.speed = 0.2f;
+
+	idleDownRight.PushBack({ 0,141,55,47 });
+	idleDownRight.PushBack({ 55,141,55,47 });
+	idleDownRight.PushBack({ 110,141,55,47 });
+	idleDownRight.PushBack({ 165,141,55,47 });
+	idleDownRight.speed = 0.2f;
+
+	idleDownLeft.PushBack({ 0,235,55,47 });
+	idleDownLeft.PushBack({ 55,235,55,47 });
+	idleDownLeft.PushBack({ 110,235,55,47 });
+	idleDownLeft.PushBack({ 165,235,55,47 });
+	idleDownLeft.speed = 0.2f;
+
 	down.PushBack({ 0,564,55,47 });
 	down.PushBack({ 55,564,55,47 });
 	down.PushBack({ 110,564,55,47 });
@@ -51,6 +75,30 @@ Thrall::Thrall(iPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	right.PushBack({ 110,470,55,47 });
 	right.PushBack({ 165,470,55,47 });
 	right.speed = 0.2f;
+
+	upRight.PushBack({ 0,423,55,47 });
+	upRight.PushBack({ 55,423,55,47 });
+	upRight.PushBack({ 110,423,55,47 });
+	upRight.PushBack({ 165,423,55,47 });
+	upRight.speed = 0.2f;
+
+	upLeft.PushBack({ 0,705,55,47 });
+	upLeft.PushBack({ 55,705,55,47 });
+	upLeft.PushBack({ 110,705,55,47 });
+	upLeft.PushBack({ 165,705,55,47 });
+	upLeft.speed = 0.2f;
+
+	downRight.PushBack({ 0,517,55,47 });
+	downRight.PushBack({ 55,517,55,47 });
+	downRight.PushBack({ 110,517,55,47 });
+	downRight.PushBack({ 165,517,55,47 });
+	downRight.speed = 0.2f;
+
+	downLeft.PushBack({ 0,611,55,47 });
+	downLeft.PushBack({ 55,611,55,47 });
+	downLeft.PushBack({ 110,611,55,47 });
+	downLeft.PushBack({ 165,611,55,47 });
+	downLeft.speed = 0.2f;
 }
 
 bool Thrall::Update(float dt)
