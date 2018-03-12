@@ -19,13 +19,7 @@ bool Enemy_Footman::Update(float dt)
 	{
 	case FOOTMAN_STATE::FOOTMAN_IDLE:
 		anim = &animIdle[LookAtPlayer()];
-		if (DistanceToPlayer() < DISTANCE_TO_ATAC) {
-			state = FOOTMAN_STATE::FOOTMAN_ATAC;
-			accountantPrincipal = SDL_GetTicks() + ATAC_COOLDOWN;
-			anim = &animAtac[LookAtPlayer()];
-			anim->Reset();
-		}
-		else if (DistanceToPlayer() < DISTANCE_TO_MOVE) {
+		if (DistanceToPlayer() < DISTANCE_TO_MOVE) {
 			state = FOOTMAN_STATE::FOOTMAN_WALK;
 		}
 		break;
@@ -38,6 +32,7 @@ bool Enemy_Footman::Update(float dt)
 			state = FOOTMAN_STATE::FOOTMAN_ATAC;
 			accountantPrincipal = SDL_GetTicks() + ATAC_COOLDOWN;
 			anim = &animAtac[LookAtPlayer()];
+			anim->Reset();
 		}
 		break;
 	case FOOTMAN_STATE::FOOTMAN_ATAC:
@@ -185,51 +180,51 @@ void Enemy_Footman::ChargeAnimations()
 
 	// -------------------------------------------------------------------
 
+	animCharge[FIXED_ANGLE::UP].PushBack({ 457,137,76,68 });
 	animCharge[FIXED_ANGLE::UP].PushBack({ 533,137,76,68 });
 	animCharge[FIXED_ANGLE::UP].PushBack({ 609,137,76,68 });
-	animCharge[FIXED_ANGLE::UP].PushBack({ 685,137,76,68 });
 	animCharge[FIXED_ANGLE::UP].speed = 0.2f;
 	animCharge[FIXED_ANGLE::UP].loop = false;
 
+	animCharge[FIXED_ANGLE::UP_RIGHT].PushBack({ 685,137,76,68 });
 	animCharge[FIXED_ANGLE::UP_RIGHT].PushBack({ 761,137,76,68 });
 	animCharge[FIXED_ANGLE::UP_RIGHT].PushBack({ 837,137,76,68 });
-	animCharge[FIXED_ANGLE::UP_RIGHT].PushBack({ 913,137,76,68 });
 	animCharge[FIXED_ANGLE::UP_RIGHT].speed = 0.1f;
 	animCharge[FIXED_ANGLE::UP_RIGHT].loop = false;
 
-	animCharge[FIXED_ANGLE::RIGHT].PushBack({ 1,137,76,68 });
-	animCharge[FIXED_ANGLE::RIGHT].PushBack({ 77,137,76,68 });
-	animCharge[FIXED_ANGLE::RIGHT].PushBack({ 153,137,76,68 });
+	animCharge[FIXED_ANGLE::RIGHT].PushBack({ 913,137,76,68 });
+	animCharge[FIXED_ANGLE::RIGHT].PushBack({ 1,205,76,68 });
+	animCharge[FIXED_ANGLE::RIGHT].PushBack({ 77,205,76,68 });
 	animCharge[FIXED_ANGLE::RIGHT].speed = 0.1f;
 	animCharge[FIXED_ANGLE::RIGHT].loop = false;
 
-	animCharge[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 229,137,76,68 });
-	animCharge[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 305,137,76,68 });
-	animCharge[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 381,137,76,68 });
+	animCharge[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 153,205,76,68 });
+	animCharge[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 229,205,76,68 });
+	animCharge[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 305,205,76,68 });
 	animCharge[FIXED_ANGLE::DOWN_RIGHT].speed = 0.1f;
 	animCharge[FIXED_ANGLE::DOWN_RIGHT].loop = false;
 
-	animCharge[FIXED_ANGLE::DOWN].PushBack({ 457,137,76,68 });
-	animCharge[FIXED_ANGLE::DOWN].PushBack({ 533,137,76,68 });
-	animCharge[FIXED_ANGLE::DOWN].PushBack({ 609,137,76,68 });
+	animCharge[FIXED_ANGLE::DOWN].PushBack({ 381,205,76,68 });
+	animCharge[FIXED_ANGLE::DOWN].PushBack({ 457,205,76,68 });
+	animCharge[FIXED_ANGLE::DOWN].PushBack({ 533,205,76,68 });
 	animCharge[FIXED_ANGLE::DOWN].speed = 0.1f;
 	animCharge[FIXED_ANGLE::DOWN].loop = false;
 
-	animCharge[FIXED_ANGLE::DOWN_LEFT].PushBack({ 685,137,76,68 });
-	animCharge[FIXED_ANGLE::DOWN_LEFT].PushBack({ 837,137,76,68 });
-	animCharge[FIXED_ANGLE::DOWN_LEFT].PushBack({ 913,137,76,68 });
+	animCharge[FIXED_ANGLE::DOWN_LEFT].PushBack({ 609,205,76,68 });
+	animCharge[FIXED_ANGLE::DOWN_LEFT].PushBack({ 685,205,76,68 });
+	animCharge[FIXED_ANGLE::DOWN_LEFT].PushBack({ 761,205,76,68 });
 	animCharge[FIXED_ANGLE::DOWN_LEFT].speed = 0.1f;
 	animCharge[FIXED_ANGLE::DOWN_LEFT].loop = false;
 
-	animCharge[FIXED_ANGLE::LEFT].PushBack({ 1,205,76,68 });
-	animCharge[FIXED_ANGLE::LEFT].PushBack({ 77,205,76,68 });
-	animCharge[FIXED_ANGLE::LEFT].PushBack({ 305,205,76,68 });
+	animCharge[FIXED_ANGLE::LEFT].PushBack({ 837,205,76,68 });
+	animCharge[FIXED_ANGLE::LEFT].PushBack({ 913,205,76,68 });
+	animCharge[FIXED_ANGLE::LEFT].PushBack({ 1,273,76,68 });
 	animCharge[FIXED_ANGLE::LEFT].speed = 0.1f;
 	animCharge[FIXED_ANGLE::LEFT].loop = false;
 
-	animCharge[FIXED_ANGLE::UP_LEFT].PushBack({ 381,205,76,68 });
-	animCharge[FIXED_ANGLE::UP_LEFT].PushBack({ 457,205,76,68 });
-	animCharge[FIXED_ANGLE::UP_LEFT].PushBack({ 533,205,76,68 });
+	animCharge[FIXED_ANGLE::UP_LEFT].PushBack({ 77,273,76,68 });
+	animCharge[FIXED_ANGLE::UP_LEFT].PushBack({ 153,273,76,68 });
+	animCharge[FIXED_ANGLE::UP_LEFT].PushBack({ 229,273,76,68 });
 	animCharge[FIXED_ANGLE::UP_LEFT].speed = 0.1f;
 	animCharge[FIXED_ANGLE::UP_LEFT].loop = false;
 }
