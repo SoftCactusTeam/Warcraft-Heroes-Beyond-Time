@@ -3,6 +3,13 @@
 
 #include "EnemyEntity.h"
 
+enum FOOTMAN_STATE{
+	FOOTMAN_IDLE,
+	FOOTMAN_WALK,
+	FOOTMAN_ATAC,
+	FOOTMAN_CHARGE
+};
+
 class Enemy_Footman : public EnemyEntity
 {
 public:
@@ -15,7 +22,7 @@ public:
 	void ChargeAnimations();
 
 public:
-
+	FOOTMAN_STATE state;
 };
 
 #endif
