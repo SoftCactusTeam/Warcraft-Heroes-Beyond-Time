@@ -19,6 +19,16 @@ bool Scene::Awake()
 
 bool Scene::Start()
 {
+	LabelInfo defLabel;
+	defLabel.color = Red;
+	defLabel.fontName = "Arial16";
+	defLabel.text = "Hey bitches im here";
+	
+	App->gui->CreateLabel({0,0}, defLabel, nullptr, nullptr);
+	App->entities->AddPlayer({0,0}, THRALL);
+
+
+
 	//LabelInfo defLabel;
 	//defLabel.color = Red;
 	//defLabel.fontName = "Arial16";

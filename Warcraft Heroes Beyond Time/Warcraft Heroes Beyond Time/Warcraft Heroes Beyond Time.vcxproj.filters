@@ -18,9 +18,6 @@
     <ClCompile Include="Entity.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerEntity.cpp">
-      <Filter>Entities\Dynamic Entities</Filter>
-    </ClCompile>
     <ClCompile Include="StaticEntity.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
@@ -30,63 +27,26 @@
     <ClCompile Include="EnemyEntity.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
-    <ClCompile Include="Application.cpp" />
-    <ClCompile Include="GUIElem.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Label.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="InputBox.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Console.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Fonts.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="FileSystem.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleAudio.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleInput.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleEntitySystem.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleRender.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleGUI.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleTextures.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleWindow.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Color.cpp">
-      <Filter>Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="Log.cpp">
-      <Filter>Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="PugiXml\src\pugixml.cpp">
-      <Filter>Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="InputBox.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="GUIElem.cpp" />
+    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Fonts.cpp" />
+    <ClCompile Include="FileSystem.cpp" />
+    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="ModuleAudio.cpp" />
+    <ClCompile Include="ModuleEntitySystem.cpp" />
+    <ClCompile Include="ModuleGUI.cpp" />
+    <ClCompile Include="ModuleInput.cpp" />
+    <ClCompile Include="Log.cpp" />
+    <ClCompile Include="ModuleRender.cpp" />
+    <ClCompile Include="ModuleTextures.cpp" />
+    <ClCompile Include="ModuleWindow.cpp" />
+    <ClCompile Include="PlayerEntity.cpp" />
+    <ClCompile Include="PugiXml\src\pugixml.cpp" />
+    <ClCompile Include="Thrall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene.h" />
@@ -111,86 +71,37 @@
     <ClInclude Include="Entity.h">
       <Filter>Entities</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerEntity.h">
-      <Filter>Entities\Dynamic Entities</Filter>
-    </ClInclude>
     <ClInclude Include="StaticEntity.h">
       <Filter>Entities</Filter>
     </ClInclude>
     <ClInclude Include="StaticObjectEntity.h">
       <Filter>Entities\Static Entities</Filter>
     </ClInclude>
-    <ClInclude Include="Application.h" />
-    <ClInclude Include="GUIElem.h">
-      <Filter>GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Label.h">
-      <Filter>GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="InputBox.h">
-      <Filter>GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Console.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Fonts.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="FileSystem.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleEntitySystem.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleAudio.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleRender.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleTextures.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleGUI.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleInput.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleWindow.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Animation.h">
-      <Filter>Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="Globals.h">
-      <Filter>Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="Log.h">
-      <Filter>Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="p2Defs.h">
-      <Filter>Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="p2Point.h">
-      <Filter>Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="PugiXml\src\pugiconfig.hpp">
-      <Filter>Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="PugiXml\src\pugixml.hpp">
-      <Filter>Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="Module.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Helpers</Filter>
-    </ClInclude>
     <ClInclude Include="Console.h" />
     <ClInclude Include="GUIElem.h" />
     <ClInclude Include="InputBox.h" />
     <ClInclude Include="Label.h" />
+    <ClInclude Include="Animation.h" />
+    <ClInclude Include="Application.h" />
+    <ClInclude Include="Globals.h" />
+    <ClInclude Include="Fonts.h" />
+    <ClInclude Include="FileSystem.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="ModuleAudio.h" />
+    <ClInclude Include="ModuleEntitySystem.h" />
+    <ClInclude Include="ModuleGUI.h" />
+    <ClInclude Include="ModuleInput.h" />
+    <ClInclude Include="Module.h" />
+    <ClInclude Include="p2Defs.h" />
+    <ClInclude Include="Log.h" />
+    <ClInclude Include="p2Point.h" />
+    <ClInclude Include="ModuleRender.h" />
+    <ClInclude Include="ModuleTextures.h" />
+    <ClInclude Include="ModuleWindow.h" />
+    <ClInclude Include="PlayerEntity.h" />
+    <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
+    <ClInclude Include="PugiXml\src\pugixml.hpp" />
+    <ClInclude Include="Thrall.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Entities">
@@ -201,15 +112,6 @@
     </Filter>
     <Filter Include="Entities\Static Entities">
       <UniqueIdentifier>{1bfbf667-b19d-49f5-816c-83b78491c311}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GUI">
-      <UniqueIdentifier>{46175166-3091-43c2-981c-0110e882db7f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Modules">
-      <UniqueIdentifier>{3584f8b8-d46b-4fa6-8a57-876ba69aa374}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Helpers">
-      <UniqueIdentifier>{40d1c3b8-72bb-40e8-9504-723a3c09686b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
