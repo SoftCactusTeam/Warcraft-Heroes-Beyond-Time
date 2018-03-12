@@ -40,10 +40,13 @@ public:
 	void AddChest(iPoint coor, CHEST_TYPE type);
 	void AddStaticObject(iPoint coor, STATIC_OBJECT_TYPE type);
 
+	Entity* actualPlayer = nullptr;
+
 private:
 	std::list<Entity*>		entities;
 	std::list<Entity*>		toSpawn; 
 	std::vector<SDL_Texture*> spritesheetsEntities;
+
 };
 
 #endif

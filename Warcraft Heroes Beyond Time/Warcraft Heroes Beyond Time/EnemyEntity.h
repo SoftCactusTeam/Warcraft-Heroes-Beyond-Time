@@ -8,9 +8,10 @@ public:
 	EnemyEntity(iPoint coor, ENEMY_TYPE character, SDL_Texture* texture);
 
 	virtual bool Start();
-	virtual bool Update();
+	virtual bool Update(float dt);
 	virtual bool Finish();
 
+	//virtual bool Atac();
 public:
 	ENEMY_TYPE type = ENEMY_TYPE::NON_ENEMY;
 

@@ -199,6 +199,7 @@ void EntitySystem::AddBoss(iPoint coor, BOSS_TYPE type)
 		break;
 	}
 	toSpawn.push_back((Entity*)newEntity);
+	actualPlayer = (Entity*)newEntity;
 }
 
 void EntitySystem::AddPlayer(iPoint coor, PLAYER_TYPE type)
@@ -217,6 +218,7 @@ void EntitySystem::AddPlayer(iPoint coor, PLAYER_TYPE type)
 		break;
 	}
 	toSpawn.push_back(newEntity);
+	actualPlayer = newEntity;
 }
 
 void EntitySystem::AddConsumable(iPoint coor, CONSUMABLE_TYPE type)

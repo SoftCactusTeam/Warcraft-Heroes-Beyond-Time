@@ -21,7 +21,7 @@ bool Scene::Start()
 {
 
 	App->entities->AddPlayer({0,0}, THRALL);
-	App->entities->AddEnemy({ 10,0 }, FOOTMAN);
+	App->entities->AddEnemy({ 80,80 }, FOOTMAN);
 	//LabelInfo defLabel;
 	//defLabel.color = Red;
 	//defLabel.fontName = "Arial16";

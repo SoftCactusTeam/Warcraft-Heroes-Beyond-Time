@@ -9,7 +9,7 @@ public:
 	Enemy_Footman(iPoint coor, ENEMY_TYPE character, SDL_Texture* texture);
 
 	bool Start();
-	bool Update();
+	bool Update(float dt);
 	bool Finish();
 
 public:
