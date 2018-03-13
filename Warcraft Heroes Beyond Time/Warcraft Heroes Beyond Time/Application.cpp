@@ -16,6 +16,7 @@
 #include "ModuleAudio.h"
 #include "Scene.h"
 #include "Console.h"
+#include "ModuleColliders.h"
 
 #include "Fonts.h"
 #include "ModuleGUI.h"
@@ -33,7 +34,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	audio = new Audio();
 	scene = new Scene();
 	console = new Console();
-
+	colliders = new ModuleColliders();
 	//map = new Map();
 
 	// Ordered for awake / Start / Update
@@ -49,6 +50,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(fs);
 	AddModule(console);
 	AddModule(gui);
+	AddModule(colliders);
 	//AddModule(map);
 
 	// render last to swap buffer

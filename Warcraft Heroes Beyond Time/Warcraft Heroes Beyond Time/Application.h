@@ -22,7 +22,7 @@ class Audio;
 class Scene;
 class Fonts;
 class Console;
-
+class ModuleColliders;
 
 class Application
 {
@@ -75,7 +75,7 @@ public:
 	Audio*					audio = nullptr;
 	Scene*					scene = nullptr;
 	Console*				console = nullptr;
-
+	ModuleColliders*		colliders = nullptr;
 public:
 
 	float dt = 0.0f;

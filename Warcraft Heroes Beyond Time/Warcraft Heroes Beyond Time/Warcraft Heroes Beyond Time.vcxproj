@@ -136,6 +136,7 @@
     <ClCompile Include="Fonts.cpp" />
     <ClCompile Include="FileSystem.cpp" />
     <ClCompile Include="InputBox.cpp" />
+    <ClCompile Include="ModuleColliders.cpp" />
     <ClCompile Include="Pathfinding.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Label.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="FileSystem.h" />
     <ClInclude Include="GUIElem.h" />
     <ClInclude Include="InputBox.h" />
+    <ClInclude Include="ModuleColliders.h" />
     <ClInclude Include="Pathfinding.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Label.h" />
