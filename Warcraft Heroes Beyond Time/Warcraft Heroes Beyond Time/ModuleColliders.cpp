@@ -9,23 +9,26 @@ Collider::Collider(Entity* owner, SDL_Rect colliderRect, COLLIDER_TYPE type, iPo
 	this->owner = owner;
 	this->colliderRect = colliderRect;
 	this->type = type;
-	this->colliderRect.x = offset.x;
-	this->colliderRect.y = offset.y;
+	this->colliderRect.x += offset.x;
+	this->colliderRect.y += offset.y;
 }
 
 bool ModuleColliders::Update(float dt)
 {
 	for (int i = 0; i < colliders.size(); i++)
-	{
 		for (int col = i + 1; col < colliders.size(); col++)
-		{
 			if (CheckCollision(i,col))
 			{
 				colliders[i]->owner->Collision(colliders[col]->type);
 				colliders[col]->owner->Collision(colliders[i]->type);
 			}
-		}
-	}
+	// Comprobar colliders temporals
+	for (int i = 0; i < colliders.size(); i++)
+		for (int col = 0; col < temporalColliders.size(); col++)
+			if (ChechCollisionTemporalCollider(i, col))
+			{
+				colliders[i]->owner->Collision(temporalColliders[col]->type);
+			}
 	// Netejar colliders temporals
 	for (int i = 0; i < temporalColliders.size(); i++)
 		if (temporalColliderstimer[i] < SDL_GetTicks())
@@ -36,16 +39,6 @@ bool ModuleColliders::Update(float dt)
 
 			std::swap(temporalColliderstimer[i], temporalColliderstimer.back());
 			temporalColliderstimer.pop_back();
-		}
-
-	// Comprobar colliders temporals
-	for (int i = 0; i < colliders.size(); i++)
-		for (int col = 0; col < temporalColliders.size(); col++)
-		{
-			if (ChechCollisionTemporalCollider(i, col))
-			{
-				colliders[i]->owner->Collision(colliders[col]->type);
-			}
 		}
 	PrintColliders(printColliders);
 	return true;
@@ -97,12 +90,16 @@ bool ModuleColliders::ChechCollisionTemporalCollider(int col, int colTemporal)
 		colliders[col]->owner->pos.x + colliders[col]->colliderRect.x + colliders[col]->colliderRect.w > temporalColliders[colTemporal]->colliderRect.x &&
 		colliders[col]->owner->pos.x + colliders[col]->colliderRect.y < temporalColliders[colTemporal]->colliderRect.y + temporalColliders[colTemporal]->colliderRect.h &&
 		colliders[col]->owner->pos.x + colliders[col]->colliderRect.y + colliders[col]->colliderRect.h > temporalColliders[colTemporal]->colliderRect.y);
-
 }
 
 void ModuleColliders::PrintColliders(bool print)
 {
 	if (print)
+	{
 		for (int i = 0; i < colliders.size(); i++)
 			App->render->DrawQuad({ colliders[i]->owner->pos.x + colliders[i]->colliderRect.x, colliders[i]->owner->pos.y + colliders[i]->colliderRect.y, colliders[i]->colliderRect.w, colliders[i]->colliderRect.h }, 255, 255, 255, 100);
+		for (int i = 0; i < temporalColliders.size(); i++)
+			App->render->DrawQuad({ temporalColliders[i]->colliderRect.x, temporalColliders[i]->colliderRect.y, temporalColliders[i]->colliderRect.w, temporalColliders[i]->colliderRect.h }, 255, 0, 255, 100);
+
+	}
 }
