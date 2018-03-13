@@ -56,15 +56,15 @@ void ModuleColliders::CleanCollidersEntity(Entity* entity)
 
 bool ModuleColliders::CheckCollision(int col1, int col2)
 {
-	return (colliders[col1]->colliderRect.x < colliders[col2]->colliderRect.x + colliders[col2]->colliderRect.w &&
-		colliders[col1]->colliderRect.x + colliders[col1]->colliderRect.w > colliders[col2]->colliderRect.x &&
-		colliders[col1]->colliderRect.y < colliders[col2]->colliderRect.y + colliders[col2]->colliderRect.h &&
-		colliders[col1]->colliderRect.y + colliders[col1]->colliderRect.h > colliders[col2]->colliderRect.y);
+	return (colliders[col1]->owner->pos.x < colliders[col2]->owner->pos.x + colliders[col2]->colliderRect.w &&
+		colliders[col1]->owner->pos.x + colliders[col1]->colliderRect.w > colliders[col2]->owner->pos.x &&
+		colliders[col1]->owner->pos.y < colliders[col2]->owner->pos.y + colliders[col2]->colliderRect.h &&
+		colliders[col1]->owner->pos.y + colliders[col1]->colliderRect.h > colliders[col2]->owner->pos.y);
 }
 
 void ModuleColliders::PrintColliders(bool print)
 {
 	if (print)
 		for (int i = 0; i < colliders.size(); i++)
-			App->render->DrawQuad({ colliders[i]->owner->pos.x, colliders[i]->owner->pos.y, colliders[i]->colliderRect.w, colliders[i]->colliderRect.h }, 255, 255, 255, 255);
+			App->render->DrawQuad({ colliders[i]->owner->pos.x, colliders[i]->owner->pos.y, colliders[i]->colliderRect.w, colliders[i]->colliderRect.h }, 255, 255, 255, 100);
 }
