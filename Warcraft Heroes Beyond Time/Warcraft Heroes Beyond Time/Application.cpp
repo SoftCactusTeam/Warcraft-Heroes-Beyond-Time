@@ -19,6 +19,7 @@
 
 #include "Fonts.h"
 #include "ModuleGUI.h"
+#include "ModuleMapGenerator.h"
 
 Application::Application(int argc, char* args[]) : argc(argc), args(args)
 {
@@ -33,6 +34,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	audio = new Audio();
 	scene = new Scene();
 	console = new Console();
+	map = new MapGenerator();
 
 	//map = new Map();
 
@@ -44,6 +46,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(textures);
 	AddModule(entities);
 	AddModule(audio);
+	AddModule(map);
 	AddModule(scene);
 	AddModule(fonts);
 	AddModule(fs);

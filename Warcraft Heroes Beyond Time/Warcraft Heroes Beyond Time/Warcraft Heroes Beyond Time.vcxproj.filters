@@ -47,6 +47,7 @@
     <ClCompile Include="PlayerEntity.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
     <ClCompile Include="Thrall.cpp" />
+    <ClCompile Include="ModuleMapGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene.h" />
@@ -102,6 +103,7 @@
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
     <ClInclude Include="Thrall.h" />
+    <ClInclude Include="ModuleMapGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Entities">

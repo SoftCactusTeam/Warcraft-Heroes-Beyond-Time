@@ -5,6 +5,8 @@
 #include "Label.h"
 #include "InputBox.h"
 #include "ModuleInput.h"
+#include "ModuleMapGenerator.h"
+#include "ModuleRender.h"
 
 Scene::Scene()
 {
@@ -27,7 +29,7 @@ bool Scene::Start()
 	App->gui->CreateLabel({0,0}, defLabel, nullptr, nullptr);
 	App->entities->AddPlayer({0,0}, THRALL);
 
-
+	App->map->GenerateGrid(20,20);
 
 	//LabelInfo defLabel;
 	//defLabel.color = Red;
@@ -71,6 +73,28 @@ bool Scene::Update(float dt)
 	{
 		App->Load();
 	}
+
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+	{
+		App->render->camera.y += 10;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	{
+		App->render->camera.x += 10;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+	{
+		App->render->camera.y -= 10;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	{
+		App->render->camera.x -= 10;
+	}
+
+	App->map->BlitMap();
 
 	return true;
 }
