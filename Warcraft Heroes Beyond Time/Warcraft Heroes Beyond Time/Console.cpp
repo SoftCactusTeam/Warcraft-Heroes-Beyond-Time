@@ -124,7 +124,7 @@ bool Console::ExecConsoleOrder(std::string name)
 		if (consoleOrderVector[i]->orderName() == nom_ordre) 
 		{
 			consoleOrderVector[i]->Exec(parametre_ordre, numeric_parametre_ordre);
-			i = consoleOrderVector.size() + 1;	// SURTI DEL BUCLE, POSAR UN break o continue
+			break;
 		}
 	}
 

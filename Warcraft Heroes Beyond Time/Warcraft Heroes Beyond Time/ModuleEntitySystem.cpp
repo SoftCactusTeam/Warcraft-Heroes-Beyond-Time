@@ -35,6 +35,96 @@ class Txell_ConsoleOrder : public ConsoleOrder
 	}
 };
 
+class Spawn_ConsoleOrder : public ConsoleOrder
+{
+	std::string orderName()
+	{
+		return "spawn";
+	}
+
+	void Exec(std::string parameter, int parameterNumeric)
+	{
+		if (parameter == "footman")
+		{
+
+		}
+
+		else if (parameter == "archer")
+		{
+
+		}
+
+		else if (parameter == "wizard")
+		{
+
+		}
+		else if (parameter == "darkknight")
+		{
+
+		}
+		else if (parameter == "healthpotion")
+		{
+
+		}
+		
+	}
+};
+
+class Equip_ConsoleOrder : public ConsoleOrder
+{
+	std::string orderName()
+	{
+		return "equip";
+	}
+
+	void Exec(std::string parameter, int parameterNumeric)
+	{
+		//Items
+	}
+};
+
+class Clear_ConsoleOrder : public ConsoleOrder
+{
+	std::string orderName()
+	{
+		return "clear";
+	}
+
+	void Exec(std::string parameter, int parameterNumeric)
+	{
+		if (parameter == "enemies")
+		{
+			//EntitySystem Function that set all enemies boolean to true.
+		}
+	}
+};
+
+class Player_ConsoleOrder : public ConsoleOrder
+{
+	std::string orderName()
+	{
+		return "player";
+	}
+
+	void Exec(std::string parameter, int parameterNumeric)
+	{
+		if (parameter == "energy")
+		{
+			//Set energy to parameterNumeric (not more than 100%).
+		}
+		else if (parameter == "godmodeon")
+		{
+			//Activate Godmode
+		}
+			
+		else if (parameter == "godmodeoff")
+		{
+			//DeActivate Godmode
+		}
+			
+	}
+};
+
 EntitySystem::EntitySystem() : Module()
 {
 	name = "entitySystem";
@@ -50,6 +140,19 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	ConsoleOrder* txell_consoleOrder = new Txell_ConsoleOrder;
 	App->console->AddConsoleOrderToList(txell_consoleOrder);
 
+	ConsoleOrder* spawn_consoleOrder = new Spawn_ConsoleOrder;
+	App->console->AddConsoleOrderToList(spawn_consoleOrder);
+
+	ConsoleOrder* equip_consoleOrder = new Equip_ConsoleOrder;
+	App->console->AddConsoleOrderToList(equip_consoleOrder);
+
+	ConsoleOrder* clear_consoleOrder = new Clear_ConsoleOrder;
+	App->console->AddConsoleOrderToList(clear_consoleOrder);
+
+	ConsoleOrder* player_consoleOrder = new Player_ConsoleOrder;
+	App->console->AddConsoleOrderToList(player_consoleOrder);
+
+	//------------- Loading Stats -------------------------------------------------------------
 	pugi::xml_node thrall = entitiesNode.child("players").child("thrall");
 	thrallstats.hp = thrall.attribute("hp").as_uint(0);
 	thrallstats.speed = thrall.attribute("speed").as_uint(0);
@@ -322,4 +425,13 @@ void EntitySystem::Load(const pugi::xml_node& eSystemNode)
 void EntitySystem::SetPlayer(PlayerEntity* player)
 {
 	this->player = player;
+}
+
+void EntitySystem::ClearEnemies()
+{
+	/*std::list<Entity*>::iterator it;
+	for (it = entities.begin(); it != entities.end(); ++it)
+	{
+		if((*it)->)
+	}*/
 }

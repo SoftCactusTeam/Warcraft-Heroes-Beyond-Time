@@ -63,6 +63,8 @@ public:
 	void AddStaticObject(fPoint coor, STATIC_OBJECT_TYPE type);
 	void SetPlayer(PlayerEntity* player);
 
+	void ClearEnemies();
+
 
 private:
 	std::list<Entity*>		entities;
