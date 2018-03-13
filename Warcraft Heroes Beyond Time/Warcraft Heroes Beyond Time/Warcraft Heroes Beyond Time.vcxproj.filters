@@ -56,6 +56,9 @@
     <ClCompile Include="StaticEntity.cpp">
       <Filter>Entities\Static Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Pathfinding.cpp">
+      <Filter>Entities\Dynamic Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene.h" />
@@ -119,6 +122,9 @@
     </ClInclude>
     <ClInclude Include="StaticEntity.h">
       <Filter>Entities\Static Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Pathfinding.h">
+      <Filter>Entities\Dynamic Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
