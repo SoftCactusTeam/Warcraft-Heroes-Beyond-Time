@@ -94,7 +94,11 @@ bool Scene::Update(float dt)
 		App->render->camera.x -= 20;
 	}
 
-	App->map->BlitMap();
+	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
+	{
+		App->map->CleanMap();
+		App->map->GenerateGrid(50, 50);
+	}
 
 	return true;
 }

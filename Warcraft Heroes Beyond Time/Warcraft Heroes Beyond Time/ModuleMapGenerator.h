@@ -27,7 +27,10 @@ public:
 	bool CheckBoundaries(const iPoint& pos) const;
 	bool GenerateGrid(int sizeX, int sizeY);
 	bool ExecuteAlgorithm(MapNode* startNode, uint iterations);
-	bool BlitMap();
+	bool GenerateWalls();
+	bool Update(float dt);
+	bool CleanMap();
+	bool CleanUp();
 
 private:
 
@@ -35,7 +38,6 @@ private:
 	uint sizeX = 0u;
 	uint sizeY = 0u;
 	std::vector<MapNode*> nodes;
-	std::list<MapNode*> visited;
 	SDL_Texture* mapTexture = nullptr;
 
 };

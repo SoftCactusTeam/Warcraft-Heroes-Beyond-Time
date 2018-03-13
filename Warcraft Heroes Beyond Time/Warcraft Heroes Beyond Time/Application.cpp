@@ -44,9 +44,9 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(window);
 	AddModule(input);
 	AddModule(textures);
+	AddModule(map);
 	AddModule(entities);
 	AddModule(audio);
-	AddModule(map);
 	AddModule(scene);
 	AddModule(fonts);
 	AddModule(fs);
