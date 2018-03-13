@@ -10,6 +10,7 @@
 #include "EntitiesEnums.h"
 
 class Entity;
+class PlayerEntity;
 
 class EntitySystem : public Module
 {
@@ -54,17 +55,23 @@ public:
 	bool ClearEntitiesList();
 	bool UnloadTexturesVector();
 
-	void AddPlayer(fPoint coor, PLAYER_TYPE type);
+	PlayerEntity* AddPlayer(fPoint coor, PLAYER_TYPE type);
 	void AddEnemy(fPoint coor, ENEMY_TYPE type);
 	void AddBoss(fPoint coor, BOSS_TYPE type);
 	void AddConsumable(fPoint coor, CONSUMABLE_TYPE type);
 	void AddChest(fPoint coor, CHEST_TYPE type);
 	void AddStaticObject(fPoint coor, STATIC_OBJECT_TYPE type);
+	void SetPlayer(PlayerEntity* player);
+
 
 private:
 	std::list<Entity*>		entities;
 	std::list<Entity*>		toSpawn; 
 	std::vector<SDL_Texture*> spritesheetsEntities;
+
+public:
+
+	PlayerEntity * player = nullptr;
 };
 
 #endif

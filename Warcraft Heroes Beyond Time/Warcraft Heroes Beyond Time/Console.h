@@ -27,20 +27,25 @@ public:
 	Console();
 	~Console();
 
+	void Init();
 	bool Awake(pugi::xml_node& consoleNode);
 	bool Start();
 	bool Update(float dt);
 	bool CleanUp();
+
+
+	void SwitchWrittingState();
 
 	bool ExecConsoleOrder(std::string name);
 	void AddConsoleOrderToList(ConsoleOrder* consoleOrder);
 
 private:
 
-	std::vector<ConsoleOrder*> consoleOrderList;
+	std::vector<ConsoleOrder*> consoleOrderVector;
 	InputBox* box = nullptr;
-
 	SDL_Rect rectConsoleQuad = {0,0,0,0};
+
+	bool writting = false;
 };
 
 #endif

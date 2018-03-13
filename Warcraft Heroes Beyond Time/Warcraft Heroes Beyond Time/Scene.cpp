@@ -10,6 +10,7 @@ Scene::Scene()
 {
 	name = "scene";
 }
+
 Scene::~Scene(){}
 
 bool Scene::Awake()
@@ -19,15 +20,16 @@ bool Scene::Awake()
 
 bool Scene::Start()
 {
-	LabelInfo defLabel;
+	/*LabelInfo defLabel;
 	defLabel.color = Red;
 	defLabel.fontName = "Arial16";
 	defLabel.text = "Hey bitches im here";
 	
-	App->gui->CreateLabel({0,0}, defLabel, nullptr, nullptr);
-	App->entities->AddPlayer({0,0}, THRALL);
+	App->gui->CreateLabel({0,0}, defLabel, nullptr, nullptr);*/
 
 
+	PlayerEntity* player = App->entities->AddPlayer({50,50}, THRALL);
+	App->entities->SetPlayer(player);
 
 	//LabelInfo defLabel;
 	//defLabel.color = Red;

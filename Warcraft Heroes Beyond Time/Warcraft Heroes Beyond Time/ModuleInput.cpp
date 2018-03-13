@@ -245,13 +245,10 @@ bool Input::IsAnyKeyPressed()
 void Input::ExternActionsAtKeyInput(const int key) {
 	// NOMES FER SERVIR EN CASOS MOLT CONCRETS I OPTIMS !!!!!!!!
 	// printf_s("%i\n", key);		// PER TROBAR EL NUMERO DE LES TECLES
-	switch (key) {
-	case 53:	// º button -> OpenConsole
-		if (App->console->isActive() == false)
-			App->console->Start();
-		else
-			App->console->CleanUp();
-
+	switch (key) 
+	{
+		case SDL_SCANCODE_GRAVE:	// º button -> OpenConsole
+			App->console->SwitchWrittingState();
 		break;
 	}
 }

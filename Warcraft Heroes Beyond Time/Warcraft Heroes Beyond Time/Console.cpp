@@ -4,6 +4,8 @@
 #include "ModuleGUI.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
+#include "ModuleEntitySystem.h"
+#include "PlayerEntity.h"
 
 
 // ====================================================================================== //
@@ -20,92 +22,135 @@ Console::Console() {
 }
 
 Console::~Console() {
-	for (int i = 0; i < consoleOrderList.size(); i++)
-		delete consoleOrderList[i];
+
+	std::vector<ConsoleOrder*>::iterator it;
+	for (it = consoleOrderVector.begin(); it != consoleOrderVector.end(); ++it)
+		delete *it;
+	consoleOrderVector.clear();
 }
 
-bool Console::Awake(pugi::xml_node& consoleNode) {
+void Console::Init()
+{
+	active = true;
+}
+
+bool Console::Awake(pugi::xml_node& consoleNode) 
+{
+	writting = false;
+	return true;
+}
+
+bool Console::Start() 
+{
+	
 	uint windowsWidth;
 	uint windowHeight;
 	App->window->GetWindowSize(windowsWidth, windowHeight);
-	rectConsoleQuad = { 0,0, (int)windowsWidth, 20 };
-	
+
+	rectConsoleQuad = { 0, 0, 1920, 35 };
+
 	InputBoxInfo defInputBox;
-	defInputBox.color = Black;
-	defInputBox.fontName = "Arial16";
+	defInputBox.color = White;
+	defInputBox.fontName = "Arial11";
 
-	box = App->gui->CreateInputBox({ 0, 0 }, defInputBox, nullptr, nullptr);
-	box->DisableInput();
+	box = App->gui->CreateInputBox({ 5, 0 }, defInputBox, nullptr, nullptr);
 
-	active = false;
+	return true;
+}
+
+bool Console::Update(float dt) 
+{
+	if (writting)
+	{
+		App->render->DrawQuad(rectConsoleQuad, 0, 0, 0, 200);
+		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KeyState::KEY_DOWN)
+		{
+			ExecConsoleOrder(box->text);
+		}
+	}
 	
 	return true;
 }
 
-bool Console::Start() {
-	active = true;
-	box->EnableInput();
+
+bool Console::CleanUp()
+{
 	return true;
 }
 
-bool Console::Update(float dt) {
-	App->render->DrawQuad(rectConsoleQuad, 255, 255, 255, 120);
-	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KeyState::KEY_DOWN) {
-		ExecConsoleOrder(box->text);
-	}
-	return true;
-}
-
-
-bool Console::CleanUp(){
-	active = false;
-	box->ClearBox();
-	box->DisableInput();
-	return true;
-}
-
-bool Console::ExecConsoleOrder(std::string name) {
+bool Console::ExecConsoleOrder(std::string name) 
+{
 	std::string nom_ordre;
 	std::string parametre_ordre;
 	int			numeric_parametre_ordre = 0;
 
-	for (int i = 0; i < name.size(); i++) {
-		if (name.at(i) == '_') {
-			for (int o = 0; o < i; o++) {	//AQUI ES GENERA EL nom_ordre
+	for (int i = 0; i < name.size(); i++) 
+	{
+		if (name.at(i) == '_') 
+		{
+			for (int o = 0; o < i; o++) //AQUI ES GENERA EL nom_ordre
+			{	
 				nom_ordre += name.at(o);
 			}
-			for (int e = i + 1; e < name.size(); e++) {	//AQUI ES GENERA EL parametre_ordre
-				if (name.at(e) == '_') {
+
+			for (int e = i + 1; e < name.size(); e++) //AQUI ES GENERA EL parametre_ordre
+			{	
+				if (name.at(e) == '_') 
+				{
 					std::string auxiliarStringNumber = "";
 					for (int u = e + 1; u < name.size(); u++)
 						auxiliarStringNumber += name.at(u);
 					numeric_parametre_ordre = atoi(auxiliarStringNumber.c_str());
 					e = name.size();
 				}
+
 				else
 					parametre_ordre += name.at(e);
 
 			}
+
 			i = name.size();
 		}
 	}
-	if (parametre_ordre.size() == 0) {
+	if (parametre_ordre.size() == 0) 
+	{
 		nom_ordre = name;
 		parametre_ordre = "not";
 		numeric_parametre_ordre = -1;
 	}
 
-	for (int i = 0; i < consoleOrderList.size(); i++) {
-		if (consoleOrderList[i]->orderName() == nom_ordre) {
-			consoleOrderList[i]->Exec(parametre_ordre, numeric_parametre_ordre);
-			i = consoleOrderList.size() + 1;	// SURTI DEL BUCLE, POSAR UN break o continue
+	for (int i = 0; i < consoleOrderVector.size(); i++) 
+	{
+		if (consoleOrderVector[i]->orderName() == nom_ordre) 
+		{
+			consoleOrderVector[i]->Exec(parametre_ordre, numeric_parametre_ordre);
+			i = consoleOrderVector.size() + 1;	// SURTI DEL BUCLE, POSAR UN break o continue
 		}
 	}
+
 	box->ClearBox();
 	return true;
 }
 
+void Console::AddConsoleOrderToList(ConsoleOrder* consoleOrder) 
+{
+	consoleOrderVector.push_back(consoleOrder);
+}
 
-void Console::AddConsoleOrderToList(ConsoleOrder* consoleOrder) {
-	consoleOrderList.push_back(consoleOrder);
+void Console::SwitchWrittingState()
+{
+	writting = !writting;
+	if (writting)
+	{
+		box->EnableInput();
+		App->entities->player->Walk(false);
+	}
+		
+	else
+	{
+		box->DisableInput();
+		box->ClearBox();
+		App->entities->player->Walk(true);
+	}
+		
 }

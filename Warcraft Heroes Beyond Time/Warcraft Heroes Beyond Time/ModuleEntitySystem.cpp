@@ -240,7 +240,7 @@ void EntitySystem::AddBoss(fPoint coor, BOSS_TYPE type)
 	toSpawn.push_back((Entity*)newEntity);
 }
 
-void EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
+PlayerEntity* EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
 {
 	PlayerEntity* newEntity = nullptr;
 	switch (type)
@@ -256,6 +256,7 @@ void EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
 		break;
 	}
 	toSpawn.push_back(newEntity);
+	return newEntity;
 }
 
 void EntitySystem::AddConsumable(fPoint coor, CONSUMABLE_TYPE type)
@@ -316,4 +317,9 @@ void EntitySystem::Load(const pugi::xml_node& eSystemNode)
 {
 
 	return;
+}
+
+void EntitySystem::SetPlayer(PlayerEntity* player)
+{
+	this->player = player;
 }
