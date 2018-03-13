@@ -183,7 +183,7 @@ void EntitySystem::AddEnemy(iPoint coor, ENEMY_TYPE type)
 		break;
 	}
 	toSpawn.push_back(newEntity);
-	App->colliders->AddCollider((Entity*)newEntity, { 0,0,32,32 }, COLLIDER_ENEMY);
+	App->colliders->AddCollider((Entity*)newEntity, { 0,0,32,32 }, COLLIDER_ENEMY, { 20,20 });
 
 }
 
@@ -222,7 +222,7 @@ void EntitySystem::AddPlayer(iPoint coor, PLAYER_TYPE type)
 	}
 	toSpawn.push_back(newEntity);
 	actualPlayer = newEntity;
-	App->colliders->AddCollider((Entity*)newEntity, {0,0,32,32}, COLLIDER_PLAYER);
+	App->colliders->AddCollider((Entity*)newEntity, { 0,0,32,32 }, COLLIDER_PLAYER, {10,10});
 }
 
 void EntitySystem::AddConsumable(iPoint coor, CONSUMABLE_TYPE type)
