@@ -31,13 +31,13 @@ bool Window::Awake(pugi::xml_node& windowNode)
 	else
 	{
 		Uint32 flags = SDL_WINDOW_SHOWN;
-		bool fullscreen = false;
+		bool fullscreen = windowNode.child("fullscreen").attribute("active").as_bool();
 		bool borderless = false;
 		bool resizable = true;
 		bool fullscreen_window = false;
 
-		width = 1280;
-		height = 720;
+		width = windowNode.child("size").attribute("w").as_uint();
+		height = windowNode.child("size").attribute("h").as_uint();
 		scale = 1;
 
 		if (fullscreen == true)

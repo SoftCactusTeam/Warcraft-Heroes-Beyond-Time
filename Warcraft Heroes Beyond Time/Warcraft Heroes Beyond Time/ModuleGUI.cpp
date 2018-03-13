@@ -49,7 +49,7 @@ bool ModuleGUI::Update(float dt)
 	{
 		result = (*it)->Update(dt);
 	}
-
+	
 	return result;
 }
 

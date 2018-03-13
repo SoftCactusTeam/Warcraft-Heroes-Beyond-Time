@@ -7,12 +7,14 @@
 #include "p2Point.h"
 #include "SDL/include/SDL.h"
 #include "Fonts.h"
+#include "Console.h"
 
 class GUIElem;
 class Label;
 class InputBox;
 class LabelInfo;
 class InputBoxInfo;
+
 
 class ModuleGUI : public Module
 {

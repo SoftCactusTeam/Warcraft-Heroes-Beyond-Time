@@ -36,6 +36,7 @@ bool Fonts::Awake(pugi::xml_node& fontsNode)
 
 	//	//Load all Fonts
 		default = Load("fonts/arial.ttf", "Arial16", 16);
+		Load("fonts/arial.ttf", "Arial11", 11);
 	}
 
 	return ret;

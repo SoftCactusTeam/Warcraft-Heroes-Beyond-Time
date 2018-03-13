@@ -18,10 +18,51 @@ bool PlayerEntity::Finish() { return true; }
 
 void PlayerEntity::PlayerStates(float dt)
 {
-	if (App->input->IsKeyboardAvailable())
-		KeyboardStates(dt);
+	if (move)
+	{
+		if (App->input->IsKeyboardAvailable())
+			KeyboardStates(dt);
+		else
+			JoyconStates(dt);
+	}
 	else
-		JoyconStates(dt);
+	{
+		switch (state)
+		{
+		case states::PL_DOWN:
+			anim = &idleDown;
+			state = states::PL_IDLE;
+			break;
+		case states::PL_DOWN_LEFT:
+			anim = &idleDownLeft;
+			state = states::PL_IDLE;
+			break;
+		case states::PL_LEFT:
+			anim = &idleLeft;
+			state = states::PL_IDLE;
+			break;
+		case states::PL_UP_LEFT:
+			anim = &idleUpLeft;
+			state = states::PL_IDLE;
+			break;
+		case states::PL_UP:
+			anim = &idleUp;
+			state = states::PL_IDLE;
+			break;
+		case states::PL_UP_RIGHT:
+			anim = &idleUpRight;
+			state = states::PL_IDLE;
+			break;
+		case states::PL_RIGHT:
+			anim = &idleRight;
+			state = states::PL_IDLE;
+			break;
+		case states::PL_DOWN_RIGHT:
+			anim = &idleDownRight;
+			state = states::PL_IDLE;
+			break;
+		}
+	}
 }
 
 void PlayerEntity::KeyboardStates(float dt)
@@ -496,4 +537,9 @@ void PlayerEntity::JoyconStates(float dt)
 		}
 		break;
 	}
+}
+
+void PlayerEntity::Walk(bool can)
+{
+	this->move = can;
 }
