@@ -21,12 +21,18 @@ public:
 	bool CleanUp();
 
 	void AddCollider(Entity* owner, SDL_Rect colliderRect, COLLIDER_TYPE type, iPoint offset);
+	void AddTemporalCollider(SDL_Rect colliderRect, COLLIDER_TYPE type, int timer);
 	void CleanCollidersEntity(Entity* entity);
 	bool CheckCollision(int col1, int col2);
+	bool ChechCollisionTemporalCollider(int col, int colTemporal);
 	void PrintColliders(bool print);
 
 private:
 	std::vector<Collider*> colliders;
+	// Aquestes 2 llistes van en paralel
+	std::vector<Collider*> temporalColliders;
+	std::vector<int> temporalColliderstimer;
+	//	--------------------------------
 	bool printColliders = true;
 };
 
