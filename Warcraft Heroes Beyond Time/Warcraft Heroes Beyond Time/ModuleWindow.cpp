@@ -36,8 +36,8 @@ bool Window::Awake(pugi::xml_node& windowNode)
 		bool resizable = true;
 		bool fullscreen_window = false;
 
-		width = 1920;
-		height = 1080;
+		width = 1280;
+		height = 720;
 		scale = 1;
 
 		if (fullscreen == true)

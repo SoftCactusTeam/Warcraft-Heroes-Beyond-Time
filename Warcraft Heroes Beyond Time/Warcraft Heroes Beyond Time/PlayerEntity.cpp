@@ -29,49 +29,49 @@ void PlayerEntity::KeyboardStates(float dt)
 	switch (state)
 	{
 	case states::PL_IDLE:
-		if ((App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT))
+		if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT))
 		{
 			state = states::PL_UP_RIGHT;
 			anim = &upRight;
 			break;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+		else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		{
 			state = states::PL_UP_LEFT;
 			anim = &upLeft;
 			break;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 		{
 			state = states::PL_DOWN_RIGHT;
 			anim = &downRight;
 			break;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT  && App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT  && App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		{
 			state = states::PL_DOWN_LEFT;
 			anim = &downLeft;
 			break;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+		else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 		{
 			state = states::PL_UP;
 			anim = &up;
 			break;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 		{
 			state = states::PL_DOWN;
 			anim = &down;
 			break;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+		else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		{
 			state = states::PL_LEFT;
 			anim = &left;
 			break;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+		else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 		{
 			state = states::PL_RIGHT;
 			anim = &right;
@@ -81,19 +81,19 @@ void PlayerEntity::KeyboardStates(float dt)
 
 	case states::PL_UP:
 		pos.y -= speed * dt;
-		if ((App->input->GetKey(SDL_SCANCODE_UP) == KEY_UP))
+		if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_UP))
 		{
 			state = states::PL_IDLE;
 			anim = &idleUp;
 			break;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+		else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 		{
 			state = states::PL_UP_RIGHT;
 			anim = &upRight;
 			break;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+		else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		{
 			state = states::PL_UP_LEFT;
 			anim = &upLeft;
@@ -103,19 +103,19 @@ void PlayerEntity::KeyboardStates(float dt)
 
 	case states::PL_DOWN:
 		pos.y += speed * dt;
-		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
+		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_UP)
 		{
 			state = states::PL_IDLE;
 			anim = &idleDown;
 			break;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 		{
 			state = states::PL_DOWN_RIGHT;
 			anim = &downRight;
 			break;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		{
 			state = states::PL_DOWN_LEFT;
 			anim = &downLeft;
@@ -125,19 +125,19 @@ void PlayerEntity::KeyboardStates(float dt)
 
 	case states::PL_LEFT:
 		pos.x -= speed * dt;
-		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
 		{
 			state = states::PL_IDLE;
 			anim = &idleLeft;
 			break;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+		else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 		{
 			state = states::PL_UP_LEFT;
 			anim = &upLeft;
 			break;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+		else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 		{
 			state = states::PL_DOWN_LEFT;
 			anim = &downLeft;
@@ -147,19 +147,19 @@ void PlayerEntity::KeyboardStates(float dt)
 
 	case states::PL_RIGHT:
 		pos.x += speed * dt;
-		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
 		{
 			state = states::PL_IDLE;
 			anim = &idleRight;
 			break;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+		else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 		{
 			state = states::PL_UP_RIGHT;
 			anim = &upRight;
 			break;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+		else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 		{
 			state = states::PL_DOWN_RIGHT;
 			anim = &downRight;
@@ -170,19 +170,19 @@ void PlayerEntity::KeyboardStates(float dt)
 	case states::PL_UP_LEFT:
 		pos.x -= speed * 0.75f * dt;
 		pos.y -= speed * 0.75f * dt;
-		if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_UP && App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_UP && App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
 		{
 			state = states::PL_IDLE;
 			anim = &idleUpLeft;
 			break;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_UP)
+		else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
 		{
 			state = states::PL_LEFT;
 			anim = &left;
 			break;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
+		else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
 		{
 			state = states::PL_UP;
 			anim = &up;
@@ -193,19 +193,19 @@ void PlayerEntity::KeyboardStates(float dt)
 	case states::PL_UP_RIGHT:
 		pos.x += speed * 0.75f * dt;
 		pos.y -= speed * 0.75f * dt;
-		if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_UP && App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_UP && App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
 		{
 			state = states::PL_IDLE;
 			anim = &idleUpRight;
 			break;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_UP)
+		else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
 		{
 			state = states::PL_RIGHT;
 			anim = &right;
 			break;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
+		else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
 		{
 			state = states::PL_UP;
 			anim = &up;
@@ -216,19 +216,19 @@ void PlayerEntity::KeyboardStates(float dt)
 	case states::PL_DOWN_LEFT:
 		pos.x -= speed * 0.75f * dt;
 		pos.y += speed * 0.75f * dt;
-		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP && App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
+		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_UP && App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
 		{
 			state = states::PL_IDLE;
 			anim = &idleDownLeft;
 			break;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
+		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_UP)
 		{
 			state = states::PL_LEFT;
 			anim = &left;
 			break;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
+		else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
 		{
 			state = states::PL_DOWN;
 			anim = &down;
@@ -239,19 +239,19 @@ void PlayerEntity::KeyboardStates(float dt)
 	case states::PL_DOWN_RIGHT:
 		pos.x += speed * 0.75f * dt;
 		pos.y += speed * 0.75f * dt;
-		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP && App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
+		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_UP && App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
 		{
 			state = states::PL_IDLE;
 			anim = &idleDownRight;
 			break;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
+		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_UP)
 		{
 			state = states::PL_RIGHT;
 			anim = &right;
 			break;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
+		else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
 		{
 			state = states::PL_DOWN;
 			anim = &down;
