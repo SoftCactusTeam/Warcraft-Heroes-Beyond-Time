@@ -7,7 +7,7 @@
 #include "p2Point.h"
 #include "SDL/include/SDL.h"
 #include "Fonts.h"
-#include "Console.h"
+
 
 class GUIElem;
 class Label;
