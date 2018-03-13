@@ -24,6 +24,7 @@ public:
 	MapGenerator();
 	~MapGenerator();
 	inline int Get(int x, int y) const;
+	bool CheckBoundaries(const iPoint& pos) const;
 	bool GenerateGrid(int sizeX, int sizeY);
 	bool ExecuteAlgorithm(MapNode* startNode, uint iterations);
 	bool BlitMap();

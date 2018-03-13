@@ -29,7 +29,7 @@ bool Scene::Start()
 	App->gui->CreateLabel({0,0}, defLabel, nullptr, nullptr);
 	App->entities->AddPlayer({0,0}, THRALL);
 
-	App->map->GenerateGrid(20,20);
+	App->map->GenerateGrid(50,50);
 
 	//LabelInfo defLabel;
 	//defLabel.color = Red;
@@ -76,22 +76,22 @@ bool Scene::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
-		App->render->camera.y += 10;
+		App->render->camera.y += 20;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
-		App->render->camera.x += 10;
+		App->render->camera.x += 20;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	{
-		App->render->camera.y -= 10;
+		App->render->camera.y -= 20;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
-		App->render->camera.x -= 10;
+		App->render->camera.x -= 20;
 	}
 
 	App->map->BlitMap();
