@@ -11,9 +11,12 @@ class Label;
 
 class ConsoleOrder {
 public:
+
 	virtual std::string orderName() = 0;
-	virtual void Exec(std::string parametre, int parametreNumeric) = 0;		// FER QUE RETORNI UN STRING
+	virtual void Exec(std::string parameter, int parameterNumeric) = 0;		// Return a string
+
 private:
+
 	bool isActive = false;
 };
 

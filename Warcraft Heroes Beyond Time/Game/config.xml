@@ -22,7 +22,22 @@
 
   </audio>
 
-  <entitySystem>
+  <entitySystem difficulty = "normal">
+    <enemies>
+      <footman hp = "200" speed = "40" damage = "60" dropping_chance = "25" range = "125" difficulty = "1"/>
+      <archer hp = "200" speed = "40" damage = "60" dropping_chance = "25" range = "125" difficulty = "2"/>
+      <wizard hp = "200" speed = "40" damage = "60" dropping_chance = "25" range = "125" difficulty = "5"/>
+      <dark_knight hp = "200" speed = "40" damage = "60" dropping_chance = "25" range = "125" difficulty = "7"/>
+    </enemies>
+
+    <players>
+      <thrall hp = "200" speed = "40" damage = "60" energy_percent_hit = "5"/>
+    </players>
+
+    <items>
+      <item1/>
+      <item2/>
+    </items>
 
   </entitySystem>
   
@@ -35,7 +50,7 @@
   </input>
 
   <renderer>
-
+    <vsync active = "true"/>
   </renderer>
 
   <textures>
@@ -43,6 +58,9 @@
   </textures>
   
   <window>
+    
+    <size w = "1280" h = "720"/>
+    <fullscreen active = "false"/>
     
   </window>
 

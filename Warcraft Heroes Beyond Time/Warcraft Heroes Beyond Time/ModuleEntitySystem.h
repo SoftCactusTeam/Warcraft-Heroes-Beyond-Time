@@ -15,6 +15,27 @@ class EntitySystem : public Module
 {
 public:
 
+	struct ThrallStats
+	{
+		uint hp = 0;
+		uint speed = 0;
+		uint damage = 0;
+		uint energyPercentbyHit = 0;
+
+	} thrallstats;
+
+	struct EnemyStats
+	{
+		uint hp = 0;
+		uint speed = 0;
+		uint damage = 0;
+		uint range = 0;
+		uint dropping_chance = 0;
+		uint difficulty = 0;
+
+	} footmanstats, archerstats, wizardstats, darkknightstats;
+
+
 	EntitySystem();
 
 	void Init();
