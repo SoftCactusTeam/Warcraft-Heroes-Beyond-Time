@@ -10,6 +10,7 @@ public:
 	virtual bool Start();
 	virtual bool Update(float dt);
 	virtual bool Finish();
+	virtual void Collision(COLLIDER_TYPE type);
 
 	FIXED_ANGLE CaculateAngle(iPoint objectiveCoor);
 	uint DistanceToObejective(iPoint objectiveCoor);

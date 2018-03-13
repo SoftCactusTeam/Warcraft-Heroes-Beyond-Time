@@ -8,6 +8,17 @@ Collider::Collider(Entity* owner, SDL_Rect colliderRect)
 
 bool ModuleColliders::Update()
 {
+	for (int i = 0; i < colliders.size(); i++)
+	{
+		for (int col = i + 1; col < colliders.size(); col++)
+		{
+			if (CheckCollision(i,col))
+			{
+				colliders[i]->owner->Collision(colliders[col]->type);
+				colliders[col]->owner->Collision(colliders[i]->type);
+			}
+		}
+	}
 
 	return true;
 }
@@ -35,4 +46,12 @@ void ModuleColliders::CleanCollidersEntity(Entity* entity)
 			std::swap(colliders[i], colliders.back());
 			colliders.pop_back();
 		}
+}
+
+bool ModuleColliders::CheckCollision(int col1, int col2)
+{
+	return (colliders[col1]->colliderRect.x < colliders[col2]->colliderRect.x + colliders[col2]->colliderRect.w &&
+		colliders[col1]->colliderRect.x + colliders[col1]->colliderRect.w > colliders[col2]->colliderRect.x &&
+		colliders[col1]->colliderRect.y < colliders[col2]->colliderRect.y + colliders[col2]->colliderRect.h &&
+		colliders[col1]->colliderRect.y + colliders[col1]->colliderRect.h > colliders[col2]->colliderRect.y);
 }

@@ -16,6 +16,8 @@ public:
 	virtual bool Finish();
 	virtual bool Draw(float dt);
 
+	virtual void Collision(COLLIDER_TYPE type);
+
 public:
 	iPoint pos = { 0,0 };
 	SDL_Texture* texture = nullptr;

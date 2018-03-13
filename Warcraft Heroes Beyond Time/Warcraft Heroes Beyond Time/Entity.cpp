@@ -18,3 +18,5 @@ bool Entity::Draw(float dt)
 }
 
 bool Entity::Finish() { return true; }
+
+void Entity::Collision(COLLIDER_TYPE type) {}
