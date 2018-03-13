@@ -1,12 +1,17 @@
 #include "ModuleColliders.h"
 
-Collider::Collider(Entity* owner, SDL_Rect colliderRect)
+// TO PRINT COLLIDERS
+#include "Application.h"
+#include "ModuleRender.h"
+
+Collider::Collider(Entity* owner, SDL_Rect colliderRect, COLLIDER_TYPE type)
 {
 	this->owner = owner;
 	this->colliderRect = colliderRect;
+	this->type = type;
 }
 
-bool ModuleColliders::Update()
+bool ModuleColliders::Update(float dt)
 {
 	for (int i = 0; i < colliders.size(); i++)
 	{
@@ -19,7 +24,7 @@ bool ModuleColliders::Update()
 			}
 		}
 	}
-
+	PrintColliders(printColliders);
 	return true;
 }
 
@@ -31,9 +36,10 @@ bool ModuleColliders::CleanUp()
 	return true;
 }
 
-void ModuleColliders::AddCollider(Collider col)
+void ModuleColliders::AddCollider(Entity* owner, SDL_Rect colliderRect, COLLIDER_TYPE type)
 {
-	Collider* aux = new Collider(col);
+
+	Collider* aux = new Collider(owner, colliderRect, type);
 	colliders.push_back(aux);
 }
 
@@ -54,4 +60,11 @@ bool ModuleColliders::CheckCollision(int col1, int col2)
 		colliders[col1]->colliderRect.x + colliders[col1]->colliderRect.w > colliders[col2]->colliderRect.x &&
 		colliders[col1]->colliderRect.y < colliders[col2]->colliderRect.y + colliders[col2]->colliderRect.h &&
 		colliders[col1]->colliderRect.y + colliders[col1]->colliderRect.h > colliders[col2]->colliderRect.y);
+}
+
+void ModuleColliders::PrintColliders(bool print)
+{
+	if (print)
+		for (int i = 0; i < colliders.size(); i++)
+			App->render->DrawQuad({ colliders[i]->owner->pos.x, colliders[i]->owner->pos.y, colliders[i]->colliderRect.w, colliders[i]->colliderRect.h }, 255, 255, 255, 255);
 }

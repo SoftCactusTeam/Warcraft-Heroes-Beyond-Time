@@ -10,6 +10,7 @@
 #include "ConsumableEntity.h"
 #include "ChestEntity.h"
 #include "StaticObjectEntity.h"
+#include "ModuleColliders.h"
 
 
 #include "Thrall.h"
@@ -182,6 +183,8 @@ void EntitySystem::AddEnemy(iPoint coor, ENEMY_TYPE type)
 		break;
 	}
 	toSpawn.push_back(newEntity);
+	App->colliders->AddCollider((Entity*)newEntity, { 0,0,10,10 }, COLLIDER_ENEMY);
+
 }
 
 void EntitySystem::AddBoss(iPoint coor, BOSS_TYPE type)
@@ -219,6 +222,7 @@ void EntitySystem::AddPlayer(iPoint coor, PLAYER_TYPE type)
 	}
 	toSpawn.push_back(newEntity);
 	actualPlayer = newEntity;
+	App->colliders->AddCollider((Entity*)newEntity, {0,0,10,10}, COLLIDER_PLAYER);
 }
 
 void EntitySystem::AddConsumable(iPoint coor, CONSUMABLE_TYPE type)

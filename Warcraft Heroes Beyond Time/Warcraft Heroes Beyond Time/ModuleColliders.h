@@ -8,7 +8,7 @@
 
 struct Collider
 {
-	Collider(Entity* owner, SDL_Rect colliderRect);
+	Collider(Entity* owner, SDL_Rect colliderRect, COLLIDER_TYPE type);
 	SDL_Rect colliderRect;
 	Entity* owner;
 	COLLIDER_TYPE type;
@@ -16,15 +16,18 @@ struct Collider
 
 class ModuleColliders : public Module
 {
-	bool Update();
+public:
+	bool Update(float dt);
 	bool CleanUp();
 
-	void AddCollider(Collider col);
+	void AddCollider(Entity* owner, SDL_Rect colliderRect, COLLIDER_TYPE type);
 	void CleanCollidersEntity(Entity* entity);
 	bool CheckCollision(int col1, int col2);
+	void PrintColliders(bool print);
 
 private:
 	std::vector<Collider*> colliders;
+	bool printColliders = true;
 };
 
 
