@@ -64,6 +64,8 @@ public:
 	bool DestroyChilds();
 
 	fPoint calculateScreenPos();
+
+	void Move(fPoint dist);
 };
 
 #endif

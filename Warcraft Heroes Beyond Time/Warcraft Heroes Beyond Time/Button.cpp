@@ -29,3 +29,12 @@ bool Button::Update(float dt)
 	return result;
 }
 
+void Button::MoveChilds(fPoint dist)
+{
+	std::list<GUIElem*>::iterator it;
+	for (it = childs.begin(); it != childs.end(); ++it)
+	{
+		(*it)->Move(dist);
+	}
+}
+

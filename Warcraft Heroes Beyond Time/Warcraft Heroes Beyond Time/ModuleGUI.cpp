@@ -22,7 +22,7 @@ bool ModuleGUI::Awake(pugi::xml_node& guiNode)
 
 bool ModuleGUI::Start()
 {
-	atlas = App->textures->Load("GUI/atlas.png");
+	atlas = App->textures->Load("GUI/atlas480b.png");
 	return true;
 }
 

@@ -91,18 +91,25 @@ void GUIElem::HandleInput()
 		if (!MouseHover())
 		{
 			LOG("Mouse Leave");
-			UIevent = UIEvents::MOUSE_LEAVE;
+			UIevent = UIEvents::MOUSE_LEFT_UP;
 			break;
 		}
 		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_RELEASED)
 		{
 			LOG("Mouse left click released");
-			UIevent = UIEvents::MOUSE_ENTER;
+			UIevent = UIEvents::MOUSE_LEFT_UP;
 			listener->OnUIEvent((GUIElem*)this, UIevent);
 			
 			break;
 		}
 
+		break;
+	case UIEvents::MOUSE_LEFT_UP:
+		if (!MouseHover())
+			UIevent = UIEvents::NO_EVENT;
+		else
+			UIevent = UIEvents::MOUSE_ENTER;
+		listener->OnUIEvent(this, UIevent);
 		break;
 	case UIEvents::MOUSE_LEAVE:
 		listener->OnUIEvent((GUIElem*)this, UIevent);
@@ -173,4 +180,15 @@ fPoint GUIElem::calculateScreenPos()
 	this->screenPos = screenPos;
 
 	return screenPos;
+}
+
+void GUIElem::Move(fPoint dist)
+{
+	std::list<GUIElem*>::iterator it;
+	for (it = childs.begin(); it != childs.end(); ++it)
+	{
+		(*it)->Move(dist);
+	}
+	this->localPos += dist;
+	calculateScreenPos();
 }
