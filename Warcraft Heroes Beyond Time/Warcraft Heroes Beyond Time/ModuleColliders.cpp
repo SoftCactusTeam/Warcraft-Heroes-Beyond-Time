@@ -88,8 +88,8 @@ bool ModuleColliders::ChechCollisionTemporalCollider(int col, int colTemporal)
 {
 	return (colliders[col]->owner->pos.x + colliders[col]->colliderRect.x < temporalColliders[colTemporal]->colliderRect.x + temporalColliders[colTemporal]->colliderRect.w &&
 		colliders[col]->owner->pos.x + colliders[col]->colliderRect.x + colliders[col]->colliderRect.w > temporalColliders[colTemporal]->colliderRect.x &&
-		colliders[col]->owner->pos.x + colliders[col]->colliderRect.y < temporalColliders[colTemporal]->colliderRect.y + temporalColliders[colTemporal]->colliderRect.h &&
-		colliders[col]->owner->pos.x + colliders[col]->colliderRect.y + colliders[col]->colliderRect.h > temporalColliders[colTemporal]->colliderRect.y);
+		colliders[col]->owner->pos.y + colliders[col]->colliderRect.y < temporalColliders[colTemporal]->colliderRect.y + temporalColliders[colTemporal]->colliderRect.h &&
+		colliders[col]->owner->pos.y + colliders[col]->colliderRect.y + colliders[col]->colliderRect.h > temporalColliders[colTemporal]->colliderRect.y);
 }
 
 void ModuleColliders::PrintColliders(bool print)

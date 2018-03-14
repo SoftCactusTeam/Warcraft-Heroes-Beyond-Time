@@ -226,7 +226,7 @@ void EntitySystem::AddPlayer(iPoint coor, PLAYER_TYPE type)
 	App->colliders->AddTemporalCollider({ 200,0,32,32 }, COLLIDER_PLAYER, 1000);
 	App->colliders->AddTemporalCollider({ 100,0,32,32 }, COLLIDER_PLAYER, 2000);
 	App->colliders->AddTemporalCollider({ 0,100,32,32 }, COLLIDER_PLAYER, 3000);
-	App->colliders->AddTemporalCollider({ 100,100,32,32 }, COLLIDER_PLAYER, 4000);
+	App->colliders->AddTemporalCollider({ 200,100,32,32 }, COLLIDER_PLAYER, 4000);
 
 }
 
