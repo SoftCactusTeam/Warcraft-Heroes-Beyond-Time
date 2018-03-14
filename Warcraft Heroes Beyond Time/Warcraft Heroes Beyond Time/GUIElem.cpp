@@ -28,7 +28,7 @@ bool GUIElem::MouseHover() const
 
 	bool result = false;
 
-	fPoint worldPos = { screenPos.x + App->render->camera.x, screenPos.y + App->render->camera.y };
+	fPoint worldPos = { screenPos.x, screenPos.y};
 
 	//if collides
 	if (!(x < worldPos.x ||
@@ -97,8 +97,9 @@ void GUIElem::HandleInput()
 		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_RELEASED)
 		{
 			LOG("Mouse left click released");
-			listener->OnUIEvent((GUIElem*)this, UIevent);
 			UIevent = UIEvents::MOUSE_ENTER;
+			listener->OnUIEvent((GUIElem*)this, UIevent);
+			
 			break;
 		}
 

@@ -5,6 +5,7 @@
 #include "Label.h"
 #include "InputBox.h"
 #include "ModuleInput.h"
+#include "Button.h"
 
 Scene::Scene()
 {
@@ -24,19 +25,20 @@ bool Scene::Start()
 	defLabel.color = Red;
 	defLabel.fontName = "Arial16";
 	defLabel.text = "Hey bitches im here";
-	
+
 	App->gui->CreateLabel({0,0}, defLabel, nullptr, nullptr);*/
 
 
-	PlayerEntity* player = App->entities->AddPlayer({50,50}, THRALL);
+	PlayerEntity* player = App->entities->AddPlayer({ 50,50 }, THRALL);
 	App->entities->SetPlayer(player);
 
-	//LabelInfo defLabel;
-	//defLabel.color = Red;
-	//defLabel.fontName = "Arial16";
-	//defLabel.text = "Hey bitches im here";
-	//
-	//Application->gui->CreateLabel({0,0}, defLabel, nullptr, nullptr);
+	Button* button = (Button*)App->gui->CreateButton({20.0f, 20.0f }, this);
+
+	LabelInfo defLabel;
+	defLabel.color = Red;
+	defLabel.fontName = "Arial11";
+	defLabel.text = "I'm a button";
+	App->gui->CreateLabel({5,5}, defLabel, button, this);
 
 
 
@@ -90,5 +92,33 @@ bool Scene::CleanUp()
 //-----------------------------------
 void Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 {
-
+	switch (UIelem->type)
+	{
+		case GUIElem::GUIElemType::BUTTON:
+		{
+			Button* button = (Button*)UIelem;
+			switch (_event)
+			{
+				case UIEvents::MOUSE_ENTER:
+				case UIEvents::MOUSE_RIGHT_UP:
+				case UIEvents::MOUSE_LEFT_UP:
+				{
+					button->atlasRect = Button1MouseHover;
+					break;
+				}
+				case UIEvents::MOUSE_LEFT_CLICK:
+				{
+					button->atlasRect = Button1Pressed;
+					break;
+				}
+				case UIEvents::MOUSE_LEAVE:
+				case UIEvents::NO_EVENT:
+				{
+					button->atlasRect = Button1;
+					break;
+				}
+			}
+			break;
+		}
+	}
 }

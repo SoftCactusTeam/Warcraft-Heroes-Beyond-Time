@@ -15,7 +15,7 @@ struct LabelInfo
 class Label : public GUIElem
 {
 public:
-	Label() {};
+	Label() {}
 	Label(fPoint position, LabelInfo& info, GUIElem* parent, Module* listener);
 	~Label();
 	bool Update(float dt);

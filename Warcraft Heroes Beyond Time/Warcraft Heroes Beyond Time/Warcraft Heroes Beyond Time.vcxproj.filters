@@ -85,6 +85,9 @@
     <ClCompile Include="Thrall.cpp">
       <Filter>Entities\Dynamic Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene.h" />
@@ -185,6 +188,9 @@
     </ClInclude>
     <ClInclude Include="Thrall.h">
       <Filter>Entities\Dynamic Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

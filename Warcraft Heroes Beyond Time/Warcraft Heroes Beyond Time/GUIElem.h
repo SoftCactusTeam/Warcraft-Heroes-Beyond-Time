@@ -40,13 +40,11 @@ protected:
 	fPoint localPos = { 0.0f, 0.0f };
 	fPoint screenPos = { 0.0f, 0.0f };
 
-	GUIElemType type = GUIElemType::NO_ELEMTYPE;
-	SDL_Rect atlasRect = { 0, 0, 0, 0 };
-
 	UIEvents UIevent = UIEvents::NO_EVENT;
 	Module* listener = nullptr;
-
-
+public:
+	GUIElemType type = GUIElemType::NO_ELEMTYPE;
+	SDL_Rect atlasRect = { 0, 0, 0, 0 };
 
 public:
 	GUIElem() {}

@@ -1,10 +1,12 @@
 #include "ModuleGUI.h"
 #include "Application.h"
 #include "Fonts.h"
+#include "ModuleTextures.h"
 
+#include "GUIElem.h"
 #include "Label.h"
 #include "InputBox.h"
-#include "GUIElem.h"
+#include "Button.h"
 
 ModuleGUI::ModuleGUI() : Module()
 {
@@ -20,6 +22,7 @@ bool ModuleGUI::Awake(pugi::xml_node& guiNode)
 
 bool ModuleGUI::Start()
 {
+	atlas = App->textures->Load("GUI/atlas.png");
 	return true;
 }
 
@@ -87,7 +90,7 @@ bool ModuleGUI::DestroyElem(GUIElem* element)
 	return true;
 }
 
-Label* ModuleGUI::CreateLabel(fPoint position, LabelInfo& info, GUIElem* parent, Module* listener)
+GUIElem* ModuleGUI::CreateLabel(fPoint position, LabelInfo& info, GUIElem* parent, Module* listener)
 {
 	Label* label = new Label(position, info, parent, listener);
 
@@ -96,13 +99,20 @@ Label* ModuleGUI::CreateLabel(fPoint position, LabelInfo& info, GUIElem* parent,
 	return label;
 }
 
-InputBox* ModuleGUI::CreateInputBox(fPoint localPos, InputBoxInfo& info, Module* listener, GUIElem* parent)
+GUIElem* ModuleGUI::CreateInputBox(fPoint localPos, InputBoxInfo& info, Module* listener, GUIElem* parent)
 {
 	InputBox* inputBox = new InputBox(localPos, info, listener, parent);
 
 	elementsToSpawn.push_back((GUIElem*)inputBox);
 
 	return inputBox;
+}
+
+GUIElem* ModuleGUI::CreateButton(fPoint localPos, Module* listener, GUIElem* parent)
+{
+	Button* button = new Button(localPos, parent, listener);
+	elementsToSpawn.push_back(button);
+	return button;
 }
 
 SDL_Texture* ModuleGUI::getAtlas() const

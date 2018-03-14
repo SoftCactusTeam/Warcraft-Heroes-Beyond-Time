@@ -10,8 +10,6 @@
 
 
 class GUIElem;
-class Label;
-class InputBox;
 class LabelInfo;
 class InputBoxInfo;
 
@@ -31,8 +29,10 @@ public:
 	bool CleanUp();
 
 public:
-	Label* CreateLabel(fPoint position, LabelInfo& info, GUIElem* parent = nullptr, Module* listener = nullptr);
-	InputBox* CreateInputBox(fPoint localPos, InputBoxInfo& info, Module* listener = nullptr, GUIElem* parent = nullptr);
+	GUIElem* CreateLabel(fPoint position, LabelInfo& info, GUIElem* parent = nullptr, Module* listener = nullptr);
+	GUIElem* CreateInputBox(fPoint localPos, InputBoxInfo& info, Module* listener = nullptr, GUIElem* parent = nullptr);
+	GUIElem* CreateButton(fPoint localPos, Module* listener, GUIElem* parent = nullptr);
+
 	bool DestroyElem(GUIElem* element);
 	SDL_Texture* getAtlas() const;
 

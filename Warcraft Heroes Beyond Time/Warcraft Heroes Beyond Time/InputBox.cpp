@@ -5,7 +5,7 @@
 #include "Fonts.h"
 #include "InputBox.h"
 
-InputBox::InputBox(fPoint localPos, InputBoxInfo& info, Module* listener, GUIElem* parent) : GUIElem(localPos, listener, InputBox1, GUIElemType::INPUTBOX, parent)
+InputBox::InputBox(fPoint localPos, InputBoxInfo& info, Module* listener, GUIElem* parent) : GUIElem(localPos, listener, {0,0,0,0}, GUIElemType::INPUTBOX, parent)
 {
 	font = App->fonts->getFontbyName(info.fontName);
 	color = info.color;
