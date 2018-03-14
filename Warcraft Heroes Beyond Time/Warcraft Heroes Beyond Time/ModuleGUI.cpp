@@ -7,6 +7,7 @@
 #include "Label.h"
 #include "InputBox.h"
 #include "Button.h"
+#include "Slider.h"
 
 ModuleGUI::ModuleGUI() : Module()
 {
@@ -113,6 +114,13 @@ GUIElem* ModuleGUI::CreateButton(fPoint localPos, BType btype, Module* listener,
 	Button* button = new Button(localPos, btype, parent, listener);
 	elementsToSpawn.push_back(button);
 	return button;
+}
+
+GUIElem* ModuleGUI::CreateSlider(fPoint localPos, SliderInfo sInfo, Module* listener, GUIElem* parent)
+{
+	Slider* slider = new Slider(localPos, listener, sliderbar, sInfo, GUIElem::GUIElemType::SLIDER, parent);
+	elementsToSpawn.push_back(slider);
+	return slider;
 }
 
 SDL_Texture* ModuleGUI::getAtlas() const

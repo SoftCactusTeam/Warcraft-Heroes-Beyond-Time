@@ -7,6 +7,8 @@
 #include "ModuleInput.h"
 #include "Button.h"
 #include "Console.h"
+#include "Slider.h"
+#include "ModuleAudio.h"
 
 Scene::Scene()
 {
@@ -41,12 +43,12 @@ bool Scene::Start()
 			defLabel.text = "PLAY";
 			App->gui->CreateLabel({ 100,40 }, defLabel, button, this);
 
-			Button* button2 = (Button*)App->gui->CreateButton({ 300, 150.0f }, BType::NO_BTYPE, this);
+			Button* button2 = (Button*)App->gui->CreateButton({ 300, 150.0f }, BType::SETTINGS, this);
 
 			LabelInfo defLabel2;
 			defLabel2.color = Red;
 			defLabel2.fontName = "Arial11";
-			defLabel2.text = "I'm useless";
+			defLabel2.text = "Settings";
 			App->gui->CreateLabel({ 90,40 }, defLabel2, button2, this);
 
 			Button* button3 = (Button*)App->gui->CreateButton({ 300, 250.0f }, BType::EXIT_GAME, this);
@@ -56,6 +58,30 @@ bool Scene::Start()
 			defLabel3.fontName = "Arial11";
 			defLabel3.text = "Fuck u go fucking out of here ;(";
 			App->gui->CreateLabel({ 40,40 }, defLabel3, button3, this);
+
+			break;
+		}
+		case Stages::SETTINGS:
+		{
+			SliderInfo sinfo;
+			sinfo.type = Slider::SliderType::MUSIC_VOLUME;
+			Slider* slider = (Slider*)App->gui->CreateSlider({ 250, 190 }, sinfo, this, nullptr);
+
+			LabelInfo defLabel3;
+			defLabel3.color = White;
+			defLabel3.fontName = "Arial11";
+			std::string temp = (char*)std::to_string(App->audio->MusicVolumePercent).data();
+			defLabel3.text = (char*)temp.data();
+			App->gui->CreateLabel({ 380,7 }, defLabel3, slider, this);
+
+
+			Button* button3 = (Button*)App->gui->CreateButton({ 300, 250.0f }, BType::GO_MMENU, this);
+
+			LabelInfo defLabel2;
+			defLabel2.color = Red;
+			defLabel2.fontName = "Arial11";
+			defLabel2.text = "Go Back ;)";
+			App->gui->CreateLabel({ 40,40 }, defLabel2, button3, this);
 
 			break;
 		}
@@ -179,6 +205,15 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 					case BType::EXIT_GAME:
 						return false;
 						break;
+					case BType::SETTINGS:
+						actual_scene = Stages::SETTINGS;
+						restart = true;
+						break;
+					case BType::GO_MMENU:
+						actual_scene = Stages::MAIN_MENU;
+						restart = true;
+						break;
+
 					}
 					break;
 				}

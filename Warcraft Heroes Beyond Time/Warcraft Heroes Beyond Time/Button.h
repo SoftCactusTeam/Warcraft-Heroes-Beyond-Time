@@ -18,6 +18,7 @@ enum class BType
 	NO_BTYPE,
 	PLAY,
 	GO_MMENU,
+	SETTINGS,
 	EXIT_GAME
 
 };

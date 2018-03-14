@@ -30,7 +30,8 @@ public:
 		NO_ELEMTYPE = -1,
 		BUTTON,
 		LABEL,
-		INPUTBOX
+		INPUTBOX,
+		SLIDER
 	};
 	
 protected:

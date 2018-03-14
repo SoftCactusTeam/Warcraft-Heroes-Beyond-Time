@@ -28,13 +28,11 @@ bool GUIElem::MouseHover() const
 
 	bool result = false;
 
-	fPoint worldPos = { screenPos.x, screenPos.y};
-
 	//if collides
-	if (!(x < worldPos.x ||
-		x > worldPos.x + atlasRect.w ||
-		y < worldPos.y ||
-		y > worldPos.y + atlasRect.h))
+	if (!(x < screenPos.x ||
+		x > screenPos.x + atlasRect.w ||
+		y < screenPos.y ||
+		y > screenPos.y + atlasRect.h))
 	{
 		result = true;
 	}
@@ -94,17 +92,13 @@ bool GUIElem::HandleInput()
 		{
 			LOG("Mouse Leave");
 			UIevent = UIEvents::MOUSE_LEFT_UP;
-			listener->OnUIEvent((GUIElem*)this, UIevent);
-
-			break;
+			ret = listener->OnUIEvent((GUIElem*)this, UIevent);
 		}
 		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_RELEASED)
 		{
 			LOG("Mouse left click released");
 			UIevent = UIEvents::MOUSE_LEFT_UP;
 			ret = listener->OnUIEvent((GUIElem*)this, UIevent);
-			
-			break;
 		}
 
 		break;

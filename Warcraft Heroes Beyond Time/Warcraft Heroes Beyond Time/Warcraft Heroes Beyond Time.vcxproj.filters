@@ -88,6 +88,9 @@
     <ClCompile Include="Button.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
+    <ClCompile Include="Slider.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene.h" />
@@ -190,6 +193,9 @@
       <Filter>Entities\Dynamic Entities</Filter>
     </ClInclude>
     <ClInclude Include="Button.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Slider.h">
       <Filter>GUI</Filter>
     </ClInclude>
   </ItemGroup>

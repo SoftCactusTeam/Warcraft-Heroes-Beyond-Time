@@ -28,6 +28,7 @@ public:
 	{
 		NO_STAGE,
 		MAIN_MENU, 
+		SETTINGS,
 		INGAME
 
 	} actual_scene = Stages::MAIN_MENU;
