@@ -12,15 +12,15 @@
 #define ABAIX { 356,921,32,32 }
 #define ADALT { 356,409,32,32 }
 #define ADALT2 { 292,184,0,0 }
-#define DRETAIESQUERRA
-#define ADALTIABAIX
-#define ADALTDRETA
-#define ADALTESQUERRA
-#define ADALTESQUERRADRETA
+#define DRETAIESQUERRA { 260,601,32,32 }
+#define ADALTIABAIX { 453,537,32,32 }
+#define ADALTDRETA { 69,506,32,32 }
+#define ADALTESQUERRA { 261,890,32,32 }
+#define ADALTESQUERRADRETA { 164,890,32,32 }
 #define ABAIXDRETA
 #define ABAIXESQUERRA
 #define ABAIXESQUERRADRETA
-#define TANCAT
+#define TANCAT { 358,472,32,32 }
 
 MapGenerator::MapGenerator() {}
 
@@ -79,6 +79,7 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations)
 			if (auxNode->whatToBlit.x != 260)
 			{
 				auxNode->whatToBlit = FLOOR;
+				visited.push_back(auxNode);
 				i++;
 			}
 		}
@@ -88,6 +89,7 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations)
 			if (auxNode->whatToBlit.x != 260)
 			{
 				auxNode->whatToBlit = FLOOR;
+				visited.push_back(auxNode);
 				i++;
 			}
 		}
@@ -97,6 +99,7 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations)
 			if (auxNode->whatToBlit.x != 260)
 			{
 				auxNode->whatToBlit = FLOOR;
+				visited.push_back(auxNode);
 				i++;
 			}
 		}
@@ -106,6 +109,7 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations)
 			if (auxNode->whatToBlit.x != 260)
 			{
 				auxNode->whatToBlit = FLOOR;
+				visited.push_back(auxNode);
 				i++;
 			}
 		}
@@ -116,19 +120,124 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations)
 	return true;
 }
 
+int MapGenerator::CheckTypeOfNode(MapNode* nodetocheck)
+{
+	bool adalt, abaix, dreta, esquerra;
+	adalt = abaix = dreta = esquerra = false;
+
+	// si existeix...
+	if (CheckBoundaries({ nodetocheck->pos.x,nodetocheck->pos.y + 1 }))
+	{
+		// si no son terra...
+		if (nodes[Get(nodetocheck->pos.x, nodetocheck->pos.y + 1)]->whatToBlit.x == 260)
+		{ 
+			abaix = true;
+
+		}
+	}
+
+	// si existeix...
+	if (CheckBoundaries({ nodetocheck->pos.x,nodetocheck->pos.y - 1 }))
+	{
+		// si no son terra...
+		if (nodes[Get(nodetocheck->pos.x, nodetocheck->pos.y - 1)]->whatToBlit.x == 260)
+		{ 
+			adalt = true;
+		}
+	}
+
+	// si existeix...
+	if (CheckBoundaries({ nodetocheck->pos.x +1,nodetocheck->pos.y }))
+	{
+		// si no son terra...
+		if (nodes[Get(nodetocheck->pos.x + 1, nodetocheck->pos.y)]->whatToBlit.x == 260)
+		{
+			dreta = true;
+		}
+	}
+
+	// si existeix...
+	if (CheckBoundaries({ nodetocheck->pos.x - 1,nodetocheck->pos.y }))
+	{
+		// si no son terra...
+		if (nodes[Get(nodetocheck->pos.x - 1, nodetocheck->pos.y)]->whatToBlit.x == 260)
+		{
+			esquerra = true;
+		}
+	}
+
+	if (adalt && esquerra && dreta && abaix)
+		return (int)nodeType::typeFully;
+	else if (adalt && esquerra && dreta && !abaix)
+		return (int)nodeType::typeUpLeftRight;
+	else if (!adalt && esquerra && dreta && abaix)
+		return (int)nodeType::typeDownLeftRight;
+	else if (adalt && esquerra && !dreta && abaix)
+		return (int)nodeType::typeUpDownLeft;
+	else if (adalt && !esquerra && dreta && abaix)
+		return (int)nodeType::typeUpDownRight;
+	else if (adalt && esquerra && !dreta && !abaix)
+		return (int)nodeType::typeUpLeft;
+	else if (adalt && !esquerra && dreta && !abaix)
+		return (int)nodeType::typeUpRight;
+	else if (!adalt && esquerra && !dreta && abaix)
+		return (int)nodeType::typeDownLeft;
+	else if (!adalt && !esquerra && dreta && abaix)
+		return (int)nodeType::typeDownRight;
+	else if (adalt && !esquerra && !dreta && abaix)
+		return (int)nodeType::typeUpDown;
+	else if (!adalt && esquerra && dreta && !abaix)
+		return (int)nodeType::typeLeftRight;
+	else if (adalt && !esquerra && !dreta && !abaix)
+		return (int)nodeType::typeUp;
+	else if (!adalt && esquerra && !dreta && !abaix)
+		return (int)nodeType::typeLeft;
+	else if (!adalt && !esquerra && dreta && !abaix)
+		return (int)nodeType::typeRight;
+	else if (!adalt && !esquerra && !dreta && abaix)
+		return (int)nodeType::typeDown;
+	else
+		return (int)nodeType::noType;
+}
+
+
+void MapGenerator::UpdateNode(MapNode* nodetocheck, int type)
+{
+	if (type == (int)nodeType::typeDown)
+		nodetocheck->whatToBlit = ADALT;
+	else if (type == (int)nodeType::typeUp)
+		nodetocheck->whatToBlit = ABAIX;
+	else if (type == (int)nodeType::typeLeft)
+		nodetocheck->whatToBlit = DRETA;
+	else if (type == (int)nodeType::typeRight)
+		nodetocheck->whatToBlit = ESQUERRA;
+	else if (type == (int)nodeType::typeFully)
+		nodetocheck->whatToBlit = TANCAT;
+	else if (type == (int)nodeType::typeUpRight)
+		nodetocheck->whatToBlit = ADALTDRETA;
+	else if (type == (int)nodeType::typeUpLeftRight)
+		nodetocheck->whatToBlit = ADALTESQUERRADRETA;
+//	else if (type == (int)nodeType::typeDownLeftRight)
+		//nodetocheck->whatToBlit = ABAIXESQUERRADRETA;
+	
+
+}
+
 bool MapGenerator::GenerateWalls()
 {
-	for (uint i = 0u; i < nodes.size(); ++i)
+	for (uint i = 0u; i < visited.size(); ++i)
 	{
-		if (nodes[i]->whatToBlit.x == 260)
+		if (visited[i]->whatToBlit.x == 260)
 		{
-			MapNode* auxNode = nodes[Get(nodes[i]->pos.x, nodes[i]->pos.y)];
+			MapNode* auxNode = visited[i];
 
 			if (CheckBoundaries({ auxNode->pos.x, auxNode->pos.y - 1 }))
 			{
 				if (nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)]->whatToBlit.x == 292)
 				{
-					nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)]->whatToBlit = ADALT;
+					//Check type of node adn Update
+					int type = CheckTypeOfNode(nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)]);
+					UpdateNode(nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)], type);
 				}
 			}
 
@@ -136,7 +245,9 @@ bool MapGenerator::GenerateWalls()
 			{
 				if (nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)]->whatToBlit.x == 292)
 				{
-						nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)]->whatToBlit = ABAIX;
+					//Check type of node adn Update
+					int type = CheckTypeOfNode(nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)]);
+					UpdateNode(nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)], type);
 				}
 			}
 
@@ -144,7 +255,9 @@ bool MapGenerator::GenerateWalls()
 			{
 				if (nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)]->whatToBlit.x == 292)
 				{
-						nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)]->whatToBlit = DRETA;
+					//Check type of node adn Update
+					int type = CheckTypeOfNode(nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)]);
+					UpdateNode(nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)], type);
 				}
 			}
 
@@ -152,7 +265,9 @@ bool MapGenerator::GenerateWalls()
 			{
 				if (nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)]->whatToBlit.x == 292)
 				{
-						nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)]->whatToBlit = ESQUERRA;
+					//Check type of node adn Update
+					int type = CheckTypeOfNode(nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)]);
+					UpdateNode(nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)], type);
 				}
 			}
 		}
