@@ -80,7 +80,7 @@ bool Render::Update(float dt)
 bool Render::PostUpdate()
 {
 	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
-	SDL_RenderSetLogicalSize(renderer, 1920, 1080);
+	SDL_RenderSetLogicalSize(renderer, 854, 480);
 	SDL_RenderPresent(renderer);
 	return true;
 }

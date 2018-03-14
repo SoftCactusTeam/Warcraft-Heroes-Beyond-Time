@@ -38,7 +38,7 @@ bool Window::Awake(pugi::xml_node& windowNode)
 
 		width = windowNode.child("size").attribute("w").as_uint();
 		height = windowNode.child("size").attribute("h").as_uint();
-		scale = 3;
+		scale = 1;
 
 		if (fullscreen == true)
 		{
