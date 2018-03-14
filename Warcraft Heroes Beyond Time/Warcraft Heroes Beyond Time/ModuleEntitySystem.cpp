@@ -48,7 +48,10 @@ class Spawn_ConsoleOrder : public ConsoleOrder
 		{
 
 		}
-
+		else if (parameter == "thrall")
+		{
+			App->entities->AddPlayer({ 0,50 }, THRALL);
+		}
 		else if (parameter == "archer")
 		{
 
