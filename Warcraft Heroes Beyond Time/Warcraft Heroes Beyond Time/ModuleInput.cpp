@@ -248,7 +248,8 @@ void Input::ExternActionsAtKeyInput(const int key) {
 	switch (key) 
 	{
 		case SDL_SCANCODE_GRAVE:	// º button -> OpenConsole
-			App->console->SwitchWrittingState();
+			if(App->console->isActive())
+				App->console->SwitchWrittingState();
 		break;
 	}
 }

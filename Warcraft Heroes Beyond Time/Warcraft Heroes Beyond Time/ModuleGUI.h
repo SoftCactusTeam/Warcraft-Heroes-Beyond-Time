@@ -12,6 +12,8 @@
 class GUIElem;
 class LabelInfo;
 class InputBoxInfo;
+struct SliderInfo;
+enum class BType;
 
 
 class ModuleGUI : public Module
@@ -31,7 +33,8 @@ public:
 public:
 	GUIElem* CreateLabel(fPoint position, LabelInfo& info, GUIElem* parent = nullptr, Module* listener = nullptr);
 	GUIElem* CreateInputBox(fPoint localPos, InputBoxInfo& info, Module* listener = nullptr, GUIElem* parent = nullptr);
-	GUIElem* CreateButton(fPoint localPos, Module* listener, GUIElem* parent = nullptr);
+	GUIElem* CreateButton(fPoint localPos, BType btype, Module* listener, GUIElem* parent = nullptr);
+	GUIElem* CreateSlider(fPoint localPos, SliderInfo sInfo, Module* listener, GUIElem* parent = nullptr);
 
 	bool DestroyElem(GUIElem* element);
 	SDL_Texture* getAtlas() const;

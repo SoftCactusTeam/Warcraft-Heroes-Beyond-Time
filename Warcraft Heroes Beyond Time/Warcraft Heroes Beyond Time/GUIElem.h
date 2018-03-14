@@ -30,7 +30,8 @@ public:
 		NO_ELEMTYPE = -1,
 		BUTTON,
 		LABEL,
-		INPUTBOX
+		INPUTBOX,
+		SLIDER
 	};
 	
 protected:
@@ -55,7 +56,7 @@ public:
 	virtual bool Update(float dt);
 	virtual bool MouseHover() const;
 	virtual void DebugDraw();
-	virtual void HandleInput();
+	virtual bool HandleInput();
 
 	bool hasParent()const;
 	GUIElem* getParent() const;
@@ -64,6 +65,8 @@ public:
 	bool DestroyChilds();
 
 	fPoint calculateScreenPos();
+
+	void Move(fPoint dist);
 };
 
 #endif

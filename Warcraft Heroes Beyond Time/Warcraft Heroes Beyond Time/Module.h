@@ -56,8 +56,10 @@ public:
 	virtual void Load(const pugi::xml_node&) 
 	{}
 
-	virtual void OnUIEvent(GUIElem* UIelem, UIEvents _event) 
-{}
+	virtual bool OnUIEvent(GUIElem* UIelem, UIEvents _event) 
+	{
+		return true;
+	}
 
 	bool Activate()
 	{

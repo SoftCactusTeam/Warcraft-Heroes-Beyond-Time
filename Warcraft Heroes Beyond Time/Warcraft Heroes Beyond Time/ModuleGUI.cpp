@@ -7,6 +7,7 @@
 #include "Label.h"
 #include "InputBox.h"
 #include "Button.h"
+#include "Slider.h"
 
 ModuleGUI::ModuleGUI() : Module()
 {
@@ -22,7 +23,7 @@ bool ModuleGUI::Awake(pugi::xml_node& guiNode)
 
 bool ModuleGUI::Start()
 {
-	atlas = App->textures->Load("GUI/atlas.png");
+	atlas = App->textures->Load("GUI/atlas480b.png");
 	return true;
 }
 
@@ -108,11 +109,18 @@ GUIElem* ModuleGUI::CreateInputBox(fPoint localPos, InputBoxInfo& info, Module* 
 	return inputBox;
 }
 
-GUIElem* ModuleGUI::CreateButton(fPoint localPos, Module* listener, GUIElem* parent)
+GUIElem* ModuleGUI::CreateButton(fPoint localPos, BType btype, Module* listener, GUIElem* parent)
 {
-	Button* button = new Button(localPos, parent, listener);
+	Button* button = new Button(localPos, btype, parent, listener);
 	elementsToSpawn.push_back(button);
 	return button;
+}
+
+GUIElem* ModuleGUI::CreateSlider(fPoint localPos, SliderInfo sInfo, Module* listener, GUIElem* parent)
+{
+	Slider* slider = new Slider(localPos, listener, sliderbar, sInfo, GUIElem::GUIElemType::SLIDER, parent);
+	elementsToSpawn.push_back(slider);
+	return slider;
 }
 
 SDL_Texture* ModuleGUI::getAtlas() const

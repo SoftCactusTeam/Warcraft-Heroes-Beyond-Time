@@ -20,7 +20,7 @@ public:
 	~Label();
 	bool Update(float dt);
 	bool MouseHover() const;
-	void EditText(char* text, SDL_Color color);
+	void EditText(std::string text, SDL_Color color);
 
 private:
 	std::string text;
