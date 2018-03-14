@@ -3,7 +3,7 @@
 #include "Button.h"
 
 
-Button::Button(fPoint localPos, GUIElem* parent, Module* listener) : GUIElem(localPos, listener, Button1, GUIElemType::BUTTON, parent) {}
+Button::Button(fPoint localPos, BType btype, GUIElem* parent, Module* listener) : GUIElem(localPos, listener, Button1, GUIElemType::BUTTON, parent), btype(btype) {}
 
 Button::~Button()
 {
@@ -24,7 +24,7 @@ bool Button::Update(float dt)
 		result = UpdateChilds(dt);
 
 	if (result)
-		HandleInput();
+		result = HandleInput();
 	
 	return result;
 }

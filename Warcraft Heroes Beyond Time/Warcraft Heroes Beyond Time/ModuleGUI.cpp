@@ -108,9 +108,9 @@ GUIElem* ModuleGUI::CreateInputBox(fPoint localPos, InputBoxInfo& info, Module* 
 	return inputBox;
 }
 
-GUIElem* ModuleGUI::CreateButton(fPoint localPos, Module* listener, GUIElem* parent)
+GUIElem* ModuleGUI::CreateButton(fPoint localPos, BType btype, Module* listener, GUIElem* parent)
 {
-	Button* button = new Button(localPos, parent, listener);
+	Button* button = new Button(localPos, btype, parent, listener);
 	elementsToSpawn.push_back(button);
 	return button;
 }

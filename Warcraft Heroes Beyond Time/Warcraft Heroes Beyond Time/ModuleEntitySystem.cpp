@@ -132,7 +132,7 @@ EntitySystem::EntitySystem() : Module()
 
 void EntitySystem::Init()
 {
-	active = true;
+	active = false;
 }
 
 bool EntitySystem::Awake(pugi::xml_node& entitiesNode)

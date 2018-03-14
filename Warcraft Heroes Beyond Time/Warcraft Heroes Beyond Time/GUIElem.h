@@ -55,7 +55,7 @@ public:
 	virtual bool Update(float dt);
 	virtual bool MouseHover() const;
 	virtual void DebugDraw();
-	virtual void HandleInput();
+	virtual bool HandleInput();
 
 	bool hasParent()const;
 	GUIElem* getParent() const;

@@ -31,7 +31,7 @@ Console::~Console() {
 
 void Console::Init()
 {
-	active = true;
+	active = false;
 }
 
 bool Console::Awake(pugi::xml_node& consoleNode) 

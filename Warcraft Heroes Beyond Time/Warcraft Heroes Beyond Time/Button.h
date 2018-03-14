@@ -13,13 +13,23 @@
 
 class Label;
 
+enum class BType
+{
+	NO_BTYPE,
+	PLAY,
+	GO_MMENU,
+	EXIT_GAME
+
+};
+
 class Button : public GUIElem
 {
 public:
+	BType btype = BType::NO_BTYPE;
 
 public:
 	Button() {}
-	Button(fPoint localPos, GUIElem* parent = nullptr, Module* listener = nullptr);
+	Button(fPoint localPos, BType btype, GUIElem* parent = nullptr, Module* listener = nullptr);
 
 	virtual ~Button();
 

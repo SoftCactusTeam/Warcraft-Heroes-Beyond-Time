@@ -41,9 +41,11 @@ bool GUIElem::MouseHover() const
 	return result;
 }
 
-void GUIElem::HandleInput()
+bool GUIElem::HandleInput()
 {
-	switch (UIevent) 
+	bool ret = true;
+
+	switch (UIevent)
 	{
 
 	case UIEvents::NO_EVENT:
@@ -92,13 +94,15 @@ void GUIElem::HandleInput()
 		{
 			LOG("Mouse Leave");
 			UIevent = UIEvents::MOUSE_LEFT_UP;
+			listener->OnUIEvent((GUIElem*)this, UIevent);
+
 			break;
 		}
 		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_RELEASED)
 		{
 			LOG("Mouse left click released");
 			UIevent = UIEvents::MOUSE_LEFT_UP;
-			listener->OnUIEvent((GUIElem*)this, UIevent);
+			ret = listener->OnUIEvent((GUIElem*)this, UIevent);
 			
 			break;
 		}
@@ -116,6 +120,8 @@ void GUIElem::HandleInput()
 		UIevent = UIEvents::NO_EVENT;
 		break;
 	}
+
+	return ret;
 }
 
 void GUIElem::DebugDraw() //In progress

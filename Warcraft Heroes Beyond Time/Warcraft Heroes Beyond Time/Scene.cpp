@@ -6,6 +6,7 @@
 #include "InputBox.h"
 #include "ModuleInput.h"
 #include "Button.h"
+#include "Console.h"
 
 Scene::Scene()
 {
@@ -27,36 +28,50 @@ bool Scene::Start()
 	defLabel.text = "Hey bitches im here";
 
 	App->gui->CreateLabel({0,0}, defLabel, nullptr, nullptr);*/
+	App->gui->Activate();
+	switch (actual_scene)
+	{
+		case Stages::MAIN_MENU:
+		{
+			Button* button = (Button*)App->gui->CreateButton({ 300, 50.0f }, BType::PLAY, this);
 
+			LabelInfo defLabel;
+			defLabel.color = Red;
+			defLabel.fontName = "Arial11";
+			defLabel.text = "PLAY";
+			App->gui->CreateLabel({ 100,40 }, defLabel, button, this);
 
-	PlayerEntity* player = App->entities->AddPlayer({ 50,50 }, THRALL);
-	App->entities->SetPlayer(player);
+			Button* button2 = (Button*)App->gui->CreateButton({ 300, 150.0f }, BType::NO_BTYPE, this);
 
-	Button* button = (Button*)App->gui->CreateButton({300, 50.0f }, this);
+			LabelInfo defLabel2;
+			defLabel2.color = Red;
+			defLabel2.fontName = "Arial11";
+			defLabel2.text = "I'm useless";
+			App->gui->CreateLabel({ 90,40 }, defLabel2, button2, this);
 
-	LabelInfo defLabel;
-	defLabel.color = Red;
-	defLabel.fontName = "Arial11";
-	defLabel.text = "I'm a button";
-	App->gui->CreateLabel({85,40}, defLabel, button, this);
+			Button* button3 = (Button*)App->gui->CreateButton({ 300, 250.0f }, BType::EXIT_GAME, this);
 
-	Button* button2 = (Button*)App->gui->CreateButton({ 300, 150.0f }, this);
+			LabelInfo defLabel3;
+			defLabel3.color = Red;
+			defLabel3.fontName = "Arial11";
+			defLabel3.text = "Fuck u go fucking out of here ;(";
+			App->gui->CreateLabel({ 40,40 }, defLabel3, button3, this);
 
-	LabelInfo defLabel2;
-	defLabel2.color = Red;
-	defLabel2.fontName = "Arial11";
-	defLabel2.text = "I'm a button too";
-	App->gui->CreateLabel({ 80,40 }, defLabel2, button2, this);
+			break;
+		}
+		case Stages::INGAME:
+		{
+			App->entities->Activate();
+			App->console->Activate();
+			PlayerEntity* player = App->entities->AddPlayer({ 50,50 }, THRALL);
+			App->entities->SetPlayer(player);
+			break;
+		}
+			
+	}
+	
 
-	Button* button3 = (Button*)App->gui->CreateButton({ 300, 250.0f }, this);
-
-	LabelInfo defLabel3;
-	defLabel3.color = Red;
-	defLabel3.fontName = "Arial11";
-	defLabel3.text = "Fuck u I'm the best :(";
-	App->gui->CreateLabel({ 65,40 }, defLabel3, button3, this);
-
-
+	
 	//InputBoxInfo defInputBox;
 	//defInputBox.color = Green;
 	//defInputBox.fontName = "Arial16";
@@ -91,22 +106,41 @@ bool Scene::Update(float dt)
 		App->Load();
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)
+	{
+		if (actual_scene == Stages::MAIN_MENU)
+			actual_scene = Stages::INGAME;
+		else
+			actual_scene = Stages::MAIN_MENU;
+		restart = true;
+	}
+
 	return true;
 }
 
 bool Scene::PostUpdate()
 {
+	if (restart)
+	{
+		restart = false;
+		this->DeActivate();
+		this->Activate();
+	}
 	return true;
 }
 
 bool Scene::CleanUp()
 {
+	App->gui->DeActivate();
+	App->entities->DeActivate();
+	App->console->DeActivate();
 	return true;
 }
 
 //-----------------------------------
-void Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
+bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 {
+	bool ret = true;
 	switch (UIelem->type)
 	{
 		case GUIElem::GUIElemType::BUTTON:
@@ -136,10 +170,21 @@ void Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 				{
 					button->atlasRect = Button1MouseHover;
 					button->MoveChilds({ 0.0f, -4.0f });
+					switch (button->btype)
+					{
+					case BType::PLAY:
+						actual_scene = Stages::INGAME;
+						restart = true;
+						break;
+					case BType::EXIT_GAME:
+						return false;
+						break;
+					}
 					break;
 				}
 			}
 			break;
 		}
 	}
+	return ret;
 }
