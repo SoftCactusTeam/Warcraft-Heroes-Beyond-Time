@@ -44,6 +44,12 @@ bool Input::Awake(pugi::xml_node& inputNode)
 		LOG("SDL_GAMECONTROLLER could not initialize! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
+	
+	if (SDL_InitSubSystem(SDL_INIT_HAPTIC) < 0)
+	{
+		printf_s("SDL_HAPTIC could not initialize! SDL_Error: %s\n", SDL_GetError());
+		ret = false;
+	}
 
 	if (SDL_NumJoysticks() < 1)
 		LOG("Warning: No joystick detected");
@@ -53,6 +59,22 @@ bool Input::Awake(pugi::xml_node& inputNode)
 		if (controller == NULL)
 		{
 			LOG("Warning: Unable to open game controller! SDL Error: %s\n", SDL_GetError());
+		}
+		else
+		{
+			controllerHaptic = SDL_HapticOpenFromJoystick(controller);
+			if (controllerHaptic == NULL)
+			{
+				LOG("Warning: Controller does not support haptics! SDL Error: %s\n", SDL_GetError());
+			}
+			else
+			{
+				//Get initialize rumble
+				if (SDL_HapticRumbleInit(controllerHaptic) < 0)
+				{
+					LOG("Warning: Unable to initialize rumble! SDL Error: %s\n", SDL_GetError());
+				}
+			}
 		}
 	}
 
@@ -186,6 +208,11 @@ bool Input::PreUpdate()
 		case SDL_JOYBUTTONDOWN:
 			if (event.jbutton.which == 0)
 			{
+				// RUMBLE TEST
+				if (SDL_HapticRumblePlay(controllerHaptic, 0.75, 500) != 0)
+				{
+					printf("Warning: Unable to play rumble! %s\n", SDL_GetError());
+				}
 				kbAvailable = false;
 				jButtons[event.jbutton.button - 1] = KEY_DOWN;
 			}
@@ -208,10 +235,14 @@ bool Input::PreUpdate()
 
 bool Input::CleanUp()
 {
+	LOG("Quitting haptic");
+	SDL_HapticClose(controllerHaptic);
+	controllerHaptic = NULL;
+
 	LOG("Quitting game controller");
 	SDL_JoystickClose(controller);
 	controller = NULL;
-
+	
 	LOG("Quitting SDL event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 

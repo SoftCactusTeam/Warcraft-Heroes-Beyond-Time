@@ -7,7 +7,7 @@
 
 #define FLOOR { 260,506,32,32 }
 #define WATER { 292,928,32,32 }
-#define ESQUERRA { 35,441,32,32 }
+#define ESQUERRA { 3,441,32,32 }
 #define DRETA { 516,473,32,32 }
 #define ABAIX { 356,921,32,32 }
 #define ADALT { 356,409,32,32 }
@@ -55,7 +55,7 @@ bool MapGenerator::GenerateGrid(int sizeX, int sizeY)
 
 	ExecuteAlgorithm( nodes[Get(25,25)],600);
 
-	//GenerateWalls();
+	GenerateWalls();
 
 	return nodes.size() == totalSize;
 }
@@ -123,31 +123,37 @@ bool MapGenerator::GenerateWalls()
 		if (nodes[i]->whatToBlit.x == 260)
 		{
 			MapNode* auxNode = nodes[Get(nodes[i]->pos.x, nodes[i]->pos.y)];
-	
-			if (nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)]->whatToBlit.x == 292)
+
+			if (CheckBoundaries({ auxNode->pos.x, auxNode->pos.y - 1 }))
 			{
-				if(CheckBoundaries(nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)]->pos))
+				if (nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)]->whatToBlit.x == 292)
+				{
 					nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)]->whatToBlit = ADALT;
-				if (CheckBoundaries(nodes[Get(auxNode->pos.x, auxNode->pos.y + 2)]->pos))
-					nodes[Get(auxNode->pos.x, auxNode->pos.y - 2)]->whatToBlit = ADALT2;
+				}
 			}
 
-			if (nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)]->whatToBlit.x == 292)
+			if (CheckBoundaries({ auxNode->pos.x, auxNode->pos.y + 1}))
 			{
-				if (CheckBoundaries(nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)]->pos))
-					nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)]->whatToBlit = ABAIX;
+				if (nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)]->whatToBlit.x == 292)
+				{
+						nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)]->whatToBlit = ABAIX;
+				}
 			}
 
-			if (nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)]->whatToBlit.x == 292)
+			if (CheckBoundaries({ auxNode->pos.x + 1, auxNode->pos.y }))
 			{
-				if (CheckBoundaries(nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)]->pos))
-					nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)]->whatToBlit = DRETA;
+				if (nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)]->whatToBlit.x == 292)
+				{
+						nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)]->whatToBlit = DRETA;
+				}
 			}
 
-			if (nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)]->whatToBlit.x == 292)
+			if (CheckBoundaries({ auxNode->pos.x - 1, auxNode->pos.y }))
 			{
-				if (CheckBoundaries(nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)]->pos))
-					nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)]->whatToBlit = ESQUERRA;
+				if (nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)]->whatToBlit.x == 292)
+				{
+						nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)]->whatToBlit = ESQUERRA;
+				}
 			}
 		}
 	}

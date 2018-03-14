@@ -93,6 +93,7 @@ private:
 	bool		key_pressed = false;
 
 	SDL_Joystick* controller = NULL;
+	SDL_Haptic* controllerHaptic = NULL;
 
 	float xAxis = 0;
 	float yAxis = 0;
