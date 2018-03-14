@@ -17,6 +17,7 @@ struct Collider
 class ModuleColliders : public Module
 {
 public:
+	bool Awake(pugi::xml_node& consoleNode);
 	bool Update(float dt);
 	bool CleanUp();
 
@@ -33,7 +34,10 @@ private:
 	std::vector<Collider*> temporalColliders;
 	std::vector<int> temporalColliderstimer;
 	//	--------------------------------
-	bool printColliders = true;
+
+public:
+	bool printColliders = false;
+
 };
 
 

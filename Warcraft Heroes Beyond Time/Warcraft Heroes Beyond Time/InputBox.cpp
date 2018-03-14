@@ -57,12 +57,12 @@ void InputBox::DisableInput()
 
 void InputBox::ClearBox()
 {
-	/*if(!text.empty())
+	if(!text.empty())
 		text.clear();
 
 	if(texturetoBlit)
 		SDL_DestroyTexture(texturetoBlit);
 
-	texturetoBlit = App->fonts->Print(text.data(), color, font);*/
+	texturetoBlit = App->fonts->Print(text.data(), color, font);
 }
 

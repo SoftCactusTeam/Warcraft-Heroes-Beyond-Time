@@ -1,8 +1,19 @@
 #include "ModuleColliders.h"
-
-// TO PRINT COLLIDERS
 #include "Application.h"
 #include "ModuleRender.h"
+#include "Console.h"
+
+class ConsoleColliders : public ConsoleOrder
+{
+	std::string orderName() { return "colliders"; }
+	void Exec(std::string parametre, int parametreNumeric) {
+		if (parametre == "print")
+			if (parametreNumeric == 1)
+				App->colliders->printColliders = true;
+			else if (parametreNumeric == 0)
+				App->colliders->printColliders = false;
+	}
+};
 
 Collider::Collider(Entity* owner, SDL_Rect colliderRect, COLLIDER_TYPE type, iPoint offset)
 {
@@ -11,6 +22,14 @@ Collider::Collider(Entity* owner, SDL_Rect colliderRect, COLLIDER_TYPE type, iPo
 	this->type = type;
 	this->colliderRect.x += offset.x;
 	this->colliderRect.y += offset.y;
+}
+
+bool ModuleColliders::Awake(pugi::xml_node& consoleNode)
+{
+	ConsoleOrder* order = new ConsoleColliders();
+	App->console->AddConsoleOrderToList(order);
+	printColliders = false;
+	return true;
 }
 
 bool ModuleColliders::Update(float dt)

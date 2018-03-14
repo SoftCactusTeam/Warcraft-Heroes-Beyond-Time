@@ -1,7 +1,9 @@
 #include "Enemy_Footman.h"
 
 #define DISTANCE_TO_MOVE	300
+#define DISTANCE_TO_CHARGE	120
 #define DISTANCE_TO_ATAC	70
+#define CHARGE_DISTANCE		50
 #define ATAC_COOLDOWN		1000
 
 Enemy_Footman::Enemy_Footman(iPoint coor, ENEMY_TYPE character, SDL_Texture* texture) : EnemyEntity(coor, character, texture) {}
@@ -25,23 +27,33 @@ bool Enemy_Footman::Update(float dt)
 		break;
 	case FOOTMAN_STATE::FOOTMAN_WALK:
 		anim = &animWalk[LookAtPlayer()];
-		if (DistanceToPlayer() > DISTANCE_TO_MOVE) {
+		if (DistanceToPlayer() > DISTANCE_TO_MOVE)
+		{
 			state = FOOTMAN_STATE::FOOTMAN_IDLE;
 		}
-		else if (DistanceToPlayer() < DISTANCE_TO_ATAC) {
+		else if (DistanceToPlayer() < DISTANCE_TO_ATAC)
+		{
 			state = FOOTMAN_STATE::FOOTMAN_ATAC;
 			accountantPrincipal = SDL_GetTicks() + ATAC_COOLDOWN;
 			anim = &animAtac[LookAtPlayer()];
 			anim->Reset();
 		}
+		//else if (DistanceToPlayer() < DISTANCE_TO_CHARGE)
+		//{
+		//	state = FOOTMAN_STATE::FOOTMAN_ATAC;
+		//	accountantPrincipal = CHARGE_DISTANCE;
+		//	anim = &animCharge[LookAtPlayer()];
+		//	anim->Reset();
+		//}
 		break;
 	case FOOTMAN_STATE::FOOTMAN_ATAC:
 		if (SDL_GetTicks() > accountantPrincipal)
 			state = FOOTMAN_STATE::FOOTMAN_IDLE;
 		break;
-	//case FOOTMAN_STATE::FOOTMAN_CHARGE:
-
-	//	break;
+	case FOOTMAN_STATE::FOOTMAN_CHARGE:
+		//if (accountantPrincipal <= 0)
+		//	state = FOOTMAN_STATE::FOOTMAN_IDLE;
+		break;
 	}
 	return true;
 }
