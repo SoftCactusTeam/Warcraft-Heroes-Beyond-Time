@@ -55,7 +55,7 @@ bool MapGenerator::GenerateGrid(int sizeX, int sizeY)
 
 	ExecuteAlgorithm( nodes[Get(25,25)],600);
 
-	GenerateWalls();
+	//GenerateWalls();
 
 	return nodes.size() == totalSize;
 }

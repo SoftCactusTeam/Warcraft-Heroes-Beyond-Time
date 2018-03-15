@@ -91,6 +91,9 @@
     <ClCompile Include="Slider.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleMapGenerator.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene.h" />
@@ -197,6 +200,9 @@
     </ClInclude>
     <ClInclude Include="Slider.h">
       <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleMapGenerator.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
