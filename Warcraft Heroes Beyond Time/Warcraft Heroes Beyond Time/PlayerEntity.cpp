@@ -16,6 +16,37 @@ bool PlayerEntity::Update(float dt) { return true; }
 
 bool PlayerEntity::Finish() { return true; }
 
+fPoint PlayerEntity::CalculatePosFromBezier(fPoint startPos, fPoint handleA, float t, fPoint handleB, fPoint endPos)
+{
+	float t2 = pow(t, 2);
+	float t3 = pow(t, 3);
+	float subT = 1.0f - t;
+	float subT2 = pow((1.0f - t), 2);
+	float subT3 = pow((1.0f - t), 3);
+
+	fPoint firstArgument;
+	firstArgument.x = startPos.x * subT3;
+	firstArgument.y = startPos.y * subT3;
+
+	fPoint secondArgument;
+	secondArgument.x = endPos.x * t3;
+	secondArgument.y = endPos.y * t3;
+
+	fPoint thirdArgument;
+	thirdArgument.x = 3.0f * t2 * subT * handleB.x;
+	thirdArgument.y = 3.0f * t2 * subT * handleB.y;
+
+	fPoint fourthArgument;
+	fourthArgument.x = 3 * subT2 * t * handleA.x;
+	fourthArgument.y = 3 * subT2 * t * handleA.y;
+
+	fPoint res;
+	res.x = firstArgument.x + secondArgument.x + thirdArgument.x + fourthArgument.x;
+	res.y = firstArgument.y + secondArgument.y + thirdArgument.y + fourthArgument.y;
+
+	return { 0.0f, 0.0f };
+}
+
 void PlayerEntity::PlayerStates(float dt)
 {
 	if (move)
@@ -118,6 +149,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &right;
 			break;
 		}
+	
 		break;
 
 	case states::PL_UP:

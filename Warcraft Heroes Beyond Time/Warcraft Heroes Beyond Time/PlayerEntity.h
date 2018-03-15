@@ -10,7 +10,7 @@ protected:
 
 	PLAYER_TYPE type = PLAYER_TYPE::NON_PLAYER;
 	Animation idleDown, idleUp, idleLeft, idleRight, idleUpRight, idleUpLeft, idleDownRight, idleDownLeft;
-	Animation up, down, left, right, upLeft, upRight, downLeft, downRight;
+	Animation up, down, left, right, upLeft, upRight, downLeft, downRight, dashRight;
 	float speed = 250.0f;
 	bool move = true;
 
@@ -25,7 +25,10 @@ protected:
 		PL_UP_RIGHT,
 		PL_UP_LEFT,
 		PL_DOWN_RIGHT,
-		PL_DOWN_LEFT
+		PL_DOWN_LEFT,
+
+		PL_DASH_RIGHT,
+
 	} state;
 
 public:
@@ -39,6 +42,10 @@ public:
 	void KeyboardStates(float dt);
 	void JoyconStates(float dt);
 	virtual bool Finish();
+
+	//This functions calculates player postion given a Bezier Curve
+
+	fPoint CalculatePosFromBezier(fPoint startPos, fPoint handleA, float t, fPoint handleB, fPoint endPos);
 
 
 };

@@ -99,6 +99,12 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	downLeft.PushBack({ 110,611,55,47 });
 	downLeft.PushBack({ 165,611,55,47 });
 	downLeft.speed = 0.2f;
+
+	// ------- Dash animations -------
+
+	dashRight.PushBack({ 110, 470, 55, 47 });
+	dashRight.speed = 0.2f;
+
 }
 
 bool Thrall::Update(float dt)
