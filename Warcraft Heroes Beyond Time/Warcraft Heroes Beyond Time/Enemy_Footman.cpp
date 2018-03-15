@@ -1,10 +1,13 @@
 #include "Enemy_Footman.h"
+#include "Application.h"
+#include "Pathfinding.h"
 
 #define DISTANCE_TO_MOVE	300
 #define DISTANCE_TO_CHARGE	120
 #define DISTANCE_TO_ATAC	70
 #define CHARGE_DISTANCE		50
 #define ATAC_COOLDOWN		1000
+#define MOVEMENT_SPEED		2
 
 Enemy_Footman::Enemy_Footman(iPoint coor, ENEMY_TYPE character, SDL_Texture* texture) : EnemyEntity(coor, character, texture) {}
 
@@ -45,6 +48,11 @@ bool Enemy_Footman::Update(float dt)
 		//	anim = &animCharge[LookAtPlayer()];
 		//	anim->Reset();
 		//}
+		else // AQUI CAMINA, PERO AQUESTA FUNCIO ES TEMPORAL
+		{
+			pos += {SillyMovementToPlayer(pos).x * MOVEMENT_SPEED, SillyMovementToPlayer(pos).y * MOVEMENT_SPEED};
+		}
+
 		break;
 	case FOOTMAN_STATE::FOOTMAN_ATAC:
 		if (SDL_GetTicks() > accountantPrincipal)

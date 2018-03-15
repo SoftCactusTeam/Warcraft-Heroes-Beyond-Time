@@ -3,6 +3,8 @@
 
 #include "Entity.h"
 
+iPoint SillyMovementToPlayer(iPoint pos);
+
 class DstarPath
 {
 public:
