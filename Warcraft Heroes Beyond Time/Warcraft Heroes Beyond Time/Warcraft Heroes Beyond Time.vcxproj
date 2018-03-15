@@ -138,6 +138,7 @@
     <ClCompile Include="FileSystem.cpp" />
     <ClCompile Include="InputBox.cpp" />
     <ClCompile Include="Slider.cpp" />
+    <ClCompile Include="ModuleMapGenerator.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="GUIElem.h" />
     <ClInclude Include="InputBox.h" />
     <ClInclude Include="Slider.h" />
+    <ClInclude Include="ModuleMapGenerator.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="ModuleAudio.h" />

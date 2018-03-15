@@ -9,6 +9,9 @@
 #include "Console.h"
 #include "Slider.h"
 #include "ModuleAudio.h"
+#include "ModuleMapGenerator.h"
+#include "ModuleRender.h"
+
 
 Scene::Scene()
 {
@@ -28,8 +31,22 @@ bool Scene::Start()
 	defLabel.color = Red;
 	defLabel.fontName = "Arial16";
 	defLabel.text = "Hey bitches im here";
+	
+	App->gui->CreateLabel({0,0}, defLabel, nullptr, nullptr);
+	App->entities->AddPlayer({0,0}, THRALL);
+
+	App->map->GenerateGrid(50,50);
+
+	//LabelInfo defLabel;
+	//defLabel.color = Red;
+	//defLabel.fontName = "Arial16";
+	//defLabel.text = "Hey bitches im here";
+	//
+	//Application->gui->CreateLabel({0,0}, defLabel, nullptr, nullptr);
+
 
 	App->gui->CreateLabel({0,0}, defLabel, nullptr, nullptr);*/
+
 	App->gui->Activate();
 	switch (actual_scene)
 	{
@@ -132,13 +149,31 @@ bool Scene::Update(float dt)
 		App->Load();
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)
+
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
-		if (actual_scene == Stages::MAIN_MENU)
-			actual_scene = Stages::INGAME;
-		else
-			actual_scene = Stages::MAIN_MENU;
-		restart = true;
+		App->render->camera.y += 20;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	{
+		App->render->camera.x += 20;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+	{
+		App->render->camera.y -= 20;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	{
+		App->render->camera.x -= 20;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
+	{
+		App->map->CleanMap();
+		App->map->GenerateGrid(50, 50);
 	}
 
 	return true;
