@@ -32,13 +32,13 @@ bool Scene::Start()
 	PlayerEntity* player = App->entities->AddPlayer({ 50,50 }, THRALL);
 	App->entities->SetPlayer(player);
 
-	Button* button = (Button*)App->gui->CreateButton({20.0f, 20.0f }, this);
+	//Button* button = (Button*)App->gui->CreateButton({20.0f, 20.0f }, this);
 
 	LabelInfo defLabel;
 	defLabel.color = Red;
 	defLabel.fontName = "Arial11";
 	defLabel.text = "I'm a button";
-	App->gui->CreateLabel({5,5}, defLabel, button, this);
+	//App->gui->CreateLabel({5,5}, defLabel, button, this);
 
 
 

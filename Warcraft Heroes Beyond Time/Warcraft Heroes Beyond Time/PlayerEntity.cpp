@@ -12,7 +12,12 @@ bool PlayerEntity::Start()
 	return true;
 }
 
-bool PlayerEntity::Update(float dt) { return true; }
+bool PlayerEntity::Update(float dt) 
+{ 
+	
+
+	return true; 
+}
 
 bool PlayerEntity::Finish() { return true; }
 
@@ -44,11 +49,37 @@ fPoint PlayerEntity::CalculatePosFromBezier(fPoint startPos, fPoint handleA, flo
 	res.x = firstArgument.x + secondArgument.x + thirdArgument.x + fourthArgument.x;
 	res.y = firstArgument.y + secondArgument.y + thirdArgument.y + fourthArgument.y;
 
-	return { 0.0f, 0.0f };
+	return res;
 }
 
 void PlayerEntity::PlayerStates(float dt)
 {
+
+	// ----- Dash test -----
+
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT && !dashEnabled)
+	{
+		dashEnabled = true;
+		startPos = pos;
+		endPos.x = pos.x + 20.0f;
+		endPos.y = pos.y;
+	}
+
+	if (dashEnabled && t <= 1.0f && t >= 0.0f)
+	{
+		pos.x = CalculatePosFromBezier(startPos, handleA, t, handleB, endPos).x;
+		t += 0.01f;
+	}
+
+	if (t >= 1.0f)
+	{
+		dashEnabled = false;
+		t = 0.0f;
+	}
+	
+
+	// -----------------
+
 	if (move)
 	{
 		if (App->input->IsKeyboardAvailable())

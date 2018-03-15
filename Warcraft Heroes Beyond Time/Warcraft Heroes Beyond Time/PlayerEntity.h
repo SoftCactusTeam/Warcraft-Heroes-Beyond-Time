@@ -47,6 +47,15 @@ public:
 
 	fPoint CalculatePosFromBezier(fPoint startPos, fPoint handleA, float t, fPoint handleB, fPoint endPos);
 
+	// Dash variables
+
+	fPoint handleA = { 0.42f, 0.0f };
+	fPoint handleB = { 0.58f, 1.0f };
+	fPoint endPos = { 0.0f, 0.0f };
+	fPoint startPos = { 0.0f, 0.0f };
+	
+	bool dashEnabled = false;
+	float t = 0.0f;
 
 };
 
