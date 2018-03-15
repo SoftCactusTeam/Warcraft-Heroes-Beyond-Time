@@ -35,11 +35,14 @@ public:
 	// Play a previously loaded WAV
 	bool PlayFx(unsigned int fx, int repeat = 0);
 
-	//bool UI_Do(const GUIElem* elem, Events* event);
+	void setMusicVolume(uint percent);
+	void setFXVolume(uint percent);
 
 public:
 
 	//uint sounds here
+	uint MusicVolumePercent = 50;
+	uint FXVolumePercent = 50;
 
 private:
 	

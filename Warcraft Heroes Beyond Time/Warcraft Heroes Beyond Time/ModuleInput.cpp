@@ -44,6 +44,12 @@ bool Input::Awake(pugi::xml_node& inputNode)
 		LOG("SDL_GAMECONTROLLER could not initialize! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
+	
+	if (SDL_InitSubSystem(SDL_INIT_HAPTIC) < 0)
+	{
+		printf_s("SDL_HAPTIC could not initialize! SDL_Error: %s\n", SDL_GetError());
+		ret = false;
+	}
 
 	if (SDL_NumJoysticks() < 1)
 		LOG("Warning: No joystick detected");
@@ -53,6 +59,22 @@ bool Input::Awake(pugi::xml_node& inputNode)
 		if (controller == NULL)
 		{
 			LOG("Warning: Unable to open game controller! SDL Error: %s\n", SDL_GetError());
+		}
+		else
+		{
+			controllerHaptic = SDL_HapticOpenFromJoystick(controller);
+			if (controllerHaptic == NULL)
+			{
+				LOG("Warning: Controller does not support haptics! SDL Error: %s\n", SDL_GetError());
+			}
+			else
+			{
+				//Get initialize rumble
+				if (SDL_HapticRumbleInit(controllerHaptic) < 0)
+				{
+					LOG("Warning: Unable to initialize rumble! SDL Error: %s\n", SDL_GetError());
+				}
+			}
 		}
 	}
 
@@ -78,6 +100,7 @@ bool Input::PreUpdate()
 	{
 		if (keys[i] == 1)
 		{
+			kbAvailable = true;
 			key_pressed = true;
 
 			if (keyboard[i] == KEY_IDLE) { 
@@ -153,7 +176,6 @@ bool Input::PreUpdate()
 
 		case SDL_MOUSEMOTION:
 		{
-
 			int scale = App->window->GetScale();
 			mouse_motion_x = event.motion.xrel / scale;
 			mouse_motion_y = event.motion.yrel / scale;
@@ -164,6 +186,7 @@ bool Input::PreUpdate()
 
 		case SDL_JOYAXISMOTION:
 			if (event.jaxis.which == 0)
+				kbAvailable = false;
 			{
 				if (event.jaxis.axis == 0)
 				{
@@ -184,7 +207,15 @@ bool Input::PreUpdate()
 
 		case SDL_JOYBUTTONDOWN:
 			if (event.jbutton.which == 0)
+			{
+				// RUMBLE TEST
+				if (SDL_HapticRumblePlay(controllerHaptic, 0.75, 500) != 0)
+				{
+					printf("Warning: Unable to play rumble! %s\n", SDL_GetError());
+				}
+				kbAvailable = false;
 				jButtons[event.jbutton.button - 1] = KEY_DOWN;
+			}
 			break;
 
 		case SDL_JOYBUTTONUP:
@@ -204,10 +235,14 @@ bool Input::PreUpdate()
 
 bool Input::CleanUp()
 {
+	LOG("Quitting haptic");
+	SDL_HapticClose(controllerHaptic);
+	controllerHaptic = NULL;
+
 	LOG("Quitting game controller");
 	SDL_JoystickClose(controller);
 	controller = NULL;
-
+	
 	LOG("Quitting SDL event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 
@@ -241,13 +276,11 @@ bool Input::IsAnyKeyPressed()
 void Input::ExternActionsAtKeyInput(const int key) {
 	// NOMES FER SERVIR EN CASOS MOLT CONCRETS I OPTIMS !!!!!!!!
 	// printf_s("%i\n", key);		// PER TROBAR EL NUMERO DE LES TECLES
-	switch (key) {
-	case 53:	// º button -> OpenConsole
-		if (App->console->isActive() == false)
-			App->console->Start();
-		else
-			App->console->CleanUp();
-
+	switch (key) 
+	{
+		case SDL_SCANCODE_GRAVE:	// º button -> OpenConsole
+			if(App->console->isActive())
+				App->console->SwitchWrittingState();
 		break;
 	}
 }

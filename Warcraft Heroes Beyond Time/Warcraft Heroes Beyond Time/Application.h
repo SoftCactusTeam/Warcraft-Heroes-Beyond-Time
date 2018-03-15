@@ -22,6 +22,7 @@ class Audio;
 class Scene;
 class Fonts;
 class Console;
+class MapGenerator;
 
 
 class Application
@@ -67,7 +68,6 @@ public:
 	Input*					input = nullptr;
 	Render*					render = nullptr;
 	Textures*				textures = nullptr;
-	Map*					map = nullptr;
 	Fonts*					fonts = nullptr;
 	EntitySystem*			entities = nullptr;
 	FileSystem*				fs = nullptr;
@@ -75,6 +75,7 @@ public:
 	Audio*					audio = nullptr;
 	Scene*					scene = nullptr;
 	Console*				console = nullptr;
+	MapGenerator*			map = nullptr;
 
 public:
 

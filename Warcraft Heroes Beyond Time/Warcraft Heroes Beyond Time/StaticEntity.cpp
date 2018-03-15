@@ -1,6 +1,6 @@
 #include "StaticEntity.h"
 
-StaticEntity::StaticEntity(iPoint coor, SDL_Texture* texture) : Entity(coor, texture) {}
+StaticEntity::StaticEntity(fPoint coor, SDL_Texture* texture) : Entity(coor, texture) {}
 
 bool StaticEntity::Start() { return true; }
 

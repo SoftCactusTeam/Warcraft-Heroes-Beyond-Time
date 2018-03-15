@@ -1,10 +1,13 @@
 #include "ModuleGUI.h"
 #include "Application.h"
 #include "Fonts.h"
+#include "ModuleTextures.h"
 
+#include "GUIElem.h"
 #include "Label.h"
 #include "InputBox.h"
-#include "GUIElem.h"
+#include "Button.h"
+#include "Slider.h"
 
 ModuleGUI::ModuleGUI() : Module()
 {
@@ -20,6 +23,7 @@ bool ModuleGUI::Awake(pugi::xml_node& guiNode)
 
 bool ModuleGUI::Start()
 {
+	atlas = App->textures->Load("GUI/atlas480b.png");
 	return true;
 }
 
@@ -49,7 +53,7 @@ bool ModuleGUI::Update(float dt)
 	{
 		result = (*it)->Update(dt);
 	}
-
+	
 	return result;
 }
 
@@ -87,7 +91,7 @@ bool ModuleGUI::DestroyElem(GUIElem* element)
 	return true;
 }
 
-Label* ModuleGUI::CreateLabel(fPoint position, LabelInfo& info, GUIElem* parent, Module* listener)
+GUIElem* ModuleGUI::CreateLabel(fPoint position, LabelInfo& info, GUIElem* parent, Module* listener)
 {
 	Label* label = new Label(position, info, parent, listener);
 
@@ -96,13 +100,27 @@ Label* ModuleGUI::CreateLabel(fPoint position, LabelInfo& info, GUIElem* parent,
 	return label;
 }
 
-InputBox* ModuleGUI::CreateInputBox(fPoint localPos, InputBoxInfo& info, Module* listener, GUIElem* parent)
+GUIElem* ModuleGUI::CreateInputBox(fPoint localPos, InputBoxInfo& info, Module* listener, GUIElem* parent)
 {
 	InputBox* inputBox = new InputBox(localPos, info, listener, parent);
 
 	elementsToSpawn.push_back((GUIElem*)inputBox);
 
 	return inputBox;
+}
+
+GUIElem* ModuleGUI::CreateButton(fPoint localPos, BType btype, Module* listener, GUIElem* parent)
+{
+	Button* button = new Button(localPos, btype, parent, listener);
+	elementsToSpawn.push_back(button);
+	return button;
+}
+
+GUIElem* ModuleGUI::CreateSlider(fPoint localPos, SliderInfo sInfo, Module* listener, GUIElem* parent)
+{
+	Slider* slider = new Slider(localPos, listener, sliderbar, sInfo, GUIElem::GUIElemType::SLIDER, parent);
+	elementsToSpawn.push_back(slider);
+	return slider;
 }
 
 SDL_Texture* ModuleGUI::getAtlas() const

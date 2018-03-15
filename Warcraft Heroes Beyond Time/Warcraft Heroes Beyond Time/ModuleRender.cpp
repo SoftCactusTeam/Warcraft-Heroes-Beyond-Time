@@ -27,7 +27,7 @@ bool Render::Awake(pugi::xml_node& renderNode)
 	// load flags
 	Uint32 flags = SDL_RENDERER_ACCELERATED;
 
-	vsync = VSYNC;
+	vsync = renderNode.child("vsync").attribute("active").as_bool();
 	if(vsync == true)
 	{
 		flags |= SDL_RENDERER_PRESENTVSYNC;
@@ -80,6 +80,7 @@ bool Render::Update(float dt)
 bool Render::PostUpdate()
 {
 	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
+	SDL_RenderSetLogicalSize(renderer, 854, 480);
 	SDL_RenderPresent(renderer);
 	return true;
 }
@@ -109,7 +110,7 @@ void Render::ResetViewPort()
 bool Render::Blit(const SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, int pivot_x, int pivot_y) const
 {
 	bool ret = true;
-	uint scale = 3;
+	uint scale = App->window->GetScale();
 
 	SDL_Rect rect;
 	rect.x = (int)(camera.x * speed) + x * scale;

@@ -30,7 +30,8 @@ public:
 		NO_ELEMTYPE = -1,
 		BUTTON,
 		LABEL,
-		INPUTBOX
+		INPUTBOX,
+		SLIDER
 	};
 	
 protected:
@@ -40,13 +41,11 @@ protected:
 	fPoint localPos = { 0.0f, 0.0f };
 	fPoint screenPos = { 0.0f, 0.0f };
 
-	GUIElemType type = GUIElemType::NO_ELEMTYPE;
-	SDL_Rect atlasRect = { 0, 0, 0, 0 };
-
 	UIEvents UIevent = UIEvents::NO_EVENT;
 	Module* listener = nullptr;
-
-
+public:
+	GUIElemType type = GUIElemType::NO_ELEMTYPE;
+	SDL_Rect atlasRect = { 0, 0, 0, 0 };
 
 public:
 	GUIElem() {}
@@ -57,7 +56,7 @@ public:
 	virtual bool Update(float dt);
 	virtual bool MouseHover() const;
 	virtual void DebugDraw();
-	virtual void HandleInput();
+	virtual bool HandleInput();
 
 	bool hasParent()const;
 	GUIElem* getParent() const;
@@ -66,6 +65,8 @@ public:
 	bool DestroyChilds();
 
 	fPoint calculateScreenPos();
+
+	void Move(fPoint dist);
 };
 
 #endif

@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{2781B1EC-1D8B-4816-86D8-8A9200ECBEFC}</ProjectGuid>
     <RootNamespace>Warcraft Heroes Beyond Time</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -81,6 +81,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
     </ClCompile>
     <Link />
     <Link>
@@ -125,6 +126,7 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="BossEntity.cpp" />
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="ChestEntity.cpp" />
     <ClCompile Include="ConsumableEntity.cpp" />
     <ClCompile Include="DynamicEntity.cpp" />
@@ -135,6 +137,8 @@
     <ClCompile Include="Fonts.cpp" />
     <ClCompile Include="FileSystem.cpp" />
     <ClCompile Include="InputBox.cpp" />
+    <ClCompile Include="Slider.cpp" />
+    <ClCompile Include="ModuleMapGenerator.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
@@ -157,6 +161,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="BossEntity.h" />
+    <ClInclude Include="Button.h" />
     <ClInclude Include="ChestEntity.h" />
     <ClInclude Include="ConsumableEntity.h" />
     <ClInclude Include="DynamicEntity.h" />
@@ -169,6 +174,8 @@
     <ClInclude Include="FileSystem.h" />
     <ClInclude Include="GUIElem.h" />
     <ClInclude Include="InputBox.h" />
+    <ClInclude Include="Slider.h" />
+    <ClInclude Include="ModuleMapGenerator.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="ModuleAudio.h" />

@@ -5,7 +5,7 @@
 
 class StaticEntity : public Entity {
 public:
-	StaticEntity(iPoint coor, SDL_Texture* texture);
+	StaticEntity(fPoint coor, SDL_Texture* texture);
 
 	virtual bool Start();
 	virtual bool Update(float dt);

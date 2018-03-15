@@ -5,7 +5,7 @@
 
 class ConsumableEntity : public StaticEntity {
 public:
-	ConsumableEntity(iPoint coor, CONSUMABLE_TYPE type, SDL_Texture* texture);
+	ConsumableEntity(fPoint coor, CONSUMABLE_TYPE type, SDL_Texture* texture);
 
 	bool Start();
 	bool Finish();

@@ -3,11 +3,17 @@
 
 #include "DynamicEntity.h"
 
-class PlayerEntity : public DynamicEntity {
+class PlayerEntity : public DynamicEntity 
+{
+
 protected:
+
 	PLAYER_TYPE type = PLAYER_TYPE::NON_PLAYER;
 	Animation idleDown, idleUp, idleLeft, idleRight, idleUpRight, idleUpLeft, idleDownRight, idleDownLeft;
 	Animation up, down, left, right, upLeft, upRight, downLeft, downRight;
+	float speed = 250.0f;
+	bool move = true;
+
 	enum class states
 	{
 		PL_NON_STATE,
@@ -23,12 +29,18 @@ protected:
 	} state;
 
 public:
-	PlayerEntity(iPoint coor, PLAYER_TYPE type, SDL_Texture* texture);
+	PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture);
+
+	void Walk(bool);
 
 	virtual bool Start();
 	virtual bool Update(float dt);
 	void PlayerStates(float dt);
+	void KeyboardStates(float dt);
+	void JoyconStates(float dt);
 	virtual bool Finish();
+
+
 };
 
 #endif

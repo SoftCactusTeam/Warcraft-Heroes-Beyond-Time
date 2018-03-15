@@ -9,7 +9,7 @@
 class Entity {
 public:
 	Entity() {}
-	Entity(iPoint coor, SDL_Texture* texture);
+	Entity(fPoint coor, SDL_Texture* texture);
 
 	virtual bool Start();
 	virtual bool Update(float dt);
@@ -17,7 +17,7 @@ public:
 	virtual bool Draw(float dt);
 
 public:
-	iPoint pos = { 0,0 };
+	fPoint pos = { 0,0 };
 	SDL_Texture* texture = nullptr;
 	Animation* anim;
 	bool destroy = false;
