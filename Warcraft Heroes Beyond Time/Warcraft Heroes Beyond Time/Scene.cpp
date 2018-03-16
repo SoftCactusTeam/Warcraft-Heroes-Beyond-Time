@@ -82,23 +82,23 @@ bool Scene::Start()
 		{
 			SliderInfo sinfo;
 			sinfo.type = Slider::SliderType::MUSIC_VOLUME;
-			Slider* slider = (Slider*)App->gui->CreateSlider({ 250, 190 }, sinfo, this, nullptr);
+			Slider* slider = (Slider*)App->gui->CreateSlider({ 200, 190 }, sinfo, this, nullptr);
 
 			LabelInfo defLabel3;
 			defLabel3.color = White;
 			defLabel3.fontName = "Arial11";
 			std::string temp = (char*)std::to_string(App->audio->MusicVolumePercent).data();
 			defLabel3.text = (char*)temp.data();
-			App->gui->CreateLabel({ 380,7 }, defLabel3, slider, this);
+			App->gui->CreateLabel({ 270,3 }, defLabel3, slider, this);
 
 
-			Button* button3 = (Button*)App->gui->CreateButton({ 300, 250.0f }, BType::GO_MMENU, this);
+			Button* button3 = (Button*)App->gui->CreateButton({ 250, 250.0f }, BType::GO_MMENU, this);
 
 			LabelInfo defLabel2;
 			defLabel2.color = Red;
 			defLabel2.fontName = "Arial11";
 			defLabel2.text = "Go Back ;)";
-			App->gui->CreateLabel({ 40,40 }, defLabel2, button3, this);
+			App->gui->CreateLabel({ 50,25 }, defLabel2, button3, this);
 
 			break;
 		}
@@ -233,7 +233,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 					button->MoveChilds({ 0.0f, -4.0f });
 					switch (button->btype)
 					{
-					/*case BType::PLAY:
+					case BType::PLAY:
 						actual_scene = Stages::INGAME;
 						restart = true;
 						break;
@@ -247,7 +247,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 					case BType::GO_MMENU:
 						actual_scene = Stages::MAIN_MENU;
 						restart = true;
-						break;*/
+						break;
 
 					}
 					break;

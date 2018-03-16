@@ -5,10 +5,10 @@
 
 //atlasRect defines---------------------------
 
-#define sliderbar {207,151,366,23}
-#define slidermobile {580,144,15,38}
+#define sliderbar {145,105,256,17}
+#define slidermobile {406,100,11,28}
 
-#define sliderdeadzone 12
+#define sliderdeadzone 10
 
 //----------------------------------
 
@@ -33,6 +33,7 @@ public:
 
 	bool Update(float dt);
 	bool HandleInput();
+	bool MouseHover() const;
 
 protected:
 	SliderType stype = SliderType::NO_STYPE;
@@ -41,6 +42,11 @@ protected:
 	float smobilepos;
 	SDL_Rect sliderMobileRect = slidermobile;
 	bool focused = false;
+
+	uint minValue = 0;
+	uint maxValue = 0;
+
+
 };
 
 struct SliderInfo

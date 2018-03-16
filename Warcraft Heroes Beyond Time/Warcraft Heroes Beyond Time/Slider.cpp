@@ -9,18 +9,22 @@
 Slider::Slider(fPoint localPos, Module* listener, SDL_Rect atlasRect, SliderInfo sInfo, GUIElemType type, GUIElem* parent) : GUIElem(localPos, listener, atlasRect, type, parent)
 {
 	stype = sInfo.type;
-	
+
+	minValue = screenPos.x + 8;
+	maxValue = screenPos.x + atlasRect.w - 10;
+
 	switch (stype)
 	{
 		case SliderType::MUSIC_VOLUME:
-			this->smobilepos = (atlasRect.w - 2 * sliderdeadzone) * App->audio->MusicVolumePercent / 100 + screenPos.x + sliderdeadzone / 2;
+			this->smobilepos = (App->audio->MusicVolumePercent * (maxValue - minValue)) / 100 + minValue - 4;
 			this->valuePercent = App->audio->MusicVolumePercent;
 			break;
 		case SliderType::FX_VOLUME:
-			this->smobilepos = (atlasRect.w - 2 * sliderdeadzone) * App->audio->FXVolumePercent / 100 + screenPos.x + sliderdeadzone / 2;
+			this->smobilepos = (App->audio->FXVolumePercent * (maxValue - minValue)) / 100 + minValue - 4;
 			this->valuePercent = App->audio->FXVolumePercent;
 			break;
 	}
+
 	
 }
 
@@ -36,7 +40,7 @@ bool Slider::Update(float dt)
 		ret = App->render->Blit(App->gui->getAtlas(), (int)(screenPos.x + App->render->camera.x), (int)(screenPos.y + App->render->camera.y), &atlasRect);
 
 	if (ret)
-		ret = App->render->Blit(App->gui->getAtlas(), (int)(smobilepos + App->render->camera.x), (int)(screenPos.y - 7 + App->render->camera.y), &sliderMobileRect);
+		ret = App->render->Blit(App->gui->getAtlas(), (int)(smobilepos + App->render->camera.x), (int)(screenPos.y - 5 + App->render->camera.y), &sliderMobileRect);
 	
 	if(ret)
 		ret = UpdateChilds(dt);
@@ -47,8 +51,7 @@ bool Slider::Update(float dt)
 bool Slider::HandleInput()
 {
 	bool ret = true;
-	uint minvalue = screenPos.x + sliderdeadzone;
-	uint maxvalue = screenPos.x + atlasRect.w - sliderdeadzone;
+	
 	int x, y;
 	App->input->GetMousePosition(x, y);
 
@@ -59,14 +62,14 @@ bool Slider::HandleInput()
 	
 	if(focused)
 	{
-		if (x <= minvalue)
-			smobilepos = minvalue - 15 / 2;
-		else if (x >= maxvalue)
-			smobilepos = maxvalue - 15 / 2;
+		if (x <= minValue)
+			smobilepos = minValue - 4;
+		else if (x >= maxValue)
+			smobilepos = maxValue - 4;
 		else
-			smobilepos = x - 15 / 2;
+			smobilepos = x - 4;
 
-		valuePercent = (smobilepos + 15/2 - minvalue) * 100 / (maxvalue - minvalue);
+		valuePercent = (smobilepos + 4 - minValue) * 100 / (maxValue - minValue);
 
 		Label* label;
 		std::list<GUIElem*>::iterator it;
@@ -85,12 +88,25 @@ bool Slider::HandleInput()
 				App->audio->setFXVolume(valuePercent);
 				break;
 		}
-		
-
 	}
-
-
-
 	return ret;
+}
+
+bool Slider::MouseHover() const
+{
+	int x, y;
+	App->input->GetMousePosition(x, y);
+
+	bool result = false;
+
+	//if collides
+	if (!(x < minValue ||
+		x > maxValue ||
+		y < screenPos.y ||
+		y > screenPos.y + atlasRect.h))
+	{
+		result = true;
+	}
+	return result;
 }
 
