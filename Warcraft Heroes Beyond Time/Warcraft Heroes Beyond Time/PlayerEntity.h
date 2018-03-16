@@ -49,8 +49,10 @@ public:
 
 	// Dash variables
 
-	fPoint handleA = { 0.42f, 0.0f };
-	fPoint handleB = { 0.58f, 1.0f };
+	fPoint handleA = { 0.2f, 0.0f };
+	fPoint handleB = { 0.8f, 1.0f };
+
+
 	fPoint endPos = { 0.0f, 0.0f };
 	fPoint startPos = { 0.0f, 0.0f };
 	

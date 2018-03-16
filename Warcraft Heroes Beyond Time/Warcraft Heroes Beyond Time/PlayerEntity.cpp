@@ -23,27 +23,27 @@ bool PlayerEntity::Finish() { return true; }
 
 fPoint PlayerEntity::CalculatePosFromBezier(fPoint startPos, fPoint handleA, float t, fPoint handleB, fPoint endPos)
 {
-	float t2 = pow(t, 2);
-	float t3 = pow(t, 3);
+	float t2 = pow(t, 2.0f);
+	float t3 = pow(t, 3.0f);
 	float subT = 1.0f - t;
-	float subT2 = pow((1.0f - t), 2);
-	float subT3 = pow((1.0f - t), 3);
+	float subT2 = pow(subT, 2);
+	float subT3 = pow(subT, 3);
 
 	fPoint firstArgument;
-	firstArgument.x = startPos.x * subT3;
-	firstArgument.y = startPos.y * subT3;
+	firstArgument.x = subT3 * startPos.x;
+	firstArgument.y = subT3 * startPos.y ;
 
 	fPoint secondArgument;
-	secondArgument.x = endPos.x * t3;
-	secondArgument.y = endPos.y * t3;
+	secondArgument.x = 3.0f * t * subT2 * handleA.x;
+	secondArgument.y = 3.0f * t * subT2 * handleA.y;
 
 	fPoint thirdArgument;
 	thirdArgument.x = 3.0f * t2 * subT * handleB.x;
 	thirdArgument.y = 3.0f * t2 * subT * handleB.y;
 
 	fPoint fourthArgument;
-	fourthArgument.x = 3 * subT2 * t * handleA.x;
-	fourthArgument.y = 3 * subT2 * t * handleA.y;
+	fourthArgument.x = t3 * endPos.x;
+	fourthArgument.y = t3 * endPos.y;
 
 	fPoint res;
 	res.x = firstArgument.x + secondArgument.x + thirdArgument.x + fourthArgument.x;
@@ -61,14 +61,15 @@ void PlayerEntity::PlayerStates(float dt)
 	{
 		dashEnabled = true;
 		startPos = pos;
-		endPos.x = pos.x + 20.0f;
+		endPos.x = pos.x + 30.0f;
 		endPos.y = pos.y;
 	}
 
 	if (dashEnabled && t <= 1.0f && t >= 0.0f)
 	{
-		pos.x = CalculatePosFromBezier(startPos, handleA, t, handleB, endPos).x;
-		t += 0.01f;
+		t += 0.05f;
+		pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * 250.0f;
+		
 	}
 
 	if (t >= 1.0f)
