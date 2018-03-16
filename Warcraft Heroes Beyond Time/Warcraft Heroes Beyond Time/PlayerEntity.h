@@ -10,7 +10,9 @@ protected:
 
 	PLAYER_TYPE type = PLAYER_TYPE::NON_PLAYER;
 	Animation idleDown, idleUp, idleLeft, idleRight, idleUpRight, idleUpLeft, idleDownRight, idleDownLeft;
-	Animation up, down, left, right, upLeft, upRight, downLeft, downRight, dashRight;
+	Animation up, down, left, right, upLeft, upRight, downLeft, downRight;
+	Animation dashRight, dashLeft, dashUp, dashDown, dashUpRight, dashUpLeft, dashDownRight, dashDownLeft;
+	Animation* last_anim = nullptr;
 	float speed = 250.0f;
 	bool move = true;
 
@@ -27,9 +29,11 @@ protected:
 		PL_DOWN_RIGHT,
 		PL_DOWN_LEFT,
 
-		PL_DASH_RIGHT,
+		PL_DASH
 
 	} state;
+
+	states last_state = states::PL_NON_STATE;
 
 public:
 	PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture);

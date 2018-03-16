@@ -57,7 +57,7 @@ void PlayerEntity::PlayerStates(float dt)
 
 	// ----- Dash test -----
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT && !dashEnabled)
+	/*if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_REPEAT  && !dashEnabled)
 	{
 		dashEnabled = true;
 		startPos = pos;
@@ -76,7 +76,7 @@ void PlayerEntity::PlayerStates(float dt)
 	{
 		dashEnabled = false;
 		t = 0.0f;
-	}
+	}*/
 	
 
 	// -----------------
@@ -181,7 +181,67 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &right;
 			break;
 		}
+		else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && t == 0.0f)
+		{
+			startPos = pos;
+			endPos.x = 250.0f;
+			endPos.y = 250.0f;
+
+			last_state = state;
+			state = states::PL_DASH;
+			last_anim = anim;
+			
+			break;
+		}
 	
+		break;
+
+	case states::PL_DASH:
+
+		if (t <= 1.0f && t >= 0.0f)
+		{
+			t += 0.05f;
+
+			if (last_anim == &idleRight || last_state == states::PL_RIGHT )
+			{
+				pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.x;
+				anim = &dashRight;
+				break;
+			}
+			else if (last_anim == &idleLeft || last_state == states::PL_LEFT)
+			{
+				pos.x = startPos.x - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.x;
+				anim = &dashLeft;
+				break;
+			}
+			else if (last_anim == &idleUp || last_state == states::PL_UP)
+			{
+				pos.y = startPos.y - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.y;
+				anim = &dashUp;
+				break;
+			}
+			else if (last_anim == &idleDown || last_state == states::PL_DOWN)
+			{
+				pos.y = startPos.y + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.y;
+				anim = &dashDown;
+				break;
+			}
+		}
+		else
+		{
+			state = states::PL_IDLE;
+			t = 0.0f;
+
+			if (anim == &dashRight)
+				anim = &idleRight;
+			else if (anim == &dashLeft)
+				anim = &idleLeft;
+			else if (anim == &dashUp)
+				anim = &idleUp;
+			else if (anim == &dashDown)
+				anim = &idleDown;
+		}
+
 		break;
 
 	case states::PL_UP:
@@ -419,6 +479,66 @@ void PlayerEntity::JoyconStates(float dt)
 			anim = &right;
 			break;
 		}
+		else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN && t == 0.0f)
+		{
+			startPos = pos;
+			endPos.x = 250.0f;
+			endPos.y = 250.0f;
+
+			last_state = state;
+			state = states::PL_DASH;
+			last_anim = anim;
+
+			break;
+		}
+		break;
+
+	case states::PL_DASH:
+
+		if (t <= 1.0f && t >= 0.0f)
+		{
+			t += 0.05f;
+
+			if (last_anim == &idleRight || last_state == states::PL_RIGHT)
+			{
+				pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.x;
+				anim = &dashRight;
+				break;
+			}
+			else if (last_anim == &idleLeft || last_state == states::PL_LEFT)
+			{
+				pos.x = startPos.x - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.x;
+				anim = &dashLeft;
+				break;
+			}
+			else if (last_anim == &idleUp || last_state == states::PL_UP)
+			{
+				pos.y = startPos.y - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.y;
+				anim = &dashUp;
+				break;
+			}
+			else if (last_anim == &idleDown || last_state == states::PL_DOWN)
+			{
+				pos.y = startPos.y + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.y;
+				anim = &dashDown;
+				break;
+			}
+		}
+		else
+		{
+			state = states::PL_IDLE;
+			t = 0.0f;
+
+			if (anim == &dashRight)
+				anim = &idleRight;
+			else if (anim == &dashLeft)
+				anim = &idleLeft;
+			else if (anim == &dashUp)
+				anim = &idleUp;
+			else if (anim == &dashDown)
+				anim = &idleDown;
+		}
+
 		break;
 
 	case states::PL_UP:
