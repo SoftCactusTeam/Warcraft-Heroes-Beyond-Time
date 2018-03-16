@@ -226,6 +226,14 @@ void PlayerEntity::KeyboardStates(float dt)
 				anim = &dashDown;
 				break;
 			}
+			else if (last_anim == &idleUpRight || last_state == states::PL_UP_RIGHT)
+			{
+				pos.x = startPos.x + 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.y;
+				pos.y = startPos.y - 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.y;
+
+				anim = &dashUpRight;
+				break;
+			}
 		}
 		else
 		{
@@ -240,6 +248,8 @@ void PlayerEntity::KeyboardStates(float dt)
 				anim = &idleUp;
 			else if (anim == &dashDown)
 				anim = &idleDown;
+			else if (anim == &dashUpRight)
+				anim = &idleUpRight;
 		}
 
 		break;
@@ -523,6 +533,14 @@ void PlayerEntity::JoyconStates(float dt)
 				anim = &dashDown;
 				break;
 			}
+			else if (last_anim == &idleUpRight || last_state == states::PL_UP_RIGHT)
+			{
+				pos.x = startPos.x + 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.y;
+				pos.y = startPos.y - 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.y;
+
+				anim = &dashUpRight;
+				break;
+			}
 		}
 		else
 		{
@@ -537,6 +555,8 @@ void PlayerEntity::JoyconStates(float dt)
 				anim = &idleUp;
 			else if (anim == &dashDown)
 				anim = &idleDown;
+			else if (anim == &dashUpRight)
+				anim = &idleUpRight;
 		}
 
 		break;
