@@ -52,29 +52,29 @@ bool Scene::Start()
 	{
 		case Stages::MAIN_MENU:
 		{
-			Button* button = (Button*)App->gui->CreateButton({ 300, 50.0f }, BType::PLAY, this);
+			Button* button = (Button*)App->gui->CreateButton({ 250, 50.0f }, BType::PLAY, this);
 
 			LabelInfo defLabel;
 			defLabel.color = Red;
 			defLabel.fontName = "Arial11";
 			defLabel.text = "PLAY";
-			App->gui->CreateLabel({ 100,40 }, defLabel, button, this);
+			App->gui->CreateLabel({ 65,25 }, defLabel, button, this);
 
-			Button* button2 = (Button*)App->gui->CreateButton({ 300, 150.0f }, BType::SETTINGS, this);
+			Button* button2 = (Button*)App->gui->CreateButton({ 250, 150.0f }, BType::SETTINGS, this);
 
 			LabelInfo defLabel2;
 			defLabel2.color = Red;
 			defLabel2.fontName = "Arial11";
 			defLabel2.text = "Settings";
-			App->gui->CreateLabel({ 90,40 }, defLabel2, button2, this);
+			App->gui->CreateLabel({ 60,25 }, defLabel2, button2, this);
 
-			Button* button3 = (Button*)App->gui->CreateButton({ 300, 250.0f }, BType::EXIT_GAME, this);
+			Button* button3 = (Button*)App->gui->CreateButton({ 250, 250.0f }, BType::EXIT_GAME, this);
 
 			LabelInfo defLabel3;
 			defLabel3.color = Red;
-			defLabel3.fontName = "Arial11";
+			defLabel3.fontName = "Arial9";
 			defLabel3.text = "Fuck u go fucking out of here ;(";
-			App->gui->CreateLabel({ 40,40 }, defLabel3, button3, this);
+			App->gui->CreateLabel({ 13,25 }, defLabel3, button3, this);
 
 			break;
 		}
@@ -233,7 +233,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 					button->MoveChilds({ 0.0f, -4.0f });
 					switch (button->btype)
 					{
-					case BType::PLAY:
+					/*case BType::PLAY:
 						actual_scene = Stages::INGAME;
 						restart = true;
 						break;
@@ -247,7 +247,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 					case BType::GO_MMENU:
 						actual_scene = Stages::MAIN_MENU;
 						restart = true;
-						break;
+						break;*/
 
 					}
 					break;
