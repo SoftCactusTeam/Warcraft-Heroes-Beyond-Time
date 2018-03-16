@@ -226,7 +226,7 @@ void PlayerEntity::KeyboardStates(float dt)
 				anim = &dashDown;
 				break;
 			}
-			else if (animBeforeDash == &idleUpRight || last_state == states::PL_UP_RIGHT)
+			else if (animBeforeDash == &idleUpRight || animBeforeDash ==&upRight)
 			{
 				pos.x = startPos.x + 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.x;
 				pos.y = startPos.y - 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.y;
@@ -280,7 +280,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &upLeft;
 			break;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 		{
 			startPos = pos;
 			state = states::PL_DASH;
@@ -309,7 +309,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &downLeft;
 			break;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 		{
 			startPos = pos;
 			state = states::PL_DASH;
@@ -338,7 +338,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &downLeft;
 			break;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 		{
 			startPos = pos;
 			state = states::PL_DASH;
@@ -367,7 +367,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &downRight;
 			break;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 		{
 			startPos = pos;
 			state = states::PL_DASH;
@@ -397,6 +397,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &up;
 			break;
 		}
+
 		break;
 
 	case states::PL_UP_RIGHT:
@@ -418,6 +419,13 @@ void PlayerEntity::KeyboardStates(float dt)
 		{
 			state = states::PL_UP;
 			anim = &up;
+			break;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		{
+			startPos = pos;
+			state = states::PL_DASH;
+			animBeforeDash = anim;
 			break;
 		}
 		break;
@@ -567,7 +575,6 @@ void PlayerEntity::JoyconStates(float dt)
 			{
 				pos.x = startPos.x + 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.x;
 				pos.y = startPos.y - 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.y;
-
 				anim = &dashUpRight;
 				break;
 			}
@@ -594,7 +601,6 @@ void PlayerEntity::JoyconStates(float dt)
 			else if (anim == &dashDownLeft)
 				anim = &idleDownLeft;
 		}
-
 		break;
 
 	case states::PL_UP:
@@ -617,7 +623,7 @@ void PlayerEntity::JoyconStates(float dt)
 			anim = &upLeft;
 			break;
 		}
-		else if (App->input->GetYAxis() < 0 && App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
+		else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
 		{
 			startPos = pos;
 			state = states::PL_DASH;
@@ -646,7 +652,7 @@ void PlayerEntity::JoyconStates(float dt)
 			anim = &downLeft;
 			break;
 		}
-		else if (App->input->GetYAxis() > 0 && App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
+		else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
 		{
 			startPos = pos;
 			state = states::PL_DASH;
@@ -676,7 +682,7 @@ void PlayerEntity::JoyconStates(float dt)
 			anim = &downLeft;
 			break;
 		}
-		else if (App->input->GetXAxis() < 0 && App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
+		else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
 		{
 			startPos = pos;
 			state = states::PL_DASH;
@@ -705,7 +711,7 @@ void PlayerEntity::JoyconStates(float dt)
 			anim = &downRight;
 			break;
 		}
-		if (App->input->GetXAxis() > 0 && App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
 		{
 			startPos = pos;
 			state = states::PL_DASH;
