@@ -230,7 +230,27 @@ void PlayerEntity::KeyboardStates(float dt)
 			{
 				pos.x = startPos.x + 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.x;
 				pos.y = startPos.y - 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.y;
-
+				anim = &dashUpRight;
+				break;
+			}
+			else if (animBeforeDash == &idleDownRight || animBeforeDash == &downRight)
+			{
+				pos.x = startPos.x + 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.x;
+				pos.y = startPos.y + 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.y;
+				anim = &dashUpRight;
+				break;
+			}
+			else if (animBeforeDash == &idleDownLeft || animBeforeDash == &downLeft)
+			{
+				pos.x = startPos.x - 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.x;
+				pos.y = startPos.y + 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.y;
+				anim = &dashUpRight;
+				break;
+			}
+			else if (animBeforeDash == &idleUpLeft || animBeforeDash == &upLeft)
+			{
+				pos.x = startPos.x - 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.x;
+				pos.y = startPos.y - 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.y;
 				anim = &dashUpRight;
 				break;
 			}
@@ -397,7 +417,13 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &up;
 			break;
 		}
-
+		else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		{
+			startPos = pos;
+			state = states::PL_DASH;
+			animBeforeDash = anim;
+			break;
+		}
 		break;
 
 	case states::PL_UP_RIGHT:
@@ -451,6 +477,13 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &down;
 			break;
 		}
+		else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		{
+			startPos = pos;
+			state = states::PL_DASH;
+			animBeforeDash = anim;
+			break;
+		}
 		break;
 
 	case states::PL_DOWN_RIGHT:
@@ -472,6 +505,13 @@ void PlayerEntity::KeyboardStates(float dt)
 		{
 			state = states::PL_DOWN;
 			anim = &down;
+			break;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		{
+			startPos = pos;
+			state = states::PL_DASH;
+			animBeforeDash = anim;
 			break;
 		}
 		break;
@@ -571,9 +611,30 @@ void PlayerEntity::JoyconStates(float dt)
 				anim = &dashDown;
 				break;
 			}
-			else if (animBeforeDash == &idleUpRight || last_state == states::PL_UP_RIGHT)
+			else if (animBeforeDash == &idleUpRight || animBeforeDash == &upRight)
 			{
 				pos.x = startPos.x + 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.x;
+				pos.y = startPos.y - 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.y;
+				anim = &dashUpRight;
+				break;
+			}
+			else if (animBeforeDash == &idleDownRight || animBeforeDash == &downRight)
+			{
+				pos.x = startPos.x + 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.x;
+				pos.y = startPos.y + 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.y;
+				anim = &dashUpRight;
+				break;
+			}
+			else if (animBeforeDash == &idleDownLeft || animBeforeDash == &downLeft)
+			{
+				pos.x = startPos.x - 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.x;
+				pos.y = startPos.y + 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.y;
+				anim = &dashUpRight;
+				break;
+			}
+			else if (animBeforeDash == &idleUpLeft || animBeforeDash == &upLeft)
+			{
+				pos.x = startPos.x - 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.x;
 				pos.y = startPos.y - 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.y;
 				anim = &dashUpRight;
 				break;
@@ -741,6 +802,13 @@ void PlayerEntity::JoyconStates(float dt)
 			anim = &up;
 			break;
 		}
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
+		{
+			startPos = pos;
+			state = states::PL_DASH;
+			animBeforeDash = anim;
+			break;
+		}
 		break;
 
 	case states::PL_UP_RIGHT:
@@ -762,6 +830,13 @@ void PlayerEntity::JoyconStates(float dt)
 		{
 			state = states::PL_UP;
 			anim = &up;
+			break;
+		}
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
+		{
+			startPos = pos;
+			state = states::PL_DASH;
+			animBeforeDash = anim;
 			break;
 		}
 		break;
@@ -787,6 +862,13 @@ void PlayerEntity::JoyconStates(float dt)
 			anim = &down;
 			break;
 		}
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
+		{
+			startPos = pos;
+			state = states::PL_DASH;
+			animBeforeDash = anim;
+			break;
+		}
 		break;
 
 	case states::PL_DOWN_RIGHT:
@@ -808,6 +890,13 @@ void PlayerEntity::JoyconStates(float dt)
 		{
 			state = states::PL_DOWN;
 			anim = &down;
+			break;
+		}
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
+		{
+			startPos = pos;
+			state = states::PL_DASH;
+			animBeforeDash = anim;
 			break;
 		}
 		break;
