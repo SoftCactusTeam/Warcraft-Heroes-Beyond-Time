@@ -86,6 +86,7 @@
     <Link />
     <Link>
       <SubSystem>Console</SubSystem>
+      <AdditionalLibraryDirectories>SDL/lib/x86</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
