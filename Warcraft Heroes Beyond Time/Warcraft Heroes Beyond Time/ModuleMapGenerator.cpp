@@ -98,7 +98,7 @@ bool MapGenerator::GenerateMap(MapData data)
 {
 	bool ret = true;
 
-	mapTexture = App->textures->Load("map.jpg");
+	mapTexture = App->textures->Load(data.tilesetPath);
 
 	this->sizeX = data.sizeX;
 	this->sizeY = data.sizeY;
@@ -117,7 +117,7 @@ bool MapGenerator::GenerateMap(MapData data)
 	ret = nodes.size() == totalSize;
 
 	if (ret)
-		ret = ExecuteAlgorithm( nodes[Get(25,25)],600);
+		ret = ExecuteAlgorithm( nodes[Get(sizeX/2,sizeY/2)], data.iterations, data.seed);
 
 	if (ret)
 		ret = GenerateWalls();
@@ -125,11 +125,14 @@ bool MapGenerator::GenerateMap(MapData data)
 	return ret;
 }
 
-bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations)
+bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int seed)
 {
 	LOG("Executing map Algorithm...");
 
-	srand(time(NULL));
+	if (seed != 0)
+		srand(seed);
+	else
+		srand(time(NULL));
 
 	startNode->whatToBlit = FLOOR;
 

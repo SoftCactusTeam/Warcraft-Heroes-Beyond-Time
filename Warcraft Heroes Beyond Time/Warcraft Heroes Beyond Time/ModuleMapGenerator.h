@@ -11,10 +11,12 @@ class Module;
 
 struct MapData
 {
-	char* seed = NULL;
+	char* tilesetPath = NULL;
 	int sizeX = 0;
-	int sizeY = 0;
+	int sizeY = 0;	
+	uint iterations = 0;
 	int randomize = 0;
+	int seed = 0;
 };
 
 struct MapNode
@@ -48,7 +50,7 @@ public:
 	inline int Get(int x, int y) const;
 	bool CheckBoundaries(const iPoint& pos) const;
 	bool GenerateMap(MapData data);
-	bool ExecuteAlgorithm(MapNode* startNode, uint iterations);
+	bool ExecuteAlgorithm(MapNode* startNode, uint iterations, int seed);
 	int CheckTypeOfNode(MapNode* nodetocheck);
 	void UpdateNode(MapNode* nodetocheck, int type);
 	bool GenerateWalls();
