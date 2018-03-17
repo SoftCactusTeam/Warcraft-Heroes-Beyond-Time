@@ -13,6 +13,7 @@ protected:
 	Animation up, down, left, right, upLeft, upRight, downLeft, downRight;
 	Animation dashRight, dashLeft, dashUp, dashDown, dashUpRight, dashUpLeft, dashDownRight, dashDownLeft;
 	Animation* animBeforeDash = nullptr;
+	Animation animDashUp[8];
 	float speed = 250.0f;
 	bool move = true;
 
@@ -53,8 +54,8 @@ public:
 
 	// Dash variables
 
-	fPoint handleA = { 0.2f, 0.0f };
-	fPoint handleB = { 0.8f, 1.0f };
+	fPoint handleA = { 0.6f, 0.0f };
+	fPoint handleB = { 0.4f, 1.0f };
 
 
 	fPoint endPos = { 0.0f, 0.0f };

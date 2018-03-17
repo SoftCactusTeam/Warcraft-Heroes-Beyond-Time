@@ -125,6 +125,32 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 
 	dashDownLeft.PushBack({ 165,611,55,47 });
 	dashDownRight.speed = 0.2f;
+
+	// ----
+
+	animDashUp[1].PushBack({ 229, 3, 55, 122 });
+	animDashUp[1].speed = 0.2f;
+
+	animDashUp[2].PushBack({ 297, 3, 55, 122 });
+	animDashUp[2].speed = 0.2f;
+
+	animDashUp[3].PushBack({ 365, 3, 55, 122 });
+	animDashUp[3].speed = 0.2f;
+
+	animDashUp[4].PushBack({ 433, 3, 55, 122 });
+	animDashUp[4].speed = 0.2f;
+
+	animDashUp[5].PushBack({ 501, 3, 55, 122 });
+	animDashUp[5].speed = 0.2f;
+
+	animDashUp[6].PushBack({ 569, 3, 55, 122 });
+	animDashUp[6].speed = 0.2f;
+
+	animDashUp[7].PushBack({ 637, 3, 55, 122 });
+	animDashUp[7].speed = 0.2f;
+
+	animDashUp[8].PushBack({ 705, 3, 55, 122 });
+	animDashUp[8].speed = 0.2f;
 }
 
 bool Thrall::Update(float dt)
