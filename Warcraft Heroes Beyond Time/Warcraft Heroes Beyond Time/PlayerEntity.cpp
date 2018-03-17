@@ -331,7 +331,17 @@ void PlayerEntity::KeyboardStates(float dt)
 				pos.x = startPos.x - 250.0f * 0.75f * bezierPoint.y;
 				pos.y = startPos.y - 250.0f * 0.75f * bezierPoint.y;
 
-				anim = &dashUpLeft;
+				if (t >= 0.0f && t <= 0.2f)
+					anim = &animDashUpLeft[1];
+				else if (t > 0.2f && t <= 0.4f)
+					anim = &animDashUpLeft[2];
+				else if (t > 0.4f && t <= 0.55f)
+					anim = &animDashUpLeft[3];
+				else if (t > 0.55f && t <= 0.7f)
+					anim = &animDashUpLeft[4];
+				else if (t > 0.7f && t <= 1.0f)
+					anim = &animDashUpLeft[5];
+
 				float x = 0.05f / dt;
 				t += (x * dt);
 				break;
@@ -352,7 +362,7 @@ void PlayerEntity::KeyboardStates(float dt)
 				anim = &idleDown;
 			else if (anim == &dashUpRight)
 				anim = &idleUpRight;
-			else if (anim == &dashUpLeft)
+			else if (anim == &animDashUpLeft[5])
 				anim = &idleUpLeft;
 			else if (anim == &dashDownRight)
 				anim = &idleDownRight;
@@ -798,7 +808,17 @@ void PlayerEntity::JoyconStates(float dt)
 				pos.x = startPos.x - 250.0f * 0.75f * bezierPoint.y;
 				pos.y = startPos.y - 250.0f * 0.75f * bezierPoint.y;
 
-				anim = &dashUpLeft;
+				if (t >= 0.0f && t <= 0.2f)
+					anim = &animDashUpLeft[1];
+				else if (t > 0.2f && t <= 0.4f)
+					anim = &animDashUpLeft[2];
+				else if (t > 0.4f && t <= 0.55f)
+					anim = &animDashUpLeft[3];
+				else if (t > 0.55f && t <= 0.7f)
+					anim = &animDashUpLeft[4];
+				else if (t > 0.7f && t <= 1.0f)
+					anim = &animDashUpLeft[5];
+
 				float x = 0.05f / dt;
 				t += (x * dt);
 				break;
@@ -819,7 +839,7 @@ void PlayerEntity::JoyconStates(float dt)
 				anim = &idleDown;
 			else if (anim == &dashUpRight)
 				anim = &idleUpRight;
-			else if (anim == &dashUpLeft)
+			else if (anim == &animDashUpLeft[5])
 				anim = &idleUpLeft;
 			else if (anim == &dashDownRight)
 				anim = &idleDownRight;

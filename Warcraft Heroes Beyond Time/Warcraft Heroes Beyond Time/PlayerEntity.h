@@ -15,6 +15,7 @@ protected:
 	Animation* animBeforeDash = nullptr;
 	Animation animDashUp[6];
 	Animation animDashLeft[6];
+	Animation animDashUpLeft[6];
 	float speed = 250.0f;
 	bool move = true;
 
