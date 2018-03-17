@@ -2,11 +2,6 @@
 #include "Application.h"
 #include "ModuleEntitySystem.h"
 
-Pathfinding::Pathfinding()
-{
-	name = "pathfinding";
-}
-
 iPoint SillyMovementToPlayer(iPoint pos)
 {
 	iPoint res = { 1,1 };
@@ -15,4 +10,33 @@ iPoint SillyMovementToPlayer(iPoint pos)
 	if (App->entities->actualPlayer->pos.y - pos.y < 0)
 		res.y = -1;
 	return res;
+}
+
+pathNode::pathNode(int cost)
+{
+	this->cost = cost;
+}
+
+Pathfinding::Pathfinding()
+{
+	name = "pathfinding";
+}
+
+void Pathfinding::LoadMap(uint width, uint height)
+{
+	this->mapWidth = width;
+	this->mapHeight = height;
+}
+
+void Pathfinding::AddNodeToMap(int cost)
+{
+	pathNode* aux = new pathNode(cost);
+	map.push_back(aux);
+}
+
+void Pathfinding::ClearMap()
+{
+	for (int i = 0; i < map.size(); i++)
+		delete map[i];
+	map.clear();
 }
