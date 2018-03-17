@@ -2,9 +2,9 @@
 #include "Application.h"
 #include "ModuleEntitySystem.h"
 
-DstarPath::DstarPath(Entity* actor)
+Pathfinding::Pathfinding()
 {
-	this->actor = actor;
+	name = "pathfinding";
 }
 
 iPoint SillyMovementToPlayer(iPoint pos)

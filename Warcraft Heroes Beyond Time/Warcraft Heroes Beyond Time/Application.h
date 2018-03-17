@@ -23,6 +23,7 @@ class Scene;
 class Fonts;
 class Console;
 class ModuleColliders;
+class Pathfinding;
 
 class Application
 {
@@ -76,6 +77,8 @@ public:
 	Scene*					scene = nullptr;
 	Console*				console = nullptr;
 	ModuleColliders*		colliders = nullptr;
+	Pathfinding*			path = nullptr;
+
 public:
 
 	float dt = 0.0f;

@@ -24,6 +24,11 @@ Collider::Collider(Entity* owner, SDL_Rect colliderRect, COLLIDER_TYPE type, iPo
 	this->colliderRect.y += offset.y;
 }
 
+ModuleColliders::ModuleColliders()
+{
+	name = "colliders";
+}
+
 bool ModuleColliders::Awake(pugi::xml_node& consoleNode)
 {
 	ConsoleOrder* order = new ConsoleColliders();

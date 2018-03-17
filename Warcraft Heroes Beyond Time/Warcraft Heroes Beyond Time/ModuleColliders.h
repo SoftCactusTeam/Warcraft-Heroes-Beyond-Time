@@ -17,6 +17,7 @@ struct Collider
 class ModuleColliders : public Module
 {
 public:
+	ModuleColliders();
 	bool Awake(pugi::xml_node& consoleNode);
 	bool Update(float dt);
 	bool CleanUp();

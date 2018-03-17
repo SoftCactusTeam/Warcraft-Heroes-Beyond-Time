@@ -2,13 +2,14 @@
 #define __Pathfinding_H__
 
 #include "Entity.h"
+#include "Module.h"
 
 iPoint SillyMovementToPlayer(iPoint pos);
 
-class DstarPath
+class Pathfinding : public Module
 {
 public:
-	DstarPath(Entity* actor);
+	Pathfinding();
 
 
 private:
