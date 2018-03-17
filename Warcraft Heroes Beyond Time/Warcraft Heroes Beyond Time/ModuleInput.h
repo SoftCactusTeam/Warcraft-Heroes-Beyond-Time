@@ -76,8 +76,9 @@ public:
 	void SetTextReadyFalse() { textReady = false; };
 	char* GetText() { return inputText; };
 	bool IsKeyboardAvailable() { return kbAvailable; }
-
 	void ExternActionsAtKeyInput(int key);
+	bool PlayJoyRumble(float strength, Uint32 length);
+
 private:
 	bool		windowEvents[WE_COUNT];
 	KeyState*	keyboard;

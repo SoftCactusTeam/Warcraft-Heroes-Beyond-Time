@@ -12,4 +12,18 @@ extern SDL_Color Black;
 extern SDL_Color White;
 extern SDL_Color Grey;
 
+inline bool operator==(const SDL_Rect& a, const SDL_Rect& b)
+{
+	return a.x == b.x && a.y == b.y && a.w == b.w && a.h == b.h;
+}
+
+
+inline bool operator!=(const SDL_Rect& a, const SDL_Rect& b)
+{
+	if (a.x == b.x && a.y == b.y && a.w == b.w && a.h == b.h)
+		return false;
+	else
+		return true;
+}
+
 #endif
