@@ -13,7 +13,8 @@ protected:
 	Animation up, down, left, right, upLeft, upRight, downLeft, downRight;
 	Animation dashRight, dashLeft, dashUp, dashDown, dashUpRight, dashUpLeft, dashDownRight, dashDownLeft;
 	Animation* animBeforeDash = nullptr;
-	Animation animDashUp[8];
+	Animation animDashUp[6];
+	Animation animDashLeft[6];
 	float speed = 250.0f;
 	bool move = true;
 
