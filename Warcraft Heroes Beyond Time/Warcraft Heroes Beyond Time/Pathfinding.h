@@ -9,8 +9,9 @@ iPoint SillyMovementToPlayer(iPoint pos);
 
 struct pathNode
 {
-	pathNode(int cost);
+	pathNode(int cost, iPoint nodePos);
 	int cost = -1;
+	iPoint nodePos;
 };
 
 class Pathfinding : public Module
@@ -18,8 +19,8 @@ class Pathfinding : public Module
 public:
 	Pathfinding();
 	void LoadMap(uint width, uint height);
-	void AddNodeToMap(int cost);
-	void ClearMap();
+	void AddNodeToMap(int cost, iPoint nodePos = { -1,-1 });
+	void ClearMap(); 
 
 private:
 	std::vector<pathNode*> map;
@@ -27,9 +28,13 @@ private:
 	uint mapHeight = 0;
 };
 
-struct PathList
+struct PathVector
 {
-
+	PathVector();
+	iPoint nextObjective = { -1,-1 };
+	iPoint pathToMove(iPoint actualPos);
+private:
+	std::vector<pathNode*> path;
 };
 
 #endif

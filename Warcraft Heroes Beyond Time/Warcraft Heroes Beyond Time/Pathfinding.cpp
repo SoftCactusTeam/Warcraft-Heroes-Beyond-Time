@@ -12,15 +12,13 @@ iPoint SillyMovementToPlayer(iPoint pos)
 	return res;
 }
 
-pathNode::pathNode(int cost)
+pathNode::pathNode(int cost, iPoint nodePos)
 {
 	this->cost = cost;
+	this->nodePos = nodePos;
 }
 
-Pathfinding::Pathfinding()
-{
-	name = "pathfinding";
-}
+Pathfinding::Pathfinding() { name = "pathfinding"; }
 
 void Pathfinding::LoadMap(uint width, uint height)
 {
@@ -28,9 +26,9 @@ void Pathfinding::LoadMap(uint width, uint height)
 	this->mapHeight = height;
 }
 
-void Pathfinding::AddNodeToMap(int cost)
+void Pathfinding::AddNodeToMap(int cost, iPoint point)
 {
-	pathNode* aux = new pathNode(cost);
+	pathNode* aux = new pathNode(cost, point);
 	map.push_back(aux);
 }
 
@@ -39,4 +37,19 @@ void Pathfinding::ClearMap()
 	for (int i = 0; i < map.size(); i++)
 		delete map[i];
 	map.clear();
+}
+
+PathVector::PathVector()
+{
+
+}
+
+iPoint PathVector::pathToMove(iPoint actualPos)
+{
+	if (actualPos == nextObjective)
+	{
+		path.pop_back();
+		nextObjective = path[0]->nodePos;
+	}
+
 }
