@@ -237,21 +237,21 @@ void PlayerEntity::KeyboardStates(float dt)
 			{
 				pos.x = startPos.x + 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.x;
 				pos.y = startPos.y + 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.y;
-				anim = &dashUpRight;
+				anim = &dashDownRight;
 				break;
 			}
 			else if (animBeforeDash == &idleDownLeft || animBeforeDash == &downLeft)
 			{
 				pos.x = startPos.x - 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.x;
 				pos.y = startPos.y + 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.y;
-				anim = &dashUpRight;
+				anim = &dashDownLeft;
 				break;
 			}
 			else if (animBeforeDash == &idleUpLeft || animBeforeDash == &upLeft)
 			{
 				pos.x = startPos.x - 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.x;
 				pos.y = startPos.y - 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.y;
-				anim = &dashUpRight;
+				anim = &dashUpLeft;
 				break;
 			}
 		}
@@ -622,21 +622,21 @@ void PlayerEntity::JoyconStates(float dt)
 			{
 				pos.x = startPos.x + 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.x;
 				pos.y = startPos.y + 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.y;
-				anim = &dashUpRight;
+				anim = &dashDownRight;
 				break;
 			}
 			else if (animBeforeDash == &idleDownLeft || animBeforeDash == &downLeft)
 			{
 				pos.x = startPos.x - 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.x;
 				pos.y = startPos.y + 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.y;
-				anim = &dashUpRight;
+				anim = &dashDownLeft;
 				break;
 			}
 			else if (animBeforeDash == &idleUpLeft || animBeforeDash == &upLeft)
 			{
 				pos.x = startPos.x - 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.x;
 				pos.y = startPos.y - 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.y;
-				anim = &dashUpRight;
+				anim = &dashUpLeft;
 				break;
 			}
 		}
