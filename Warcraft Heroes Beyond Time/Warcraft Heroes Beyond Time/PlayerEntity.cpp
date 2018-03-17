@@ -200,8 +200,6 @@ void PlayerEntity::KeyboardStates(float dt)
 
 		if (t <= 1.0f && t >= 0.0f)
 		{
-			
-
 			if (animBeforeDash == &idleRight || animBeforeDash == &right)
 			{
 				pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.x;
@@ -232,32 +230,44 @@ void PlayerEntity::KeyboardStates(float dt)
 			}
 			else if (animBeforeDash == &idleUpRight || animBeforeDash ==&upRight)
 			{
-				pos.x = startPos.x + 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.x;
-				pos.y = startPos.y - 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.y;
+				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+					
+				pos.x = startPos.x + 250.0f * 0.75f * bezierPoint.x;
+				pos.y = startPos.y - 250.0f * 0.75f * bezierPoint.x;
+
 				anim = &dashUpRight;
 				t += (5.0f * dt);
 				break;
 			}
 			else if (animBeforeDash == &idleDownRight || animBeforeDash == &downRight)
 			{
-				pos.x = startPos.x + 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.x;
-				pos.y = startPos.y + 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.y;
+				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+
+				pos.x = startPos.x + 250.0f * 0.75f * bezierPoint.x;
+				pos.y = startPos.y + 250.0f * 0.75f * bezierPoint.x;
+
 				anim = &dashDownRight;
 				t += (5.0f * dt);
 				break;
 			}
 			else if (animBeforeDash == &idleDownLeft || animBeforeDash == &downLeft)
 			{
-				pos.x = startPos.x - 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.x;
-				pos.y = startPos.y + 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.y;
+				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+
+				pos.x = startPos.x - 250.0f * 0.75f * bezierPoint.x;
+				pos.y = startPos.y + 250.0f * 0.75f * bezierPoint.x;
+
 				anim = &dashDownLeft;
 				t += (5.0f * dt);
 				break;
 			}
 			else if (animBeforeDash == &idleUpLeft || animBeforeDash == &upLeft)
 			{
-				pos.x = startPos.x - 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.x;
-				pos.y = startPos.y - 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.y;
+				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+
+				pos.x = startPos.x - 250.0f * 0.75f * bezierPoint.x;
+				pos.y = startPos.y - 250.0f * 0.75f * bezierPoint.x;
+
 				anim = &dashUpLeft;
 				t += (5.0f * dt);
 				break;
@@ -625,32 +635,44 @@ void PlayerEntity::JoyconStates(float dt)
 			}
 			else if (animBeforeDash == &idleUpRight || animBeforeDash == &upRight)
 			{
-				pos.x = startPos.x + 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.x;
-				pos.y = startPos.y - 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.y;
+				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+
+				pos.x = startPos.x + 250.0f * 0.75f * bezierPoint.x;
+				pos.y = startPos.y - 250.0f * 0.75f * bezierPoint.x;
+
 				anim = &dashUpRight;
 				t += (5.0f * dt);
 				break;
 			}
 			else if (animBeforeDash == &idleDownRight || animBeforeDash == &downRight)
 			{
-				pos.x = startPos.x + 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.x;
-				pos.y = startPos.y + 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.y;
+				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+
+				pos.x = startPos.x + 250.0f * 0.75f * bezierPoint.x;
+				pos.y = startPos.y + 250.0f * 0.75f * bezierPoint.x;
+
 				anim = &dashDownRight;
 				t += (5.0f * dt);
 				break;
 			}
 			else if (animBeforeDash == &idleDownLeft || animBeforeDash == &downLeft)
 			{
-				pos.x = startPos.x - 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.x;
-				pos.y = startPos.y + 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.y;
+				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+
+				pos.x = startPos.x - 250.0f * 0.75f * bezierPoint.x;
+				pos.y = startPos.y + 250.0f * 0.75f * bezierPoint.x;
+
 				anim = &dashDownLeft;
 				t += (5.0f * dt);
 				break;
 			}
 			else if (animBeforeDash == &idleUpLeft || animBeforeDash == &upLeft)
 			{
-				pos.x = startPos.x - 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * endPos.x;
-				pos.y = startPos.y - 0.75f * CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.y;
+				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+
+				pos.x = startPos.x - 250.0f * 0.75f * bezierPoint.x;
+				pos.y = startPos.y - 250.0f * 0.75f * bezierPoint.x;
+
 				anim = &dashUpLeft;
 				t += (5.0f * dt);
 				break;
