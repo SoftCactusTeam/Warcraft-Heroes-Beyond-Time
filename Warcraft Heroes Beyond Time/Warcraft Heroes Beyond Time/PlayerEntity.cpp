@@ -200,7 +200,7 @@ void PlayerEntity::KeyboardStates(float dt)
 
 		if (t <= 1.0f && t >= 0.0f)
 		{
-			t += 0.05f;
+			t += (dt * 5.0f);
 
 			if (animBeforeDash == &idleRight || animBeforeDash == &right)
 			{
@@ -585,7 +585,7 @@ void PlayerEntity::JoyconStates(float dt)
 
 		if (t <= 1.0f && t >= 0.0f)
 		{
-			t += 0.05f;
+			t += (dt * 5.0f);
 
 			if (animBeforeDash == &idleRight || animBeforeDash == &right)
 			{
