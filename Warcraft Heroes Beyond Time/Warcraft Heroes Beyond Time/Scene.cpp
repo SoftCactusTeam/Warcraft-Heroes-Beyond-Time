@@ -35,7 +35,13 @@ bool Scene::Start()
 	App->gui->CreateLabel({0,0}, defLabel, nullptr, nullptr);
 	App->entities->AddPlayer({0,0}, THRALL);
 
-	App->map->GenerateGrid(50,50);
+	MapData mapInfo;
+	mapInfo.sizeX = 50;
+	mapInfo.sizeY = 50;
+	mapInfo.iterations = 600;
+	mapInfo.tilesetPath = "map.jpg";
+
+	App->map->GenerateMap(mapInfo);
 
 	//LabelInfo defLabel;
 	//defLabel.color = Red;
@@ -52,29 +58,29 @@ bool Scene::Start()
 	{
 		case Stages::MAIN_MENU:
 		{
-			Button* button = (Button*)App->gui->CreateButton({ 300, 50.0f }, BType::PLAY, this);
+			Button* button = (Button*)App->gui->CreateButton({ 250, 50.0f }, BType::PLAY, this);
 
 			LabelInfo defLabel;
 			defLabel.color = Red;
 			defLabel.fontName = "Arial11";
 			defLabel.text = "PLAY";
-			App->gui->CreateLabel({ 100,40 }, defLabel, button, this);
+			App->gui->CreateLabel({ 65,25 }, defLabel, button, this);
 
-			Button* button2 = (Button*)App->gui->CreateButton({ 300, 150.0f }, BType::SETTINGS, this);
+			Button* button2 = (Button*)App->gui->CreateButton({ 250, 150.0f }, BType::SETTINGS, this);
 
 			LabelInfo defLabel2;
 			defLabel2.color = Red;
 			defLabel2.fontName = "Arial11";
 			defLabel2.text = "Settings";
-			App->gui->CreateLabel({ 90,40 }, defLabel2, button2, this);
+			App->gui->CreateLabel({ 60,25 }, defLabel2, button2, this);
 
-			Button* button3 = (Button*)App->gui->CreateButton({ 300, 250.0f }, BType::EXIT_GAME, this);
+			Button* button3 = (Button*)App->gui->CreateButton({ 250, 250.0f }, BType::EXIT_GAME, this);
 
 			LabelInfo defLabel3;
 			defLabel3.color = Red;
-			defLabel3.fontName = "Arial11";
+			defLabel3.fontName = "Arial9";
 			defLabel3.text = "Fuck u go fucking out of here ;(";
-			App->gui->CreateLabel({ 40,40 }, defLabel3, button3, this);
+			App->gui->CreateLabel({ 13,25 }, defLabel3, button3, this);
 
 			break;
 		}
@@ -82,23 +88,23 @@ bool Scene::Start()
 		{
 			SliderInfo sinfo;
 			sinfo.type = Slider::SliderType::MUSIC_VOLUME;
-			Slider* slider = (Slider*)App->gui->CreateSlider({ 250, 190 }, sinfo, this, nullptr);
+			Slider* slider = (Slider*)App->gui->CreateSlider({ 200, 190 }, sinfo, this, nullptr);
 
 			LabelInfo defLabel3;
 			defLabel3.color = White;
 			defLabel3.fontName = "Arial11";
 			std::string temp = (char*)std::to_string(App->audio->MusicVolumePercent).data();
 			defLabel3.text = (char*)temp.data();
-			App->gui->CreateLabel({ 380,7 }, defLabel3, slider, this);
+			App->gui->CreateLabel({ 270,3 }, defLabel3, slider, this);
 
 
-			Button* button3 = (Button*)App->gui->CreateButton({ 300, 250.0f }, BType::GO_MMENU, this);
+			Button* button3 = (Button*)App->gui->CreateButton({ 250, 250.0f }, BType::GO_MMENU, this);
 
 			LabelInfo defLabel2;
 			defLabel2.color = Red;
 			defLabel2.fontName = "Arial11";
 			defLabel2.text = "Go Back ;)";
-			App->gui->CreateLabel({ 40,40 }, defLabel2, button3, this);
+			App->gui->CreateLabel({ 50,25 }, defLabel2, button3, this);
 
 			break;
 		}
@@ -172,8 +178,20 @@ bool Scene::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && actual_scene == Stages::INGAME)
 	{
-		App->map->CleanMap();
-		App->map->GenerateGrid(50, 50);
+		App->map->CleanUp();
+
+		MapData mapInfo;
+		mapInfo.sizeX = 50;
+		mapInfo.sizeY = 50;
+		mapInfo.iterations = 600;
+		mapInfo.tilesetPath = "map.jpg";
+
+		App->map->GenerateMap(mapInfo);
+	}
+
+	if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
+	{
+		App->input->PlayJoyRumble(0.75f, 100);
 	}
 
 	return true;
@@ -195,6 +213,7 @@ bool Scene::CleanUp()
 	App->gui->DeActivate();
 	App->entities->DeActivate();
 	App->console->DeActivate();
+
 	return true;
 }
 

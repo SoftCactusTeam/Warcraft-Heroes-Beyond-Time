@@ -11,6 +11,7 @@
 #include "ConsumableEntity.h"
 #include "ChestEntity.h"
 #include "StaticObjectEntity.h"
+#include "ModuleMapGenerator.h"
 
 #include "Console.h"
 
@@ -224,6 +225,8 @@ bool EntitySystem::Update(float dt)
 {
 	bool ret = true;
 
+	App->map->DrawPrePlayerMap(); //TEMPORAL PER LA RELEASE
+
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end() && ret; ++it)
 	{
 		ret = (*it)->Update(dt);
@@ -236,6 +239,7 @@ bool EntitySystem::Update(float dt)
 			ret = (*it)->Draw(dt);
 		}
 	}
+
 	return ret;
 }
 
