@@ -20,8 +20,8 @@ bool MapGenerator::Update(float dt)
 {
 	bool ret = true;
 
-	ret = DrawPrePlayerMap();
-
+	//ret = DrawPrePlayerMap();
+	ret = DrawPostPlayerMap();
 	return ret;
 }
 
@@ -29,7 +29,7 @@ bool MapGenerator::PostUpdate()
 {
 	bool ret = true;
 	
-	ret = DrawPostPlayerMap();
+	//ret = DrawPostPlayerMap();
 
 	return ret;
 }
@@ -48,7 +48,9 @@ bool MapGenerator::CleanUp()
 
 	nodes.clear();
 
-	return nodes.size() <= 0;
+	visited.clear();
+
+	return nodes.size() <= 0 && visited.size() <= 0;
 }
 
 bool MapGenerator::DrawPrePlayerMap()
