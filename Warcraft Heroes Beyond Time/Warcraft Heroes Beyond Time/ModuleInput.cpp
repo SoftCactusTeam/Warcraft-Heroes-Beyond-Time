@@ -58,21 +58,21 @@ bool Input::Awake(pugi::xml_node& inputNode)
 		controller = SDL_JoystickOpen(0);
 		if (controller == NULL)
 		{
-			LOG("Warning: Unable to open game controller! SDL Error: %s\n", SDL_GetError());
+			LOG("Warning: Unable to open game controller! SDL Error: %s", SDL_GetError());
 		}
 		else
 		{
 			controllerHaptic = SDL_HapticOpenFromJoystick(controller);
 			if (controllerHaptic == NULL)
 			{
-				LOG("Warning: Controller does not support haptics! SDL Error: %s\n", SDL_GetError());
+				LOG("Warning: Controller does not support haptics! SDL Error: %s", SDL_GetError());
 			}
 			else
 			{
 				//Get initialize rumble
 				if (SDL_HapticRumbleInit(controllerHaptic) < 0)
 				{
-					LOG("Warning: Unable to initialize rumble! SDL Error: %s\n", SDL_GetError());
+					LOG("Warning: Unable to initialize rumble! SDL Error: %s", SDL_GetError());
 				}
 			}
 		}
@@ -208,11 +208,6 @@ bool Input::PreUpdate()
 		case SDL_JOYBUTTONDOWN:
 			if (event.jbutton.which == 0)
 			{
-				// RUMBLE TEST
-				if (SDL_HapticRumblePlay(controllerHaptic, 0.75, 500) != 0)
-				{
-					printf("Warning: Unable to play rumble! %s\n", SDL_GetError());
-				}
 				kbAvailable = false;
 				jButtons[event.jbutton.button - 1] = KEY_DOWN;
 			}
@@ -271,6 +266,18 @@ bool Input::IsAnyKeyPressed()
 	bool is_any_key_pressed = key_pressed;
 	key_pressed = false;
 	return is_any_key_pressed;
+}
+
+
+bool Input::PlayJoyRumble(float strength, Uint32 length)
+{
+	if (SDL_HapticRumblePlay(controllerHaptic, strength, length) != 0)
+	{
+		LOG("Warning: Unable to play rumble! %s", SDL_GetError());
+		return false;
+	}
+	else
+		return true;
 }
 
 void Input::ExternActionsAtKeyInput(const int key) {

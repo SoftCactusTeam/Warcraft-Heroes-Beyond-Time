@@ -35,7 +35,13 @@ bool Scene::Start()
 	App->gui->CreateLabel({0,0}, defLabel, nullptr, nullptr);
 	App->entities->AddPlayer({0,0}, THRALL);
 
-	App->map->GenerateGrid(50,50);
+	MapData mapInfo;
+	mapInfo.sizeX = 50;
+	mapInfo.sizeY = 50;
+	mapInfo.iterations = 600;
+	mapInfo.tilesetPath = "map.jpg";
+
+	App->map->GenerateMap(mapInfo);
 
 	//LabelInfo defLabel;
 	//defLabel.color = Red;
@@ -172,8 +178,15 @@ bool Scene::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && actual_scene == Stages::INGAME)
 	{
-		App->map->CleanMap();
-		App->map->GenerateGrid(50, 50);
+		App->map->CleanUp();
+
+		MapData mapInfo;
+		mapInfo.sizeX = 50;
+		mapInfo.sizeY = 50;
+		mapInfo.iterations = 600;
+		mapInfo.tilesetPath = "map.jpg";
+
+		App->map->GenerateMap(mapInfo);
 	}
 
 	return true;
