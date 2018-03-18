@@ -1,5 +1,4 @@
 #include "DynamicEntity.h"
-#include <math.h>
 
 DynamicEntity::DynamicEntity(fPoint coor, SDL_Texture* texture) : Entity(coor, texture) {}
 
@@ -36,6 +35,7 @@ FIXED_ANGLE DynamicEntity::CaculateAngle(fPoint objectiveCoor)
 			angleToReturn = FIXED_ANGLE::RIGHT;
 		else if (dY / 2.5f > dX)
 			angleToReturn = FIXED_ANGLE::UP;
+		// there could be an else angleToReturn = UpRight, but isn't necessary
 		break;
 	case FIXED_ANGLE::UP_LEFT:
 		dX = (float)pos.x - (float)objectiveCoor.x;
@@ -65,12 +65,3 @@ FIXED_ANGLE DynamicEntity::CaculateAngle(fPoint objectiveCoor)
 
 	return angleToReturn;
 }
-
-uint DynamicEntity::DistanceToObejective(iPoint objectiveCoor)
-{
-	uint totalX = this->pos.x - objectiveCoor.x;
-	uint totalY = this->pos.y - objectiveCoor.y;
-	return sqrt((totalX * totalX) + (totalY * totalY));
-}
-
-void DynamicEntity::Collision(COLLIDER_TYPE type) {}

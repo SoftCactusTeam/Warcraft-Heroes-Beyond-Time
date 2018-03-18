@@ -12,11 +12,10 @@
 #include "ModuleTextures.h"
 #include "ModuleEntitySystem.h"
 #include "FileSystem.h"
+
 #include "ModuleAudio.h"
 #include "Scene.h"
 #include "Console.h"
-#include "ModuleColliders.h"
-#include "Pathfinding.h"
 
 #include "Fonts.h"
 #include "ModuleGUI.h"
@@ -35,13 +34,8 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	audio = new Audio();
 	scene = new Scene();
 	console = new Console();
-<<<<<<< HEAD
 	map = new MapGenerator();
 
-=======
-	colliders = new ModuleColliders();
-	path = new Pathfinding();
->>>>>>> 1st_Enemy
 	//map = new Map();
 
 	// Ordered for awake / Start / Update
@@ -58,8 +52,6 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(fs);
 	AddModule(console);
 	AddModule(gui);
-	AddModule(colliders);
-	AddModule(path);
 	//AddModule(map);
 
 	// render last to swap buffer
