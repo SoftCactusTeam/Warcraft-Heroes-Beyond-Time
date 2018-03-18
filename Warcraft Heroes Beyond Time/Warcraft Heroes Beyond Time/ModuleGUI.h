@@ -8,11 +8,13 @@
 #include "SDL/include/SDL.h"
 #include "Fonts.h"
 
+
 class GUIElem;
-class Label;
-class InputBox;
 class LabelInfo;
 class InputBoxInfo;
+struct SliderInfo;
+enum class BType;
+
 
 class ModuleGUI : public Module
 {
@@ -29,8 +31,11 @@ public:
 	bool CleanUp();
 
 public:
-	Label* CreateLabel(fPoint position, LabelInfo& info, GUIElem* parent = nullptr, Module* listener = nullptr);
-	InputBox* CreateInputBox(fPoint localPos, InputBoxInfo& info, Module* listener = nullptr, GUIElem* parent = nullptr);
+	GUIElem* CreateLabel(fPoint position, LabelInfo& info, GUIElem* parent = nullptr, Module* listener = nullptr);
+	GUIElem* CreateInputBox(fPoint localPos, InputBoxInfo& info, Module* listener = nullptr, GUIElem* parent = nullptr);
+	GUIElem* CreateButton(fPoint localPos, BType btype, Module* listener, GUIElem* parent = nullptr);
+	GUIElem* CreateSlider(fPoint localPos, SliderInfo sInfo, Module* listener, GUIElem* parent = nullptr);
+
 	bool DestroyElem(GUIElem* element);
 	SDL_Texture* getAtlas() const;
 

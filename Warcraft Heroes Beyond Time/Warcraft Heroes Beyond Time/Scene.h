@@ -20,12 +20,22 @@ public:
 
 public:
 
-	virtual void OnUIEvent(GUIElem* UIelem, UIEvents _event);
+	virtual bool OnUIEvent(GUIElem* UIelem, UIEvents _event);
 	
 
+public:
+	enum class Stages
+	{
+		NO_STAGE,
+		MAIN_MENU, 
+		SETTINGS,
+		INGAME
+
+	} actual_scene = Stages::MAIN_MENU;
+
+
 private:
-
-
+	bool restart = false;
 };
 
 

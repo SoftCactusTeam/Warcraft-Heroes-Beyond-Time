@@ -23,9 +23,9 @@ Audio::~Audio()
 // Called before render is available
 bool Audio::Awake(pugi::xml_node& audioNode)
 {
-
 	LOG("Loading Audio Mixer");
 	bool ret = true;
+	
 	SDL_Init(0);
 
 	if(SDL_InitSubSystem(SDL_INIT_AUDIO) < 0)
@@ -56,6 +56,13 @@ bool Audio::Awake(pugi::xml_node& audioNode)
 	
 	//----------------------------------------------Load fx-------------------------------
 	
+
+
+	//----------------------------------------------SetVolumes----------------------------
+	Mix_Volume(-1, MIX_MAX_VOLUME * (FXVolumePercent / 100));
+	Mix_VolumeMusic(MIX_MAX_VOLUME * (MusicVolumePercent / 100));
+
+
 
 	return ret;
 }
@@ -176,4 +183,16 @@ bool Audio::PlayFx(unsigned int id, int repeat)
 	}
 
 	return ret;
+}
+
+void Audio::setMusicVolume(uint percent)
+{
+	MusicVolumePercent = percent;
+	Mix_VolumeMusic(MIX_MAX_VOLUME * (MusicVolumePercent / 100));
+}
+
+void Audio::setFXVolume(uint percent)
+{
+	FXVolumePercent = percent;
+	Mix_Volume(-1, MIX_MAX_VOLUME * (FXVolumePercent / 100));
 }

@@ -81,10 +81,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
     </ClCompile>
     <Link />
     <Link>
       <SubSystem>Console</SubSystem>
+      <AdditionalLibraryDirectories>./SDL/lib/x86/</AdditionalLibraryDirectories>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -125,6 +128,7 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="BossEntity.cpp" />
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="ChestEntity.cpp" />
     <ClCompile Include="ConsumableEntity.cpp" />
     <ClCompile Include="DynamicEntity.cpp" />
@@ -135,6 +139,7 @@
     <ClCompile Include="Fonts.cpp" />
     <ClCompile Include="FileSystem.cpp" />
     <ClCompile Include="InputBox.cpp" />
+    <ClCompile Include="Slider.cpp" />
     <ClCompile Include="ModuleMapGenerator.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Label.cpp" />
@@ -158,6 +163,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="BossEntity.h" />
+    <ClInclude Include="Button.h" />
     <ClInclude Include="ChestEntity.h" />
     <ClInclude Include="ConsumableEntity.h" />
     <ClInclude Include="DynamicEntity.h" />
@@ -170,6 +176,7 @@
     <ClInclude Include="FileSystem.h" />
     <ClInclude Include="GUIElem.h" />
     <ClInclude Include="InputBox.h" />
+    <ClInclude Include="Slider.h" />
     <ClInclude Include="ModuleMapGenerator.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Label.h" />

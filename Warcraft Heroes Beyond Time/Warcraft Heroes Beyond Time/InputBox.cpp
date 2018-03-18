@@ -5,7 +5,7 @@
 #include "Fonts.h"
 #include "InputBox.h"
 
-InputBox::InputBox(fPoint localPos, InputBoxInfo& info, Module* listener, GUIElem* parent) : GUIElem(localPos, listener, InputBox1, GUIElemType::INPUTBOX, parent)
+InputBox::InputBox(fPoint localPos, InputBoxInfo& info, Module* listener, GUIElem* parent) : GUIElem(localPos, listener, {0,0,0,0}, GUIElemType::INPUTBOX, parent)
 {
 	font = App->fonts->getFontbyName(info.fontName);
 	color = info.color;
@@ -57,12 +57,12 @@ void InputBox::DisableInput()
 
 void InputBox::ClearBox()
 {
-	/*if(!text.empty())
+	if(!text.empty())
 		text.clear();
 
 	if(texturetoBlit)
 		SDL_DestroyTexture(texturetoBlit);
 
-	texturetoBlit = App->fonts->Print(text.data(), color, font);*/
+	texturetoBlit = App->fonts->Print(text.data(), color, font);
 }
 

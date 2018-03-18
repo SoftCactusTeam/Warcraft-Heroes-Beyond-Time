@@ -49,11 +49,11 @@ bool Label::MouseHover() const
 	return result;
 }
 
-void Label::EditText(char* text, SDL_Color color)
+void Label::EditText(std::string text, SDL_Color color)
 {
 	this->text = text;
 	SDL_DestroyTexture(texturetoBlit);
-	texturetoBlit = App->fonts->Print(text, color, font);
+	texturetoBlit = App->fonts->Print(text.data(), color, font);
 }
 
 

@@ -28,22 +28,22 @@ bool GUIElem::MouseHover() const
 
 	bool result = false;
 
-	fPoint worldPos = { screenPos.x + App->render->camera.x, screenPos.y + App->render->camera.y };
-
 	//if collides
-	if (!(x < worldPos.x ||
-		x > worldPos.x + atlasRect.w ||
-		y < worldPos.y ||
-		y > worldPos.y + atlasRect.h))
+	if (!(x < screenPos.x ||
+		x > screenPos.x + atlasRect.w ||
+		y < screenPos.y ||
+		y > screenPos.y + atlasRect.h))
 	{
 		result = true;
 	}
 	return result;
 }
 
-void GUIElem::HandleInput()
+bool GUIElem::HandleInput()
 {
-	switch (UIevent) 
+	bool ret = true;
+
+	switch (UIevent)
 	{
 
 	case UIEvents::NO_EVENT:
@@ -91,23 +91,31 @@ void GUIElem::HandleInput()
 		if (!MouseHover())
 		{
 			LOG("Mouse Leave");
-			UIevent = UIEvents::MOUSE_LEAVE;
-			break;
+			UIevent = UIEvents::MOUSE_LEFT_UP;
+			ret = listener->OnUIEvent((GUIElem*)this, UIevent);
 		}
 		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_RELEASED)
 		{
 			LOG("Mouse left click released");
-			listener->OnUIEvent((GUIElem*)this, UIevent);
-			UIevent = UIEvents::MOUSE_ENTER;
-			break;
+			UIevent = UIEvents::MOUSE_LEFT_UP;
+			ret = listener->OnUIEvent((GUIElem*)this, UIevent);
 		}
 
+		break;
+	case UIEvents::MOUSE_LEFT_UP:
+		if (!MouseHover())
+			UIevent = UIEvents::NO_EVENT;
+		else
+			UIevent = UIEvents::MOUSE_ENTER;
+		listener->OnUIEvent(this, UIevent);
 		break;
 	case UIEvents::MOUSE_LEAVE:
 		listener->OnUIEvent((GUIElem*)this, UIevent);
 		UIevent = UIEvents::NO_EVENT;
 		break;
 	}
+
+	return ret;
 }
 
 void GUIElem::DebugDraw() //In progress
@@ -172,4 +180,15 @@ fPoint GUIElem::calculateScreenPos()
 	this->screenPos = screenPos;
 
 	return screenPos;
+}
+
+void GUIElem::Move(fPoint dist)
+{
+	std::list<GUIElem*>::iterator it;
+	for (it = childs.begin(); it != childs.end(); ++it)
+	{
+		(*it)->Move(dist);
+	}
+	this->localPos += dist;
+	calculateScreenPos();
 }
