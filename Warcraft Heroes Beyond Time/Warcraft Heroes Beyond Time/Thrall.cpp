@@ -105,20 +105,11 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	dashRight.PushBack({ 110, 470, 55, 47 });
 	dashRight.speed = 0.2f;
 
-	dashLeft.PushBack({ 110,658,55,47 });
-	dashLeft.speed = 0.2f;
-
-	dashUp.PushBack({ 110,376,55,47 });
-	dashUp.speed = 0.2f;
-
 	dashDown.PushBack({ 110,564,55,47 });
 	dashDown.speed = 0.2f;
 
 	dashUpRight.PushBack({ 165,423,55,47 });
 	dashUpRight.speed = 0.2f;
-
-	dashUpLeft.PushBack({ 236, 176, 98, 98 });
-	dashUpLeft.speed = 0.2f;
 
 	dashDownRight.PushBack({ 165,517,55,47 });
 	dashDownRight.speed = 0.2f;

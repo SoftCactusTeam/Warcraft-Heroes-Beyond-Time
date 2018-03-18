@@ -11,7 +11,7 @@ protected:
 	PLAYER_TYPE type = PLAYER_TYPE::NON_PLAYER;
 	Animation idleDown, idleUp, idleLeft, idleRight, idleUpRight, idleUpLeft, idleDownRight, idleDownLeft;
 	Animation up, down, left, right, upLeft, upRight, downLeft, downRight;
-	Animation dashRight, dashLeft, dashUp, dashDown, dashUpRight, dashUpLeft, dashDownRight, dashDownLeft;
+	Animation dashRight, dashDown, dashUpRight, dashDownRight, dashDownLeft;
 	Animation* animBeforeDash = nullptr;
 	Animation animDashUp[6];
 	Animation animDashLeft[6];
@@ -35,8 +35,6 @@ protected:
 		PL_DASH
 
 	} state;
-
-	states last_state = states::PL_NON_STATE;
 
 public:
 	PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture);

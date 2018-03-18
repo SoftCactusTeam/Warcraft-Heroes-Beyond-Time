@@ -187,7 +187,6 @@ void PlayerEntity::KeyboardStates(float dt)
 		else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && t == 0.0f)
 		{
 			startPos = pos;
-			last_state = state;
 			state = states::PL_DASH;
 			animBeforeDash = anim;
 			
