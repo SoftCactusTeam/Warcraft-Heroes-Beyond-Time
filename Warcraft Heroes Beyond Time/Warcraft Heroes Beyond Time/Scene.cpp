@@ -213,7 +213,6 @@ bool Scene::CleanUp()
 	App->gui->DeActivate();
 	App->entities->DeActivate();
 	App->console->DeActivate();
-	App->map->DeActivate();
 
 	return true;
 }
