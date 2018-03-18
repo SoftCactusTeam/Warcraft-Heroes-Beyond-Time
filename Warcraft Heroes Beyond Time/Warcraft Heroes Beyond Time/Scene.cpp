@@ -189,6 +189,11 @@ bool Scene::Update(float dt)
 		App->map->GenerateMap(mapInfo);
 	}
 
+	if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
+	{
+		App->input->PlayJoyRumble(0.75f, 100);
+	}
+
 	return true;
 }
 
@@ -208,6 +213,8 @@ bool Scene::CleanUp()
 	App->gui->DeActivate();
 	App->entities->DeActivate();
 	App->console->DeActivate();
+	App->map->DeActivate();
+
 	return true;
 }
 
