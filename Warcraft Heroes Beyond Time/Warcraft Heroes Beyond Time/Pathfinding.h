@@ -28,13 +28,13 @@ private:
 	uint mapHeight = 0;
 };
 
-struct PathVector
-{
-	PathVector();
-	iPoint nextObjective = { -1,-1 };
-	iPoint pathToMove(iPoint actualPos);
-private:
-	std::vector<pathNode*> path;
-};
+//struct PathVector
+//{
+//	PathVector();
+//	iPoint nextObjective = { -1,-1 };
+//	iPoint pathToMove(iPoint actualPos);
+//private:
+//	std::vector<pathNode*> path;
+//};
 
 #endif

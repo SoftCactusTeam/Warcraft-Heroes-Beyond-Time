@@ -39,17 +39,16 @@ void Pathfinding::ClearMap()
 	map.clear();
 }
 
-PathVector::PathVector()
-{
-
-}
-
-iPoint PathVector::pathToMove(iPoint actualPos)
-{
-	if (actualPos == nextObjective)
-	{
-		path.pop_back();
-		nextObjective = path[0]->nodePos;
-	}
-
-}
+//PathVector::PathVector()
+//{
+//
+//}
+//
+//iPoint PathVector::pathToMove(iPoint actualPos)
+//{
+//	if (actualPos == nextObjective)
+//	{
+//		path.pop_back();
+//		nextObjective = path[0]->nodePos;
+//	}
+//}
