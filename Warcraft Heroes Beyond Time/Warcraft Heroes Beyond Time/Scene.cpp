@@ -27,13 +27,9 @@ bool Scene::Awake()
 
 bool Scene::Start()
 {
-	/*LabelInfo defLabel;
-	defLabel.color = Red;
-	defLabel.fontName = "Arial16";
-	defLabel.text = "Hey bitches im here";
 	
-	App->gui->CreateLabel({0,0}, defLabel, nullptr, nullptr);
 	App->entities->AddPlayer({0,0}, THRALL);
+	App->entities->AddEnemy({ 80,80 }, FOOTMAN);
 
 	MapData mapInfo;
 	mapInfo.sizeX = 50;
@@ -42,16 +38,6 @@ bool Scene::Start()
 	mapInfo.tilesetPath = "map.jpg";
 
 	App->map->GenerateMap(mapInfo);
-
-	//LabelInfo defLabel;
-	//defLabel.color = Red;
-	//defLabel.fontName = "Arial16";
-	//defLabel.text = "Hey bitches im here";
-	//
-	//Application->gui->CreateLabel({0,0}, defLabel, nullptr, nullptr);
-
-
-	App->gui->CreateLabel({0,0}, defLabel, nullptr, nullptr);*/
 
 	App->gui->Activate();
 	switch (actual_scene)
@@ -119,19 +105,6 @@ bool Scene::Start()
 			
 	}
 	
-
-	
-	//InputBoxInfo defInputBox;
-	//defInputBox.color = Green;
-	//defInputBox.fontName = "Arial16";
-
-	//InputBox* box = Application->gui->CreateInputBox({ 0, 200 }, defInputBox, nullptr, nullptr);
-	//box->EnableInput();
-
-	
-
-
-
 	return true;
 }
 

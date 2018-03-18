@@ -66,6 +66,8 @@ public:
 	void ClearEnemies();
 
 
+	Entity* actualPlayer = nullptr;
+
 private:
 	std::list<Entity*>		entities;
 	std::list<Entity*>		toSpawn; 
