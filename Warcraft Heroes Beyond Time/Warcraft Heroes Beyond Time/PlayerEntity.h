@@ -46,24 +46,28 @@ public:
 	void PlayerStates(float dt);
 	void KeyboardStates(float dt);
 	void JoyconStates(float dt);
+	void CheckIddleStates();
+	void CheckMapLimits();
 	virtual bool Finish();
 
-	//This functions calculates player postion given a Bezier Curve
-
+	//This function calculates player position given a Bezier Curve
 	fPoint CalculatePosFromBezier(fPoint startPos, fPoint handleA, float t, fPoint handleB, fPoint endPos);
 
 	// Dash variables
-
 	fPoint handleA = { 0.6f, 0.0f };
 	fPoint handleB = { 0.4f, 1.0f };
-
-
 	fPoint endPos = { 0.0f, 0.0f };
 	fPoint startPos = { 0.0f, 0.0f };
 	
 	bool dashEnabled = false;
 	float t = 0.0f;
 
+	//Camera culling
+	SDL_Rect freeZone;
+	float freeZonex, freeZoney;
+
+	void InitCulling();
+	void CheckCulling();
 };
 
 #endif

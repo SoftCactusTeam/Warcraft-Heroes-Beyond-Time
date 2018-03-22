@@ -19,7 +19,7 @@ bool Label::Update(float dt)
 	bool result = false;
 
 	
-	result = App->render->Blit(texturetoBlit, (int)(this->screenPos.x + App->render->camera.x), (int)(this->screenPos.y + App->render->camera.y));
+	result = App->render->Blit(texturetoBlit, (int)(this->screenPos.x - App->render->camera.x), (int)(this->screenPos.y - App->render->camera.y));
 
 	UpdateChilds(dt);
 
@@ -33,7 +33,7 @@ bool Label::MouseHover() const
 
 	bool result = false;
 
-	fPoint worldPos = { screenPos.x + App->render->camera.x, screenPos.y + App->render->camera.y };
+	fPoint worldPos = { screenPos.x - App->render->camera.x, screenPos.y - App->render->camera.y };
 
 	int w, h;
 	SDL_QueryTexture(texturetoBlit, nullptr, nullptr, &w, &h);

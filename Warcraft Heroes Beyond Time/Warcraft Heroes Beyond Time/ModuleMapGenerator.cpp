@@ -314,3 +314,9 @@ int MapGenerator::CheckTypeOfNode(MapNode* nodetocheck)
 	else
 		return (int)nodeType::noType;
 }
+
+void MapGenerator::getSize(uint& w, uint& h)
+{
+	w = sizeX;
+	h = sizeY;
+}

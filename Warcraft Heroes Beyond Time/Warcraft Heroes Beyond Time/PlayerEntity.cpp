@@ -1,6 +1,8 @@
 #include "Application.h"
 #include "PlayerEntity.h"
 #include "ModuleInput.h"
+#include "ModuleRender.h"
+#include "ModuleMapGenerator.h"
 
 PlayerEntity::PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : DynamicEntity (coor, texture), type(type) {}
 
@@ -12,13 +14,13 @@ bool PlayerEntity::Start()
 	endPos.x = 250.0f;
 	endPos.y = 250.0f;
 
+	InitCulling();
+
 	return true;
 }
 
 bool PlayerEntity::Update(float dt) 
 { 
-	
-
 	return true; 
 }
 
@@ -90,44 +92,13 @@ void PlayerEntity::PlayerStates(float dt)
 			KeyboardStates(dt);
 		else
 			JoyconStates(dt);
+
+		CheckMapLimits();
+		CheckCulling();
 	}
 	else
 	{
-		switch (state)
-		{
-		case states::PL_DOWN:
-			anim = &idleDown;
-			state = states::PL_IDLE;
-			break;
-		case states::PL_DOWN_LEFT:
-			anim = &idleDownLeft;
-			state = states::PL_IDLE;
-			break;
-		case states::PL_LEFT:
-			anim = &idleLeft;
-			state = states::PL_IDLE;
-			break;
-		case states::PL_UP_LEFT:
-			anim = &idleUpLeft;
-			state = states::PL_IDLE;
-			break;
-		case states::PL_UP:
-			anim = &idleUp;
-			state = states::PL_IDLE;
-			break;
-		case states::PL_UP_RIGHT:
-			anim = &idleUpRight;
-			state = states::PL_IDLE;
-			break;
-		case states::PL_RIGHT:
-			anim = &idleRight;
-			state = states::PL_IDLE;
-			break;
-		case states::PL_DOWN_RIGHT:
-			anim = &idleDownRight;
-			state = states::PL_IDLE;
-			break;
-		}
+		CheckIddleStates();
 	}
 }
 
@@ -373,6 +344,7 @@ void PlayerEntity::KeyboardStates(float dt)
 
 	case states::PL_UP:
 		pos.y -= speed * dt;
+	
 		if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_UP))
 		{
 			state = states::PL_IDLE;
@@ -1087,7 +1059,120 @@ void PlayerEntity::JoyconStates(float dt)
 	}
 }
 
+void PlayerEntity::CheckIddleStates()
+{
+	switch (state)
+	{
+	case states::PL_DOWN:
+		anim = &idleDown;
+		state = states::PL_IDLE;
+		break;
+	case states::PL_DOWN_LEFT:
+		anim = &idleDownLeft;
+		state = states::PL_IDLE;
+		break;
+	case states::PL_LEFT:
+		anim = &idleLeft;
+		state = states::PL_IDLE;
+		break;
+	case states::PL_UP_LEFT:
+		anim = &idleUpLeft;
+		state = states::PL_IDLE;
+		break;
+	case states::PL_UP:
+		anim = &idleUp;
+		state = states::PL_IDLE;
+		break;
+	case states::PL_UP_RIGHT:
+		anim = &idleUpRight;
+		state = states::PL_IDLE;
+		break;
+	case states::PL_RIGHT:
+		anim = &idleRight;
+		state = states::PL_IDLE;
+		break;
+	case states::PL_DOWN_RIGHT:
+		anim = &idleDownRight;
+		state = states::PL_IDLE;
+		break;
+	}
+}
+
 void PlayerEntity::Walk(bool can)
 {
 	this->move = can;
+}
+
+void PlayerEntity::InitCulling()
+{
+	SDL_Rect currRect = anim->GetCurrentRect();
+	App->render->fcamerax = this->pos.x + App->render->camera.w / 4 + currRect.w / 2;
+	App->render->fcameray = this->pos.y + App->render->camera.h / 4 - currRect.h;
+
+	freeZonex = pos.x - 55 / 2;
+	freeZoney = pos.y - 55 / 2;
+
+	freeZone.x = pos.x - 55;
+	freeZone.y = pos.y - 55;
+	freeZone.w = 55 / 2 * 2 + 55;
+	freeZone.h = 55 / 2 * 2 + 47;
+}
+
+void PlayerEntity::CheckCulling()
+{
+	SDL_Rect currentRect = anim->GetCurrentRect();
+	if (freeZonex > this->pos.x)
+	{
+		App->render->fcamerax += freeZonex - pos.x;
+		freeZonex = this->pos.x;
+	}
+
+	else if (freeZonex + freeZone.w < pos.x + currentRect.w)
+	{
+		App->render->fcamerax -= (pos.x + currentRect.w) - (freeZonex + freeZone.w);
+		freeZonex = (this->pos.x + currentRect.w) - freeZone.w;
+	}
+
+	if (freeZoney > pos.y)
+	{
+		App->render->fcameray += freeZoney - pos.y;
+		freeZoney = pos.y;
+	}
+	else if (freeZoney + freeZone.h < pos.y + currentRect.h)
+	{
+		App->render->fcameray -= (pos.y + currentRect.h) - (freeZoney + freeZone.h);
+		freeZoney = pos.y + currentRect.h - freeZone.h;
+	}
+
+
+	freeZone.x = (int)freeZonex;
+	freeZone.y = (int)freeZoney;
+
+	//Uncomment line below to see the freeZone.
+	//App->render->DrawQuad(freeZone, 255, 0, 0, 50, true, true);
+}
+
+void PlayerEntity::CheckMapLimits()
+{
+	uint w, h;
+	App->map->getSize(w, h);
+
+	if (w != 0 && h != 0)
+	{
+		if (pos.x < 0)
+			pos.x = 0;
+
+		else if (pos.x + 55 > w * 48)
+		{
+			pos.x = w * 48 - 55;
+		}
+
+		if (pos.y < 0)
+			pos.y = 0;
+
+		else if (pos.y + 47 > h * 48)
+		{
+			pos.y = h * 48 - 47;
+		}
+	}	
 }

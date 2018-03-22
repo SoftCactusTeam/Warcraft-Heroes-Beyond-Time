@@ -112,7 +112,7 @@ bool Scene::Start()
 		{
 			App->entities->Activate();
 			App->console->Activate();
-			PlayerEntity* player = App->entities->AddPlayer({ 50,50 }, THRALL);
+			PlayerEntity* player = App->entities->AddPlayer({ 55,55 }, THRALL);
 			App->entities->SetPlayer(player);
 			break;
 		}

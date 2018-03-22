@@ -56,6 +56,9 @@ public:
 	bool GenerateWalls();
 	bool CleanUp();
 
+	void getSize(uint& w, uint& h);
+
+
 private:
 
 	uint totalSize = 0u;
