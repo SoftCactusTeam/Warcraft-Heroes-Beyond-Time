@@ -51,7 +51,7 @@ class Spawn_ConsoleOrder : public ConsoleOrder
 		}
 		else if (parameter == "thrall")
 		{
-			App->entities->AddPlayer({ 0,50 }, THRALL);
+			App->entities->AddPlayer({ App->entities->player->pos.x, App->entities->player->pos.y - 60 }, THRALL);
 		}
 		else if (parameter == "archer")
 		{
