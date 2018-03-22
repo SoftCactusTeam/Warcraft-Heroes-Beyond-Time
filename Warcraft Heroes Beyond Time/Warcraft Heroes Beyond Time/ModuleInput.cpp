@@ -191,16 +191,28 @@ bool Input::PreUpdate()
 				if (event.jaxis.axis == 0)
 				{
 					if (event.jaxis.value < -J_DEAD_ZONE || event.jaxis.value > J_DEAD_ZONE)
+					{
 						xAxis = event.jaxis.value;
+						xDeadZone = false;
+					}
 					else
+					{
 						xAxis = 0;
+						xDeadZone = true;
+					}
 				}
 				else if (event.jaxis.axis == 1)
 				{
 					if (event.jaxis.value < -J_DEAD_ZONE || event.jaxis.value > J_DEAD_ZONE)
+					{
 						yAxis = event.jaxis.value;
+						yDeadZone = false;
+					}
 					else
+					{
 						yAxis = 0;
+						yDeadZone = true;
+					}
 				}
 			}
 			break;

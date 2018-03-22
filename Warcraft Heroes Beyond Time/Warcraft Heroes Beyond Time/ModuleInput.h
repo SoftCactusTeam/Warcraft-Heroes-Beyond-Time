@@ -9,6 +9,7 @@
 #define NUM_MOUSE_BUTTONS 5
 #define J_DEAD_ZONE 10000
 #define NUM_J_BUTTONS 16
+#define MAX_JAXIS_VALUE 32767.0f
 
 struct SDL_Rect;
 
@@ -68,6 +69,11 @@ public:
 		return yAxis;
 	}
 
+	bool InsideDeadZone() const
+	{
+		return xDeadZone && yDeadZone;
+	}
+
 	void GetMousePosition(int &x, int &y);
 	void GetMouseMotion(int& x, int& y);
 
@@ -98,6 +104,8 @@ private:
 
 	float xAxis = 0;
 	float yAxis = 0;
+	bool xDeadZone = false;
+	bool yDeadZone = false;
 	bool kbAvailable = false;
 };
 

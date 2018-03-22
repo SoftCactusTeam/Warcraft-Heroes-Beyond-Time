@@ -809,62 +809,61 @@ void PlayerEntity::JoyconStates(float dt)
 		break;
 
 		case states::PL_MOVE:
+	
+			float X = App->input->GetXAxis() / MAX_JAXIS_VALUE;
+			float Y = App->input->GetYAxis() / MAX_JAXIS_VALUE;
 
-			
-			float X = App->input->GetXAxis() / 32767.0f;
-			float Y = App->input->GetYAxis() / 32767.0f;
-			pos.x += X * 250.0f * dt;
-			pos.y += Y * 250.0f * dt;
+			pos.x += X * speed * dt;
+			pos.y += Y *speed * dt;
 
 			float angle = RAD_2_DEG(atan2(Y, X));
 
 			if (angle < 0)
 				angle += 360.0f;
 
-			printf_s("%f \n", angle);
-
 			if (angle >= 247.5f && angle < 292.5f)
-			{
 				anim = &up;
-			}
 
 			else if (angle >= 67.5f && angle < 112.5f)
-			{
 				anim = &down;
-			}
 
-			else if ((angle >= 337.5f && angle < 360.0f) || (angle >= 0 && angle < 22.5f))
-			{
+			else if (((angle >= 337.5f && angle < 360.0f) || (angle >= 0 && angle < 22.5f) && !App->input->InsideDeadZone()))
 				anim = &right;
-			}
 
 			else if (angle >= 157.5f && angle < 202.5f)
-			{
 				anim = &left;
-			}
-			//
+			
 			else if (angle >= 292.5f && angle < 337.5f)
-			{
 				anim = &upRight;
-			}
 
 			else if (angle >= 202.5f && angle < 247.5f)
-			{
 				anim = &upLeft;
-			}
 
 			else if (angle >= 112.5f && angle < 157.5f)
-			{
 				anim = &downLeft;
-			}
 
 			else if (angle >= 22.5f && angle < 67.5f)
-			{
 				anim = &downRight;
-			}
 
 			if (App->input->GetXAxis() == 0 && App->input->GetYAxis() == 0)
 			{
+				if (anim == &up)
+					anim = &idleUp;
+				if (anim == &down)
+					anim = &idleDown;
+				else if (anim == &right)
+					anim = &idleRight;
+				else if (anim == &left)
+					anim = &idleLeft;
+				else if (anim == &upRight)
+					anim = &idleUpRight;
+				else if (anim == &upLeft)
+					anim = &idleUpLeft;
+				else if (anim == &downRight)
+					anim = &idleDownRight;
+				else if (anim == &downLeft)
+					anim = &idleDownLeft;
+
 				state = states::PL_IDLE;
 				break;
 			}
