@@ -2,6 +2,8 @@
 #include "PlayerEntity.h"
 #include "ModuleInput.h"
 
+#include <math.h>
+
 PlayerEntity::PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : DynamicEntity (coor, texture), type(type) {}
 
 bool PlayerEntity::Start()
@@ -515,7 +517,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			animBeforeDash = anim;
 			break;
 		}
-		break;
+break;
 
 	case states::PL_UP_RIGHT:
 		pos.x += speed * 0.75f * dt;
@@ -614,54 +616,12 @@ void PlayerEntity::JoyconStates(float dt)
 	switch (state)
 	{
 	case states::PL_IDLE:
-		if (App->input->GetYAxis() < 0 && App->input->GetXAxis() > 0)
+		if (App->input->GetXAxis() != 0 || App->input->GetYAxis() != 0)
 		{
-			state = states::PL_UP_RIGHT;
-			anim = &upRight;
+			state = states::PL_MOVE;
 			break;
 		}
-		else if (App->input->GetYAxis() < 0 && App->input->GetXAxis() < 0)
-		{
-			state = states::PL_UP_LEFT;
-			anim = &upLeft;
-			break;
-		}
-		else if (App->input->GetYAxis() > 0 && App->input->GetXAxis() > 0)
-		{
-			state = states::PL_DOWN_RIGHT;
-			anim = &downRight;
-			break;
-		}
-		else if (App->input->GetYAxis() > 0 && App->input->GetXAxis() < 0)
-		{
-			state = states::PL_DOWN_LEFT;
-			anim = &downLeft;
-			break;
-		}
-		else if (App->input->GetYAxis() < 0)
-		{
-			state = states::PL_UP;
-			anim = &up;
-			break;
-		}
-		else if (App->input->GetYAxis() > 0)
-		{
-			state = states::PL_DOWN;
-			anim = &down;
-			break;
-		}
-		else if (App->input->GetXAxis() < 0)
-		{
-			state = states::PL_LEFT;
-			anim = &left;
-			break;
-		}
-		else if (App->input->GetXAxis() > 0)
-		{
-			state = states::PL_RIGHT;
-			anim = &right;
-			break;
-		}
+		
 		else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN && t == 0.0f)
 		{
 			startPos = pos;
@@ -848,241 +808,67 @@ void PlayerEntity::JoyconStates(float dt)
 
 		break;
 
-	case states::PL_UP:
-		pos.y -= speed * dt;
-		if (App->input->GetYAxis() == 0)
-		{
-			state = states::PL_IDLE;
-			anim = &idleUp;
-			break;
-		}
-		else if (App->input->GetYAxis() < 0 && App->input->GetXAxis() > 0)
-		{
-			state = states::PL_UP_RIGHT;
-			anim = &upRight;
-			break;
-		}
-		else if (App->input->GetYAxis() < 0 && App->input->GetXAxis() < 0)
-		{
-			state = states::PL_UP_LEFT;
-			anim = &upLeft;
-			break;
-		}
-		else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
-		{
-			startPos = pos;
-			state = states::PL_DASH;
-			animBeforeDash = anim;
-			break;
-		}
-		break;
+		case states::PL_MOVE:
 
-	case states::PL_DOWN:
-		pos.y += speed * dt;
-		if (App->input->GetYAxis() == 0)
-		{
-			state = states::PL_IDLE;
-			anim = &idleDown;
-			break;
-		}
-		else if (App->input->GetYAxis() > 0 && App->input->GetXAxis() > 0)
-		{
-			state = states::PL_DOWN_RIGHT;
-			anim = &downRight;
-			break;
-		}
-		else if (App->input->GetYAxis() > 0 && App->input->GetXAxis() < 0)
-		{
-			state = states::PL_DOWN_LEFT;
-			anim = &downLeft;
-			break;
-		}
-		else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
-		{
-			startPos = pos;
-			state = states::PL_DASH;
-			animBeforeDash = anim;
-			break;
-		}
-	
-		break;
+			
+			float X = App->input->GetXAxis() / 32767.0f;
+			float Y = App->input->GetYAxis() / 32767.0f;
+			pos.x += X * 250.0f * dt;
+			pos.y += Y * 250.0f * dt;
 
-	case states::PL_LEFT:
-		pos.x -= speed * dt;
-		if (App->input->GetXAxis() == 0)
-		{
-			state = states::PL_IDLE;
-			anim = &idleLeft;
-			break;
-		}
-		else if (App->input->GetYAxis() < 0 && App->input->GetXAxis() < 0)
-		{
-			state = states::PL_UP_LEFT;
-			anim = &upLeft;
-			break;
-		}
-		else if (App->input->GetYAxis() > 0 && App->input->GetXAxis() < 0)
-		{
-			state = states::PL_DOWN_LEFT;
-			anim = &downLeft;
-			break;
-		}
-		else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
-		{
-			startPos = pos;
-			state = states::PL_DASH;
-			animBeforeDash = anim;
-			break;
-		}
-		break;
+			float angle = RAD_2_DEG(atan2(Y, X));
 
-	case states::PL_RIGHT:
-		pos.x += speed * dt;
-		if (App->input->GetXAxis() == 0)
-		{
-			state = states::PL_IDLE;
-			anim = &idleRight;
-			break;
-		}
-		else if (App->input->GetYAxis() < 0 && App->input->GetXAxis() > 0)
-		{
-			state = states::PL_UP_RIGHT;
-			anim = &upRight;
-			break;
-		}
-		else if (App->input->GetYAxis() > 0 && App->input->GetXAxis() > 0)
-		{
-			state = states::PL_DOWN_RIGHT;
-			anim = &downRight;
-			break;
-		}
-		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
-		{
-			startPos = pos;
-			state = states::PL_DASH;
-			animBeforeDash = anim;
-			break;
-		}
-		break;
+			if (angle < 0)
+				angle += 360.0f;
 
-	case states::PL_UP_LEFT:
-		pos.x -= speed * 0.75f * dt;
-		pos.y -= speed * 0.75f * dt;
-		if (App->input->GetYAxis() == 0 && App->input->GetXAxis() == 0)
-		{
-			state = states::PL_IDLE;
-			anim = &idleUpLeft;
-			break;
-		}
-		else if (App->input->GetXAxis() < 0 && App->input->GetYAxis() == 0)
-		{
-			state = states::PL_LEFT;
-			anim = &left;
-			break;
-		}
-		else if (App->input->GetYAxis() < 0 && App->input->GetXAxis() == 0)
-		{
-			state = states::PL_UP;
-			anim = &up;
-			break;
-		}
-		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
-		{
-			startPos = pos;
-			state = states::PL_DASH;
-			animBeforeDash = anim;
-			break;
-		}
-		break;
+			printf_s("%f \n", angle);
 
-	case states::PL_UP_RIGHT:
-		pos.x += speed * 0.75f * dt;
-		pos.y -= speed * 0.75f * dt;
-		if (App->input->GetYAxis() == 0 && App->input->GetXAxis() == 0)
-		{
-			state = states::PL_IDLE;
-			anim = &idleUpRight;
-			break;
-		}
-		else if (App->input->GetXAxis() > 0 && App->input->GetYAxis() == 0)
-		{
-			state = states::PL_RIGHT;
-			anim = &right;
-			break;
-		}
-		else if (App->input->GetYAxis() < 0 && App->input->GetXAxis() == 0)
-		{
-			state = states::PL_UP;
-			anim = &up;
-			break;
-		}
-		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
-		{
-			startPos = pos;
-			state = states::PL_DASH;
-			animBeforeDash = anim;
-			break;
-		}
-		break;
+			if (angle >= 247.5f && angle < 292.5f)
+			{
+				anim = &up;
+			}
 
-	case states::PL_DOWN_LEFT:
-		pos.x -= speed * 0.75f * dt;
-		pos.y += speed * 0.75f * dt;
-		if (App->input->GetYAxis() == 0 && App->input->GetXAxis() == 0)
-		{
-			state = states::PL_IDLE;
-			anim = &idleDownLeft;
-			break;
-		}
-		else if (App->input->GetXAxis() < 0 && App->input->GetYAxis() == 0)
-		{
-			state = states::PL_LEFT;
-			anim = &left;
-			break;
-		}
-		else if (App->input->GetYAxis() > 0 && App->input->GetXAxis() == 0)
-		{
-			state = states::PL_DOWN;
-			anim = &down;
-			break;
-		}
-		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
-		{
-			startPos = pos;
-			state = states::PL_DASH;
-			animBeforeDash = anim;
-			break;
-		}
-		break;
+			else if (angle >= 67.5f && angle < 112.5f)
+			{
+				anim = &down;
+			}
 
-	case states::PL_DOWN_RIGHT:
-		pos.x += speed * 0.75f * dt;
-		pos.y += speed * 0.75f * dt;
-		if (App->input->GetYAxis() == 0 && App->input->GetXAxis() == 0)
-		{
-			state = states::PL_IDLE;
-			anim = &idleDownRight;
-			break;
-		}
-		else if (App->input->GetXAxis() > 0 && App->input->GetYAxis() == 0)
-		{
-			state = states::PL_RIGHT;
-			anim = &right;
-			break;
-		}
-		else if (App->input->GetYAxis() > 0 && App->input->GetXAxis() == 0)
-		{
-			state = states::PL_DOWN;
-			anim = &down;
-			break;
-		}
-		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
-		{
-			startPos = pos;
-			state = states::PL_DASH;
-			animBeforeDash = anim;
-			break;
-		}
+			else if ((angle >= 337.5f && angle < 360.0f) || (angle >= 0 && angle < 22.5f))
+			{
+				anim = &right;
+			}
+
+			else if (angle >= 157.5f && angle < 202.5f)
+			{
+				anim = &left;
+			}
+			//
+			else if (angle >= 292.5f && angle < 337.5f)
+			{
+				anim = &upRight;
+			}
+
+			else if (angle >= 202.5f && angle < 247.5f)
+			{
+				anim = &upLeft;
+			}
+
+			else if (angle >= 112.5f && angle < 157.5f)
+			{
+				anim = &downLeft;
+			}
+
+			else if (angle >= 22.5f && angle < 67.5f)
+			{
+				anim = &downRight;
+			}
+
+			if (App->input->GetXAxis() == 0 && App->input->GetYAxis() == 0)
+			{
+				state = states::PL_IDLE;
+				break;
+			}
+
 		break;
 	}
 }

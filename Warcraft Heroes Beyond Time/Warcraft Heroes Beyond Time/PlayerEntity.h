@@ -31,7 +31,7 @@ protected:
 		PL_UP_LEFT,
 		PL_DOWN_RIGHT,
 		PL_DOWN_LEFT,
-
+		PL_MOVE,
 		PL_DASH
 
 	} state;
