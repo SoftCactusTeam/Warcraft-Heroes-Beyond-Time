@@ -46,6 +46,8 @@ public:
 	void PlayerStates(float dt);
 	void KeyboardStates(float dt);
 	void JoyconStates(float dt);
+	float GetAngleFromAxis(float xAxis, float yAxis);
+	Animation* GetAnimFromAngle(float angle);
 	virtual bool Finish();
 
 	//This functions calculates player postion given a Bezier Curve
@@ -63,6 +65,7 @@ public:
 	
 	bool dashEnabled = false;
 	float t = 0.0f;
+	float angle = 0.0f;
 
 };
 

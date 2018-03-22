@@ -26,6 +26,8 @@ bool PlayerEntity::Update(float dt)
 
 bool PlayerEntity::Finish() { return true; }
 
+
+
 fPoint PlayerEntity::CalculatePosFromBezier(fPoint startPos, fPoint handleA, float t, fPoint handleB, fPoint endPos)
 {
 	float t2 = pow(t, 2.0f);
@@ -636,7 +638,16 @@ void PlayerEntity::JoyconStates(float dt)
 
 		if (t <= 1.0f && t >= 0.0f)
 		{
-			if (animBeforeDash == &idleRight || animBeforeDash == &right)
+
+
+			pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.x * (sin(RAD_2_DEG(angle)));
+			pos.y = startPos.y - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.y * (cos(RAD_2_DEG(angle)));
+			anim = &dashRight;
+			float x = 0.05f / dt;
+			t += (x * dt);
+
+
+			/*if (animBeforeDash == &idleRight || animBeforeDash == &right)
 			{
 				pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.x;
 				anim = &dashRight;
@@ -678,39 +689,6 @@ void PlayerEntity::JoyconStates(float dt)
 					anim = &animDashUp[4];
 				else if (t > 0.7f && t <= 1.0f)
 					anim = &animDashUp[5];
-
-				/*if (t >= 0.0f && t <= 0.1835f)
-				{
-				anim = &animDashUp[1];
-				}
-				else if (t > 0.1835f && t <= 0.3395f)
-				{
-				anim = &animDashUp[2];
-				}
-				else if (t > 0.3395f && t <= 0.4955f)
-				{
-				anim = &animDashUp[3];
-				}
-				else if (t > 0.4955f && t <= 0.5595f)
-				{
-				anim = &animDashUp[4];
-				}
-				else if (t > 0.5595f && t <= 0.5735f)
-				{
-				anim = &animDashUp[5];
-				}
-				else if (t > 0.5735f && t <= 0.6375f)
-				{
-				anim = &animDashUp[6];
-				}
-				else if (t > 0.6375f && t <= 0.7935f)
-				{
-				anim = &animDashUp[7];
-				}
-				else if (t > 0.7935f && t <= 1.0f)
-				{
-				anim = &animDashUp[8];
-				}*/
 
 				float x = 0.05f / dt;
 				t += (x * dt);
@@ -804,46 +782,42 @@ void PlayerEntity::JoyconStates(float dt)
 				anim = &idleDownRight;
 			else if (anim == &dashDownLeft)
 				anim = &idleDownLeft;
-		}
+		}*/
 
-		break;
+			break;
+		}
+		else
+		{
+			state = states::PL_IDLE;
+			anim = &idleDown;
+			t = 0.0f;
+		}
 
 		case states::PL_MOVE:
 	
+			if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN && t == 0.0f)
+			{
+				startPos = pos;
+				state = states::PL_DASH;
+				animBeforeDash = anim;
+
+				float X = App->input->GetXAxis() / MAX_JAXIS_VALUE;
+				float Y = App->input->GetYAxis() / MAX_JAXIS_VALUE;
+
+				angle = GetAngleFromAxis(X, Y);
+
+				break;
+			}
+
 			float X = App->input->GetXAxis() / MAX_JAXIS_VALUE;
 			float Y = App->input->GetYAxis() / MAX_JAXIS_VALUE;
 
 			pos.x += X * speed * dt;
 			pos.y += Y *speed * dt;
 
-			float angle = RAD_2_DEG(atan2(Y, X));
+			angle = GetAngleFromAxis(X, Y);
 
-			if (angle < 0)
-				angle += 360.0f;
-
-			if (angle >= 247.5f && angle < 292.5f)
-				anim = &up;
-
-			else if (angle >= 67.5f && angle < 112.5f)
-				anim = &down;
-
-			else if (((angle >= 337.5f && angle < 360.0f) || (angle >= 0 && angle < 22.5f) && !App->input->InsideDeadZone()))
-				anim = &right;
-
-			else if (angle >= 157.5f && angle < 202.5f)
-				anim = &left;
-			
-			else if (angle >= 292.5f && angle < 337.5f)
-				anim = &upRight;
-
-			else if (angle >= 202.5f && angle < 247.5f)
-				anim = &upLeft;
-
-			else if (angle >= 112.5f && angle < 157.5f)
-				anim = &downLeft;
-
-			else if (angle >= 22.5f && angle < 67.5f)
-				anim = &downRight;
+			anim = GetAnimFromAngle(angle);
 
 			if (App->input->GetXAxis() == 0 && App->input->GetYAxis() == 0)
 			{
@@ -870,6 +844,51 @@ void PlayerEntity::JoyconStates(float dt)
 
 		break;
 	}
+}
+
+float PlayerEntity::GetAngleFromAxis(float X, float Y)
+{
+
+	float angle = RAD_2_DEG(atan2(Y, X));
+
+	if (angle < 0)
+		angle += 360.0f;
+
+	return angle;
+}
+
+Animation* PlayerEntity::GetAnimFromAngle(float angle)
+{
+	Animation* animToReturn = nullptr;
+
+	if (angle >= 247.5f && angle < 292.5f)
+		animToReturn = &up;
+
+	else if (angle >= 67.5f && angle < 112.5f)
+		animToReturn = &down;
+
+	else if (((angle >= 337.5f && angle < 360.0f) || (angle >= 0 && angle < 22.5f) && !App->input->InsideDeadZone()))
+		animToReturn = &right;
+
+	else if (angle >= 157.5f && angle < 202.5f)
+		animToReturn = &left;
+
+	else if (angle >= 292.5f && angle < 337.5f)
+		animToReturn = &upRight;
+
+	else if (angle >= 202.5f && angle < 247.5f)
+		animToReturn = &upLeft;
+
+	else if (angle >= 112.5f && angle < 157.5f)
+		animToReturn = &downLeft;
+
+	else if (angle >= 22.5f && angle < 67.5f)
+		animToReturn = &downRight;
+
+	else
+		animToReturn = &idleDown;
+
+	return animToReturn;
 }
 
 void PlayerEntity::Walk(bool can)
