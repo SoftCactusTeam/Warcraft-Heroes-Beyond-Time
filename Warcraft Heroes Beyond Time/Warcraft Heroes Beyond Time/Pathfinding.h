@@ -12,6 +12,7 @@ struct pathNode
 	pathNode(int cost, iPoint nodePos);
 	int cost = -1;
 	iPoint nodePos;
+	pathNode* neighbours[4] = { nullptr, nullptr, nullptr, nullptr };
 };
 
 class Pathfinding : public Module
@@ -20,8 +21,12 @@ public:
 	Pathfinding();
 	void LoadMap();
 	void ClearMap(); 
+
 	void AddNodeToMap(int cost, iPoint nodePos = { -1,-1 });
 	void PrintColliders();
+
+	void LoadNeighbours();
+	int ExistWalkableAtPos(iPoint pos);
 
 private:
 	std::vector<pathNode*> map;
@@ -30,13 +35,13 @@ private:
 	uint mapHeight = 0;
 };
 
-//struct PathVector
-//{
-//	PathVector();
-//	iPoint nextObjective = { -1,-1 };
-//	iPoint pathToMove(iPoint actualPos);
-//private:
-//	std::vector<pathNode*> path;
-//};
+struct PathVector
+{
+	PathVector();
+	iPoint nextTileToMove(iPoint actualPos);
+	void CalculatePathAstar(iPoint thisPos, iPoint tileToMove);
+private:
+	std::vector<pathNode*> path;
+};
 
 #endif

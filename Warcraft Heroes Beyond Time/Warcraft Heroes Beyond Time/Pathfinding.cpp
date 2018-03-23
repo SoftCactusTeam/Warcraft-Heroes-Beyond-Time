@@ -15,11 +15,20 @@ fPoint SillyMovementToPlayer(fPoint pos)
 	return res;
 }
 
+// ---------------------------------------------------------------------------------------------------
+// ------------------------------------------ PATH NODE ----------------------------------------------
+// ---------------------------------------------------------------------------------------------------
+
 pathNode::pathNode(int cost, iPoint nodePos)
 {
 	this->cost = cost;
 	this->nodePos = nodePos;
 }
+
+// ---------------------------------------------------------------------------------------------------
+// ------------------------------------------- PATFINDING --------------------------------------------
+// ---------------------------------------------------------------------------------------------------
+
 
 Pathfinding::Pathfinding() { name = "pathfinding"; }
 
@@ -31,6 +40,7 @@ void Pathfinding::LoadMap()
 		if (tmpMapNodes[i]->cost != -1)
 			AddNodeToMap(tmpMapNodes[i]->cost, tmpMapNodes[i]->pos);
 	}
+	LoadNeighbours();
 }
 
 void Pathfinding::ClearMap()
@@ -52,17 +62,45 @@ void Pathfinding::PrintColliders()
 		App->render->DrawQuad({ map[i]->nodePos.x * (int)tileSize, map[i]->nodePos.y * (int)tileSize, (int)tileSize, (int)tileSize }, 255, 255, 0 , 140);
 }
 
+void Pathfinding::LoadNeighbours()
+{
+	for (int i = 0; i < map.size(); i++)
+	{
+		if (ExistWalkableAtPos(iPoint(map[i]->nodePos.x + 1, map[i]->nodePos.y)) != -1)
+			map[i]->neighbours[0] = map[ExistWalkableAtPos(iPoint(map[i]->nodePos.x + 1, map[i]->nodePos.y))];
+		if (ExistWalkableAtPos(iPoint(map[i]->nodePos.x - 1, map[i]->nodePos.y)) != -1)
+			map[i]->neighbours[0] = map[ExistWalkableAtPos(iPoint(map[i]->nodePos.x - 1, map[i]->nodePos.y))];
+		if (ExistWalkableAtPos(iPoint(map[i]->nodePos.x, map[i]->nodePos.y + 1)) != -1)
+			map[i]->neighbours[0] = map[ExistWalkableAtPos(iPoint(map[i]->nodePos.x, map[i]->nodePos.y + 1))];
+		if (ExistWalkableAtPos(iPoint(map[i]->nodePos.x, map[i]->nodePos.y - 1)) != -1)
+			map[i]->neighbours[0] = map[ExistWalkableAtPos(iPoint(map[i]->nodePos.x, map[i]->nodePos.y - 1))];
+	}
+}
 
-//PathVector::PathVector()
-//{
-//
-//}
-//
-//iPoint PathVector::pathToMove(iPoint actualPos)
-//{
-//	if (actualPos == nextObjective)
-//	{
-//		path.pop_back();
-//		nextObjective = path[0]->nodePos;
-//	}
-//}
+int Pathfinding::ExistWalkableAtPos(iPoint pos)
+{
+	for (int i = 0; i < map.size(); i++)
+		if (map[i]->nodePos == pos)
+			return i;
+	return -1;
+}
+
+// ---------------------------------------------------------------------------------------------------
+// ------------------------------------------- PATH VECTOR -------------------------------------------
+// ---------------------------------------------------------------------------------------------------
+
+PathVector::PathVector() {}
+
+iPoint PathVector::nextTileToMove(iPoint actualPos)
+{
+	if (actualPos == path[0]->nodePos)
+		path.pop_back();
+
+	return path[0]->nodePos;
+}
+
+void PathVector::CalculatePathAstar(iPoint thisPos, iPoint tileToMove)
+{
+	int thisPosInVector = App->path->ExistWalkableAtPos(thisPos);
+
+}
