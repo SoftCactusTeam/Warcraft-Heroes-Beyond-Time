@@ -638,11 +638,9 @@ void PlayerEntity::JoyconStates(float dt)
 
 		if (t <= 1.0f && t >= 0.0f)
 		{
-
-
-			pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.x * (sin(RAD_2_DEG(angle)));
-			pos.y = startPos.y - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.y * (cos(RAD_2_DEG(angle)));
-			anim = &dashRight;
+			pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.x * cos(DEG_2_RAD(angle));
+			pos.y = startPos.y + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.y * sin(DEG_2_RAD(angle));
+			
 			float x = 0.05f / dt;
 			t += (x * dt);
 
@@ -812,7 +810,7 @@ void PlayerEntity::JoyconStates(float dt)
 			float Y = App->input->GetYAxis() / MAX_JAXIS_VALUE;
 
 			pos.x += X * speed * dt;
-			pos.y += Y *speed * dt;
+			pos.y += Y * speed * dt;
 
 			angle = GetAngleFromAxis(X, Y);
 

@@ -4,7 +4,8 @@
 #include "SDL/include/SDL.h"
 
 #define PI 3.14159265358979323846f
-#define RAD_2_DEG(angle) angle * 180 / PI
+#define RAD_2_DEG(angle) angle * 180.0f / PI
+#define DEG_2_RAD(angle) angle * PI / 180.0f
 
 typedef unsigned int uint;
 
