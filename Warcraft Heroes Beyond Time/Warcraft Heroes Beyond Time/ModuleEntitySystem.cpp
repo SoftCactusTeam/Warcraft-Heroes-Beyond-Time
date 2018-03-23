@@ -204,7 +204,7 @@ bool EntitySystem::Start()
 {
 	LOG("Loading textures");
 	spritesheetsEntities.push_back(App->textures->Load("images/thrall_spritesheet.png"));
-	spritesheetsEntities.push_back(App->textures->Load("Sprites/Footman/Footman.png"));
+	spritesheetsEntities.push_back(App->textures->Load("Sprites/Footman/Footman_sprite.png"));
 	bool ret = true;
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end() && ret; ++it)
 	{
@@ -357,7 +357,6 @@ void EntitySystem::AddBoss(fPoint coor, BOSS_TYPE type)
 		break;
 	}
 	toSpawn.push_back((Entity*)newEntity);
-	actualPlayer = (Entity*)newEntity;
 }
 
 PlayerEntity* EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
@@ -376,7 +375,6 @@ PlayerEntity* EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
 		break;
 	}
 	toSpawn.push_back((Entity*)newEntity);
-	actualPlayer = newEntity;
 	App->colliders->AddCollider((Entity*)newEntity, { 0,0,32,32 }, COLLIDER_PLAYER, {10,10});
 	return newEntity;
 }

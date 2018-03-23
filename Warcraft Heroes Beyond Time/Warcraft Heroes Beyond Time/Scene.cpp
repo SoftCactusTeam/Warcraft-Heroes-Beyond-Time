@@ -27,9 +27,6 @@ bool Scene::Awake()
 
 bool Scene::Start()
 {
-	App->entities->AddPlayer({0,0}, THRALL);
-	App->entities->AddEnemy({ 80,80 }, FOOTMAN);
-
 	MapData mapInfo;
 	mapInfo.sizeX = 50;
 	mapInfo.sizeY = 50;
@@ -98,6 +95,7 @@ bool Scene::Start()
 			App->entities->Activate();
 			App->console->Activate();
 			PlayerEntity* player = App->entities->AddPlayer({ 55,55 }, THRALL);
+			App->entities->AddEnemy({ 80,80 }, FOOTMAN);
 			App->entities->SetPlayer(player);
 			break;
 		}

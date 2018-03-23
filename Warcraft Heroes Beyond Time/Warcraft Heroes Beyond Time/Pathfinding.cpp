@@ -1,13 +1,14 @@
 #include "Pathfinding.h"
 #include "Application.h"
 #include "ModuleEntitySystem.h"
+#include "PlayerEntity.h"
 
 fPoint SillyMovementToPlayer(fPoint pos)
 {
 	fPoint res = { 1,1 };
-	if (App->entities->actualPlayer->pos.x - pos.x < 0)
+	if (App->entities->player->pos.x - pos.x < 0)
 		res.x = -1;
-	if (App->entities->actualPlayer->pos.y - pos.y < 0)
+	if (App->entities->player->pos.y - pos.y < 0)
 		res.y = -1;
 	return res;
 }
