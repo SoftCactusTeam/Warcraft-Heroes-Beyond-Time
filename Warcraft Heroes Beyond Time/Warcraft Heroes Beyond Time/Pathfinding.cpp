@@ -87,11 +87,6 @@ int Pathfinding::ExistWalkableAtPos(iPoint pos)
 	return -1;
 }
 
-std::vector<pathNode*> Pathfinding::GetPathNode()
-{
-	return map;
-}
-
 // ---------------------------------------------------------------------------------------------------
 // ------------------------------------------- PATH VECTOR -------------------------------------------
 // ---------------------------------------------------------------------------------------------------
@@ -108,9 +103,26 @@ iPoint PathVector::nextTileToMove(iPoint actualPos)
 
 void PathVector::CalculatePathAstar(iPoint thisPos, iPoint tileToMove)
 {
-	const std::vector<pathNode*> mapCopy = App->path->GetPathNode();
 	std::priority_queue<pathNode*> frontQueue;
 	std::queue<pathNode*> visitedQueue;
-	
-	frontQueue.push([mapCopy[ExistWalkableAtPos(thisPos)]);
+	uint costSoFar = 0;
+
+	frontQueue.push(App->path->map[App->path->ExistWalkableAtPos(thisPos)]);
+	visitedQueue.push(App->path->map[App->path->ExistWalkableAtPos(thisPos)]);
+
+	while (frontQueue.empty() == false)
+	{
+		pathNode* current = frontQueue.top();
+		frontQueue.pop();
+		if (current->nodePos == tileToMove)
+			break;
+		// Calcular veins
+		for (int i = 0; i < 4; i++)
+			if (current->neighbours[i] != nullptr)
+			{
+				uint distanceToObjective = (uint)(current->neighbours[i]->nodePos.x - tileToMove.x) + (uint)(current->neighbours[i]->nodePos.y - tileToMove.y);
+				current->neighbours[i]->cost += current->cost + distanceToObjective;
+				frontQueue.push(current->neighbours[i]);
+			}
+	}
 }

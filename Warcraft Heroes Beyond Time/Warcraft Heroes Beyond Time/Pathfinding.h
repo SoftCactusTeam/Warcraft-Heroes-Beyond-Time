@@ -28,9 +28,6 @@ public:
 	void LoadNeighbours();
 	int ExistWalkableAtPos(iPoint pos);
 
-	std::vector<pathNode*> GetPathNode();
-
-private:
 	std::vector<pathNode*> map;
 	uint tileSize = 0;
 	uint mapWidth = 0;
