@@ -5,6 +5,8 @@
 #include "ModuleMapGenerator.h"
 #include "ModuleRender.h"
 
+#include <queue>
+
 fPoint SillyMovementToPlayer(fPoint pos)
 {
 	fPoint res = { 1,1 };
@@ -85,6 +87,11 @@ int Pathfinding::ExistWalkableAtPos(iPoint pos)
 	return -1;
 }
 
+std::vector<pathNode*> Pathfinding::GetPathNode()
+{
+	return map;
+}
+
 // ---------------------------------------------------------------------------------------------------
 // ------------------------------------------- PATH VECTOR -------------------------------------------
 // ---------------------------------------------------------------------------------------------------
@@ -101,6 +108,9 @@ iPoint PathVector::nextTileToMove(iPoint actualPos)
 
 void PathVector::CalculatePathAstar(iPoint thisPos, iPoint tileToMove)
 {
-	int thisPosInVector = App->path->ExistWalkableAtPos(thisPos);
-
+	const std::vector<pathNode*> mapCopy = App->path->GetPathNode();
+	std::priority_queue<pathNode*> frontQueue;
+	std::queue<pathNode*> visitedQueue;
+	
+	frontQueue.push([mapCopy[ExistWalkableAtPos(thisPos)]);
 }
