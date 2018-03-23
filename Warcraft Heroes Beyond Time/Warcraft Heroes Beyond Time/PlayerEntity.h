@@ -59,13 +59,12 @@ public:
 	fPoint handleA = { 0.6f, 0.0f };
 	fPoint handleB = { 0.4f, 1.0f };
 
-
-	fPoint endPos = { 0.0f, 0.0f };
 	fPoint startPos = { 0.0f, 0.0f };
 	
 	bool dashEnabled = false;
 	float t = 0.0f;
 	float angle = 0.0f;
+	float dashDistance = 250.0f;
 
 };
 

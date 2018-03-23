@@ -7,7 +7,7 @@
 #include "SDL\include\SDL_scancode.h"
 
 #define NUM_MOUSE_BUTTONS 5
-#define J_DEAD_ZONE 10000
+#define J_DEAD_ZONE 6000
 #define NUM_J_BUTTONS 16
 #define MAX_JAXIS_VALUE 32767.0f
 
