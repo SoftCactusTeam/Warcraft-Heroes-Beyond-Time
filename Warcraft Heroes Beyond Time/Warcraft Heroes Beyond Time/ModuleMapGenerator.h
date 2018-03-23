@@ -58,6 +58,7 @@ public:
 
 	void getSize(uint& w, uint& h);
 
+	std::vector<MapNode*> GetMapNodesAndInfo(uint& sizeX, uint& sizeY, uint& tileSize);
 
 private:
 

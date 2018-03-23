@@ -2,6 +2,8 @@
 #include "Application.h"
 #include "ModuleEntitySystem.h"
 #include "PlayerEntity.h"
+#include "ModuleMapGenerator.h"
+#include "ModuleRender.h"
 
 fPoint SillyMovementToPlayer(fPoint pos)
 {
@@ -21,16 +23,14 @@ pathNode::pathNode(int cost, iPoint nodePos)
 
 Pathfinding::Pathfinding() { name = "pathfinding"; }
 
-void Pathfinding::LoadMap(uint width, uint height)
+void Pathfinding::LoadMap()
 {
-	this->mapWidth = width;
-	this->mapHeight = height;
-}
-
-void Pathfinding::AddNodeToMap(int cost, iPoint point)
-{
-	pathNode* aux = new pathNode(cost, point);
-	map.push_back(aux);
+	std::vector<MapNode*> tmpMapNodes = App->map->GetMapNodesAndInfo(mapWidth, mapHeight, tileSize);
+	for (int i = 0; i < tmpMapNodes.size(); i++)
+	{
+		if (tmpMapNodes[i]->cost != -1)
+			AddNodeToMap(tmpMapNodes[i]->cost, tmpMapNodes[i]->pos);
+	}
 }
 
 void Pathfinding::ClearMap()
@@ -39,6 +39,19 @@ void Pathfinding::ClearMap()
 		delete map[i];
 	map.clear();
 }
+
+void Pathfinding::AddNodeToMap(int cost, iPoint point)
+{
+	pathNode* aux = new pathNode(cost, point);
+	map.push_back(aux);
+}
+
+void Pathfinding::PrintColliders()
+{
+	for (int i = 0; i < map.size(); i++)
+		App->render->DrawQuad({ map[i]->nodePos.x * (int)tileSize, map[i]->nodePos.y * (int)tileSize, (int)tileSize, (int)tileSize }, 255, 255, 0 , 140);
+}
+
 
 //PathVector::PathVector()
 //{

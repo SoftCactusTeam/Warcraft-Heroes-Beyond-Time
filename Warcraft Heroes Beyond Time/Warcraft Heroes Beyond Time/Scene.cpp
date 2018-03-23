@@ -12,6 +12,8 @@
 #include "ModuleMapGenerator.h"
 #include "ModuleRender.h"
 
+#include "Pathfinding.h"
+
 
 Scene::Scene()
 {
@@ -97,6 +99,7 @@ bool Scene::Start()
 			PlayerEntity* player = App->entities->AddPlayer({ 55,55 }, THRALL);
 			App->entities->AddEnemy({ 80,80 }, FOOTMAN);
 			App->entities->SetPlayer(player);
+			App->path->LoadMap();
 			break;
 		}
 			
@@ -112,6 +115,9 @@ bool Scene::PreUpdate()
 
 bool Scene::Update(float dt)
 {
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)
+		App->path->PrintColliders();
+
 	//TESTING SAVES
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{

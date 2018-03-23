@@ -18,12 +18,14 @@ class Pathfinding : public Module
 {
 public:
 	Pathfinding();
-	void LoadMap(uint width, uint height);
-	void AddNodeToMap(int cost, iPoint nodePos = { -1,-1 });
+	void LoadMap();
 	void ClearMap(); 
+	void AddNodeToMap(int cost, iPoint nodePos = { -1,-1 });
+	void PrintColliders();
 
 private:
 	std::vector<pathNode*> map;
+	uint tileSize = 0;
 	uint mapWidth = 0;
 	uint mapHeight = 0;
 };
