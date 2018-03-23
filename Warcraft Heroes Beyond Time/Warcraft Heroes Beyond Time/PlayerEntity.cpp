@@ -789,7 +789,7 @@ void PlayerEntity::JoyconStates(float dt)
 		else
 		{
 			state = states::PL_IDLE;
-			anim = &idleDown;
+			//anim = &idleDown;
 			t = 0.0f;
 		}
 
@@ -799,7 +799,6 @@ void PlayerEntity::JoyconStates(float dt)
 			{
 				startPos = pos;
 				state = states::PL_DASH;
-				animBeforeDash = anim;
 
 				float X = App->input->GetXAxis() / MAX_JAXIS_VALUE;
 				float Y = App->input->GetYAxis() / MAX_JAXIS_VALUE;
@@ -817,7 +816,10 @@ void PlayerEntity::JoyconStates(float dt)
 
 			angle = GetAngleFromAxis(X, Y);
 
-			anim = GetAnimFromAngle(angle);
+			Animation* tmpAnim = GetAnimFromAngle(angle);
+
+			if (tmpAnim != nullptr)
+				anim = tmpAnim;
 
 			if (App->input->GetXAxis() == 0 && App->input->GetYAxis() == 0)
 			{
@@ -885,8 +887,8 @@ Animation* PlayerEntity::GetAnimFromAngle(float angle)
 	else if (angle >= 22.5f && angle < 67.5f)
 		animToReturn = &downRight;
 
-	else
-		animToReturn = &idleDown;
+	//else
+		//animToReturn = &idleDown;
 
 	return animToReturn;
 }
