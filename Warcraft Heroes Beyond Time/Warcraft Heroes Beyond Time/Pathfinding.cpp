@@ -2,9 +2,9 @@
 #include "Application.h"
 #include "ModuleEntitySystem.h"
 
-iPoint SillyMovementToPlayer(iPoint pos)
+fPoint SillyMovementToPlayer(fPoint pos)
 {
-	iPoint res = { 1,1 };
+	fPoint res = { 1,1 };
 	if (App->entities->actualPlayer->pos.x - pos.x < 0)
 		res.x = -1;
 	if (App->entities->actualPlayer->pos.y - pos.y < 0)

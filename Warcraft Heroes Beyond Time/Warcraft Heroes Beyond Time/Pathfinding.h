@@ -5,7 +5,7 @@
 #include "Module.h"
 #include <vector>
 
-iPoint SillyMovementToPlayer(iPoint pos);
+fPoint SillyMovementToPlayer(fPoint pos);
 
 struct pathNode
 {

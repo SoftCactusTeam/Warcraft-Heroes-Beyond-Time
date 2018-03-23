@@ -13,7 +13,7 @@ enum FOOTMAN_STATE{
 class Enemy_Footman : public EnemyEntity
 {
 public:
-	Enemy_Footman(iPoint coor, ENEMY_TYPE character, SDL_Texture* texture);
+	Enemy_Footman(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture);
 
 	bool Start();
 	bool Update(float dt);

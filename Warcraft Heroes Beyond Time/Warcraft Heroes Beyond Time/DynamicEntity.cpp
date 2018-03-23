@@ -66,7 +66,7 @@ FIXED_ANGLE DynamicEntity::CaculateAngle(fPoint objectiveCoor)
 	return angleToReturn;
 }
 
-uint DynamicEntity::DistanceToObejective(iPoint objectiveCoor)
+uint DynamicEntity::DistanceToObejective(fPoint objectiveCoor)
 {
 	uint totalX = this->pos.x - objectiveCoor.x;
 	uint totalY = this->pos.y - objectiveCoor.y;

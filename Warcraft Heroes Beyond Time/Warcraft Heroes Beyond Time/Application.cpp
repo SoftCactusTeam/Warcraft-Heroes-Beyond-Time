@@ -35,13 +35,9 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	audio = new Audio();
 	scene = new Scene();
 	console = new Console();
-<<<<<<< HEAD
 	map = new MapGenerator();
-
-=======
 	colliders = new ModuleColliders();
 	path = new Pathfinding();
->>>>>>> 1st_Enemy
 	//map = new Map();
 
 	// Ordered for awake / Start / Update

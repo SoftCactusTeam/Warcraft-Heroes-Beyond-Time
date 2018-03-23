@@ -375,18 +375,10 @@ PlayerEntity* EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
 		newEntity = new PlayerEntity(coor, PLAYER_TYPE::SYLVANAS, nullptr);
 		break;
 	}
-	toSpawn.push_back(newEntity);
-<<<<<<< HEAD
-	return newEntity;
-=======
+	toSpawn.push_back((Entity*)newEntity);
 	actualPlayer = newEntity;
 	App->colliders->AddCollider((Entity*)newEntity, { 0,0,32,32 }, COLLIDER_PLAYER, {10,10});
-	App->colliders->AddTemporalCollider({ 200,0,32,32 }, COLLIDER_PLAYER, 1000);
-	App->colliders->AddTemporalCollider({ 100,0,32,32 }, COLLIDER_PLAYER, 2000);
-	App->colliders->AddTemporalCollider({ 0,100,32,32 }, COLLIDER_PLAYER, 3000);
-	App->colliders->AddTemporalCollider({ 200,100,32,32 }, COLLIDER_PLAYER, 4000);
-
->>>>>>> 1st_Enemy
+	return newEntity;
 }
 
 void EntitySystem::AddConsumable(fPoint coor, CONSUMABLE_TYPE type)

@@ -12,12 +12,8 @@ public:
 	virtual bool Finish();
 	virtual void Collision(COLLIDER_TYPE type);
 
-<<<<<<< HEAD
 	FIXED_ANGLE CaculateAngle(fPoint objectiveCoor);
-=======
-	FIXED_ANGLE CaculateAngle(iPoint objectiveCoor);
-	uint DistanceToObejective(iPoint objectiveCoor);
->>>>>>> 1st_Enemy
+	uint DistanceToObejective(fPoint objectiveCoor);
 
 public:
 	int live = -1;

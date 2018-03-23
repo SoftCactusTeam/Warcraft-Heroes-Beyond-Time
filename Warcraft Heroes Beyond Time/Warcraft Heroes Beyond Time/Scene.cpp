@@ -27,7 +27,6 @@ bool Scene::Awake()
 
 bool Scene::Start()
 {
-	
 	App->entities->AddPlayer({0,0}, THRALL);
 	App->entities->AddEnemy({ 80,80 }, FOOTMAN);
 

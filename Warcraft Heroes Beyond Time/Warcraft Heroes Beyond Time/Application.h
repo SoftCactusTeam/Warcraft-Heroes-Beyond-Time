@@ -22,13 +22,9 @@ class Audio;
 class Scene;
 class Fonts;
 class Console;
-<<<<<<< HEAD
 class MapGenerator;
-
-=======
 class ModuleColliders;
 class Pathfinding;
->>>>>>> 1st_Enemy
 
 class Application
 {
@@ -80,12 +76,9 @@ public:
 	Audio*					audio = nullptr;
 	Scene*					scene = nullptr;
 	Console*				console = nullptr;
-<<<<<<< HEAD
 	MapGenerator*			map = nullptr;
-=======
 	ModuleColliders*		colliders = nullptr;
 	Pathfinding*			path = nullptr;
->>>>>>> 1st_Enemy
 
 public:
 

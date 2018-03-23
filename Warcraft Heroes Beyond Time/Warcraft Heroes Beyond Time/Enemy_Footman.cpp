@@ -9,7 +9,7 @@
 #define ATAC_COOLDOWN		1000
 #define MOVEMENT_SPEED		2
 
-Enemy_Footman::Enemy_Footman(iPoint coor, ENEMY_TYPE character, SDL_Texture* texture) : EnemyEntity(coor, character, texture) {}
+Enemy_Footman::Enemy_Footman(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture) : EnemyEntity(coor, character, texture) {}
 
 bool Enemy_Footman::Start()
 {

@@ -121,9 +121,9 @@ void ModuleColliders::PrintColliders(bool print)
 	if (print)
 	{
 		for (int i = 0; i < colliders.size(); i++)
-			App->render->DrawQuad({ colliders[i]->owner->pos.x + colliders[i]->colliderRect.x, colliders[i]->owner->pos.y + colliders[i]->colliderRect.y, colliders[i]->colliderRect.w, colliders[i]->colliderRect.h }, 255, 255, 255, 100);
+			printf_s("aa");
+			//App->render->DrawQuad({ colliders[i]->owner->pos.x + colliders[i]->colliderRect.x, colliders[i]->owner->pos.y + colliders[i]->colliderRect.y, colliders[i]->colliderRect.w, colliders[i]->colliderRect.h }, 255, 255, 255, 100);
 		for (int i = 0; i < temporalColliders.size(); i++)
 			App->render->DrawQuad({ temporalColliders[i]->colliderRect.x, temporalColliders[i]->colliderRect.y, temporalColliders[i]->colliderRect.w, temporalColliders[i]->colliderRect.h }, 255, 0, 255, 100);
-
 	}
 }
