@@ -9,6 +9,7 @@
 
 #include "Console.h"
 
+
 #include "SDL/include/SDL.h"
 #define MAX_KEYS 300
 
@@ -259,6 +260,13 @@ bool Input::CleanUp()
 bool Input::GetWindowEvent(EventWindow ev)
 {
 	return windowEvents[ev];
+}
+
+float Input::GetPercentageFromAxis() const
+{
+	float moduleVec = sqrtf((pow(xAxis, 2.0f) + pow(yAxis, 2.0f)));
+
+	return moduleVec / MAX_JAXIS_VALUE;
 }
 
 void Input::GetMousePosition(int& x, int& y)

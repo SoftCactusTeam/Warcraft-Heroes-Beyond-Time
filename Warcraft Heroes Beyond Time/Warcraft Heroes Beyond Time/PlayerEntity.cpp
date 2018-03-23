@@ -2,8 +2,6 @@
 #include "PlayerEntity.h"
 #include "ModuleInput.h"
 
-#include <math.h>
-
 PlayerEntity::PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : DynamicEntity (coor, texture), type(type) {}
 
 bool PlayerEntity::Start()
