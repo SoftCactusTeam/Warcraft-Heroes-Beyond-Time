@@ -750,7 +750,7 @@ void PlayerEntity::JoyconStates(float dt)
 				float X = App->input->GetXAxis() / MAX_JAXIS_VALUE;
 				float Y = App->input->GetYAxis() / MAX_JAXIS_VALUE;
 
-				angle = GetAngleFromAxis(X, Y);
+				angle = App->input->GetAngleFromAxis();
 
 				break;
 			}
@@ -761,7 +761,7 @@ void PlayerEntity::JoyconStates(float dt)
 			pos.x += X * speed * dt;
 			pos.y += Y * speed * dt;
 
-			angle = GetAngleFromAxis(X, Y);
+			angle = App->input->GetAngleFromAxis();
 
 			Animation* tmpAnim = GetAnimFromAngle(angle);
 
@@ -793,17 +793,6 @@ void PlayerEntity::JoyconStates(float dt)
 
 		break;
 	}
-}
-
-float PlayerEntity::GetAngleFromAxis(float X, float Y)
-{
-
-	float angle = RAD_2_DEG(atan2(Y, X));
-
-	if (angle < 0)
-		angle += 360.0f;
-
-	return angle;
 }
 
 Animation* PlayerEntity::GetAnimFromAngle(float angle, bool dashOn)

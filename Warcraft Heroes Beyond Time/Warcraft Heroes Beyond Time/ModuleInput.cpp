@@ -269,6 +269,16 @@ float Input::GetPercentageFromAxis() const
 	return moduleVec / MAX_JAXIS_VALUE;
 }
 
+float Input::GetAngleFromAxis() const
+{
+	float angle = RAD_2_DEG(atan2(yAxis, xAxis));
+
+	if (angle < 0)
+		angle += 360.0f;
+
+	return angle;
+}
+
 void Input::GetMousePosition(int& x, int& y)
 {
 	x = mouse_x;

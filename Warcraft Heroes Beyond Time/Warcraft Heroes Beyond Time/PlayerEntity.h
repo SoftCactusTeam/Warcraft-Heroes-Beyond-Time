@@ -46,7 +46,7 @@ public:
 	void PlayerStates(float dt);
 	void KeyboardStates(float dt);
 	void JoyconStates(float dt);
-	float GetAngleFromAxis(float xAxis, float yAxis);
+
 	Animation* GetAnimFromAngle(float angle, bool dashOn = false);
 	bool IsPlayerMoving();
 	virtual bool Finish();
