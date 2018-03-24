@@ -696,9 +696,6 @@ void PlayerEntity::JoyconStates(float dt)
 				pos.y = startPos.y + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance * sin(DEG_2_RAD(angle));
 			
 				anim = GetAnimFromAngle(angle, true);
-
-				if (anim == nullptr)
-					anim = GetAnimFromAngle(angle, true);
 			}
 			
 			float x = 0.05f / dt;
