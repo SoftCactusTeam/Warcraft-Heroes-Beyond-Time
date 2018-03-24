@@ -1,6 +1,9 @@
 #include "Enemy_Footman.h"
 #include "Application.h"
-#include "Pathfinding.h"
+#include "ModuleEntitySystem.h"
+#include "PlayerEntity.h"
+
+#include "ModuleInput.h"
 
 #define DISTANCE_TO_MOVE	300
 #define DISTANCE_TO_CHARGE	120
@@ -62,6 +65,12 @@ bool Enemy_Footman::Update(float dt)
 		//if (accountantPrincipal <= 0)
 		//	state = FOOTMAN_STATE::FOOTMAN_IDLE;
 		break;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_4) == KeyState::KEY_DOWN)
+	{
+		pathVector.CalculatePathAstar(iPoint((int)this->pos.x, (int)this->pos.y), iPoint((int)App->entities->player->pos.x, (int)App->entities->player->pos.y));
+
 	}
 	return true;
 }

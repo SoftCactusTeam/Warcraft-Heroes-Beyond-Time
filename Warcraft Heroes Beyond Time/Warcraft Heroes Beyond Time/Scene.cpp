@@ -97,7 +97,6 @@ bool Scene::Start()
 			App->entities->Activate();
 			App->console->Activate();
 			PlayerEntity* player = App->entities->AddPlayer({ 55,55 }, THRALL);
-			App->entities->AddEnemy({ 80,80 }, FOOTMAN);
 			App->entities->SetPlayer(player);
 			App->path->LoadMap();
 			break;

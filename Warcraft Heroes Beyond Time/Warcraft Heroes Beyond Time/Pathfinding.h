@@ -13,6 +13,8 @@ struct pathNode
 	int cost = -1;
 	iPoint nodePos;
 	pathNode* neighbours[4] = { nullptr, nullptr, nullptr, nullptr };
+	pathNode* parent = nullptr;
+	bool operator < (const pathNode& compare);
 };
 
 class Pathfinding : public Module

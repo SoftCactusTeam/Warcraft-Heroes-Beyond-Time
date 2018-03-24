@@ -27,6 +27,11 @@ pathNode::pathNode(int cost, iPoint nodePos)
 	this->nodePos = nodePos;
 }
 
+bool pathNode::operator < (const pathNode& compare)
+{
+	return this->cost < compare.cost;
+}
+
 // ---------------------------------------------------------------------------------------------------
 // ------------------------------------------- PATFINDING --------------------------------------------
 // ---------------------------------------------------------------------------------------------------
@@ -104,11 +109,11 @@ iPoint PathVector::nextTileToMove(iPoint actualPos)
 void PathVector::CalculatePathAstar(iPoint thisPos, iPoint tileToMove)
 {
 	std::priority_queue<pathNode*> frontQueue;
-	std::queue<pathNode*> visitedQueue;
+	std::vector<pathNode*> visitedQueue;
 	uint costSoFar = 0;
 
 	frontQueue.push(App->path->map[App->path->ExistWalkableAtPos(thisPos)]);
-	visitedQueue.push(App->path->map[App->path->ExistWalkableAtPos(thisPos)]);
+	visitedQueue.push_back(App->path->map[App->path->ExistWalkableAtPos(thisPos)]);
 
 	while (frontQueue.empty() == false)
 	{
@@ -120,9 +125,29 @@ void PathVector::CalculatePathAstar(iPoint thisPos, iPoint tileToMove)
 		for (int i = 0; i < 4; i++)
 			if (current->neighbours[i] != nullptr)
 			{
-				uint distanceToObjective = (uint)(current->neighbours[i]->nodePos.x - tileToMove.x) + (uint)(current->neighbours[i]->nodePos.y - tileToMove.y);
-				current->neighbours[i]->cost += current->cost + distanceToObjective;
-				frontQueue.push(current->neighbours[i]);
+				// Comprobar si ja esta a visited
+				bool isVisited = false;
+				for (int i2 = 0; i2 < visitedQueue.size() && isVisited == false; i2++)
+					if (visitedQueue[i2] == current->neighbours[i])
+						isVisited = true;
+				// Si no es visitada fer la resta
+				if (isVisited == false)
+				{
+					uint distanceToObjective = (uint)(current->neighbours[i]->nodePos.x - tileToMove.x) + (uint)(current->neighbours[i]->nodePos.y - tileToMove.y);
+					current->neighbours[i]->cost += current->cost + distanceToObjective;
+					frontQueue.push(current->neighbours[i]);
+					visitedQueue.push_back(current->neighbours[i]);
+					current->neighbours[i]->parent = current;
+				}
+				else
+				{
+					uint distanceToObjective = (uint)(current->neighbours[i]->nodePos.x - tileToMove.x) + (uint)(current->neighbours[i]->nodePos.y - tileToMove.y);
+					if ((current->neighbours[i]->cost += current->cost + distanceToObjective) < (current->neighbours[i]->cost))
+					{
+						frontQueue.push(current->neighbours[i]);
+						current->neighbours[i]->parent = current;
+					}
+				}
 			}
 	}
 }
