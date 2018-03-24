@@ -64,7 +64,7 @@ private:
 	uint totalSize = 0u;
 	uint sizeX = 0u;
 	uint sizeY = 0u;
-	uint tileSize = 32;
+	uint tileSize = 48;
 	std::vector<MapNode*> nodes;
 	std::vector<MapNode*> visited;
 	SDL_Texture* mapTexture = nullptr;
