@@ -633,26 +633,26 @@ void PlayerEntity::JoyconStates(float dt)
 
 		if (t <= 1.0f && t >= 0.0f)
 		{
-
 			if (animBeforeDash == &idleRight)
 			{
 				pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * 250.0f;
+				anim = &dashRight;
 				
 			}
 			else if (animBeforeDash == &idleLeft)
 			{
 				pos.x = startPos.x - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
-				
+				anim = &dashLeft; //
 			}
 			else if (animBeforeDash == &idleUp)
 			{
 				pos.y = startPos.y - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
-				
+				anim = &dashUp; //
 			}
 			else if (animBeforeDash == &idleDown)
 			{
 				pos.y = startPos.y + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
-
+				anim = &dashDown;
 			}
 			else if (animBeforeDash == &idleUpRight)
 			{
@@ -660,6 +660,8 @@ void PlayerEntity::JoyconStates(float dt)
 
 				pos.x = startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(315.0f));
 				pos.y = startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(315.0f));
+
+				anim = &dashUpRight;
 			}
 			else if (animBeforeDash == &idleUpLeft)
 			{
@@ -667,6 +669,8 @@ void PlayerEntity::JoyconStates(float dt)
 
 				pos.x = startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(225.0f));
 				pos.y = startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(225.0f));
+
+				anim = &dashUpLeft; //
 			}
 			else if (animBeforeDash == &idleDownRight)
 			{
@@ -674,6 +678,8 @@ void PlayerEntity::JoyconStates(float dt)
 
 				pos.x = startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(45.0f));
 				pos.y = startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(45.0f));
+
+				anim = &dashDownRight;
 			}
 			else if (animBeforeDash == &idleDownLeft)
 			{
@@ -681,11 +687,15 @@ void PlayerEntity::JoyconStates(float dt)
 
 				pos.x = startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(135.0f));
 				pos.y = startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(135.0f));
+
+				anim = &dashDownLeft;
 			}
 			else
 			{
 				pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance * cos(DEG_2_RAD(angle));
 				pos.y = startPos.y + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance * sin(DEG_2_RAD(angle));
+			
+				anim = GetAnimFromAngle(angle, true);
 			}
 			
 			float x = 0.05f / dt;
@@ -694,7 +704,35 @@ void PlayerEntity::JoyconStates(float dt)
 		}
 		else
 		{
-			state = states::PL_IDLE;
+			if (App->input->InsideDeadZone())
+			{
+				state = states::PL_IDLE;
+
+				if (anim == &dashRight)
+					anim = &idleRight;
+				else if (anim == &dashDown)
+					anim = &idleDown;
+				else if (anim == &dashUpRight)
+					anim = &idleUpRight;
+				else if (anim == &dashDownLeft)
+					anim = &idleDownLeft;
+				else if (anim == &dashDownRight)
+					anim = &idleDownRight;
+				else if (anim == &dashUpRight)
+					anim = &idleUpRight;
+				else if (anim == &dashLeft)
+					anim = &idleLeft;
+				else if (anim == &dashUpLeft)
+					anim = &idleUpLeft;
+				else if (anim == &dashUp)
+					anim = &idleUp;
+			}
+			else
+			{
+				state = states::PL_MOVE;
+				anim = animBeforeDash;
+			}
+				
 			animBeforeDash = nullptr;
 			t = 0.0f;
 		}
@@ -702,9 +740,10 @@ void PlayerEntity::JoyconStates(float dt)
 		break;
 
 		case states::PL_MOVE:
-	
+			
 			if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN && t == 0.0f)
 			{
+				animBeforeDash = anim;
 				startPos = pos;
 				state = states::PL_DASH;
 
@@ -767,36 +806,73 @@ float PlayerEntity::GetAngleFromAxis(float X, float Y)
 	return angle;
 }
 
-Animation* PlayerEntity::GetAnimFromAngle(float angle)
+Animation* PlayerEntity::GetAnimFromAngle(float angle, bool dashOn)
 {
 	Animation* animToReturn = nullptr;
 
-	if (angle >= 247.5f && angle < 292.5f)
-		animToReturn = &up;
-
+	if (angle >= 247.5f && angle < 292.5f) // to change
+	{
+		if (!dashOn)
+			animToReturn = &up;
+		else
+			animToReturn = &dashUp;
+	}
+		
 	else if (angle >= 67.5f && angle < 112.5f)
-		animToReturn = &down;
+	{
+		if (!dashOn)
+			animToReturn = &down;
+		else
+			animToReturn = &dashDown;
+	}
 
 	else if (((angle >= 337.5f && angle < 360.0f) || (angle >= 0 && angle < 22.5f) && !App->input->InsideDeadZone()))
-		animToReturn = &right;
+	{
+		if (!dashOn)
+			animToReturn = &right;
+		else
+			animToReturn = &dashRight;
+	}
 
-	else if (angle >= 157.5f && angle < 202.5f)
-		animToReturn = &left;
+	else if (angle >= 157.5f && angle < 202.5f) // to change
+	{
+		if (!dashOn)
+			animToReturn = &left;
+		else
+			animToReturn = &dashLeft;
+	}
 
 	else if (angle >= 292.5f && angle < 337.5f)
-		animToReturn = &upRight;
+	{
+		if (!dashOn)
+			animToReturn = &upRight;
+		else
+			animToReturn = &dashUpRight;
+	}
 
-	else if (angle >= 202.5f && angle < 247.5f)
-		animToReturn = &upLeft;
+	else if (angle >= 202.5f && angle < 247.5f) // to change
+	{
+		if (!dashOn)
+			animToReturn = &upLeft;
+		else
+			animToReturn = &dashUpLeft;
+	}
 
 	else if (angle >= 112.5f && angle < 157.5f)
-		animToReturn = &downLeft;
+	{
+		if (!dashOn)
+			animToReturn = &downLeft;
+		else
+			animToReturn = &dashDownLeft;
+	}
 
 	else if (angle >= 22.5f && angle < 67.5f)
-		animToReturn = &downRight;
-
-	//else
-		//animToReturn = &idleDown;
+	{
+		if (!dashOn)
+			animToReturn = &downRight;
+		else
+			animToReturn = &dashDownRight;
+	}
 
 	return animToReturn;
 }
