@@ -13,9 +13,6 @@ protected:
 	Animation up, down, left, right, upLeft, upRight, downLeft, downRight;
 	Animation dashRight, dashDown, dashUpRight, dashDownRight, dashDownLeft, dashUp, dashLeft, dashUpLeft;
 	Animation* animBeforeDash = nullptr;
-	Animation animDashUp[6];
-	Animation animDashLeft[6];
-	Animation animDashUpLeft[6];
 	float speed = 250.0f;
 	bool move = true;
 
@@ -51,22 +48,20 @@ public:
 	bool IsPlayerMoving();
 	virtual bool Finish();
 
-	//This functions calculates player postion given a Bezier Curve
+	//This functions calculates player postion given a Bezier Curve an a moment in time
 
 	fPoint CalculatePosFromBezier(fPoint startPos, fPoint handleA, float t, fPoint handleB, fPoint endPos);
 
-	// Dash variables
+	// Bezier/dash related variables
 
 	fPoint handleA = { 0.6f, 0.0f };
 	fPoint handleB = { 0.4f, 1.0f };
 
 	fPoint startPos = { 0.0f, 0.0f };
 	
-	bool dashEnabled = false;
 	float t = 0.0f;
 	float angle = 0.0f;
 	float dashDistance = 250.0f;
-
 };
 
 #endif

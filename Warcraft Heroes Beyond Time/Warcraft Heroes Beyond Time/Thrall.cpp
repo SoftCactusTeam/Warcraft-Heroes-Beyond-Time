@@ -126,59 +126,6 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	dashLeft.PushBack({ 110,658,55,47 });
 	dashLeft.speed = 0.2f;
 
-	// ----
-
-	// Up dash
-
-	animDashUp[1].PushBack({ 249, 3, 55, 122 });
-	animDashUp[1].speed = 0.2f;
-
-	animDashUp[2].PushBack({ 317, 3, 55, 122 });
-	animDashUp[2].speed = 0.2f;
-
-	animDashUp[3].PushBack({ 385, 3, 55, 122 });
-	animDashUp[3].speed = 0.2f;
-
-	animDashUp[4].PushBack({ 453, 3, 55, 122 });
-	animDashUp[4].speed = 0.2f;
-
-	animDashUp[5].PushBack({ 521, 3, 55, 122 });
-	animDashUp[5].speed = 0.2f;
-
-	// Left dash
-
-	animDashLeft[1].PushBack({ 236, 127, 132, 47 });
-	animDashLeft[1].speed = 0.2f;
-
-	animDashLeft[2].PushBack({ 369, 127, 132, 47 });
-	animDashLeft[2].speed = 0.2f;
-
-	animDashLeft[3].PushBack({ 502, 127, 132, 47 });
-	animDashLeft[3].speed = 0.2f;
-
-	animDashLeft[4].PushBack({ 635, 127, 132, 47 });
-	animDashLeft[4].speed = 0.2f;
-
-	animDashLeft[5].PushBack({ 768, 127, 132, 47 });
-	animDashLeft[5].speed = 0.2f;
-
-	// -- Up Left Dash --
-
-	animDashUpLeft[1].PushBack({ 236, 176, 98, 98 });
-	animDashUpLeft[1].speed = 0.2f;
-
-	animDashUpLeft[2].PushBack({ 335, 176, 98, 98 });
-	animDashUpLeft[2].speed = 0.2f;
-
-	animDashUpLeft[3].PushBack({ 434, 176, 98, 98 });
-	animDashUpLeft[3].speed = 0.2f;
-
-	animDashUpLeft[4].PushBack({ 533, 176, 98, 98 });
-	animDashUpLeft[4].speed = 0.2f;
-
-	animDashUpLeft[5].PushBack({ 632, 176, 98, 98 });
-	animDashUpLeft[5].speed = 0.2f;
-
 }
 
 bool Thrall::Update(float dt)

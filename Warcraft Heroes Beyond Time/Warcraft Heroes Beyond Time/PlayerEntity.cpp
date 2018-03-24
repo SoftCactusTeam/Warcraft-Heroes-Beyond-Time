@@ -21,8 +21,6 @@ bool PlayerEntity::Update(float dt)
 
 bool PlayerEntity::Finish() { return true; }
 
-
-
 fPoint PlayerEntity::CalculatePosFromBezier(fPoint startPos, fPoint handleA, float t, fPoint handleB, fPoint endPos)
 {
 	float t2 = pow(t, 2.0f);
@@ -56,33 +54,6 @@ fPoint PlayerEntity::CalculatePosFromBezier(fPoint startPos, fPoint handleA, flo
 
 void PlayerEntity::PlayerStates(float dt)
 {
-
-	// ----- Dash test -----
-
-	/*if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_REPEAT  && !dashEnabled)
-	{
-		dashEnabled = true;
-		startPos = pos;
-		dashDistance = pos.x + 30.0f;
-		dashDistance = pos.y;
-	}
-
-	if (dashEnabled && t <= 1.0f && t >= 0.0f)
-	{
-		t += 0.05f;
-		pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * 250.0f;
-		
-	}
-
-	if (t >= 1.0f)
-	{
-		dashEnabled = false;
-		t = 0.0f;
-	}*/
-	
-
-	// -----------------
-
 	if (move)
 	{
 		if (App->input->IsKeyboardAvailable())
@@ -201,6 +172,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			if (animBeforeDash == &idleRight || animBeforeDash == &right)
 			{
 				pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
+				
 				anim = &dashRight;
 				float x = 0.05f / dt;
 				t += (x * dt);
@@ -210,18 +182,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			{
 				pos.x = startPos.x - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
 				
-				if (t >= 0.0f && t <= 0.2f)
-					anim = &animDashLeft[1];
-				else if (t > 0.2f && t <= 0.4f)
-					anim = &animDashLeft[2];
-				else if (t > 0.4f && t <= 0.55f)
-					anim = &animDashLeft[3];
-				else if (t > 0.55f && t <= 0.7f)
-					anim = &animDashLeft[4];
-				else if (t > 0.7f && t <= 1.0f)
-					anim = &animDashLeft[5];
-
-
+				anim = &dashLeft;
 				float x = 0.05f / dt;
 				t += (x * dt);
 				break;
@@ -230,50 +191,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			{
 				pos.y = startPos.y - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
 
-				if (t >= 0.0f && t <= 0.2f)
-					anim = &animDashUp[1];
-				else if (t > 0.2f && t <= 0.4f)
-					anim = &animDashUp[2];
-				else if (t > 0.4f && t <= 0.55f)
-					anim = &animDashUp[3];
-				else if (t > 0.55f && t <= 0.7f)
-					anim = &animDashUp[4];
-				else if (t > 0.7f && t <= 1.0f)
-					anim = &animDashUp[5];
-
-				/*if (t >= 0.0f && t <= 0.1835f)
-				{
-					anim = &animDashUp[1];
-				}
-				else if (t > 0.1835f && t <= 0.3395f)
-				{
-					anim = &animDashUp[2];
-				}
-				else if (t > 0.3395f && t <= 0.4955f)
-				{
-					anim = &animDashUp[3];
-				}
-				else if (t > 0.4955f && t <= 0.5595f)
-				{
-					anim = &animDashUp[4];
-				}
-				else if (t > 0.5595f && t <= 0.5735f)
-				{
-					anim = &animDashUp[5];
-				}
-				else if (t > 0.5735f && t <= 0.6375f)
-				{
-					anim = &animDashUp[6];
-				}
-				else if (t > 0.6375f && t <= 0.7935f)
-				{
-					anim = &animDashUp[7];
-				}
-				else if (t > 0.7935f && t <= 1.0f)
-				{
-					anim = &animDashUp[8];
-				}*/
-
+				anim = &dashUp;
 				float x = 0.05f / dt;
 				t += (x * dt);
 				break;
@@ -281,6 +199,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			else if (animBeforeDash == &idleDown || animBeforeDash == &down)
 			{
 				pos.y = startPos.y + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
+
 				anim = &dashDown;
 				float x = 0.05f / dt;
 				t += (x * dt);
@@ -329,17 +248,7 @@ void PlayerEntity::KeyboardStates(float dt)
 				pos.x = startPos.x - 250.0f * 0.75f * bezierPoint.y;
 				pos.y = startPos.y - 250.0f * 0.75f * bezierPoint.y;
 
-				if (t >= 0.0f && t <= 0.2f)
-					anim = &animDashUpLeft[1];
-				else if (t > 0.2f && t <= 0.4f)
-					anim = &animDashUpLeft[2];
-				else if (t > 0.4f && t <= 0.55f)
-					anim = &animDashUpLeft[3];
-				else if (t > 0.55f && t <= 0.7f)
-					anim = &animDashUpLeft[4];
-				else if (t > 0.7f && t <= 1.0f)
-					anim = &animDashUpLeft[5];
-
+				anim = &dashUpLeft;
 				float x = 0.05f / dt;
 				t += (x * dt);
 				break;
@@ -352,15 +261,15 @@ void PlayerEntity::KeyboardStates(float dt)
 
 			if (anim == &dashRight)
 				anim = &idleRight;
-			else if (anim == &animDashLeft[5])
+			else if (anim == &dashLeft)
 				anim = &idleLeft;
-			else if (anim == &animDashUp[5])
+			else if (anim == &dashUp)
 				anim = &idleUp;
 			else if (anim == &dashDown)
 				anim = &idleDown;
 			else if (anim == &dashUpRight)
 				anim = &idleUpRight;
-			else if (anim == &animDashUpLeft[5])
+			else if (anim == &dashUpLeft)
 				anim = &idleUpLeft;
 			else if (anim == &dashDownRight)
 				anim = &idleDownRight;
