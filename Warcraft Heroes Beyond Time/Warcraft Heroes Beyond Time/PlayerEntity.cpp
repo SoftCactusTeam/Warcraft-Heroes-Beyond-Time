@@ -801,6 +801,11 @@ Animation* PlayerEntity::GetAnimFromAngle(float angle)
 	return animToReturn;
 }
 
+bool PlayerEntity::IsPlayerMoving()
+{
+	return state == states::PL_MOVE;
+}
+
 void PlayerEntity::Walk(bool can)
 {
 	this->move = can;

@@ -48,6 +48,7 @@ public:
 	void JoyconStates(float dt);
 	float GetAngleFromAxis(float xAxis, float yAxis);
 	Animation* GetAnimFromAngle(float angle);
+	bool IsPlayerMoving();
 	virtual bool Finish();
 
 	//This functions calculates player postion given a Bezier Curve

@@ -176,8 +176,11 @@ bool Thrall::Update(float dt)
 {
 	PlayerStates(dt);
 
-	float percentage = App->input->GetPercentageFromAxis();
+	float percentage = 1.0f;
 
+	if (IsPlayerMoving())
+		percentage = App->input->GetPercentageFromAxis();
+	
 	anim->speed = anim->speedFactor * percentage * dt;
 
 	return true;
