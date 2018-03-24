@@ -21,6 +21,7 @@ private:
 
 public:
 	float speed = 0.0f;
+	float speedFactor = 0.0f;
 	bool loop = true;
 
 public:
