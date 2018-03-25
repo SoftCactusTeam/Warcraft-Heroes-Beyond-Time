@@ -34,7 +34,7 @@ bool InputBox::Update(float dt)
 		}
 	}
 
-	ret = App->render->Blit(texturetoBlit, (int)(this->screenPos.x + App->render->camera.x), (int)(this->screenPos.y + App->render->camera.y));
+	ret = App->render->Blit(texturetoBlit, (int)(this->screenPos.x - App->render->camera.x), (int)(this->screenPos.y - App->render->camera.y));
 
 	UpdateChilds(dt);
 

@@ -133,6 +133,7 @@
     <ClCompile Include="ConsumableEntity.cpp" />
     <ClCompile Include="DynamicEntity.cpp" />
     <ClCompile Include="EnemyEntity.cpp" />
+    <ClCompile Include="Enemy_Footman.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Console.cpp" />
@@ -141,6 +142,8 @@
     <ClCompile Include="InputBox.cpp" />
     <ClCompile Include="Slider.cpp" />
     <ClCompile Include="ModuleMapGenerator.cpp" />
+    <ClCompile Include="ModuleColliders.cpp" />
+    <ClCompile Include="Pathfinding.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
@@ -168,6 +171,7 @@
     <ClInclude Include="ConsumableEntity.h" />
     <ClInclude Include="DynamicEntity.h" />
     <ClInclude Include="EnemyEntity.h" />
+    <ClInclude Include="Enemy_Footman.h" />
     <ClInclude Include="EntitiesEnums.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Console.h" />
@@ -178,6 +182,8 @@
     <ClInclude Include="InputBox.h" />
     <ClInclude Include="Slider.h" />
     <ClInclude Include="ModuleMapGenerator.h" />
+    <ClInclude Include="ModuleColliders.h" />
+    <ClInclude Include="Pathfinding.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="ModuleAudio.h" />

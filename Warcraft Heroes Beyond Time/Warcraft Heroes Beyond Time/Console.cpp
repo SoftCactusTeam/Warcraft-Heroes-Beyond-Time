@@ -47,7 +47,7 @@ bool Console::Start()
 	uint windowHeight;
 	App->window->GetWindowSize(windowsWidth, windowHeight);
 
-	rectConsoleQuad = { 0, 0, 1920, 35 };
+	rectConsoleQuad = { 0, 0, 640, 17 };
 
 	InputBoxInfo defInputBox;
 	defInputBox.color = White;
@@ -62,6 +62,8 @@ bool Console::Update(float dt)
 {
 	if (writting)
 	{
+		rectConsoleQuad.x = - App->render->camera.x;
+		rectConsoleQuad.y = - App->render->camera.y;
 		App->render->DrawQuad(rectConsoleQuad, 0, 0, 0, 200);
 		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KeyState::KEY_DOWN)
 		{

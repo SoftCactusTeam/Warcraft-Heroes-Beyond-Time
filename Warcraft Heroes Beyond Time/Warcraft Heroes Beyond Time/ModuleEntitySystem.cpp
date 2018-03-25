@@ -5,13 +5,15 @@
 
 #include "Entity.h"
 #include "PlayerEntity.h"
-#include "Thrall.h"
 #include "BossEntity.h"
 #include "EnemyEntity.h"
 #include "ConsumableEntity.h"
 #include "ChestEntity.h"
 #include "StaticObjectEntity.h"
 #include "ModuleMapGenerator.h"
+#include "ModuleColliders.h"
+#include "Thrall.h"
+#include "Enemy_Footman.h"
 
 #include "Console.h"
 
@@ -51,7 +53,7 @@ class Spawn_ConsoleOrder : public ConsoleOrder
 		}
 		else if (parameter == "thrall")
 		{
-			App->entities->AddPlayer({ 0,50 }, THRALL);
+			App->entities->AddPlayer({ App->entities->player->pos.x, App->entities->player->pos.y - 60 }, THRALL);
 		}
 		else if (parameter == "archer")
 		{
@@ -202,7 +204,12 @@ bool EntitySystem::Start()
 {
 	LOG("Loading textures");
 	spritesheetsEntities.push_back(App->textures->Load("images/thrall_spritesheet.png"));
-
+	spritesheetsEntities.push_back(App->textures->Load("Sprites/Footman/Footman_sprite.png"));
+	bool ret = true;
+	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end() && ret; ++it)
+	{
+		ret = (*it)->Start();
+	}
 	return true;
 }
 
@@ -239,6 +246,8 @@ bool EntitySystem::Update(float dt)
 			ret = (*it)->Draw(dt);
 		}
 	}
+
+	App->map->DrawPostPlayerMap();
 
 	return ret;
 }
@@ -312,7 +321,7 @@ void EntitySystem::AddEnemy(fPoint coor, ENEMY_TYPE type)
 	EnemyEntity* newEntity = nullptr;
 	switch (type) {
 	case ENEMY_TYPE::FOOTMAN:
-		newEntity = new EnemyEntity(coor, ENEMY_TYPE::FOOTMAN, nullptr);
+		newEntity = new Enemy_Footman(coor, ENEMY_TYPE::FOOTMAN, spritesheetsEntities[FOOTMAN_SHEET] /*SHA DE CANVIAR !*/);
 		break;
 	case ENEMY_TYPE::ARCHER:
 		newEntity = new EnemyEntity(coor, ENEMY_TYPE::ARCHER, nullptr);
@@ -330,7 +339,9 @@ void EntitySystem::AddEnemy(fPoint coor, ENEMY_TYPE type)
 		newEntity = new EnemyEntity(coor, ENEMY_TYPE::SKELETON, nullptr);
 		break;
 	}
-	toSpawn.push_back((Entity*)newEntity);
+	toSpawn.push_back(newEntity);
+	App->colliders->AddCollider((Entity*)newEntity, { 0,0,32,32 }, COLLIDER_ENEMY, { 20,20 });
+
 }
 
 void EntitySystem::AddBoss(fPoint coor, BOSS_TYPE type)
@@ -356,7 +367,7 @@ PlayerEntity* EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
 	switch (type)
 	{
 	case PLAYER_TYPE::THRALL:
-		newEntity = new Thrall(coor, PLAYER_TYPE::THRALL, spritesheetsEntities[THRALLSHEET]);
+		newEntity = new Thrall(coor, PLAYER_TYPE::THRALL, spritesheetsEntities[THRALL_SHEET]);
 		break;
 	case PLAYER_TYPE::VALEERA:
 		newEntity = new PlayerEntity(coor, PLAYER_TYPE::VALEERA, nullptr);
@@ -365,7 +376,8 @@ PlayerEntity* EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
 		newEntity = new PlayerEntity(coor, PLAYER_TYPE::SYLVANAS, nullptr);
 		break;
 	}
-	toSpawn.push_back(newEntity);
+	toSpawn.push_back((Entity*)newEntity);
+	App->colliders->AddCollider((Entity*)newEntity, { 0,0,32,32 }, COLLIDER_PLAYER, {10,10});
 	return newEntity;
 }
 

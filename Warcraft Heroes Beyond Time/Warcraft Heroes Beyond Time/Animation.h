@@ -21,6 +21,7 @@ private:
 
 public:
 	float speed = 0.0f;
+	float speedFactor = 0.0f;
 	bool loop = true;
 
 public:
@@ -39,6 +40,11 @@ public:
 			current_frame = (loop) ? 0.0f : last_frame - 1;
 		}
 
+		return frames[(int)current_frame];
+	}
+
+	SDL_Rect& GetCurrentRect()
+	{
 		return frames[(int)current_frame];
 	}
 

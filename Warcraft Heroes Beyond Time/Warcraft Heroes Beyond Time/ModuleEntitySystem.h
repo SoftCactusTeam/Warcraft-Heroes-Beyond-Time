@@ -65,7 +65,6 @@ public:
 
 	void ClearEnemies();
 
-
 private:
 	std::list<Entity*>		entities;
 	std::list<Entity*>		toSpawn; 

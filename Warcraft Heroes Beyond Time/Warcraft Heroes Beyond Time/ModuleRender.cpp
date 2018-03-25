@@ -43,16 +43,18 @@ bool Render::Awake(pugi::xml_node& renderNode)
 	}
 	else
 	{
-		camera.w = App->window->screen_surface->w / App->window->GetScale();
-		camera.h = App->window->screen_surface->h / App->window->GetScale();
+		camera.w = 640/*App->window->screen_surface->w*/;
+		camera.h = 360/*App->window->screen_surface->h*/;
 		camera.x = 0;
 		camera.y = 0;
+		fcamerax = 0;
+		fcameray = 0;
 	}
 
 	uint width = 0, height = 0;
 	App->window->GetWindowSize(width, height);
 
-	SDL_RenderSetLogicalSize(renderer, width, height);
+	SDL_RenderSetLogicalSize(renderer, 640, 360);
 
 	return ret;
 }
@@ -74,13 +76,19 @@ bool Render::PreUpdate()
 
 bool Render::Update(float dt)
 {
+	camera.x = (int)fcamerax;
+	camera.y = (int)fcameray;
+	if (camera.x > 0)
+		camera.x = 0;
+	if (camera.y > 0)
+		camera.y = 0;
+
 	return true;
 }
 
 bool Render::PostUpdate()
 {
 	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
-	SDL_RenderSetLogicalSize(renderer, 640, 360);
 	SDL_RenderPresent(renderer);
 	return true;
 }

@@ -10,14 +10,17 @@ public:
 	virtual bool Start();
 	virtual bool Update(float dt);
 	virtual bool Finish();
+	virtual void Collision(COLLIDER_TYPE type);
 
 	FIXED_ANGLE CaculateAngle(fPoint objectiveCoor);
+	uint DistanceToObejective(fPoint objectiveCoor);
 
 public:
 	int live = -1;
 	int movementSpeed = -1;
 	int atacSpeed = -1;
 	int accountantPrincipal = -1;
+	FIXED_ANGLE orientation = FIXED_ANGLE::NON_ANGLE;
 };
 
 #endif

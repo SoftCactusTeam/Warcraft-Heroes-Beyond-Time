@@ -27,31 +27,13 @@ bool Scene::Awake()
 
 bool Scene::Start()
 {
-	/*LabelInfo defLabel;
-	defLabel.color = Red;
-	defLabel.fontName = "Arial16";
-	defLabel.text = "Hey bitches im here";
-	
-	App->gui->CreateLabel({0,0}, defLabel, nullptr, nullptr);
-	App->entities->AddPlayer({0,0}, THRALL);
-
 	MapData mapInfo;
 	mapInfo.sizeX = 50;
 	mapInfo.sizeY = 50;
 	mapInfo.iterations = 600;
-	mapInfo.tilesetPath = "map.jpg";
+	mapInfo.tilesetPath = "Tiles.png";
 
 	App->map->GenerateMap(mapInfo);
-
-	//LabelInfo defLabel;
-	//defLabel.color = Red;
-	//defLabel.fontName = "Arial16";
-	//defLabel.text = "Hey bitches im here";
-	//
-	//Application->gui->CreateLabel({0,0}, defLabel, nullptr, nullptr);
-
-
-	App->gui->CreateLabel({0,0}, defLabel, nullptr, nullptr);*/
 
 	App->gui->Activate();
 	switch (actual_scene)
@@ -112,26 +94,14 @@ bool Scene::Start()
 		{
 			App->entities->Activate();
 			App->console->Activate();
-			PlayerEntity* player = App->entities->AddPlayer({ 50,50 }, THRALL);
+			PlayerEntity* player = App->entities->AddPlayer({ 55,55 }, THRALL);
+			App->entities->AddEnemy({ 80,80 }, FOOTMAN);
 			App->entities->SetPlayer(player);
 			break;
 		}
 			
 	}
 	
-
-	
-	//InputBoxInfo defInputBox;
-	//defInputBox.color = Green;
-	//defInputBox.fontName = "Arial16";
-
-	//InputBox* box = Application->gui->CreateInputBox({ 0, 200 }, defInputBox, nullptr, nullptr);
-	//box->EnableInput();
-
-	
-
-
-
 	return true;
 }
 
@@ -155,27 +125,6 @@ bool Scene::Update(float dt)
 		App->Load();
 	}
 
-
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-	{
-		App->render->camera.y += 20;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-	{
-		App->render->camera.x += 20;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-	{
-		App->render->camera.y -= 20;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-	{
-		App->render->camera.x -= 20;
-	}
-
 	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && actual_scene == Stages::INGAME)
 	{
 		App->map->CleanUp();
@@ -184,7 +133,7 @@ bool Scene::Update(float dt)
 		mapInfo.sizeX = 50;
 		mapInfo.sizeY = 50;
 		mapInfo.iterations = 600;
-		mapInfo.tilesetPath = "map.jpg";
+		mapInfo.tilesetPath = "Tiles.png";
 
 		App->map->GenerateMap(mapInfo);
 	}

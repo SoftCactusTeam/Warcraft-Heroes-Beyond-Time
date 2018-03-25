@@ -35,6 +35,8 @@ public:
 
 	SDL_Renderer*	renderer;
 	SDL_Rect		camera;
+	float			fcamerax;
+	float			fcameray;
 	SDL_Rect		viewport;
 	SDL_Color		background;
 	bool			vsync = false;
