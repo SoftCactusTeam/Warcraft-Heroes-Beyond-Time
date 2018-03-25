@@ -31,7 +31,7 @@ bool Scene::Start()
 	mapInfo.sizeX = 50;
 	mapInfo.sizeY = 50;
 	mapInfo.iterations = 600;
-	mapInfo.tilesetPath = "map.jpg";
+	mapInfo.tilesetPath = "Tiles.png";
 
 	App->map->GenerateMap(mapInfo);
 
@@ -133,7 +133,7 @@ bool Scene::Update(float dt)
 		mapInfo.sizeX = 50;
 		mapInfo.sizeY = 50;
 		mapInfo.iterations = 600;
-		mapInfo.tilesetPath = "map.jpg";
+		mapInfo.tilesetPath = "Tiles.png";
 
 		App->map->GenerateMap(mapInfo);
 	}

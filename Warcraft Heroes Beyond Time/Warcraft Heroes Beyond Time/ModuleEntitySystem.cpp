@@ -247,6 +247,8 @@ bool EntitySystem::Update(float dt)
 		}
 	}
 
+	App->map->DrawPostPlayerMap();
+
 	return ret;
 }
 
