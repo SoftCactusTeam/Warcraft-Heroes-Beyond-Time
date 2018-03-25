@@ -882,3 +882,32 @@ void PlayerEntity::CheckMapLimits()
 		}
 	}	
 }
+
+void PlayerEntity::AddItem(Item item)
+{
+	itemsActive.push_back(item);
+}
+
+void PlayerEntity::IterateItems(ItemFunctions nameFunction)
+{
+	std::list<Item>::iterator it = itemsActive.begin();
+
+	for (; it != itemsActive.end(); ++it)
+	{
+		switch (nameFunction)
+		{
+		case ItemFunctions::GetItem:
+			it->GetItem();
+			break;
+
+		case ItemFunctions::UpdateLogic:
+			it->UpdateLogic();
+			break;
+
+		case ItemFunctions::ByeByeItem:
+			it->ByeByeItem();
+			break;
+
+		}
+	}
+}

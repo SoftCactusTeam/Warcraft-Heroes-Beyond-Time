@@ -37,6 +37,9 @@
     <ClCompile Include="StaticObjectEntity.cpp" />
     <ClCompile Include="Thrall.cpp" />
     <ClCompile Include="GUIElem.cpp" />
+    <ClCompile Include="Item.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -80,8 +83,16 @@
     <ClInclude Include="StaticEntity.h" />
     <ClInclude Include="StaticObjectEntity.h" />
     <ClInclude Include="Thrall.h" />
+    <ClInclude Include="Item.h">
+      <Filter>Items</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Items">
+      <UniqueIdentifier>{05944e24-550c-4b68-8f81-161596d05580}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
