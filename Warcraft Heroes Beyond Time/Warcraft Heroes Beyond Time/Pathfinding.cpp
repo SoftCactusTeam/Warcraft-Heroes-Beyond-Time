@@ -94,14 +94,6 @@ int Pathfinding::ExistWalkableAtPos(iPoint pos)
 
 PathVector::PathVector() {}
 
-iPoint PathVector::nextTileToMove(iPoint actualPos)
-{
-	if (actualPos == walkPath[0]->nodePos)
-		walkPath.pop_back();
-
-	return walkPath[0]->nodePos;
-}
-
 bool PathVector::CalculatePathAstar(iPoint thisPos, iPoint tileToMove)
 {
 	/// CLEAN VISITED
@@ -175,13 +167,15 @@ bool PathVector::CalculatePathAstar(iPoint thisPos, iPoint tileToMove)
 
 bool PathVector::CalculateWay(iPoint thisPos, iPoint tileToMove)
 {
-	// CLEAR VECTOR
-	for (int i = 0; i < walkPath.size(); i++)
-		delete walkPath[i];
+	/// SET SIZE & POSITIONS
+	thisPos = iPoint(thisPos.x / App->map->getTileSize(), thisPos.y / App->map->getTileSize());
+	tileToMove = iPoint(tileToMove.x / App->map->getTileSize(), tileToMove.y / App->map->getTileSize());
+
+	/// CLEAR VECTOR
 	walkPath.clear();
-	// CALCULATE VECTOR
+
+	/// CALCULATE VECTOR
 	for (int i = 0; i < pathVec.size(); i++)
-	{
 		if (pathVec[i]->nodePos == tileToMove)
 		{
 			walkPath.push_back(pathVec[i]);
@@ -191,14 +185,11 @@ bool PathVector::CalculateWay(iPoint thisPos, iPoint tileToMove)
 			{
 				aux = aux->parent;
 				if (aux->parent != nullptr)
-				{
 					walkPath.push_back(aux);
-				}
 				else
-					return false;
+					break;
 			}
 		}
-	}
 	return true;
 }
 
@@ -206,7 +197,91 @@ void PathVector::PrintAstar()
 {
 	int tileSize = App->map->getTileSize();
 	for (int i = 0; i < pathVec.size(); i++)
+		App->render->DrawQuad({ pathVec[i]->nodePos.x * (int)tileSize, pathVec[i]->nodePos.y * (int)tileSize, (int)tileSize, (int)tileSize }, 0, 150 , 255, 140);
+	for (int i = 0; i < walkPath.size(); i++)
+		App->render->DrawQuad({ walkPath[i]->nodePos.x * (int)tileSize, walkPath[i]->nodePos.y * (int)tileSize, (int)tileSize, (int)tileSize }, 0, 200, 255, 140);
+}
+
+bool PathVector::isEmpty()
+{
+	if (pathVec.size() <= 0)
+		return true;
+	if (walkPath.size() <= 0)
+		return true;
+	return false;
+}
+
+iPoint PathVector::nextTileToMove(iPoint actualPos)
+{
+	if (walkPath.empty() == true)
+		return iPoint(0, 0);
+	if (actualPos == walkPath.front()->nodePos)
+		walkPath.pop_back();
+	iPoint ret;
+	FIXED_ANGLE angleToReturn = FIXED_ANGLE::NON_ANGLE;
+
+	if (walkPath[0]->nodePos.x - actualPos.x >= 0)
 	{
-		App->render->DrawQuad({ pathVec[i]->nodePos.x * (int)tileSize, pathVec[i]->nodePos.y * (int)tileSize, (int)tileSize, (int)tileSize }, 0, 150 + i , 255, 140);
+		if (walkPath[0]->nodePos.y - actualPos.y >= 0)
+			angleToReturn = FIXED_ANGLE::UP_LEFT;
+		else
+			angleToReturn = FIXED_ANGLE::DOWN_LEFT;
 	}
+	else
+	{
+		if (walkPath[0]->nodePos.y - actualPos.y >= 0)
+			angleToReturn = FIXED_ANGLE::UP_RIGHT;
+		else
+			angleToReturn = FIXED_ANGLE::DOWN_RIGHT;
+	}
+	float dX = 0.0f;
+	float dY = 0.0f;
+	switch (angleToReturn)
+	{
+	case FIXED_ANGLE::UP_RIGHT:
+		dX = (float)actualPos.x - (float)walkPath[0]->nodePos.x;
+		dY = (float)walkPath[0]->nodePos.y - (float)actualPos.y;
+		if (dX / 2.5f > dY)
+			angleToReturn = FIXED_ANGLE::RIGHT;
+		else if (dY / 2.5f > dX)
+			angleToReturn = FIXED_ANGLE::UP;
+		break;
+	case FIXED_ANGLE::UP_LEFT:
+		dX = (float)walkPath[0]->nodePos.x - (float)actualPos.x;
+		dY = (float)walkPath[0]->nodePos.y - (float)actualPos.y;
+		if (dX / 2.5f > dY)
+			angleToReturn = FIXED_ANGLE::LEFT;
+		else if (dY / 2.5f > dX)
+			angleToReturn = FIXED_ANGLE::UP;
+		break;
+	case FIXED_ANGLE::DOWN_RIGHT:
+		dX = (float)actualPos.x - (float)walkPath[0]->nodePos.x;
+		dY = (float)actualPos.y - (float)walkPath[0]->nodePos.y;
+		if (dX / 2.5f > dY)
+			angleToReturn = FIXED_ANGLE::RIGHT;
+		else if (dY / 2.5f > dX)
+			angleToReturn = FIXED_ANGLE::DOWN;
+		break;
+	case FIXED_ANGLE::DOWN_LEFT:
+		dX = (float)walkPath[0]->nodePos.x - (float)actualPos.x;
+		dY = (float)actualPos.y - (float)walkPath[0]->nodePos.y;
+		if (dX / 2.5f > dY)
+			angleToReturn = FIXED_ANGLE::LEFT;
+		else if (dY / 2.5f > dX)
+			angleToReturn = FIXED_ANGLE::DOWN;
+		break;
+	}
+	switch (angleToReturn)
+	{
+	case UP: ret = iPoint(0, -3); break;
+	case UP_RIGHT: ret = iPoint(2, -2); break;
+	case RIGHT: ret = iPoint(3, 0); break;
+	case DOWN_RIGHT: ret = iPoint(2, 2); break;
+	case DOWN: ret = iPoint(0, 3); break;
+	case DOWN_LEFT: ret = iPoint(-2, 2); break;
+	case LEFT: ret = iPoint(-3, 0); break;
+	case UP_LEFT: ret = iPoint(-2, -2); break;
+	}
+
+	return ret;
 }

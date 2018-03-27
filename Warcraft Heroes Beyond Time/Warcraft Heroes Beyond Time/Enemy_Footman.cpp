@@ -27,9 +27,9 @@ bool Enemy_Footman::Update(float dt)
 	{
 	case FOOTMAN_STATE::FOOTMAN_IDLE:
 		anim = &animIdle[LookAtPlayer()];
-		/*if (DistanceToPlayer() < DISTANCE_TO_MOVE) {
+		if (DistanceToPlayer() < DISTANCE_TO_MOVE) {
 			state = FOOTMAN_STATE::FOOTMAN_WALK;
-		}*/
+		}
 		break;
 	case FOOTMAN_STATE::FOOTMAN_WALK:
 		anim = &animWalk[LookAtPlayer()];
@@ -53,7 +53,13 @@ bool Enemy_Footman::Update(float dt)
 		//}
 		else // AQUI CAMINA, PERO AQUESTA FUNCIO ES TEMPORAL
 		{
-			pos += {SillyMovementToPlayer(pos).x * MOVEMENT_SPEED, SillyMovementToPlayer(pos).y * MOVEMENT_SPEED};
+			iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x, (int)pos.y));
+			if (pathVector.isEmpty()) {
+				pathVector.CalculatePathAstar(iPoint((int)this->pos.x, (int)this->pos.y), iPoint((int)App->entities->player->pos.x, (int)App->entities->player->pos.y));
+				pathVector.CalculateWay(iPoint((int)this->pos.x, (int)this->pos.y), iPoint((int)App->entities->player->pos.x, (int)App->entities->player->pos.y));
+			}
+			else
+				this->pos += fPoint((float)move.x, (float)move.y);
 		}
 
 		break;
