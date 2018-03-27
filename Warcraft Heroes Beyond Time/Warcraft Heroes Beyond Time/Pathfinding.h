@@ -4,17 +4,17 @@
 #include "Entity.h"
 #include "Module.h"
 #include <vector>
+#include <queue>
 
 fPoint SillyMovementToPlayer(fPoint pos);
 
 struct pathNode
 {
 	pathNode(int cost, iPoint nodePos);
-	int cost = -1;
+	int cost = 0;
 	iPoint nodePos;
 	pathNode* neighbours[4] = { nullptr, nullptr, nullptr, nullptr };
 	pathNode* parent = nullptr;
-	bool operator < (const pathNode& compare);
 };
 
 class Pathfinding : public Module
@@ -36,13 +36,25 @@ public:
 	uint mapHeight = 0;
 };
 
+struct pathNodeComparison
+{
+	bool operator()(const pathNode* lhs, const pathNode* rhs) const
+	{
+		return lhs->cost > rhs->cost;
+	}
+};
+
 struct PathVector
 {
 	PathVector();
 	iPoint nextTileToMove(iPoint actualPos);
-	void CalculatePathAstar(iPoint thisPos, iPoint tileToMove);
+	bool CalculatePathAstar(iPoint thisPos, iPoint tileToMove);
+	bool CalculateWay(iPoint thisPos, iPoint tileToMove);
+	void PrintAstar();
 private:
-	std::vector<pathNode*> path;
+	std::vector<pathNode*> pathVec;
+	std::vector<pathNode*> walkPath;
+
 };
 
 #endif

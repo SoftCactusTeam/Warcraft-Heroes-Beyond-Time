@@ -27,9 +27,9 @@ bool Enemy_Footman::Update(float dt)
 	{
 	case FOOTMAN_STATE::FOOTMAN_IDLE:
 		anim = &animIdle[LookAtPlayer()];
-		if (DistanceToPlayer() < DISTANCE_TO_MOVE) {
+		/*if (DistanceToPlayer() < DISTANCE_TO_MOVE) {
 			state = FOOTMAN_STATE::FOOTMAN_WALK;
-		}
+		}*/
 		break;
 	case FOOTMAN_STATE::FOOTMAN_WALK:
 		anim = &animWalk[LookAtPlayer()];
@@ -70,8 +70,10 @@ bool Enemy_Footman::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_4) == KeyState::KEY_DOWN)
 	{
 		pathVector.CalculatePathAstar(iPoint((int)this->pos.x, (int)this->pos.y), iPoint((int)App->entities->player->pos.x, (int)App->entities->player->pos.y));
-
+		pathVector.CalculateWay(iPoint((int)this->pos.x, (int)this->pos.y), iPoint((int)App->entities->player->pos.x, (int)App->entities->player->pos.y));
 	}
+		pathVector.PrintAstar();
+
 	return true;
 }
 

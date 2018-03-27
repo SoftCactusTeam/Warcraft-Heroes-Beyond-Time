@@ -115,7 +115,6 @@ bool MapGenerator::GenerateMap(MapData data)
 			nodes.push_back(new MapNode({ (int)j,(int)i }, WATER));
 		}
 	}
-
 	ret = nodes.size() == totalSize;
 
 	if (ret)
@@ -319,6 +318,11 @@ void MapGenerator::getSize(uint& w, uint& h)
 {
 	w = sizeX;
 	h = sizeY;
+}
+
+int MapGenerator::getTileSize()
+{
+	return tileSize;
 }
 
 std::vector<MapNode*> MapGenerator::GetMapNodesAndInfo(uint& sizeX, uint& sizeY, uint& tileSize)
