@@ -48,6 +48,8 @@ bool MapGenerator::CleanUp()
 
 	visited.clear();
 
+	totalSize = 0u;
+
 	return nodes.size() <= 0 && visited.size() <= 0;
 }
 
@@ -90,8 +92,8 @@ inline int MapGenerator::Get(int x, int y) const
 
 bool MapGenerator::CheckBoundaries(const iPoint& pos) const
 {
-	return (pos.x > 0 && pos.x < (int)sizeX - 1 &&
-		pos.y > 0 && pos.y < (int)sizeY - 1);
+	return (pos.x > 1 && pos.x < (int)sizeX - 2 &&
+		pos.y > 1 && pos.y < (int)sizeY - 2);
 }
 
 bool MapGenerator::GenerateMap(MapData data)
@@ -135,6 +137,7 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 		srand(time(NULL));
 
 	startNode->whatToBlit = FLOOR;
+	visited.push_back(startNode);
 
 	MapNode* auxNode = startNode;
 
@@ -194,7 +197,7 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 
 	auxNode = nullptr;
 
-	return visited.size() == iterations;
+	return visited.size() == iterations + 1;
 }
 
 bool MapGenerator::GenerateWalls()
@@ -207,8 +210,6 @@ bool MapGenerator::GenerateWalls()
 		{
 			MapNode* auxNode = visited[i];
 
-			if (CheckBoundaries({ auxNode->pos.x, auxNode->pos.y - 1 }))
-			{
 				if (SDL_RectEquals(&nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)]->whatToBlit, &SDL_Rect(WATER)))
 				{
 					nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)]->whatToBlit = WALL;
@@ -216,37 +217,27 @@ bool MapGenerator::GenerateWalls()
 					//int type = CheckTypeOfNode(nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)]);
 					//UpdateNode(nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)], type);
 				}
-			}
 
-			if (CheckBoundaries({ auxNode->pos.x, auxNode->pos.y + 1 }))
-			{
 				if (SDL_RectEquals(&nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)]->whatToBlit, &SDL_Rect(WATER)))
 				{
 					//Check type of node adn Update
 					//int type = CheckTypeOfNode(nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)]);
 					//UpdateNode(nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)], type);
 				}
-			}
 
-			if (CheckBoundaries({ auxNode->pos.x + 1, auxNode->pos.y }))
-			{
 				if (SDL_RectEquals(&nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)]->whatToBlit, &SDL_Rect(WATER)))
 				{
 					//Check type of node adn Update
 					//int type = CheckTypeOfNode(nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)]);
 					//UpdateNode(nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)], type);
 				}
-			}
 
-			if (CheckBoundaries({ auxNode->pos.x - 1, auxNode->pos.y }))
-			{
 				if (SDL_RectEquals(&nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)]->whatToBlit, &SDL_Rect(WATER)))
 				{
 					//Check type of node adn Update
 					//int type = CheckTypeOfNode(nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)]);
 					//UpdateNode(nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)], type);
 				}
-			}
 		}
 	}
 

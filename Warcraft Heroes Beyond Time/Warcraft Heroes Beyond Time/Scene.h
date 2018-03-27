@@ -36,6 +36,7 @@ public:
 
 private:
 	bool restart = false;
+	int lvlIndex = 0;
 };
 
 

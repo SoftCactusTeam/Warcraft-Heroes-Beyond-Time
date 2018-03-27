@@ -27,14 +27,6 @@ bool Scene::Awake()
 
 bool Scene::Start()
 {
-	MapData mapInfo;
-	mapInfo.sizeX = 50;
-	mapInfo.sizeY = 50;
-	mapInfo.iterations = 600;
-	mapInfo.tilesetPath = "Tiles.png";
-
-	App->map->GenerateMap(mapInfo);
-
 	App->gui->Activate();
 	switch (actual_scene)
 	{
@@ -94,7 +86,16 @@ bool Scene::Start()
 		{
 			App->entities->Activate();
 			App->console->Activate();
-			PlayerEntity* player = App->entities->AddPlayer({ 55,55 }, THRALL);
+
+			MapData mapInfo;
+			mapInfo.sizeX = 50;
+			mapInfo.sizeY = 50;
+			mapInfo.iterations = 600;
+			mapInfo.tilesetPath = "Tiles.png";
+			lvlIndex = 1;
+
+			App->map->GenerateMap(mapInfo);
+			PlayerEntity* player = App->entities->AddPlayer({ 25*48,25*48 }, THRALL);
 			App->entities->AddEnemy({ 80,80 }, FOOTMAN);
 			App->entities->SetPlayer(player);
 			break;
@@ -116,7 +117,6 @@ bool Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
 		App->Save();
-
 	}
 
 	//TESTING LOAD
@@ -125,7 +125,7 @@ bool Scene::Update(float dt)
 		App->Load();
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && actual_scene == Stages::INGAME)
+	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && actual_scene == Stages::INGAME && lvlIndex != 8)
 	{
 		App->map->CleanUp();
 
@@ -136,11 +136,41 @@ bool Scene::Update(float dt)
 		mapInfo.tilesetPath = "Tiles.png";
 
 		App->map->GenerateMap(mapInfo);
+
+		App->entities->ClearEntitiesList();
+		PlayerEntity* player = App->entities->AddPlayer({ 25 * 48,25 * 48 }, THRALL);
+		App->entities->SetPlayer(player);
+
+		lvlIndex++;
+	}
+	else if(App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
+	{
+		App->entities->ClearEntitiesList();
+		App->map->CleanUp();
+		lvlIndex = 0;
+		// RESTART THIS MODULE AND THE ENTIRE GAME // GO TO MAIN MENU
 	}
 
 	if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
 	{
 		App->input->PlayJoyRumble(0.75f, 100);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	{
+		App->render->camera.y += 10;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	{
+		App->render->camera.x += 10;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	{
+		App->render->camera.y -= 10;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	{
+		App->render->camera.x -= 10;
 	}
 
 	return true;

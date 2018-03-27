@@ -822,7 +822,7 @@ void PlayerEntity::InitCulling()
 
 void PlayerEntity::CheckCulling()
 {
-	if (this == App->entities->player)
+	/*if (this == App->entities->player)
 	{
 		SDL_Rect currentRect = anim->GetCurrentRect();
 		if (freeZonex > this->pos.x)
@@ -854,8 +854,7 @@ void PlayerEntity::CheckCulling()
 
 		//Uncomment line below to see the freeZone.
 		//App->render->DrawQuad(freeZone, 255, 0, 0, 50, true, true);
-	}
-	
+	}*/
 }
 
 void PlayerEntity::CheckMapLimits()
