@@ -98,6 +98,8 @@ bool Scene::Start()
 			PlayerEntity* player = App->entities->AddPlayer({ 25*48,25*48 }, THRALL);
 			App->entities->AddEnemy({ 80,80 }, FOOTMAN);
 			App->entities->SetPlayer(player);
+
+			lvlChest = App->entities->AddChest({ 25 * 48,25 * 48 }, MID_CHEST);
 			break;
 		}
 			

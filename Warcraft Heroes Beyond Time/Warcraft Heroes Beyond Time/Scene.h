@@ -3,6 +3,7 @@
 
 #include "Module.h"
 
+struct Chest;
 
 class Scene : public Module
 {
@@ -37,6 +38,8 @@ public:
 private:
 	bool restart = false;
 	int lvlIndex = 0;
+
+	Chest* lvlChest = nullptr;
 };
 
 

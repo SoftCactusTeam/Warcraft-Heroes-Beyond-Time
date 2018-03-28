@@ -205,11 +205,15 @@ bool EntitySystem::Start()
 	LOG("Loading textures");
 	spritesheetsEntities.push_back(App->textures->Load("images/thrall_spritesheet.png"));
 	spritesheetsEntities.push_back(App->textures->Load("Sprites/Footman/Footman_sprite.png"));
+	spritesheetsEntities.push_back(App->textures->Load("all_items.png"));
+	
 	bool ret = true;
+
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end() && ret; ++it)
 	{
 		ret = (*it)->Start();
 	}
+
 	return true;
 }
 
@@ -400,18 +404,19 @@ void EntitySystem::AddConsumable(fPoint coor, CONSUMABLE_TYPE type)
 
 void EntitySystem::AddChest(fPoint coor, CHEST_TYPE type) 
 {
-	ChestEntiy* newEntity = nullptr;
+	ChestEntity* newEntity = nullptr;
 	switch (type) {
 	case CHEST_TYPE::LOW_CHEST:
-		newEntity = new ChestEntiy(coor, CHEST_TYPE::LOW_CHEST, nullptr);
+		newEntity = new ChestEntity(coor, CHEST_TYPE::LOW_CHEST, nullptr);
 		break;
 	case CHEST_TYPE::MID_CHEST:
-		newEntity = new ChestEntiy(coor, CHEST_TYPE::MID_CHEST, nullptr);
+		newEntity = new ChestEntity(coor, CHEST_TYPE::MID_CHEST, spritesheetsEntities[ITEMS_SHEET]);
 		break;
 	case CHEST_TYPE::HIGH_CHEST:
-		newEntity = new ChestEntiy(coor, CHEST_TYPE::HIGH_CHEST, nullptr);
+		newEntity = new ChestEntity(coor, CHEST_TYPE::HIGH_CHEST, nullptr);
 		break;
 	}
+
 	toSpawn.push_back((Entity*)newEntity);
 }
 
