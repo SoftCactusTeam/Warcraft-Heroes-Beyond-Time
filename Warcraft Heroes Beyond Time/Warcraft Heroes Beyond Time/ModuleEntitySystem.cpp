@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include "Application.h"
 #include "Log.h"
 #include "ModuleEntitySystem.h"
@@ -143,6 +146,7 @@ void EntitySystem::Init()
 
 bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 {
+	srand(time(NULL));
 	ConsoleOrder* txell_consoleOrder = new Entities_ConsoleOrder;
 	App->console->AddConsoleOrderToList(txell_consoleOrder);
 
@@ -451,4 +455,10 @@ void EntitySystem::ClearEnemies()
 	{
 		if((*it)->)
 	}*/
+}
+
+
+int EntitySystem::GetRandomNumber(int rang)
+{
+	return rand() % rang;
 }
