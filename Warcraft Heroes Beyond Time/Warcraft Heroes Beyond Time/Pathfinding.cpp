@@ -190,6 +190,11 @@ bool PathVector::CalculateWay(iPoint thisPos, iPoint tileToMove)
 					break;
 			}
 		}
+	//std::vector<pathNode*> copyWalkPath = walkPath;
+	//for (int i = copyWalkPath.size(); i > 0; i--)
+	//{
+	//	walkPath[copyWalkPath.size() - i] = copyWalkPath[i - 1];
+	//}
 	return true;
 }
 
@@ -206,82 +211,24 @@ bool PathVector::isEmpty()
 {
 	if (pathVec.size() <= 0)
 		return true;
-	if (walkPath.size() <= 0)
+	else if (walkPath.size() <= 0)
 		return true;
 	return false;
 }
 
 iPoint PathVector::nextTileToMove(iPoint actualPos)
 {
-	if (walkPath.empty() == true)
-		return iPoint(0, 0);
-	if (actualPos == walkPath.front()->nodePos)
-		walkPath.pop_back();
-	iPoint ret;
-	FIXED_ANGLE angleToReturn = FIXED_ANGLE::NON_ANGLE;
+	/// SET SIZE & POSITIONS
+	actualPos = iPoint(actualPos.x / App->map->getTileSize(), actualPos.y / App->map->getTileSize());
 
-	if (walkPath[0]->nodePos.x - actualPos.x >= 0)
-	{
-		if (walkPath[0]->nodePos.y - actualPos.y >= 0)
-			angleToReturn = FIXED_ANGLE::UP_LEFT;
-		else
-			angleToReturn = FIXED_ANGLE::DOWN_LEFT;
-	}
-	else
-	{
-		if (walkPath[0]->nodePos.y - actualPos.y >= 0)
-			angleToReturn = FIXED_ANGLE::UP_RIGHT;
-		else
-			angleToReturn = FIXED_ANGLE::DOWN_RIGHT;
-	}
-	float dX = 0.0f;
-	float dY = 0.0f;
-	switch (angleToReturn)
-	{
-	case FIXED_ANGLE::UP_RIGHT:
-		dX = (float)actualPos.x - (float)walkPath[0]->nodePos.x;
-		dY = (float)walkPath[0]->nodePos.y - (float)actualPos.y;
-		if (dX / 2.5f > dY)
-			angleToReturn = FIXED_ANGLE::RIGHT;
-		else if (dY / 2.5f > dX)
-			angleToReturn = FIXED_ANGLE::UP;
-		break;
-	case FIXED_ANGLE::UP_LEFT:
-		dX = (float)walkPath[0]->nodePos.x - (float)actualPos.x;
-		dY = (float)walkPath[0]->nodePos.y - (float)actualPos.y;
-		if (dX / 2.5f > dY)
-			angleToReturn = FIXED_ANGLE::LEFT;
-		else if (dY / 2.5f > dX)
-			angleToReturn = FIXED_ANGLE::UP;
-		break;
-	case FIXED_ANGLE::DOWN_RIGHT:
-		dX = (float)actualPos.x - (float)walkPath[0]->nodePos.x;
-		dY = (float)actualPos.y - (float)walkPath[0]->nodePos.y;
-		if (dX / 2.5f > dY)
-			angleToReturn = FIXED_ANGLE::RIGHT;
-		else if (dY / 2.5f > dX)
-			angleToReturn = FIXED_ANGLE::DOWN;
-		break;
-	case FIXED_ANGLE::DOWN_LEFT:
-		dX = (float)walkPath[0]->nodePos.x - (float)actualPos.x;
-		dY = (float)actualPos.y - (float)walkPath[0]->nodePos.y;
-		if (dX / 2.5f > dY)
-			angleToReturn = FIXED_ANGLE::LEFT;
-		else if (dY / 2.5f > dX)
-			angleToReturn = FIXED_ANGLE::DOWN;
-		break;
-	}
-	switch (angleToReturn)
-	{
-	case UP: ret = iPoint(0, -3); break;
-	case UP_RIGHT: ret = iPoint(2, -2); break;
-	case RIGHT: ret = iPoint(3, 0); break;
-	case DOWN_RIGHT: ret = iPoint(2, 2); break;
-	case DOWN: ret = iPoint(0, 3); break;
-	case DOWN_LEFT: ret = iPoint(-2, 2); break;
-	case LEFT: ret = iPoint(-3, 0); break;
-	case UP_LEFT: ret = iPoint(-2, -2); break;
-	}
+	iPoint ret(0, 0);
+	if (walkPath.empty() == true)
+		return ret;
+
+	ret.x = walkPath.back()->nodePos.x - actualPos.x;
+	ret.y = walkPath.back()->nodePos.y - actualPos.y;
+	if (ret.x == 0 && ret.y == 0)
+		walkPath.pop_back();
 
 	return ret;
 }

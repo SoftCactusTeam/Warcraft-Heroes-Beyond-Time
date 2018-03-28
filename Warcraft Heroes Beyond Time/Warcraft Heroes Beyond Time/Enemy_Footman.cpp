@@ -10,7 +10,7 @@
 #define DISTANCE_TO_ATAC	70
 #define CHARGE_DISTANCE		50
 #define ATAC_COOLDOWN		1000
-#define MOVEMENT_SPEED		2
+#define MOVEMENT_SPEED		5
 
 Enemy_Footman::Enemy_Footman(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture) : EnemyEntity(coor, character, texture) {}
 
@@ -53,13 +53,17 @@ bool Enemy_Footman::Update(float dt)
 		//}
 		else // AQUI CAMINA, PERO AQUESTA FUNCIO ES TEMPORAL
 		{
-			iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x, (int)pos.y));
-			if (pathVector.isEmpty()) {
+
+			if (pathVector.isEmpty())
+			{
 				pathVector.CalculatePathAstar(iPoint((int)this->pos.x, (int)this->pos.y), iPoint((int)App->entities->player->pos.x, (int)App->entities->player->pos.y));
 				pathVector.CalculateWay(iPoint((int)this->pos.x, (int)this->pos.y), iPoint((int)App->entities->player->pos.x, (int)App->entities->player->pos.y));
 			}
 			else
-				this->pos += fPoint((float)move.x, (float)move.y);
+			{
+				iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x, (int)pos.y));
+				this->pos += fPoint((float)move.x * MOVEMENT_SPEED, (float)move.y * MOVEMENT_SPEED);
+			}
 		}
 
 		break;
