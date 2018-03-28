@@ -23,6 +23,15 @@ bool Enemy_Footman::Start()
 
 bool Enemy_Footman::Update(float dt)
 {
+	// AIXO ES PER COMPROBAR SI ESTA PARADA O NO
+	if (stop == true)
+	{
+		if (SDL_GetTicks() > accountantPrincipal)
+			stop = false;
+		else
+			return true;
+	}
+
 	switch (state)
 	{
 	case FOOTMAN_STATE::FOOTMAN_IDLE:
@@ -74,10 +83,12 @@ bool Enemy_Footman::Update(float dt)
 		//if (accountantPrincipal <= 0)
 		//	state = FOOTMAN_STATE::FOOTMAN_IDLE;
 		break;
+	default:
+		state = FOOTMAN_STATE::FOOTMAN_IDLE;
+		break;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_4) == KeyState::KEY_DOWN)
-		pathVector.PrintAstar();
+	pathVector.PrintAstar();
 
 	return true;
 }

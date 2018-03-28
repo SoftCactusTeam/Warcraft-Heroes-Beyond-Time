@@ -19,7 +19,6 @@ public:
 	int live = -1;
 	int movementSpeed = -1;
 	int atacSpeed = -1;
-	int accountantPrincipal = -1;
 	FIXED_ANGLE orientation = FIXED_ANGLE::NON_ANGLE;
 };
 
