@@ -103,6 +103,10 @@ bool PathVector::CalculatePathAstar(iPoint thisPos, iPoint tileToMove)
 	thisPos = iPoint(thisPos.x / App->map->getTileSize() , thisPos.y / App->map->getTileSize());
 	tileToMove = iPoint(tileToMove.x / App->map->getTileSize() , tileToMove.y / App->map->getTileSize());
 
+	/// SI L'OBJECTIU ESTA FORA DEL PATH WALKABLE FORA
+	if (App->path->ExistWalkableAtPos(tileToMove) == -1)
+		return false;
+
 	/// INIT QUEUES & FIRST PUSH
 	std::priority_queue<pathNode*, std::vector<pathNode*>, pathNodeComparison> frontQueue;
 	std::vector<pathNode*> visitedQueue;
@@ -190,11 +194,6 @@ bool PathVector::CalculateWay(iPoint thisPos, iPoint tileToMove)
 					break;
 			}
 		}
-	//std::vector<pathNode*> copyWalkPath = walkPath;
-	//for (int i = copyWalkPath.size(); i > 0; i--)
-	//{
-	//	walkPath[copyWalkPath.size() - i] = copyWalkPath[i - 1];
-	//}
 	return true;
 }
 
