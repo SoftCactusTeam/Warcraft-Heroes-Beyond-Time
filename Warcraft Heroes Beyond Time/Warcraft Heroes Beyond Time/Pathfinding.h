@@ -25,7 +25,7 @@ public:
 	void ClearMap(); 
 
 	void AddNodeToMap(int cost, iPoint nodePos = { -1,-1 });
-	void PrintColliders();
+	void PrintWalkableTiles();
 
 	void LoadNeighbours();
 	int ExistWalkableAtPos(iPoint pos);
@@ -34,6 +34,7 @@ public:
 	uint tileSize = 0;
 	uint mapWidth = 0;
 	uint mapHeight = 0;
+	bool printWalkables = false;
 };
 
 struct pathNodeComparison

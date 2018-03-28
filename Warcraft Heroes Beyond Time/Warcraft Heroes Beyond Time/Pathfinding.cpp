@@ -56,7 +56,7 @@ void Pathfinding::AddNodeToMap(int cost, iPoint point)
 	map.push_back(aux);
 }
 
-void Pathfinding::PrintColliders()
+void Pathfinding::PrintWalkableTiles()
 {
 
 	for (int i = 0; i < map.size(); i++)

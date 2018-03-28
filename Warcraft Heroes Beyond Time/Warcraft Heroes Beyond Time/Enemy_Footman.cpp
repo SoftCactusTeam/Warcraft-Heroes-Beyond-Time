@@ -53,7 +53,6 @@ bool Enemy_Footman::Update(float dt)
 		//}
 		else // AQUI CAMINA, PERO AQUESTA FUNCIO ES TEMPORAL
 		{
-
 			if (pathVector.isEmpty())
 			{
 				pathVector.CalculatePathAstar(iPoint((int)this->pos.x, (int)this->pos.y), iPoint((int)App->entities->player->pos.x, (int)App->entities->player->pos.y));
@@ -78,10 +77,6 @@ bool Enemy_Footman::Update(float dt)
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_4) == KeyState::KEY_DOWN)
-	{
-		pathVector.CalculatePathAstar(iPoint((int)this->pos.x, (int)this->pos.y), iPoint((int)App->entities->player->pos.x, (int)App->entities->player->pos.y));
-		pathVector.CalculateWay(iPoint((int)this->pos.x, (int)this->pos.y), iPoint((int)App->entities->player->pos.x, (int)App->entities->player->pos.y));
-	}
 		pathVector.PrintAstar();
 
 	return true;

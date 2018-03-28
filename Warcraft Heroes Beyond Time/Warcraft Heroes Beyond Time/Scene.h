@@ -11,7 +11,7 @@ public:
 	Scene();
 	virtual ~Scene();
 
-	bool Awake();
+	bool Awake(pugi::xml_node& consoleNode);
 	bool Start();
 	bool PreUpdate();
 	bool Update(float dt);

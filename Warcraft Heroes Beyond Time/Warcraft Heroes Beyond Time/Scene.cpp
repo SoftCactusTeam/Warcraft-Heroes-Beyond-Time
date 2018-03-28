@@ -11,8 +11,19 @@
 #include "ModuleAudio.h"
 #include "ModuleMapGenerator.h"
 #include "ModuleRender.h"
-
 #include "Pathfinding.h"
+
+class ConsoleMap : public ConsoleOrder
+{
+	std::string orderName() { return "map"; }
+	void Exec(std::string parametre, int parametreNumeric) {
+		if (parametre == "printwalkables")
+			if (parametreNumeric == 1)
+				App->path->printWalkables = true;
+			else if (parametreNumeric == 0)
+				App->path->printWalkables = false;
+	}
+};
 
 
 Scene::Scene()
@@ -22,8 +33,10 @@ Scene::Scene()
 
 Scene::~Scene(){}
 
-bool Scene::Awake()
+bool Scene::Awake(pugi::xml_node& consoleNode)
 {
+	ConsoleOrder* order = new ConsoleMap();
+	App->console->AddConsoleOrderToList(order);
 	return true;
 }
 
@@ -114,9 +127,8 @@ bool Scene::PreUpdate()
 
 bool Scene::Update(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)
-		App->path->PrintColliders();
-
+	if (App->path->printWalkables == true)
+		App->path->PrintWalkableTiles();
 	//TESTING SAVES
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
