@@ -206,6 +206,12 @@ void PathVector::PrintAstar()
 		App->render->DrawQuad({ walkPath[i]->nodePos.x * (int)tileSize, walkPath[i]->nodePos.y * (int)tileSize, (int)tileSize, (int)tileSize }, 0, 200, 255, 140);
 }
 
+void PathVector::Clear()
+{
+	pathVec.clear();
+	walkPath.clear();
+}
+
 bool PathVector::isEmpty()
 {
 	if (pathVec.size() <= 0)

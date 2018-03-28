@@ -51,8 +51,11 @@ struct PathVector
 	iPoint nextTileToMove(iPoint actualPos);
 	bool CalculatePathAstar(iPoint thisPos, iPoint tileToMove);
 	bool CalculateWay(iPoint thisPos, iPoint tileToMove);
+
 	void PrintAstar();
+	void Clear();
 	bool isEmpty();
+
 private:
 	std::vector<pathNode*> pathVec;
 	std::vector<pathNode*> walkPath;

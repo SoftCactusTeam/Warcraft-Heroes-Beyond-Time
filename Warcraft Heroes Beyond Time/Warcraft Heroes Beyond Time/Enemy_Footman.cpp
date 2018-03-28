@@ -8,7 +8,8 @@
 #define DISTANCE_TO_MOVE	300
 #define DISTANCE_TO_CHARGE	120
 #define DISTANCE_TO_ATAC	70
-#define CHARGE_DISTANCE		50
+#define CHARGE_DISTANCE		100
+#define CHARGE_SPEED		20
 #define ATAC_COOLDOWN		1000
 #define MOVEMENT_SPEED		5
 
@@ -38,6 +39,7 @@ bool Enemy_Footman::Update(float dt)
 		anim = &animIdle[LookAtPlayer()];
 		if (DistanceToPlayer() < DISTANCE_TO_MOVE) {
 			state = FOOTMAN_STATE::FOOTMAN_WALK;
+			pathVector.Clear();
 		}
 		break;
 	case FOOTMAN_STATE::FOOTMAN_WALK:
@@ -45,6 +47,7 @@ bool Enemy_Footman::Update(float dt)
 		if (DistanceToPlayer() > DISTANCE_TO_MOVE)
 		{
 			state = FOOTMAN_STATE::FOOTMAN_IDLE;
+			pathVector.Clear();
 		}
 		else if (DistanceToPlayer() < DISTANCE_TO_ATAC)
 		{
@@ -53,13 +56,20 @@ bool Enemy_Footman::Update(float dt)
 			anim = &animAtac[LookAtPlayer()];
 			anim->Reset();
 		}
-		//else if (DistanceToPlayer() < DISTANCE_TO_CHARGE)
-		//{
-		//	state = FOOTMAN_STATE::FOOTMAN_ATAC;
-		//	accountantPrincipal = CHARGE_DISTANCE;
-		//	anim = &animCharge[LookAtPlayer()];
-		//	anim->Reset();
-		//}
+		else if (DistanceToPlayer() < DISTANCE_TO_CHARGE)
+		{
+			if (App->entities->GetRandomNumber(100) <= 70)		// Si supera una tirada de 70%
+			{
+				state = FOOTMAN_STATE::FOOTMAN_CHARGE;
+				accountantPrincipal = CHARGE_DISTANCE;
+				anim = &animCharge[LookAtPlayer()];
+				anim->Reset();
+			}
+			else
+			{
+				StopConcreteTime(1000);
+			}
+		}
 		else // AQUI CAMINA, PERO AQUESTA FUNCIO ES TEMPORAL
 		{
 			if (pathVector.isEmpty())
@@ -77,14 +87,29 @@ bool Enemy_Footman::Update(float dt)
 		break;
 	case FOOTMAN_STATE::FOOTMAN_ATAC:
 		if (SDL_GetTicks() > accountantPrincipal)
+		{
 			state = FOOTMAN_STATE::FOOTMAN_IDLE;
+			pathVector.Clear();
+		}
 		break;
 	case FOOTMAN_STATE::FOOTMAN_CHARGE:
-		//if (accountantPrincipal <= 0)
-		//	state = FOOTMAN_STATE::FOOTMAN_IDLE;
+		if (accountantPrincipal <= 0)
+		{
+			StopConcreteTime(500);
+			state = FOOTMAN_STATE::FOOTMAN_IDLE;
+			pathVector.Clear();
+		}
+		else
+		{
+			iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x, (int)pos.y));
+			this->pos += fPoint((float)move.x * CHARGE_SPEED, (float)move.y * CHARGE_SPEED);
+
+			accountantPrincipal -= CHARGE_SPEED;
+		}
 		break;
 	default:
 		state = FOOTMAN_STATE::FOOTMAN_IDLE;
+		pathVector.Clear();
 		break;
 	}
 
