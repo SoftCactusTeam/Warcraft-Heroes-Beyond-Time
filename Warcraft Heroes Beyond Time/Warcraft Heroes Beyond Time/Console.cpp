@@ -6,6 +6,7 @@
 #include "ModuleRender.h"
 #include "ModuleEntitySystem.h"
 #include "PlayerEntity.h"
+#include "Scene.h"
 
 
 // ====================================================================================== //
@@ -145,14 +146,14 @@ void Console::SwitchWrittingState()
 	if (writting)
 	{
 		box->EnableInput();
-		App->entities->player->Walk(false);
+		App->scene->player->Walk(false);
 	}
 		
 	else
 	{
 		box->DisableInput();
 		box->ClearBox();
-		App->entities->player->Walk(true);
+		App->scene->player->Walk(true);
 	}
 		
 }

@@ -95,11 +95,12 @@ bool Scene::Start()
 			lvlIndex = 1;
 
 			App->map->GenerateMap(mapInfo);
-			PlayerEntity* player = App->entities->AddPlayer({ 25*48,25*48 }, THRALL);
+			player = App->entities->AddPlayer({ 25*48,25*48 }, THRALL);
 			App->entities->AddEnemy({ 80,80 }, FOOTMAN);
-			App->entities->SetPlayer(player);
 
-			lvlChest = App->entities->AddChest({ 25 * 48,25 * 48 }, MID_CHEST);
+			iPoint chestPos = App->map->GetRandomValidPoint();
+			lvlChest = App->entities->AddChest({ (float)chestPos.x * 48,(float)chestPos.y * 48 }, MID_CHEST);
+			portal = App->entities->AddStaticEntity({ 25 * 48,25 * 48 }, PORTAL);
 			break;
 		}
 			
@@ -140,9 +141,11 @@ bool Scene::Update(float dt)
 		App->map->GenerateMap(mapInfo);
 
 		App->entities->ClearEntitiesList();
-		PlayerEntity* player = App->entities->AddPlayer({ 25 * 48,25 * 48 }, THRALL);
-		App->entities->SetPlayer(player);
-
+		player = App->entities->AddPlayer({ 25 * 48,25 * 48 }, THRALL);
+		iPoint chestPos = App->map->GetRandomValidPoint();
+		lvlChest = App->entities->AddChest({ (float)chestPos.x * 48,(float)chestPos.y * 48 }, MID_CHEST);
+		portal = App->entities->AddStaticEntity({ 25 * 48,25 * 48 }, PORTAL);
+		
 		lvlIndex++;
 	}
 	else if(App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
@@ -173,6 +176,12 @@ bool Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 	{
 		App->render->camera.x -= 10;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN)
+	{
+		lvlChest->UnLockChest();
+		lvlChest->OpenChest();
 	}
 
 	return true;

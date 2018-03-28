@@ -2,8 +2,9 @@
 #define __SCENE_H__
 
 #include "Module.h"
-
-struct Chest;
+#include "PlayerEntity.h"
+#include "ChestEntity.h"
+#include "StaticEntity.h"
 
 class Scene : public Module
 {
@@ -39,7 +40,11 @@ private:
 	bool restart = false;
 	int lvlIndex = 0;
 
-	Chest* lvlChest = nullptr;
+	ChestEntity* lvlChest = nullptr;
+	StaticEntity* portal = nullptr;
+
+public:
+	PlayerEntity* player = nullptr;
 };
 
 

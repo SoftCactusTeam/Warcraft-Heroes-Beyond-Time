@@ -53,6 +53,17 @@ bool MapGenerator::CleanUp()
 	return nodes.size() <= 0 && visited.size() <= 0;
 }
 
+iPoint MapGenerator::GetRandomValidPoint()
+{
+	int randNum = 0;
+
+	do
+		randNum = rand() % (nodes.size() - 0 + 1);
+	while (!SDL_RectEquals(&nodes[randNum]->whatToBlit, &SDL_Rect(FLOOR)) || nodes[randNum]->pos == nodes[Get(sizeX / 2, sizeY / 2)]->pos);
+		
+	return nodes[randNum]->pos;
+}
+
 bool MapGenerator::DrawPrePlayerMap()
 {
 	bool ret = true;

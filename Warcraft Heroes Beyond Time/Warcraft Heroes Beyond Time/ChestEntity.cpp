@@ -5,7 +5,7 @@ ChestEntity::ChestEntity(fPoint coor, CHEST_TYPE type, SDL_Texture* texture) : S
 	chest.PushBack({ 1,18,32,32 });
 	chest.PushBack({ 34,18,32,32 });
 	chest.PushBack({ 67,18,32,32 });
-	chest.speed = 1.0f;
+	chest.speedFactor = 0.0f;
 }
 
 bool ChestEntity::Start()
@@ -17,10 +17,10 @@ bool ChestEntity::Start()
 
 bool ChestEntity::Update(float dt)
 {
-	if (chest.Finished())
+	if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({67,18,32,32})))
 		chest.Stop();
-
-	chest.speed *= dt;
+	
+		anim->speed = chest.speedFactor * dt;
 
 	return true;
 }
@@ -29,9 +29,10 @@ bool ChestEntity::Finish() { return true; }
 
 bool ChestEntity::OpenChest()
 {
-	chest.Start();
-
-	return true;
+	if (!locked)
+		chest.Start(2.0f);
+	
+	return !locked;
 }
 
 void ChestEntity::UnLockChest()

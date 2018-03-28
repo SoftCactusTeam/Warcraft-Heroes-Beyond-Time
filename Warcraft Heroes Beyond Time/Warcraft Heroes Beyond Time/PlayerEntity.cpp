@@ -2,6 +2,7 @@
 #include "PlayerEntity.h"
 #include "ModuleInput.h"
 #include "ModuleRender.h"
+#include "Scene.h"
 #include "ModuleMapGenerator.h"
 #include "ModuleEntitySystem.h"
 
@@ -804,7 +805,7 @@ void PlayerEntity::Walk(bool can)
 
 void PlayerEntity::InitCulling()
 {
-	if (this == App->entities->player)
+	if (this == App->scene->player)
 	{
 		SDL_Rect currRect = anim->GetCurrentRect();
 		App->render->fcamerax = this->pos.x + App->render->camera.w / 4 + currRect.w / 2;

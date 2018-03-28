@@ -5,13 +5,12 @@
 
 class StaticObjectEntity : public StaticEntity {
 public:
-	StaticObjectEntity(fPoint coor, STATIC_OBJECT_TYPE type, SDL_Texture* texture);
+	StaticObjectEntity(fPoint coor, SDL_Texture* texture);
 
 	bool Start();
 	bool Finish();
 
 private:
-	STATIC_OBJECT_TYPE type = STATIC_OBJECT_TYPE::NON_SOBJECT;
 };
 
 #endif

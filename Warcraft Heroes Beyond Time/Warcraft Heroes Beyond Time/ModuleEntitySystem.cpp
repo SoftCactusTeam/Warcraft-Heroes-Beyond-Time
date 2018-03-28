@@ -2,6 +2,7 @@
 #include "Log.h"
 #include "ModuleEntitySystem.h"
 #include "ModuleTextures.h"
+#include "Scene.h"
 
 #include "Entity.h"
 #include "PlayerEntity.h"
@@ -14,6 +15,7 @@
 #include "ModuleColliders.h"
 #include "Thrall.h"
 #include "Enemy_Footman.h"
+#include "PortalEntity.h"
 
 #include "Console.h"
 
@@ -53,7 +55,7 @@ class Spawn_ConsoleOrder : public ConsoleOrder
 		}
 		else if (parameter == "thrall")
 		{
-			App->entities->AddPlayer({ App->entities->player->pos.x, App->entities->player->pos.y - 60 }, THRALL);
+			App->entities->AddPlayer({ App->scene->player->pos.x, App->scene->player->pos.y - 60 }, THRALL);
 		}
 		else if (parameter == "archer")
 		{
@@ -206,7 +208,8 @@ bool EntitySystem::Start()
 	spritesheetsEntities.push_back(App->textures->Load("images/thrall_spritesheet.png"));
 	spritesheetsEntities.push_back(App->textures->Load("Sprites/Footman/Footman_sprite.png"));
 	spritesheetsEntities.push_back(App->textures->Load("all_items.png"));
-	
+	spritesheetsEntities.push_back(App->textures->Load("Mines.png"));
+
 	bool ret = true;
 
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end() && ret; ++it)
@@ -402,7 +405,7 @@ void EntitySystem::AddConsumable(fPoint coor, CONSUMABLE_TYPE type)
 	toSpawn.push_back((Entity*)newEntity);
 }
 
-void EntitySystem::AddChest(fPoint coor, CHEST_TYPE type) 
+ChestEntity* EntitySystem::AddChest(fPoint coor, CHEST_TYPE type) 
 {
 	ChestEntity* newEntity = nullptr;
 	switch (type) {
@@ -417,22 +420,23 @@ void EntitySystem::AddChest(fPoint coor, CHEST_TYPE type)
 		break;
 	}
 
-	toSpawn.push_back((Entity*)newEntity);
+	toSpawn.push_back(newEntity);
+
+	return newEntity;
 }
 
-void EntitySystem::AddStaticObject(fPoint coor, STATIC_OBJECT_TYPE type) 
+StaticEntity* EntitySystem::AddStaticEntity(fPoint coor, STATIC_ENTITY_TYPE type)
 {
-	StaticObjectEntity* newEntity = nullptr;
-	switch (type) 
+	PortalEntity* newEntity = nullptr;
+	switch (type)
 	{
-	case STATIC_OBJECT_TYPE::TREE:
-		newEntity = new StaticObjectEntity(coor, STATIC_OBJECT_TYPE::TREE, nullptr);
-		break;
-	case STATIC_OBJECT_TYPE::ROCK:
-		newEntity = new StaticObjectEntity(coor, STATIC_OBJECT_TYPE::ROCK, nullptr);
+	case STATIC_ENTITY_TYPE::PORTAL:
+		newEntity = new PortalEntity(coor, STATIC_ENTITY_TYPE::PORTAL, spritesheetsEntities[MINES_SHEET]);
 		break;
 	}
-	toSpawn.push_back((Entity*)newEntity);
+	toSpawn.push_back(newEntity);
+
+	return newEntity;
 }
 
 void EntitySystem::Save(pugi::xml_node& eSystemNode)
@@ -444,11 +448,6 @@ void EntitySystem::Load(const pugi::xml_node& eSystemNode)
 {
 
 	return;
-}
-
-void EntitySystem::SetPlayer(PlayerEntity* player)
-{
-	this->player = player;
 }
 
 void EntitySystem::ClearEnemies()

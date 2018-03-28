@@ -55,6 +55,7 @@ public:
 	void UpdateNode(MapNode* nodetocheck, int type);
 	bool GenerateWalls();
 	bool CleanUp();
+	iPoint GetRandomValidPoint();
 
 	void getSize(uint& w, uint& h);
 
