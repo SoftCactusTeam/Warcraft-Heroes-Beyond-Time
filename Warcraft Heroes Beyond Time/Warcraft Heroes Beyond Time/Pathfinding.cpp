@@ -33,7 +33,7 @@ pathNode::pathNode(int cost, iPoint nodePos)
 
 Pathfinding::Pathfinding() { name = "pathfinding"; }
 
-void Pathfinding::LoadMap()
+void Pathfinding::LoadPathMap()
 {
 	std::vector<MapNode*> tmpMapNodes = App->map->GetMapNodesAndInfo(mapWidth, mapHeight, tileSize);
 	for (int i = 0; i < tmpMapNodes.size(); i++)

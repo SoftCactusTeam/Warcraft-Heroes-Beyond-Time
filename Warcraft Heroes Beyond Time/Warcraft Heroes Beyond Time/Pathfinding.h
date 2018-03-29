@@ -21,7 +21,7 @@ class Pathfinding : public Module
 {
 public:
 	Pathfinding();
-	void LoadMap();
+	void LoadPathMap();
 	void ClearMap(); 
 
 	void AddNodeToMap(int cost, iPoint nodePos = { -1,-1 });
