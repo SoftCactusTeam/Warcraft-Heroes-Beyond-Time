@@ -7,12 +7,7 @@ Button::Button(fPoint localPos, BType btype, GUIElem* parent, Module* listener) 
 
 Button::~Button()
 {
-	std::list<GUIElem*>::iterator it;
-	for (it = childs.begin(); it != childs.end(); ++it)
-	{
-		delete (*it);
-	}
-	childs.clear();
+	DestroyChilds();
 }
 
 bool Button::Update(float dt)

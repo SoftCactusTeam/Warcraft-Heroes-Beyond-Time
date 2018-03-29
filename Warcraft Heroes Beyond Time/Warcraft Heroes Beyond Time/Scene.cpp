@@ -1,18 +1,17 @@
 #include "Application.h"
 #include "Scene.h"
 #include "ModuleEntitySystem.h"
-#include  "ModuleGUI.h"
-#include "Label.h"
-#include "InputBox.h"
+#include "ModuleGUI.h"
 #include "ModuleInput.h"
-#include "Button.h"
 #include "Console.h"
-#include "Slider.h"
 #include "ModuleAudio.h"
 #include "ModuleMapGenerator.h"
 #include "ModuleRender.h"
 #include "Pathfinding.h"
 #include "ModuleColliders.h"
+#include "ChestEntity.h"
+#include "PortalEntity.h"
+
 
 class ConsoleMap : public ConsoleOrder
 {
@@ -25,6 +24,12 @@ class ConsoleMap : public ConsoleOrder
 				App->path->printWalkables = false;
 	}
 };
+
+#include "Label.h"
+#include "InputBox.h"
+#include "Button.h"
+#include "GUIWindow.h"
+#include "Slider.h"
 
 
 Scene::Scene()
@@ -48,6 +53,7 @@ bool Scene::Start()
 	{
 		case Stages::MAIN_MENU:
 		{
+			//PLAY BUTTON
 			Button* button = (Button*)App->gui->CreateButton({ 250, 50.0f }, BType::PLAY, this);
 
 			LabelInfo defLabel;
@@ -55,7 +61,8 @@ bool Scene::Start()
 			defLabel.fontName = "Arial11";
 			defLabel.text = "PLAY";
 			App->gui->CreateLabel({ 65,25 }, defLabel, button, this);
-
+			
+			//SETTINGS BUTTON
 			Button* button2 = (Button*)App->gui->CreateButton({ 250, 150.0f }, BType::SETTINGS, this);
 
 			LabelInfo defLabel2;
@@ -64,6 +71,7 @@ bool Scene::Start()
 			defLabel2.text = "Settings";
 			App->gui->CreateLabel({ 60,25 }, defLabel2, button2, this);
 
+			//EXIT GAME BUTTON
 			Button* button3 = (Button*)App->gui->CreateButton({ 250, 250.0f }, BType::EXIT_GAME, this);
 
 			LabelInfo defLabel3;
@@ -76,6 +84,7 @@ bool Scene::Start()
 		}
 		case Stages::SETTINGS:
 		{
+			//MUSIC VOLUME SLIDER
 			SliderInfo sinfo;
 			sinfo.type = Slider::SliderType::MUSIC_VOLUME;
 			Slider* slider = (Slider*)App->gui->CreateSlider({ 200, 190 }, sinfo, this, nullptr);
@@ -87,7 +96,7 @@ bool Scene::Start()
 			defLabel3.text = (char*)temp.data();
 			App->gui->CreateLabel({ 270,3 }, defLabel3, slider, this);
 
-
+			//BACK BUTTON
 			Button* button3 = (Button*)App->gui->CreateButton({ 250, 250.0f }, BType::GO_MMENU, this);
 
 			LabelInfo defLabel2;
@@ -103,8 +112,7 @@ bool Scene::Start()
 			App->entities->Activate();
 			App->console->Activate();
 
-			//App->path->LoadMap();
-
+			App->map->Activate();
 
 			MapData mapInfo;
 			mapInfo.sizeX = 50;
@@ -114,14 +122,21 @@ bool Scene::Start()
 			lvlIndex = 1;
 
 			App->map->GenerateMap(mapInfo);
-			player = App->entities->AddPlayer({ 25*48,25*48 }, THRALL);
-      
-			App->colliders->AddTileCollider({10,10,50,50}, COLLIDER_TYPE::COLLIDER_UNWALKABLE);
+			player = App->entities->AddPlayer({ 25 * 48,25 * 48 }, THRALL);
+
+			App->colliders->AddTileCollider({ 10,10,50,50 }, COLLIDER_TYPE::COLLIDER_UNWALKABLE);
 			App->colliders->AddTileCollider({ 10,70,50,50 }, COLLIDER_TYPE::COLLIDER_UNWALKABLE);
-      
+
 			iPoint chestPos = App->map->GetRandomValidPoint();
 			lvlChest = App->entities->AddChest({ (float)chestPos.x * 48,(float)chestPos.y * 48 }, MID_CHEST);
 			portal = (PortalEntity*)App->entities->AddStaticEntity({ 25 * 48,25 * 48 }, PORTAL);
+
+
+
+			player = App->entities->AddPlayer({ 55,55 }, THRALL);
+
+			//App->path->LoadMap();
+
 			break;
 		}
 			
@@ -151,6 +166,7 @@ bool Scene::Update(float dt)
 		App->Load();
 	}
 
+	//GENERATE A NEW MAP
 	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && actual_scene == Stages::INGAME && lvlIndex != 8)
 	{
 		App->map->CleanUp();
@@ -179,6 +195,7 @@ bool Scene::Update(float dt)
 		// RESTART THIS MODULE AND THE ENTIRE GAME // GO TO MAIN MENU
 	}
 
+	//CONTROLLER RUMBLES
 	if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
 	{
 		App->input->PlayJoyRumble(0.75f, 100);
@@ -206,8 +223,51 @@ bool Scene::Update(float dt)
 		lvlChest->UnLockChest();
 		lvlChest->OpenChest();
 		portal->OpenPortal();
-	}
 
+	//PAUSE GAME
+		if (actual_scene == Stages::INGAME)
+		{
+			if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN ||
+				App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_START) == KEY_DOWN) //Start button, idk
+			{
+				if (!paused)
+				{
+					paused = true;
+					fPoint localPos = fPoint(640 / 2 - 255 / 2, 360 / 2 - 296 / 2);
+					PauseMenu = (GUIWindow*)App->gui->CreateGUIWindow(localPos, StoneWindow, this);
+
+					Button* Resume = (Button*)App->gui->CreateButton({ 255 / 2 - 158 / 2, 20.0f }, BType::RESUME, this, PauseMenu);
+
+					LabelInfo defLabel1;
+					defLabel1.color = White;
+					defLabel1.fontName = "Arial11";
+					defLabel1.text = "Resume";
+					App->gui->CreateLabel({ 57,23 }, defLabel1, Resume, this);
+
+					Button* MainMenu = (Button*)App->gui->CreateButton({ 255 / 2 - 158 / 2, 110.0f }, BType::GO_MMENU, this, PauseMenu);
+
+					LabelInfo defLabel2;
+					defLabel2.color = White;
+					defLabel2.fontName = "Arial11";
+					defLabel2.text = "Return to the Main Menu";
+					App->gui->CreateLabel({ 23,23 }, defLabel2, MainMenu, this);
+
+					Button* SaveAndExit = (Button*)App->gui->CreateButton({ 255 / 2 - 158 / 2, 200.0f }, BType::EXIT_GAME, this, PauseMenu);
+
+					LabelInfo defLabel3;
+					defLabel3.color = White;
+					defLabel3.fontName = "Arial11";
+					defLabel3.text = "Save and Exit";
+					App->gui->CreateLabel({ 43,23 }, defLabel3, SaveAndExit, this);
+				}
+				else
+				{
+					paused = false;
+					App->gui->DestroyElem(PauseMenu);
+				}
+			}
+		}
+	}
 	return true;
 }
 
@@ -225,6 +285,7 @@ bool Scene::PostUpdate()
 bool Scene::CleanUp()
 {
 	App->gui->DeActivate();
+	App->map->DeActivate();
 	App->entities->DeActivate();
 	App->console->DeActivate();
 
@@ -279,9 +340,13 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 						break;
 					case BType::GO_MMENU:
 						actual_scene = Stages::MAIN_MENU;
+						paused = false;
 						restart = true;
 						break;
-
+					case BType::RESUME:
+						paused = false;
+						App->gui->DestroyElem(PauseMenu);
+						break;
 					}
 					break;
 				}

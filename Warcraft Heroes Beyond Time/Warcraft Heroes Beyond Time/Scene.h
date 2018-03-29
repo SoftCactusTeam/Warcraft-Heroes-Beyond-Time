@@ -2,9 +2,11 @@
 #define __SCENE_H__
 
 #include "Module.h"
-#include "PlayerEntity.h"
-#include "ChestEntity.h"
-#include "PortalEntity.h"
+
+class GUIWindow;
+class PlayerEntity;
+class ChestEntity;
+class PortalEntity;
 
 class Scene : public Module
 {
@@ -35,9 +37,14 @@ public:
 
 	} actual_scene = Stages::MAIN_MENU;
 
+	
 
 private:
+
+	GUIWindow* PauseMenu = nullptr;
+
 	bool restart = false;
+
 	int lvlIndex = 0;
 
 	ChestEntity* lvlChest = nullptr;
@@ -45,6 +52,9 @@ private:
 
 public:
 	PlayerEntity* player = nullptr;
+
+	bool paused = false;
+
 };
 
 
