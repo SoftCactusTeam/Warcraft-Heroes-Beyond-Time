@@ -11,6 +11,8 @@
 
 class Entity;
 class PlayerEntity;
+class ChestEntity;
+class StaticEntity;
 
 class EntitySystem : public Module
 {
@@ -59,9 +61,8 @@ public:
 	void AddEnemy(fPoint coor, ENEMY_TYPE type);
 	void AddBoss(fPoint coor, BOSS_TYPE type);
 	void AddConsumable(fPoint coor, CONSUMABLE_TYPE type);
-	void AddChest(fPoint coor, CHEST_TYPE type);
-	void AddStaticObject(fPoint coor, STATIC_OBJECT_TYPE type);
-	void SetPlayer(PlayerEntity* player);
+	ChestEntity* AddChest(fPoint coor, CHEST_TYPE type);
+	StaticEntity* AddStaticEntity(fPoint coor, STATIC_ENTITY_TYPE type);
 
 	void ClearEnemies();
 	int GetRandomNumber(int rang);
@@ -70,9 +71,6 @@ private:
 	std::list<Entity*>		toSpawn; 
 	std::vector<SDL_Texture*> spritesheetsEntities;
 
-public:
-
-	PlayerEntity * player = nullptr;
 };
 
 #endif

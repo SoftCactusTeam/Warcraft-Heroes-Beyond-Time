@@ -21,6 +21,7 @@ private:
 
 public:
 	float speed = 0.0f;
+	float speedFactor = 0.0f;
 	bool loop = true;
 
 public:
@@ -58,13 +59,14 @@ public:
 		current_frame = 0;
 	}
 
-	void Start()
+	void Start(float speedFactor)
 	{
-		speed = 0.08f;
+		this->speedFactor = speedFactor;
 	}
 
 	void Stop()
 	{
+		speedFactor = 0.0f;
 		speed = 0.0f;
 	}
 };

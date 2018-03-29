@@ -9,6 +9,7 @@
 
 #include "Console.h"
 
+
 #include "SDL/include/SDL.h"
 #define MAX_KEYS 300
 
@@ -191,16 +192,28 @@ bool Input::PreUpdate()
 				if (event.jaxis.axis == 0)
 				{
 					if (event.jaxis.value < -J_DEAD_ZONE || event.jaxis.value > J_DEAD_ZONE)
+					{
 						xAxis = event.jaxis.value;
+						xDeadZone = false;
+					}
 					else
+					{
 						xAxis = 0;
+						xDeadZone = true;
+					}
 				}
 				else if (event.jaxis.axis == 1)
 				{
 					if (event.jaxis.value < -J_DEAD_ZONE || event.jaxis.value > J_DEAD_ZONE)
+					{
 						yAxis = event.jaxis.value;
+						yDeadZone = false;
+					}
 					else
+					{
 						yAxis = 0;
+						yDeadZone = true;
+					}
 				}
 			}
 			break;
@@ -247,6 +260,23 @@ bool Input::CleanUp()
 bool Input::GetWindowEvent(EventWindow ev)
 {
 	return windowEvents[ev];
+}
+
+float Input::GetPercentageFromAxis() const
+{
+	float moduleVec = sqrtf((pow(xAxis, 2.0f) + pow(yAxis, 2.0f)));
+
+	return moduleVec / MAX_JAXIS_VALUE;
+}
+
+float Input::GetAngleFromAxis() const
+{
+	float angle = RAD_2_DEG(atan2(yAxis, xAxis));
+
+	if (angle < 0)
+		angle += 360.0f;
+
+	return angle;
 }
 
 void Input::GetMousePosition(int& x, int& y)

@@ -26,7 +26,6 @@
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="StaticEntity.cpp" />
-    <ClCompile Include="StaticObjectEntity.cpp" />
     <ClCompile Include="Thrall.cpp" />
     <ClCompile Include="GUIElem.cpp" />
     <ClCompile Include="DynamicEntity.cpp">
@@ -56,6 +55,10 @@
     <ClCompile Include="Enemy_Archer.cpp">
       <Filter>Entities\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
+    <ClCompile Include="PortalEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -88,7 +91,6 @@
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="StaticEntity.h" />
-    <ClInclude Include="StaticObjectEntity.h" />
     <ClInclude Include="Thrall.h" />
     <ClInclude Include="DynamicEntity.h">
       <Filter>Entities</Filter>
@@ -120,6 +122,10 @@
     <ClInclude Include="Enemy_Archer.h">
       <Filter>Entities\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="PortalEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />
@@ -139,6 +145,8 @@
     </Filter>
     <Filter Include="Entities\Enemy">
       <UniqueIdentifier>{33c1e0c5-aa50-4bd5-93ef-f007957f20f5}</UniqueIdentifier>
+    <Filter Include="Items">
+      <UniqueIdentifier>{05944e24-550c-4b68-8f81-161596d05580}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

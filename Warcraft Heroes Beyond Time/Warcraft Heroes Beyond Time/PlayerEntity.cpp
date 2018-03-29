@@ -2,6 +2,7 @@
 #include "PlayerEntity.h"
 #include "ModuleInput.h"
 #include "ModuleRender.h"
+#include "Scene.h"
 #include "ModuleMapGenerator.h"
 #include "ModuleEntitySystem.h"
 
@@ -11,9 +12,6 @@ bool PlayerEntity::Start()
 {
 	anim = &idleDown;
 	state = states::PL_IDLE;
-
-	endPos.x = 250.0f;
-	endPos.y = 250.0f;
 
 	InitCulling();
 
@@ -62,33 +60,6 @@ fPoint PlayerEntity::CalculatePosFromBezier(fPoint startPos, fPoint handleA, flo
 
 void PlayerEntity::PlayerStates(float dt)
 {
-
-	// ----- Dash test -----
-
-	/*if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_REPEAT  && !dashEnabled)
-	{
-		dashEnabled = true;
-		startPos = pos;
-		endPos.x = pos.x + 30.0f;
-		endPos.y = pos.y;
-	}
-
-	if (dashEnabled && t <= 1.0f && t >= 0.0f)
-	{
-		t += 0.05f;
-		pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).x * 250.0f;
-		
-	}
-
-	if (t >= 1.0f)
-	{
-		dashEnabled = false;
-		t = 0.0f;
-	}*/
-	
-
-	// -----------------
-
 	if (move)
 	{
 		if (App->input->IsKeyboardAvailable())
@@ -162,7 +133,7 @@ void PlayerEntity::KeyboardStates(float dt)
 		{
 			startPos = pos;
 			state = states::PL_DASH;
-			animBeforeDash = anim;
+			animBefore = anim;
 			
 			break;
 		}
@@ -173,95 +144,43 @@ void PlayerEntity::KeyboardStates(float dt)
 
 		if (t <= 1.0f && t >= 0.0f)
 		{
-			if (animBeforeDash == &idleRight || animBeforeDash == &right)
+			if (animBefore == &idleRight || animBefore == &right)
 			{
-				pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.x;
+				pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
+				
 				anim = &dashRight;
 				float x = 0.05f / dt;
 				t += (x * dt);
 				break;
 			}
-			else if (animBeforeDash == &idleLeft || animBeforeDash == &left)
+			else if (animBefore == &idleLeft || animBefore == &left)
 			{
-				pos.x = startPos.x - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.x;
+				pos.x = startPos.x - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
 				
-				if (t >= 0.0f && t <= 0.2f)
-					anim = &animDashLeft[1];
-				else if (t > 0.2f && t <= 0.4f)
-					anim = &animDashLeft[2];
-				else if (t > 0.4f && t <= 0.55f)
-					anim = &animDashLeft[3];
-				else if (t > 0.55f && t <= 0.7f)
-					anim = &animDashLeft[4];
-				else if (t > 0.7f && t <= 1.0f)
-					anim = &animDashLeft[5];
-
-
+				anim = &dashLeft;
 				float x = 0.05f / dt;
 				t += (x * dt);
 				break;
 			}
-			else if (animBeforeDash == &idleUp || animBeforeDash == &up)
+			else if (animBefore == &idleUp || animBefore == &up)
 			{
-				pos.y = startPos.y - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.y;
+				pos.y = startPos.y - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
 
-				if (t >= 0.0f && t <= 0.2f)
-					anim = &animDashUp[1];
-				else if (t > 0.2f && t <= 0.4f)
-					anim = &animDashUp[2];
-				else if (t > 0.4f && t <= 0.55f)
-					anim = &animDashUp[3];
-				else if (t > 0.55f && t <= 0.7f)
-					anim = &animDashUp[4];
-				else if (t > 0.7f && t <= 1.0f)
-					anim = &animDashUp[5];
-
-				/*if (t >= 0.0f && t <= 0.1835f)
-				{
-					anim = &animDashUp[1];
-				}
-				else if (t > 0.1835f && t <= 0.3395f)
-				{
-					anim = &animDashUp[2];
-				}
-				else if (t > 0.3395f && t <= 0.4955f)
-				{
-					anim = &animDashUp[3];
-				}
-				else if (t > 0.4955f && t <= 0.5595f)
-				{
-					anim = &animDashUp[4];
-				}
-				else if (t > 0.5595f && t <= 0.5735f)
-				{
-					anim = &animDashUp[5];
-				}
-				else if (t > 0.5735f && t <= 0.6375f)
-				{
-					anim = &animDashUp[6];
-				}
-				else if (t > 0.6375f && t <= 0.7935f)
-				{
-					anim = &animDashUp[7];
-				}
-				else if (t > 0.7935f && t <= 1.0f)
-				{
-					anim = &animDashUp[8];
-				}*/
-
+				anim = &dashUp;
 				float x = 0.05f / dt;
 				t += (x * dt);
 				break;
 			}
-			else if (animBeforeDash == &idleDown || animBeforeDash == &down)
+			else if (animBefore == &idleDown || animBefore == &down)
 			{
-				pos.y = startPos.y + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.y;
+				pos.y = startPos.y + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
+
 				anim = &dashDown;
 				float x = 0.05f / dt;
 				t += (x * dt);
 				break;
 			}
-			else if (animBeforeDash == &idleUpRight || animBeforeDash ==&upRight)
+			else if (animBefore == &idleUpRight || animBefore ==&upRight)
 			{
 				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
 					
@@ -273,7 +192,7 @@ void PlayerEntity::KeyboardStates(float dt)
 				t += (x * dt);
 				break;
 			}
-			else if (animBeforeDash == &idleDownRight || animBeforeDash == &downRight)
+			else if (animBefore == &idleDownRight || animBefore == &downRight)
 			{
 				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
 
@@ -285,7 +204,7 @@ void PlayerEntity::KeyboardStates(float dt)
 				t += (x * dt);
 				break;
 			}
-			else if (animBeforeDash == &idleDownLeft || animBeforeDash == &downLeft)
+			else if (animBefore == &idleDownLeft || animBefore == &downLeft)
 			{
 				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
 
@@ -297,24 +216,14 @@ void PlayerEntity::KeyboardStates(float dt)
 				t += (x * dt);
 				break;
 			}
-			else if (animBeforeDash == &idleUpLeft || animBeforeDash == &upLeft)
+			else if (animBefore == &idleUpLeft || animBefore == &upLeft)
 			{
 				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
 
 				pos.x = startPos.x - 250.0f * 0.75f * bezierPoint.y;
 				pos.y = startPos.y - 250.0f * 0.75f * bezierPoint.y;
 
-				if (t >= 0.0f && t <= 0.2f)
-					anim = &animDashUpLeft[1];
-				else if (t > 0.2f && t <= 0.4f)
-					anim = &animDashUpLeft[2];
-				else if (t > 0.4f && t <= 0.55f)
-					anim = &animDashUpLeft[3];
-				else if (t > 0.55f && t <= 0.7f)
-					anim = &animDashUpLeft[4];
-				else if (t > 0.7f && t <= 1.0f)
-					anim = &animDashUpLeft[5];
-
+				anim = &dashUpLeft;
 				float x = 0.05f / dt;
 				t += (x * dt);
 				break;
@@ -327,15 +236,15 @@ void PlayerEntity::KeyboardStates(float dt)
 
 			if (anim == &dashRight)
 				anim = &idleRight;
-			else if (anim == &animDashLeft[5])
+			else if (anim == &dashLeft)
 				anim = &idleLeft;
-			else if (anim == &animDashUp[5])
+			else if (anim == &dashUp)
 				anim = &idleUp;
 			else if (anim == &dashDown)
 				anim = &idleDown;
 			else if (anim == &dashUpRight)
 				anim = &idleUpRight;
-			else if (anim == &animDashUpLeft[5])
+			else if (anim == &dashUpLeft)
 				anim = &idleUpLeft;
 			else if (anim == &dashDownRight)
 				anim = &idleDownRight;
@@ -370,7 +279,7 @@ void PlayerEntity::KeyboardStates(float dt)
 		{
 			startPos = pos;
 			state = states::PL_DASH;
-			animBeforeDash = anim;
+			animBefore = anim;
 			break;
 		}
 		break;
@@ -380,7 +289,7 @@ void PlayerEntity::KeyboardStates(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_UP)
 		{
 			state = states::PL_IDLE;
-			anim = &idleDown;
+			anim = &attackDown;
 			break;
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
@@ -399,7 +308,7 @@ void PlayerEntity::KeyboardStates(float dt)
 		{
 			startPos = pos;
 			state = states::PL_DASH;
-			animBeforeDash = anim;
+			animBefore = anim;
 			break;
 		}
 		break;
@@ -428,7 +337,7 @@ void PlayerEntity::KeyboardStates(float dt)
 		{
 			startPos = pos;
 			state = states::PL_DASH;
-			animBeforeDash = anim;
+			animBefore = anim;
 			break;
 		}
 		break;
@@ -457,7 +366,7 @@ void PlayerEntity::KeyboardStates(float dt)
 		{
 			startPos = pos;
 			state = states::PL_DASH;
-			animBeforeDash = anim;
+			animBefore = anim;
 			break;
 		}
 		break;
@@ -487,10 +396,10 @@ void PlayerEntity::KeyboardStates(float dt)
 		{
 			startPos = pos;
 			state = states::PL_DASH;
-			animBeforeDash = anim;
+			animBefore = anim;
 			break;
 		}
-		break;
+break;
 
 	case states::PL_UP_RIGHT:
 		pos.x += speed * 0.75f * dt;
@@ -517,7 +426,7 @@ void PlayerEntity::KeyboardStates(float dt)
 		{
 			startPos = pos;
 			state = states::PL_DASH;
-			animBeforeDash = anim;
+			animBefore = anim;
 			break;
 		}
 		break;
@@ -547,7 +456,7 @@ void PlayerEntity::KeyboardStates(float dt)
 		{
 			startPos = pos;
 			state = states::PL_DASH;
-			animBeforeDash = anim;
+			animBefore = anim;
 			break;
 		}
 		break;
@@ -577,7 +486,7 @@ void PlayerEntity::KeyboardStates(float dt)
 		{
 			startPos = pos;
 			state = states::PL_DASH;
-			animBeforeDash = anim;
+			animBefore = anim;
 			break;
 		}
 		break;
@@ -589,475 +498,228 @@ void PlayerEntity::JoyconStates(float dt)
 	switch (state)
 	{
 	case states::PL_IDLE:
-		if (App->input->GetYAxis() < 0 && App->input->GetXAxis() > 0)
+		if (App->input->GetXAxis() != 0 || App->input->GetYAxis() != 0)
 		{
-			state = states::PL_UP_RIGHT;
-			anim = &upRight;
+			state = states::PL_MOVE;
 			break;
 		}
-		else if (App->input->GetYAxis() < 0 && App->input->GetXAxis() < 0)
-		{
-			state = states::PL_UP_LEFT;
-			anim = &upLeft;
-			break;
-		}
-		else if (App->input->GetYAxis() > 0 && App->input->GetXAxis() > 0)
-		{
-			state = states::PL_DOWN_RIGHT;
-			anim = &downRight;
-			break;
-		}
-		else if (App->input->GetYAxis() > 0 && App->input->GetXAxis() < 0)
-		{
-			state = states::PL_DOWN_LEFT;
-			anim = &downLeft;
-			break;
-		}
-		else if (App->input->GetYAxis() < 0)
-		{
-			state = states::PL_UP;
-			anim = &up;
-			break;
-		}
-		else if (App->input->GetYAxis() > 0)
-		{
-			state = states::PL_DOWN;
-			anim = &down;
-			break;
-		}
-		else if (App->input->GetXAxis() < 0)
-		{
-			state = states::PL_LEFT;
-			anim = &left;
-			break;
-		}
-		else if (App->input->GetXAxis() > 0)
-		{
-			state = states::PL_RIGHT;
-			anim = &right;
-			break;
-		}
+		
 		else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN && t == 0.0f)
 		{
 			startPos = pos;
 			state = states::PL_DASH;
-			animBeforeDash = anim;
-
+			animBefore = anim;
 			break;
 		}
+
+		else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_X) == KEY_DOWN)
+		{
+			animBefore = anim;
+			state = states::PL_ATTACK;
+			break;
+		}
+
 		break;
 
 	case states::PL_DASH:
 
 		if (t <= 1.0f && t >= 0.0f)
 		{
-			if (animBeforeDash == &idleRight || animBeforeDash == &right)
+			if (animBefore == &idleRight)
 			{
-				pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.x;
+				pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
 				anim = &dashRight;
-				float x = 0.05f / dt;
-				t += (x * dt);
-				break;
+				
 			}
-			else if (animBeforeDash == &idleLeft || animBeforeDash == &left)
+			else if (animBefore == &idleLeft)
 			{
-				pos.x = startPos.x - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.x;
-
-				if (t >= 0.0f && t <= 0.2f)
-					anim = &animDashLeft[1];
-				else if (t > 0.2f && t <= 0.4f)
-					anim = &animDashLeft[2];
-				else if (t > 0.4f && t <= 0.55f)
-					anim = &animDashLeft[3];
-				else if (t > 0.55f && t <= 0.7f)
-					anim = &animDashLeft[4];
-				else if (t > 0.7f && t <= 1.0f)
-					anim = &animDashLeft[5];
-
-
-				float x = 0.05f / dt;
-				t += (x * dt);
-				break;
+				pos.x = startPos.x - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
+				anim = &dashLeft; //
 			}
-			else if (animBeforeDash == &idleUp || animBeforeDash == &up)
+			else if (animBefore == &idleUp)
 			{
-				pos.y = startPos.y - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.y;
-
-				if (t >= 0.0f && t <= 0.2f)
-					anim = &animDashUp[1];
-				else if (t > 0.2f && t <= 0.4f)
-					anim = &animDashUp[2];
-				else if (t > 0.4f && t <= 0.55f)
-					anim = &animDashUp[3];
-				else if (t > 0.55f && t <= 0.7f)
-					anim = &animDashUp[4];
-				else if (t > 0.7f && t <= 1.0f)
-					anim = &animDashUp[5];
-
-				/*if (t >= 0.0f && t <= 0.1835f)
-				{
-				anim = &animDashUp[1];
-				}
-				else if (t > 0.1835f && t <= 0.3395f)
-				{
-				anim = &animDashUp[2];
-				}
-				else if (t > 0.3395f && t <= 0.4955f)
-				{
-				anim = &animDashUp[3];
-				}
-				else if (t > 0.4955f && t <= 0.5595f)
-				{
-				anim = &animDashUp[4];
-				}
-				else if (t > 0.5595f && t <= 0.5735f)
-				{
-				anim = &animDashUp[5];
-				}
-				else if (t > 0.5735f && t <= 0.6375f)
-				{
-				anim = &animDashUp[6];
-				}
-				else if (t > 0.6375f && t <= 0.7935f)
-				{
-				anim = &animDashUp[7];
-				}
-				else if (t > 0.7935f && t <= 1.0f)
-				{
-				anim = &animDashUp[8];
-				}*/
-
-				float x = 0.05f / dt;
-				t += (x * dt);
-				break;
+				pos.y = startPos.y - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
+				anim = &dashUp; //
 			}
-			else if (animBeforeDash == &idleDown || animBeforeDash == &down)
+			else if (animBefore == &idleDown)
 			{
-				pos.y = startPos.y + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * endPos.y;
+				pos.y = startPos.y + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
 				anim = &dashDown;
-				float x = 0.05f / dt;
-				t += (x * dt);
-				break;
 			}
-			else if (animBeforeDash == &idleUpRight || animBeforeDash == &upRight)
+			else if (animBefore == &idleUpRight)
 			{
 				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
 
-				pos.x = startPos.x + 250.0f * 0.75f * bezierPoint.y;
-				pos.y = startPos.y - 250.0f * 0.75f * bezierPoint.y;
+				pos.x = startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(315.0f));
+				pos.y = startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(315.0f));
 
 				anim = &dashUpRight;
-				float x = 0.05f / dt;
-				t += (x * dt);
-				break;
 			}
-			else if (animBeforeDash == &idleDownRight || animBeforeDash == &downRight)
+			else if (animBefore == &idleUpLeft)
 			{
 				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
 
-				pos.x = startPos.x + 250.0f * 0.75f * bezierPoint.y;
-				pos.y = startPos.y + 250.0f * 0.75f * bezierPoint.y;
+				pos.x = startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(225.0f));
+				pos.y = startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(225.0f));
+
+				anim = &dashUpLeft; //
+			}
+			else if (animBefore == &idleDownRight)
+			{
+				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+
+				pos.x = startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(45.0f));
+				pos.y = startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(45.0f));
 
 				anim = &dashDownRight;
-				float x = 0.05f / dt;
-				t += (x * dt);
-				break;
 			}
-			else if (animBeforeDash == &idleDownLeft || animBeforeDash == &downLeft)
+			else if (animBefore == &idleDownLeft)
 			{
 				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
 
-				pos.x = startPos.x - 250.0f * 0.75f * bezierPoint.y;
-				pos.y = startPos.y + 250.0f * 0.75f * bezierPoint.y;
+				pos.x = startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(135.0f));
+				pos.y = startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(135.0f));
 
 				anim = &dashDownLeft;
-				float x = 0.05f / dt;
-				t += (x * dt);
-				break;
 			}
-			else if (animBeforeDash == &idleUpLeft || animBeforeDash == &upLeft)
+			else
 			{
-				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
-
-				pos.x = startPos.x - 250.0f * 0.75f * bezierPoint.y;
-				pos.y = startPos.y - 250.0f * 0.75f * bezierPoint.y;
-
-				if (t >= 0.0f && t <= 0.2f)
-					anim = &animDashUpLeft[1];
-				else if (t > 0.2f && t <= 0.4f)
-					anim = &animDashUpLeft[2];
-				else if (t > 0.4f && t <= 0.55f)
-					anim = &animDashUpLeft[3];
-				else if (t > 0.55f && t <= 0.7f)
-					anim = &animDashUpLeft[4];
-				else if (t > 0.7f && t <= 1.0f)
-					anim = &animDashUpLeft[5];
-
-				float x = 0.05f / dt;
-				t += (x * dt);
-				break;
+				pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance * cos(DEG_2_RAD(angle));
+				pos.y = startPos.y + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance * sin(DEG_2_RAD(angle));
+			
+				anim = GetAnimFromAngle(angle, true);
 			}
+			
+			float x = 0.05f / dt;
+			t += (x * dt);
+
 		}
 		else
 		{
-			state = states::PL_IDLE;
+			if (App->input->InsideDeadZone())
+			{
+				state = states::PL_IDLE;
+
+				if (anim == &dashRight)
+					anim = &idleRight;
+				else if (anim == &dashDown)
+					anim = &idleDown;
+				else if (anim == &dashUpRight)
+					anim = &idleUpRight;
+				else if (anim == &dashDownLeft)
+					anim = &idleDownLeft;
+				else if (anim == &dashDownRight)
+					anim = &idleDownRight;
+				else if (anim == &dashUpRight)
+					anim = &idleUpRight;
+				else if (anim == &dashLeft)
+					anim = &idleLeft;
+				else if (anim == &dashUpLeft)
+					anim = &idleUpLeft;
+				else if (anim == &dashUp)
+					anim = &idleUp;
+			}
+			else
+			{
+				state = states::PL_MOVE;
+				anim = animBefore;
+			}
+				
+			animBefore = nullptr;
 			t = 0.0f;
-
-			if (anim == &dashRight)
-				anim = &idleRight;
-			else if (anim == &animDashLeft[5])
-				anim = &idleLeft;
-			else if (anim == &animDashUp[5])
-				anim = &idleUp;
-			else if (anim == &dashDown)
-				anim = &idleDown;
-			else if (anim == &dashUpRight)
-				anim = &idleUpRight;
-			else if (anim == &animDashUpLeft[5])
-				anim = &idleUpLeft;
-			else if (anim == &dashDownRight)
-				anim = &idleDownRight;
-			else if (anim == &dashDownLeft)
-				anim = &idleDownLeft;
 		}
 
 		break;
 
-	case states::PL_UP:
-		pos.y -= speed * dt;
-		if (App->input->GetYAxis() == 0)
+		case states::PL_MOVE:
 		{
-			state = states::PL_IDLE;
-			anim = &idleUp;
-			break;
-		}
-		else if (App->input->GetYAxis() < 0 && App->input->GetXAxis() > 0)
-		{
-			state = states::PL_UP_RIGHT;
-			anim = &upRight;
-			break;
-		}
-		else if (App->input->GetYAxis() < 0 && App->input->GetXAxis() < 0)
-		{
-			state = states::PL_UP_LEFT;
-			anim = &upLeft;
-			break;
-		}
-		else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
-		{
-			startPos = pos;
-			state = states::PL_DASH;
-			animBeforeDash = anim;
-			break;
-		}
-		break;
+			if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN && t == 0.0f)
+			{
+				animBefore = anim;
+				startPos = pos;
+				state = states::PL_DASH;
 
-	case states::PL_DOWN:
-		pos.y += speed * dt;
-		if (App->input->GetYAxis() == 0)
-		{
-			state = states::PL_IDLE;
-			anim = &idleDown;
-			break;
-		}
-		else if (App->input->GetYAxis() > 0 && App->input->GetXAxis() > 0)
-		{
-			state = states::PL_DOWN_RIGHT;
-			anim = &downRight;
-			break;
-		}
-		else if (App->input->GetYAxis() > 0 && App->input->GetXAxis() < 0)
-		{
-			state = states::PL_DOWN_LEFT;
-			anim = &downLeft;
-			break;
-		}
-		else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
-		{
-			startPos = pos;
-			state = states::PL_DASH;
-			animBeforeDash = anim;
-			break;
-		}
-	
-		break;
+				float X = App->input->GetXAxis() / MAX_JAXIS_VALUE;
+				float Y = App->input->GetYAxis() / MAX_JAXIS_VALUE;
 
-	case states::PL_LEFT:
-		pos.x -= speed * dt;
-		if (App->input->GetXAxis() == 0)
-		{
-			state = states::PL_IDLE;
-			anim = &idleLeft;
-			break;
-		}
-		else if (App->input->GetYAxis() < 0 && App->input->GetXAxis() < 0)
-		{
-			state = states::PL_UP_LEFT;
-			anim = &upLeft;
-			break;
-		}
-		else if (App->input->GetYAxis() > 0 && App->input->GetXAxis() < 0)
-		{
-			state = states::PL_DOWN_LEFT;
-			anim = &downLeft;
-			break;
-		}
-		else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
-		{
-			startPos = pos;
-			state = states::PL_DASH;
-			animBeforeDash = anim;
-			break;
-		}
-		break;
+				angle = App->input->GetAngleFromAxis();
 
-	case states::PL_RIGHT:
-		pos.x += speed * dt;
-		if (App->input->GetXAxis() == 0)
-		{
-			state = states::PL_IDLE;
-			anim = &idleRight;
-			break;
-		}
-		else if (App->input->GetYAxis() < 0 && App->input->GetXAxis() > 0)
-		{
-			state = states::PL_UP_RIGHT;
-			anim = &upRight;
-			break;
-		}
-		else if (App->input->GetYAxis() > 0 && App->input->GetXAxis() > 0)
-		{
-			state = states::PL_DOWN_RIGHT;
-			anim = &downRight;
-			break;
-		}
-		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
-		{
-			startPos = pos;
-			state = states::PL_DASH;
-			animBeforeDash = anim;
-			break;
-		}
-		break;
+				break;
+			}
 
-	case states::PL_UP_LEFT:
-		pos.x -= speed * 0.75f * dt;
-		pos.y -= speed * 0.75f * dt;
-		if (App->input->GetYAxis() == 0 && App->input->GetXAxis() == 0)
-		{
-			state = states::PL_IDLE;
-			anim = &idleUpLeft;
-			break;
-		}
-		else if (App->input->GetXAxis() < 0 && App->input->GetYAxis() == 0)
-		{
-			state = states::PL_LEFT;
-			anim = &left;
-			break;
-		}
-		else if (App->input->GetYAxis() < 0 && App->input->GetXAxis() == 0)
-		{
-			state = states::PL_UP;
-			anim = &up;
-			break;
-		}
-		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
-		{
-			startPos = pos;
-			state = states::PL_DASH;
-			animBeforeDash = anim;
-			break;
-		}
-		break;
+			float X = App->input->GetXAxis() / MAX_JAXIS_VALUE;
+			float Y = App->input->GetYAxis() / MAX_JAXIS_VALUE;
 
-	case states::PL_UP_RIGHT:
-		pos.x += speed * 0.75f * dt;
-		pos.y -= speed * 0.75f * dt;
-		if (App->input->GetYAxis() == 0 && App->input->GetXAxis() == 0)
-		{
-			state = states::PL_IDLE;
-			anim = &idleUpRight;
-			break;
-		}
-		else if (App->input->GetXAxis() > 0 && App->input->GetYAxis() == 0)
-		{
-			state = states::PL_RIGHT;
-			anim = &right;
-			break;
-		}
-		else if (App->input->GetYAxis() < 0 && App->input->GetXAxis() == 0)
-		{
-			state = states::PL_UP;
-			anim = &up;
-			break;
-		}
-		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
-		{
-			startPos = pos;
-			state = states::PL_DASH;
-			animBeforeDash = anim;
-			break;
-		}
-		break;
+			pos.x += X * speed * dt;
+			pos.y += Y * speed * dt;
 
-	case states::PL_DOWN_LEFT:
-		pos.x -= speed * 0.75f * dt;
-		pos.y += speed * 0.75f * dt;
-		if (App->input->GetYAxis() == 0 && App->input->GetXAxis() == 0)
-		{
-			state = states::PL_IDLE;
-			anim = &idleDownLeft;
-			break;
-		}
-		else if (App->input->GetXAxis() < 0 && App->input->GetYAxis() == 0)
-		{
-			state = states::PL_LEFT;
-			anim = &left;
-			break;
-		}
-		else if (App->input->GetYAxis() > 0 && App->input->GetXAxis() == 0)
-		{
-			state = states::PL_DOWN;
-			anim = &down;
-			break;
-		}
-		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
-		{
-			startPos = pos;
-			state = states::PL_DASH;
-			animBeforeDash = anim;
-			break;
-		}
-		break;
+			angle = App->input->GetAngleFromAxis();
 
-	case states::PL_DOWN_RIGHT:
-		pos.x += speed * 0.75f * dt;
-		pos.y += speed * 0.75f * dt;
-		if (App->input->GetYAxis() == 0 && App->input->GetXAxis() == 0)
-		{
-			state = states::PL_IDLE;
-			anim = &idleDownRight;
+			Animation* tmpAnim = GetAnimFromAngle(angle);
+
+			if (tmpAnim != nullptr)
+				anim = tmpAnim;
+
+			if (App->input->GetXAxis() == 0 && App->input->GetYAxis() == 0)
+			{
+				if (anim == &up)
+					anim = &idleUp;
+				if (anim == &down)
+					anim = &idleDown;
+				else if (anim == &right)
+					anim = &idleRight;
+				else if (anim == &left)
+					anim = &idleLeft;
+				else if (anim == &upRight)
+					anim = &idleUpRight;
+				else if (anim == &upLeft)
+					anim = &idleUpLeft;
+				else if (anim == &downRight)
+					anim = &idleDownRight;
+				else if (anim == &downLeft)
+					anim = &idleDownLeft;
+
+				state = states::PL_IDLE;
+				break;
+			}
+
+			if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_X))
+			{
+				animBefore = anim;
+				state = states::PL_ATTACK;
+
+				break;
+
+			}
 			break;
 		}
-		else if (App->input->GetXAxis() > 0 && App->input->GetYAxis() == 0)
-		{
-			state = states::PL_RIGHT;
-			anim = &right;
-			break;
-		}
-		else if (App->input->GetYAxis() > 0 && App->input->GetXAxis() == 0)
-		{
-			state = states::PL_DOWN;
-			anim = &down;
-			break;
-		}
-		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
-		{
-			startPos = pos;
-			state = states::PL_DASH;
-			animBeforeDash = anim;
-			break;
-		}
+
+		case states::PL_ATTACK:
+			if (animBefore == &idleDown || animBefore == &down)
+				anim = &attackDown;
+
+			else if (animBefore == &idleUp || animBefore == &up)
+				anim = &attackUp;
+
+			else if (animBefore == &idleLeft || animBefore == &left || animBefore == &upLeft || animBefore == &downLeft || animBefore == &idleDownLeft || animBefore == &idleUpLeft)
+				anim = &attackLeft;
+
+			else if (animBefore == &idleRight || animBefore == &right || animBefore == &idleUpRight || animBefore == &idleDownRight || animBefore == &upRight || animBefore == &downRight)
+				anim = &attackRight;
+
+			if (anim->Finished())
+			{
+				anim->Reset();
+				anim = animBefore;
+
+				if (animBefore == &left || animBefore == &up || animBefore == &right || animBefore == &down || animBefore == &upRight || animBefore == &upLeft || animBefore == &downLeft || animBefore == &downRight)
+					state = states::PL_MOVE;
+				else
+					state = states::PL_IDLE;
+
+				break;
+			}
+
 		break;
 	}
 }
@@ -1101,6 +763,87 @@ void PlayerEntity::CheckIddleStates()
 	}
 }
 
+Animation* PlayerEntity::GetAnimFromAngle(float angle, bool dashOn)
+{
+	Animation* animToReturn = nullptr;
+
+	if (angle >= 247.5f && angle < 292.5f) // to change
+	{
+		if (!dashOn)
+			animToReturn = &up;
+		else
+			animToReturn = &dashUp;
+	}
+		
+	else if (angle >= 67.5f && angle < 112.5f)
+	{
+		if (!dashOn)
+			animToReturn = &down;
+		else
+			animToReturn = &dashDown;
+	}
+
+	else if (((angle >= 337.5f && angle < 360.0f) || (angle >= 0 && angle < 22.5f) && !App->input->InsideDeadZone()))
+	{
+		if (!dashOn)
+			animToReturn = &right;
+		else
+			animToReturn = &dashRight;
+	}
+
+	else if (angle >= 157.5f && angle < 202.5f) // to change
+	{
+		if (!dashOn)
+			animToReturn = &left;
+		else
+			animToReturn = &dashLeft;
+	}
+
+	else if (angle >= 292.5f && angle < 337.5f)
+	{
+		if (!dashOn)
+			animToReturn = &upRight;
+		else
+			animToReturn = &dashUpRight;
+	}
+
+	else if (angle >= 202.5f && angle < 247.5f) // to change
+	{
+		if (!dashOn)
+			animToReturn = &upLeft;
+		else
+			animToReturn = &dashUpLeft;
+	}
+
+	else if (angle >= 112.5f && angle < 157.5f)
+	{
+		if (!dashOn)
+			animToReturn = &downLeft;
+		else
+			animToReturn = &dashDownLeft;
+	}
+
+	else if (angle >= 22.5f && angle < 67.5f)
+	{
+		if (!dashOn)
+			animToReturn = &downRight;
+		else
+			animToReturn = &dashDownRight;
+	}
+	else
+	{
+		if (dashOn)
+			animToReturn = &dashRight;
+	}
+
+	return animToReturn;
+}
+
+bool PlayerEntity::IsPlayerMoving()
+{
+	return state == states::PL_MOVE;
+}
+
 void PlayerEntity::Walk(bool can)
 {
 	this->move = can;
@@ -1108,7 +851,7 @@ void PlayerEntity::Walk(bool can)
 
 void PlayerEntity::InitCulling()
 {
-	if (this == App->entities->player)
+	if (this == App->scene->player)
 	{
 		SDL_Rect currRect = anim->GetCurrentRect();
 		App->render->fcamerax = this->pos.x + App->render->camera.w / 4 + currRect.w / 2;
@@ -1126,7 +869,7 @@ void PlayerEntity::InitCulling()
 
 void PlayerEntity::CheckCulling()
 {
-	if (this == App->entities->player)
+	/*if (this == App->entities->player)
 	{
 		SDL_Rect currentRect = anim->GetCurrentRect();
 		if (freeZonex > this->pos.x)
@@ -1158,8 +901,7 @@ void PlayerEntity::CheckCulling()
 
 		//Uncomment line below to see the freeZone.
 		//App->render->DrawQuad(freeZone, 255, 0, 0, 50, true, true);
-	}
-	
+	}*/
 }
 
 void PlayerEntity::CheckMapLimits()
@@ -1185,4 +927,33 @@ void PlayerEntity::CheckMapLimits()
 			pos.y = h * 48 - 47;
 		}
 	}	
+}
+
+void PlayerEntity::AddItem(Item item)
+{
+	itemsActive.push_back(item);
+}
+
+void PlayerEntity::IterateItems(ItemFunctions nameFunction)
+{
+	std::list<Item>::iterator it = itemsActive.begin();
+
+	for (; it != itemsActive.end(); ++it)
+	{
+		switch (nameFunction)
+		{
+		case ItemFunctions::GetItem:
+			it->GetItem();
+			break;
+
+		case ItemFunctions::UpdateLogic:
+			it->UpdateLogic();
+			break;
+
+		case ItemFunctions::ByeByeItem:
+			it->ByeByeItem();
+			break;
+
+		}
+	}
 }
