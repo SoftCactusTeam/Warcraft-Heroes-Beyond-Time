@@ -53,6 +53,9 @@
     <ClCompile Include="PlayerEntity.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy_Archer.cpp">
+      <Filter>Entities\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -113,6 +116,9 @@
     </ClInclude>
     <ClInclude Include="PlayerEntity.h">
       <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy_Archer.h">
+      <Filter>Entities\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
