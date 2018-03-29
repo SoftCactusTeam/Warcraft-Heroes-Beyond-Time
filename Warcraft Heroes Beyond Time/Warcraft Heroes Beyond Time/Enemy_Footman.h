@@ -30,7 +30,8 @@ public:
 	FOOTMAN_STATE state;
 
 	// Charge variables
-	fPoint chargeMovement;
+	fPoint		chargeMovement;
+	uint		chargeTime = 0;
 };
 
 #endif

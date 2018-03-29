@@ -11,6 +11,7 @@
 #define DISTANCE_TO_ATAC	70
 #define CHARGE_DISTANCE		50
 #define CHARGE_SPEED		10
+#define CHARGE_COOLDOWN		5000
 #define ATAC_COOLDOWN		1000
 #define MOVEMENT_SPEED		5
 
@@ -91,18 +92,20 @@ void Enemy_Footman::doWalk()
 	}
 	else if (DistanceToPlayer() < DISTANCE_TO_CHARGE)
 	{
-		if (App->entities->GetRandomNumber(100) <= 70)		// Si supera una tirada de 70%
-		{
-			state = FOOTMAN_STATE::FOOTMAN_CHARGE;
-			accountantPrincipal = CHARGE_DISTANCE;
-			anim = &animCharge[LookAtPlayer()];
-			anim->Reset();
-			chargeMovement = CaculateIPointAngle(App->entities->player->pos) * CHARGE_SPEED;
-		}
-		else
-		{
-			StopConcreteTime(1000);
-		}
+		if (chargeTime < SDL_GetTicks())
+			if (App->entities->GetRandomNumber(100) <= 70)		// Si supera una tirada de 70%
+			{
+				state = FOOTMAN_STATE::FOOTMAN_CHARGE;
+				accountantPrincipal = CHARGE_DISTANCE;
+				anim = &animCharge[LookAtPlayer()];
+				anim->Reset();
+				chargeMovement = CaculateIPointAngle(App->entities->player->pos) * CHARGE_SPEED;
+				chargeTime = SDL_GetTicks() + CHARGE_COOLDOWN;
+			}
+			else
+			{
+				StopConcreteTime(1000);
+			}
 	}
 	else // AQUI CAMINA, PERO AQUESTA FUNCIO ES TEMPORAL
 	{
