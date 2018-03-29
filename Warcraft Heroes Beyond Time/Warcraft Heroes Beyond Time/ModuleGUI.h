@@ -35,6 +35,7 @@ public:
 	GUIElem* CreateInputBox(fPoint localPos, InputBoxInfo& info, Module* listener = nullptr, GUIElem* parent = nullptr);
 	GUIElem* CreateButton(fPoint localPos, BType btype, Module* listener, GUIElem* parent = nullptr);
 	GUIElem* CreateSlider(fPoint localPos, SliderInfo sInfo, Module* listener, GUIElem* parent = nullptr);
+	GUIElem* CreateGUIWindow(fPoint localPos, SDL_Rect type, Module* listener, GUIElem* parent = nullptr);
 
 	bool DestroyElem(GUIElem* element);
 	SDL_Texture* getAtlas() const;

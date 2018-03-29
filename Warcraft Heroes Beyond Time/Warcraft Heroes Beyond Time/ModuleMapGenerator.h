@@ -43,6 +43,14 @@ public:
 public:
 	MapGenerator();
 	~MapGenerator();
+
+	void Init()
+	{
+		active = false;
+	}
+
+	bool Update(float dt);
+	bool PostUpdate();
 	bool DrawPrePlayerMap();
 	bool DrawPostPlayerMap();
 	inline int Get(int x, int y) const;

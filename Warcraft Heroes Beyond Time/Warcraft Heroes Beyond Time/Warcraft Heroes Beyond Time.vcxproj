@@ -163,6 +163,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="StaticEntity.cpp" />
     <ClCompile Include="Thrall.cpp" />
+    <ClCompile Include="GUIWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -208,6 +209,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="StaticEntity.h" />
     <ClInclude Include="Thrall.h" />
+    <ClInclude Include="GUIWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GUIElem.cpp" />
