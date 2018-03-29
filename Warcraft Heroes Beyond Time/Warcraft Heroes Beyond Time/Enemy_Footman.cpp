@@ -4,6 +4,7 @@
 #include "PlayerEntity.h"
 #include "ModuleColliders.h"
 #include "ModuleInput.h"
+#include "ModuleMapGenerator.h"
 
 #define DISTANCE_TO_MOVE	300
 #define DISTANCE_TO_CHARGE	120
@@ -129,19 +130,23 @@ void Enemy_Footman::doAtac()
 
 void Enemy_Footman::doCharge()
 {
-	App->colliders->AddTemporalCollider({ (int)pos.x, (int)pos.y, 32, 32 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATAC, 10);
 	if (accountantPrincipal <= 0)
 	{
-		StopConcreteTime(500);
+		StopConcreteTime(1000);
 		state = FOOTMAN_STATE::FOOTMAN_IDLE;
 		pathVector.Clear();
 	}
 	else
 	{
-
-		this->pos += chargeMovement;  CaculateIPointAngle(App->entities->player->pos) * CHARGE_SPEED;
-
-		accountantPrincipal -= CHARGE_SPEED;
+		/// PER EVITAR QUE ES CAIGUI DEL MAPA
+		if (App->path->ExistWalkableAtPos(iPoint(((int)pos.x + (int)chargeMovement.x) / App->map->getTileSize(), ((int)pos.y + (int)chargeMovement.y) / App->map->getTileSize())) == -1)
+			accountantPrincipal = 0;
+		else
+		{
+			pos += chargeMovement;
+			accountantPrincipal -= CHARGE_SPEED;
+			App->colliders->AddTemporalCollider({ (int)pos.x, (int)pos.y, 32, 32 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATAC, 10);
+		}
 	}
 }
 
