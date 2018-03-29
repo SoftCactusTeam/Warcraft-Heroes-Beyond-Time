@@ -55,7 +55,7 @@ public:
 
 	KeyState GetPadButtonDown(int id) const
 	{
-		return jButtons[id - 1];
+		return jButtons[id];
 	}
 
 	float GetXAxis() const
@@ -93,7 +93,8 @@ private:
 	bool		textReady = false;
 	bool		key_pressed = false;
 
-	SDL_Joystick* controller = NULL;
+	SDL_Joystick* joystick = NULL;
+	SDL_GameController* controller = NULL;
 	SDL_Haptic* controllerHaptic = NULL;
 
 	float xAxis = 0;

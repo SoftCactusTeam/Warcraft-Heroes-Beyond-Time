@@ -161,7 +161,7 @@ bool Scene::Update(float dt)
 	if (actual_scene == Stages::INGAME)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN ||
-			App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_START) == KEY_DOWN)
+			App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_START) == KEY_DOWN) //Start button, idk
 		{
 			if (!paused)
 			{
