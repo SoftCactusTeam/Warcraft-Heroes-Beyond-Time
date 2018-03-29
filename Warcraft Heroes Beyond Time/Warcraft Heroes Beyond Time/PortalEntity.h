@@ -10,6 +10,7 @@ public:
 	bool Start();
 	bool Update(float dt);
 	bool Finish();
+	void OpenPortal();
 
 private:
 	STATIC_ENTITY_TYPE type = STATIC_ENTITY_TYPE::NON_SENTITY;

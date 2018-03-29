@@ -100,7 +100,7 @@ bool Scene::Start()
 
 			iPoint chestPos = App->map->GetRandomValidPoint();
 			lvlChest = App->entities->AddChest({ (float)chestPos.x * 48,(float)chestPos.y * 48 }, MID_CHEST);
-			portal = App->entities->AddStaticEntity({ 25 * 48,25 * 48 }, PORTAL);
+			portal = (PortalEntity*)App->entities->AddStaticEntity({ 25 * 48,25 * 48 }, PORTAL);
 			break;
 		}
 			
@@ -144,7 +144,7 @@ bool Scene::Update(float dt)
 		player = App->entities->AddPlayer({ 25 * 48,25 * 48 }, THRALL);
 		iPoint chestPos = App->map->GetRandomValidPoint();
 		lvlChest = App->entities->AddChest({ (float)chestPos.x * 48,(float)chestPos.y * 48 }, MID_CHEST);
-		portal = App->entities->AddStaticEntity({ 25 * 48,25 * 48 }, PORTAL);
+		portal = (PortalEntity*)App->entities->AddStaticEntity({ 25 * 48,25 * 48 }, PORTAL);
 		
 		lvlIndex++;
 	}
@@ -182,6 +182,7 @@ bool Scene::Update(float dt)
 	{
 		lvlChest->UnLockChest();
 		lvlChest->OpenChest();
+		portal->OpenPortal();
 	}
 
 	return true;

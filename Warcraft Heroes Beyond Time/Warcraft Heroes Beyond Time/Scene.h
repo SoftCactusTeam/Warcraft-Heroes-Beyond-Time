@@ -4,7 +4,7 @@
 #include "Module.h"
 #include "PlayerEntity.h"
 #include "ChestEntity.h"
-#include "StaticEntity.h"
+#include "PortalEntity.h"
 
 class Scene : public Module
 {
@@ -41,7 +41,7 @@ private:
 	int lvlIndex = 0;
 
 	ChestEntity* lvlChest = nullptr;
-	StaticEntity* portal = nullptr;
+	PortalEntity* portal = nullptr;
 
 public:
 	PlayerEntity* player = nullptr;

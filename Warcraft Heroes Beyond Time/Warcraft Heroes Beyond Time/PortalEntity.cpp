@@ -10,15 +10,26 @@ PortalEntity::PortalEntity(fPoint coor, STATIC_ENTITY_TYPE type, SDL_Texture * t
 bool PortalEntity::Start()
 {
 	anim = &portal;
+
+	
 	return true;
 }
 
 bool PortalEntity::Update(float dt)
 {
+	if (SDL_RectEquals(&anim->GetCurrentFrame(), &SDL_Rect({ 310, 139, 131, 129 })))
+		anim->speedFactor = 0.0f;
+
+	anim->speed = anim->speedFactor * dt;
 	return true;
 }
 
 bool PortalEntity::Finish()
 {
 	return true;
+}
+
+void PortalEntity::OpenPortal()
+{
+	portal.speedFactor = 1.0f;
 }
