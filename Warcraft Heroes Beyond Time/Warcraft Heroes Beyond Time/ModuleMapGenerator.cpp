@@ -3,6 +3,7 @@
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
 #include "Log.h"
+#include "scene.h"
 
 #include <time.h>
 
@@ -13,24 +14,6 @@
 MapGenerator::MapGenerator() {}
 
 MapGenerator::~MapGenerator() {}
-
-bool MapGenerator::Update(float dt)
-{
-	bool ret = true;
-
-	//ret = DrawPostPlayerMap();
-	
-	return ret;
-}
-
-bool MapGenerator::PostUpdate()
-{
-	bool ret = true;
-	
-	
-
-	return ret;
-}
 
 bool MapGenerator::CleanUp()
 {
@@ -70,7 +53,7 @@ bool MapGenerator::DrawPrePlayerMap()
 
 	for (uint i = 0u; i < totalSize && ret; ++i)
 	{
-		if (SDL_RectEquals(&nodes[i]->whatToBlit, &SDL_Rect(FLOOR)))
+		if (SDL_RectEquals(&nodes[i]->whatToBlit, &SDL_Rect(FLOOR)) || (!SDL_RectEquals(&nodes[i]->whatToBlit, &SDL_Rect(FLOOR)) && nodes[i]->pos.y * tileSize <= App->scene->player->pos.y))
 		{
 			iPoint posToBlit = nodes[i]->pos;
 			ret = App->render->Blit(mapTexture, posToBlit.x * tileSize, posToBlit.y * tileSize, &nodes[i]->whatToBlit);
@@ -86,7 +69,7 @@ bool MapGenerator::DrawPostPlayerMap()
 
 	for (uint i = 0u; i < totalSize && ret; ++i)
 	{
-		if (!SDL_RectEquals(&nodes[i]->whatToBlit, &SDL_Rect(FLOOR)))
+		if (!SDL_RectEquals(&nodes[i]->whatToBlit, &SDL_Rect(FLOOR)) && nodes[i]->pos.y * tileSize >= App->scene->player->pos.y)
 		{
 			iPoint posToBlit = nodes[i]->pos;
 			ret = App->render->Blit(mapTexture, posToBlit.x * tileSize, posToBlit.y * tileSize, &nodes[i]->whatToBlit);
