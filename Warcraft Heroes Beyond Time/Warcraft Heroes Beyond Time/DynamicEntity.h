@@ -13,6 +13,7 @@ public:
 	virtual void Collision(COLLIDER_TYPE type);
 
 	FIXED_ANGLE CaculateAngle(fPoint objectiveCoor);
+	fPoint CaculateIPointAngle(fPoint objectiveCoor);
 	uint DistanceToObejective(fPoint objectiveCoor);
 
 public:

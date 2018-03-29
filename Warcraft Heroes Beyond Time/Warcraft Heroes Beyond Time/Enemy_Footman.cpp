@@ -8,8 +8,8 @@
 #define DISTANCE_TO_MOVE	300
 #define DISTANCE_TO_CHARGE	120
 #define DISTANCE_TO_ATAC	70
-#define CHARGE_DISTANCE		100
-#define CHARGE_SPEED		20
+#define CHARGE_DISTANCE		50
+#define CHARGE_SPEED		10
 #define ATAC_COOLDOWN		1000
 #define MOVEMENT_SPEED		5
 
@@ -96,6 +96,7 @@ void Enemy_Footman::doWalk()
 			accountantPrincipal = CHARGE_DISTANCE;
 			anim = &animCharge[LookAtPlayer()];
 			anim->Reset();
+			chargeMovement = CaculateIPointAngle(App->entities->player->pos) * CHARGE_SPEED;
 		}
 		else
 		{
@@ -128,6 +129,7 @@ void Enemy_Footman::doAtac()
 
 void Enemy_Footman::doCharge()
 {
+	App->colliders->AddTemporalCollider({ (int)pos.x, (int)pos.y, 32, 32 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATAC, 10);
 	if (accountantPrincipal <= 0)
 	{
 		StopConcreteTime(500);
@@ -136,8 +138,8 @@ void Enemy_Footman::doCharge()
 	}
 	else
 	{
-		iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x, (int)pos.y));
-		this->pos += fPoint((float)move.x * CHARGE_SPEED, (float)move.y * CHARGE_SPEED);
+
+		this->pos += chargeMovement;  CaculateIPointAngle(App->entities->player->pos) * CHARGE_SPEED;
 
 		accountantPrincipal -= CHARGE_SPEED;
 	}

@@ -28,6 +28,9 @@ public:
 
 public:
 	FOOTMAN_STATE state;
+
+	// Charge variables
+	fPoint chargeMovement;
 };
 
 #endif
