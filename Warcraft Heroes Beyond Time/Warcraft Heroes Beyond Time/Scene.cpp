@@ -12,6 +12,7 @@
 #include "ModuleMapGenerator.h"
 #include "ModuleRender.h"
 #include "Pathfinding.h"
+#include "ModuleColliders.h"
 
 class ConsoleMap : public ConsoleOrder
 {
@@ -110,6 +111,8 @@ bool Scene::Start()
 			App->entities->Activate();
 			App->console->Activate();
 			PlayerEntity* player = App->entities->AddPlayer({ 55,55 }, THRALL);
+			App->colliders->AddTileCollider({10,10,50,50}, COLLIDER_TYPE::COLLIDER_UNWALKABLE);
+			App->colliders->AddTileCollider({ 10,70,50,50 }, COLLIDER_TYPE::COLLIDER_UNWALKABLE);
 			App->entities->SetPlayer(player);
 			App->path->LoadMap();
 			break;
