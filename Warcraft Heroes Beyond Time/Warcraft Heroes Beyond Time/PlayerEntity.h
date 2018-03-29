@@ -49,6 +49,7 @@ public:
 	void CheckIddleStates();
 	void CheckMapLimits();
 	virtual bool Finish();
+	virtual void Collision(COLLIDER_TYPE type);
 
 	//This function calculates player position given a Bezier Curve
 	fPoint CalculatePosFromBezier(fPoint startPos, fPoint handleA, float t, fPoint handleB, fPoint endPos);

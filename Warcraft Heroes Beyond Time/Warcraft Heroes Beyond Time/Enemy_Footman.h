@@ -21,6 +21,11 @@ public:
 
 	void ChargeAnimations();
 
+	void doIdle();
+	void doWalk();
+	void doAtac();
+	void doCharge();
+
 public:
 	FOOTMAN_STATE state;
 };
