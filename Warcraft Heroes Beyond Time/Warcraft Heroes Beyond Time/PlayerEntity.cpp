@@ -525,7 +525,7 @@ void PlayerEntity::JoyconStates(float dt)
 		{
 			if (animBefore == &idleRight)
 			{
-				pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * 250.0f;
+				pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
 				anim = &dashRight;
 				
 			}
@@ -693,16 +693,16 @@ void PlayerEntity::JoyconStates(float dt)
 		}
 
 		case states::PL_ATTACK:
-			if (animBefore == &idleDown || animBefore == &idleDownLeft || animBefore == &idleDownRight || animBefore == &down || animBefore == &downLeft || animBefore == &downRight)
+			if (animBefore == &idleDown || animBefore == &down)
 				anim = &attackDown;
 
-			else if (animBefore == &idleUp || animBefore == &idleUpLeft || animBefore == &idleUpRight || animBefore == &up || animBefore == &upLeft || animBefore == &upRight)
+			else if (animBefore == &idleUp || animBefore == &up)
 				anim = &attackUp;
 
-			else if (animBefore == &idleLeft || animBefore == &left)
+			else if (animBefore == &idleLeft || animBefore == &left || animBefore == &upLeft || animBefore == &downLeft || animBefore == &idleDownLeft || animBefore == &idleUpLeft)
 				anim = &attackLeft;
 
-			else if (animBefore == &idleRight || animBefore == &right)
+			else if (animBefore == &idleRight || animBefore == &right || animBefore == &idleUpRight || animBefore == &idleDownRight || animBefore == &upRight || animBefore == &downRight)
 				anim = &attackRight;
 
 			if (anim->Finished())
