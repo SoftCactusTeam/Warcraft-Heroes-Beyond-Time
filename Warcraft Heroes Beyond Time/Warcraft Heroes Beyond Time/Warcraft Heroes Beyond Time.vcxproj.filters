@@ -6,12 +6,22 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="ChestEntity.cpp" />
     <ClCompile Include="ConsumableEntity.cpp" />
+    <ClCompile Include="DynamicEntity.cpp" />
+    <ClCompile Include="EnemyEntity.cpp" />
+    <ClCompile Include="Enemy_Archer.cpp" />
+    <ClCompile Include="Enemy_Footman.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Fonts.cpp" />
     <ClCompile Include="FileSystem.cpp" />
     <ClCompile Include="InputBox.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="Slider.cpp" />
+    <ClCompile Include="ModuleMapGenerator.cpp" />
+    <ClCompile Include="ModuleColliders.cpp" />
+    <ClCompile Include="Pathfinding.cpp" />
+    <ClCompile Include="PortalEntity.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
@@ -23,42 +33,12 @@
     <ClCompile Include="ModuleRender.cpp" />
     <ClCompile Include="ModuleTextures.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
+    <ClCompile Include="PlayerEntity.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="StaticEntity.cpp" />
     <ClCompile Include="Thrall.cpp" />
     <ClCompile Include="GUIElem.cpp" />
-    <ClCompile Include="DynamicEntity.cpp">
-      <Filter>Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="Pathfinding.cpp">
-      <Filter>Pathfinding</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleMapGenerator.cpp">
-      <Filter>Map</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleColliders.cpp">
-      <Filter>Colliders</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy_Footman.cpp">
-      <Filter>Entities\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyEntity.cpp">
-      <Filter>Entities\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerEntity.cpp">
-      <Filter>Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy_Archer.cpp">
-      <Filter>Entities\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Item.cpp">
-      <Filter>Items</Filter>
-    </ClCompile>
-    <ClCompile Include="PortalEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -67,13 +47,24 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="ChestEntity.h" />
     <ClInclude Include="ConsumableEntity.h" />
+    <ClInclude Include="DynamicEntity.h" />
+    <ClInclude Include="EnemyEntity.h" />
+    <ClInclude Include="Enemy_Archer.h" />
+    <ClInclude Include="Enemy_Footman.h" />
+    <ClInclude Include="EntitiesEnums.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Fonts.h" />
     <ClInclude Include="FileSystem.h" />
     <ClInclude Include="GUIElem.h" />
     <ClInclude Include="InputBox.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="PortalEntity.h" />
     <ClInclude Include="Slider.h" />
+    <ClInclude Include="ModuleMapGenerator.h" />
+    <ClInclude Include="ModuleColliders.h" />
+    <ClInclude Include="Pathfinding.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="ModuleAudio.h" />
@@ -87,66 +78,14 @@
     <ClInclude Include="ModuleRender.h" />
     <ClInclude Include="ModuleTextures.h" />
     <ClInclude Include="ModuleWindow.h" />
+    <ClInclude Include="PlayerEntity.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="StaticEntity.h" />
     <ClInclude Include="Thrall.h" />
-    <ClInclude Include="DynamicEntity.h">
-      <Filter>Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="EntitiesEnums.h">
-      <Filter>Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="Pathfinding.h">
-      <Filter>Pathfinding</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleMapGenerator.h">
-      <Filter>Map</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleColliders.h">
-      <Filter>Colliders</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy_Footman.h">
-      <Filter>Entities\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyEntity.h">
-      <Filter>Entities\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerEntity.h">
-      <Filter>Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy_Archer.h">
-      <Filter>Entities\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>Items</Filter>
-    </ClInclude>
-    <ClInclude Include="PortalEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="Entities">
-      <UniqueIdentifier>{436cd46a-c38a-450b-aa01-ed5998a8493d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Map">
-      <UniqueIdentifier>{92df696f-79b9-4173-b64f-938e501b787b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Pathfinding">
-      <UniqueIdentifier>{d32c3ce4-07a2-409e-812e-e5d545584071}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Colliders">
-      <UniqueIdentifier>{773f0257-8733-48e2-bddc-374a79b3b345}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Entities\Enemy">
-      <UniqueIdentifier>{33c1e0c5-aa50-4bd5-93ef-f007957f20f5}</UniqueIdentifier>
-    <Filter Include="Items">
-      <UniqueIdentifier>{05944e24-550c-4b68-8f81-161596d05580}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
 </Project>

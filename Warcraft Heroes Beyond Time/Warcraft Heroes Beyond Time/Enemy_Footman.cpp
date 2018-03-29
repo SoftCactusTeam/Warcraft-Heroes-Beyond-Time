@@ -5,6 +5,7 @@
 #include "ModuleColliders.h"
 #include "ModuleInput.h"
 #include "ModuleMapGenerator.h"
+#include "Scene.h"
 
 #define DISTANCE_TO_MOVE	300
 #define DISTANCE_TO_CHARGE	120
@@ -99,7 +100,7 @@ void Enemy_Footman::doWalk()
 				accountantPrincipal = CHARGE_DISTANCE;
 				anim = &animCharge[LookAtPlayer()];
 				anim->Reset();
-				chargeMovement = CaculateIPointAngle(App->entities->player->pos) * CHARGE_SPEED;
+				chargeMovement = CaculateIPointAngle(App->scene->player->pos) * CHARGE_SPEED;
 				chargeTime = SDL_GetTicks() + CHARGE_COOLDOWN;
 			}
 			else
@@ -111,8 +112,8 @@ void Enemy_Footman::doWalk()
 	{
 		if (pathVector.isEmpty())
 		{
-			pathVector.CalculatePathAstar(iPoint((int)this->pos.x, (int)this->pos.y), iPoint((int)App->entities->player->pos.x, (int)App->entities->player->pos.y));
-			pathVector.CalculateWay(iPoint((int)this->pos.x, (int)this->pos.y), iPoint((int)App->entities->player->pos.x, (int)App->entities->player->pos.y));
+			pathVector.CalculatePathAstar(iPoint((int)this->pos.x, (int)this->pos.y), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y));
+			pathVector.CalculateWay(iPoint((int)this->pos.x, (int)this->pos.y), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y));
 		}
 		else
 		{

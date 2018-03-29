@@ -33,13 +33,7 @@ class Entities_ConsoleOrder : public ConsoleOrder
 	void Exec(std::string parameter, int parameterNumeric) 
 	{
 		if (parameter == "footman")
-			App->entities->AddEnemy(fPoint(App->entities->player->pos), FOOTMAN);
-
-		else if (parameter == "pesada")
-			printf_s("Txell pesada %i\n", parameterNumeric);
-
-		else if (parameter == "not")
-			printf_s("not parametre %i\n", parameterNumeric);
+			App->entities->AddEnemy(App->scene->player->pos, FOOTMAN);
 	}
 };
 

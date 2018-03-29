@@ -64,7 +64,6 @@ public:
 	
 	Animation* GetAnimFromAngle(float angle, bool dashOn = false);
 	bool IsPlayerMoving();
-	virtual bool Finish();
 
 	// Bezier/dash related variables
 
