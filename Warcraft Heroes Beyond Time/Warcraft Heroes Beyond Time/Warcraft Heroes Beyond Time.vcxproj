@@ -158,6 +158,7 @@
     <ClCompile Include="StaticEntity.cpp" />
     <ClCompile Include="StaticObjectEntity.cpp" />
     <ClCompile Include="Thrall.cpp" />
+    <ClCompile Include="GUIWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -198,6 +199,7 @@
     <ClInclude Include="StaticEntity.h" />
     <ClInclude Include="StaticObjectEntity.h" />
     <ClInclude Include="Thrall.h" />
+    <ClInclude Include="GUIWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GUIElem.cpp" />

@@ -3,6 +3,7 @@
 
 #include "Module.h"
 
+class GUIWindow;
 
 class Scene : public Module
 {
@@ -33,9 +34,14 @@ public:
 
 	} actual_scene = Stages::MAIN_MENU;
 
+	
 
 private:
+
+	GUIWindow* PauseMenu = nullptr;
+
 	bool restart = false;
+	bool paused = false;
 };
 
 

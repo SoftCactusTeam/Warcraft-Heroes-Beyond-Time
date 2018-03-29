@@ -43,6 +43,11 @@ public:
 public:
 	MapGenerator();
 	~MapGenerator();
+	/*void Init()
+	{
+		active = false;
+	}*/
+
 	bool Update(float dt);
 	bool PostUpdate();
 	bool DrawPrePlayerMap();

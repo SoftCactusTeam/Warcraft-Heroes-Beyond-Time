@@ -21,7 +21,8 @@ bool MapGenerator::Update(float dt)
 	bool ret = true;
 
 	//ret = DrawPrePlayerMap();
-	ret = DrawPostPlayerMap();
+	if (nodes.size() > 0)
+		ret = DrawPostPlayerMap();
 	return ret;
 }
 
@@ -47,7 +48,6 @@ bool MapGenerator::CleanUp()
 	}
 
 	nodes.clear();
-
 	visited.clear();
 
 	return nodes.size() <= 0 && visited.size() <= 0;
@@ -56,15 +56,15 @@ bool MapGenerator::CleanUp()
 bool MapGenerator::DrawPrePlayerMap()
 {
 	bool ret = true;
-
-	for (uint i = 0u; i < totalSize && ret; ++i)
-	{
-		if (SDL_RectEquals(&nodes[i]->whatToBlit, &SDL_Rect(FLOOR)))
+	if (nodes.size() > 0)
+		for (uint i = 0u; i < totalSize && ret; ++i)
 		{
-			iPoint posToBlit = nodes[i]->pos;
-			ret = App->render->Blit(mapTexture, posToBlit.x * tileSize, posToBlit.y * tileSize, &nodes[i]->whatToBlit);
+			if (SDL_RectEquals(&nodes[i]->whatToBlit, &SDL_Rect(FLOOR)))
+			{
+				iPoint posToBlit = nodes[i]->pos;
+				ret = App->render->Blit(mapTexture, posToBlit.x * tileSize, posToBlit.y * tileSize, &nodes[i]->whatToBlit);
+			}
 		}
-	}
 
 	return ret;
 }

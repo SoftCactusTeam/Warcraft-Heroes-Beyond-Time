@@ -31,7 +31,8 @@ public:
 		BUTTON,
 		LABEL,
 		INPUTBOX,
-		SLIDER
+		SLIDER,
+		WINDOW
 	};
 	
 protected:
