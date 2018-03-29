@@ -27,7 +27,6 @@ struct MapNode
 	iPoint pos = { 0,0 };
 	int cost = -1;
 	SDL_Rect whatToBlit = { 0,0,0,0 };
-	bool floor = false;
 };
 
 class MapGenerator : public Module
@@ -58,7 +57,8 @@ public:
 	bool CheckBoundaries(const iPoint& pos) const;
 	bool GenerateMap(MapData data);
 	bool ExecuteAlgorithm(MapNode* startNode, uint iterations, int seed);
-	SDL_Rect randomTile(bool isFloor);
+	int CheckTypeOfNode(MapNode* nodetocheck);
+	void UpdateNode(MapNode* nodetocheck, int type);
 	bool GenerateWalls();
 	bool CleanUp();
 	iPoint GetRandomValidPoint();
