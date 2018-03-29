@@ -53,6 +53,8 @@ public:
 
 	void CheckIddleStates();
 	void CheckMapLimits();
+	virtual bool Finish();
+	virtual void Collision(COLLIDER_TYPE type);
 
 	void AddItem(Item item);
 	void IterateItems(ItemFunctions nameFunction);

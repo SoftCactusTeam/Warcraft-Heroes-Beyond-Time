@@ -2,6 +2,7 @@
 #define __ENEMYENTITY_H__
 
 #include "DynamicEntity.h"
+#include "Pathfinding.h"
 
 #define NUMBER_OF_ORIENTATIONS 8
 
@@ -23,7 +24,7 @@ protected:
 	Animation animWalk[NUMBER_OF_ORIENTATIONS];
 	Animation animAtac[NUMBER_OF_ORIENTATIONS];
 	Animation animCharge[NUMBER_OF_ORIENTATIONS];
-
+	PathVector pathVector;
 };
 
 #endif

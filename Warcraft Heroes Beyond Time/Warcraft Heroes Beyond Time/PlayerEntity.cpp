@@ -25,6 +25,8 @@ bool PlayerEntity::Update(float dt)
 
 bool PlayerEntity::Finish() { return true; }
 
+void PlayerEntity::Collision(COLLIDER_TYPE type){}
+
 fPoint PlayerEntity::CalculatePosFromBezier(fPoint startPos, fPoint handleA, float t, fPoint handleB, fPoint endPos)
 {
 	float t2 = pow(t, 2.0f);

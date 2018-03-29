@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include "Application.h"
 #include "Log.h"
 #include "ModuleEntitySystem.h"
@@ -20,17 +23,17 @@
 #include "Console.h"
 
 
-class Txell_ConsoleOrder : public ConsoleOrder 
+class Entities_ConsoleOrder : public ConsoleOrder 
 {
 	std::string orderName() 
 	{ 
-		return "txell"; 
+		return "spawn"; 
 	}
 
 	void Exec(std::string parameter, int parameterNumeric) 
 	{
-		if (parameter == "sexy")
-			printf_s("Txell sexy %i\n", parameterNumeric);
+		if (parameter == "footman")
+			App->entities->AddEnemy(fPoint(App->entities->player->pos), FOOTMAN);
 
 		else if (parameter == "pesada")
 			printf_s("Txell pesada %i\n", parameterNumeric);
@@ -145,7 +148,8 @@ void EntitySystem::Init()
 
 bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 {
-	ConsoleOrder* txell_consoleOrder = new Txell_ConsoleOrder;
+	srand(time(NULL));
+	ConsoleOrder* txell_consoleOrder = new Entities_ConsoleOrder;
 	App->console->AddConsoleOrderToList(txell_consoleOrder);
 
 	ConsoleOrder* spawn_consoleOrder = new Spawn_ConsoleOrder;
@@ -457,4 +461,10 @@ void EntitySystem::ClearEnemies()
 	{
 		if((*it)->)
 	}*/
+}
+
+
+int EntitySystem::GetRandomNumber(int rang)
+{
+	return rand() % rang;
 }

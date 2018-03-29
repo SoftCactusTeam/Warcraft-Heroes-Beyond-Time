@@ -11,6 +11,20 @@
 #include "ModuleAudio.h"
 #include "ModuleMapGenerator.h"
 #include "ModuleRender.h"
+#include "Pathfinding.h"
+#include "ModuleColliders.h"
+
+class ConsoleMap : public ConsoleOrder
+{
+	std::string orderName() { return "map"; }
+	void Exec(std::string parametre, int parametreNumeric) {
+		if (parametre == "printwalkables")
+			if (parametreNumeric == 1)
+				App->path->printWalkables = true;
+			else if (parametreNumeric == 0)
+				App->path->printWalkables = false;
+	}
+};
 
 
 Scene::Scene()
@@ -20,8 +34,10 @@ Scene::Scene()
 
 Scene::~Scene(){}
 
-bool Scene::Awake()
+bool Scene::Awake(pugi::xml_node& consoleNode)
 {
+	ConsoleOrder* order = new ConsoleMap();
+	App->console->AddConsoleOrderToList(order);
 	return true;
 }
 
@@ -87,6 +103,9 @@ bool Scene::Start()
 			App->entities->Activate();
 			App->console->Activate();
 
+			//App->path->LoadMap();
+
+
 			MapData mapInfo;
 			mapInfo.sizeX = 50;
 			mapInfo.sizeY = 50;
@@ -96,8 +115,11 @@ bool Scene::Start()
 
 			App->map->GenerateMap(mapInfo);
 			player = App->entities->AddPlayer({ 25*48,25*48 }, THRALL);
-			App->entities->AddEnemy({ 80,80 }, FOOTMAN);
-
+			App->entities->SetPlayer(player);
+      
+			App->colliders->AddTileCollider({10,10,50,50}, COLLIDER_TYPE::COLLIDER_UNWALKABLE);
+			App->colliders->AddTileCollider({ 10,70,50,50 }, COLLIDER_TYPE::COLLIDER_UNWALKABLE);
+      
 			iPoint chestPos = App->map->GetRandomValidPoint();
 			lvlChest = App->entities->AddChest({ (float)chestPos.x * 48,(float)chestPos.y * 48 }, MID_CHEST);
 			portal = (PortalEntity*)App->entities->AddStaticEntity({ 25 * 48,25 * 48 }, PORTAL);
@@ -116,6 +138,8 @@ bool Scene::PreUpdate()
 
 bool Scene::Update(float dt)
 {
+	if (App->path->printWalkables == true)
+		App->path->PrintWalkableTiles();
 	//TESTING SAVES
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{

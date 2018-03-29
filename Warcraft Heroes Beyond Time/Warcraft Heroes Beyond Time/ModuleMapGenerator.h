@@ -56,7 +56,9 @@ public:
 	iPoint GetRandomValidPoint();
 
 	void getSize(uint& w, uint& h);
+	int getTileSize();
 
+	std::vector<MapNode*> GetMapNodesAndInfo(uint& sizeX, uint& sizeY, uint& tileSize);
 
 private:
 

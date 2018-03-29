@@ -17,13 +17,14 @@ public:
 	virtual bool Draw(float dt);
 
 	virtual void Collision(COLLIDER_TYPE type);
-
+	void StopConcreteTime(int time);
 public:
 	fPoint pos = { 0,0 };
 	SDL_Texture* texture = nullptr;
 	Animation* anim;
+	int accountantPrincipal = -1;
 	bool destroy = false;
-
+	bool stop = false;
 };
 
 #endif

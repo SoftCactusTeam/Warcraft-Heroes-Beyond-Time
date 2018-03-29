@@ -177,3 +177,13 @@ bool Thrall::Finish()
 {	
 	return true;
 }
+
+void Thrall::Collision(COLLIDER_TYPE type)
+{
+	switch (type)
+	{
+	case COLLIDER_TYPE::COLLIDER_ENEMY_ATAC:
+		printf_s("ha rebut una hostia guapa");
+		break;
+	}
+}
