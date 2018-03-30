@@ -14,6 +14,8 @@
 #define ATAC_COOLDOWN		1000
 #define MOVEMENT_SPEED		5
 
+#define ARROW_SPEED			5
+
 Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture) : EnemyEntity(coor, character, texture) {}
 
 bool Enemy_Archer::Start()
@@ -128,7 +130,21 @@ void Enemy_Archer::doAtac()
 
 void Enemy_Archer::ShootArrow()
 {
-	Enemy_Archer_Arrow* newArrow = new Enemy_Archer_Arrow(pos, App->entities->spritesheetsEntities[ARCHER_ARROW_SHEET], CaculateFPointAngle(App->scene->player->pos), LookAtPlayer(), 1000);
+	fPoint directionShoot = App->scene->player->pos;
+	directionShoot.x -= pos.x;
+	directionShoot.y -= pos.y;
+	fPoint copyToDivideDirectionShoot = directionShoot;
+	if (copyToDivideDirectionShoot.x < 0)
+		copyToDivideDirectionShoot.x *= -1;
+	if (copyToDivideDirectionShoot.y < 0)
+		copyToDivideDirectionShoot.y *= -1;
+	float total = copyToDivideDirectionShoot.x + copyToDivideDirectionShoot.y;
+	if (total < 0)
+		total *= -1;
+	directionShoot.x /= total;
+	directionShoot.y /= total;
+
+	Enemy_Archer_Arrow* newArrow = new Enemy_Archer_Arrow(pos, App->entities->spritesheetsEntities[ARCHER_ARROW_SHEET], directionShoot * ARROW_SPEED, LookAtPlayer(), 1000);
 	arrowsVector.push_back(newArrow);
 }
 
