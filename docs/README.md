@@ -50,7 +50,7 @@ _Lozano Sánchez, David's responsability and Github account_
 * Art and audio  
 * [Github account](https://github.com/DavidTheMaaster)  
 
-_Molina-Prados Ciudad, Jonatahn's responsability and Github account_  
+_Molina-Prados Ciudad, Jonathan's responsability and Github account_  
 
 * UI  
 * [Github account](https://github.com/Jony635)  
