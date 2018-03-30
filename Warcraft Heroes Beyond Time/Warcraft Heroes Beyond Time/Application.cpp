@@ -54,9 +54,9 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(fonts);
 	AddModule(fs);
 	AddModule(console);
-	AddModule(colliders);
 	AddModule(path);
 	AddModule(printer);
+	AddModule(colliders);
 	AddModule(gui);
 	//AddModule(map);
 
