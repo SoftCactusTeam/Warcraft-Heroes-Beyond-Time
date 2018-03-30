@@ -76,12 +76,12 @@ bool Render::PreUpdate()
 
 bool Render::Update(float dt)
 {
-//	camera.x = (int)fcamerax;
-	//camera.y = (int)fcameray;
-	//if (camera.x > 0)
-		//camera.x = 0;
-	//if (camera.y > 0)
-		//camera.y = 0;
+	camera.x = (int)fcamerax;
+	camera.y = (int)fcameray;
+	if (camera.x > 0)
+		camera.x = 0;
+	if (camera.y > 0)
+		camera.y = 0;
 
 	return true;
 }

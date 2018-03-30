@@ -8,7 +8,6 @@
     <ClCompile Include="ConsumableEntity.cpp" />
     <ClCompile Include="DynamicEntity.cpp" />
     <ClCompile Include="EnemyEntity.cpp" />
-    <ClCompile Include="Enemy_Archer.cpp" />
     <ClCompile Include="Enemy_Footman.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Color.cpp" />
@@ -16,12 +15,10 @@
     <ClCompile Include="Fonts.cpp" />
     <ClCompile Include="FileSystem.cpp" />
     <ClCompile Include="InputBox.cpp" />
-    <ClCompile Include="Item.cpp" />
     <ClCompile Include="Slider.cpp" />
     <ClCompile Include="ModuleMapGenerator.cpp" />
     <ClCompile Include="ModuleColliders.cpp" />
     <ClCompile Include="Pathfinding.cpp" />
-    <ClCompile Include="PortalEntity.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
@@ -39,7 +36,17 @@
     <ClCompile Include="StaticEntity.cpp" />
     <ClCompile Include="Thrall.cpp" />
     <ClCompile Include="GUIElem.cpp" />
+<<<<<<< HEAD
+    <ClCompile Include="Item.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
+    <ClCompile Include="PortalEntity.cpp" />
+    <ClCompile Include="GUIWindow.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+=======
     <ClCompile Include="GUIWindow.cpp" />
+>>>>>>> origin/2nEnemy+EnemiesPolish_&_PathPolish
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -50,7 +57,6 @@
     <ClInclude Include="ConsumableEntity.h" />
     <ClInclude Include="DynamicEntity.h" />
     <ClInclude Include="EnemyEntity.h" />
-    <ClInclude Include="Enemy_Archer.h" />
     <ClInclude Include="Enemy_Footman.h" />
     <ClInclude Include="EntitiesEnums.h" />
     <ClInclude Include="Entity.h" />
@@ -60,8 +66,6 @@
     <ClInclude Include="FileSystem.h" />
     <ClInclude Include="GUIElem.h" />
     <ClInclude Include="InputBox.h" />
-    <ClInclude Include="Item.h" />
-    <ClInclude Include="PortalEntity.h" />
     <ClInclude Include="Slider.h" />
     <ClInclude Include="ModuleMapGenerator.h" />
     <ClInclude Include="ModuleColliders.h" />
@@ -85,9 +89,22 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="StaticEntity.h" />
     <ClInclude Include="Thrall.h" />
-    <ClInclude Include="GUIWindow.h" />
+    <ClInclude Include="Item.h">
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="PortalEntity.h" />
+    <ClInclude Include="GUIWindow.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />
+
+    <ClInclude Include="GUIWindow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Items">
+      <UniqueIdentifier>{05944e24-550c-4b68-8f81-161596d05580}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

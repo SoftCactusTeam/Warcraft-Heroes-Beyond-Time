@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
 #include "Application.h"
 #include "Log.h"
 #include "ModuleEntitySystem.h"
@@ -23,17 +20,23 @@
 #include "Console.h"
 
 
-class Entities_ConsoleOrder : public ConsoleOrder 
+class Txell_ConsoleOrder : public ConsoleOrder 
 {
 	std::string orderName() 
 	{ 
-		return "spawn"; 
+		return "txell"; 
 	}
 
 	void Exec(std::string parameter, int parameterNumeric) 
 	{
-		if (parameter == "footman")
-			App->entities->AddEnemy(App->scene->player->pos, FOOTMAN);
+		if (parameter == "sexy")
+			printf_s("Txell sexy %i\n", parameterNumeric);
+
+		else if (parameter == "pesada")
+			printf_s("Txell pesada %i\n", parameterNumeric);
+
+		else if (parameter == "not")
+			printf_s("not parametre %i\n", parameterNumeric);
 	}
 };
 
@@ -142,8 +145,7 @@ void EntitySystem::Init()
 
 bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 {
-	srand(time(NULL));
-	ConsoleOrder* txell_consoleOrder = new Entities_ConsoleOrder;
+	ConsoleOrder* txell_consoleOrder = new Txell_ConsoleOrder;
 	App->console->AddConsoleOrderToList(txell_consoleOrder);
 
 	ConsoleOrder* spawn_consoleOrder = new Spawn_ConsoleOrder;
@@ -346,7 +348,7 @@ void EntitySystem::AddEnemy(fPoint coor, ENEMY_TYPE type)
 		break;
 	}
 	toSpawn.push_back(newEntity);
-	App->colliders->AddCollider((Entity*)newEntity, { 0,0,32,32 }, COLLIDER_ENEMY, { 20,20 });
+	//App->colliders->AddCollider((Entity*)newEntity, { 0,0,32,32 }, COLLIDER_ENEMY, { 20,20 });
 
 }
 
@@ -382,8 +384,8 @@ PlayerEntity* EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
 		newEntity = new PlayerEntity(coor, PLAYER_TYPE::SYLVANAS, nullptr);
 		break;
 	}
-	toSpawn.push_back((Entity*)newEntity);
-	App->colliders->AddCollider((Entity*)newEntity, { 0,0,32,32 }, COLLIDER_PLAYER, {10,10});
+	toSpawn.push_back(newEntity);
+	//App->colliders->AddCollider(newEntity, { 0,0,32,32 }, COLLIDER_PLAYER, {10,10});
 	return newEntity;
 }
 
@@ -456,10 +458,4 @@ void EntitySystem::ClearEnemies()
 	{
 		if((*it)->)
 	}*/
-}
-
-
-int EntitySystem::GetRandomNumber(int rang)
-{
-	return rand() % rang;
 }

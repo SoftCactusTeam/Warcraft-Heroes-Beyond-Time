@@ -10,8 +10,6 @@ public:
 
 	bool Update(float dt);
 	bool Finish();
-
-	void Collision(COLLIDER_TYPE type);
 };
 
 #endif

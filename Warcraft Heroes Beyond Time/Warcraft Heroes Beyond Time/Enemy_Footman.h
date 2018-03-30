@@ -21,17 +21,8 @@ public:
 
 	void ChargeAnimations();
 
-	void doIdle();
-	void doWalk();
-	void doAtac();
-	void doCharge();
-
 public:
 	FOOTMAN_STATE state;
-
-	// Charge variables
-	fPoint		chargeMovement;
-	uint		chargeTime = 0;
 };
 
 #endif

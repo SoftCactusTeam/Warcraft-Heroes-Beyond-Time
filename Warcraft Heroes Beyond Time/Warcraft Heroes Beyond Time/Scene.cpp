@@ -7,23 +7,11 @@
 #include "ModuleAudio.h"
 #include "ModuleMapGenerator.h"
 #include "ModuleRender.h"
-#include "Pathfinding.h"
 #include "ModuleColliders.h"
 #include "ChestEntity.h"
 #include "PortalEntity.h"
+#include "Pathfinding.h"
 
-
-class ConsoleMap : public ConsoleOrder
-{
-	std::string orderName() { return "map"; }
-	void Exec(std::string parametre, int parametreNumeric) {
-		if (parametre == "printwalkables")
-			if (parametreNumeric == 1)
-				App->path->printWalkables = true;
-			else if (parametreNumeric == 0)
-				App->path->printWalkables = false;
-	}
-};
 
 #include "Label.h"
 #include "InputBox.h"
@@ -39,16 +27,15 @@ Scene::Scene()
 
 Scene::~Scene(){}
 
-bool Scene::Awake(pugi::xml_node& consoleNode)
+bool Scene::Awake()
 {
-	ConsoleOrder* order = new ConsoleMap();
-	App->console->AddConsoleOrderToList(order);
 	return true;
 }
 
 bool Scene::Start()
 {
 	App->gui->Activate();
+	App->colliders->Activate();
 	switch (actual_scene)
 	{
 		case Stages::MAIN_MENU:
@@ -57,11 +44,11 @@ bool Scene::Start()
 			Button* button = (Button*)App->gui->CreateButton({ 250, 50.0f }, BType::PLAY, this);
 
 			LabelInfo defLabel;
-			defLabel.color = Red;
-			defLabel.fontName = "Arial11";
+			defLabel.color = Yellow;
+			defLabel.fontName = "LifeCraft20";
 			defLabel.text = "PLAY";
-			App->gui->CreateLabel({ 65,25 }, defLabel, button, this);
-			
+			App->gui->CreateLabel({ 60,20 }, defLabel, button, this);
+
 			//SETTINGS BUTTON
 			Button* button2 = (Button*)App->gui->CreateButton({ 250, 150.0f }, BType::SETTINGS, this);
 
@@ -111,7 +98,6 @@ bool Scene::Start()
 		{
 			App->entities->Activate();
 			App->console->Activate();
-
 			App->map->Activate();
 
 			MapData mapInfo;
@@ -123,28 +109,22 @@ bool Scene::Start()
 
 			App->map->GenerateMap(mapInfo);
 
+			player = App->entities->AddPlayer({ 25*48,25*48 }, THRALL);
 			App->path->LoadPathMap();
+			App->entities->AddEnemy({ 80,80 }, FOOTMAN);
 
-			player = App->entities->AddPlayer({ 25 * 48,25 * 48 }, THRALL);
+			/*App->colliders->AddTileCollider({ 10,10,50,50 }, COLLIDER_TYPE::COLLIDER_UNWALKABLE);
+			App->colliders->AddTileCollider({ 10,70,50,50 }, COLLIDER_TYPE::COLLIDER_UNWALKABLE);*/
 
-			App->colliders->AddTileCollider({ 10,10,50,50 }, COLLIDER_TYPE::COLLIDER_UNWALKABLE);
-			App->colliders->AddTileCollider({ 10,70,50,50 }, COLLIDER_TYPE::COLLIDER_UNWALKABLE);
 
 			iPoint chestPos = App->map->GetRandomValidPoint();
 			lvlChest = App->entities->AddChest({ (float)chestPos.x * 48,(float)chestPos.y * 48 }, MID_CHEST);
 			portal = (PortalEntity*)App->entities->AddStaticEntity({ 25 * 48,25 * 48 }, PORTAL);
-
-
-
-			player = App->entities->AddPlayer({ 55,55 }, THRALL);
-
-			//App->path->LoadMap();
-
 			break;
 		}
-			
+
 	}
-	
+
 	return true;
 }
 
@@ -155,8 +135,6 @@ bool Scene::PreUpdate()
 
 bool Scene::Update(float dt)
 {
-	if (App->path->printWalkables == true)
-		App->path->PrintWalkableTiles();
 	//TESTING SAVES
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
@@ -169,7 +147,8 @@ bool Scene::Update(float dt)
 		App->Load();
 	}
 
-	//GENERATE A NEW MAP
+
+//GENERATE A NEW MAP
 	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && actual_scene == Stages::INGAME && lvlIndex != 8)
 	{
 		App->map->CleanUp();
@@ -187,7 +166,7 @@ bool Scene::Update(float dt)
 		iPoint chestPos = App->map->GetRandomValidPoint();
 		lvlChest = App->entities->AddChest({ (float)chestPos.x * 48,(float)chestPos.y * 48 }, MID_CHEST);
 		portal = (PortalEntity*)App->entities->AddStaticEntity({ 25 * 48,25 * 48 }, PORTAL);
-		
+
 		lvlIndex++;
 	}
 	else if(App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
@@ -226,7 +205,7 @@ bool Scene::Update(float dt)
 		lvlChest->UnLockChest();
 		lvlChest->OpenChest();
 		portal->OpenPortal();
-
+	}
 	//PAUSE GAME
 		if (actual_scene == Stages::INGAME)
 		{
@@ -270,7 +249,6 @@ bool Scene::Update(float dt)
 				}
 			}
 		}
-	}
 	return true;
 }
 
@@ -291,6 +269,7 @@ bool Scene::CleanUp()
 	App->map->DeActivate();
 	App->entities->DeActivate();
 	App->console->DeActivate();
+	App->colliders->DeActivate();
 
 	return true;
 }
