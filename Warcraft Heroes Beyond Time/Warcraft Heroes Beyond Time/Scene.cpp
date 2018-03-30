@@ -45,7 +45,7 @@ bool Scene::Start()
 
 			LabelInfo defLabel;
 			defLabel.color = Yellow;
-			defLabel.fontName = "LifeCraft20";
+			defLabel.fontName = "LifeCraft80";
 			defLabel.text = "PLAY";
 			App->gui->CreateLabel({ 60,20 }, defLabel, button, this);
 
@@ -54,18 +54,18 @@ bool Scene::Start()
 
 			LabelInfo defLabel2;
 			defLabel2.color = Red;
-			defLabel2.fontName = "Arial11";
+			defLabel2.fontName = "Arial80";
 			defLabel2.text = "Settings";
-			App->gui->CreateLabel({ 60,25 }, defLabel2, button2, this);
+			App->gui->CreateLabel({ 40,17 }, defLabel2, button2, this);
 
 			//EXIT GAME BUTTON
 			Button* button3 = (Button*)App->gui->CreateButton({ 250, 250.0f }, BType::EXIT_GAME, this);
 
 			LabelInfo defLabel3;
 			defLabel3.color = Red;
-			defLabel3.fontName = "Arial9";
-			defLabel3.text = "Fuck u go fucking out of here ;(";
-			App->gui->CreateLabel({ 13,25 }, defLabel3, button3, this);
+			defLabel3.fontName = "Arial40";
+			defLabel3.text = "Fuck u go fucking out of\n               here ;(";
+			App->gui->CreateLabel({ 13,20 }, defLabel3, button3, this);
 
 			break;
 		}

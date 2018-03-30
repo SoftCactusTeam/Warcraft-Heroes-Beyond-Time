@@ -45,7 +45,7 @@ bool InputBox::Draw()
 	bool ret = true;
 	
 	if(texturetoBlit)
-		ret = App->render->Blit(texturetoBlit, (int)(this->screenPos.x - App->render->camera.x), (int)(this->screenPos.y - App->render->camera.y));
+		ret = App->render->Blit(texturetoBlit, (int)(this->screenPos.x - App->render->camera.x), (int)(this->screenPos.y - App->render->camera.y), nullptr, 0.3);
 
 	if(ret)
 		ret = DrawChilds();

@@ -52,7 +52,7 @@ bool Console::Start()
 
 	InputBoxInfo defInputBox;
 	defInputBox.color = White;
-	defInputBox.fontName = "Arial11";
+	defInputBox.fontName = "Arial80";
 
 	box = (InputBox*)App->gui->CreateInputBox({ 5, 0 }, defInputBox, nullptr, nullptr);
 
