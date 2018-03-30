@@ -100,7 +100,7 @@ void Enemy_Footman::doWalk()
 				accountantPrincipal = CHARGE_DISTANCE;
 				anim = &animCharge[LookAtPlayer()];
 				anim->Reset();
-				chargeMovement = CaculateIPointAngle(App->scene->player->pos) * CHARGE_SPEED;
+				chargeMovement = CaculateFPointAngle(App->scene->player->pos) * CHARGE_SPEED;
 				chargeTime = SDL_GetTicks() + CHARGE_COOLDOWN;
 			}
 			else

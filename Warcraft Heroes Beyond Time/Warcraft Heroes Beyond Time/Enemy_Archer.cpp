@@ -7,6 +7,7 @@
 #include "ModuleMapGenerator.h"
 #include "Scene.h"
 #include "ModuleRender.h"
+#include "ModuleInput.h"
 
 #define DISTANCE_TO_MOVE	300
 #define DISTANCE_TO_ATAC	150
@@ -24,6 +25,23 @@ bool Enemy_Archer::Start()
 
 bool Enemy_Archer::Update(float dt)
 {
+	if (App->input->GetKey(SDL_SCANCODE_9) == KeyState::KEY_DOWN)
+		ShootArrow();
+
+	// L'update de les flextes
+	for (int i = 0; i < arrowsVector.size(); i++)
+	{
+		if (arrowsVector[i]->destroy == false)
+			arrowsVector[i]->Update();
+		else
+		{
+			delete arrowsVector[i];
+			arrowsVector.emplace_back(arrowsVector[i]);
+			arrowsVector.pop_back();
+			// COMPROBAR SI AIXO FUNCIONA !!!
+		}
+	}
+
 	// AIXO ES PER COMPROBAR SI ESTA PARADA O NO
 	if (stop == true)
 		if (SDL_GetTicks() > accountantPrincipal)
@@ -49,7 +67,6 @@ bool Enemy_Archer::Update(float dt)
 	}
 
 	pathVector.PrintAstar();
-
 	return true;
 }
 
@@ -107,6 +124,12 @@ void Enemy_Archer::doAtac()
 		state = ARCHER_STATE::ARCHER_IDLE;
 		pathVector.Clear();
 	}
+}
+
+void Enemy_Archer::ShootArrow()
+{
+	Enemy_Archer_Arrow* newArrow = new Enemy_Archer_Arrow(pos, App->entities->spritesheetsEntities[ARCHER_ARROW_SHEET], CaculateFPointAngle(App->scene->player->pos), LookAtPlayer(), 1000);
+	arrowsVector.push_back(newArrow);
 }
 
 void Enemy_Archer::ChargeAnimations()
@@ -281,15 +304,30 @@ Enemy_Archer_Arrow::Enemy_Archer_Arrow(fPoint coor, SDL_Texture* texture, fPoint
 	this->direction = direction;
 	this->deadTimer = deadTimer;
 	this->angle = angle;
+
+	// Assignar els rects
+
+	rect[FIXED_ANGLE::UP] = { 0,0,32,32 };
+	rect[FIXED_ANGLE::UP_RIGHT] = { 32,0,32,32 };
+	rect[FIXED_ANGLE::RIGHT] = { 64,0,32,32 };
+	rect[FIXED_ANGLE::DOWN_RIGHT] = { 92,0,32,32 };
+	rect[FIXED_ANGLE::DOWN] = { 0,32,32,32 };
+	rect[FIXED_ANGLE::DOWN_LEFT] = { 32,32,32,32 };
+	rect[FIXED_ANGLE::LEFT] = { 64,32,32,32 };
+	rect[FIXED_ANGLE::UP_LEFT] = { 92,32,32,32 };
+
 }
 
 void Enemy_Archer_Arrow::Update()
 {
-	this->pos += direction;
-	App->render->Blit(texture, pos.x, pos.y, &rect[angle]);
-}
+	if (deadTimer > 0)
+	{
+		this->pos += direction;
+		App->render->Blit(texture, pos.x, pos.y, &rect[angle]);
 
-void Enemy_Archer_Arrow::Finish()
-{
+	}
+	else
+	{
 
+	}
 }

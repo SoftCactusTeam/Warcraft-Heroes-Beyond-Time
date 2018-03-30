@@ -66,10 +66,11 @@ public:
 
 	void ClearEnemies();
 	int GetRandomNumber(int rang);
+
+	std::vector<SDL_Texture*> spritesheetsEntities;
 private:
 	std::list<Entity*>		entities;
 	std::list<Entity*>		toSpawn; 
-	std::vector<SDL_Texture*> spritesheetsEntities;
 
 };
 

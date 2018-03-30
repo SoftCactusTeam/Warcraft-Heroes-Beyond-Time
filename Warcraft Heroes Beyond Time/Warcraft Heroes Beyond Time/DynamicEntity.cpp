@@ -66,7 +66,7 @@ FIXED_ANGLE DynamicEntity::CaculateAngle(fPoint objectiveCoor)
 	return angleToReturn;
 }
 
-fPoint DynamicEntity::CaculateIPointAngle(fPoint objectiveCoor)
+fPoint DynamicEntity::CaculateFPointAngle(fPoint objectiveCoor)
 {
 	switch (CaculateAngle(objectiveCoor))
 	{

@@ -2,6 +2,7 @@
 #define __Enemy_Archer_H__
 
 #include "EnemyEntity.h"
+#include <vector>
 
 #define ARROW_DEAD_TIMER 2000
 
@@ -17,7 +18,6 @@ public:
 	Enemy_Archer_Arrow(fPoint coor, SDL_Texture* texture, fPoint direction, FIXED_ANGLE angle,int deadTimer = ARROW_DEAD_TIMER);
 
 	void Update();
-	void Finish();
 
 public:
 	fPoint			pos;
@@ -26,7 +26,7 @@ public:
 	SDL_Rect		rect[NUMBER_OF_ORIENTATIONS];
 	FIXED_ANGLE		angle;
 	int				deadTimer;
-
+	bool			destroy = false;
 };
 
 class Enemy_Archer : public EnemyEntity
@@ -44,12 +44,16 @@ public:
 	void doWalk();
 	void doAtac();
 
+	void ShootArrow();
+
 public:
 	ARCHER_STATE state;
 	Animation animIdle[NUMBER_OF_ORIENTATIONS];
 	Animation animWalk[NUMBER_OF_ORIENTATIONS];
 	Animation animAtac[NUMBER_OF_ORIENTATIONS];
 	Animation animDeath[NUMBER_OF_ORIENTATIONS];
+
+	std::vector<Enemy_Archer_Arrow*> arrowsVector;
 };
 
 #endif

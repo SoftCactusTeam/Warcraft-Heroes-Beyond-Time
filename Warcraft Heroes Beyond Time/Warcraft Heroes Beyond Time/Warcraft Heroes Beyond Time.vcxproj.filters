@@ -22,7 +22,6 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
-    <ClCompile Include="ModuleEntitySystem.cpp" />
     <ClCompile Include="ModuleGUI.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -44,6 +43,9 @@
       <Filter>Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Enemy_Footman.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleEntitySystem.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
   </ItemGroup>
@@ -72,7 +74,6 @@
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="ModuleAudio.h" />
-    <ClInclude Include="ModuleEntitySystem.h" />
     <ClInclude Include="ModuleGUI.h" />
     <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="Module.h" />
@@ -96,6 +97,9 @@
       <Filter>Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Enemy_Footman.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleEntitySystem.h">
       <Filter>Enemy</Filter>
     </ClInclude>
   </ItemGroup>
