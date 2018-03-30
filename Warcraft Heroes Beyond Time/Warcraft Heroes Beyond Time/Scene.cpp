@@ -44,7 +44,7 @@ bool Scene::Start()
 			Button* button = (Button*)App->gui->CreateButton({ 250, 50.0f }, BType::PLAY, this);
 
 			LabelInfo defLabel;
-			defLabel.color = Yellow;
+			defLabel.color = White;
 			defLabel.fontName = "LifeCraft80";
 			defLabel.text = "PLAY";
 			App->gui->CreateLabel({ 60,20 }, defLabel, button, this);
@@ -53,7 +53,7 @@ bool Scene::Start()
 			Button* button2 = (Button*)App->gui->CreateButton({ 250, 150.0f }, BType::SETTINGS, this);
 
 			LabelInfo defLabel2;
-			defLabel2.color = Red;
+			defLabel2.color = White;
 			defLabel2.fontName = "Arial80";
 			defLabel2.text = "Settings";
 			App->gui->CreateLabel({ 40,17 }, defLabel2, button2, this);
@@ -62,7 +62,7 @@ bool Scene::Start()
 			Button* button3 = (Button*)App->gui->CreateButton({ 250, 250.0f }, BType::EXIT_GAME, this);
 
 			LabelInfo defLabel3;
-			defLabel3.color = Red;
+			defLabel3.color = White;
 			defLabel3.fontName = "Arial40";
 			defLabel3.text = "Fuck u go fucking out of\n               here ;(";
 			App->gui->CreateLabel({ 13,20 }, defLabel3, button3, this);
@@ -78,19 +78,19 @@ bool Scene::Start()
 
 			LabelInfo defLabel3;
 			defLabel3.color = White;
-			defLabel3.fontName = "Arial11";
+			defLabel3.fontName = "Arial80";
 			std::string temp = (char*)std::to_string(App->audio->MusicVolumePercent).data();
 			defLabel3.text = (char*)temp.data();
-			App->gui->CreateLabel({ 270,3 }, defLabel3, slider, this);
+			App->gui->CreateLabel({ 270,-3 }, defLabel3, slider, this);
 
 			//BACK BUTTON
 			Button* button3 = (Button*)App->gui->CreateButton({ 250, 250.0f }, BType::GO_MMENU, this);
 
 			LabelInfo defLabel2;
-			defLabel2.color = Red;
-			defLabel2.fontName = "Arial11";
+			defLabel2.color = White;
+			defLabel2.fontName = "Arial80";
 			defLabel2.text = "Go Back ;)";
-			App->gui->CreateLabel({ 50,25 }, defLabel2, button3, this);
+			App->gui->CreateLabel({ 27,15 }, defLabel2, button3, this);
 
 			break;
 		}
@@ -149,7 +149,7 @@ bool Scene::Update(float dt)
 
 
 //GENERATE A NEW MAP
-	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && actual_scene == Stages::INGAME && lvlIndex != 8)
+	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && actual_scene == Stages::INGAME && lvlIndex != 8 && !App->input->IsTextReady())
 	{
 		App->map->CleanUp();
 
@@ -222,25 +222,25 @@ bool Scene::Update(float dt)
 
 					LabelInfo defLabel1;
 					defLabel1.color = White;
-					defLabel1.fontName = "Arial11";
+					defLabel1.fontName = "Arial80";
 					defLabel1.text = "Resume";
-					App->gui->CreateLabel({ 57,23 }, defLabel1, Resume, this);
+					App->gui->CreateLabel({ 35,15 }, defLabel1, Resume, this);
 
 					Button* MainMenu = (Button*)App->gui->CreateButton({ 255 / 2 - 158 / 2, 110.0f }, BType::GO_MMENU, this, PauseMenu);
 
 					LabelInfo defLabel2;
 					defLabel2.color = White;
-					defLabel2.fontName = "Arial11";
+					defLabel2.fontName = "Arial40";
 					defLabel2.text = "Return to the Main Menu";
-					App->gui->CreateLabel({ 23,23 }, defLabel2, MainMenu, this);
+					App->gui->CreateLabel({ 15,23 }, defLabel2, MainMenu, this);
 
 					Button* SaveAndExit = (Button*)App->gui->CreateButton({ 255 / 2 - 158 / 2, 200.0f }, BType::EXIT_GAME, this, PauseMenu);
 
 					LabelInfo defLabel3;
 					defLabel3.color = White;
-					defLabel3.fontName = "Arial11";
+					defLabel3.fontName = "Arial65";
 					defLabel3.text = "Save and Exit";
-					App->gui->CreateLabel({ 43,23 }, defLabel3, SaveAndExit, this);
+					App->gui->CreateLabel({ 20,20 }, defLabel3, SaveAndExit, this);
 				}
 				else
 				{

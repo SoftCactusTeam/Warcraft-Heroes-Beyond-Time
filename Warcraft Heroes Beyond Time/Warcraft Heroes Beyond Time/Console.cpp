@@ -43,18 +43,17 @@ bool Console::Awake(pugi::xml_node& consoleNode)
 
 bool Console::Start() 
 {
-	
 	uint windowsWidth;
 	uint windowHeight;
 	App->window->GetWindowSize(windowsWidth, windowHeight);
 
-	rectConsoleQuad = { 0, 0, 640, 17 };
+	rectConsoleQuad = { 0, 0, 640, 15 };
 
 	InputBoxInfo defInputBox;
 	defInputBox.color = White;
-	defInputBox.fontName = "Arial80";
+	defInputBox.fontName = "Arial30";
 
-	box = (InputBox*)App->gui->CreateInputBox({ 5, 0 }, defInputBox, nullptr, nullptr);
+	box = (InputBox*)App->gui->CreateInputBox({ 5, 2 }, defInputBox, nullptr, nullptr);
 
 	return true;
 }

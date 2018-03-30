@@ -23,7 +23,7 @@ bool InputBox::Update(float dt)
 		{
 			text += App->input->GetText();
 			SDL_DestroyTexture(texturetoBlit);
-			texturetoBlit = App->fonts->Print(text.data(), color, font);
+			texturetoBlit = App->fonts->Print(text.data(), color, font, 90000);
 			App->input->SetTextReadyFalse();
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN && text.size() > 0)
