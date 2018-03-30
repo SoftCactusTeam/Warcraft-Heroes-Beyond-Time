@@ -131,8 +131,20 @@ void PlayerEntity::KeyboardStates(float dt)
 		{
 			startPos = pos;
 			state = states::PL_DASH;
+			animBefore = anim;	
+			break;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+		{
+			state = states::PL_ATTACK;
 			animBefore = anim;
-			
+			break;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+		{
+			state = states::PL_SKILL;
+			animBefore = anim;
+			anim = &skill;
 			break;
 		}
 	
@@ -280,6 +292,19 @@ void PlayerEntity::KeyboardStates(float dt)
 			animBefore = anim;
 			break;
 		}
+		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+		{
+			state = states::PL_ATTACK;
+			animBefore = anim;
+			break;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+		{
+			state = states::PL_SKILL;
+			animBefore = anim;
+			anim = &skill;
+			break;
+		}
 		break;
 
 	case states::PL_DOWN:
@@ -287,7 +312,7 @@ void PlayerEntity::KeyboardStates(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_UP)
 		{
 			state = states::PL_IDLE;
-			anim = &attackDown;
+			anim = &idleDown;
 			break;
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
@@ -307,6 +332,19 @@ void PlayerEntity::KeyboardStates(float dt)
 			startPos = pos;
 			state = states::PL_DASH;
 			animBefore = anim;
+			break;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+		{
+			state = states::PL_ATTACK;
+			animBefore = anim;
+			break;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+		{
+			state = states::PL_SKILL;
+			animBefore = anim;
+			anim = &skill;
 			break;
 		}
 		break;
@@ -338,6 +376,19 @@ void PlayerEntity::KeyboardStates(float dt)
 			animBefore = anim;
 			break;
 		}
+		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+		{
+			state = states::PL_ATTACK;
+			animBefore = anim;
+			break;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+		{
+			state = states::PL_SKILL;
+			animBefore = anim;
+			anim = &skill;
+			break;
+		}
 		break;
 
 	case states::PL_RIGHT:
@@ -365,6 +416,19 @@ void PlayerEntity::KeyboardStates(float dt)
 			startPos = pos;
 			state = states::PL_DASH;
 			animBefore = anim;
+			break;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+		{
+			state = states::PL_ATTACK;
+			animBefore = anim;
+			break;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+		{
+			state = states::PL_SKILL;
+			animBefore = anim;
+			anim = &skill;
 			break;
 		}
 		break;
@@ -399,6 +463,19 @@ void PlayerEntity::KeyboardStates(float dt)
 			animBefore = anim;
 			break;
 		}
+		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+		{
+			state = states::PL_ATTACK;
+			animBefore = anim;
+			break;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+		{
+			state = states::PL_SKILL;
+			animBefore = anim;
+			anim = &skill;
+			break;
+		}
 break;
 
 	case states::PL_UP_RIGHT:
@@ -427,6 +504,19 @@ break;
 			startPos = pos;
 			state = states::PL_DASH;
 			animBefore = anim;
+			break;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+		{
+			state = states::PL_ATTACK;
+			animBefore = anim;
+			break;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+		{
+			state = states::PL_SKILL;
+			animBefore = anim;
+			anim = &skill;
 			break;
 		}
 		break;
@@ -459,6 +549,19 @@ break;
 			animBefore = anim;
 			break;
 		}
+		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+		{
+			state = states::PL_ATTACK;
+			animBefore = anim;
+			break;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+		{
+			state = states::PL_SKILL;
+			animBefore = anim;
+			anim = &skill;
+			break;
+		}
 		break;
 
 	case states::PL_DOWN_RIGHT:
@@ -489,6 +592,19 @@ break;
 			animBefore = anim;
 			break;
 		}
+		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+		{
+			state = states::PL_ATTACK;
+			animBefore = anim;
+			break;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+		{
+			state = states::PL_SKILL;
+			animBefore = anim;
+			anim = &skill;
+			break;
+		}
 		break;
 
 	case states::PL_ATTACK:
@@ -508,8 +624,61 @@ break;
 		if (anim->Finished())
 		{
 			anim->Reset();
-			anim = &idleDown;
+
+			if (animBefore == &left)
+				anim = &idleLeft;
+			else if (animBefore == &up)
+				anim = &idleUp;
+			else if (animBefore == &down)
+				anim = &idleDown;
+			else if (animBefore == &right)
+				anim = &idleRight;
+			else if (animBefore == &upRight)
+				anim = &idleUpRight;
+			else if (animBefore == &upLeft)
+				anim = &idleUpLeft;
+			else if (animBefore == &downLeft)
+				anim = &idleDownLeft;
+			else if (animBefore == &downRight)
+				anim = &idleDownRight;
+			else
+				anim = animBefore;
+
 			state = states::PL_IDLE;
+
+			break;
+		}
+
+		break;
+
+	case states::PL_SKILL:
+
+		if (anim->Finished())
+		{
+			anim->Reset();
+			anim = animBefore;
+
+			if (animBefore == &left)
+				anim = &idleLeft;
+			else if (animBefore == &up)
+				anim = &idleUp;
+			else if (animBefore == &down)
+				anim = &idleDown;
+			else if (animBefore == &right)
+				anim = &idleRight;
+			else if (animBefore == &upRight)
+				anim = &idleUpRight;
+			else if (animBefore == &upLeft)
+				anim = &idleUpLeft;
+			else if (animBefore == &downLeft)
+				anim = &idleDownLeft;
+			else if (animBefore == &downRight)
+				anim = &idleDownRight;
+			else
+				anim = animBefore;
+
+			state = states::PL_IDLE;
+
 			break;
 		}
 

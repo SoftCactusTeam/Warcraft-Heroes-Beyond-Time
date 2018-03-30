@@ -214,20 +214,21 @@ SDL_Rect MapGenerator::randomTile(bool isFloor)
 
 	if (isFloor)
 	{
-		int randNum = rand() % (6 - 1 + 1) + 1;
+		int randNum = rand() % (100 - 1 + 1) + 1;
 
-		if (randNum == 1)
-			toReturn = FLOOR;
-		else if (randNum == 2)
-			toReturn = FLOOR2;
-		else if (randNum == 3)
-			toReturn = FLOOR3;
-		else if (randNum == 4)
-			toReturn = FLOOR4;
-		else if (randNum == 5)
-			toReturn = FLOOR5;
-		else if (randNum == 6)
+		if (randNum <= 2)
 			toReturn = FLOOR6;
+		else if (randNum <= 4)
+			toReturn = FLOOR5;		
+		else if (randNum <= 7)
+			toReturn = FLOOR4;
+		else if (randNum <= 10)
+			toReturn = FLOOR3;
+		else if (randNum <= 13)
+			toReturn = FLOOR2;
+		else if (randNum <= 100)
+			toReturn = FLOOR;
+		
 	}
 	else
 	{
