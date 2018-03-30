@@ -18,9 +18,9 @@ class Pathfinding : public Module
 {
 public:
 	Pathfinding();
-	void LoadMap(uint width, uint height);
+	void LoadPathMap();
 	void AddNodeToMap(int cost, iPoint nodePos = { -1,-1 });
-	void ClearMap(); 
+	void ClearMap();
 
 private:
 	std::vector<pathNode*> map;

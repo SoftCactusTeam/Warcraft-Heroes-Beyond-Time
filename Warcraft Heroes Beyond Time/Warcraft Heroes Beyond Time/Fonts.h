@@ -12,7 +12,7 @@
 #include <map>
 #include <iostream>
 
-struct SDL_Texture;
+class SDL_Texture;
 
 class Fonts : public Module
 {

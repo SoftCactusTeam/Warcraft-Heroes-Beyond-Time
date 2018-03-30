@@ -34,9 +34,19 @@
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="StaticEntity.cpp" />
-    <ClCompile Include="StaticObjectEntity.cpp" />
     <ClCompile Include="Thrall.cpp" />
     <ClCompile Include="GUIElem.cpp" />
+<<<<<<< HEAD
+    <ClCompile Include="Item.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
+    <ClCompile Include="PortalEntity.cpp" />
+    <ClCompile Include="GUIWindow.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+=======
+    <ClCompile Include="GUIWindow.cpp" />
+>>>>>>> origin/2nEnemy+EnemiesPolish_&_PathPolish
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -78,10 +88,23 @@
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="StaticEntity.h" />
-    <ClInclude Include="StaticObjectEntity.h" />
     <ClInclude Include="Thrall.h" />
+    <ClInclude Include="Item.h">
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="PortalEntity.h" />
+    <ClInclude Include="GUIWindow.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />
+
+    <ClInclude Include="GUIWindow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Items">
+      <UniqueIdentifier>{05944e24-550c-4b68-8f81-161596d05580}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

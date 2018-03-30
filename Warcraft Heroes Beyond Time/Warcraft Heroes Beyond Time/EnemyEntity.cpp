@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleEntitySystem.h"
 #include "PlayerEntity.h"
+#include "Scene.h"
 
 EnemyEntity::EnemyEntity(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture) : DynamicEntity(coor, texture), type(type) {}
 
@@ -13,7 +14,7 @@ bool EnemyEntity::Finish() { return true; }
 
 FIXED_ANGLE EnemyEntity::LookAtPlayer()
 {
-	switch (CaculateAngle(App->entities->player->pos))
+	switch (CaculateAngle(App->scene->player->pos))
 	{
 	case FIXED_ANGLE::UP:
 		orientation = FIXED_ANGLE::UP;
@@ -45,5 +46,5 @@ FIXED_ANGLE EnemyEntity::LookAtPlayer()
 
 uint EnemyEntity::DistanceToPlayer()
 {
-	return DistanceToObejective(App->entities->player->pos);
+	return DistanceToObejective(App->scene->player->pos);
 }

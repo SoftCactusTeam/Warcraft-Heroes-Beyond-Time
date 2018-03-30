@@ -8,6 +8,7 @@
 
 struct Collider
 {
+	Collider(SDL_Rect colliderRect, COLLIDER_TYPE type);
 	Collider(Entity* owner, SDL_Rect colliderRect, COLLIDER_TYPE type, iPoint offset);
 	SDL_Rect colliderRect;	// El X i Y del Rect fan de offset !!!
 	Entity* owner;
@@ -24,6 +25,7 @@ public:
 
 	void AddCollider(Entity* owner, SDL_Rect colliderRect, COLLIDER_TYPE type, iPoint offset);
 	void AddTemporalCollider(SDL_Rect colliderRect, COLLIDER_TYPE type, int timer);
+	void AddTileCollider(SDL_Rect colliderRect, COLLIDER_TYPE type);
 	void CleanCollidersEntity(Entity* entity);
 	bool CheckCollision(int col1, int col2);
 	bool ChechCollisionTemporalCollider(int col, int colTemporal);

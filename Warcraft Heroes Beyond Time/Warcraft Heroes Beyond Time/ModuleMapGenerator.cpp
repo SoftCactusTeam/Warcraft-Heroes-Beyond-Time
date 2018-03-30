@@ -3,35 +3,27 @@
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
 #include "Log.h"
+#include "Scene.h"
+#include "PlayerEntity.h"
+
 
 #include <time.h>
 
-#define FLOOR { 0,48,48,48 }
-#define WATER { 48,0,48,48 }
+#define VOID { 196,0,48,48 }
+#define FLOOR { 0,49,48,48 }
+#define FLOOR2 { 49,49,48,48 }
+#define FLOOR3 { 98,49,48,48 }
+#define FLOOR4 { 147,49,48,48 }
+#define FLOOR5 { 196,49,48,48 }
+#define FLOOR6 { 0,98,48,48 }
 #define WALL { 0,0,48,48 }
+#define WALL2 { 49,0,48,48 }
+#define WALL3 { 98,0,48,48 }
+#define WALL4 { 147,0,48,48 }
 
 MapGenerator::MapGenerator() {}
 
 MapGenerator::~MapGenerator() {}
-
-bool MapGenerator::Update(float dt)
-{
-	bool ret = true;
-
-	//ret = DrawPostPlayerMap();
-	
-	return ret;
-}
-
-bool MapGenerator::PostUpdate()
-{
-	bool ret = true;
-	
-	
-
-	return ret;
-}
-
 bool MapGenerator::CleanUp()
 {
 	bool ret = true;
@@ -48,7 +40,20 @@ bool MapGenerator::CleanUp()
 
 	visited.clear();
 
+	totalSize = 0u;
+
 	return nodes.size() <= 0 && visited.size() <= 0;
+}
+
+iPoint MapGenerator::GetRandomValidPoint()
+{
+	int randNum = 0;
+
+	do
+		randNum = rand() % (nodes.size() - 0 + 1);
+	while (!nodes[randNum]->floor || nodes[randNum]->pos == nodes[Get(sizeX / 2, sizeY / 2)]->pos);
+
+	return nodes[randNum]->pos;
 }
 
 bool MapGenerator::DrawPrePlayerMap()
@@ -57,7 +62,7 @@ bool MapGenerator::DrawPrePlayerMap()
 
 	for (uint i = 0u; i < totalSize && ret; ++i)
 	{
-		if (SDL_RectEquals(&nodes[i]->whatToBlit, &SDL_Rect(FLOOR)))
+		if (nodes[i]->floor || (!nodes[i]->floor && nodes[i]->pos.y * tileSize <= App->scene->player->pos.y))
 		{
 			iPoint posToBlit = nodes[i]->pos;
 			ret = App->render->Blit(mapTexture, posToBlit.x * tileSize, posToBlit.y * tileSize, &nodes[i]->whatToBlit);
@@ -73,7 +78,7 @@ bool MapGenerator::DrawPostPlayerMap()
 
 	for (uint i = 0u; i < totalSize && ret; ++i)
 	{
-		if (!SDL_RectEquals(&nodes[i]->whatToBlit, &SDL_Rect(FLOOR)))
+		if (!nodes[i]->floor && nodes[i]->pos.y * tileSize >= App->scene->player->pos.y)
 		{
 			iPoint posToBlit = nodes[i]->pos;
 			ret = App->render->Blit(mapTexture, posToBlit.x * tileSize, posToBlit.y * tileSize, &nodes[i]->whatToBlit);
@@ -90,8 +95,8 @@ inline int MapGenerator::Get(int x, int y) const
 
 bool MapGenerator::CheckBoundaries(const iPoint& pos) const
 {
-	return (pos.x > 0 && pos.x < (int)sizeX - 1 &&
-		pos.y > 0 && pos.y < (int)sizeY - 1);
+	return (pos.x > 1 && pos.x < (int)sizeX - 2 &&
+		pos.y > 1 && pos.y < (int)sizeY - 2);
 }
 
 bool MapGenerator::GenerateMap(MapData data)
@@ -110,10 +115,9 @@ bool MapGenerator::GenerateMap(MapData data)
 	{
 		for (uint j = 0u; j < sizeX; ++j)
 		{
-			nodes.push_back(new MapNode({ (int)j,(int)i }, WATER));
+			nodes.push_back(new MapNode({ (int)j,(int)i }, VOID));
 		}
 	}
-
 	ret = nodes.size() == totalSize;
 
 	if (ret)
@@ -134,7 +138,9 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 	else
 		srand(time(NULL));
 
-	startNode->whatToBlit = FLOOR;
+	startNode->whatToBlit = randomTile(true);
+	startNode->floor = true;
+	visited.push_back(startNode);
 
 	MapNode* auxNode = startNode;
 
@@ -146,11 +152,12 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 		if ((randNum == 0 || randNum == 1 || randNum == 3) && CheckBoundaries({ auxNode->pos.x + 1, auxNode->pos.y }))
 		{
 			auxNode = nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)];
-			if (!SDL_RectEquals(&auxNode->whatToBlit, &SDL_Rect(FLOOR)))
+			if (!auxNode->floor)
 			{
-				auxNode->whatToBlit = FLOOR;
+				auxNode->whatToBlit = randomTile(true);
 				auxNode->cost = 0;
 				visited.push_back(auxNode);
+				auxNode->floor = true;
 				i++;
 			}
 		}
@@ -158,11 +165,12 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 		else if ((randNum == 4 || randNum == 5 || randNum == 6) && CheckBoundaries({ auxNode->pos.x - 1, auxNode->pos.y }))
 		{
 			auxNode = nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)];
-			if (!SDL_RectEquals(&auxNode->whatToBlit, &SDL_Rect(FLOOR)))
+			if (!auxNode->floor)
 			{
-				auxNode->whatToBlit = FLOOR;
+				auxNode->whatToBlit = randomTile(true);
 				auxNode->cost = 0;
 				visited.push_back(auxNode);
+				auxNode->floor = true;
 				i++;
 			}
 		}
@@ -170,11 +178,12 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 		else if ((randNum == 7 || randNum == 8) && CheckBoundaries({ auxNode->pos.x, auxNode->pos.y + 1 }))
 		{
 			auxNode = nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)];
-			if (!SDL_RectEquals(&auxNode->whatToBlit, &SDL_Rect(FLOOR)))
+			if (!auxNode->floor)
 			{
-				auxNode->whatToBlit = FLOOR;
+				auxNode->whatToBlit = randomTile(true);
 				auxNode->cost = 0;
 				visited.push_back(auxNode);
+				auxNode->floor = true;
 				i++;
 			}
 		}
@@ -182,11 +191,12 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 		else if ((randNum == 9 || randNum == 10) && CheckBoundaries({ auxNode->pos.x, auxNode->pos.y - 1 }))
 		{
 			auxNode = nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)];
-			if (!SDL_RectEquals(&auxNode->whatToBlit, &SDL_Rect(FLOOR)))
+			if (!auxNode->floor)
 			{
-				auxNode->whatToBlit = FLOOR;
+				auxNode->whatToBlit = randomTile(true);
 				auxNode->cost = 0;
 				visited.push_back(auxNode);
+				auxNode->floor = true;
 				i++;
 			}
 		}
@@ -194,7 +204,45 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 
 	auxNode = nullptr;
 
-	return visited.size() == iterations;
+	return visited.size() == iterations + 1;
+}
+
+SDL_Rect MapGenerator::randomTile(bool isFloor)
+{
+	SDL_Rect toReturn = VOID;
+
+	if (isFloor)
+	{
+		int randNum = rand() % (6 - 1 + 1) + 1;
+
+		if (randNum == 1)
+			toReturn = FLOOR;
+		else if (randNum == 2)
+			toReturn = FLOOR2;
+		else if (randNum == 3)
+			toReturn = FLOOR3;
+		else if (randNum == 4)
+			toReturn = FLOOR4;
+		else if (randNum == 5)
+			toReturn = FLOOR5;
+		else if (randNum == 6)
+			toReturn = FLOOR6;
+	}
+	else
+	{
+		int randNum = rand() % (4 - 1 + 1) + 1;
+
+		if (randNum == 1)
+			toReturn = WALL;
+		else if (randNum == 2)
+			toReturn = WALL2;
+		else if (randNum == 3)
+			toReturn = WALL3;
+		else if (randNum == 4)
+			toReturn = WALL4;
+	}
+
+	return toReturn;
 }
 
 bool MapGenerator::GenerateWalls()
@@ -203,117 +251,59 @@ bool MapGenerator::GenerateWalls()
 
 	for (uint i = 0u; i < visited.size(); ++i)
 	{
-		if (SDL_RectEquals(&visited[i]->whatToBlit, &SDL_Rect(FLOOR)))
+		if (visited[i]->floor)
 		{
 			MapNode* auxNode = visited[i];
 
-			if (CheckBoundaries({ auxNode->pos.x, auxNode->pos.y - 1 }))
-			{
-				if (SDL_RectEquals(&nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)]->whatToBlit, &SDL_Rect(WATER)))
+				if (SDL_RectEquals(&nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)]->whatToBlit, &SDL_Rect(VOID)))
 				{
-					nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)]->whatToBlit = WALL;
+					nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)]->whatToBlit = randomTile(false);
 					//Check type of node adn Update
 					//int type = CheckTypeOfNode(nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)]);
 					//UpdateNode(nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)], type);
 				}
-			}
 
-			if (CheckBoundaries({ auxNode->pos.x, auxNode->pos.y + 1 }))
-			{
-				if (SDL_RectEquals(&nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)]->whatToBlit, &SDL_Rect(WATER)))
+				if (SDL_RectEquals(&nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)]->whatToBlit, &SDL_Rect(VOID)))
 				{
 					//Check type of node adn Update
 					//int type = CheckTypeOfNode(nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)]);
 					//UpdateNode(nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)], type);
 				}
-			}
 
-			if (CheckBoundaries({ auxNode->pos.x + 1, auxNode->pos.y }))
-			{
-				if (SDL_RectEquals(&nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)]->whatToBlit, &SDL_Rect(WATER)))
+				if (SDL_RectEquals(&nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)]->whatToBlit, &SDL_Rect(VOID)))
 				{
 					//Check type of node adn Update
 					//int type = CheckTypeOfNode(nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)]);
 					//UpdateNode(nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)], type);
 				}
-			}
 
-			if (CheckBoundaries({ auxNode->pos.x - 1, auxNode->pos.y }))
-			{
-				if (SDL_RectEquals(&nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)]->whatToBlit, &SDL_Rect(WATER)))
+				if (SDL_RectEquals(&nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)]->whatToBlit, &SDL_Rect(VOID)))
 				{
 					//Check type of node adn Update
 					//int type = CheckTypeOfNode(nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)]);
 					//UpdateNode(nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)], type);
 				}
-			}
 		}
 	}
 
 	return true;
 }
 
-void MapGenerator::UpdateNode(MapNode* nodetocheck, int type)
-{
-	if (type == type == (int)nodeType::typeTiledWall)
-		nodetocheck->whatToBlit = WALL;
-	else if (type == type == (int)nodeType::typeWall)
-		nodetocheck->whatToBlit = WALL;
-}
-
-int MapGenerator::CheckTypeOfNode(MapNode* nodetocheck)
-{
-	bool adalt, abaix, dreta, esquerra;
-	adalt = abaix = dreta = esquerra = false;
-
-	// si existeix...
-	if (CheckBoundaries({ nodetocheck->pos.x,nodetocheck->pos.y + 1 }))
-	{
-		// si no son terra...
-		if (SDL_RectEquals(&nodes[Get(nodetocheck->pos.x, nodetocheck->pos.y + 1)]->whatToBlit, &SDL_Rect(FLOOR)))
-		{ 
-			abaix = true;
-		}
-	}
-
-	// si existeix...
-	if (CheckBoundaries({ nodetocheck->pos.x, nodetocheck->pos.y - 1 }))
-	{
-		// si no son terra...
-		if (SDL_RectEquals(&nodes[Get(nodetocheck->pos.x, nodetocheck->pos.y - 1)]->whatToBlit, &SDL_Rect(FLOOR)))
-		{ 
-			adalt = true;
-		}
-	}
-
-	// si existeix...
-	if (CheckBoundaries({ nodetocheck->pos.x +1, nodetocheck->pos.y }))
-	{
-		// si no son terra...
-		if (SDL_RectEquals(&nodes[Get(nodetocheck->pos.x + 1, nodetocheck->pos.y)]->whatToBlit, &SDL_Rect(FLOOR)))
-		{
-			dreta = true;
-		}
-	}
-
-	// si existeix...
-	if (CheckBoundaries({ nodetocheck->pos.x - 1, nodetocheck->pos.y }))
-	{
-		// si no son terra...
-		if (SDL_RectEquals(&nodes[Get(nodetocheck->pos.x - 1, nodetocheck->pos.y)]->whatToBlit, &SDL_Rect(FLOOR)))
-		{
-			esquerra = true;
-		}
-	}
-
-	if (adalt && esquerra && dreta && abaix)
-		return (int)nodeType::typeFully;
-	else
-		return (int)nodeType::noType;
-}
-
 void MapGenerator::getSize(uint& w, uint& h)
 {
 	w = sizeX;
 	h = sizeY;
+}
+
+int MapGenerator::getTileSize()
+{
+	return tileSize;
+}
+
+std::vector<MapNode*> MapGenerator::GetMapNodesAndInfo(uint& sizeX, uint& sizeY, uint& tileSize)
+{
+	sizeX = this->sizeX;
+	sizeY = this->sizeY;
+	tileSize = this->tileSize;
+	return nodes;
 }

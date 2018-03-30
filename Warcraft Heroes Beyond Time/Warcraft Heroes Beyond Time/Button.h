@@ -6,8 +6,8 @@
 //atlasRect defines---------------------------
 
 #define Button1 {45,8,158,68}
-#define Button1MouseHover {205,8,158,68}
-#define Button1Pressed {365,8,158,68}
+#define Button1MouseHover {216,8,158,68}
+#define Button1Pressed {384,8,158,68}
 
 //----------------------------------
 
@@ -19,6 +19,7 @@ enum class BType
 	PLAY,
 	GO_MMENU,
 	SETTINGS,
+	RESUME,
 	EXIT_GAME
 
 };

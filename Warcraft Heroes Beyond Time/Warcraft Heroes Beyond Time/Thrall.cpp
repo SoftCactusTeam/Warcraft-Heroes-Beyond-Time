@@ -126,6 +126,36 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	dashLeft.PushBack({ 110,658,55,47 });
 	dashLeft.speed = 0.2f;
 
+	// ---- attack animation ----
+
+	attackDown.PushBack({ 256,309,51,54 });
+	attackDown.PushBack({ 322,309,51,54 });
+	attackDown.PushBack({ 398,309,51,54 });
+	attackDown.PushBack({ 486,309,51,54 });
+	attackDown.PushBack({ 571,309,51,54 });
+	attackDown.speedFactor = 9.0f;
+
+	attackUp.PushBack({ 263,389,46,47 });
+	attackUp.PushBack({ 336,389,46,47 });
+	attackUp.PushBack({ 409,389,46,47 });
+	attackUp.PushBack({ 482,389,46,47 });
+	attackUp.PushBack({ 555,389,46,47 });
+	attackUp.speedFactor = 9.0f;
+
+	attackRight.PushBack({ 256,558,51,36 });
+	attackRight.PushBack({ 329,558,51,36 });
+	attackRight.PushBack({ 402,558,51,36 });
+	attackRight.PushBack({ 475,558,51,36 });
+	attackRight.PushBack({ 548,558,51,36 });
+	attackRight.speedFactor = 9.0f;
+
+	attackLeft.PushBack({ 260,626,59,39 });
+	attackLeft.PushBack({ 333,626,59,39 });
+	attackLeft.PushBack({ 406,626,59,39 });
+	attackLeft.PushBack({ 479,626,59,39 });
+	attackLeft.PushBack({ 552,626,59,39 });
+	attackLeft.speedFactor = 9.0f;
+
 }
 
 bool Thrall::Update(float dt)
@@ -137,6 +167,7 @@ bool Thrall::Update(float dt)
 	if (IsPlayerMoving())
 		percentage = App->input->GetPercentageFromAxis();
 	
+	if (anim != nullptr)
 	anim->speed = anim->speedFactor * percentage * dt;
 
 	return true;

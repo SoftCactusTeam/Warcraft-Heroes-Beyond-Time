@@ -3,6 +3,10 @@
 
 #include "Module.h"
 
+class GUIWindow;
+class PlayerEntity;
+class ChestEntity;
+class PortalEntity;
 
 class Scene : public Module
 {
@@ -21,21 +25,36 @@ public:
 public:
 
 	virtual bool OnUIEvent(GUIElem* UIelem, UIEvents _event);
-	
+
 
 public:
 	enum class Stages
 	{
 		NO_STAGE,
-		MAIN_MENU, 
+		MAIN_MENU,
 		SETTINGS,
 		INGAME
 
 	} actual_scene = Stages::MAIN_MENU;
 
 
+
 private:
+
+	GUIWindow* PauseMenu = nullptr;
+
 	bool restart = false;
+
+	int lvlIndex = 0;
+
+	ChestEntity* lvlChest = nullptr;
+	PortalEntity* portal = nullptr;
+
+public:
+	PlayerEntity* player = nullptr;
+
+	bool paused = false;
+
 };
 
 

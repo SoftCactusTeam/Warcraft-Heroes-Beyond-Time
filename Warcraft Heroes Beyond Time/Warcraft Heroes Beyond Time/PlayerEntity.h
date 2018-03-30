@@ -2,6 +2,9 @@
 #define __PLAYERENTITY_H__
 
 #include "DynamicEntity.h"
+#include "Item.h"
+
+#include <list>
 
 class PlayerEntity : public DynamicEntity 
 {
@@ -12,9 +15,12 @@ protected:
 	Animation idleDown, idleUp, idleLeft, idleRight, idleUpRight, idleUpLeft, idleDownRight, idleDownLeft;
 	Animation up, down, left, right, upLeft, upRight, downLeft, downRight;
 	Animation dashRight, dashDown, dashUpRight, dashDownRight, dashDownLeft, dashUp, dashLeft, dashUpLeft;
-	Animation* animBeforeDash = nullptr;
+	Animation attackDown, attackUp, attackLeft, attackRight;
+	Animation* animBefore = nullptr;
 	float speed = 250.0f;
 	bool move = true;
+
+	std::list<Item> itemsActive;
 
 	enum class states
 	{
@@ -29,7 +35,8 @@ protected:
 		PL_DOWN_RIGHT,
 		PL_DOWN_LEFT,
 		PL_MOVE,
-		PL_DASH
+		PL_DASH,
+		PL_ATTACK
 
 	} state;
 
@@ -47,6 +54,9 @@ public:
 	void CheckIddleStates();
 	void CheckMapLimits();
 
+	void AddItem(Item item);
+	void IterateItems(ItemFunctions nameFunction);
+
 	//This function calculates player position given a Bezier Curve
 	fPoint CalculatePosFromBezier(fPoint startPos, fPoint handleA, float t, fPoint handleB, fPoint endPos);
 	
@@ -60,7 +70,7 @@ public:
 	fPoint handleB = { 0.4f, 1.0f };
 	fPoint endPos = { 0.0f, 0.0f };
 	float angle = 0.0f;
-	float dashDistance = 250.0f;
+	float dashDistance = 150.0f;
 	float t = 0.0f;
 	fPoint startPos = { 0.0f, 0.0f };
 
