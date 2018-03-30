@@ -141,6 +141,7 @@
     <ClCompile Include="FileSystem.cpp" />
     <ClCompile Include="InputBox.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ModulePrinter.cpp" />
     <ClCompile Include="Slider.cpp" />
     <ClCompile Include="ModuleMapGenerator.cpp" />
     <ClCompile Include="ModuleColliders.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="GUIElem.h" />
     <ClInclude Include="InputBox.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="ModulePrinter.h" />
     <ClInclude Include="PortalEntity.h" />
     <ClInclude Include="Slider.h" />
     <ClInclude Include="ModuleMapGenerator.h" />

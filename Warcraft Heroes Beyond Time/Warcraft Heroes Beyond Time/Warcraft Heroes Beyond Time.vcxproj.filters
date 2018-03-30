@@ -109,6 +109,9 @@
     <ClCompile Include="Thrall.cpp">
       <Filter>Entities\Dynamic Entities</Filter>
     </ClCompile>
+    <ClCompile Include="ModulePrinter.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -233,6 +236,9 @@
     </ClInclude>
     <ClInclude Include="PortalEntity.h">
       <Filter>Entities\Static Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="ModulePrinter.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

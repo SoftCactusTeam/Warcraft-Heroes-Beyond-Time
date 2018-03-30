@@ -207,6 +207,7 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 	return visited.size() == iterations + 1;
 }
 
+
 SDL_Rect MapGenerator::randomTile(bool isFloor)
 {
 	SDL_Rect toReturn = VOID;

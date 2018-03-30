@@ -18,10 +18,19 @@ bool Label::Update(float dt)
 {
 	bool result = false;
 
-	
+	result = UpdateChilds(dt);
+
+	return result;
+}
+
+bool Label::Draw()
+{
+	bool result = true;
+
 	result = App->render->Blit(texturetoBlit, (int)(this->screenPos.x - App->render->camera.x), (int)(this->screenPos.y - App->render->camera.y));
 
-	UpdateChilds(dt);
+	if (result)
+		result = DrawChilds();
 
 	return result;
 }

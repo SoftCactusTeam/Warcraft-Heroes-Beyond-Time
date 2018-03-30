@@ -60,6 +60,8 @@ bool ModuleGUI::Update(float dt)
 
 bool ModuleGUI::PostUpdate()
 {
+	bool ret = true;
+
 	if (elementsToKill.size() > 0)
 	{
 		std::list<GUIElem*>::iterator it;
@@ -69,8 +71,22 @@ bool ModuleGUI::PostUpdate()
 		}
 		elementsToKill.clear();
 	}
-	return elementsToKill.size() <= 0;
+
+	ret = elementsToKill.size() <= 0;
+
+	if (ret)
+	{
+		std::list<GUIElem*>::iterator it;
+		for (it = GUIElemList.begin(); it != GUIElemList.end() && ret; ++it)
+		{
+			ret = (*it)->Draw();
+		}
+
+	}
+
+	return ret;
 }
+		
 
 bool ModuleGUI::CleanUp()
 {

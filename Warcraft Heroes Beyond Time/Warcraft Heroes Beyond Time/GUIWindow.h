@@ -19,6 +19,7 @@ public:
 	virtual ~GUIWindow();
 
 	bool Update(float dt);
+	bool Draw();
 
 private:
 	SDL_Rect background;

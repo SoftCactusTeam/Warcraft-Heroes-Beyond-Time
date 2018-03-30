@@ -19,6 +19,7 @@ public:
 	Label(fPoint position, LabelInfo& info, GUIElem* parent, Module* listener);
 	~Label();
 	bool Update(float dt);
+	bool Draw();
 	bool MouseHover() const;
 	void EditText(std::string text, SDL_Color color);
 
