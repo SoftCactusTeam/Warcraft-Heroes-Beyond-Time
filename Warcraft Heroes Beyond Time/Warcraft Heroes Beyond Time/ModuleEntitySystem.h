@@ -65,7 +65,7 @@ public:
 	StaticEntity* AddStaticEntity(fPoint coor, STATIC_ENTITY_TYPE type);
 
 	void ClearEnemies();
-	int GetRandomNumber(int rang);
+
 private:
 	std::list<Entity*>		entities;
 	std::list<Entity*>		toSpawn; 

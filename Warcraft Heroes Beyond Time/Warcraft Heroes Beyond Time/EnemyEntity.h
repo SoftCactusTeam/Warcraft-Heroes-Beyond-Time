@@ -2,7 +2,6 @@
 #define __ENEMYENTITY_H__
 
 #include "DynamicEntity.h"
-#include "Pathfinding.h"
 
 #define NUMBER_OF_ORIENTATIONS 8
 
@@ -21,6 +20,7 @@ public:
 
 protected:
 	PathVector pathVector;
+
 };
 
 #endif
