@@ -182,8 +182,8 @@ void PlayerEntity::KeyboardStates(float dt)
 			{
 				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
 					
-				pos.x = startPos.x + 250.0f * 0.75f * bezierPoint.y;
-				pos.y = startPos.y - 250.0f * 0.75f * bezierPoint.y;
+				pos.x = startPos.x + dashDistance * 0.75f * bezierPoint.y;
+				pos.y = startPos.y - dashDistance * 0.75f * bezierPoint.y;
 
 				anim = &dashUpRight;
 				float x = 0.05f / dt;
@@ -194,8 +194,8 @@ void PlayerEntity::KeyboardStates(float dt)
 			{
 				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
 
-				pos.x = startPos.x + 250.0f * 0.75f * bezierPoint.y;
-				pos.y = startPos.y + 250.0f * 0.75f * bezierPoint.y;
+				pos.x = startPos.x + dashDistance * 0.75f * bezierPoint.y;
+				pos.y = startPos.y + dashDistance * 0.75f * bezierPoint.y;
 
 				anim = &dashDownRight;
 				float x = 0.05f / dt;
@@ -206,8 +206,8 @@ void PlayerEntity::KeyboardStates(float dt)
 			{
 				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
 
-				pos.x = startPos.x - 250.0f * 0.75f * bezierPoint.y;
-				pos.y = startPos.y + 250.0f * 0.75f * bezierPoint.y;
+				pos.x = startPos.x - dashDistance * 0.75f * bezierPoint.y;
+				pos.y = startPos.y + dashDistance * 0.75f * bezierPoint.y;
 
 				anim = &dashDownLeft;
 				float x = 0.05f / dt;
@@ -218,8 +218,8 @@ void PlayerEntity::KeyboardStates(float dt)
 			{
 				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
 
-				pos.x = startPos.x - 250.0f * 0.75f * bezierPoint.y;
-				pos.y = startPos.y - 250.0f * 0.75f * bezierPoint.y;
+				pos.x = startPos.x - dashDistance * 0.75f * bezierPoint.y;
+				pos.y = startPos.y - dashDistance * 0.75f * bezierPoint.y;
 
 				anim = &dashUpLeft;
 				float x = 0.05f / dt;
@@ -370,8 +370,10 @@ void PlayerEntity::KeyboardStates(float dt)
 		break;
 
 	case states::PL_UP_LEFT:
+
 		pos.x -= speed * 0.75f * dt;
 		pos.y -= speed * 0.75f * dt;
+
 		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_UP && App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
 		{
 			state = states::PL_IDLE;
@@ -488,6 +490,30 @@ break;
 			break;
 		}
 		break;
+
+	case states::PL_ATTACK:
+
+		if (animBefore == &idleDown || animBefore == &down)
+			anim = &attackDown;
+
+		else if (animBefore == &idleUp || animBefore == &up)
+			anim = &attackUp;
+
+		else if (animBefore == &idleLeft || animBefore == &left || animBefore == &upLeft || animBefore == &downLeft || animBefore == &idleDownLeft || animBefore == &idleUpLeft)
+			anim = &attackLeft;
+
+		else if (animBefore == &idleRight || animBefore == &right || animBefore == &idleUpRight || animBefore == &idleDownRight || animBefore == &upRight || animBefore == &downRight)
+			anim = &attackRight;
+
+		if (anim->Finished())
+		{
+			anim->Reset();
+			anim = &idleDown;
+			state = states::PL_IDLE;
+			break;
+		}
+
+		break;
 	}
 }
 
@@ -514,6 +540,14 @@ void PlayerEntity::JoyconStates(float dt)
 		{
 			animBefore = anim;
 			state = states::PL_ATTACK;
+			break;
+		}
+
+		else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_Y) == KEY_DOWN)
+		{
+			animBefore = anim;
+			anim = &skill;
+			state = states::PL_SKILL;
 			break;
 		}
 
@@ -681,7 +715,7 @@ void PlayerEntity::JoyconStates(float dt)
 				break;
 			}
 
-			if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_X))
+			if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_X) == KEY_DOWN)
 			{
 				animBefore = anim;
 				state = states::PL_ATTACK;
@@ -689,6 +723,15 @@ void PlayerEntity::JoyconStates(float dt)
 				break;
 
 			}
+
+			else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_Y) == KEY_DOWN)
+			{
+				animBefore = anim;
+				anim = &skill;
+				state = states::PL_SKILL;
+				break;
+			}
+
 			break;
 		}
 
@@ -707,6 +750,24 @@ void PlayerEntity::JoyconStates(float dt)
 
 			if (anim->Finished())
 			{
+				anim->Reset();
+				anim = animBefore;
+
+				if (animBefore == &left || animBefore == &up || animBefore == &right || animBefore == &down || animBefore == &upRight || animBefore == &upLeft || animBefore == &downLeft || animBefore == &downRight)
+					state = states::PL_MOVE;
+				else
+					state = states::PL_IDLE;
+
+				break;
+			}
+
+		break;
+
+		case states::PL_SKILL:
+
+			if (anim->Finished())
+			{
+
 				anim->Reset();
 				anim = animBefore;
 

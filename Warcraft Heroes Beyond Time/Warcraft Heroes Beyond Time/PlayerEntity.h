@@ -16,6 +16,7 @@ protected:
 	Animation up, down, left, right, upLeft, upRight, downLeft, downRight;
 	Animation dashRight, dashDown, dashUpRight, dashDownRight, dashDownLeft, dashUp, dashLeft, dashUpLeft;
 	Animation attackDown, attackUp, attackLeft, attackRight;
+	Animation skill;
 	Animation* animBefore = nullptr;
 	float speed = 250.0f;
 	bool move = true;
@@ -36,7 +37,8 @@ protected:
 		PL_DOWN_LEFT,
 		PL_MOVE,
 		PL_DASH,
-		PL_ATTACK
+		PL_ATTACK,
+		PL_SKILL
 
 	} state;
 
