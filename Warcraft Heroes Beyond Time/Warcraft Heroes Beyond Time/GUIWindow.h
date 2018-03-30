@@ -19,9 +19,6 @@ public:
 	virtual ~GUIWindow();
 
 	bool Update(float dt);
-
-private:
-	SDL_Rect background;
 };
 
 

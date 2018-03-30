@@ -38,7 +38,6 @@ bool Fonts::Awake(pugi::xml_node& fontsNode)
 		default = Load("fonts/arial.ttf", "Arial16", 16);
 		Load("fonts/arial.ttf", "Arial11", 11);
 		Load("fonts/arial.ttf", "Arial9", 9);
-		Load("fonts/LifeCraft_Font.ttf", "LifeCraft20", 20);
 	}
 
 	return ret;

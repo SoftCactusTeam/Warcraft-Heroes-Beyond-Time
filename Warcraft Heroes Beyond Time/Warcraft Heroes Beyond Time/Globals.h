@@ -15,7 +15,6 @@ extern SDL_Color Blue;
 extern SDL_Color Black;
 extern SDL_Color White;
 extern SDL_Color Grey;
-extern SDL_Color Yellow;
 
 
 #endif

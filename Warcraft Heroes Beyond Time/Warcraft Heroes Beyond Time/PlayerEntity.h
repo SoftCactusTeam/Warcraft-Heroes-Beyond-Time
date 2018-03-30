@@ -53,6 +53,8 @@ public:
 
 	void CheckIddleStates();
 	void CheckMapLimits();
+	virtual bool Finish();
+	virtual void Collision(COLLIDER_TYPE type);
 
 	void AddItem(Item item);
 	void IterateItems(ItemFunctions nameFunction);
@@ -62,7 +64,6 @@ public:
 	
 	Animation* GetAnimFromAngle(float angle, bool dashOn = false);
 	bool IsPlayerMoving();
-	virtual bool Finish();
 
 	// Bezier/dash related variables
 

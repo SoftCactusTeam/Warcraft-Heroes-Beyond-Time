@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{2781B1EC-1D8B-4816-86D8-8A9200ECBEFC}</ProjectGuid>
     <RootNamespace>Warcraft Heroes Beyond Time</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -133,6 +133,7 @@
     <ClCompile Include="ConsumableEntity.cpp" />
     <ClCompile Include="DynamicEntity.cpp" />
     <ClCompile Include="EnemyEntity.cpp" />
+    <ClCompile Include="Enemy_Archer.cpp" />
     <ClCompile Include="Enemy_Footman.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Color.cpp" />
@@ -173,6 +174,7 @@
     <ClInclude Include="ConsumableEntity.h" />
     <ClInclude Include="DynamicEntity.h" />
     <ClInclude Include="EnemyEntity.h" />
+    <ClInclude Include="Enemy_Archer.h" />
     <ClInclude Include="Enemy_Footman.h" />
     <ClInclude Include="EntitiesEnums.h" />
     <ClInclude Include="Entity.h" />
