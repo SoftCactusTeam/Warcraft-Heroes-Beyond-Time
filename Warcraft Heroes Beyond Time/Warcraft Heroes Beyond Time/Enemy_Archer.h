@@ -27,6 +27,11 @@ public:
 
 public:
 	ARCHER_STATE state;
+	Animation animIdle[NUMBER_OF_ORIENTATIONS];
+	Animation animWalk[NUMBER_OF_ORIENTATIONS];
+	Animation animAtac[NUMBER_OF_ORIENTATIONS];
+	Animation animDeath[NUMBER_OF_ORIENTATIONS];
+
 };
 
 #endif

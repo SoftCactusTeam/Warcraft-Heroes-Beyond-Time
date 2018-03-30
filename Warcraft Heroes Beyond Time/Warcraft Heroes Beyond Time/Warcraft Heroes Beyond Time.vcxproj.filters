@@ -7,9 +7,6 @@
     <ClCompile Include="ChestEntity.cpp" />
     <ClCompile Include="ConsumableEntity.cpp" />
     <ClCompile Include="DynamicEntity.cpp" />
-    <ClCompile Include="EnemyEntity.cpp" />
-    <ClCompile Include="Enemy_Archer.cpp" />
-    <ClCompile Include="Enemy_Footman.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Console.cpp" />
@@ -40,6 +37,15 @@
     <ClCompile Include="Thrall.cpp" />
     <ClCompile Include="GUIElem.cpp" />
     <ClCompile Include="GUIWindow.cpp" />
+    <ClCompile Include="EnemyEntity.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy_Archer.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy_Footman.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -49,9 +55,6 @@
     <ClInclude Include="ChestEntity.h" />
     <ClInclude Include="ConsumableEntity.h" />
     <ClInclude Include="DynamicEntity.h" />
-    <ClInclude Include="EnemyEntity.h" />
-    <ClInclude Include="Enemy_Archer.h" />
-    <ClInclude Include="Enemy_Footman.h" />
     <ClInclude Include="EntitiesEnums.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Console.h" />
@@ -86,8 +89,22 @@
     <ClInclude Include="StaticEntity.h" />
     <ClInclude Include="Thrall.h" />
     <ClInclude Include="GUIWindow.h" />
+    <ClInclude Include="EnemyEntity.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy_Archer.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy_Footman.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Enemy">
+      <UniqueIdentifier>{08c47e94-3e9f-4dff-87cf-7ef3e63dd18f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

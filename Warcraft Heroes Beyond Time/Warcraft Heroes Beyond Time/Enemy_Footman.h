@@ -28,6 +28,10 @@ public:
 
 public:
 	FOOTMAN_STATE state;
+	Animation animIdle[NUMBER_OF_ORIENTATIONS];
+	Animation animWalk[NUMBER_OF_ORIENTATIONS];
+	Animation animAtac[NUMBER_OF_ORIENTATIONS];
+	Animation animCharge[NUMBER_OF_ORIENTATIONS];
 
 	// Charge variables
 	fPoint		chargeMovement;

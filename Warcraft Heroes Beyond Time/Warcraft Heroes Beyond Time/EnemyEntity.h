@@ -20,10 +20,6 @@ public:
 	ENEMY_TYPE type = ENEMY_TYPE::NON_ENEMY;
 
 protected:
-	Animation animIdle[NUMBER_OF_ORIENTATIONS];
-	Animation animWalk[NUMBER_OF_ORIENTATIONS];
-	Animation animAtac[NUMBER_OF_ORIENTATIONS];
-	Animation animCharge[NUMBER_OF_ORIENTATIONS];
 	PathVector pathVector;
 };
 

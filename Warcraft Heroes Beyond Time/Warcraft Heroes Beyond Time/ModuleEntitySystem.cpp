@@ -18,6 +18,7 @@
 #include "ModuleColliders.h"
 #include "Thrall.h"
 #include "Enemy_Footman.h"
+#include "Enemy_Archer.h"
 #include "PortalEntity.h"
 
 #include "Console.h"
@@ -34,6 +35,8 @@ class Entities_ConsoleOrder : public ConsoleOrder
 	{
 		if (parameter == "footman")
 			App->entities->AddEnemy(App->scene->player->pos, FOOTMAN);
+		if (parameter == "archer")
+			App->entities->AddEnemy(App->scene->player->pos, ARCHER);
 	}
 };
 
@@ -207,6 +210,7 @@ bool EntitySystem::Start()
 	spritesheetsEntities.push_back(App->textures->Load("Sprites/Footman/Footman_sprite.png"));
 	spritesheetsEntities.push_back(App->textures->Load("all_items.png"));
 	spritesheetsEntities.push_back(App->textures->Load("Mines.png"));
+	spritesheetsEntities.push_back(App->textures->Load("Sprites/Archer/Archer_sprite.png"));
 
 	bool ret = true;
 
@@ -327,10 +331,10 @@ void EntitySystem::AddEnemy(fPoint coor, ENEMY_TYPE type)
 	EnemyEntity* newEntity = nullptr;
 	switch (type) {
 	case ENEMY_TYPE::FOOTMAN:
-		newEntity = new Enemy_Footman(coor, ENEMY_TYPE::FOOTMAN, spritesheetsEntities[FOOTMAN_SHEET] /*SHA DE CANVIAR !*/);
+		newEntity = new Enemy_Footman(coor, ENEMY_TYPE::FOOTMAN, spritesheetsEntities[FOOTMAN_SHEET]);
 		break;
 	case ENEMY_TYPE::ARCHER:
-		newEntity = new EnemyEntity(coor, ENEMY_TYPE::ARCHER, nullptr);
+		newEntity = new Enemy_Archer(coor, ENEMY_TYPE::ARCHER, spritesheetsEntities[ARCHER_SHEET]);
 		break;
 	case ENEMY_TYPE::MAGE:
 		newEntity = new EnemyEntity(coor, ENEMY_TYPE::MAGE, nullptr);
