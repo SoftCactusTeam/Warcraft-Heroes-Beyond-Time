@@ -6,9 +6,10 @@
 #include "ModuleInput.h"
 #include "ModuleMapGenerator.h"
 #include "Scene.h"
+#include "ModuleRender.h"
 
 #define DISTANCE_TO_MOVE	300
-#define DISTANCE_TO_ATAC	70
+#define DISTANCE_TO_ATAC	150
 #define ATAC_COOLDOWN		1000
 #define MOVEMENT_SPEED		5
 
@@ -270,5 +271,25 @@ void Enemy_Archer::ChargeAnimations()
 	animDeath[FIXED_ANGLE::UP_LEFT].PushBack({ 112,1,53,39 });
 	animDeath[FIXED_ANGLE::UP_LEFT].PushBack({ 48,363,44,43 });
 	animDeath[FIXED_ANGLE::UP_LEFT].speed = 0.1f;
+
+}
+
+Enemy_Archer_Arrow::Enemy_Archer_Arrow(fPoint coor, SDL_Texture* texture, fPoint direction, FIXED_ANGLE angle, int deadTimer)
+{
+	this->pos = coor;
+	this->texture = texture;
+	this->direction = direction;
+	this->deadTimer = deadTimer;
+	this->angle = angle;
+}
+
+void Enemy_Archer_Arrow::Update()
+{
+	this->pos += direction;
+	App->render->Blit(texture, pos.x, pos.y, &rect[angle]);
+}
+
+void Enemy_Archer_Arrow::Finish()
+{
 
 }
