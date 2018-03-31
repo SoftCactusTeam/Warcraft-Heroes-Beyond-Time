@@ -16,7 +16,6 @@ public:
 	InputBox(fPoint localPos, InputBoxInfo& info, Module* listener, GUIElem* parent = nullptr);
 	~InputBox();
 	bool Update(float dt);
-	bool Draw();
 	void EnableInput();
 	void DisableInput();
 	void ClearBox();

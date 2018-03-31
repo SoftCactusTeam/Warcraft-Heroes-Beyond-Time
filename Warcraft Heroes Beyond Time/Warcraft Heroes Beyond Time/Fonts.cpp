@@ -36,13 +36,8 @@ bool Fonts::Awake(pugi::xml_node& fontsNode)
 
 	//	//Load all Fonts
 		default = Load("fonts/arial.ttf", "Arial16", 16);
-
-		Load("fonts/arial.ttf", "Arial80", 80);
-		Load("fonts/arial.ttf", "Arial40", 40);
-		Load("fonts/LifeCraft_Font.ttf", "LifeCraft80", 80);
-		Load("fonts/arial.ttf", "Arial30", 30);
-		Load("fonts/arial.ttf", "Arial65", 65);
-
+		Load("fonts/arial.ttf", "Arial11", 11);
+		Load("fonts/arial.ttf", "Arial9", 9);
 	}
 
 	return ret;
@@ -85,10 +80,10 @@ TTF_Font* const Fonts::Load(const char* path, char* name, int size)
 }
 
 // Print text using font
-SDL_Texture* Fonts::Print(const char* text, SDL_Color color, _TTF_Font* font, uint multilabelwidth)
+SDL_Texture* Fonts::Print(const char* text, SDL_Color color, _TTF_Font* font)
 {
 	SDL_Texture* ret = NULL;
-	SDL_Surface* surface = TTF_RenderText_Blended_Wrapped((font) ? font : default, text, color, multilabelwidth);
+	SDL_Surface* surface = TTF_RenderText_Blended_Wrapped((font) ? font : default, text, color, 800);
 
 	if(surface == NULL)
 	{

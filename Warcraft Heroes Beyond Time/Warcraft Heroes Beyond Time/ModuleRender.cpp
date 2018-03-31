@@ -115,13 +115,14 @@ void Render::ResetViewPort()
 	SDL_RenderSetViewport(renderer, &viewport);
 }
 
-bool Render::Blit(const SDL_Texture* texture, int x, int y, const SDL_Rect* section, float scale, float speed, double angle, int pivot_x, int pivot_y) const
+bool Render::Blit(const SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, int pivot_x, int pivot_y) const
 {
 	bool ret = true;
+	uint scale = App->window->GetScale();
 
 	SDL_Rect rect;
-	rect.x = (int)(camera.x * speed) + x /** scale*/;
-	rect.y = (int)(camera.y * speed) + y /** scale*/;
+	rect.x = (int)(camera.x * speed) + x * scale;
+	rect.y = (int)(camera.y * speed) + y * scale;
 
 	if(section != NULL)
 	{

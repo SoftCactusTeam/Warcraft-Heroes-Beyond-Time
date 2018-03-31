@@ -242,6 +242,9 @@ bool EntitySystem::Update(float dt)
 {
 	bool ret = true;
 
+	
+	App->map->DrawPrePlayerMap(); //TEMPORAL PER LA RELEASE
+
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end() && ret; ++it)
 	{
 		ret = (*it)->Update(dt);
@@ -254,6 +257,8 @@ bool EntitySystem::Update(float dt)
 			ret = (*it)->Draw(dt);
 		}
 	}
+
+	App->map->DrawPostPlayerMap();
 
 	return ret;
 }
@@ -382,9 +387,8 @@ PlayerEntity* EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
 		newEntity = new PlayerEntity(coor, PLAYER_TYPE::SYLVANAS, nullptr);
 		break;
 	}
-
-	toSpawn.push_back(newEntity);
-	App->colliders->AddCollider(newEntity, { 0,0,32,32 }, COLLIDER_PLAYER, {10,10});
+	toSpawn.push_back((Entity*)newEntity);
+	App->colliders->AddCollider((Entity*)newEntity, { 0,0,32,32 }, COLLIDER_PLAYER, {10,10});
 	return newEntity;
 }
 

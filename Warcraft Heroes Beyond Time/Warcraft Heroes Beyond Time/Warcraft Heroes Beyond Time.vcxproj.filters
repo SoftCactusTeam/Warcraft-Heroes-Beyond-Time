@@ -48,15 +48,6 @@
     <ClCompile Include="ModuleEntitySystem.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="ModulePrinter.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="GUIImage.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Stat.cpp">
-      <Filter>GUI\Warcraft Specific</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -111,15 +102,6 @@
     <ClInclude Include="ModuleEntitySystem.h">
       <Filter>Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="ModulePrinter.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="GUIImage.h">
-      <Filter>GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Stat.h">
-      <Filter>GUI\Warcraft Specific</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />
@@ -127,9 +109,6 @@
   <ItemGroup>
     <Filter Include="Enemy">
       <UniqueIdentifier>{08c47e94-3e9f-4dff-87cf-7ef3e63dd18f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GUI\Warcraft Specific">
-      <UniqueIdentifier>{a44ceca3-55bf-4adb-bcf5-e831248165a6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
