@@ -27,7 +27,7 @@ struct MapNode
 	iPoint pos = { 0,0 };
 	int cost = -1;
 	SDL_Rect whatToBlit = { 0,0,0,0 };
-	bool floor = false;
+	int layerBelow = 0;
 };
 
 class MapGenerator : public Module
