@@ -37,6 +37,7 @@ public:
 
 public:
 	bool Update(float dt);
+	bool Draw();
 	void MoveChilds(fPoint dist);
 };
 
