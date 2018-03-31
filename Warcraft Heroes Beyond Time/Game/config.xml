@@ -61,7 +61,9 @@
     
     <size w = "1280" h = "720"/>
     <fullscreen active = "false"/>
-    
+    <borderless active = "true"/>
+    <resizable active = "false"/>
+    <fullscreen_window active = "true"/>
   </window>
 
 </Game> 
