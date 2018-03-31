@@ -13,7 +13,6 @@
 #define DISTANCE_TO_ATAC	150
 #define ATAC_COOLDOWN		1000
 #define MOVEMENT_SPEED		5
-
 #define ARROW_SPEED			5
 
 Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture) : EnemyEntity(coor, character, texture) {}
@@ -37,7 +36,6 @@ bool Enemy_Archer::Update(float dt)
 			arrowsVector[i]->Update();
 		else
 		{
-			delete arrowsVector[i];
 			arrowsVector.emplace_back(arrowsVector[i]);
 			arrowsVector.pop_back();
 			// COMPROBAR SI AIXO FUNCIONA !!!
@@ -103,6 +101,7 @@ void Enemy_Archer::doWalk()
 		anim = &animAtac[LookAtPlayer()];
 		anim->Reset();
 		App->colliders->AddTemporalCollider({ (int)pos.x, (int)pos.y, 64, 64 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATAC, ATAC_COOLDOWN);
+		pathVector.Clear();
 	}
 	else // AQUI CAMINA, PERO AQUESTA FUNCIO ES TEMPORAL
 	{
@@ -148,177 +147,12 @@ void Enemy_Archer::ShootArrow()
 	arrowsVector.push_back(newArrow);
 }
 
-void Enemy_Archer::ChargeAnimations()
-{
-
-	// ANIM IDLE
-
-	animIdle[FIXED_ANGLE::UP].PushBack({ 153,179,42,48 });
-	animIdle[FIXED_ANGLE::UP].speed = 0.1f;
-
-	animIdle[FIXED_ANGLE::UP_RIGHT].PushBack({ 101,225,44,47 });
-	animIdle[FIXED_ANGLE::UP_RIGHT].speed = 0.1f;
-
-	animIdle[FIXED_ANGLE::RIGHT].PushBack({ 165,565,40,41 });
-	animIdle[FIXED_ANGLE::RIGHT].speed = 0.1f;
-
-	animIdle[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 1,371,44,39 });
-	animIdle[FIXED_ANGLE::DOWN_RIGHT].speed = 0.1f;
-
-	animIdle[FIXED_ANGLE::DOWN].PushBack({ 1,241,46,44 });
-	animIdle[FIXED_ANGLE::DOWN].speed = 0.1f;
-
-	animIdle[FIXED_ANGLE::DOWN_LEFT].PushBack({ 142,398,44,39 });
-	animIdle[FIXED_ANGLE::DOWN_LEFT].speed = 0.1f;
-
-	animIdle[FIXED_ANGLE::LEFT].PushBack({ 90,530,40,42 });
-	animIdle[FIXED_ANGLE::LEFT].speed = 0.1f;
-
-	animIdle[FIXED_ANGLE::UP_LEFT].PushBack({ 150,269,44,47 });
-	animIdle[FIXED_ANGLE::UP_LEFT].speed = 0.1f;
-
-	// ANIM WALK
-
-	animWalk[FIXED_ANGLE::UP].PushBack({ 153,179,42,48 });
-	animWalk[FIXED_ANGLE::UP].PushBack({ 157,1,44,51 });
-	animWalk[FIXED_ANGLE::UP].PushBack({ 109,89,43,49 });
-	animWalk[FIXED_ANGLE::UP].PushBack({ 160,94,38,49 });
-	animWalk[FIXED_ANGLE::UP].PushBack({ 153,134,43,48 });
-	animWalk[FIXED_ANGLE::UP].speed = 0.1f;
-
-	animWalk[FIXED_ANGLE::UP_RIGHT].PushBack({ 101,225,44,47 });
-	animWalk[FIXED_ANGLE::UP_RIGHT].PushBack({ 46,453,40,43 });
-	animWalk[FIXED_ANGLE::UP_RIGHT].PushBack({ 49,275,42,46 });
-	animWalk[FIXED_ANGLE::UP_RIGHT].PushBack({ 1,147,43,48 });
-	animWalk[FIXED_ANGLE::UP_RIGHT].PushBack({ 97,316,42,45 });
-	animWalk[FIXED_ANGLE::UP_RIGHT].speed = 0.1f;
-
-	animWalk[FIXED_ANGLE::RIGHT].PushBack({ 165,565,40,41 });
-	animWalk[FIXED_ANGLE::RIGHT].PushBack({ 1,412,42,43 });
-	animWalk[FIXED_ANGLE::RIGHT].PushBack({ 140,439,41,43 });
-	animWalk[FIXED_ANGLE::RIGHT].PushBack({ 81,572,37,40 });
-	animWalk[FIXED_ANGLE::RIGHT].PushBack({ 211,47,37,43 });
-	animWalk[FIXED_ANGLE::RIGHT].speed = 0.1f;
-
-	animWalk[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 1,371,44,39 });
-	animWalk[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 207,530,40,39 });
-	animWalk[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 182,488,42,40 });
-	animWalk[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 1,331,45,38 });
-	animWalk[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 191,361,44,39 });
-	animWalk[FIXED_ANGLE::DOWN_RIGHT].speed = 0.1f;
-
-	animWalk[FIXED_ANGLE::DOWN].PushBack({ 1,241,46,44 });
-	animWalk[FIXED_ANGLE::DOWN].PushBack({ 203,183,45,42 });
-	animWalk[FIXED_ANGLE::DOWN].PushBack({ 203,197,45,44 });
-	animWalk[FIXED_ANGLE::DOWN].PushBack({ 185,446,40,43 });
-	animWalk[FIXED_ANGLE::DOWN].PushBack({ 47,408,43,43 });
-	animWalk[FIXED_ANGLE::DOWN].speed = 0.1f;
-
-	animWalk[FIXED_ANGLE::DOWN_LEFT].PushBack({ 142,398,44,39 });
-	animWalk[FIXED_ANGLE::DOWN_LEFT].PushBack({ 207,571,40,39 });
-	animWalk[FIXED_ANGLE::DOWN_LEFT].PushBack({ 136,523,42,40 });
-	animWalk[FIXED_ANGLE::DOWN_LEFT].PushBack({ 144,358,45,38 });
-	animWalk[FIXED_ANGLE::DOWN_LEFT].PushBack({ 94,405,44,39 });
-	animWalk[FIXED_ANGLE::DOWN_LEFT].speed = 0.1f;
-
-	animWalk[FIXED_ANGLE::LEFT].PushBack({ 90,530,40,42 });
-	animWalk[FIXED_ANGLE::LEFT].PushBack({ 188,402,42,43 });
-	animWalk[FIXED_ANGLE::LEFT].PushBack({ 92,446,41,43 });
-	animWalk[FIXED_ANGLE::LEFT].PushBack({ 123,572,37,40 });
-	animWalk[FIXED_ANGLE::LEFT].PushBack({ 211,92,37,43 });
-	animWalk[FIXED_ANGLE::LEFT].speed = 0.1f;
-
-	animWalk[FIXED_ANGLE::UP_LEFT].PushBack({ 150,269,44,47 });
-	animWalk[FIXED_ANGLE::UP_LEFT].PushBack({ 1,456,40,43 });
-	animWalk[FIXED_ANGLE::UP_LEFT].PushBack({ 1,287,42,46 });
-	animWalk[FIXED_ANGLE::UP_LEFT].PushBack({ 98,271,43,46 });
-	animWalk[FIXED_ANGLE::UP_LEFT].PushBack({ 49,319,42,45 });
-	animWalk[FIXED_ANGLE::UP_LEFT].speed = 0.1f;
-
-	//	ANIM ATAC
-
-	animAtac[FIXED_ANGLE::UP].PushBack({ 1,1,49,54 });
-	animAtac[FIXED_ANGLE::UP].PushBack({ 57,42,46,50 });
-	animAtac[FIXED_ANGLE::UP].speed = 0.1f;
-
-	animAtac[FIXED_ANGLE::UP_RIGHT].PushBack({ 109,42,45,49 });
-	animAtac[FIXED_ANGLE::UP_RIGHT].PushBack({ 101,183,40,48 });
-	animAtac[FIXED_ANGLE::UP_RIGHT].speed = 0.1f;
-
-	animAtac[FIXED_ANGLE::RIGHT].PushBack({ 151,223,47,44 });
-	animAtac[FIXED_ANGLE::RIGHT].PushBack({ 46,495,41,42 });
-	animAtac[FIXED_ANGLE::RIGHT].speed = 0.1f;
-
-	animAtac[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 1,572,38,38 });
-	animAtac[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 167,482,43,39 });
-	animAtac[FIXED_ANGLE::DOWN_RIGHT].speed = 0.1f;
-
-	animAtac[FIXED_ANGLE::DOWN].PushBack({ 199,273,47,38 });
-	animAtac[FIXED_ANGLE::DOWN].PushBack({ 146,315,46,41 });
-	animAtac[FIXED_ANGLE::DOWN].speed = 0.1f;
-
-	animAtac[FIXED_ANGLE::DOWN_LEFT].PushBack({ 41,572,38,38 });
-	animAtac[FIXED_ANGLE::DOWN_LEFT].PushBack({ 91,489,43,39 });
-	animAtac[FIXED_ANGLE::DOWN_LEFT].speed = 0.1f;
-
-	animAtac[FIXED_ANGLE::LEFT].PushBack({ 200,227,47,44 });
-	animAtac[FIXED_ANGLE::LEFT].PushBack({ 1,498,41,42 });
-	animAtac[FIXED_ANGLE::LEFT].speed = 0.1f;
-
-	animAtac[FIXED_ANGLE::UP_LEFT].PushBack({ 160,47,45,49 });
-	animAtac[FIXED_ANGLE::UP_LEFT].PushBack({ 51,185,40,48 });
-	animAtac[FIXED_ANGLE::UP_LEFT].speed = 0.1f;
-
-	//	ANIM DEATH
-
-	animDeath[FIXED_ANGLE::UP].PushBack({ 1,98,47,48 });
-	animDeath[FIXED_ANGLE::UP].PushBack({ 57,1,53,39 });
-	animDeath[FIXED_ANGLE::UP].PushBack({ 96,360,44,43 });
-	animDeath[FIXED_ANGLE::UP].speed = 0.1f;
-
-	animDeath[FIXED_ANGLE::UP_RIGHT].PushBack({ 1,98,47,48 });
-	animDeath[FIXED_ANGLE::UP_RIGHT].PushBack({ 57,1,53,39 });
-	animDeath[FIXED_ANGLE::UP_RIGHT].PushBack({ 96,360,44,43 });
-	animDeath[FIXED_ANGLE::UP_RIGHT].speed = 0.1f;
-
-	animDeath[FIXED_ANGLE::RIGHT].PushBack({ 1,52,44,50 });
-	animDeath[FIXED_ANGLE::RIGHT].PushBack({ 199,313,46,46 });
-	animDeath[FIXED_ANGLE::RIGHT].PushBack({ 1,192,47,47 });
-	animDeath[FIXED_ANGLE::RIGHT].speed = 0.1f;
-
-	animDeath[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 1,52,44,50 });
-	animDeath[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 199,313,46,46 });
-	animDeath[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 1,192,47,47 });
-	animDeath[FIXED_ANGLE::DOWN_RIGHT].speed = 0.1f;
-
-	animDeath[FIXED_ANGLE::LEFT].PushBack({ 51,139,44,48 });
-	animDeath[FIXED_ANGLE::LEFT].PushBack({ 50,227,46,46 });
-	animDeath[FIXED_ANGLE::LEFT].PushBack({ 53,90,48,47 });
-	animDeath[FIXED_ANGLE::LEFT].speed = 0.1f;
-
-	animDeath[FIXED_ANGLE::DOWN_LEFT].PushBack({ 51,139,44,48 });
-	animDeath[FIXED_ANGLE::DOWN_LEFT].PushBack({ 50,227,46,46 });
-	animDeath[FIXED_ANGLE::DOWN_LEFT].PushBack({ 53,90,48,47 });
-	animDeath[FIXED_ANGLE::DOWN_LEFT].speed = 0.1f;
-
-	animDeath[FIXED_ANGLE::DOWN].PushBack({ 103,134,47,48 });
-	animDeath[FIXED_ANGLE::DOWN].PushBack({ 112,1,53,39 });
-	animDeath[FIXED_ANGLE::DOWN].PushBack({ 48,363,44,43 });
-	animDeath[FIXED_ANGLE::DOWN].speed = 0.1f;
-
-	animDeath[FIXED_ANGLE::UP_LEFT].PushBack({ 103,134,47,48 });
-	animDeath[FIXED_ANGLE::UP_LEFT].PushBack({ 112,1,53,39 });
-	animDeath[FIXED_ANGLE::UP_LEFT].PushBack({ 48,363,44,43 });
-	animDeath[FIXED_ANGLE::UP_LEFT].speed = 0.1f;
-
-}
-
 Enemy_Archer_Arrow::Enemy_Archer_Arrow(fPoint coor, SDL_Texture* texture, fPoint direction, FIXED_ANGLE angle, int deadTimer)
 {
 	this->pos = coor;
 	this->texture = texture;
 	this->direction = direction;
-	this->deadTimer = deadTimer;
+	this->deadTimer = SDL_GetTicks() + deadTimer;
 	this->angle = angle;
 
 	// Assignar els rects
@@ -336,7 +170,7 @@ Enemy_Archer_Arrow::Enemy_Archer_Arrow(fPoint coor, SDL_Texture* texture, fPoint
 
 void Enemy_Archer_Arrow::Update()
 {
-	if (deadTimer > 0)
+	if (SDL_GetTicks() < deadTimer)
 	{
 		this->pos += direction;
 		App->render->Blit(texture, pos.x, pos.y, &rect[angle]);
@@ -344,6 +178,168 @@ void Enemy_Archer_Arrow::Update()
 	}
 	else
 	{
-
+		destroy = true;
 	}
+}
+
+
+
+void Enemy_Archer::ChargeAnimations()
+{
+	//animIdle
+	//north
+	animIdle[FIXED_ANGLE::UP].PushBack({ 47,491,42,48 });
+	animIdle[FIXED_ANGLE::UP].speed = 0.1f;
+	//north-east
+	animIdle[FIXED_ANGLE::UP_RIGHT].PushBack({ 46,393,44,47 });
+	animIdle[FIXED_ANGLE::UP_RIGHT].speed = 0.1f;
+	//east
+	animIdle[FIXED_ANGLE::RIGHT].PushBack({ 167,123,40,41 });
+	animIdle[FIXED_ANGLE::RIGHT].speed = 0.1f;
+	//south-east
+	animIdle[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 111,41,44,39 });
+	animIdle[FIXED_ANGLE::DOWN_RIGHT].speed = 0.1f;
+	//south
+	animIdle[FIXED_ANGLE::DOWN].PushBack({ 50,299,46,44 });
+	animIdle[FIXED_ANGLE::DOWN].speed = 0.1f;
+	//south-west
+	animIdle[FIXED_ANGLE::DOWN_LEFT].PushBack({ 46,82,44,39 });
+	animIdle[FIXED_ANGLE::DOWN_LEFT].speed = 0.1f;
+	//west
+	animIdle[FIXED_ANGLE::LEFT].PushBack({ 91,165,40,42 });
+	animIdle[FIXED_ANGLE::LEFT].speed = 0.1f;
+	//north-west
+	animIdle[FIXED_ANGLE::UP_LEFT].PushBack({ 46,442,44,47 });
+	animIdle[FIXED_ANGLE::UP_LEFT].speed = 0.1f;
+	//animWalk
+	//north
+	animWalk[FIXED_ANGLE::UP].PushBack({ 47,491,42,48 });
+	animWalk[FIXED_ANGLE::UP].PushBack({ 142,551,44,51 });
+	animWalk[FIXED_ANGLE::UP].PushBack({ 136,496,43,49 });
+	animWalk[FIXED_ANGLE::UP].PushBack({ 141,445,38,49 });
+	animWalk[FIXED_ANGLE::UP].PushBack({ 91,493,43,48 });
+	animWalk[FIXED_ANGLE::UP].speed = 0.1f;
+	//north-east
+	animWalk[FIXED_ANGLE::UP_RIGHT].PushBack({ 46,393,44,47 });
+	animWalk[FIXED_ANGLE::UP_RIGHT].PushBack({ 173,211,40,43 });
+	animWalk[FIXED_ANGLE::UP_RIGHT].PushBack({ 141,347,42,46 });
+	animWalk[FIXED_ANGLE::UP_RIGHT].PushBack({ 1,441,43,48 });
+	animWalk[FIXED_ANGLE::UP_RIGHT].PushBack({ 194,306,42,45 });
+	animWalk[FIXED_ANGLE::UP_RIGHT].speed = 0.1f;
+	//east
+	animWalk[FIXED_ANGLE::RIGHT].PushBack({ 167,123,40,41 });
+	animWalk[FIXED_ANGLE::RIGHT].PushBack({ 47,209,42,43 });
+	animWalk[FIXED_ANGLE::RIGHT].PushBack({ 130,210,41,43 });
+	animWalk[FIXED_ANGLE::RIGHT].PushBack({ 1,123,37,40 });
+	animWalk[FIXED_ANGLE::RIGHT].PushBack({ 91,209,37,43 });
+	animWalk[FIXED_ANGLE::RIGHT].speed = 0.1f;
+	//south-east
+	animWalk[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 111,41,44,39 });
+	animWalk[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 157,41,40,39 });
+	animWalk[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 40,123,42,40 });
+	animWalk[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 1,1,45,38 });
+	animWalk[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 199,41,44,39 });
+	animWalk[FIXED_ANGLE::DOWN_RIGHT].speed = 0.1f;
+	//south
+	animWalk[FIXED_ANGLE::DOWN].PushBack({ 50,299,46,44 });
+	animWalk[FIXED_ANGLE::DOWN].PushBack({ 44,165,45,42 });
+	animWalk[FIXED_ANGLE::DOWN].PushBack({ 98,300,45,44 });
+	animWalk[FIXED_ANGLE::DOWN].PushBack({ 1,254,40,43 });
+	animWalk[FIXED_ANGLE::DOWN].PushBack({ 43,254,43,43 });
+	animWalk[FIXED_ANGLE::DOWN].speed = 0.1f;
+	//south-west
+	animWalk[FIXED_ANGLE::DOWN_LEFT].PushBack({ 46,82,44,39 });
+	animWalk[FIXED_ANGLE::DOWN_LEFT].PushBack({ 92,82,40,39 });
+	animWalk[FIXED_ANGLE::DOWN_LEFT].PushBack({ 84,123,42,40 });
+	animWalk[FIXED_ANGLE::DOWN_LEFT].PushBack({ 88,1,45,38 });
+	animWalk[FIXED_ANGLE::DOWN_LEFT].PushBack({ 134,82,44,39 });
+	animWalk[FIXED_ANGLE::DOWN_LEFT].speed = 0.1f;
+	//west
+	animWalk[FIXED_ANGLE::LEFT].PushBack({ 91,165,40,42 });
+	animWalk[FIXED_ANGLE::LEFT].PushBack({ 127,255,42,43 });
+	animWalk[FIXED_ANGLE::LEFT].PushBack({ 171,256,41,43 });
+	animWalk[FIXED_ANGLE::LEFT].PushBack({ 128,123,37,40 });
+	animWalk[FIXED_ANGLE::LEFT].PushBack({ 88,254,37,43 });
+	animWalk[FIXED_ANGLE::LEFT].speed = 0.1f;
+	//north-west
+	animWalk[FIXED_ANGLE::UP_LEFT].PushBack({ 46,442,44,47 });
+	animWalk[FIXED_ANGLE::UP_LEFT].PushBack({ 215,211,40,43 });
+	animWalk[FIXED_ANGLE::UP_LEFT].PushBack({ 185,353,42,46 });
+	animWalk[FIXED_ANGLE::UP_LEFT].PushBack({ 1,393,43,46 });
+	animWalk[FIXED_ANGLE::UP_LEFT].PushBack({ 1,345,42,45 });
+	animWalk[FIXED_ANGLE::UP_LEFT].speed = 0.1f;
+	//animAttack
+	//north
+	animAtac[FIXED_ANGLE::UP].PushBack({ 188,551,49,54 });
+	animAtac[FIXED_ANGLE::UP].PushBack({ 94,547,46,50 });
+	animAtac[FIXED_ANGLE::UP].speed = 0.1f;
+	//north-east
+	animAtac[FIXED_ANGLE::UP_RIGHT].PushBack({ 181,500,45,49 });
+	animAtac[FIXED_ANGLE::UP_RIGHT].PushBack({ 214,256,40,48 });
+	animAtac[FIXED_ANGLE::UP_RIGHT].speed = 0.1f;
+	//east
+	animAtac[FIXED_ANGLE::RIGHT].PushBack({ 1,299,47,44 });
+	animAtac[FIXED_ANGLE::RIGHT].PushBack({ 1,165,41,42 });
+	animAtac[FIXED_ANGLE::RIGHT].speed = 0.1f;
+	//south-east
+	animAtac[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 48,1,38,38 });
+	animAtac[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 1,82,43,39 });
+	animAtac[FIXED_ANGLE::DOWN_RIGHT].speed = 0.1f;
+	//south
+	animAtac[FIXED_ANGLE::DOWN].PushBack({ 175,1,47,38 });
+	animAtac[FIXED_ANGLE::DOWN].PushBack({ 209,123,46,41 });
+	animAtac[FIXED_ANGLE::DOWN].speed = 0.1f;
+	//south-west
+	animAtac[FIXED_ANGLE::DOWN_LEFT].PushBack({ 135,1,38,38 });
+	animAtac[FIXED_ANGLE::DOWN_LEFT].PushBack({ 180,82,43,39 });
+	animAtac[FIXED_ANGLE::DOWN_LEFT].speed = 0.1f;
+	//west
+	animAtac[FIXED_ANGLE::LEFT].PushBack({ 145,301,47,44 });
+	animAtac[FIXED_ANGLE::LEFT].PushBack({ 133,166,41,42 });
+	animAtac[FIXED_ANGLE::LEFT].speed = 0.1f;
+	//north-west
+	animAtac[FIXED_ANGLE::UP_LEFT].PushBack({ 1,541,45,49 });
+	animAtac[FIXED_ANGLE::UP_LEFT].PushBack({ 141,395,40,48 });
+	animAtac[FIXED_ANGLE::UP_LEFT].speed = 0.1f;
+	//animDeath
+	//north-east 
+	animDeath[FIXED_ANGLE::UP_RIGHT].PushBack({ 92,443,47,48 });
+	animDeath[FIXED_ANGLE::UP_RIGHT].PushBack({ 1,41,53,39 });
+	animDeath[FIXED_ANGLE::UP_RIGHT].PushBack({ 176,166,44,43 });
+	animDeath[FIXED_ANGLE::UP_RIGHT].speed = 0.1f;
+	//south-east 
+	animDeath[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 48,543,44,50 });
+	animDeath[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 45,345,46,46 });
+	animDeath[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 92,394,47,47 });
+	animDeath[FIXED_ANGLE::DOWN_RIGHT].speed = 0.1f;
+	//south-west
+	animDeath[FIXED_ANGLE::DOWN_LEFT].PushBack({ 1,491,44,48 });
+	animDeath[FIXED_ANGLE::DOWN_LEFT].PushBack({ 93,346,46,46 });
+	animDeath[FIXED_ANGLE::DOWN_LEFT].PushBack({ 183,401,48,47 });
+	animDeath[FIXED_ANGLE::DOWN_LEFT].speed = 0.1f;
+	//north-west
+	animDeath[FIXED_ANGLE::UP_LEFT].PushBack({ 181,450,47,48 });
+	animDeath[FIXED_ANGLE::UP_LEFT].PushBack({ 56,41,53,39 });
+	animDeath[FIXED_ANGLE::UP_LEFT].PushBack({ 1,209,44,50 });
+	animDeath[FIXED_ANGLE::UP_LEFT].speed = 0.1f;
+	//north
+	animDeath[FIXED_ANGLE::UP].PushBack({ 92,443,47,48 });
+	animDeath[FIXED_ANGLE::UP].PushBack({ 1,41,53,39 });
+	animDeath[FIXED_ANGLE::UP].PushBack({ 176,166,44,43 });
+	animDeath[FIXED_ANGLE::UP].speed = 0.1f;
+	//south
+	animDeath[FIXED_ANGLE::DOWN].PushBack({ 1,491,44,48 });
+	animDeath[FIXED_ANGLE::DOWN].PushBack({ 93,346,46,46 });
+	animDeath[FIXED_ANGLE::DOWN].PushBack({ 183,401,48,47 });
+	animDeath[FIXED_ANGLE::DOWN].speed = 0.1f;
+	//east
+	animDeath[FIXED_ANGLE::RIGHT].PushBack({ 92,443,47,48 });
+	animDeath[FIXED_ANGLE::RIGHT].PushBack({ 1,41,53,39 });
+	animDeath[FIXED_ANGLE::RIGHT].PushBack({ 176,166,44,43 });
+	animDeath[FIXED_ANGLE::RIGHT].speed = 0.1f;
+	//west
+	animDeath[FIXED_ANGLE::LEFT].PushBack({ 1,491,44,48 });
+	animDeath[FIXED_ANGLE::LEFT].PushBack({ 93,346,46,46 });
+	animDeath[FIXED_ANGLE::LEFT].PushBack({ 183,401,48,47 });
+	animDeath[FIXED_ANGLE::LEFT].speed = 0.1f;
 }
