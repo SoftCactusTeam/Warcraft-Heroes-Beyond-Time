@@ -40,9 +40,9 @@ bool ModulePrinter::CleanUp()
 	return true;
 }
 
-bool ModulePrinter::PrintSprite(iPoint pos, SDL_Texture* texture, SDL_Rect SquaretoBlit)
+bool ModulePrinter::PrintSprite(iPoint pos, SDL_Texture* texture, SDL_Rect SquaretoBlit, int layer)
 {
-	Sprite* sprite = new Sprite(pos, texture, SquaretoBlit);
+	Sprite* sprite = new Sprite(pos, texture, SquaretoBlit, layer);
 	SpriteQueue.push(sprite);
 
 	return true;

@@ -14,13 +14,14 @@ class Sprite
 {
 public:
 
-	iPoint pos;
-	SDL_Texture* texture;
+	iPoint pos = { 0,0 };
+	SDL_Texture* texture = nullptr;
 	SDL_Rect SquaretoBlit;
+	int layer = 0;
 
 public:
 
-	Sprite(iPoint pos, SDL_Texture* texture, SDL_Rect SquaretoBlit) : pos(pos), texture(texture), SquaretoBlit(SquaretoBlit) {}
+	Sprite(iPoint pos, SDL_Texture* texture, SDL_Rect SquaretoBlit, int layer) : pos(pos), texture(texture), SquaretoBlit(SquaretoBlit), layer(layer) {}
 
 };
 
@@ -29,8 +30,10 @@ class Compare
 public:
 	bool operator () (Sprite* first, Sprite* second)
 	{
-		//Less to high order 
-		return first->pos.y + first->SquaretoBlit.h > second->pos.y + second->SquaretoBlit.h;
+		if (first->layer != second->layer)
+			return first->layer > second->layer;
+		else
+			return first->pos.y + first->SquaretoBlit.h > second->pos.y + second->SquaretoBlit.h;
 	}
 };
 
@@ -48,14 +51,7 @@ public:
 
 public:
 
-	bool PrintSprite(iPoint pos, SDL_Texture* texture, SDL_Rect SquaretoBlit);
-
-private:
-
-	bool isLower(Sprite* first, Sprite* second) const
-	{
-		return first->pos.y + first->SquaretoBlit.h < second->pos.y + second->SquaretoBlit.h;
-	}
+	bool PrintSprite(iPoint pos, SDL_Texture* texture, SDL_Rect SquaretoBlit, int layer = 0);
 
 private:
 
