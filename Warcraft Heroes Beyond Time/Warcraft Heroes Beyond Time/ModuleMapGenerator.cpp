@@ -57,7 +57,7 @@ iPoint MapGenerator::GetRandomValidPoint()
 	return nodes[randNum]->pos;
 }
 
-bool MapGenerator::Update(float dt)
+bool MapGenerator::PostUpdate()
 {
 	return DrawMap();
 }

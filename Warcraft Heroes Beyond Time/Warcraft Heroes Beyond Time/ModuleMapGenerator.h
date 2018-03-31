@@ -49,7 +49,7 @@ public:
 	{
 		active = false;
 	}
-	bool Update(float dt);
+	bool PostUpdate();
 	bool DrawMap() const;
 	inline int Get(int x, int y) const;
 	bool CheckBoundaries(const iPoint& pos) const;
