@@ -39,7 +39,6 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	colliders = new ModuleColliders();
 	path = new Pathfinding();
 	printer = new ModulePrinter();
-	//map = new Map();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -58,7 +57,6 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(printer);
 	AddModule(colliders);
 	AddModule(gui);
-	//AddModule(map);
 
 	// render last to swap buffer
 	AddModule(render);

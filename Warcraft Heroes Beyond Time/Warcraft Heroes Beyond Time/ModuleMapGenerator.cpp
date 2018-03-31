@@ -68,11 +68,18 @@ bool MapGenerator::DrawMap() const
 
 	for (uint i = 0u; i < totalSize && ret; ++i)
 	{
-		iPoint posToBlit = nodes[i]->pos;
-		if (nodes[i]->floor)
-			ret = App->printer->PrintSprite({ posToBlit.x * (int)tileSize, posToBlit.y * (int)tileSize }, mapTexture, nodes[i]->whatToBlit, -1);
-		else
-			ret = App->printer->PrintSprite({ posToBlit.x * (int)tileSize, posToBlit.y * (int)tileSize }, mapTexture, nodes[i]->whatToBlit, 0);
+		iPoint MapPos = { (nodes[i]->pos.x * (int)(this->tileSize)),  (nodes[i]->pos.y * (int)(this->tileSize))};
+
+		if (MapPos.x + (int)tileSize > -App->render->camera.x &&
+			MapPos.x - tileSize < -App->render->camera.x + App->render->camera.w &&
+			MapPos.y + (int)tileSize > -App->render->camera.y &&
+			MapPos.y - tileSize < -App->render->camera.y + App->render->camera.h)
+		{
+			if (nodes[i]->floor || nodes[i]->)
+				ret = App->printer->PrintSprite({ MapPos.x , MapPos.y }, mapTexture, nodes[i]->whatToBlit, -1);
+			else
+				ret = App->printer->PrintSprite({ MapPos.x , MapPos.y }, mapTexture, nodes[i]->whatToBlit, 0);
+		}
 	}
 
 	return ret;
