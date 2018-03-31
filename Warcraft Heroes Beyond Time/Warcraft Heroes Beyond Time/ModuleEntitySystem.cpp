@@ -239,9 +239,6 @@ bool EntitySystem::Update(float dt)
 {
 	bool ret = true;
 
-	
-	App->map->DrawPrePlayerMap(); //TEMPORAL PER LA RELEASE
-
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end() && ret; ++it)
 	{
 		ret = (*it)->Update(dt);
@@ -254,8 +251,6 @@ bool EntitySystem::Update(float dt)
 			ret = (*it)->Draw(dt);
 		}
 	}
-
-	App->map->DrawPostPlayerMap();
 
 	return ret;
 }

@@ -49,9 +49,8 @@ public:
 	{
 		active = false;
 	}
-
-	bool DrawPrePlayerMap();
-	bool DrawPostPlayerMap();
+	bool Update(float dt);
+	bool DrawMap() const;
 	inline int Get(int x, int y) const;
 	bool CheckBoundaries(const iPoint& pos) const;
 	bool GenerateMap(MapData data);

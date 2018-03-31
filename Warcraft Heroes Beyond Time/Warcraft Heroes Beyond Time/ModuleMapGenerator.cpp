@@ -2,6 +2,7 @@
 #include "ModuleMapGenerator.h"
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
+#include "ModulePrinter.h"
 #include "Log.h"
 #include "Scene.h"
 #include "PlayerEntity.h"
@@ -56,33 +57,22 @@ iPoint MapGenerator::GetRandomValidPoint()
 	return nodes[randNum]->pos;
 }
 
-bool MapGenerator::DrawPrePlayerMap()
+bool MapGenerator::Update(float dt)
 {
-	bool ret = true;
-
-	for (uint i = 0u; i < totalSize && ret; ++i)
-	{
-		if (nodes[i]->floor || (!nodes[i]->floor && nodes[i]->pos.y * tileSize <= App->scene->player->pos.y))
-		{
-			iPoint posToBlit = nodes[i]->pos;
-			ret = App->render->Blit(mapTexture, posToBlit.x * tileSize, posToBlit.y * tileSize, &nodes[i]->whatToBlit);
-		}
-	}
-
-	return ret;
+	return DrawMap();
 }
 
-bool MapGenerator::DrawPostPlayerMap()
+bool MapGenerator::DrawMap() const
 {
 	bool ret = true;
 
 	for (uint i = 0u; i < totalSize && ret; ++i)
 	{
-		if (!nodes[i]->floor && nodes[i]->pos.y * tileSize >= App->scene->player->pos.y)
-		{
-			iPoint posToBlit = nodes[i]->pos;
-			ret = App->render->Blit(mapTexture, posToBlit.x * tileSize, posToBlit.y * tileSize, &nodes[i]->whatToBlit);
-		}
+		iPoint posToBlit = nodes[i]->pos;
+		if (nodes[i]->floor)
+			ret = App->printer->PrintSprite({ posToBlit.x * (int)tileSize, posToBlit.y * (int)tileSize }, mapTexture, nodes[i]->whatToBlit, -1);
+		else
+			ret = App->printer->PrintSprite({ posToBlit.x * (int)tileSize, posToBlit.y * (int)tileSize }, mapTexture, nodes[i]->whatToBlit, 0);
 	}
 
 	return ret;

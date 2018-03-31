@@ -21,7 +21,7 @@ public:
 
 public:
 
-	Sprite(iPoint pos, SDL_Texture* texture, SDL_Rect SquaretoBlit, int layer) : pos(pos), texture(texture), SquaretoBlit(SquaretoBlit), layer(layer) {}
+	Sprite(iPoint& pos, SDL_Texture* texture, SDL_Rect& SquaretoBlit, int layer) : pos(pos), texture(texture), SquaretoBlit(SquaretoBlit), layer(layer) {}
 
 };
 
