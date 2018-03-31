@@ -17,5 +17,6 @@ extern SDL_Color White;
 extern SDL_Color Grey;
 extern SDL_Color Yellow;
 
+bool ColorEquals(SDL_Color color1, SDL_Color color2);
 
 #endif

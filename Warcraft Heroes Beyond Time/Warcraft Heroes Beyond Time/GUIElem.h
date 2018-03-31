@@ -32,7 +32,10 @@ public:
 		LABEL,
 		INPUTBOX,
 		SLIDER,
-		WINDOW
+		WINDOW,
+		IMAGE,
+
+		STAT
 	};
 	
 protected:

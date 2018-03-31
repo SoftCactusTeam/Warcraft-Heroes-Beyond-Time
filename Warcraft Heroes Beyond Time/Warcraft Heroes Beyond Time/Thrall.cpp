@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "Thrall.h"
 #include "ModuleInput.h"
+#include "ModuleEntitySystem.h"
 
 Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEntity(coor, type, texture) 
 {
@@ -156,6 +157,7 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	attackLeft.PushBack({ 552,626,59,39 });
 	attackLeft.speedFactor = 9.0f;
 
+	numStats = App->entities->thrallstats;
 }
 
 bool Thrall::Update(float dt)

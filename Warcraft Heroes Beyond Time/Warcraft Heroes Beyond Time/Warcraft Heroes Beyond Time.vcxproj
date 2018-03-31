@@ -139,6 +139,7 @@
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Fonts.cpp" />
     <ClCompile Include="FileSystem.cpp" />
+    <ClCompile Include="GUIImage.cpp" />
     <ClCompile Include="InputBox.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ModulePrinter.cpp" />
@@ -147,6 +148,7 @@
     <ClCompile Include="ModuleColliders.cpp" />
     <ClCompile Include="Pathfinding.cpp" />
     <ClCompile Include="PortalEntity.cpp" />
+    <ClCompile Include="Stat.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
@@ -182,6 +184,7 @@
     <ClInclude Include="Fonts.h" />
     <ClInclude Include="FileSystem.h" />
     <ClInclude Include="GUIElem.h" />
+    <ClInclude Include="GUIImage.h" />
     <ClInclude Include="InputBox.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ModulePrinter.h" />
@@ -190,6 +193,7 @@
     <ClInclude Include="ModuleMapGenerator.h" />
     <ClInclude Include="ModuleColliders.h" />
     <ClInclude Include="Pathfinding.h" />
+    <ClInclude Include="Stat.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="ModuleAudio.h" />

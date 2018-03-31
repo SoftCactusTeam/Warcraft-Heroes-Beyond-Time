@@ -112,6 +112,12 @@
     <ClCompile Include="ModulePrinter.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="GUIImage.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Stat.cpp">
+      <Filter>GUI\Warcraft Specific</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -240,6 +246,12 @@
     <ClInclude Include="ModulePrinter.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="GUIImage.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Stat.h">
+      <Filter>GUI\Warcraft Specific</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />
@@ -262,6 +274,9 @@
     </Filter>
     <Filter Include="Entities\Static Entities">
       <UniqueIdentifier>{93bbfb31-6dae-4cff-89d6-b7ecc916c4dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\Warcraft Specific">
+      <UniqueIdentifier>{a44ceca3-55bf-4adb-bcf5-e831248165a6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

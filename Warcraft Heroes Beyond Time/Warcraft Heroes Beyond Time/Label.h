@@ -21,12 +21,13 @@ public:
 	bool Update(float dt);
 	bool Draw();
 	bool MouseHover() const;
-	void EditText(std::string text, SDL_Color color);
+	void EditText(std::string text, SDL_Color color = {0,0,0,0});
 
 private:
 	std::string text;
 	TTF_Font* font = nullptr;
 	SDL_Texture* texturetoBlit = nullptr;
+	SDL_Color color;
 };
 
 #endif
