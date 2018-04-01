@@ -94,43 +94,130 @@ bool Enemy_Archer::Finish()
 	return true;
 }
 
-// FUNCIONS D'ESTAT	
+// ---------------------------------------------------------------------------------
+// ----------------  INIT STATE_MACHIN FUNCTIONS  ----------------------------------
+// ---------------------------------------------------------------------------------
 
 void Enemy_Archer::initIdle()
 {
 	state = ARCHER_STATE::ARCHER_IDLE;
 	pathVector.Clear();
 }
+
 void Enemy_Archer::initWalk()
 {
-
+	state = ARCHER_STATE::ARCHER_WALK;
 }
+
 void Enemy_Archer::initAtac()
 {
-
+	state = ARCHER_STATE::ARCHER_BASIC_ATAC;
+	accountantPrincipal = SDL_GetTicks() + ATAC_COOLDOWN;
+	anim = &animAtac[LookAtPlayer()];
+	anim->Reset();
+	pathVector.Clear();
+	ShootArrow();
 }
+
 void Enemy_Archer::initTriAtac()
 {
-
+	state = ARCHER_STATE::ARCHER_TRI_ATAC;
+	accountantPrincipal = SDL_GetTicks() + TRI_ATAC_COOLDOWN;
+	anim = &animAtac[LookAtPlayer()];
+	anim->Reset();
+	pathVector.Clear();
+	ShootArrow();
+	ShootArrow({ 20,-20 });
+	ShootArrow({ -20,20 });
 }
+
 void Enemy_Archer::initFastAtac()
 {
-
+	state = ARCHER_STATE::ARCHER_FASTSHOOT_ATAC;
+	accountantPrincipal = SDL_GetTicks() + FAST_ATAC_COOLDOWN;
+	anim = &animAtac[LookAtPlayer()];
+	anim->Reset();
+	pathVector.Clear();
+	arrowToShoot = FAST_ATAC_ARROWS;
+	timeToShootAnother = SDL_GetTicks() + FAST_ATAC_TIME_BETWEEN;
 }
+
 void Enemy_Archer::initBackJump()
 {
+	state = ARCHER_STATE::ARCHER_BACKJUMP;
+	accountantPrincipal = SDL_GetTicks() + JUMP_BACK_COOLDOWN;
+	anim = &animAtac[LookAtPlayer()];
+	anim->Reset();
+	pathVector.Clear();
 
+	int randomX = App->entities->GetRandomNumber(6);
+	if (randomX > 3)
+	{
+		randomX -= 3;
+		randomX *= -1;
+	}
+	int randomY = App->entities->GetRandomNumber(6);
+	if (randomY > 3)
+	{
+		randomY -= 3;
+		randomY *= -1;
+	}
+	if (App->path->ExistWalkableAtPos(iPoint((int)pos.x / App->map->getTileSize() - randomX, (int)pos.y / App->map->getTileSize() - randomY)))
+	{
+		pos.x += randomX * App->map->getTileSize();
+		pos.y += randomY * App->map->getTileSize();
+	}
 }
+
 void Enemy_Archer::initScape()
 {
-
+		int randomX = App->entities->GetRandomNumber(DISTANCE_TO_GO_SCAPE);
+		if (randomX > DISTANCE_TO_GO_SCAPE / 2)
+		{
+			randomX -= DISTANCE_TO_GO_SCAPE / 2;
+			randomX *= -1;
+		}
+		int randomY = App->entities->GetRandomNumber(DISTANCE_TO_GO_SCAPE);
+		if (randomY > DISTANCE_TO_GO_SCAPE / 2)
+		{
+			randomY -= DISTANCE_TO_GO_SCAPE / 2;
+			randomY *= -1;
+		}
+		bool finded = true;
+		while (App->path->ExistWalkableAtPos(iPoint((int)pos.x / App->map->getTileSize() - randomX, (int)pos.y / App->map->getTileSize() - randomY)) == false)
+		{
+			randomX--;
+			randomY--;
+			if (randomX < DISTANCE_TO_GO_SCAPE / 4 || randomY < DISTANCE_TO_GO_SCAPE / 4) {
+				finded = false;
+				break;
+			}
+		}
+		if (finded)
+		{
+			posToScape = { iPoint((int)pos.x / App->map->getTileSize() - randomX , (int)pos.y / App->map->getTileSize() - randomY) };
+			state = ARCHER_STATE::ARCHER_SCAPE;
+			accountantPrincipal = SDL_GetTicks() + SCAPE_TIME;
+			anim = &animAtac[LookAtPlayer()];
+			anim->Reset();
+			pathVector.Clear();
+		}
+		else
+		{
+			state = ARCHER_STATE::ARCHER_IDLE;
+			pathVector.Clear();
+		}
 }
+
+// ---------------------------------------------------------------------------------
+// ----------------  UPDATE(DO) STATE_MACHIN FUNCTIONS  ----------------------------
+// ---------------------------------------------------------------------------------
 
 void Enemy_Archer::doIdle()
 {
 	anim = &animIdle[LookAtPlayer()];
 	if (DistanceToPlayer() < DISTANCE_TO_MOVE) {
-		state = ARCHER_STATE::ARCHER_WALK;
+		initWalk();
 	}
 }
 
@@ -143,100 +230,23 @@ void Enemy_Archer::doWalk()
 	}
 	else if (DistanceToPlayer() < DISTANCE_TO_JUMPBACK && App->entities->GetRandomNumber(10) < 7)	// Superar tirada 70%
 	{
-		state = ARCHER_STATE::ARCHER_BACKJUMP;
-		accountantPrincipal = SDL_GetTicks() + JUMP_BACK_COOLDOWN;
-		anim = &animAtac[LookAtPlayer()];
-		anim->Reset();
-		pathVector.Clear();
-		// RANDOM COORDS
-		int randomX = App->entities->GetRandomNumber(6);
-		if (randomX > 3)
-		{
-			randomX -= 3;
-			randomX *= -1;
-		}
-		int randomY = App->entities->GetRandomNumber(6);
-		if (randomY > 3)
-		{
-			randomY -= 3;
-			randomY *= -1;
-		}
-		if (App->path->ExistWalkableAtPos(iPoint((int)pos.x / App->map->getTileSize() - randomX, (int)pos.y / App->map->getTileSize() - randomY)))
-		{
-			pos.x += randomX * App->map->getTileSize();
-			pos.y += randomY * App->map->getTileSize();
-		}
+		initBackJump();
 	}
 	else if (DistanceToPlayer() < DISTANCE_TO_ATAC && App->entities->GetRandomNumber(10) < 7)	// Superar una tirada de 70%
 	{
-		state = ARCHER_STATE::ARCHER_BASIC_ATAC;
-		accountantPrincipal = SDL_GetTicks() + ATAC_COOLDOWN;
-		anim = &animAtac[LookAtPlayer()];
-		anim->Reset();
-		pathVector.Clear();
-		ShootArrow();
+		initAtac();
 	}
 	else if (DistanceToPlayer() < DISTANCE_TO_ATAC && App->entities->GetRandomNumber(10) < 5)	// Superar una tirada de 50%
 	{
-		state = ARCHER_STATE::ARCHER_TRI_ATAC;
-		accountantPrincipal = SDL_GetTicks() + TRI_ATAC_COOLDOWN;
-		anim = &animAtac[LookAtPlayer()];
-		anim->Reset();
-		pathVector.Clear();
-		ShootArrow();
-		ShootArrow({20,-20});
-		ShootArrow({-20,20});
+		initTriAtac();
 	}
 	else if (DistanceToPlayer() < DISTANCE_TO_ATAC && App->entities->GetRandomNumber(10) < 5)	// Superar una tirada de 50%
 	{
-		state = ARCHER_STATE::ARCHER_FASTSHOOT_ATAC;
-		accountantPrincipal = SDL_GetTicks() + FAST_ATAC_COOLDOWN;
-		anim = &animAtac[LookAtPlayer()];
-		anim->Reset();
-		pathVector.Clear();
-		arrowToShoot = FAST_ATAC_ARROWS;
-		timeToShootAnother = SDL_GetTicks() + FAST_ATAC_TIME_BETWEEN;
+		initFastAtac();
 	}
 	//else if (DistanceToPlayer() < DISTANCE_TO_JUMPBACK /*is the same to scape*/ /*&& App->entities->GetRandomNumber(10) < 7*/)	// Superar tirada 70%
 	//{
-
-	//	// RANDOM COORDS
-	//	int randomX = App->entities->GetRandomNumber(DISTANCE_TO_GO_SCAPE);
-	//	if (randomX > DISTANCE_TO_GO_SCAPE / 2)
-	//	{
-	//		randomX -= DISTANCE_TO_GO_SCAPE / 2;
-	//		randomX *= -1;
-	//	}
-	//	int randomY = App->entities->GetRandomNumber(DISTANCE_TO_GO_SCAPE);
-	//	if (randomY > DISTANCE_TO_GO_SCAPE / 2)
-	//	{
-	//		randomY -= DISTANCE_TO_GO_SCAPE / 2;
-	//		randomY *= -1;
-	//	}
-	//	bool finded = true;
-	//	while (App->path->ExistWalkableAtPos(iPoint((int)pos.x / App->map->getTileSize() - randomX, (int)pos.y / App->map->getTileSize() - randomY)) == false)
-	//	{
-	//		randomX--;
-	//		randomY--;
-	//		if (randomX < DISTANCE_TO_GO_SCAPE / 4 || randomY < DISTANCE_TO_GO_SCAPE / 4) {
-	//			finded = false;
-	//			break;
-	//		}
-	//	}
-	//	if (finded)
-	//	{
-	//		posToScape = { iPoint((int)pos.x / App->map->getTileSize() - randomX , (int)pos.y / App->map->getTileSize() - randomY) };
-	//		state = ARCHER_STATE::ARCHER_SCAPE;
-	//		accountantPrincipal = SDL_GetTicks() + SCAPE_TIME;
-	//		anim = &animAtac[LookAtPlayer()];
-	//		anim->Reset();
-	//		pathVector.Clear();
-	//	}
-	//	else
-	//	{
-	//		state = ARCHER_STATE::ARCHER_IDLE;
-	//		pathVector.Clear();
-	//	}
+	//initScape();
 	//}
 	else // AQUI CAMINA, PERO AQUESTA FUNCIO ES TEMPORAL
 	{
