@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{2781B1EC-1D8B-4816-86D8-8A9200ECBEFC}</ProjectGuid>
     <RootNamespace>Warcraft Heroes Beyond Time</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -133,22 +133,20 @@
     <ClCompile Include="ConsumableEntity.cpp" />
     <ClCompile Include="DynamicEntity.cpp" />
     <ClCompile Include="EnemyEntity.cpp" />
+    <ClCompile Include="Enemy_Archer.cpp" />
     <ClCompile Include="Enemy_Footman.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Fonts.cpp" />
     <ClCompile Include="FileSystem.cpp" />
-    <ClCompile Include="GUIImage.cpp" />
     <ClCompile Include="InputBox.cpp" />
     <ClCompile Include="Item.cpp" />
-    <ClCompile Include="ModulePrinter.cpp" />
     <ClCompile Include="Slider.cpp" />
     <ClCompile Include="ModuleMapGenerator.cpp" />
     <ClCompile Include="ModuleColliders.cpp" />
     <ClCompile Include="Pathfinding.cpp" />
     <ClCompile Include="PortalEntity.cpp" />
-    <ClCompile Include="Stat.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
@@ -176,6 +174,7 @@
     <ClInclude Include="ConsumableEntity.h" />
     <ClInclude Include="DynamicEntity.h" />
     <ClInclude Include="EnemyEntity.h" />
+    <ClInclude Include="Enemy_Archer.h" />
     <ClInclude Include="Enemy_Footman.h" />
     <ClInclude Include="EntitiesEnums.h" />
     <ClInclude Include="Entity.h" />
@@ -184,16 +183,13 @@
     <ClInclude Include="Fonts.h" />
     <ClInclude Include="FileSystem.h" />
     <ClInclude Include="GUIElem.h" />
-    <ClInclude Include="GUIImage.h" />
     <ClInclude Include="InputBox.h" />
     <ClInclude Include="Item.h" />
-    <ClInclude Include="ModulePrinter.h" />
     <ClInclude Include="PortalEntity.h" />
     <ClInclude Include="Slider.h" />
     <ClInclude Include="ModuleMapGenerator.h" />
     <ClInclude Include="ModuleColliders.h" />
     <ClInclude Include="Pathfinding.h" />
-    <ClInclude Include="Stat.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="ModuleAudio.h" />

@@ -15,7 +15,7 @@ public:
 	Scene();
 	virtual ~Scene();
 
-	bool Awake();
+	bool Awake(pugi::xml_node& consoleNode);
 	bool Start();
 	bool PreUpdate();
 	bool Update(float dt);
@@ -25,19 +25,19 @@ public:
 public:
 
 	virtual bool OnUIEvent(GUIElem* UIelem, UIEvents _event);
-
+	
 
 public:
 	enum class Stages
 	{
 		NO_STAGE,
-		MAIN_MENU,
+		MAIN_MENU, 
 		SETTINGS,
 		INGAME
 
 	} actual_scene = Stages::MAIN_MENU;
 
-
+	
 
 private:
 

@@ -32,10 +32,7 @@ public:
 		LABEL,
 		INPUTBOX,
 		SLIDER,
-		WINDOW,
-		IMAGE,
-
-		STAT
+		WINDOW
 	};
 	
 protected:
@@ -58,7 +55,6 @@ public:
 	virtual ~GUIElem();
 
 	virtual bool Update(float dt);
-	virtual bool Draw();
 	virtual bool MouseHover() const;
 	virtual void DebugDraw();
 	virtual bool HandleInput();
@@ -67,7 +63,6 @@ public:
 	GUIElem* getParent() const;
 	void addChild(GUIElem* child);
 	bool UpdateChilds(float dt);
-	bool DrawChilds();
 	bool DestroyChilds();
 
 	fPoint calculateScreenPos();

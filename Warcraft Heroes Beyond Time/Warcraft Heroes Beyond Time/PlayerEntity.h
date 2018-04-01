@@ -3,8 +3,6 @@
 
 #include "DynamicEntity.h"
 #include "Item.h"
-#include "ModuleEntitySystem.h"
-
 
 #include <list>
 
@@ -45,8 +43,6 @@ protected:
 public:
 	PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture);
 
-	EntitySystem::PlayerStats numStats;
-
 	void Walk(bool);
 
 	virtual bool Start();
@@ -57,6 +53,8 @@ public:
 
 	void CheckIddleStates();
 	void CheckMapLimits();
+	virtual bool Finish();
+	virtual void Collision(COLLIDER_TYPE type);
 
 	void AddItem(Item item);
 	void IterateItems(ItemFunctions nameFunction);
@@ -66,9 +64,9 @@ public:
 	
 	Animation* GetAnimFromAngle(float angle, bool dashOn = false);
 	bool IsPlayerMoving();
-	virtual bool Finish();
 
 	// Bezier/dash related variables
+
 	fPoint handleA = { 0.6f, 0.0f };
 	fPoint handleB = { 0.4f, 1.0f };
 	fPoint endPos = { 0.0f, 0.0f };
@@ -78,6 +76,7 @@ public:
 	fPoint startPos = { 0.0f, 0.0f };
 
 	//Camera culling
+
 	SDL_Rect freeZone;
 	float freeZonex, freeZoney;
 	void InitCulling();

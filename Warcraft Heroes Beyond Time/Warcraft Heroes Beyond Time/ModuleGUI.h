@@ -15,8 +15,6 @@ class InputBoxInfo;
 struct SliderInfo;
 enum class BType;
 
-class PlayerEntity;
-
 
 class ModuleGUI : public Module
 {
@@ -38,8 +36,6 @@ public:
 	GUIElem* CreateButton(fPoint localPos, BType btype, Module* listener, GUIElem* parent = nullptr);
 	GUIElem* CreateSlider(fPoint localPos, SliderInfo sInfo, Module* listener, GUIElem* parent = nullptr);
 	GUIElem* CreateGUIWindow(fPoint localPos, SDL_Rect type, Module* listener, GUIElem* parent = nullptr);
-	GUIElem* CreateGUIImage(fPoint localPos, SDL_Rect atlasRect, Module* listener, GUIElem* parent = nullptr);
-	GUIElem* CreateStatsWindow(PlayerEntity* player, fPoint localPos);
 
 	bool DestroyElem(GUIElem* element);
 	SDL_Texture* getAtlas() const;
