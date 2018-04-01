@@ -266,28 +266,20 @@ void Enemy_Archer::doWalk()
 void Enemy_Archer::doAtac()
 {
 	if (SDL_GetTicks() > accountantPrincipal)
-	{
-		state = ARCHER_STATE::ARCHER_IDLE;
-		pathVector.Clear();
-	}
+		initIdle();
 }
 
 void Enemy_Archer::doTriAtac()
 {
 	if (SDL_GetTicks() > accountantPrincipal)
-	{
-		state = ARCHER_STATE::ARCHER_IDLE;
-		pathVector.Clear();
-	}
+		initIdle();
 }
 
 void Enemy_Archer::doFastAtac()
 {
 	if (SDL_GetTicks() > accountantPrincipal)
-	{
-		state = ARCHER_STATE::ARCHER_IDLE;
-		pathVector.Clear();
-	}
+		initIdle();
+
 	else if (arrowToShoot > 0)
 	{
 		if (timeToShootAnother < SDL_GetTicks())
@@ -302,19 +294,13 @@ void Enemy_Archer::doFastAtac()
 void Enemy_Archer::doBackJump()
 {
 	if (SDL_GetTicks() > accountantPrincipal)
-	{
-		state = ARCHER_STATE::ARCHER_IDLE;
-		pathVector.Clear();
-	}
+		initIdle();
 }
 
 void Enemy_Archer::doScape()
 {
 	if (SDL_GetTicks() > accountantPrincipal)
-	{
-		state = ARCHER_STATE::ARCHER_IDLE;
-		pathVector.Clear();
-	}
+		initIdle();
 
 	if (pathVector.isEmpty())
 	{
