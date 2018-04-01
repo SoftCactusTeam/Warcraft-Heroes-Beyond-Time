@@ -38,7 +38,7 @@ void Pathfinding::LoadPathMap()
 	std::vector<MapNode*> tmpMapNodes = App->map->GetMapNodesAndInfo(mapWidth, mapHeight, tileSize);
 	for (int i = 0; i < tmpMapNodes.size(); i++)
 	{
-		if (tmpMapNodes[i]->layerBelow == -1)
+		if (tmpMapNodes[i]->cost == -1)
 			AddNodeToMap(tmpMapNodes[i]->cost, tmpMapNodes[i]->pos);
 	}
 	LoadNeighbours();

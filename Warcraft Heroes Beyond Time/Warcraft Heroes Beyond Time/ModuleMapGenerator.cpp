@@ -24,6 +24,7 @@
 MapGenerator::MapGenerator() {}
 
 MapGenerator::~MapGenerator() {}
+
 bool MapGenerator::CleanUp()
 {
 	bool ret = true;
@@ -139,6 +140,7 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 
 	startNode->whatToBlit = randomTile(true);
 	startNode->layerBelow = -1;
+	startNode->cost = -1;
 	visited.push_back(startNode);
 
 	MapNode* auxNode = startNode;
@@ -167,7 +169,7 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 			if (auxNode->layerBelow != -1)
 			{
 				auxNode->whatToBlit = randomTile(true);
-				auxNode->cost = 0;
+				auxNode->cost = -1;
 				visited.push_back(auxNode);
 				auxNode->layerBelow = -1;
 				i++;
@@ -180,7 +182,7 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 			if (auxNode->layerBelow != -1)
 			{
 				auxNode->whatToBlit = randomTile(true);
-				auxNode->cost = 0;
+				auxNode->cost = -1;
 				visited.push_back(auxNode);
 				auxNode->layerBelow = -1;
 				i++;
@@ -193,7 +195,7 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 			if (auxNode->layerBelow != -1)
 			{
 				auxNode->whatToBlit = randomTile(true);
-				auxNode->cost = 0;
+				auxNode->cost = -1;
 				visited.push_back(auxNode);
 				auxNode->layerBelow = -1;
 				i++;

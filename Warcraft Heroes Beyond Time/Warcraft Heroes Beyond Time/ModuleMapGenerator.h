@@ -25,7 +25,7 @@ struct MapNode
 	~MapNode() {};
 
 	iPoint pos = { 0,0 };
-	int cost = -1;
+	int cost = 0;
 	SDL_Rect whatToBlit = { 0,0,0,0 };
 	int layerBelow = 0;
 };
