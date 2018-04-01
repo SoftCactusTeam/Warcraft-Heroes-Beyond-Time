@@ -66,6 +66,21 @@ FIXED_ANGLE DynamicEntity::CaculateAngle(fPoint objectiveCoor)
 	return angleToReturn;
 }
 
+fPoint DynamicEntity::CaculateFPointAngle(fPoint objectiveCoor)
+{
+	switch (CaculateAngle(objectiveCoor))
+	{
+	case UP: return fPoint(0, -3); break;
+	case UP_RIGHT: return fPoint(2, -2); break;
+	case RIGHT: return fPoint(3, 0); break;
+	case DOWN_RIGHT: return fPoint(2, 2); break;
+	case DOWN: return fPoint(0, 3); break;
+	case DOWN_LEFT: return fPoint(-2, 2); break;
+	case LEFT: return fPoint(-3, 0); break;
+	case UP_LEFT: return fPoint(-2, -2); break;
+	}
+}
+
 uint DynamicEntity::DistanceToObejective(fPoint objectiveCoor)
 {
 	uint totalX = this->pos.x - objectiveCoor.x;

@@ -59,11 +59,9 @@
   
   <window>
     
-    <size w = "640" h = "360"/>
+    <size w = "1280" h = "720"/>
     <fullscreen active = "false"/>
-    <borderless active = "false"/>
-    <resizable active = "false"/>
-    <fullscreen_window active = "true"/>
+    
   </window>
 
 </Game> 

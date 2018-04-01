@@ -7,11 +7,23 @@
 #include "ModuleAudio.h"
 #include "ModuleMapGenerator.h"
 #include "ModuleRender.h"
+#include "Pathfinding.h"
 #include "ModuleColliders.h"
 #include "ChestEntity.h"
 #include "PortalEntity.h"
-#include "Pathfinding.h"
 
+
+class ConsoleMap : public ConsoleOrder
+{
+	std::string orderName() { return "map"; }
+	void Exec(std::string parametre, int parametreNumeric) {
+		if (parametre == "printwalkables")
+			if (parametreNumeric == 1)
+				App->path->printWalkables = true;
+			else if (parametreNumeric == 0)
+				App->path->printWalkables = false;
+	}
+};
 
 #include "Label.h"
 #include "InputBox.h"
@@ -27,15 +39,16 @@ Scene::Scene()
 
 Scene::~Scene(){}
 
-bool Scene::Awake()
+bool Scene::Awake(pugi::xml_node& consoleNode)
 {
+	ConsoleOrder* order = new ConsoleMap();
+	App->console->AddConsoleOrderToList(order);
 	return true;
 }
 
 bool Scene::Start()
 {
 	App->gui->Activate();
-	App->colliders->Activate();
 	switch (actual_scene)
 	{
 		case Stages::MAIN_MENU:
@@ -44,28 +57,28 @@ bool Scene::Start()
 			Button* button = (Button*)App->gui->CreateButton({ 250, 50.0f }, BType::PLAY, this);
 
 			LabelInfo defLabel;
-			defLabel.color = White;
-			defLabel.fontName = "LifeCraft80";
+			defLabel.color = Red;
+			defLabel.fontName = "Arial11";
 			defLabel.text = "PLAY";
-			App->gui->CreateLabel({ 60,20 }, defLabel, button, this);
-
+			App->gui->CreateLabel({ 65,25 }, defLabel, button, this);
+			
 			//SETTINGS BUTTON
 			Button* button2 = (Button*)App->gui->CreateButton({ 250, 150.0f }, BType::SETTINGS, this);
 
 			LabelInfo defLabel2;
-			defLabel2.color = White;
-			defLabel2.fontName = "Arial80";
+			defLabel2.color = Red;
+			defLabel2.fontName = "Arial11";
 			defLabel2.text = "Settings";
-			App->gui->CreateLabel({ 40,17 }, defLabel2, button2, this);
+			App->gui->CreateLabel({ 60,25 }, defLabel2, button2, this);
 
 			//EXIT GAME BUTTON
 			Button* button3 = (Button*)App->gui->CreateButton({ 250, 250.0f }, BType::EXIT_GAME, this);
 
 			LabelInfo defLabel3;
-			defLabel3.color = White;
-			defLabel3.fontName = "Arial40";
-			defLabel3.text = "Fuck u go fucking out of\n               here ;(";
-			App->gui->CreateLabel({ 13,20 }, defLabel3, button3, this);
+			defLabel3.color = Red;
+			defLabel3.fontName = "Arial9";
+			defLabel3.text = "Fuck u go fucking out of here ;(";
+			App->gui->CreateLabel({ 13,25 }, defLabel3, button3, this);
 
 			break;
 		}
@@ -78,19 +91,19 @@ bool Scene::Start()
 
 			LabelInfo defLabel3;
 			defLabel3.color = White;
-			defLabel3.fontName = "Arial80";
+			defLabel3.fontName = "Arial11";
 			std::string temp = (char*)std::to_string(App->audio->MusicVolumePercent).data();
 			defLabel3.text = (char*)temp.data();
-			App->gui->CreateLabel({ 270,-3 }, defLabel3, slider, this);
+			App->gui->CreateLabel({ 270,3 }, defLabel3, slider, this);
 
 			//BACK BUTTON
 			Button* button3 = (Button*)App->gui->CreateButton({ 250, 250.0f }, BType::GO_MMENU, this);
 
 			LabelInfo defLabel2;
-			defLabel2.color = White;
-			defLabel2.fontName = "Arial80";
+			defLabel2.color = Red;
+			defLabel2.fontName = "Arial11";
 			defLabel2.text = "Go Back ;)";
-			App->gui->CreateLabel({ 27,15 }, defLabel2, button3, this);
+			App->gui->CreateLabel({ 50,25 }, defLabel2, button3, this);
 
 			break;
 		}
@@ -98,6 +111,7 @@ bool Scene::Start()
 		{
 			App->entities->Activate();
 			App->console->Activate();
+
 			App->map->Activate();
 
 			MapData mapInfo;
@@ -109,22 +123,28 @@ bool Scene::Start()
 
 			App->map->GenerateMap(mapInfo);
 
-			player = App->entities->AddPlayer({ 25*48,25*48 }, THRALL);
 			App->path->LoadPathMap();
-			App->entities->AddEnemy({ 80,80 }, FOOTMAN);
 
-			/*App->colliders->AddTileCollider({ 10,10,50,50 }, COLLIDER_TYPE::COLLIDER_UNWALKABLE);
-			App->colliders->AddTileCollider({ 10,70,50,50 }, COLLIDER_TYPE::COLLIDER_UNWALKABLE);*/
+			player = App->entities->AddPlayer({ 25 * 48,25 * 48 }, THRALL);
 
+			App->colliders->AddTileCollider({ 10,10,50,50 }, COLLIDER_TYPE::COLLIDER_UNWALKABLE);
+			App->colliders->AddTileCollider({ 10,70,50,50 }, COLLIDER_TYPE::COLLIDER_UNWALKABLE);
 
 			iPoint chestPos = App->map->GetRandomValidPoint();
 			lvlChest = App->entities->AddChest({ (float)chestPos.x * 48,(float)chestPos.y * 48 }, MID_CHEST);
 			portal = (PortalEntity*)App->entities->AddStaticEntity({ 25 * 48,25 * 48 }, PORTAL);
+
+
+
+			player = App->entities->AddPlayer({ 55,55 }, THRALL);
+
+			//App->path->LoadMap();
+
 			break;
 		}
-
+			
 	}
-
+	
 	return true;
 }
 
@@ -135,6 +155,8 @@ bool Scene::PreUpdate()
 
 bool Scene::Update(float dt)
 {
+	if (App->path->printWalkables == true)
+		App->path->PrintWalkableTiles();
 	//TESTING SAVES
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
@@ -147,9 +169,8 @@ bool Scene::Update(float dt)
 		App->Load();
 	}
 
-
-//GENERATE A NEW MAP
-	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && actual_scene == Stages::INGAME && lvlIndex != 8 && !App->input->IsTextReady())
+	//GENERATE A NEW MAP
+	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && actual_scene == Stages::INGAME && lvlIndex != 8)
 	{
 		App->map->CleanUp();
 
@@ -166,7 +187,7 @@ bool Scene::Update(float dt)
 		iPoint chestPos = App->map->GetRandomValidPoint();
 		lvlChest = App->entities->AddChest({ (float)chestPos.x * 48,(float)chestPos.y * 48 }, MID_CHEST);
 		portal = (PortalEntity*)App->entities->AddStaticEntity({ 25 * 48,25 * 48 }, PORTAL);
-
+		
 		lvlIndex++;
 	}
 	else if(App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
@@ -205,7 +226,7 @@ bool Scene::Update(float dt)
 		lvlChest->UnLockChest();
 		lvlChest->OpenChest();
 		portal->OpenPortal();
-	}
+
 	//PAUSE GAME
 		if (actual_scene == Stages::INGAME)
 		{
@@ -222,25 +243,25 @@ bool Scene::Update(float dt)
 
 					LabelInfo defLabel1;
 					defLabel1.color = White;
-					defLabel1.fontName = "Arial80";
+					defLabel1.fontName = "Arial11";
 					defLabel1.text = "Resume";
-					App->gui->CreateLabel({ 35,15 }, defLabel1, Resume, this);
+					App->gui->CreateLabel({ 57,23 }, defLabel1, Resume, this);
 
 					Button* MainMenu = (Button*)App->gui->CreateButton({ 255 / 2 - 158 / 2, 110.0f }, BType::GO_MMENU, this, PauseMenu);
 
 					LabelInfo defLabel2;
 					defLabel2.color = White;
-					defLabel2.fontName = "Arial40";
+					defLabel2.fontName = "Arial11";
 					defLabel2.text = "Return to the Main Menu";
-					App->gui->CreateLabel({ 15,23 }, defLabel2, MainMenu, this);
+					App->gui->CreateLabel({ 23,23 }, defLabel2, MainMenu, this);
 
 					Button* SaveAndExit = (Button*)App->gui->CreateButton({ 255 / 2 - 158 / 2, 200.0f }, BType::EXIT_GAME, this, PauseMenu);
 
 					LabelInfo defLabel3;
 					defLabel3.color = White;
-					defLabel3.fontName = "Arial65";
+					defLabel3.fontName = "Arial11";
 					defLabel3.text = "Save and Exit";
-					App->gui->CreateLabel({ 20,20 }, defLabel3, SaveAndExit, this);
+					App->gui->CreateLabel({ 43,23 }, defLabel3, SaveAndExit, this);
 				}
 				else
 				{
@@ -249,6 +270,7 @@ bool Scene::Update(float dt)
 				}
 			}
 		}
+	}
 	return true;
 }
 
@@ -269,7 +291,6 @@ bool Scene::CleanUp()
 	App->map->DeActivate();
 	App->entities->DeActivate();
 	App->console->DeActivate();
-	App->colliders->DeActivate();
 
 	return true;
 }

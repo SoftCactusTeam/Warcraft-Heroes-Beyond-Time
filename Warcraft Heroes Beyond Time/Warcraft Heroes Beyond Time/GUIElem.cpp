@@ -20,11 +20,6 @@ bool GUIElem::Update(float dt)
 	return true;
 }
 
-bool GUIElem::Draw()
-{
-	return true;
-}
-
 bool GUIElem::MouseHover() const
 {
 	int x, y;
@@ -154,23 +149,6 @@ bool GUIElem::UpdateChilds(float dt)
 		for (it = childs.begin(); it != childs.end() && result; ++it)
 		{
 			result = (*it)->Update(dt);
-		}
-	}
-
-	return result;
-}
-
-bool GUIElem::DrawChilds()
-{
-	bool result = true;
-
-	if (childs.size() > 0)
-	{
-		std::list<GUIElem*>::iterator it;
-
-		for (it = childs.begin(); it != childs.end() && result; ++it)
-		{
-			result = (*it)->Draw();
 		}
 	}
 

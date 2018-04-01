@@ -18,14 +18,13 @@ class EntitySystem : public Module
 {
 public:
 
-	struct PlayerStats
+	struct ThrallStats
 	{
 		uint hp = 0;
-		uint armor = 0;
 		uint speed = 0;
 		uint damage = 0;
 		uint energyPercentbyHit = 0;
-		uint critChance = 0;
+
 	} thrallstats;
 
 	struct EnemyStats
@@ -66,11 +65,12 @@ public:
 	StaticEntity* AddStaticEntity(fPoint coor, STATIC_ENTITY_TYPE type);
 
 	void ClearEnemies();
+	int GetRandomNumber(int rang);
 
+	std::vector<SDL_Texture*> spritesheetsEntities;
 private:
 	std::list<Entity*>		entities;
 	std::list<Entity*>		toSpawn; 
-	std::vector<SDL_Texture*> spritesheetsEntities;
 
 };
 

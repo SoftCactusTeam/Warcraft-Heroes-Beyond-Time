@@ -21,8 +21,21 @@ public:
 
 	void ChargeAnimations();
 
+	void doIdle();
+	void doWalk();
+	void doAtac();
+	void doCharge();
+
 public:
 	FOOTMAN_STATE state;
+	Animation animIdle[NUMBER_OF_ORIENTATIONS];
+	Animation animWalk[NUMBER_OF_ORIENTATIONS];
+	Animation animAtac[NUMBER_OF_ORIENTATIONS];
+	Animation animCharge[NUMBER_OF_ORIENTATIONS];
+
+	// Charge variables
+	fPoint		chargeMovement;
+	uint		chargeTime = 0;
 };
 
 #endif

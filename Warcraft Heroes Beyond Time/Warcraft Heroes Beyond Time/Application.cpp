@@ -17,10 +17,10 @@
 #include "Console.h"
 #include "ModuleColliders.h"
 #include "Pathfinding.h"
+
 #include "Fonts.h"
 #include "ModuleGUI.h"
 #include "ModuleMapGenerator.h"
-#include "ModulePrinter.h"
 
 Application::Application(int argc, char* args[]) : argc(argc), args(args)
 {
@@ -38,7 +38,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	map = new MapGenerator();
 	colliders = new ModuleColliders();
 	path = new Pathfinding();
-	printer = new ModulePrinter();
+	//map = new Map();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -53,10 +53,10 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(fonts);
 	AddModule(fs);
 	AddModule(console);
-	AddModule(path);
-	AddModule(printer);
-	AddModule(colliders);
 	AddModule(gui);
+	AddModule(colliders);
+	AddModule(path);
+	//AddModule(map);
 
 	// render last to swap buffer
 	AddModule(render);

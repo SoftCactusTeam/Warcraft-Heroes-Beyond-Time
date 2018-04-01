@@ -32,8 +32,6 @@ public:
 	virtual ~Slider() {}
 
 	bool Update(float dt);
-	bool Draw();
-
 	bool HandleInput();
 	bool MouseHover() const;
 

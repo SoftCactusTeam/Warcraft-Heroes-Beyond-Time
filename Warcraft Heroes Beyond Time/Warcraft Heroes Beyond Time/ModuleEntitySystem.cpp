@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include "Application.h"
 #include "Log.h"
 #include "ModuleEntitySystem.h"
@@ -15,28 +18,25 @@
 #include "ModuleColliders.h"
 #include "Thrall.h"
 #include "Enemy_Footman.h"
+#include "Enemy_Archer.h"
 #include "PortalEntity.h"
 
 #include "Console.h"
 
 
-class Txell_ConsoleOrder : public ConsoleOrder 
+class Entities_ConsoleOrder : public ConsoleOrder 
 {
 	std::string orderName() 
 	{ 
-		return "txell"; 
+		return "spawn"; 
 	}
 
 	void Exec(std::string parameter, int parameterNumeric) 
 	{
-		if (parameter == "sexy")
-			printf_s("Txell sexy %i\n", parameterNumeric);
-
-		else if (parameter == "pesada")
-			printf_s("Txell pesada %i\n", parameterNumeric);
-
-		else if (parameter == "not")
-			printf_s("not parametre %i\n", parameterNumeric);
+		if (parameter == "footman")
+			App->entities->AddEnemy(App->scene->player->pos, FOOTMAN);
+		if (parameter == "archer")
+			App->entities->AddEnemy(App->scene->player->pos, ARCHER);
 	}
 };
 
@@ -145,7 +145,8 @@ void EntitySystem::Init()
 
 bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 {
-	ConsoleOrder* txell_consoleOrder = new Txell_ConsoleOrder;
+	srand(time(NULL));
+	ConsoleOrder* txell_consoleOrder = new Entities_ConsoleOrder;
 	App->console->AddConsoleOrderToList(txell_consoleOrder);
 
 	ConsoleOrder* spawn_consoleOrder = new Spawn_ConsoleOrder;
@@ -209,6 +210,8 @@ bool EntitySystem::Start()
 	spritesheetsEntities.push_back(App->textures->Load("Sprites/Footman/Footman_sprite.png"));
 	spritesheetsEntities.push_back(App->textures->Load("all_items.png"));
 	spritesheetsEntities.push_back(App->textures->Load("Mines.png"));
+	spritesheetsEntities.push_back(App->textures->Load("Sprites/Archer/Archer_sprite.png"));
+	spritesheetsEntities.push_back(App->textures->Load("Sprites/Archer/Archer_Arrow.png"));
 
 	bool ret = true;
 
@@ -239,6 +242,9 @@ bool EntitySystem::Update(float dt)
 {
 	bool ret = true;
 
+	
+	App->map->DrawPrePlayerMap(); //TEMPORAL PER LA RELEASE
+
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end() && ret; ++it)
 	{
 		ret = (*it)->Update(dt);
@@ -251,6 +257,8 @@ bool EntitySystem::Update(float dt)
 			ret = (*it)->Draw(dt);
 		}
 	}
+
+	App->map->DrawPostPlayerMap();
 
 	return ret;
 }
@@ -324,10 +332,10 @@ void EntitySystem::AddEnemy(fPoint coor, ENEMY_TYPE type)
 	EnemyEntity* newEntity = nullptr;
 	switch (type) {
 	case ENEMY_TYPE::FOOTMAN:
-		newEntity = new Enemy_Footman(coor, ENEMY_TYPE::FOOTMAN, spritesheetsEntities[FOOTMAN_SHEET] /*SHA DE CANVIAR !*/);
+		newEntity = new Enemy_Footman(coor, ENEMY_TYPE::FOOTMAN, spritesheetsEntities[FOOTMAN_SHEET]);
 		break;
 	case ENEMY_TYPE::ARCHER:
-		newEntity = new EnemyEntity(coor, ENEMY_TYPE::ARCHER, nullptr);
+		newEntity = new Enemy_Archer(coor, ENEMY_TYPE::ARCHER, spritesheetsEntities[ARCHER_SHEET]);
 		break;
 	case ENEMY_TYPE::MAGE:
 		newEntity = new EnemyEntity(coor, ENEMY_TYPE::MAGE, nullptr);
@@ -343,7 +351,7 @@ void EntitySystem::AddEnemy(fPoint coor, ENEMY_TYPE type)
 		break;
 	}
 	toSpawn.push_back(newEntity);
-	//App->colliders->AddCollider((Entity*)newEntity, { 0,0,32,32 }, COLLIDER_ENEMY, { 20,20 });
+	App->colliders->AddCollider((Entity*)newEntity, { 0,0,32,32 }, COLLIDER_ENEMY, { 20,20 });
 
 }
 
@@ -379,8 +387,8 @@ PlayerEntity* EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
 		newEntity = new PlayerEntity(coor, PLAYER_TYPE::SYLVANAS, nullptr);
 		break;
 	}
-	toSpawn.push_back(newEntity);
-	App->colliders->AddCollider(newEntity, { 0,0,32,32 }, COLLIDER_PLAYER, {10,10});
+	toSpawn.push_back((Entity*)newEntity);
+	App->colliders->AddCollider((Entity*)newEntity, { 0,0,32,32 }, COLLIDER_PLAYER, {10,10});
 	return newEntity;
 }
 
@@ -453,4 +461,10 @@ void EntitySystem::ClearEnemies()
 	{
 		if((*it)->)
 	}*/
+}
+
+
+int EntitySystem::GetRandomNumber(int rang)
+{
+	return rand() % rang;
 }

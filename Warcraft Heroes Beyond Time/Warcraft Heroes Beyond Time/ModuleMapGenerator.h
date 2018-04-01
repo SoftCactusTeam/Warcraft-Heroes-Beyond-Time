@@ -13,7 +13,7 @@ struct MapData
 {
 	char* tilesetPath = NULL;
 	int sizeX = 0;
-	int sizeY = 0;
+	int sizeY = 0;	
 	uint iterations = 0;
 	int randomize = 0;
 	int seed = 0;
@@ -27,7 +27,6 @@ struct MapNode
 	iPoint pos = { 0,0 };
 	int cost = -1;
 	SDL_Rect whatToBlit = { 0,0,0,0 };
-	int layerBelow = 0;
 };
 
 class MapGenerator : public Module
@@ -49,13 +48,17 @@ public:
 	{
 		active = false;
 	}
+
+	bool Update(float dt);
 	bool PostUpdate();
-	bool DrawMap() const;
+	bool DrawPrePlayerMap();
+	bool DrawPostPlayerMap();
 	inline int Get(int x, int y) const;
 	bool CheckBoundaries(const iPoint& pos) const;
 	bool GenerateMap(MapData data);
 	bool ExecuteAlgorithm(MapNode* startNode, uint iterations, int seed);
-	SDL_Rect randomTile(bool isFloor);
+	int CheckTypeOfNode(MapNode* nodetocheck);
+	void UpdateNode(MapNode* nodetocheck, int type);
 	bool GenerateWalls();
 	bool CleanUp();
 	iPoint GetRandomValidPoint();

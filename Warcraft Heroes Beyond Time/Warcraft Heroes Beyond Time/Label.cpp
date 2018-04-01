@@ -10,7 +10,6 @@ Label::Label(fPoint position, LabelInfo& info, GUIElem* parent, Module* listener
 	text = info.text;
 	font = App->fonts->getFontbyName(info.fontName);
 	texturetoBlit = App->fonts->Print(text.c_str(), info.color, font);
-	color = info.color;
 }
 
 Label::~Label() {}
@@ -19,19 +18,10 @@ bool Label::Update(float dt)
 {
 	bool result = false;
 
-	result = UpdateChilds(dt);
+	
+	result = App->render->Blit(texturetoBlit, (int)(this->screenPos.x - App->render->camera.x), (int)(this->screenPos.y - App->render->camera.y));
 
-	return result;
-}
-
-bool Label::Draw()
-{
-	bool result = true;
-
-	result = App->render->Blit(texturetoBlit, (int)(this->screenPos.x - App->render->camera.x), (int)(this->screenPos.y - App->render->camera.y), nullptr, 0.3);
-
-	if (result)
-		result = DrawChilds();
+	UpdateChilds(dt);
 
 	return result;
 }
@@ -63,7 +53,7 @@ void Label::EditText(std::string text, SDL_Color color)
 {
 	this->text = text;
 	SDL_DestroyTexture(texturetoBlit);
-	texturetoBlit = App->fonts->Print(text.data(), (ColorEquals({0,0,0,0}, color) ? this->color : color), font);
+	texturetoBlit = App->fonts->Print(text.data(), color, font);
 }
 
 
