@@ -36,6 +36,7 @@ public:
 
 	bool Start();
 	bool Update(float dt);
+	bool PostUpdate();
 	bool Finish();
 
 	void ChargeAnimations();

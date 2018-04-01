@@ -7,7 +7,6 @@
 #include "Scene.h"
 #include "PlayerEntity.h"
 
-
 #include <time.h>
 
 #define VOID { 196,0,48,48 }

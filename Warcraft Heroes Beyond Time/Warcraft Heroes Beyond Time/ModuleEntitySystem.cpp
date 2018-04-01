@@ -262,6 +262,11 @@ bool EntitySystem::PostUpdate()
 {
 	bool ret = true;
 
+	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end() && ret; ++it)
+	{
+		ret = (*it)->PostUpdate();
+	}
+
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); ++it)
 	{
 		if ((*it)->destroy)

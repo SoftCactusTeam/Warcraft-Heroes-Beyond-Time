@@ -6,8 +6,8 @@
 #include "ModuleInput.h"
 #include "ModuleMapGenerator.h"
 #include "Scene.h"
-#include "ModuleRender.h"
 #include "ModuleInput.h"
+#include "ModulePrinter.h"
 
 #define DISTANCE_TO_MOVE	300
 #define DISTANCE_TO_ATAC	150
@@ -28,19 +28,6 @@ bool Enemy_Archer::Update(float dt)
 {
 	if (App->input->GetKey(SDL_SCANCODE_9) == KeyState::KEY_DOWN)
 		ShootArrow();
-
-	// L'update de les flextes
-	for (int i = 0; i < arrowsVector.size(); i++)
-	{
-		if (arrowsVector[i]->destroy == false)
-			arrowsVector[i]->Update();
-		else
-		{
-			arrowsVector.emplace_back(arrowsVector[i]);
-			arrowsVector.pop_back();
-			// COMPROBAR SI AIXO FUNCIONA !!!
-		}
-	}
 
 	// AIXO ES PER COMPROBAR SI ESTA PARADA O NO
 	if (stop == true)
@@ -67,6 +54,23 @@ bool Enemy_Archer::Update(float dt)
 	}
 
 	pathVector.PrintAstar();
+	return true;
+}
+
+bool Enemy_Archer::PostUpdate()
+{
+	// L'update de les flextes
+	for (int i = 0; i < arrowsVector.size(); i++)
+	{
+		if (arrowsVector[i]->destroy == false)
+			arrowsVector[i]->Update();
+		else
+		{
+			arrowsVector.emplace_back(arrowsVector[i]);
+			arrowsVector.pop_back();
+			// COMPROBAR SI AIXO FUNCIONA !!!
+		}
+	}
 	return true;
 }
 
@@ -173,16 +177,13 @@ void Enemy_Archer_Arrow::Update()
 	if (SDL_GetTicks() < deadTimer)
 	{
 		this->pos += direction;
-		App->render->Blit(texture, pos.x, pos.y, &rect[angle]);
-
+		App->printer->PrintSprite(iPoint((int)pos.x, (int)pos.y), texture, rect[angle], 2);
 	}
 	else
 	{
 		destroy = true;
 	}
 }
-
-
 
 void Enemy_Archer::ChargeAnimations()
 {

@@ -49,12 +49,12 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 	AddModule(entities);
 	AddModule(audio);
-	AddModule(scene);
 	AddModule(fonts);
 	AddModule(fs);
 	AddModule(console);
 	AddModule(path);
 	AddModule(printer);
+	AddModule(scene);
 	AddModule(colliders);
 	AddModule(gui);
 

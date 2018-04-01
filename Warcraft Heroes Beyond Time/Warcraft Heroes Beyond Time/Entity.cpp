@@ -9,6 +9,8 @@ bool Entity::Start() { return true; }
 
 bool Entity::Update(float dt) { return true; }
 
+bool Entity::PostUpdate() { return true; }
+
 bool Entity::Finish() { return true; }
 
 bool Entity::Draw(float dt)

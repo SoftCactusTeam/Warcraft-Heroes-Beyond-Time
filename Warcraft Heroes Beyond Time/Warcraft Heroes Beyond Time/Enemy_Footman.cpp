@@ -114,6 +114,8 @@ void Enemy_Footman::doWalk()
 		{
 			pathVector.CalculatePathAstar(iPoint((int)this->pos.x, (int)this->pos.y), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y));
 			pathVector.CalculateWay(iPoint((int)this->pos.x, (int)this->pos.y), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y));
+			//pathVector.CalculatePathAstar(iPoint((int)this->pos.x - (anim->GetCurrentRect().w / 2), (int)this->pos.y - (anim->GetCurrentRect().h)), iPoint((int)App->scene->player->pos.x - (App->scene->player->anim->GetCurrentRect().w / 2), (int)App->scene->player->pos.y - (App->scene->player->anim->GetCurrentRect().h)));
+			//pathVector.CalculateWay(iPoint((int)this->pos.x - (anim->GetCurrentRect().w / 2), (int)this->pos.y - (anim->GetCurrentRect().h)), iPoint((int)App->scene->player->pos.x - (App->scene->player->anim->GetCurrentRect().w / 2), (int)App->scene->player->pos.y - (App->scene->player->anim->GetCurrentRect().h)));
 		}
 		else
 		{

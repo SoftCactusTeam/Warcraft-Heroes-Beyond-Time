@@ -151,9 +151,6 @@ bool Scene::PreUpdate()
 
 bool Scene::Update(float dt)
 {
-	if (App->path->printWalkables == true)
-		App->path->PrintWalkableTiles();
-
 	//TESTING SAVES
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
@@ -273,6 +270,10 @@ bool Scene::Update(float dt)
 
 bool Scene::PostUpdate()
 {
+	// TODO -- fer que es pintin els walkables
+	if (App->path->printWalkables == true)
+		App->path->PrintWalkableTiles();
+
 	if (restart)
 	{
 		restart = false;

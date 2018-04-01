@@ -13,6 +13,7 @@ public:
 
 	virtual bool Start();
 	virtual bool Update(float dt);
+	virtual bool PostUpdate();
 	virtual bool Finish();
 	virtual bool Draw(float dt);
 
