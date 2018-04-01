@@ -11,6 +11,7 @@
 #include "ChestEntity.h"
 #include "PortalEntity.h"
 #include "Pathfinding.h"
+#include "PlayerEntity.h"
 
 
 #include "Label.h"
@@ -222,6 +223,10 @@ bool Scene::Update(float dt)
 		lvlChest->OpenChest();
 		portal->OpenPortal();
 	}
+
+	if (App->input->GetKey(SDL_SCANCODE_8) == KEY_DOWN)
+		player->SetDamage(25, true);
+
 	//PAUSE GAME
 		if (actual_scene == Stages::INGAME)
 		{
