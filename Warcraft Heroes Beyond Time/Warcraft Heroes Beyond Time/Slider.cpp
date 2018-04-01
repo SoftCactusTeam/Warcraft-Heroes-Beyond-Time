@@ -24,26 +24,32 @@ Slider::Slider(fPoint localPos, Module* listener, SDL_Rect atlasRect, SliderInfo
 			this->valuePercent = App->audio->FXVolumePercent;
 			break;
 	}
-
-	
 }
-
 
 bool Slider::Update(float dt)
 {
 	bool ret = true;
 
-
 	ret = HandleInput();
-
+	
 	if(ret)
+		ret = UpdateChilds(dt);
+
+	return ret;
+}
+
+bool Slider::Draw()
+{
+	bool ret = true;
+
+	if (ret)
 		ret = App->render->Blit(App->gui->getAtlas(), (int)(screenPos.x - App->render->camera.x), (int)(screenPos.y - App->render->camera.y), &atlasRect);
 
 	if (ret)
 		ret = App->render->Blit(App->gui->getAtlas(), (int)(smobilepos - App->render->camera.x), (int)(screenPos.y - 5 - App->render->camera.y), &sliderMobileRect);
-	
-	if(ret)
-		ret = UpdateChilds(dt);
+
+	if (ret)
+		ret = DrawChilds();
 
 	return ret;
 }

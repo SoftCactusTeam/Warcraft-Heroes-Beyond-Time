@@ -15,7 +15,7 @@ InputBox::~InputBox(){}
 
 bool InputBox::Update(float dt)
 {
-	bool ret = false;
+	bool ret = true;
 
 	if (ReadyToWrite)
 	{
@@ -23,7 +23,7 @@ bool InputBox::Update(float dt)
 		{
 			text += App->input->GetText();
 			SDL_DestroyTexture(texturetoBlit);
-			texturetoBlit = App->fonts->Print(text.data(), color, font);
+			texturetoBlit = App->fonts->Print(text.data(), color, font, 90000);
 			App->input->SetTextReadyFalse();
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN && text.size() > 0)
@@ -34,12 +34,22 @@ bool InputBox::Update(float dt)
 		}
 	}
 
-	ret = App->render->Blit(texturetoBlit, (int)(this->screenPos.x - App->render->camera.x), (int)(this->screenPos.y - App->render->camera.y));
+	if(ret)
+		ret = UpdateChilds(dt);
+	
+	return ret;
+}
 
-	UpdateChilds(dt);
+bool InputBox::Draw()
+{
+	bool ret = true;
+	
+	if(texturetoBlit)
+		ret = App->render->Blit(texturetoBlit, (int)(this->screenPos.x - App->render->camera.x), (int)(this->screenPos.y - App->render->camera.y), nullptr, 0.3);
 
+	if(ret)
+		ret = DrawChilds();
 
-	ret = true;
 	return ret;
 }
 
