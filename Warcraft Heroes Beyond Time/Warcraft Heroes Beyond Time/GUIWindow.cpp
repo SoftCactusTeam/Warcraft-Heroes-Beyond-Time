@@ -2,7 +2,13 @@
 #include "Application.h"
 #include "ModuleRender.h"
 
-GUIWindow::GUIWindow(fPoint localPos, SDL_Rect atlasRect, GUIElem* parent, Module* listener) : GUIElem(localPos, listener, atlasRect, GUIElemType::WINDOW, parent){}
+GUIWindow::GUIWindow(fPoint localPos, SDL_Rect atlasRect, GUIElem* parent, Module* listener) : GUIElem(localPos, listener, atlasRect, GUIElemType::WINDOW, parent)
+{
+	background.x = 0;
+	background.y = 0;
+	background.w = 640;
+	background.h = 360;
+}
 
 GUIWindow::~GUIWindow()
 {

@@ -854,8 +854,8 @@ void PlayerEntity::InitCulling()
 	if (this == App->scene->player)
 	{
 		SDL_Rect currRect = anim->GetCurrentRect();
-		App->render->fcamerax = this->pos.x + App->render->camera.w / 4 + currRect.w / 2;
-		App->render->fcameray = this->pos.y + App->render->camera.h / 4 - currRect.h;
+		App->render->fcamerax = -1 * (this->pos.x + currRect.w / 2 - 640 / 2);
+		App->render->fcameray = -1 * (this->pos.y + currRect.h / 2 - 360 / 2);
 
 		freeZonex = pos.x - 55 / 2;
 		freeZoney = pos.y - 55 / 2;
@@ -869,7 +869,7 @@ void PlayerEntity::InitCulling()
 
 void PlayerEntity::CheckCulling()
 {
-	/*if (this == App->entities->player)
+	if (this == App->scene->player)
 	{
 		SDL_Rect currentRect = anim->GetCurrentRect();
 		if (freeZonex > this->pos.x)
@@ -901,7 +901,7 @@ void PlayerEntity::CheckCulling()
 
 		//Uncomment line below to see the freeZone.
 		//App->render->DrawQuad(freeZone, 255, 0, 0, 50, true, true);
-	}*/
+	}
 }
 
 void PlayerEntity::CheckMapLimits()
