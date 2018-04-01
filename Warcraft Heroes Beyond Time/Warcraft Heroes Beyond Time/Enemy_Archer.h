@@ -2,6 +2,7 @@
 #define __Enemy_Archer_H__
 
 #include "EnemyEntity.h"
+#include "ModuleColliders.h"
 #include <vector>
 
 #define ARROW_DEAD_TIMER 2000
@@ -30,6 +31,7 @@ public:
 	FIXED_ANGLE		angle;
 	int				deadTimer;
 	bool			destroy = false;
+	Collider*		arrowCollider = nullptr;
 };
 
 class Enemy_Archer : public EnemyEntity
@@ -41,8 +43,6 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 	bool Finish();
-
-	void ChargeAnimations();
 
 	void initIdle();
 	void initWalk();
@@ -60,6 +60,7 @@ public:
 	void doBackJump();
 	void doScape();
 
+	void ChargeAnimations();
 	void ShootArrow(fPoint desviation = fPoint(0,0));
 
 public:
@@ -72,8 +73,6 @@ public:
 	std::vector<Enemy_Archer_Arrow*> arrowsVector;
 
 private:
-	// General variable
-	bool initAction = false;
 	// Fast atac variables
 	int timeToShootAnother = 0;
 	int arrowToShoot = 0;

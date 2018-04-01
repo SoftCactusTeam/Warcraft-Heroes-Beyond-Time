@@ -21,10 +21,11 @@ public:
 	ModuleColliders();
 	bool Awake(pugi::xml_node& consoleNode);
 	bool Update(float dt);
+	bool PostUpdate();
 	bool CleanUp();
 
-	void AddCollider(Entity* owner, SDL_Rect colliderRect, COLLIDER_TYPE type, iPoint offset);
-	void AddTileCollider(SDL_Rect colliderRect, COLLIDER_TYPE type);
+	Collider* AddCollider(Entity* owner, SDL_Rect colliderRect, COLLIDER_TYPE type, iPoint offset);
+	Collider* AddTileCollider(SDL_Rect colliderRect, COLLIDER_TYPE type);
 	void AddTemporalCollider(SDL_Rect colliderRect, COLLIDER_TYPE type, int timer);
 	void CleanCollidersEntity(Entity* entity);
 	bool CheckCollision(int col1, int col2);

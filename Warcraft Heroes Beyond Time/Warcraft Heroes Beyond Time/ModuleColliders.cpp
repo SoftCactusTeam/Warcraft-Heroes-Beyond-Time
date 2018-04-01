@@ -73,6 +73,11 @@ bool ModuleColliders::Update(float dt)
 			std::swap(temporalColliderstimer[i], temporalColliderstimer.back());
 			temporalColliderstimer.pop_back();
 		}
+	return true;
+}
+
+bool ModuleColliders::PostUpdate()
+{
 	PrintColliders(printColliders);
 	return true;
 }
@@ -85,16 +90,18 @@ bool ModuleColliders::CleanUp()
 	return true;
 }
 
-void ModuleColliders::AddCollider(Entity* owner, SDL_Rect colliderRect, COLLIDER_TYPE type, iPoint offset)
+Collider* ModuleColliders::AddCollider(Entity* owner, SDL_Rect colliderRect, COLLIDER_TYPE type, iPoint offset)
 {
 	Collider* aux = new Collider(owner, colliderRect, type, offset);
 	colliders.push_back(aux);
+	return aux;
 }
 
-void ModuleColliders::AddTileCollider(SDL_Rect colliderRect, COLLIDER_TYPE type)
+Collider* ModuleColliders::AddTileCollider(SDL_Rect colliderRect, COLLIDER_TYPE type)
 {
 	Collider* aux = new Collider(colliderRect, type);
 	colliders.push_back(aux);
+	return aux;
 }
 
 void ModuleColliders::AddTemporalCollider(SDL_Rect colliderRect, COLLIDER_TYPE type, int timer)
