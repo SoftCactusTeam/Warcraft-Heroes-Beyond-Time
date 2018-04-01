@@ -9,8 +9,11 @@
 enum ARCHER_STATE {
 	ARCHER_IDLE,
 	ARCHER_WALK,
-	ARCHER_ATAC,
-	ARCHER_CHARGE
+	ARCHER_BASIC_ATAC,
+	ARCHER_TRI_ATAC,
+	ARCHER_FASTSHOOT_ATAC,
+	ARCHER_BACKJUMP,
+	ARCHER_SCAPE
 };
 
 class Enemy_Archer_Arrow {
@@ -41,11 +44,23 @@ public:
 
 	void ChargeAnimations();
 
+	void initIdle();
+	void initWalk();
+	void initAtac();
+	void initTriAtac();
+	void initFastAtac();
+	void initBackJump();
+	void initScape();
+
 	void doIdle();
 	void doWalk();
 	void doAtac();
+	void doTriAtac();
+	void doFastAtac();
+	void doBackJump();
+	void doScape();
 
-	void ShootArrow();
+	void ShootArrow(fPoint desviation = fPoint(0,0));
 
 public:
 	ARCHER_STATE state;
@@ -55,6 +70,15 @@ public:
 	Animation animDeath[NUMBER_OF_ORIENTATIONS];
 
 	std::vector<Enemy_Archer_Arrow*> arrowsVector;
+
+private:
+	// General variable
+	bool initAction = false;
+	// Fast atac variables
+	int timeToShootAnother = 0;
+	int arrowToShoot = 0;
+	// Scape variables
+	iPoint posToScape;
 };
 
 #endif

@@ -128,7 +128,7 @@ void Enemy_Footman::doWalk()
 void Enemy_Footman::doAtac()
 {
 	if (SDL_GetTicks() > accountantPrincipal)
-	{
+	{ 
 		state = FOOTMAN_STATE::FOOTMAN_IDLE;
 		pathVector.Clear();
 	}
