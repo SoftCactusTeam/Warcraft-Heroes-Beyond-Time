@@ -165,6 +165,12 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	skill.PushBack({ 799,459,43,59 });
 	skill.speedFactor = 9.0f;
 
+	damagedAnim.PushBack({ 664,612,47,44 });
+	damagedAnim.PushBack({ 718,612,47,44 });
+	damagedAnim.PushBack({ 773,612,47,56 });
+	damagedAnim.speedFactor = 9.0f;
+
+	live = 100;
 }
 
 bool Thrall::Update(float dt)

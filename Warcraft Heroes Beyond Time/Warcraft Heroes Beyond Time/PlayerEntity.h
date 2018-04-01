@@ -17,9 +17,11 @@ protected:
 	Animation dashRight, dashDown, dashUpRight, dashDownRight, dashDownLeft, dashUp, dashLeft, dashUpLeft;
 	Animation attackDown, attackUp, attackLeft, attackRight;
 	Animation skill;
+	Animation damagedAnim, dead;
 	Animation* animBefore = nullptr;
 	float speed = 250.0f;
 	bool move = true;
+	bool damaged = false;
 
 	std::list<Item> itemsActive;
 
@@ -38,7 +40,9 @@ protected:
 		PL_MOVE,
 		PL_DASH,
 		PL_ATTACK,
-		PL_SKILL
+		PL_SKILL,
+		PL_DEAD,
+		PL_DAMAGE
 
 	} state;
 
@@ -58,7 +62,7 @@ public:
 
 	void AddItem(Item item);
 	void IterateItems(ItemFunctions nameFunction);
-
+	void SetDamage(int damage, bool setStateDamage);
 	//This function calculates player position given a Bezier Curve
 	fPoint CalculatePosFromBezier(fPoint startPos, fPoint handleA, float t, fPoint handleB, fPoint endPos);
 	

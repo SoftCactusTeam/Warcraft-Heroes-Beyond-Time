@@ -97,7 +97,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &downRight;
 			break;
 		}
-		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT  && App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		{
 			state = states::PL_DOWN_LEFT;
 			anim = &downLeft;
@@ -131,7 +131,7 @@ void PlayerEntity::KeyboardStates(float dt)
 		{
 			startPos = pos;
 			state = states::PL_DASH;
-			animBefore = anim;	
+			animBefore = anim;
 			break;
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
@@ -147,7 +147,21 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &skill;
 			break;
 		}
-	
+		else if (live <= 0)
+		{
+			state = states::PL_DEAD;
+			animBefore = anim;
+			anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
+			break;
+		}
+		else if (damaged)
+		{
+			state = states::PL_DAMAGE;
+			animBefore = anim;
+			anim = &damagedAnim;
+			break;
+		}
+
 		break;
 
 	case states::PL_DASH:
@@ -157,7 +171,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			if (animBefore == &idleRight || animBefore == &right)
 			{
 				pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
-				
+
 				anim = &dashRight;
 				float x = 0.05f / dt;
 				t += (x * dt);
@@ -166,7 +180,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			else if (animBefore == &idleLeft || animBefore == &left)
 			{
 				pos.x = startPos.x - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
-				
+
 				anim = &dashLeft;
 				float x = 0.05f / dt;
 				t += (x * dt);
@@ -190,10 +204,10 @@ void PlayerEntity::KeyboardStates(float dt)
 				t += (x * dt);
 				break;
 			}
-			else if (animBefore == &idleUpRight || animBefore ==&upRight)
+			else if (animBefore == &idleUpRight || animBefore == &upRight)
 			{
 				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
-					
+
 				pos.x = startPos.x + dashDistance * 0.75f * bezierPoint.y;
 				pos.y = startPos.y - dashDistance * 0.75f * bezierPoint.y;
 
@@ -266,7 +280,7 @@ void PlayerEntity::KeyboardStates(float dt)
 
 	case states::PL_UP:
 		pos.y -= speed * dt;
-	
+
 		if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_UP))
 		{
 			state = states::PL_IDLE;
@@ -305,6 +319,21 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &skill;
 			break;
 		}
+		else if (live <= 0)
+		{
+			state = states::PL_DEAD;
+			animBefore = anim;
+			anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
+			break;
+		}
+		else if (damaged)
+		{
+			state = states::PL_DAMAGE;
+			animBefore = anim;
+			anim = &damagedAnim;
+			break;
+		}
+
 		break;
 
 	case states::PL_DOWN:
@@ -347,6 +376,21 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &skill;
 			break;
 		}
+		else if (live <= 0)
+		{
+			state = states::PL_DEAD;
+			animBefore = anim;
+			anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
+			break;
+		}
+		else if (damaged)
+		{
+			state = states::PL_DAMAGE;
+			animBefore = anim;
+			anim = &damagedAnim;
+			break;
+		}
+
 		break;
 
 	case states::PL_LEFT:
@@ -389,6 +433,21 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &skill;
 			break;
 		}
+		else if (live <= 0)
+		{
+			state = states::PL_DEAD;
+			animBefore = anim;
+			anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
+			break;
+		}
+		else if (damaged)
+		{
+			state = states::PL_DAMAGE;
+			animBefore = anim;
+			anim = &damagedAnim;
+			break;
+		}
+
 		break;
 
 	case states::PL_RIGHT:
@@ -431,6 +490,21 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &skill;
 			break;
 		}
+		else if (live <= 0)
+		{
+			state = states::PL_DEAD;
+			animBefore = anim;
+			anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
+			break;
+		}
+		else if (damaged)
+		{
+			state = states::PL_DAMAGE;
+			animBefore = anim;
+			anim = &damagedAnim;
+			break;
+		}
+
 		break;
 
 	case states::PL_UP_LEFT:
@@ -476,7 +550,22 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &skill;
 			break;
 		}
-break;
+		else if (live <= 0)
+		{
+			state = states::PL_DEAD;
+			animBefore = anim;
+			anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
+			break;
+		}
+		else if (damaged)
+		{
+			state = states::PL_DAMAGE;
+			animBefore = anim;
+			anim = &damagedAnim;
+			break;
+		}
+
+		break;
 
 	case states::PL_UP_RIGHT:
 		pos.x += speed * 0.75f * dt;
@@ -519,6 +608,21 @@ break;
 			anim = &skill;
 			break;
 		}
+		else if (live <= 0)
+		{
+			state = states::PL_DEAD;
+			animBefore = anim;
+			anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
+			break;
+		}
+		else if (damaged)
+		{
+			state = states::PL_DAMAGE;
+			animBefore = anim;
+			anim = &damagedAnim;
+			break;
+		}
+
 		break;
 
 	case states::PL_DOWN_LEFT:
@@ -562,6 +666,21 @@ break;
 			anim = &skill;
 			break;
 		}
+		else if (live <= 0)
+		{
+			state = states::PL_DEAD;
+			animBefore = anim;
+			anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
+			break;
+		}
+		else if (damaged)
+		{
+			state = states::PL_DAMAGE;
+			animBefore = anim;
+			anim = &damagedAnim;
+			break;
+		}
+
 		break;
 
 	case states::PL_DOWN_RIGHT:
@@ -605,6 +724,21 @@ break;
 			anim = &skill;
 			break;
 		}
+		else if (live <= 0)
+		{
+			state = states::PL_DEAD;
+			animBefore = anim;
+			anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
+			break;
+		}
+		else if (damaged)
+		{
+			state = states::PL_DAMAGE;
+			animBefore = anim;
+			anim = &damagedAnim;
+			break;
+		}
+
 		break;
 
 	case states::PL_ATTACK:
@@ -683,6 +817,31 @@ break;
 		}
 
 		break;
+
+	case states::PL_DEAD:
+
+		if (anim->Finished())
+		{
+			anim->Reset();
+			// DO SOMETHING!!
+			damaged = false;
+			break;
+		}
+
+		break;
+
+	case states::PL_DAMAGE:
+
+		if (anim->Finished())
+		{
+			anim->Reset();
+			anim = &idleDown;
+			damaged = false;
+			state = states::PL_IDLE;
+			break;
+		}
+
+		break;
 	}
 }
 
@@ -717,6 +876,20 @@ void PlayerEntity::JoyconStates(float dt)
 			animBefore = anim;
 			anim = &skill;
 			state = states::PL_SKILL;
+			break;
+		}
+		else if (live <= 0)
+		{
+			state = states::PL_DEAD;
+			animBefore = anim;
+			anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
+			break;
+		}
+		else if (damaged)
+		{
+			state = states::PL_DAMAGE;
+			animBefore = anim;
+			anim = &damagedAnim;
 			break;
 		}
 
@@ -900,6 +1073,20 @@ void PlayerEntity::JoyconStates(float dt)
 				state = states::PL_SKILL;
 				break;
 			}
+			else if (live <= 0)
+			{
+				state = states::PL_DEAD;
+				animBefore = anim;
+				anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
+				break;
+			}
+			else if (damaged)
+			{
+				state = states::PL_DAMAGE;
+				animBefore = anim;
+				anim = &damagedAnim;
+				break;
+			}
 
 			break;
 		}
@@ -949,6 +1136,31 @@ void PlayerEntity::JoyconStates(float dt)
 			}
 
 		break;
+
+		case states::PL_DEAD:
+
+			if (anim->Finished())
+			{
+				anim->Reset();
+				// DO SOMETHING
+				damaged = false;
+				break;
+			}
+
+			break;
+
+		case states::PL_DAMAGE:
+
+			if (anim->Finished())
+			{
+				anim->Reset();
+				anim = &idleDown;
+				damaged = false;
+				state = states::PL_IDLE;
+				break;
+			}
+
+			break;
 	}
 }
 
@@ -1184,4 +1396,11 @@ void PlayerEntity::IterateItems(ItemFunctions nameFunction)
 
 		}
 	}
+}
+
+void PlayerEntity::SetDamage(int damage, bool setStateDamage)
+{
+	if (setStateDamage)
+		damaged = true;
+	live -= damage;
 }
