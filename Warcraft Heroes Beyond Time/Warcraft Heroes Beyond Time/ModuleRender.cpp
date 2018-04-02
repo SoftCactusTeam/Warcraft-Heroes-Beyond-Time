@@ -12,6 +12,7 @@
 Render::Render() : Module()
 {
 	name = "renderer";
+
 	background.r = 0;
 	background.g = 0;
 	background.b = 0;
@@ -56,6 +57,8 @@ bool Render::Awake(pugi::xml_node& renderNode)
 
 	SDL_RenderSetLogicalSize(renderer, 640, 360);
 
+	SetBackgroundColor({ 0, 205, 193, 0 });
+
 	return ret;
 }
 
@@ -88,7 +91,7 @@ bool Render::Update(float dt)
 
 bool Render::PostUpdate()
 {
-	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
+	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.b, background.a);
 	SDL_RenderPresent(renderer);
 	return true;
 }
