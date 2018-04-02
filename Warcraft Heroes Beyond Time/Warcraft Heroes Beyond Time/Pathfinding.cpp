@@ -49,7 +49,6 @@ void Pathfinding::ClearMap()
 	for (int i = 0; i < map.size(); i++)
 		delete map[i];
 	map.clear();
-	this->
 }
 
 void Pathfinding::AddNodeToMap(int cost, iPoint point)
