@@ -169,23 +169,6 @@ bool Scene::Update(float dt)
 //GENERATE A NEW MAP
 	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && actual_scene == Stages::INGAME && lvlIndex != 8 && !App->console->isWritting())
 	{
-		/*App->map->CleanUp();
-
-		MapData mapInfo;
-		mapInfo.sizeX = 50;
-		mapInfo.sizeY = 50;
-		mapInfo.iterations = 600;
-		mapInfo.tilesetPath = "Tiles.png";
-
-		App->map->GenerateMap(mapInfo);
-
-		App->entities->ClearEntitiesList();
-		player = App->entities->AddPlayer({ 25 * 48,25 * 48 }, THRALL);
-		iPoint chestPos = App->map->GetRandomValidPoint();
-		lvlChest = App->entities->AddChest({ (float)chestPos.x * 48,(float)chestPos.y * 48 }, MID_CHEST);
-		portal = (PortalEntity*)App->entities->AddStaticEntity({ 25 * 48,25 * 48 }, PORTAL);
-
-		lvlIndex++;*/
 		restart = true;
 	}
 	else if(App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && actual_scene == Stages::INGAME && lvlIndex == 8 && !App->console->isWritting())
