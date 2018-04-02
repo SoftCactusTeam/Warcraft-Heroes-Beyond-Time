@@ -65,7 +65,10 @@ bool ModuleColliders::Update(float dt)
 		for (int col = 0; col < temporalColliders.size(); col++)
 			if (ChechCollisionTemporalCollider(i, col))
 			{
-				colliders[i]->owner->Collision(temporalColliders[col]->type);
+				if (colliders[i]->owner != nullptr)
+					colliders[i]->owner->Collision(temporalColliders[col]->type);
+				else
+					colliders[i]->collidingWith = temporalColliders[col]->type;
 			}
 	// Netejar colliders temporals
 	for (int i = 0; i < temporalColliders.size(); i++)
