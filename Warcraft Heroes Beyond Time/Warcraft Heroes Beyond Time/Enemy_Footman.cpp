@@ -1,13 +1,23 @@
 #include "Enemy_Footman.h"
 #include "Application.h"
-#include "Pathfinding.h"
+#include "ModuleEntitySystem.h"
+#include "PlayerEntity.h"
+#include "ModuleColliders.h"
+#include "ModuleInput.h"
+#include "ModuleMapGenerator.h"
+#include "Scene.h"
 
 #define DISTANCE_TO_MOVE	300
 #define DISTANCE_TO_CHARGE	120
-#define DISTANCE_TO_ATAC	70
+#define DISTANCE_TO_ATAC	40
 #define CHARGE_DISTANCE		50
+#define CHARGE_SPEED		10
+#define CHARGE_COOLDOWN		3000
 #define ATAC_COOLDOWN		1000
-#define MOVEMENT_SPEED		2
+#define MOVEMENT_SPEED		5
+#define DEFENSE_DISTANCE	100
+#define DEFENSE_TIME		1000
+#define DEFENSE_COOLDOWN	3000
 
 Enemy_Footman::Enemy_Footman(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture) : EnemyEntity(coor, character, texture) {}
 
@@ -20,49 +30,35 @@ bool Enemy_Footman::Start()
 
 bool Enemy_Footman::Update(float dt)
 {
+	// AIXO ES PER COMPROBAR SI ESTA PARADA O NO
+	if (stop == true)
+		if (SDL_GetTicks() > accountantPrincipal)
+			stop = false;
+		else
+			return true;
+
 	switch (state)
 	{
 	case FOOTMAN_STATE::FOOTMAN_IDLE:
-		anim = &animIdle[LookAtPlayer()];
-		if (DistanceToPlayer() < DISTANCE_TO_MOVE) {
-			state = FOOTMAN_STATE::FOOTMAN_WALK;
-		}
+		doIdle();
 		break;
 	case FOOTMAN_STATE::FOOTMAN_WALK:
-		anim = &animWalk[LookAtPlayer()];
-		if (DistanceToPlayer() > DISTANCE_TO_MOVE)
-		{
-			state = FOOTMAN_STATE::FOOTMAN_IDLE;
-		}
-		else if (DistanceToPlayer() < DISTANCE_TO_ATAC)
-		{
-			state = FOOTMAN_STATE::FOOTMAN_ATAC;
-			accountantPrincipal = SDL_GetTicks() + ATAC_COOLDOWN;
-			anim = &animAtac[LookAtPlayer()];
-			anim->Reset();
-		}
-		//else if (DistanceToPlayer() < DISTANCE_TO_CHARGE)
-		//{
-		//	state = FOOTMAN_STATE::FOOTMAN_ATAC;
-		//	accountantPrincipal = CHARGE_DISTANCE;
-		//	anim = &animCharge[LookAtPlayer()];
-		//	anim->Reset();
-		//}
-		else // AQUI CAMINA, PERO AQUESTA FUNCIO ES TEMPORAL
-		{
-			pos += {SillyMovementToPlayer(pos).x * MOVEMENT_SPEED, SillyMovementToPlayer(pos).y * MOVEMENT_SPEED};
-		}
-
+		doWalk();
 		break;
 	case FOOTMAN_STATE::FOOTMAN_ATAC:
-		if (SDL_GetTicks() > accountantPrincipal)
-			state = FOOTMAN_STATE::FOOTMAN_IDLE;
+		doAtac();
 		break;
 	case FOOTMAN_STATE::FOOTMAN_CHARGE:
-		//if (accountantPrincipal <= 0)
-		//	state = FOOTMAN_STATE::FOOTMAN_IDLE;
+		doCharge();
+		break;
+	default:
+		state = FOOTMAN_STATE::FOOTMAN_IDLE;
+		pathVector.Clear();
 		break;
 	}
+
+	pathVector.PrintAstar();
+
 	return true;
 }
 
@@ -70,6 +66,131 @@ bool Enemy_Footman::Finish()
 {
 	return true;
 }
+
+// FUNCIONS D'ESTAT	
+void Enemy_Footman::initIdle()
+{
+	state = FOOTMAN_STATE::FOOTMAN_IDLE;
+	pathVector.Clear();
+}
+
+void Enemy_Footman::initWalk()
+{
+	state = FOOTMAN_STATE::FOOTMAN_WALK;
+	pathVector.Clear();
+}
+
+void Enemy_Footman::initAtac()
+{
+	state = FOOTMAN_STATE::FOOTMAN_ATAC;
+	accountantPrincipal = SDL_GetTicks() + ATAC_COOLDOWN;
+	anim = &animAtac[LookAtPlayer()];
+	anim->Reset();
+	App->colliders->AddTemporalCollider({ (int)pos.x, (int)pos.y, 64, 64 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATAC, ATAC_COOLDOWN);
+}
+
+void Enemy_Footman::initCharge()
+{
+	state = FOOTMAN_STATE::FOOTMAN_CHARGE;
+	accountantPrincipal = CHARGE_DISTANCE;
+	anim = &animCharge[LookAtPlayer()];
+	anim->Reset();
+	chargeMovement = CaculateFPointAngle(App->scene->player->pos) * CHARGE_SPEED;
+	chargeCooldown = SDL_GetTicks() + CHARGE_COOLDOWN;
+}
+
+void Enemy_Footman::initDefense()
+{
+	state = FOOTMAN_STATE::FOOTMAN_DEFENSE;
+	accountantPrincipal = DEFENSE_TIME;
+	anim = &animCharge[LookAtPlayer()];
+	anim->Reset();
+	defenseCooldown = SDL_GetTicks() + DEFENSE_COOLDOWN;
+	defensed = true;
+}
+
+void Enemy_Footman::doIdle()
+{
+	anim = &animIdle[LookAtPlayer()];
+	if (DistanceToPlayer() < DISTANCE_TO_MOVE) {
+		initWalk();
+	}
+}
+
+void Enemy_Footman::doWalk()
+{
+	anim = &animWalk[LookAtPlayer()];
+	if (DistanceToPlayer() > DISTANCE_TO_MOVE)
+	{
+		initIdle();
+	}
+	else if (DistanceToPlayer() < DISTANCE_TO_ATAC)
+	{
+		initAtac();
+	}
+	else if (DistanceToPlayer() < DISTANCE_TO_CHARGE && chargeCooldown < SDL_GetTicks() && App->entities->GetRandomNumber(10) < 3)	// superar tirada 30%
+	{
+		initCharge();
+	}
+	else if (DistanceToPlayer() < DEFENSE_DISTANCE && defenseCooldown < SDL_GetTicks() && App->entities->GetRandomNumber(10) < 3)	// superar tirada 30%
+	{
+		initDefense();
+	}
+	else // AQUI CAMINA, PERO AQUESTA FUNCIO ES TEMPORAL
+	{
+		if (pathVector.isEmpty())
+		{
+			pathVector.CalculatePathAstar(iPoint((int)this->pos.x, (int)this->pos.y), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y));
+			pathVector.CalculateWay(iPoint((int)this->pos.x, (int)this->pos.y), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y));
+			//pathVector.CalculatePathAstar(iPoint((int)this->pos.x - (anim->GetCurrentRect().w / 2), (int)this->pos.y - (anim->GetCurrentRect().h)), iPoint((int)App->scene->player->pos.x - (App->scene->player->anim->GetCurrentRect().w / 2), (int)App->scene->player->pos.y - (App->scene->player->anim->GetCurrentRect().h)));
+			//pathVector.CalculateWay(iPoint((int)this->pos.x - (anim->GetCurrentRect().w / 2), (int)this->pos.y - (anim->GetCurrentRect().h)), iPoint((int)App->scene->player->pos.x - (App->scene->player->anim->GetCurrentRect().w / 2), (int)App->scene->player->pos.y - (App->scene->player->anim->GetCurrentRect().h)));
+		}
+		else
+		{
+			iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x, (int)pos.y));
+			this->pos += fPoint((float)move.x * MOVEMENT_SPEED, (float)move.y * MOVEMENT_SPEED);
+		}
+	}
+}
+
+void Enemy_Footman::doAtac()
+{
+	if (SDL_GetTicks() > accountantPrincipal)
+		initIdle();
+}
+
+void Enemy_Footman::doCharge()
+{
+	if (accountantPrincipal <= 0)
+	{
+		StopConcreteTime(1000);
+		initIdle();
+	}
+	else
+	{
+		/// PER EVITAR QUE ES CAIGUI DEL MAPA
+		if (App->path->ExistWalkableAtPos(iPoint(((int)pos.x + (int)chargeMovement.x) / App->map->getTileSize(), ((int)pos.y + (int)chargeMovement.y) / App->map->getTileSize())) == -1)
+			accountantPrincipal = 0;
+		else
+		{
+			pos += chargeMovement;
+			accountantPrincipal -= CHARGE_SPEED;
+			App->colliders->AddTemporalCollider({ (int)pos.x, (int)pos.y, 32, 32 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATAC, 10);
+		}
+	}
+}
+
+void Enemy_Footman::doDefense()
+{
+	if (SDL_GetTicks() > accountantPrincipal)
+	{
+		initIdle();
+		defensed = false;
+	}
+}
+
+// ----------------
+
 
 void Enemy_Footman::ChargeAnimations()
 {

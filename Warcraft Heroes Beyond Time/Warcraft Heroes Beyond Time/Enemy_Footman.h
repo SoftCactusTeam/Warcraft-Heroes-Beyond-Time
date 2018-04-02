@@ -7,7 +7,8 @@ enum FOOTMAN_STATE{
 	FOOTMAN_IDLE,
 	FOOTMAN_WALK,
 	FOOTMAN_ATAC,
-	FOOTMAN_CHARGE
+	FOOTMAN_CHARGE,
+	FOOTMAN_DEFENSE
 };
 
 class Enemy_Footman : public EnemyEntity
@@ -21,8 +22,31 @@ public:
 
 	void ChargeAnimations();
 
+	void initIdle();
+	void initWalk();
+	void initAtac();
+	void initCharge();
+	void initDefense();
+
+	void doIdle();
+	void doWalk();
+	void doAtac();
+	void doCharge();
+	void doDefense();
+
 public:
 	FOOTMAN_STATE state;
+	Animation animIdle[NUMBER_OF_ORIENTATIONS];
+	Animation animWalk[NUMBER_OF_ORIENTATIONS];
+	Animation animAtac[NUMBER_OF_ORIENTATIONS];
+	Animation animCharge[NUMBER_OF_ORIENTATIONS];
+
+	// Charge variables
+	fPoint		chargeMovement;
+	int			chargeCooldown = 0;
+	// Invulenarbility variables
+	bool		defensed = false;
+	int			defenseCooldown = 0;
 };
 
 #endif

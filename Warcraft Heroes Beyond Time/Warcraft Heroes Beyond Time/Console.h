@@ -31,10 +31,12 @@ public:
 	bool Awake(pugi::xml_node& consoleNode);
 	bool Start();
 	bool Update(float dt);
+	bool PostUpdate();
 	bool CleanUp();
 
 
 	void SwitchWrittingState();
+	bool isWritting();
 
 	bool ExecConsoleOrder(std::string name);
 	void AddConsoleOrderToList(ConsoleOrder* consoleOrder);

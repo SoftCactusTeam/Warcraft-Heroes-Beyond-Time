@@ -3,6 +3,8 @@
 
 #include "DynamicEntity.h"
 #include "Item.h"
+#include "ModuleEntitySystem.h"
+
 
 #include <list>
 
@@ -16,9 +18,12 @@ protected:
 	Animation up, down, left, right, upLeft, upRight, downLeft, downRight;
 	Animation dashRight, dashDown, dashUpRight, dashDownRight, dashDownLeft, dashUp, dashLeft, dashUpLeft;
 	Animation attackDown, attackUp, attackLeft, attackRight;
+	Animation skill;
+	Animation damagedAnim, dead;
 	Animation* animBefore = nullptr;
 	float speed = 250.0f;
 	bool move = true;
+	bool damaged = false;
 
 	std::list<Item> itemsActive;
 
@@ -36,12 +41,17 @@ protected:
 		PL_DOWN_LEFT,
 		PL_MOVE,
 		PL_DASH,
-		PL_ATTACK
+		PL_ATTACK,
+		PL_SKILL,
+		PL_DEAD,
+		PL_DAMAGE
 
 	} state;
 
 public:
 	PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture);
+
+	EntitySystem::PlayerStats numStats;
 
 	void Walk(bool);
 
@@ -53,19 +63,19 @@ public:
 
 	void CheckIddleStates();
 	void CheckMapLimits();
+	virtual bool Finish();
+	virtual void Collision(COLLIDER_TYPE type);
 
 	void AddItem(Item item);
 	void IterateItems(ItemFunctions nameFunction);
-
+	void SetDamage(int damage, bool setStateDamage);
 	//This function calculates player position given a Bezier Curve
 	fPoint CalculatePosFromBezier(fPoint startPos, fPoint handleA, float t, fPoint handleB, fPoint endPos);
 	
 	Animation* GetAnimFromAngle(float angle, bool dashOn = false);
 	bool IsPlayerMoving();
-	virtual bool Finish();
 
 	// Bezier/dash related variables
-
 	fPoint handleA = { 0.6f, 0.0f };
 	fPoint handleB = { 0.4f, 1.0f };
 	fPoint endPos = { 0.0f, 0.0f };
@@ -75,7 +85,6 @@ public:
 	fPoint startPos = { 0.0f, 0.0f };
 
 	//Camera culling
-
 	SDL_Rect freeZone;
 	float freeZonex, freeZoney;
 	void InitCulling();

@@ -25,9 +25,9 @@ struct MapNode
 	~MapNode() {};
 
 	iPoint pos = { 0,0 };
-	int cost = -1;
+	int cost = 0;
 	SDL_Rect whatToBlit = { 0,0,0,0 };
-	bool floor = false;
+	int layerBelow = 0;
 };
 
 class MapGenerator : public Module
@@ -49,9 +49,8 @@ public:
 	{
 		active = false;
 	}
-
-	bool DrawPrePlayerMap();
-	bool DrawPostPlayerMap();
+	bool PostUpdate();
+	bool DrawMap() const;
 	inline int Get(int x, int y) const;
 	bool CheckBoundaries(const iPoint& pos) const;
 	bool GenerateMap(MapData data);

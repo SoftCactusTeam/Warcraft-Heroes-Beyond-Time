@@ -20,6 +20,8 @@ public:
 
 	bool Update(float dt);
 
+	bool Draw();
+
 private:
 	SDL_Rect background;
 };

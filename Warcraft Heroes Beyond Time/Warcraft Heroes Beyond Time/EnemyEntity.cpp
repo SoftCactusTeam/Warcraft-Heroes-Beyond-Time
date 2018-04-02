@@ -10,7 +10,11 @@ bool EnemyEntity::Start() { return true; }
 
 bool EnemyEntity::Update(float dt) { return true; }
 
-bool EnemyEntity::Finish() { return true; }
+bool EnemyEntity::Finish() 
+{ 
+	pathVector.Clear();
+	return true; 
+}
 
 FIXED_ANGLE EnemyEntity::LookAtPlayer()
 {

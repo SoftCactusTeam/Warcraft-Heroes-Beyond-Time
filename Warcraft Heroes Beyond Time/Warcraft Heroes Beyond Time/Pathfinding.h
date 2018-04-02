@@ -4,14 +4,17 @@
 #include "Entity.h"
 #include "Module.h"
 #include <vector>
+#include <queue>
 
 fPoint SillyMovementToPlayer(fPoint pos);
 
 struct pathNode
 {
 	pathNode(int cost, iPoint nodePos);
-	int cost = -1;
+	int cost = 0;
 	iPoint nodePos;
+	pathNode* neighbours[4] = { nullptr, nullptr, nullptr, nullptr };
+	pathNode* parent = nullptr;
 };
 
 class Pathfinding : public Module
@@ -19,22 +22,45 @@ class Pathfinding : public Module
 public:
 	Pathfinding();
 	void LoadPathMap();
-	void AddNodeToMap(int cost, iPoint nodePos = { -1,-1 });
-	void ClearMap();
+	void ClearMap(); 
 
-private:
-	std::vector<pathNode*> map;
+	void AddNodeToMap(int cost, iPoint nodePos = { -1,-1 });
+	void PrintWalkableTiles();
+
+	void LoadNeighbours();
+	int ExistWalkableAtPos(iPoint pos);
+
+	uint tileSize = 0;
 	uint mapWidth = 0;
 	uint mapHeight = 0;
+	bool printWalkables = false;
+
+	std::vector<pathNode*> map;
 };
 
-//struct PathVector
-//{
-//	PathVector();
-//	iPoint nextObjective = { -1,-1 };
-//	iPoint pathToMove(iPoint actualPos);
-//private:
-//	std::vector<pathNode*> path;
-//};
+struct pathNodeComparison
+{
+	bool operator()(const pathNode* lhs, const pathNode* rhs) const
+	{
+		return lhs->cost > rhs->cost;
+	}
+};
+
+struct PathVector
+{
+	PathVector();
+	iPoint nextTileToMove(iPoint actualPos);
+	bool CalculatePathAstar(iPoint thisPos, iPoint tileToMove);
+	bool CalculateWay(iPoint thisPos, iPoint tileToMove);
+
+	void PrintAstar();
+	void Clear();
+	bool isEmpty();
+
+private:
+	std::vector<pathNode*> pathVec;
+	std::vector<pathNode*> walkPath;
+
+};
 
 #endif

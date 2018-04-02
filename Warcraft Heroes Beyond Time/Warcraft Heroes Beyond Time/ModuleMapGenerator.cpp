@@ -2,10 +2,10 @@
 #include "ModuleMapGenerator.h"
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
+#include "ModulePrinter.h"
 #include "Log.h"
 #include "Scene.h"
 #include "PlayerEntity.h"
-
 
 #include <time.h>
 
@@ -24,6 +24,7 @@
 MapGenerator::MapGenerator() {}
 
 MapGenerator::~MapGenerator() {}
+
 bool MapGenerator::CleanUp()
 {
 	bool ret = true;
@@ -51,37 +52,30 @@ iPoint MapGenerator::GetRandomValidPoint()
 
 	do
 		randNum = rand() % (nodes.size() - 0 + 1);
-	while (!nodes[randNum]->floor || nodes[randNum]->pos == nodes[Get(sizeX / 2, sizeY / 2)]->pos);
+	while (!nodes[randNum]->layerBelow || nodes[randNum]->pos == nodes[Get(sizeX / 2, sizeY / 2)]->pos);
 
 	return nodes[randNum]->pos;
 }
 
-bool MapGenerator::DrawPrePlayerMap()
+bool MapGenerator::PostUpdate()
 {
-	bool ret = true;
-
-	for (uint i = 0u; i < totalSize && ret; ++i)
-	{
-		if (nodes[i]->floor || (!nodes[i]->floor && nodes[i]->pos.y * tileSize <= App->scene->player->pos.y))
-		{
-			iPoint posToBlit = nodes[i]->pos;
-			ret = App->render->Blit(mapTexture, posToBlit.x * tileSize, posToBlit.y * tileSize, &nodes[i]->whatToBlit);
-		}
-	}
-
-	return ret;
+	return DrawMap();
 }
 
-bool MapGenerator::DrawPostPlayerMap()
+bool MapGenerator::DrawMap() const
 {
 	bool ret = true;
 
 	for (uint i = 0u; i < totalSize && ret; ++i)
 	{
-		if (!nodes[i]->floor && nodes[i]->pos.y * tileSize >= App->scene->player->pos.y)
-		{
-			iPoint posToBlit = nodes[i]->pos;
-			ret = App->render->Blit(mapTexture, posToBlit.x * tileSize, posToBlit.y * tileSize, &nodes[i]->whatToBlit);
+		iPoint MapPos = { (nodes[i]->pos.x * (int)(this->tileSize)),  (nodes[i]->pos.y * (int)(this->tileSize))};
+
+		if (MapPos.x + (int)tileSize > -App->render->camera.x &&
+			MapPos.x - tileSize < -App->render->camera.x + App->render->camera.w &&
+			MapPos.y + (int)tileSize > -App->render->camera.y &&
+			MapPos.y - tileSize < -App->render->camera.y + App->render->camera.h)
+		{	
+			ret = App->printer->PrintSprite({ MapPos.x , MapPos.y }, mapTexture, nodes[i]->whatToBlit, nodes[i]->layerBelow);
 		}
 	}
 
@@ -126,6 +120,12 @@ bool MapGenerator::GenerateMap(MapData data)
 	if (ret)
 		ret = GenerateWalls();
 
+	for (uint i = 0u; i < totalSize; ++i)
+	{
+		if (SDL_RectEquals(&nodes[i]->whatToBlit, &SDL_Rect(VOID)))
+			nodes[i]->layerBelow = 1;
+	}
+
 	return ret;
 }
 
@@ -139,7 +139,8 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 		srand(time(NULL));
 
 	startNode->whatToBlit = randomTile(true);
-	startNode->floor = true;
+	startNode->layerBelow = -1;
+	startNode->cost = -1;
 	visited.push_back(startNode);
 
 	MapNode* auxNode = startNode;
@@ -152,12 +153,12 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 		if ((randNum == 0 || randNum == 1 || randNum == 3) && CheckBoundaries({ auxNode->pos.x + 1, auxNode->pos.y }))
 		{
 			auxNode = nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)];
-			if (!auxNode->floor)
+			if (auxNode->layerBelow != -1)
 			{
 				auxNode->whatToBlit = randomTile(true);
-				auxNode->cost = 0;
+				auxNode->cost = -1;
 				visited.push_back(auxNode);
-				auxNode->floor = true;
+				auxNode->layerBelow = -1;
 				i++;
 			}
 		}
@@ -165,12 +166,12 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 		else if ((randNum == 4 || randNum == 5 || randNum == 6) && CheckBoundaries({ auxNode->pos.x - 1, auxNode->pos.y }))
 		{
 			auxNode = nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)];
-			if (!auxNode->floor)
+			if (auxNode->layerBelow != -1)
 			{
 				auxNode->whatToBlit = randomTile(true);
-				auxNode->cost = 0;
+				auxNode->cost = -1;
 				visited.push_back(auxNode);
-				auxNode->floor = true;
+				auxNode->layerBelow = -1;
 				i++;
 			}
 		}
@@ -178,12 +179,12 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 		else if ((randNum == 7 || randNum == 8) && CheckBoundaries({ auxNode->pos.x, auxNode->pos.y + 1 }))
 		{
 			auxNode = nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)];
-			if (!auxNode->floor)
+			if (auxNode->layerBelow != -1)
 			{
 				auxNode->whatToBlit = randomTile(true);
-				auxNode->cost = 0;
+				auxNode->cost = -1;
 				visited.push_back(auxNode);
-				auxNode->floor = true;
+				auxNode->layerBelow = -1;
 				i++;
 			}
 		}
@@ -191,12 +192,12 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 		else if ((randNum == 9 || randNum == 10) && CheckBoundaries({ auxNode->pos.x, auxNode->pos.y - 1 }))
 		{
 			auxNode = nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)];
-			if (!auxNode->floor)
+			if (auxNode->layerBelow != -1)
 			{
 				auxNode->whatToBlit = randomTile(true);
-				auxNode->cost = 0;
+				auxNode->cost = -1;
 				visited.push_back(auxNode);
-				auxNode->floor = true;
+				auxNode->layerBelow = -1;
 				i++;
 			}
 		}
@@ -207,26 +208,28 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 	return visited.size() == iterations + 1;
 }
 
+
 SDL_Rect MapGenerator::randomTile(bool isFloor)
 {
 	SDL_Rect toReturn = VOID;
 
 	if (isFloor)
 	{
-		int randNum = rand() % (6 - 1 + 1) + 1;
+		int randNum = rand() % (100 - 1 + 1) + 1;
 
-		if (randNum == 1)
-			toReturn = FLOOR;
-		else if (randNum == 2)
-			toReturn = FLOOR2;
-		else if (randNum == 3)
-			toReturn = FLOOR3;
-		else if (randNum == 4)
-			toReturn = FLOOR4;
-		else if (randNum == 5)
-			toReturn = FLOOR5;
-		else if (randNum == 6)
+		if (randNum <= 2)
 			toReturn = FLOOR6;
+		else if (randNum <= 4)
+			toReturn = FLOOR5;		
+		else if (randNum <= 7)
+			toReturn = FLOOR4;
+		else if (randNum <= 10)
+			toReturn = FLOOR3;
+		else if (randNum <= 13)
+			toReturn = FLOOR2;
+		else if (randNum <= 100)
+			toReturn = FLOOR;
+		
 	}
 	else
 	{
@@ -251,7 +254,7 @@ bool MapGenerator::GenerateWalls()
 
 	for (uint i = 0u; i < visited.size(); ++i)
 	{
-		if (visited[i]->floor)
+		if (visited[i]->layerBelow)
 		{
 			MapNode* auxNode = visited[i];
 

@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "Thrall.h"
 #include "ModuleInput.h"
+#include "ModuleEntitySystem.h"
 
 Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEntity(coor, type, texture) 
 {
@@ -156,6 +157,23 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	attackLeft.PushBack({ 552,626,59,39 });
 	attackLeft.speedFactor = 9.0f;
 
+	skill.PushBack({ 659,384,43,59 });
+	skill.PushBack({ 720,384,43,59 });
+	skill.PushBack({ 773,384,43,59 });
+	skill.PushBack({ 827,384,43,59 });
+	skill.PushBack({ 659,459,43,59 });
+	skill.PushBack({ 721,459,43,59 });
+	skill.PushBack({ 799,459,43,59 });
+	skill.speedFactor = 9.0f;
+
+	damagedAnim.PushBack({ 664,612,47,44 });
+	damagedAnim.PushBack({ 718,612,47,44 });
+	damagedAnim.PushBack({ 773,612,47,56 });
+	damagedAnim.speedFactor = 9.0f;
+
+	live = 100;
+
+	numStats = App->entities->thrallstats;
 }
 
 bool Thrall::Update(float dt)
@@ -176,4 +194,14 @@ bool Thrall::Update(float dt)
 bool Thrall::Finish()
 {	
 	return true;
+}
+
+void Thrall::Collision(COLLIDER_TYPE type)
+{
+	switch (type)
+	{
+	case COLLIDER_TYPE::COLLIDER_ENEMY_ATAC:
+		printf_s("ha rebut una hostia guapa");
+		break;
+	}
 }

@@ -43,41 +43,58 @@ bool Console::Awake(pugi::xml_node& consoleNode)
 
 bool Console::Start() 
 {
-	
 	uint windowsWidth;
 	uint windowHeight;
 	App->window->GetWindowSize(windowsWidth, windowHeight);
 
-	rectConsoleQuad = { 0, 0, 640, 17 };
+	rectConsoleQuad = { 0, 0, 640, 15 };
 
 	InputBoxInfo defInputBox;
 	defInputBox.color = White;
-	defInputBox.fontName = "Arial11";
+	defInputBox.fontName = "Arial30";
 
-	box = (InputBox*)App->gui->CreateInputBox({ 5, 0 }, defInputBox, nullptr, nullptr);
+	box = (InputBox*)App->gui->CreateInputBox({ 5, 2 }, defInputBox, nullptr, nullptr);
 
 	return true;
 }
 
 bool Console::Update(float dt) 
 {
-	if (writting)
+	bool ret = true;
+
+	if(writting)
 	{
-		rectConsoleQuad.x = - App->render->camera.x;
-		rectConsoleQuad.y = - App->render->camera.y;
-		App->render->DrawQuad(rectConsoleQuad, 0, 0, 0, 200);
 		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KeyState::KEY_DOWN)
 		{
-			ExecConsoleOrder(box->text);
+			ret = ExecConsoleOrder(box->text);
 		}
 	}
 	
-	return true;
+	return ret;
+}
+
+bool Console::PostUpdate()
+{
+	bool ret = true;
+	if (writting)
+	{
+		rectConsoleQuad.x = -App->render->camera.x;
+		rectConsoleQuad.y = -App->render->camera.y;
+		ret = App->render->DrawQuad(rectConsoleQuad, 0, 0, 0, 200);
+	}
+	return ret;
 }
 
 
 bool Console::CleanUp()
 {
+	std::vector<ConsoleOrder*>::iterator it;
+	for (it = consoleOrderVector.begin(); it != consoleOrderVector.end(); ++it)
+	{
+		delete (*it);
+	}
+	consoleOrderVector.clear();
+
 	return true;
 }
 
@@ -154,6 +171,10 @@ void Console::SwitchWrittingState()
 		box->DisableInput();
 		box->ClearBox();
 		App->scene->player->Walk(true);
-	}
-		
+	}		
+}
+
+bool Console::isWritting()
+{
+	return writting;
 }

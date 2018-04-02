@@ -25,6 +25,7 @@ class Console;
 class MapGenerator;
 class ModuleColliders;
 class Pathfinding;
+class ModulePrinter;
 
 class Application
 {
@@ -79,6 +80,7 @@ public:
 	MapGenerator*			map = nullptr;
 	ModuleColliders*		colliders = nullptr;
 	Pathfinding*			path = nullptr;
+	ModulePrinter*			printer = nullptr;
 
 public:
 
