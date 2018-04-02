@@ -104,11 +104,23 @@ Collider* ModuleColliders::AddTileCollider(SDL_Rect colliderRect, COLLIDER_TYPE 
 	return aux;
 }
 
-void ModuleColliders::AddTemporalCollider(SDL_Rect colliderRect, COLLIDER_TYPE type, int timer)
+Collider* ModuleColliders::AddTemporalCollider(SDL_Rect colliderRect, COLLIDER_TYPE type, int timer)
 {
 	Collider* aux = new Collider(nullptr, colliderRect, type, {0,0});
 	temporalColliders.push_back(aux);
 	temporalColliderstimer.push_back(timer + SDL_GetTicks());
+	return aux;
+}
+
+bool ModuleColliders::deleteCollider(Collider* col)
+{
+	for (int i = 0; i < colliders.size(); i++)
+		if (colliders[i] == col)
+		{
+			delete colliders[i];
+			colliders.erase(colliders.begin() + i);
+		}
+	return true;
 }
 
 void ModuleColliders::CleanCollidersEntity(Entity* entity)

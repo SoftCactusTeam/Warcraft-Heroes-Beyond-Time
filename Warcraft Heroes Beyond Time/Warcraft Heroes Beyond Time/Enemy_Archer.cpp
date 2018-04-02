@@ -82,6 +82,7 @@ bool Enemy_Archer::PostUpdate()
 			arrowsVector[i]->Update();
 		else
 		{
+			arrowsVector[i]->Finish();
 			arrowsVector.emplace_back(arrowsVector[i]);
 			arrowsVector.pop_back();
 		}
@@ -341,7 +342,7 @@ Enemy_Archer_Arrow::Enemy_Archer_Arrow(fPoint coor, SDL_Texture* texture, fPoint
 	this->direction = direction;
 	this->deadTimer = SDL_GetTicks() + deadTimer;
 	this->angle = angle;
-	arrowCollider = App->colliders->AddTileCollider({ coor.x,coor.y,rect->w,rect->h }, COLLIDER_TYPE::COLLIDER_ENEMY_ATAC);
+	arrowCollider = App->colliders->AddTileCollider({ (int)coor.x,(int)coor.y,30,/*rect->h*/30 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATAC);
 	// Assignar els rects
 
 	rect[FIXED_ANGLE::UP] = { 0,0,32,32 };
@@ -361,11 +362,18 @@ void Enemy_Archer_Arrow::Update()
 	{
 		this->pos += direction;
 		App->printer->PrintSprite(iPoint((int)pos.x, (int)pos.y), texture, rect[angle], 2);
+		arrowCollider->colliderRect.x = (int)pos.x;
+		arrowCollider->colliderRect.y = (int)pos.y;
 	}
 	else
 	{
 		destroy = true;
 	}
+}
+
+void Enemy_Archer_Arrow::Finish()
+{
+	App->colliders->deleteCollider(arrowCollider);
 }
 
 void Enemy_Archer::ChargeAnimations()

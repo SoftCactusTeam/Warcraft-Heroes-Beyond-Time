@@ -26,7 +26,8 @@ public:
 
 	Collider* AddCollider(Entity* owner, SDL_Rect colliderRect, COLLIDER_TYPE type, iPoint offset);
 	Collider* AddTileCollider(SDL_Rect colliderRect, COLLIDER_TYPE type);
-	void AddTemporalCollider(SDL_Rect colliderRect, COLLIDER_TYPE type, int timer);
+	Collider* AddTemporalCollider(SDL_Rect colliderRect, COLLIDER_TYPE type, int timer);
+	bool deleteCollider(Collider* col);
 	void CleanCollidersEntity(Entity* entity);
 	bool CheckCollision(int col1, int col2);
 	bool ChechCollisionTemporalCollider(int col, int colTemporal);
