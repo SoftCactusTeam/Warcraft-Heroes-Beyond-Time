@@ -88,6 +88,13 @@ bool Console::PostUpdate()
 
 bool Console::CleanUp()
 {
+	std::vector<ConsoleOrder*>::iterator it;
+	for (it = consoleOrderVector.begin(); it != consoleOrderVector.end(); ++it)
+	{
+		delete (*it);
+	}
+	consoleOrderVector.clear();
+
 	return true;
 }
 
@@ -164,6 +171,10 @@ void Console::SwitchWrittingState()
 		box->DisableInput();
 		box->ClearBox();
 		App->scene->player->Walk(true);
-	}
-		
+	}		
+}
+
+bool Console::isWritting()
+{
+	return writting;
 }

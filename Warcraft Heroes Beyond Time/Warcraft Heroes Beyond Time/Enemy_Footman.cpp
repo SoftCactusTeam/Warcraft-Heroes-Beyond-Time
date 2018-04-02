@@ -68,7 +68,6 @@ bool Enemy_Footman::Finish()
 }
 
 // FUNCIONS D'ESTAT	
-
 void Enemy_Footman::initIdle()
 {
 	state = FOOTMAN_STATE::FOOTMAN_IDLE;

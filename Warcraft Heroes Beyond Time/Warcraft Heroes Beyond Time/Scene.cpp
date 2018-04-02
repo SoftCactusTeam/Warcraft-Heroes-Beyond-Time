@@ -52,7 +52,7 @@ bool Scene::Awake(pugi::xml_node& sceneNode)
 bool Scene::Start()
 {
 	App->gui->Activate();
-	App->colliders->Activate();
+	
 	switch (actual_scene)
 	{
 		case Stages::MAIN_MENU:
@@ -113,6 +113,7 @@ bool Scene::Start()
 		}
 		case Stages::INGAME:
 		{
+			App->colliders->Activate();
 			App->entities->Activate();
 			App->console->Activate();
 			App->map->Activate();
@@ -122,7 +123,7 @@ bool Scene::Start()
 			mapInfo.sizeY = 50;
 			mapInfo.iterations = 600;
 			mapInfo.tilesetPath = "Tiles.png";
-			lvlIndex = 1;
+			lvlIndex++;
 
 			App->map->GenerateMap(mapInfo);
 
@@ -166,9 +167,9 @@ bool Scene::Update(float dt)
 
 
 //GENERATE A NEW MAP
-	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && actual_scene == Stages::INGAME && lvlIndex != 8 && !App->input->IsTextReady())
+	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && actual_scene == Stages::INGAME && lvlIndex != 8 && !App->console->isWritting())
 	{
-		App->map->CleanUp();
+		/*App->map->CleanUp();
 
 		MapData mapInfo;
 		mapInfo.sizeX = 50;
@@ -184,13 +185,14 @@ bool Scene::Update(float dt)
 		lvlChest = App->entities->AddChest({ (float)chestPos.x * 48,(float)chestPos.y * 48 }, MID_CHEST);
 		portal = (PortalEntity*)App->entities->AddStaticEntity({ 25 * 48,25 * 48 }, PORTAL);
 
-		lvlIndex++;
+		lvlIndex++;*/
+		restart = true;
 	}
-	else if(App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
+	else if(App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && actual_scene == Stages::INGAME && lvlIndex == 8 && !App->console->isWritting())
 	{
-		App->entities->ClearEntitiesList();
-		App->map->CleanUp();
 		lvlIndex = 0;
+		actual_scene = Stages::MAIN_MENU;
+		restart = true;
 		// RESTART THIS MODULE AND THE ENTIRE GAME // GO TO MAIN MENU
 	}
 
@@ -198,23 +200,6 @@ bool Scene::Update(float dt)
 	if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
 	{
 		App->input->PlayJoyRumble(0.75f, 100);
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-	{
-		App->render->camera.y += 10;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-	{
-		App->render->camera.x += 10;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-	{
-		App->render->camera.y -= 10;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-	{
-		App->render->camera.x -= 10;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN)
@@ -295,6 +280,8 @@ bool Scene::CleanUp()
 	App->entities->DeActivate();
 	App->console->DeActivate();
 	App->colliders->DeActivate();
+	App->path->ClearMap();
+
 
 	return true;
 }

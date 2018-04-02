@@ -36,6 +36,7 @@ public:
 
 
 	void SwitchWrittingState();
+	bool isWritting();
 
 	bool ExecConsoleOrder(std::string name);
 	void AddConsoleOrderToList(ConsoleOrder* consoleOrder);

@@ -61,7 +61,7 @@
     
     <size w = "640" h = "360"/>
     <fullscreen active = "false"/>
-    <borderless active = "false"/>
+    <borderless active = "true"/>
     <resizable active = "false"/>
     <fullscreen_window active = "true"/>
   </window>
