@@ -9,12 +9,15 @@
 
 #define DISTANCE_TO_MOVE	300
 #define DISTANCE_TO_CHARGE	120
-#define DISTANCE_TO_ATAC	70
+#define DISTANCE_TO_ATAC	40
 #define CHARGE_DISTANCE		50
 #define CHARGE_SPEED		10
 #define CHARGE_COOLDOWN		3000
 #define ATAC_COOLDOWN		1000
 #define MOVEMENT_SPEED		5
+#define DEFENSE_DISTANCE	100
+#define DEFENSE_TIME		1000
+#define DEFENSE_COOLDOWN	3000
 
 Enemy_Footman::Enemy_Footman(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture) : EnemyEntity(coor, character, texture) {}
 
@@ -97,6 +100,16 @@ void Enemy_Footman::initCharge()
 	chargeCooldown = SDL_GetTicks() + CHARGE_COOLDOWN;
 }
 
+void Enemy_Footman::initDefense()
+{
+	state = FOOTMAN_STATE::FOOTMAN_DEFENSE;
+	accountantPrincipal = DEFENSE_TIME;
+	anim = &animCharge[LookAtPlayer()];
+	anim->Reset();
+	defenseCooldown = SDL_GetTicks() + DEFENSE_COOLDOWN;
+	defensed = true;
+}
+
 void Enemy_Footman::doIdle()
 {
 	anim = &animIdle[LookAtPlayer()];
@@ -119,6 +132,10 @@ void Enemy_Footman::doWalk()
 	else if (DistanceToPlayer() < DISTANCE_TO_CHARGE && chargeCooldown < SDL_GetTicks() && App->entities->GetRandomNumber(10) < 3)	// superar tirada 30%
 	{
 		initCharge();
+	}
+	else if (DistanceToPlayer() < DEFENSE_DISTANCE && defenseCooldown < SDL_GetTicks() && App->entities->GetRandomNumber(10) < 3)	// superar tirada 30%
+	{
+		initDefense();
 	}
 	else // AQUI CAMINA, PERO AQUESTA FUNCIO ES TEMPORAL
 	{
@@ -161,6 +178,15 @@ void Enemy_Footman::doCharge()
 			accountantPrincipal -= CHARGE_SPEED;
 			App->colliders->AddTemporalCollider({ (int)pos.x, (int)pos.y, 32, 32 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATAC, 10);
 		}
+	}
+}
+
+void Enemy_Footman::doDefense()
+{
+	if (SDL_GetTicks() > accountantPrincipal)
+	{
+		initIdle();
+		defensed = false;
 	}
 }
 

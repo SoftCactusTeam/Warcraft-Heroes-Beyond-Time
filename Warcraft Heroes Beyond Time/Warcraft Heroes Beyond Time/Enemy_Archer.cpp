@@ -65,8 +65,7 @@ bool Enemy_Archer::Update(float dt)
 		doScape();
 		break;
 	default:
-		state = ARCHER_STATE::ARCHER_IDLE;
-		pathVector.Clear();
+		initIdle();
 		break;
 	}
 	pathVector.PrintAstar();
