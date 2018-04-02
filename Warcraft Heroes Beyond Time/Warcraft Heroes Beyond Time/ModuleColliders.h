@@ -13,6 +13,8 @@ struct Collider
 	SDL_Rect colliderRect;	// El X i Y del Rect fan de offset !!!
 	Entity* owner;
 	COLLIDER_TYPE type;
+
+	COLLIDER_TYPE collidingWith = COLLIDER_TYPE::COLLIDER_NONE;	// when isn't property of an entity
 };
 
 class ModuleColliders : public Module
@@ -21,11 +23,13 @@ public:
 	ModuleColliders();
 	bool Awake(pugi::xml_node& consoleNode);
 	bool Update(float dt);
+	bool PostUpdate();
 	bool CleanUp();
 
-	void AddCollider(Entity* owner, SDL_Rect colliderRect, COLLIDER_TYPE type, iPoint offset);
-	void AddTileCollider(SDL_Rect colliderRect, COLLIDER_TYPE type);
-	void AddTemporalCollider(SDL_Rect colliderRect, COLLIDER_TYPE type, int timer);
+	Collider* AddCollider(Entity* owner, SDL_Rect colliderRect, COLLIDER_TYPE type, iPoint offset);
+	Collider* AddTileCollider(SDL_Rect colliderRect, COLLIDER_TYPE type);
+	Collider* AddTemporalCollider(SDL_Rect colliderRect, COLLIDER_TYPE type, int timer);
+	bool deleteCollider(Collider* col);
 	void CleanCollidersEntity(Entity* entity);
 	bool CheckCollision(int col1, int col2);
 	bool ChechCollisionTemporalCollider(int col, int colTemporal);

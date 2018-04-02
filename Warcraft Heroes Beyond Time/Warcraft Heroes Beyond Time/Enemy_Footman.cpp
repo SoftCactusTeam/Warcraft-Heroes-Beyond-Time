@@ -9,12 +9,15 @@
 
 #define DISTANCE_TO_MOVE	300
 #define DISTANCE_TO_CHARGE	120
-#define DISTANCE_TO_ATAC	70
+#define DISTANCE_TO_ATAC	40
 #define CHARGE_DISTANCE		50
 #define CHARGE_SPEED		10
-#define CHARGE_COOLDOWN		5000
+#define CHARGE_COOLDOWN		3000
 #define ATAC_COOLDOWN		1000
 #define MOVEMENT_SPEED		5
+#define DEFENSE_DISTANCE	100
+#define DEFENSE_TIME		1000
+#define DEFENSE_COOLDOWN	3000
 
 Enemy_Footman::Enemy_Footman(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture) : EnemyEntity(coor, character, texture) {}
 
@@ -66,12 +69,52 @@ bool Enemy_Footman::Finish()
 
 // FUNCIONS D'ESTAT	
 
+void Enemy_Footman::initIdle()
+{
+	state = FOOTMAN_STATE::FOOTMAN_IDLE;
+	pathVector.Clear();
+}
+
+void Enemy_Footman::initWalk()
+{
+	state = FOOTMAN_STATE::FOOTMAN_WALK;
+	pathVector.Clear();
+}
+
+void Enemy_Footman::initAtac()
+{
+	state = FOOTMAN_STATE::FOOTMAN_ATAC;
+	accountantPrincipal = SDL_GetTicks() + ATAC_COOLDOWN;
+	anim = &animAtac[LookAtPlayer()];
+	anim->Reset();
+	App->colliders->AddTemporalCollider({ (int)pos.x, (int)pos.y, 64, 64 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATAC, ATAC_COOLDOWN);
+}
+
+void Enemy_Footman::initCharge()
+{
+	state = FOOTMAN_STATE::FOOTMAN_CHARGE;
+	accountantPrincipal = CHARGE_DISTANCE;
+	anim = &animCharge[LookAtPlayer()];
+	anim->Reset();
+	chargeMovement = CaculateFPointAngle(App->scene->player->pos) * CHARGE_SPEED;
+	chargeCooldown = SDL_GetTicks() + CHARGE_COOLDOWN;
+}
+
+void Enemy_Footman::initDefense()
+{
+	state = FOOTMAN_STATE::FOOTMAN_DEFENSE;
+	accountantPrincipal = DEFENSE_TIME;
+	anim = &animCharge[LookAtPlayer()];
+	anim->Reset();
+	defenseCooldown = SDL_GetTicks() + DEFENSE_COOLDOWN;
+	defensed = true;
+}
+
 void Enemy_Footman::doIdle()
 {
 	anim = &animIdle[LookAtPlayer()];
 	if (DistanceToPlayer() < DISTANCE_TO_MOVE) {
-		state = FOOTMAN_STATE::FOOTMAN_WALK;
-		pathVector.Clear();
+		initWalk();
 	}
 }
 
@@ -80,33 +123,19 @@ void Enemy_Footman::doWalk()
 	anim = &animWalk[LookAtPlayer()];
 	if (DistanceToPlayer() > DISTANCE_TO_MOVE)
 	{
-		state = FOOTMAN_STATE::FOOTMAN_IDLE;
-		pathVector.Clear();
+		initIdle();
 	}
 	else if (DistanceToPlayer() < DISTANCE_TO_ATAC)
 	{
-		state = FOOTMAN_STATE::FOOTMAN_ATAC;
-		accountantPrincipal = SDL_GetTicks() + ATAC_COOLDOWN;
-		anim = &animAtac[LookAtPlayer()];
-		anim->Reset();
-		App->colliders->AddTemporalCollider({ (int)pos.x, (int)pos.y, 64, 64 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATAC, ATAC_COOLDOWN);
+		initAtac();
 	}
-	else if (DistanceToPlayer() < DISTANCE_TO_CHARGE)
+	else if (DistanceToPlayer() < DISTANCE_TO_CHARGE && chargeCooldown < SDL_GetTicks() && App->entities->GetRandomNumber(10) < 3)	// superar tirada 30%
 	{
-		if (chargeTime < SDL_GetTicks())
-			if (App->entities->GetRandomNumber(100) <= 70)		// Si supera una tirada de 70%
-			{
-				state = FOOTMAN_STATE::FOOTMAN_CHARGE;
-				accountantPrincipal = CHARGE_DISTANCE;
-				anim = &animCharge[LookAtPlayer()];
-				anim->Reset();
-				chargeMovement = CaculateFPointAngle(App->scene->player->pos) * CHARGE_SPEED;
-				chargeTime = SDL_GetTicks() + CHARGE_COOLDOWN;
-			}
-			else
-			{
-				StopConcreteTime(1000);
-			}
+		initCharge();
+	}
+	else if (DistanceToPlayer() < DEFENSE_DISTANCE && defenseCooldown < SDL_GetTicks() && App->entities->GetRandomNumber(10) < 3)	// superar tirada 30%
+	{
+		initDefense();
 	}
 	else // AQUI CAMINA, PERO AQUESTA FUNCIO ES TEMPORAL
 	{
@@ -128,10 +157,7 @@ void Enemy_Footman::doWalk()
 void Enemy_Footman::doAtac()
 {
 	if (SDL_GetTicks() > accountantPrincipal)
-	{
-		state = FOOTMAN_STATE::FOOTMAN_IDLE;
-		pathVector.Clear();
-	}
+		initIdle();
 }
 
 void Enemy_Footman::doCharge()
@@ -139,8 +165,7 @@ void Enemy_Footman::doCharge()
 	if (accountantPrincipal <= 0)
 	{
 		StopConcreteTime(1000);
-		state = FOOTMAN_STATE::FOOTMAN_IDLE;
-		pathVector.Clear();
+		initIdle();
 	}
 	else
 	{
@@ -153,6 +178,15 @@ void Enemy_Footman::doCharge()
 			accountantPrincipal -= CHARGE_SPEED;
 			App->colliders->AddTemporalCollider({ (int)pos.x, (int)pos.y, 32, 32 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATAC, 10);
 		}
+	}
+}
+
+void Enemy_Footman::doDefense()
+{
+	if (SDL_GetTicks() > accountantPrincipal)
+	{
+		initIdle();
+		defensed = false;
 	}
 }
 
