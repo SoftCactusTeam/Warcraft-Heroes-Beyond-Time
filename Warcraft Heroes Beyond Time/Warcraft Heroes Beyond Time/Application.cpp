@@ -51,11 +51,12 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 	AddModule(fonts);
 	AddModule(fs);
-	AddModule(console);
 	AddModule(path);
 	AddModule(printer);
+	
 	AddModule(scene);
 	AddModule(colliders);
+	AddModule(console);
 	AddModule(gui);
 
 	// render last to swap buffer
