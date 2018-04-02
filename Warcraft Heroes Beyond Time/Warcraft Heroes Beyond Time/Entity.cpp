@@ -13,7 +13,7 @@ bool Entity::PostUpdate() { return true; }
 
 bool Entity::Finish() { return true; }
 
-bool Entity::Draw(float dt)
+bool Entity::Draw()
 {
 	bool ret = true;
 	//REVISTAR !

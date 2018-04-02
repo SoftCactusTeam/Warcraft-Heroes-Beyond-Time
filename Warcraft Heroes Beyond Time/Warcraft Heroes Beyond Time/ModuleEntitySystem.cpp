@@ -247,14 +247,6 @@ bool EntitySystem::Update(float dt)
 		ret = (*it)->Update(dt);
 	}
 
-	if (ret)
-	{
-		for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); ++it)
-		{
-			ret = (*it)->Draw(dt);
-		}
-	}
-
 	return ret;
 }
 
@@ -264,11 +256,11 @@ bool EntitySystem::PostUpdate()
 
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end() && ret; ++it)
 	{
-		ret = (*it)->PostUpdate();
-	}
+		ret = (*it)->Draw();
 
-	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); ++it)
-	{
+		if(ret)
+			ret = (*it)->PostUpdate();
+
 		if ((*it)->destroy)
 			entities.remove((*it));
 	}

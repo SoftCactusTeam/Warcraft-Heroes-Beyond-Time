@@ -15,7 +15,7 @@ public:
 	virtual bool Update(float dt);
 	virtual bool PostUpdate();
 	virtual bool Finish();
-	virtual bool Draw(float dt);
+	virtual bool Draw();
 
 	virtual void Collision(COLLIDER_TYPE type);
 	void StopConcreteTime(int time);
