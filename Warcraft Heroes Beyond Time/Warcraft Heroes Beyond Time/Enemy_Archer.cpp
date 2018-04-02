@@ -83,8 +83,8 @@ bool Enemy_Archer::PostUpdate()
 		else
 		{
 			arrowsVector[i]->Finish();
-			arrowsVector.emplace_back(arrowsVector[i]);
-			arrowsVector.pop_back();
+			delete arrowsVector[i];
+			arrowsVector.erase(arrowsVector.begin() + i);
 		}
 	}
 	return true;
