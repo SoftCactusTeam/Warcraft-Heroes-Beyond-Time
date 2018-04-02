@@ -21,6 +21,11 @@ public:
 
 	void ChargeAnimations();
 
+	void initIdle();
+	void initWalk();
+	void initAtac();
+	void initCharge();
+
 	void doIdle();
 	void doWalk();
 	void doAtac();
@@ -35,7 +40,7 @@ public:
 
 	// Charge variables
 	fPoint		chargeMovement;
-	uint		chargeTime = 0;
+	int			chargeCooldown = 0;
 };
 
 #endif

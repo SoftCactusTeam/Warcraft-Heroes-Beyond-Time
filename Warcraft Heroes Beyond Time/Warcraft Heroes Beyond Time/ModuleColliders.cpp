@@ -52,8 +52,13 @@ bool ModuleColliders::Update(float dt)
 			{
 				if (colliders[i]->owner != nullptr)
 					colliders[i]->owner->Collision(colliders[col]->type);
+				else
+					colliders[i]->collidingWith = colliders[col]->type;	// Aixo es quan el collider no te entity pero vol detectar
+
 				if (colliders[col]->owner != nullptr)
 					colliders[col]->owner->Collision(colliders[i]->type);
+				else
+					colliders[col]->collidingWith = colliders[i]->type;
 			}
 	// Comprobar colliders temporals
 	for (int i = 0; i < colliders.size(); i++)
@@ -129,8 +134,10 @@ void ModuleColliders::CleanCollidersEntity(Entity* entity)
 		if (colliders[i]->owner == entity)
 		{
 			delete colliders[i];
-			std::swap(colliders[i], colliders.back());
-			colliders.pop_back();
+			colliders.erase(colliders.begin() + i);
+			//delete colliders[i];
+			//std::swap(colliders[i], colliders.back());
+			//colliders.pop_back();
 		}
 }
 

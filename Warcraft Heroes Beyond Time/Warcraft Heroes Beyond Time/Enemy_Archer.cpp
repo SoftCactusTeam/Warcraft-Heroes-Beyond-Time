@@ -364,6 +364,10 @@ void Enemy_Archer_Arrow::Update()
 		App->printer->PrintSprite(iPoint((int)pos.x, (int)pos.y), texture, rect[angle], 2);
 		arrowCollider->colliderRect.x = (int)pos.x;
 		arrowCollider->colliderRect.y = (int)pos.y;
+		if (arrowCollider->collidingWith == COLLIDER_TYPE::COLLIDER_PLAYER ||
+			arrowCollider->collidingWith == COLLIDER_TYPE::COLLIDER_PLAYER_ATAC ||
+			arrowCollider->collidingWith == COLLIDER_TYPE::COLLIDER_UNWALKABLE)
+			destroy = true;
 	}
 	else
 	{

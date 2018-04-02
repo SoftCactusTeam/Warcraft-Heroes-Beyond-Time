@@ -13,6 +13,8 @@ struct Collider
 	SDL_Rect colliderRect;	// El X i Y del Rect fan de offset !!!
 	Entity* owner;
 	COLLIDER_TYPE type;
+
+	COLLIDER_TYPE collidingWith = COLLIDER_TYPE::COLLIDER_NONE;	// when isn't property of an entity
 };
 
 class ModuleColliders : public Module
