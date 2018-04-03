@@ -1,6 +1,8 @@
 #include "ModulePrinter.h"
 #include "ModuleRender.h"
 
+#include "Brofiler\Brofiler.h"
+
 bool ModulePrinter::Awake(pugi::xml_node&)
 {
 	return true;
@@ -19,6 +21,8 @@ bool ModulePrinter::Update(float dt)
 }
 bool ModulePrinter::PostUpdate()
 {
+	BROFILER_CATEGORY("Printer Blit", Profiler::Color::Azure);
+
 	while (!SpriteQueue.empty())
 	{
 		Sprite* sprite = SpriteQueue.top();

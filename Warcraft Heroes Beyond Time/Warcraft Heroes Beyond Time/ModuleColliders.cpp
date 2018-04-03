@@ -3,6 +3,8 @@
 #include "ModuleRender.h"
 #include "Console.h"
 
+#include "Brofiler\Brofiler.h"
+
 class ConsoleColliders : public ConsoleOrder
 {
 	std::string orderName() { return "colliders"; }
@@ -46,6 +48,8 @@ bool ModuleColliders::Awake(pugi::xml_node& consoleNode)
 
 bool ModuleColliders::Update(float dt)
 {
+	BROFILER_CATEGORY("Colliders Collision", Profiler::Color::Azure);
+
 	for (int i = 0; i < colliders.size(); i++)
 		for (int col = i + 1; col < colliders.size(); col++)
 			if (CheckCollision(i, col))

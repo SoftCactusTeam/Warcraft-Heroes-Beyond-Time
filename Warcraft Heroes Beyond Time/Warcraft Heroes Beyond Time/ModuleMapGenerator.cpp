@@ -7,6 +7,7 @@
 #include "Scene.h"
 #include "PlayerEntity.h"
 #include "ModuleColliders.h"
+#include "Brofiler\Brofiler.h"
 #include <time.h>
 
 #define VOID { 196,0,48,48 }
@@ -66,6 +67,8 @@ bool MapGenerator::DrawMap() const
 {
 	bool ret = true;
 
+	BROFILER_CATEGORY("Map Draw", Profiler::Color::Azure);
+
 	for (uint i = 0u; i < totalSize && ret; ++i)
 	{
 		iPoint MapPos = { (nodes[i]->pos.x * (int)(this->tileSize)),  (nodes[i]->pos.y * (int)(this->tileSize))};
@@ -95,6 +98,8 @@ bool MapGenerator::CheckBoundaries(const iPoint& pos) const
 
 bool MapGenerator::GenerateMap(MapData data)
 {
+	BROFILER_CATEGORY("Map Generation", Profiler::Color::Azure);
+
 	bool ret = true;
 
 	mapTexture = App->textures->Load(data.tilesetPath);

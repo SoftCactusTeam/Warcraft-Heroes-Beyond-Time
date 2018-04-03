@@ -6,6 +6,8 @@
 #include "ModuleRender.h"
 #include "Scene.h"
 
+#include "Brofiler\Brofiler.h"
+
 fPoint SillyMovementToPlayer(fPoint pos)
 {
 	fPoint res = { 1,1 };
@@ -97,6 +99,8 @@ PathVector::PathVector() {}
 
 bool PathVector::CalculatePathAstar(iPoint thisPos, iPoint tileToMove)
 {
+	BROFILER_CATEGORY("AStar Algorithm", Profiler::Color::Azure);
+
 	/// CLEAN VISITED
 	pathVec.clear();
 
