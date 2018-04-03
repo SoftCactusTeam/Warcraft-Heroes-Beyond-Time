@@ -6,6 +6,7 @@
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
 #include "ModuleInput.h"
+#include "ModuleMapGenerator.h"
 
 #define VSYNC true
 
@@ -79,12 +80,7 @@ bool Render::PreUpdate()
 
 bool Render::Update(float dt)
 {
-	camera.x = (int)fcamerax;
-	camera.y = (int)fcameray;
-	if (camera.x > 0)
-		camera.x = 0;
-	if (camera.y > 0)
-		camera.y = 0;
+	CheckCameraLimits();
 
 	return true;
 }
@@ -238,4 +234,30 @@ bool Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uin
 	}
 
 	return ret;
+}
+
+void Render::CheckCameraLimits()
+{
+	uint mapwidth, mapheight;
+	uint tilesize = App->map->getTileSize();
+	App->map->getSize(mapwidth, mapheight);
+
+	camera.x = (int)fcamerax;
+	camera.y = (int)fcameray;
+
+	if (camera.x > 0)
+		camera.x = 0;
+
+	else if (-camera.x + camera.w > (mapwidth * tilesize))
+	{
+		camera.x = -1 * (int)(mapwidth * tilesize - camera.w);
+	}
+
+	if (camera.y > 0)
+		camera.y = 0;
+
+	else if (-camera.y + camera.h > (mapheight * tilesize))
+	{
+		camera.y = -1 * (int)(mapheight * tilesize - camera.h);
+	}
 }
