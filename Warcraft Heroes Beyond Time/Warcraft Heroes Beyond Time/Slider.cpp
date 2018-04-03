@@ -83,6 +83,7 @@ bool Slider::HandleInput()
 		{
 			label = (Label*)(*it);
 			label->EditText(std::to_string(valuePercent), White);
+			break;
 		}
 		
 		switch(stype)
