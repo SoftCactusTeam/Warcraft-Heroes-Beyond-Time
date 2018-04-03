@@ -47,7 +47,7 @@ public:
 	std::string MainMenuBSO;
 
 
-	uint MusicVolumePercent = 50;
+	uint MusicVolumePercent = 5;
 	uint FXVolumePercent = 50;
 
 private:

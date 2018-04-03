@@ -314,6 +314,12 @@ void Scene::CreateSettingsScreen()
 	defLabel3.text = (char*)temp.data();
 	App->gui->CreateLabel({ 270,-3 }, defLabel3, slider, this);
 
+	LabelInfo defLabel;
+	defLabel.color = Black;
+	defLabel.fontName = "LifeCraft90";
+	defLabel.text = "Music Volume";
+	App->gui->CreateLabel({ 0,-50 }, defLabel, slider, this);
+
 	//BACK BUTTON
 	Button* button3 = (Button*)App->gui->CreateButton({ 250, 250.0f }, BType::GO_MMENU, this);
 
