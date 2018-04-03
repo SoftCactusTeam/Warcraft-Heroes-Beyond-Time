@@ -36,7 +36,7 @@ bool Audio::Awake(pugi::xml_node& audioNode)
 	}
 
 	// load support for the JPG and PNG image formats
-	int flags = MIX_INIT_OGG;
+	int flags = MIX_INIT_OGG | MIX_INIT_MP3;
 	int init = Mix_Init(flags);
 
 	if((init & flags) != flags)
@@ -47,20 +47,22 @@ bool Audio::Awake(pugi::xml_node& audioNode)
 	}
 
 	//Initialize SDL_mixer
-	if(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+	if(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 4096) < 0)
 	{
 		LOG("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
 		active = false;
 		ret = false;
 	}
 	
-	//----------------------------------------------Load fx-------------------------------
+	//---------------------------------------Load fx-------------------------------
 	
+	//---------------------------------------Load Music----------------------------
+	MainMenuBSO = "audio/Warcraft Adventures - Main Menu.wav";
 
+	//---------------------------------------SetVolumes----------------------------
 
-	//----------------------------------------------SetVolumes----------------------------
-	Mix_Volume(-1, MIX_MAX_VOLUME * (FXVolumePercent / 100));
-	Mix_VolumeMusic(MIX_MAX_VOLUME * (MusicVolumePercent / 100));
+	Mix_Volume(-1, (MIX_MAX_VOLUME * FXVolumePercent) / 100);
+	Mix_VolumeMusic((MIX_MAX_VOLUME * MusicVolumePercent) / 100);
 
 
 
@@ -103,7 +105,6 @@ bool Audio::PlayMusic(const char* path, float fade_time)
 	{
 		if(fade_time > 0.0f)
 		{
-			Mix_VolumeMusic(64);
 			Mix_FadeOutMusic(int(fade_time * 1000.0f));
 		}
 		else
@@ -188,11 +189,11 @@ bool Audio::PlayFx(unsigned int id, int repeat)
 void Audio::setMusicVolume(uint percent)
 {
 	MusicVolumePercent = percent;
-	Mix_VolumeMusic(MIX_MAX_VOLUME * (MusicVolumePercent / 100));
+	Mix_VolumeMusic((MIX_MAX_VOLUME * MusicVolumePercent) / 100);
 }
 
 void Audio::setFXVolume(uint percent)
 {
 	FXVolumePercent = percent;
-	Mix_Volume(-1, MIX_MAX_VOLUME * (FXVolumePercent / 100));
+	Mix_Volume(-1, (MIX_MAX_VOLUME * FXVolumePercent) / 100);
 }

@@ -41,6 +41,12 @@ public:
 public:
 
 	//uint sounds here
+	
+
+	//std::string BSO's
+	std::string MainMenuBSO;
+
+
 	uint MusicVolumePercent = 50;
 	uint FXVolumePercent = 50;
 

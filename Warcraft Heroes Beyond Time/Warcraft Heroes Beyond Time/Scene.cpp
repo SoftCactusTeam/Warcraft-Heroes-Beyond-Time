@@ -46,6 +46,8 @@ bool Scene::Awake(pugi::xml_node& sceneNode)
 {
 	ConsoleOrder* order = new ConsoleMap();
 	App->console->AddConsoleOrderToList(order);
+
+	App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
 	return true;
 }
 
@@ -247,6 +249,8 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 						restart = true;
 						break;
 					case BType::GO_MMENU:
+						if (actual_scene == Stages::INGAME)
+							App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
 						actual_scene = Stages::MAIN_MENU;
 						paused = false;
 						restart = true;
@@ -267,6 +271,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 
 void Scene::CreateMainMenuScreen()
 {
+	
 	//PLAY BUTTON
 	Button* button = (Button*)App->gui->CreateButton({ 250, 50.0f }, BType::PLAY, this);
 
