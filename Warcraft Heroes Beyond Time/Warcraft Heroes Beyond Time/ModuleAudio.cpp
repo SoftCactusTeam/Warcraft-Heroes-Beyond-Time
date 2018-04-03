@@ -7,7 +7,7 @@
 #include "Scene.h"
 
 #include "SDL/include/SDL.h"
-#include "SDL_mixer\include\SDL_mixer.h"
+#include "SDL_mixer/include/SDL_mixer.h"
 #pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
 
 Audio::Audio() : Module()
@@ -35,8 +35,8 @@ bool Audio::Awake(pugi::xml_node& audioNode)
 		ret = false;
 	}
 
-	// load support for the JPG and PNG image formats
-	int flags = MIX_INIT_OGG | MIX_INIT_MP3;
+	// load support for the music formats
+	/*int flags = MIX_INIT_OGG;
 	int init = Mix_Init(flags);
 
 	if((init & flags) != flags)
@@ -44,7 +44,7 @@ bool Audio::Awake(pugi::xml_node& audioNode)
 		LOG("Could not initialize Mixer lib. Mix_Init: %s", Mix_GetError());
 		active = false;
 		ret = false;
-	}
+	}*/
 
 	//Initialize SDL_mixer
 	if(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 4096) < 0)
@@ -57,7 +57,7 @@ bool Audio::Awake(pugi::xml_node& audioNode)
 	//---------------------------------------Load fx-------------------------------
 	
 	//---------------------------------------Load Music----------------------------
-	MainMenuBSO = "audio/Warcraft Adventures - Main Menu.wav";
+	MainMenuBSO = "audio/Warcraft Adventures - Main Menu.ogg";
 
 	//---------------------------------------SetVolumes----------------------------
 
