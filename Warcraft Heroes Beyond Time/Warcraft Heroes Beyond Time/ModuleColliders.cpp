@@ -52,28 +52,30 @@ bool ModuleColliders::Update(float dt)
 
 	for (int i = 0; i < colliders.size(); i++)
 		for (int col = i + 1; col < colliders.size(); col++)
-			if (CheckCollision(i, col))
-			{
-				if (colliders[i]->owner != nullptr)
-					colliders[i]->owner->Collision(colliders[col]->type);
-				else
-					colliders[i]->collidingWith = colliders[col]->type;	// Aixo es quan el collider no te entity pero vol detectar
+			if (CheckTipeCollMatrix(colliders[i]->type, colliders[col]->type))
+				if (CheckCollision(i, col))
+				{
+					if (colliders[i]->owner != nullptr)
+						colliders[i]->owner->Collision(colliders[col]->type);
+					else
+						colliders[i]->collidingWith = colliders[col]->type;	// Aixo es quan el collider no te entity pero vol detectar
 
-				if (colliders[col]->owner != nullptr)
-					colliders[col]->owner->Collision(colliders[i]->type);
-				else
-					colliders[col]->collidingWith = colliders[i]->type;
-			}
+					if (colliders[col]->owner != nullptr)
+						colliders[col]->owner->Collision(colliders[i]->type);
+					else
+						colliders[col]->collidingWith = colliders[i]->type;
+				}
 	// Comprobar colliders temporals
 	for (int i = 0; i < colliders.size(); i++)
 		for (int col = 0; col < temporalColliders.size(); col++)
-			if (ChechCollisionTemporalCollider(i, col))
-			{
-				if (colliders[i]->owner != nullptr)
-					colliders[i]->owner->Collision(temporalColliders[col]->type);
-				else
-					colliders[i]->collidingWith = temporalColliders[col]->type;
-			}
+			if (CheckTipeCollMatrix(colliders[i]->type, colliders[col]->type))
+				if (ChechCollisionTemporalCollider(i, col))
+				{
+					if (colliders[i]->owner != nullptr)
+						colliders[i]->owner->Collision(temporalColliders[col]->type);
+					else
+						colliders[i]->collidingWith = temporalColliders[col]->type;
+				}
 	// Netejar colliders temporals
 	for (int i = 0; i < temporalColliders.size(); i++)
 		if (temporalColliderstimer[i] < SDL_GetTicks())
@@ -146,6 +148,48 @@ void ModuleColliders::CleanCollidersEntity(Entity* entity)
 			//std::swap(colliders[i], colliders.back());
 			//colliders.pop_back();
 		}
+}
+
+bool ModuleColliders::CheckTipeCollMatrix(COLLIDER_TYPE type, COLLIDER_TYPE type2)
+{
+	bool ret = false;
+	switch (type)
+	{
+	case COLLIDER_NONE:
+		ret = false;
+		break;
+	case COLLIDER_PLAYER:
+		if (type2 == COLLIDER_ENEMY || type2 == COLLIDER_ENEMY_ATAC || type2 == COLLIDER_UNWALKABLE)
+			ret = true;
+		else
+			ret = false;
+		break;
+	case COLLIDER_ENEMY:
+		if (type2 == COLLIDER_ENEMY || type2 == COLLIDER_PLAYER_ATAC || type2 == COLLIDER_PLAYER)
+			ret = true;
+		else
+			ret = false;
+		break;
+	case COLLIDER_PLAYER_ATAC:
+		if (type2 == COLLIDER_ENEMY || type2 == COLLIDER_ENEMY_ATAC)
+			ret = true;
+		else
+			ret = false;
+		break;
+	case COLLIDER_ENEMY_ATAC:
+		if (type2 == COLLIDER_PLAYER || type2 == COLLIDER_PLAYER_ATAC)
+			ret = true;
+		else
+			ret = false;
+		break;
+	case COLLIDER_UNWALKABLE:
+		ret = false;
+		break;
+	case COLLIDER_WALKABLE: 
+		ret = false;
+		break;
+	}
+	return ret;
 }
 
 bool ModuleColliders::CheckCollision(int col1, int col2)
