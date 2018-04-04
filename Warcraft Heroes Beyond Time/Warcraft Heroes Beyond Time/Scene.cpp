@@ -354,7 +354,7 @@ void Scene::CreateSettingsScreen()
 	LabelInfo defLabel4;
 	defLabel4.color = White;
 	defLabel4.fontName = "Arial80";
-	std::string temp2 = (char*)std::to_string(App->audio->MusicVolumePercent).data();
+	std::string temp2 = (char*)std::to_string(App->audio->FXVolumePercent).data();
 	defLabel4.text = (char*)temp2.data();
 	App->gui->CreateLabel({ 270,-3 }, defLabel4, slider2, this);
 
