@@ -44,7 +44,6 @@ void Pathfinding::LoadPathMap()
 		if (tmpMapNodes[i]->cost == -1)
 			AddNodeToMap(tmpMapNodes[i]->cost, tmpMapNodes[i]->pos);
 	}
-	LoadNeighbours();
 }
 
 void Pathfinding::ClearMap()
@@ -69,23 +68,21 @@ void Pathfinding::PrintWalkableTiles()
 	}
 }
 
-void Pathfinding::LoadNeighbours()
+void Pathfinding::LoadNeighbours(pathNode* node)
 {
 	BROFILER_CATEGORY("LoadPathfindingNeighbours", Profiler::Color::Chocolate);
-	for (int i = 0; i < map.size(); i++)
-	{
-		if (ExistWalkableAtPos(iPoint(map[i]->nodePos.x + 1, map[i]->nodePos.y)) != -1)
-			map[i]->neighbours[0] = map[ExistWalkableAtPos(iPoint(map[i]->nodePos.x + 1, map[i]->nodePos.y))];
-		if (ExistWalkableAtPos(iPoint(map[i]->nodePos.x - 1, map[i]->nodePos.y)) != -1)
-			map[i]->neighbours[1] = map[ExistWalkableAtPos(iPoint(map[i]->nodePos.x - 1, map[i]->nodePos.y))];
-		if (ExistWalkableAtPos(iPoint(map[i]->nodePos.x, map[i]->nodePos.y + 1)) != -1)
-			map[i]->neighbours[2] = map[ExistWalkableAtPos(iPoint(map[i]->nodePos.x, map[i]->nodePos.y + 1))];
-		if (ExistWalkableAtPos(iPoint(map[i]->nodePos.x, map[i]->nodePos.y - 1)) != -1)
-			map[i]->neighbours[3] = map[ExistWalkableAtPos(iPoint(map[i]->nodePos.x, map[i]->nodePos.y - 1))];
-	}
+	
+		if (ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y)) != -1)
+			node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y))]);
+		if (ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y)) != -1)
+			node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y))]);
+		if (ExistWalkableAtPos(iPoint(node->nodePos.x, node->nodePos.y + 1)) != -1)
+			node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x, node->nodePos.y + 1))]);
+		if (ExistWalkableAtPos(iPoint(node->nodePos.x, node->nodePos.y - 1)) != -1)
+			node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x, node->nodePos.y - 1))]);
 }
 
-int Pathfinding::ExistWalkableAtPos(iPoint pos)
+int Pathfinding::ExistWalkableAtPos(iPoint& pos)
 {
 	for (int i = 0; i < map.size(); i++)
 		if (map[i]->nodePos == pos)
@@ -131,47 +128,33 @@ bool PathVector::CalculatePathAstar(iPoint thisPos, iPoint tileToMove)
 		if (current->nodePos == tileToMove)
 			break;
 		// Calcular veins
-		for (int i = 0; i < 4; i++)
-			if (current->neighbours[i] != nullptr)
-			{
-				/// Comprobar si ja esta a visited
-				bool isVisited = false;
-				for (int i2 = 0; i2 < visitedQueue.size() && isVisited == false; i2++)
-					if (visitedQueue[i2] == current->neighbours[i]) {
-						isVisited = true;
-						break;
-					}
-				/// Si no es visitada fer la resta
-				if (isVisited == false)
-				{
-					int a = (current->neighbours[i]->nodePos.x) - tileToMove.x;
-					if (a < 0)
-						a *= -1;
-					int b = (current->neighbours[i]->nodePos.y) - tileToMove.y;
-					if (b < 0)
-						b *= -1;
-					int distanceToObjective = a + b;
-					current->neighbours[i]->cost = 1 + distanceToObjective;
-					current->neighbours[i]->parent = current;
-					frontQueue.push(current->neighbours[i]);
-					visitedQueue.push_back(current->neighbours[i]);
+		App->path->LoadNeighbours(current);
+		for (int i = 0; i < current->neighbours.size(); i++)
+		{
+			/// Comprobar si ja esta a visited
+			bool isVisited = false;
+			for (int i2 = 0; i2 < visitedQueue.size() && isVisited == false; i2++)
+				if (visitedQueue[i2] == current->neighbours[i]) {
+					isVisited = true;
+					break;
 				}
-				//else
-				//{
-				//	int a = current->neighbours[i]->nodePos.x - tileToMove.x;
-				//	if (a < 0)
-				//		a *= -1;
-				//	int b = current->neighbours[i]->nodePos.y - tileToMove.y;
-				//	if (b < 0)
-				//		b *= -1;
-				//	int distanceToObjective = a + b;
-				//	if ((current->neighbours[i]->cost + current->cost + distanceToObjective) < (current->neighbours[i]->cost))
-				//	{
-				//		frontQueue.push(current->neighbours[i]);
-				//		current->neighbours[i]->parent = current;
-				//	}
-				//}
+			/// Si no es visitada fer la resta
+			if (isVisited == false)
+			{
+				int a = (current->neighbours[i]->nodePos.x) - tileToMove.x;
+				if (a < 0)
+					a *= -1;
+				int b = (current->neighbours[i]->nodePos.y) - tileToMove.y;
+				if (b < 0)
+					b *= -1;
+				int distanceToObjective = a + b;
+				current->neighbours[i]->cost = 1 + distanceToObjective;
+				current->neighbours[i]->parent = current;
+				frontQueue.push(current->neighbours[i]);
+				visitedQueue.push_back(current->neighbours[i]);
 			}
+		}
+		current->neighbours.clear();
 	}
 	pathVec = visitedQueue;
 }
