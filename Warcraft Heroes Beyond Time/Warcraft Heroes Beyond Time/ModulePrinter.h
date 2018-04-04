@@ -18,10 +18,12 @@ public:
 	SDL_Texture* texture = nullptr;
 	SDL_Rect SquaretoBlit;
 	int layer = 0;
+	iPoint pivot;
+	float angle;
 
 public:
 
-	Sprite(iPoint& pos, SDL_Texture* texture, SDL_Rect& SquaretoBlit, int layer) : pos(pos), texture(texture), SquaretoBlit(SquaretoBlit), layer(layer) {}
+	Sprite(iPoint& pos, SDL_Texture* texture, SDL_Rect& SquaretoBlit, int layer, iPoint pivot, float angle) : pos(pos), texture(texture), SquaretoBlit(SquaretoBlit), layer(layer), pivot(pivot), angle(angle){}
 
 };
 
@@ -51,7 +53,21 @@ public:
 
 public:
 
-	bool PrintSprite(iPoint pos, SDL_Texture* texture, SDL_Rect SquaretoBlit, int layer = 0);
+	enum class Pivots
+	{
+		UPPER_LEFT,
+		UPPER_CENTER,
+		UPPER_RIGHT,
+		CENTER_LEFT,
+		CENTER,
+		CENTER_RIGHT,
+		LOWER_LEFT,
+		LOWER_CENTER,
+		LOWER_RIGHT,
+		CUSTOM_PIVOT
+	};
+
+	bool PrintSprite(iPoint pos, SDL_Texture* texture, SDL_Rect SquaretoBlit, int layer = 0, Pivots pivot = Pivots::CENTER, float degangle = 0, iPoint custompivot = {0,0});
 
 private:
 
