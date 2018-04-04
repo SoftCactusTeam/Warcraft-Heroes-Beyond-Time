@@ -231,7 +231,7 @@ bool Application::DoUpdate()
 		pModule = (*item);
 
 		if (pModule->isActive() == false
-			|| ((pModule != gui && pModule != scene) && scene->paused)) 
+			|| (((pModule != gui && pModule != scene) && scene->paused))) 
 		{
 			continue;
 		}
@@ -312,6 +312,15 @@ bool Application::LoadConfig(pugi::xml_document& doc)
 	RELEASE(buffer);
 
 	return result;
+}
+
+void Application::AddCommands()
+{
+	std::list<Module*>::const_iterator it;
+	for (it = modules.begin(); it != modules.end(); ++it)
+	{
+		(*it)->AddCommands();
+	}
 }
 
 void Application::Save()

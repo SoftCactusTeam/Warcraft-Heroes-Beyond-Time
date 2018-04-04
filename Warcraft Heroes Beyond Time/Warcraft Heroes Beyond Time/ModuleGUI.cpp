@@ -13,6 +13,8 @@
 #include "GUIImage.h"
 #include "Stat.h"
 
+#include "Brofiler\Brofiler.h"
+
 ModuleGUI::ModuleGUI() : Module()
 {
 	name = "GUI";
@@ -93,6 +95,7 @@ bool ModuleGUI::PostUpdate()
 
 bool ModuleGUI::CleanUp()
 {
+	BROFILER_CATEGORY("ClearGUI", Profiler::Color::Chocolate);
 	std::list<GUIElem*>::reverse_iterator it;
 	for (it = GUIElemList.rbegin(); it != GUIElemList.rend(); ++it)
 	{

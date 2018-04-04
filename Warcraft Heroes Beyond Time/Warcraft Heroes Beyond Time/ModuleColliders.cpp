@@ -38,10 +38,13 @@ ModuleColliders::ModuleColliders()
 	name = "colliders";
 }
 
-bool ModuleColliders::Awake(pugi::xml_node& consoleNode)
+void ModuleColliders::Init()
 {
-	ConsoleOrder* order = new ConsoleColliders();
-	App->console->AddConsoleOrderToList(order);
+	active = false;
+}
+
+bool ModuleColliders::Awake(pugi::xml_node& collidersNode)
+{
 	printColliders = false;
 	return true;
 }
@@ -96,10 +99,17 @@ bool ModuleColliders::PostUpdate()
 
 bool ModuleColliders::CleanUp()
 {
+	BROFILER_CATEGORY("ClearCOLLIDERS", Profiler::Color::Chocolate);
 	for (int i = 0; i < colliders.size(); i++)
 		delete colliders[i];
 	colliders.clear();
 	return true;
+}
+
+void ModuleColliders::AddCommands()
+{
+	ConsoleOrder* order = new ConsoleColliders();
+	App->console->AddConsoleOrderToList(order);
 }
 
 Collider* ModuleColliders::AddCollider(Entity* owner, SDL_Rect colliderRect, COLLIDER_TYPE type, iPoint offset)

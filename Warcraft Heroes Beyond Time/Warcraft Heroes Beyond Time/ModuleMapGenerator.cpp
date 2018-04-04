@@ -28,6 +28,7 @@ MapGenerator::~MapGenerator() {}
 
 bool MapGenerator::CleanUp()
 {
+	BROFILER_CATEGORY("ClearMAP", Profiler::Color::Chocolate);
 	bool ret = true;
 
 	LOG("Unloading Map Texture...");

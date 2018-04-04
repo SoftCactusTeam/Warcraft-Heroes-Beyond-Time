@@ -8,6 +8,8 @@
 #include "PlayerEntity.h"
 #include "Scene.h"
 
+#include "Brofiler\Brofiler.h"
+
 
 // ====================================================================================== //
 // ===================== INSTRUCCIONS CONSOLA =========================================== //
@@ -38,11 +40,14 @@ void Console::Init()
 bool Console::Awake(pugi::xml_node& consoleNode) 
 {
 	writting = false;
+
 	return true;
 }
 
 bool Console::Start() 
 {
+	BROFILER_CATEGORY("ActivateConsole", Profiler::Color::Chocolate);
+
 	uint windowsWidth;
 	uint windowHeight;
 	App->window->GetWindowSize(windowsWidth, windowHeight);
@@ -54,6 +59,8 @@ bool Console::Start()
 	defInputBox.fontName = "Arial30";
 
 	box = (InputBox*)App->gui->CreateInputBox({ 5, 2 }, defInputBox, nullptr, nullptr);
+
+	App->AddCommands();
 
 	return true;
 }
@@ -88,6 +95,7 @@ bool Console::PostUpdate()
 
 bool Console::CleanUp()
 {
+	BROFILER_CATEGORY("ClearCONSOLE", Profiler::Color::Chocolate);
 	std::vector<ConsoleOrder*>::iterator it;
 	for (it = consoleOrderVector.begin(); it != consoleOrderVector.end(); ++it)
 	{

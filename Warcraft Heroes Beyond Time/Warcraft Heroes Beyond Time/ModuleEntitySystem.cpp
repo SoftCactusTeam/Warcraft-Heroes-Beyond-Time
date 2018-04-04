@@ -25,22 +25,6 @@
 
 #include "Brofiler\Brofiler.h"
 
-class Entities_ConsoleOrder : public ConsoleOrder 
-{
-	std::string orderName() 
-	{ 
-		return "spawn"; 
-	}
-
-	void Exec(std::string parameter, int parameterNumeric) 
-	{
-		if (parameter == "footman")
-			App->entities->AddEnemy(App->scene->player->pos, FOOTMAN);
-		if (parameter == "archer")
-			App->entities->AddEnemy(App->scene->player->pos, ARCHER);
-	}
-};
-
 class Spawn_ConsoleOrder : public ConsoleOrder
 {
 	std::string orderName()
@@ -52,7 +36,7 @@ class Spawn_ConsoleOrder : public ConsoleOrder
 	{
 		if (parameter == "footman")
 		{
-
+			App->entities->AddEnemy({ App->scene->player->pos.x, App->scene->player->pos.y - 60 }, FOOTMAN);
 		}
 		else if (parameter == "thrall")
 		{
@@ -60,7 +44,7 @@ class Spawn_ConsoleOrder : public ConsoleOrder
 		}
 		else if (parameter == "archer")
 		{
-
+			App->entities->AddEnemy({ App->scene->player->pos.x, App->scene->player->pos.y - 60 }, ARCHER);
 		}
 
 		else if (parameter == "wizard")
@@ -75,7 +59,7 @@ class Spawn_ConsoleOrder : public ConsoleOrder
 		{
 
 		}
-		
+
 	}
 };
 
@@ -151,20 +135,6 @@ void EntitySystem::Init()
 bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 {
 	srand(time(NULL));
-	ConsoleOrder* txell_consoleOrder = new Entities_ConsoleOrder;
-	App->console->AddConsoleOrderToList(txell_consoleOrder);
-
-	ConsoleOrder* spawn_consoleOrder = new Spawn_ConsoleOrder;
-	App->console->AddConsoleOrderToList(spawn_consoleOrder);
-
-	ConsoleOrder* equip_consoleOrder = new Equip_ConsoleOrder;
-	App->console->AddConsoleOrderToList(equip_consoleOrder);
-
-	ConsoleOrder* clear_consoleOrder = new Clear_ConsoleOrder;
-	App->console->AddConsoleOrderToList(clear_consoleOrder);
-
-	ConsoleOrder* player_consoleOrder = new Player_ConsoleOrder;
-	App->console->AddConsoleOrderToList(player_consoleOrder);
 
 	//------------- Loading Stats -------------------------------------------------------------
 	pugi::xml_node thrall = entitiesNode.child("players").child("thrall");
@@ -210,6 +180,7 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 
 bool EntitySystem::Start()
 {
+	BROFILER_CATEGORY("ActivateEntities", Profiler::Color::Chocolate);
 	LOG("Loading textures");
 	spritesheetsEntities.push_back(App->textures->Load("images/thrall_spritesheet.png"));
 	spritesheetsEntities.push_back(App->textures->Load("Sprites/Footman/Footman_sprite.png"));
@@ -275,6 +246,7 @@ bool EntitySystem::PostUpdate()
 
 bool EntitySystem::CleanUp()
 {
+	BROFILER_CATEGORY("ClearENTITIES", Profiler::Color::Chocolate);
 	bool ret = true;
 
 	LOG("Entity System: CleanUp...");
@@ -456,6 +428,21 @@ void EntitySystem::Load(const pugi::xml_node& eSystemNode)
 	return;
 }
 
+void EntitySystem::AddCommands()
+{
+	ConsoleOrder* spawn_consoleOrder = new Spawn_ConsoleOrder;
+	App->console->AddConsoleOrderToList(spawn_consoleOrder);
+
+	ConsoleOrder* equip_consoleOrder = new Equip_ConsoleOrder;
+	App->console->AddConsoleOrderToList(equip_consoleOrder);
+
+	ConsoleOrder* clear_consoleOrder = new Clear_ConsoleOrder;
+	App->console->AddConsoleOrderToList(clear_consoleOrder);
+
+	ConsoleOrder* player_consoleOrder = new Player_ConsoleOrder;
+	App->console->AddConsoleOrderToList(player_consoleOrder);
+}
+
 void EntitySystem::ClearEnemies()
 {
 	/*std::list<Entity*>::iterator it;
@@ -464,7 +451,6 @@ void EntitySystem::ClearEnemies()
 		if((*it)->)
 	}*/
 }
-
 
 int EntitySystem::GetRandomNumber(int rang)
 {

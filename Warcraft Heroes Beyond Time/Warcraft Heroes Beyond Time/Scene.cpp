@@ -72,13 +72,9 @@ bool Scene::Start()
 		}
 		case Stages::INGAME:
 		{
-			BROFILER_CATEGORY("ActivateColliders", Profiler::Color::Chocolate);
 			App->colliders->Activate();
-			BROFILER_CATEGORY("ActivateEntities", Profiler::Color::Chocolate);
 			App->entities->Activate();
-			BROFILER_CATEGORY("ActivateConsole", Profiler::Color::Chocolate);
 			App->console->Activate();
-			BROFILER_CATEGORY("ActivateMap", Profiler::Color::Chocolate);
 			App->map->Activate();
 
 			BROFILER_CATEGORY("InGame Generation", Profiler::Color::Chocolate);
@@ -200,23 +196,12 @@ bool Scene::PostUpdate()
 
 bool Scene::CleanUp()
 {
-	BROFILER_CATEGORY("ClearGUI", Profiler::Color::Chocolate);
 	App->gui->DeActivate();
-
-	BROFILER_CATEGORY("ClearMAP", Profiler::Color::Chocolate);
 	App->map->DeActivate();
-
-	BROFILER_CATEGORY("ClearENTITIES", Profiler::Color::Chocolate);
 	App->entities->DeActivate();
-
-	BROFILER_CATEGORY("ClearCONSOLE", Profiler::Color::Chocolate);
 	App->console->DeActivate();
-
-	BROFILER_CATEGORY("ClearCOLLIDERS", Profiler::Color::Chocolate);
-	App->colliders->DeActivate();
-
-	BROFILER_CATEGORY("ClearPATHFINDING", Profiler::Color::Chocolate);
 	App->path->ClearMap();
+	App->colliders->DeActivate();
 
 
 	return true;
