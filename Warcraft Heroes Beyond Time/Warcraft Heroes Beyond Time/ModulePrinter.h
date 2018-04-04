@@ -67,6 +67,7 @@ public:
 		CUSTOM_PIVOT
 	};
 
+	//Note: Angle required is in degrees, in clockwise direction
 	bool PrintSprite(iPoint pos, SDL_Texture* texture, SDL_Rect SquaretoBlit, int layer = 0, Pivots pivot = Pivots::CENTER, float degangle = 0, iPoint custompivot = {0,0});
 
 private:
