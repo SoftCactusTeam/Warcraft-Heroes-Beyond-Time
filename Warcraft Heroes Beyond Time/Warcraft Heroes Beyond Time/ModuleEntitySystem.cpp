@@ -23,6 +23,8 @@
 
 #include "Console.h"
 
+#include "Brofiler\Brofiler.h"
+
 
 class Entities_ConsoleOrder : public ConsoleOrder 
 {
@@ -321,6 +323,7 @@ bool EntitySystem::UnloadTexturesVector()
 
 void EntitySystem::AddEnemy(fPoint coor, ENEMY_TYPE type)
 {
+	BROFILER_CATEGORY("AddEnemy", Profiler::Color::Chocolate);
 	EnemyEntity* newEntity = nullptr;
 	switch (type) {
 	case ENEMY_TYPE::FOOTMAN:
@@ -366,6 +369,7 @@ void EntitySystem::AddBoss(fPoint coor, BOSS_TYPE type)
 
 PlayerEntity* EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
 {
+	BROFILER_CATEGORY("AddPlayer", Profiler::Color::Chocolate);
 	PlayerEntity* newEntity = nullptr;
 	switch (type)
 	{
@@ -404,6 +408,7 @@ void EntitySystem::AddConsumable(fPoint coor, CONSUMABLE_TYPE type)
 
 ChestEntity* EntitySystem::AddChest(fPoint coor, CHEST_TYPE type) 
 {
+	BROFILER_CATEGORY("AddChest", Profiler::Color::Chocolate);
 	ChestEntity* newEntity = nullptr;
 	switch (type) {
 	case CHEST_TYPE::LOW_CHEST:
@@ -424,6 +429,7 @@ ChestEntity* EntitySystem::AddChest(fPoint coor, CHEST_TYPE type)
 
 StaticEntity* EntitySystem::AddStaticEntity(fPoint coor, STATIC_ENTITY_TYPE type)
 {
+	BROFILER_CATEGORY("AddStaticEntity", Profiler::Color::Chocolate);
 	PortalEntity* newEntity = nullptr;
 	switch (type)
 	{

@@ -37,6 +37,7 @@ Pathfinding::Pathfinding() { name = "pathfinding"; }
 
 void Pathfinding::LoadPathMap()
 {
+	BROFILER_CATEGORY("LoadPathfinding", Profiler::Color::Chocolate);
 	std::vector<MapNode*> tmpMapNodes = App->map->GetMapNodesAndInfo(mapWidth, mapHeight, tileSize);
 	for (int i = 0; i < tmpMapNodes.size(); i++)
 	{
@@ -70,6 +71,7 @@ void Pathfinding::PrintWalkableTiles()
 
 void Pathfinding::LoadNeighbours()
 {
+	BROFILER_CATEGORY("LoadPathfindingNeighbours", Profiler::Color::Chocolate);
 	for (int i = 0; i < map.size(); i++)
 	{
 		if (ExistWalkableAtPos(iPoint(map[i]->nodePos.x + 1, map[i]->nodePos.y)) != -1)

@@ -49,6 +49,7 @@ bool MapGenerator::CleanUp()
 
 iPoint MapGenerator::GetRandomValidPoint()
 {
+	BROFILER_CATEGORY("GetRandomValidPoint", Profiler::Color::Chocolate);
 	int randNum = 0;
 
 	do

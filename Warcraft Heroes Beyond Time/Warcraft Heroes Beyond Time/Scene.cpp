@@ -13,6 +13,7 @@
 #include "Pathfinding.h"
 #include "PlayerEntity.h"
 
+#include "Brofiler\Brofiler.h"
 
 #include "Label.h"
 #include "InputBox.h"
@@ -71,11 +72,16 @@ bool Scene::Start()
 		}
 		case Stages::INGAME:
 		{
+			BROFILER_CATEGORY("ActivateColliders", Profiler::Color::Chocolate);
 			App->colliders->Activate();
+			BROFILER_CATEGORY("ActivateEntities", Profiler::Color::Chocolate);
 			App->entities->Activate();
+			BROFILER_CATEGORY("ActivateConsole", Profiler::Color::Chocolate);
 			App->console->Activate();
+			BROFILER_CATEGORY("ActivateMap", Profiler::Color::Chocolate);
 			App->map->Activate();
 
+			BROFILER_CATEGORY("InGame Generation", Profiler::Color::Chocolate);
 			MapData mapInfo;
 			mapInfo.sizeX = 50;
 			mapInfo.sizeY = 50;
@@ -86,6 +92,7 @@ bool Scene::Start()
 			App->map->GenerateMap(mapInfo);
 
 			player = App->entities->AddPlayer({ 25*48,25*48 }, THRALL);
+
 			App->path->LoadPathMap();
 			App->entities->AddEnemy({ 80,80 }, FOOTMAN);
 
@@ -96,6 +103,7 @@ bool Scene::Start()
 			iPoint chestPos = App->map->GetRandomValidPoint();
 			lvlChest = App->entities->AddChest({ (float)chestPos.x * 48,(float)chestPos.y * 48 }, MID_CHEST);
 			portal = (PortalEntity*)App->entities->AddStaticEntity({ 25 * 48,25 * 48 }, PORTAL);
+			
 			break;
 		}
 
@@ -180,6 +188,7 @@ bool Scene::PostUpdate()
 	if (App->path->printWalkables == true)
 		App->path->PrintWalkableTiles();
 
+	BROFILER_CATEGORY("SceneRestart", Profiler::Color::Chocolate);
 	if (restart)
 	{
 		restart = false;
@@ -191,11 +200,22 @@ bool Scene::PostUpdate()
 
 bool Scene::CleanUp()
 {
+	BROFILER_CATEGORY("ClearGUI", Profiler::Color::Chocolate);
 	App->gui->DeActivate();
+
+	BROFILER_CATEGORY("ClearMAP", Profiler::Color::Chocolate);
 	App->map->DeActivate();
+
+	BROFILER_CATEGORY("ClearENTITIES", Profiler::Color::Chocolate);
 	App->entities->DeActivate();
+
+	BROFILER_CATEGORY("ClearCONSOLE", Profiler::Color::Chocolate);
 	App->console->DeActivate();
+
+	BROFILER_CATEGORY("ClearCOLLIDERS", Profiler::Color::Chocolate);
 	App->colliders->DeActivate();
+
+	BROFILER_CATEGORY("ClearPATHFINDING", Profiler::Color::Chocolate);
 	App->path->ClearMap();
 
 

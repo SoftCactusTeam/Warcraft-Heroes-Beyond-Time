@@ -22,6 +22,8 @@
 #include "ModuleMapGenerator.h"
 #include "ModulePrinter.h"
 
+#include "Brofiler\Brofiler.h"
+
 Application::Application(int argc, char* args[]) : argc(argc), args(args)
 {
 	window = new Window();
@@ -185,7 +187,7 @@ bool Application::FinishUpdate()
 		avg_fps, last_frame_ms, frames_on_last_update, dt, seconds_since_startup, frame_count);
 	App->window->SetTitle(title);
 	
-
+	BROFILER_CATEGORY("MS Waiting", Profiler::Color::Chocolate);
 	if (capped_ms > 0 && last_frame_ms < capped_ms)
 	{
 		SDL_Delay(capped_ms - last_frame_ms);
@@ -223,6 +225,7 @@ bool Application::DoUpdate()
 	std::list<Module*>::const_iterator item;
 	Module* pModule = nullptr;
 
+	BROFILER_CATEGORY("AppUpdate", Profiler::Color::Chocolate);
 	for (item = modules.begin(); item != modules.end() && ret == true; ++item)
 	{
 		pModule = (*item);
@@ -246,6 +249,7 @@ bool Application::PostUpdate()
 	std::list<Module*>::const_iterator item;
 	Module* pModule = nullptr;
 
+	BROFILER_CATEGORY("AppPostUpdate", Profiler::Color::Chocolate);
 	for (item = modules.begin(); item != modules.end() && ret == true; ++item)
 	{
 		pModule = (*item);
