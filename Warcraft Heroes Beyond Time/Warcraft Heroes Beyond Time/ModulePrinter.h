@@ -9,8 +9,22 @@
 
 class SDL_Texture;
 
+class DrawingElem
+{
+public:
+	enum class DElemType
+	{
+		NONE = -1,
+		SPRITE,
+		QUAD
+	} type = DElemType::NONE;
+	
+public:
 
-class Sprite
+	DrawingElem(DElemType type) : type(type) {}
+};
+
+class Sprite : public DrawingElem
 {
 public:
 
@@ -23,19 +37,54 @@ public:
 
 public:
 
-	Sprite(iPoint& pos, SDL_Texture* texture, SDL_Rect& SquaretoBlit, int layer, iPoint pivot, float angle) : pos(pos), texture(texture), SquaretoBlit(SquaretoBlit), layer(layer), pivot(pivot), angle(angle){}
+	Sprite(iPoint& pos, SDL_Texture* texture, SDL_Rect& SquaretoBlit, int layer, iPoint pivot, float angle) : DrawingElem(DrawingElem::DElemType::SPRITE), pos(pos), texture(texture), SquaretoBlit(SquaretoBlit), layer(layer), pivot(pivot), angle(angle){}
+
+};
+
+class Quad : public DrawingElem
+{
+public:
+
+	SDL_Rect rect;
+	SDL_Color color;
+	bool filled;
+	bool use_camera;
+
+public:
+
+	Quad(SDL_Rect rect, SDL_Color color, bool filled, bool use_camera) : DrawingElem(DrawingElem::DElemType::QUAD), rect(rect), color(color), filled(filled), use_camera(use_camera) {}
 
 };
 
 class Compare
 {
 public:
-	bool operator () (Sprite* first, Sprite* second)
+	bool operator () (DrawingElem* first, DrawingElem* second)
 	{
-		if (first->layer != second->layer)
-			return first->layer > second->layer;
-		else
-			return first->pos.y + first->SquaretoBlit.h > second->pos.y + second->SquaretoBlit.h;
+		if (first->type == DrawingElem::DElemType::SPRITE && second->type == DrawingElem::DElemType::SPRITE)
+		{
+			Sprite* first_Sprite = (Sprite*)first;
+			Sprite* second_Sprite = (Sprite*)second;
+			if (first_Sprite->layer != second_Sprite->layer)
+				return first_Sprite->layer > second_Sprite->layer;
+			else
+				return first_Sprite->pos.y + first_Sprite->SquaretoBlit.h > second_Sprite->pos.y + second_Sprite->SquaretoBlit.h;
+		}
+		else if (first->type == DrawingElem::DElemType::QUAD && second->type == DrawingElem::DElemType::QUAD)
+		{
+			Quad* firstQuad = (Quad*) first;
+			Quad* secondQuad = (Quad*)second;
+			return firstQuad->rect.y + firstQuad->rect.h > secondQuad->rect.y + secondQuad->rect.h;
+		}
+		else if (first->type == DrawingElem::DElemType::QUAD && second->type == DrawingElem::DElemType::SPRITE)
+		{
+			return true;
+		}
+		else if (first->type == DrawingElem::DElemType::SPRITE && second->type == DrawingElem::DElemType::QUAD)
+		{
+			return false;
+		}
+		
 	}
 };
 
@@ -69,10 +118,12 @@ public:
 
 	//Note: Angle required is in degrees, in clockwise direction
 	bool PrintSprite(iPoint pos, SDL_Texture* texture, SDL_Rect SquaretoBlit, int layer = 0, Pivots pivot = Pivots::CENTER, float degangle = 0, iPoint custompivot = {0,0});
+	
+	bool PrintQuad(SDL_Rect rect, SDL_Color color, bool filled = false, bool use_camera = false);
 
 private:
 
-	std::priority_queue<Sprite*, std::vector<Sprite*>, Compare> SpriteQueue;
+	std::priority_queue<DrawingElem*, std::vector<DrawingElem*>, Compare> DrawingQueue;
 };
 
 

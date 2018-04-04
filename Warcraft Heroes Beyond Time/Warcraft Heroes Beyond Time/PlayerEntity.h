@@ -49,6 +49,7 @@ protected:
 	} state;
 
 public:
+
 	PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture);
 
 	EntitySystem::PlayerStats numStats;
@@ -62,13 +63,16 @@ public:
 	void JoyconStates(float dt);
 
 	void CheckIddleStates();
+
 	void CheckMapLimits();
+
 	virtual bool Finish();
 	virtual void Collision(COLLIDER_TYPE type);
 
 	void AddItem(Item item);
 	void IterateItems(ItemFunctions nameFunction);
 	void SetDamage(int damage, bool setStateDamage);
+
 	//This function calculates player position given a Bezier Curve
 	fPoint CalculatePosFromBezier(fPoint startPos, fPoint handleA, float t, fPoint handleB, fPoint endPos);
 	
@@ -89,6 +93,9 @@ public:
 	float freeZonex, freeZoney;
 	void InitCulling();
 	void CheckCulling();
+	bool drawFZ = false;
+	void DrawFreeZone(bool);
+	
 };
 
 #endif

@@ -25,7 +25,6 @@
 
 #include "Brofiler\Brofiler.h"
 
-
 class Entities_ConsoleOrder : public ConsoleOrder 
 {
 	std::string orderName() 
@@ -130,6 +129,10 @@ class Player_ConsoleOrder : public ConsoleOrder
 		else if (parameter == "godmodeoff")
 		{
 			//DeActivate Godmode
+		}
+		else if (parameter == "freezone")
+		{
+			App->scene->player->DrawFreeZone((bool)parameterNumeric);
 		}
 			
 	}

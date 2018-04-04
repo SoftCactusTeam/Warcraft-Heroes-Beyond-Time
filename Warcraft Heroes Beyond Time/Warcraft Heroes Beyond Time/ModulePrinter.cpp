@@ -23,25 +23,39 @@ bool ModulePrinter::PostUpdate()
 {
 	BROFILER_CATEGORY("Printer Blit", Profiler::Color::Azure);
 
-	while (!SpriteQueue.empty())
+	while (!DrawingQueue.empty())
 	{
-		Sprite* sprite = SpriteQueue.top();
-		App->render->Blit(sprite->texture, sprite->pos.x, sprite->pos.y, &sprite->SquaretoBlit, 1, 1, sprite->angle, sprite->pivot.x, sprite->pivot.y);
-
-		SpriteQueue.pop();
-		delete sprite;
+		DrawingElem* delem = DrawingQueue.top();
+		switch (delem->type)
+		{
+			case DrawingElem::DElemType::SPRITE:
+			{
+				Sprite* sprite = (Sprite*)delem;
+				App->render->Blit(sprite->texture, sprite->pos.x, sprite->pos.y, &sprite->SquaretoBlit, 1, 1, sprite->angle, sprite->pivot.x, sprite->pivot.y);
+				break;
+			}
+			case DrawingElem::DElemType::QUAD:
+			{
+				Quad* quad = (Quad*)delem;
+				App->render->DrawQuad(quad->rect, quad->color.r, quad->color.g, quad->color.b, quad->color.a, quad->filled, quad->use_camera);
+			}
+		}
+	
+		DrawingQueue.pop();
+		delete delem;
 	}
 	return true;
 }
+
 bool ModulePrinter::CleanUp()
 {
-	while (!SpriteQueue.empty())
+	while (!DrawingQueue.empty())
 	{
-		Sprite* sprite = SpriteQueue.top();
-		SpriteQueue.pop();
-		delete sprite;
+		DrawingElem* delem = DrawingQueue.top();
+		DrawingQueue.pop();
+		delete delem;
 	}
-	return true;
+	return DrawingQueue.empty();
 }
 
 bool ModulePrinter::PrintSprite(iPoint pos, SDL_Texture* texture, SDL_Rect SquaretoBlit, int layer, Pivots pivot, float degangle, iPoint custompivot)
@@ -102,7 +116,15 @@ bool ModulePrinter::PrintSprite(iPoint pos, SDL_Texture* texture, SDL_Rect Squar
 	}
 
 	Sprite* sprite = new Sprite(pos, texture, SquaretoBlit, layer, coordpivot, degangle);
-	SpriteQueue.push(sprite);
+	DrawingQueue.push(sprite);
+
+	return true;
+}
+
+bool ModulePrinter::PrintQuad(SDL_Rect rect, SDL_Color color, bool filled, bool use_camera)
+{
+	Quad* quad = new Quad(rect, color, filled, use_camera);
+	DrawingQueue.push(quad);
 
 	return true;
 }
