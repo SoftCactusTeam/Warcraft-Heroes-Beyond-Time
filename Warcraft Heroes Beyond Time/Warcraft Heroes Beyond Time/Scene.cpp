@@ -234,6 +234,11 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 			switch (_event)
 			{
 				case UIEvents::MOUSE_ENTER:
+				{
+					App->audio->PlayFx(App->audio->ButtonHovered);
+					button->atlasRect = Button1MouseHover;
+					break;
+				}
 				case UIEvents::MOUSE_RIGHT_UP:
 				{
 					button->atlasRect = Button1MouseHover;
@@ -241,6 +246,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 				}
 				case UIEvents::MOUSE_LEFT_CLICK:
 				{
+					App->audio->PlayFx(App->audio->ButtonClicked);
 					button->atlasRect = Button1Pressed;
 					button->MoveChilds({0.0f, 4.0f});
 					break;
@@ -325,7 +331,7 @@ void Scene::CreateSettingsScreen()
 	//MUSIC VOLUME SLIDER
 	SliderInfo sinfo;
 	sinfo.type = Slider::SliderType::MUSIC_VOLUME;
-	Slider* slider = (Slider*)App->gui->CreateSlider({ 200, 190 }, sinfo, this, nullptr);
+	Slider* slider = (Slider*)App->gui->CreateSlider({ 200, 95 }, sinfo, this, nullptr);
 
 	LabelInfo defLabel3;
 	defLabel3.color = White;
@@ -339,6 +345,24 @@ void Scene::CreateSettingsScreen()
 	defLabel.fontName = "LifeCraft90";
 	defLabel.text = "Music Volume";
 	App->gui->CreateLabel({ 0,-50 }, defLabel, slider, this);
+
+	//FX VOLUME SLIDER
+	SliderInfo sinfo2;
+	sinfo2.type = Slider::SliderType::FX_VOLUME;
+	Slider* slider2 = (Slider*)App->gui->CreateSlider({ 200, 190 }, sinfo2, this, nullptr);
+
+	LabelInfo defLabel4;
+	defLabel4.color = White;
+	defLabel4.fontName = "Arial80";
+	std::string temp2 = (char*)std::to_string(App->audio->MusicVolumePercent).data();
+	defLabel4.text = (char*)temp2.data();
+	App->gui->CreateLabel({ 270,-3 }, defLabel4, slider2, this);
+
+	LabelInfo defLabel5;
+	defLabel5.color = Black;
+	defLabel5.fontName = "LifeCraft90";
+	defLabel5.text = "FX Volume";
+	App->gui->CreateLabel({ 0,-50 }, defLabel5, slider2, this);
 
 	//BACK BUTTON
 	Button* button3 = (Button*)App->gui->CreateButton({ 250, 250.0f }, BType::GO_MMENU, this);
