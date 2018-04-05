@@ -54,7 +54,7 @@ bool ModuleColliders::Update(float dt)
 
 	for (int i = GetTotalUnwalkableColliders(); i < colliders.size(); i++)
 		for (int col = i + 1; col < colliders.size(); col++)
-			if (CheckTipeCollMatrix(colliders[i]->type, colliders[col]->type))
+			if (CheckTypeCollMatrix(colliders[i]->type, colliders[col]->type))
 				if (CheckCollision(i, col))
 				{
 					if (colliders[i]->owner != nullptr)
@@ -70,7 +70,7 @@ bool ModuleColliders::Update(float dt)
 	// Comprobar colliders temporals
 	for (int i = 0; i < colliders.size(); i++)
 		for (int col = 0; col < temporalColliders.size(); col++)
-			if (CheckTipeCollMatrix(colliders[i]->type, colliders[col]->type))
+			if (CheckTypeCollMatrix(colliders[i]->type, colliders[col]->type))
 				if (ChechCollisionTemporalCollider(i, col))
 				{
 					if (colliders[i]->owner != nullptr)
@@ -94,7 +94,7 @@ bool ModuleColliders::Update(float dt)
 
 bool ModuleColliders::PostUpdate()
 {
-	PrintColliders(printColliders);
+	PrintColliders();
 	return true;
 }
 
@@ -128,7 +128,7 @@ Collider* ModuleColliders::AddTemporalCollider(SDL_Rect colliderRect, COLLIDER_T
 	return aux;
 }
 
-bool ModuleColliders::deleteCollider(Collider* col)
+void ModuleColliders::deleteCollider(Collider* col)
 {
 	for (int i = 0; i < colliders.size(); i++)
 		if (colliders[i] == col)
@@ -136,7 +136,6 @@ bool ModuleColliders::deleteCollider(Collider* col)
 			delete colliders[i];
 			colliders.erase(colliders.begin() + i);
 		}
-	return true;
 }
 
 void ModuleColliders::CleanCollidersEntity(Entity* entity)
@@ -146,44 +145,31 @@ void ModuleColliders::CleanCollidersEntity(Entity* entity)
 		{
 			delete colliders[i];
 			colliders.erase(colliders.begin() + i);
-			//delete colliders[i];
-			//std::swap(colliders[i], colliders.back());
-			//colliders.pop_back();
 		}
 }
 
-bool ModuleColliders::CheckTipeCollMatrix(COLLIDER_TYPE type, COLLIDER_TYPE type2)
+bool ModuleColliders::CheckTypeCollMatrix(COLLIDER_TYPE type, COLLIDER_TYPE type2)
 {
 	switch (type)
 	{
 	case COLLIDER_PLAYER:
 		if (type2 == COLLIDER_ENEMY || type2 == COLLIDER_ENEMY_ATAC || type2 == COLLIDER_WALKABLE)
 			return true;
-		else
-			return false;
 		break;
 	case COLLIDER_ENEMY:
 		if (type2 == COLLIDER_ENEMY || type2 == COLLIDER_PLAYER_ATAC || type2 == COLLIDER_PLAYER)
 			return true;
-		else
-			return false;
 		break;
 	case COLLIDER_PLAYER_ATAC:
 		if (type2 == COLLIDER_ENEMY || type2 == COLLIDER_ENEMY_ATAC)
 			return true;
-		else
-			return false;
 		break;
 	case COLLIDER_ENEMY_ATAC:
 		if (type2 == COLLIDER_PLAYER || type2 == COLLIDER_PLAYER_ATAC)
 			return true;
-		else
-			return false;
-		break;
-	default:
-		return false;
 		break;
 	}
+	return false;
 }
 
 bool ModuleColliders::CheckCollision(int col1, int col2)
@@ -219,9 +205,9 @@ bool ModuleColliders::ChechCollisionTemporalCollider(int col, int colTemporal)
 			colliders[col]->colliderRect.y + colliders[col]->colliderRect.h > temporalColliders[colTemporal]->colliderRect.y);
 }
 
-void ModuleColliders::PrintColliders(bool print)
+void ModuleColliders::PrintColliders()
 {
-	if (print)
+	if (printColliders)
 	{
 		for (int i = 0; i < colliders.size(); i++)
 			if (colliders[i]->owner != nullptr)
