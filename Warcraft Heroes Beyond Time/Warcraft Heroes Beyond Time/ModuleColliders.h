@@ -35,8 +35,6 @@ public:
 	bool ChechCollisionTemporalCollider(int col, int colTemporal);
 	void PrintColliders();
 
-	int GetTotalUnwalkableColliders();	// es una guarrada pero funciona ¯\_(ºuº)_/¯
-
 private:
 	std::vector<Collider*> colliders;
 	// Aquestes 2 llistes van en paralel

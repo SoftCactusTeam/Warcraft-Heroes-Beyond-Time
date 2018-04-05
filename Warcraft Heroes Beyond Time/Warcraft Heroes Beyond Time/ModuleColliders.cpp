@@ -45,21 +45,22 @@ bool ModuleColliders::Update(float dt)
 {
 	BROFILER_CATEGORY("Colliders Collision", Profiler::Color::Azure);
 
-	for (int i = GetTotalUnwalkableColliders(); i < colliders.size(); i++)
-		for (int col = i + 1; col < colliders.size(); col++)
-			if (CheckTypeCollMatrix(colliders[i]->type, colliders[col]->type))
-				if (CheckCollision(i, col))
-				{
-					if (colliders[i]->owner != nullptr)
-						colliders[i]->owner->Collision(colliders[col]->type);
-					else
-						colliders[i]->collidingWith = colliders[col]->type;	// Aixo es quan el collider no te entity pero vol detectar
+	for (int i = 0; i < colliders.size(); i++)
+		if (colliders[i]->type != COLLIDER_UNWALKABLE)
+			for (int col = i + 1; col < colliders.size(); col++)
+				if (CheckTypeCollMatrix(colliders[i]->type, colliders[col]->type))
+					if (CheckCollision(i, col))
+					{
+						if (colliders[i]->owner != nullptr)
+							colliders[i]->owner->Collision(colliders[col]->type);
+						else
+							colliders[i]->collidingWith = colliders[col]->type;	// Aixo es quan el collider no te entity pero vol detectar
 
-					if (colliders[col]->owner != nullptr)
-						colliders[col]->owner->Collision(colliders[i]->type);
-					else
-						colliders[col]->collidingWith = colliders[i]->type;
-				}
+						if (colliders[col]->owner != nullptr)
+							colliders[col]->owner->Collision(colliders[i]->type);
+						else
+							colliders[col]->collidingWith = colliders[i]->type;
+					}
 	// Comprobar colliders temporals
 	for (int i = 0; i < colliders.size(); i++)
 		for (int col = 0; col < temporalColliders.size(); col++)
@@ -213,15 +214,4 @@ void ModuleColliders::PrintColliders()
 		for (int i = 0; i < temporalColliders.size(); i++)
 			App->render->DrawQuad({ temporalColliders[i]->colliderRect.x, temporalColliders[i]->colliderRect.y, temporalColliders[i]->colliderRect.w, temporalColliders[i]->colliderRect.h }, 255, 0, 255, 100);
 	}
-}
-
-int ModuleColliders::GetTotalUnwalkableColliders()
-{
-	int ret = 0;
-	for (int i = 0; i < colliders.size(); i++)
-		if (colliders[i]->type != COLLIDER_UNWALKABLE)
-			break;
-		else
-			ret++;
-	return ret;
 }
