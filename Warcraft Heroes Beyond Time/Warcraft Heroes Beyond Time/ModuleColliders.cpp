@@ -51,11 +51,6 @@ bool ModuleColliders::Awake(pugi::xml_node& consoleNode)
 bool ModuleColliders::Update(float dt)
 {
 	BROFILER_CATEGORY("Colliders Collision", Profiler::Color::Azure);
-	// TEMPORAL !!!
-	if (App->input->GetKey(SDL_SCANCODE_0) == KeyState::KEY_DOWN)
-		for (int i = 0; i < colliders.size(); i++)
-			printf_s("%i, ", colliders[i]->type);
-
 
 	for (int i = GetTotalUnwalkableColliders(); i < colliders.size(); i++)
 		for (int col = i + 1; col < colliders.size(); col++)
