@@ -341,7 +341,7 @@ Enemy_Archer_Arrow::Enemy_Archer_Arrow(fPoint coor, SDL_Texture* texture, fPoint
 	this->direction = direction;
 	this->deadTimer = SDL_GetTicks() + deadTimer;
 	this->angle = angle;
-	arrowCollider = App->colliders->AddTileCollider({ (int)coor.x,(int)coor.y,30,/*rect->h*/30 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATAC);
+	arrowCollider = App->colliders->AddCollider({ (int)coor.x,(int)coor.y,30,/*rect->h*/30 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATAC);
 	// Assignar els rects
 
 	rect[FIXED_ANGLE::UP] = { 0,0,32,32 };

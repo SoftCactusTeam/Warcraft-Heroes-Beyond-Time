@@ -19,20 +19,13 @@ class ConsoleColliders : public ConsoleOrder
 	}
 };
 
-Collider::Collider(Entity* owner, SDL_Rect colliderRect, COLLIDER_TYPE type, iPoint offset)
+Collider::Collider(SDL_Rect colliderRect, COLLIDER_TYPE type, Entity* owner, iPoint offset)
 {
 	this->owner = owner;
 	this->colliderRect = colliderRect;
 	this->type = type;
 	this->colliderRect.x += offset.x;
 	this->colliderRect.y += offset.y;
-}
-
-Collider::Collider(SDL_Rect colliderRect, COLLIDER_TYPE type)
-{
-	this->owner = nullptr;
-	this->colliderRect = colliderRect;
-	this->type = type;
 }
 
 ModuleColliders::ModuleColliders()
@@ -106,23 +99,25 @@ bool ModuleColliders::CleanUp()
 	return true;
 }
 
-Collider* ModuleColliders::AddCollider(Entity* owner, SDL_Rect colliderRect, COLLIDER_TYPE type, iPoint offset)
+Collider* ModuleColliders::AddCollider(SDL_Rect colliderRect, COLLIDER_TYPE type, Entity* owner, iPoint offset)
 {
-	Collider* aux = new Collider(owner, colliderRect, type, offset);
-	colliders.push_back(aux);
-	return aux;
-}
-
-Collider* ModuleColliders::AddTileCollider(SDL_Rect colliderRect, COLLIDER_TYPE type)
-{
-	Collider* aux = new Collider(colliderRect, type);
-	colliders.push_back(aux);
-	return aux;
+	if (owner != nullptr)
+	{
+		Collider* aux = new Collider(colliderRect, type, owner, offset);
+		colliders.push_back(aux);
+		return aux;
+	}
+	else
+	{
+		Collider* aux = new Collider(colliderRect, type);
+		colliders.push_back(aux);
+		return aux;
+	}
 }
 
 Collider* ModuleColliders::AddTemporalCollider(SDL_Rect colliderRect, COLLIDER_TYPE type, int timer)
 {
-	Collider* aux = new Collider(nullptr, colliderRect, type, {0,0});
+	Collider* aux = new Collider(colliderRect, type);
 	temporalColliders.push_back(aux);
 	temporalColliderstimer.push_back(timer + SDL_GetTicks());
 	return aux;

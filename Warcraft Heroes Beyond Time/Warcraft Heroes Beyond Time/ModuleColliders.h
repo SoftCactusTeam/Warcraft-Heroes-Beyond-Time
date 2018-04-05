@@ -8,8 +8,7 @@
 
 struct Collider
 {
-	Collider(Entity* owner, SDL_Rect colliderRect, COLLIDER_TYPE type, iPoint offset);
-	Collider(SDL_Rect colliderRect, COLLIDER_TYPE type);		// This is for non walkable tiles
+	Collider(SDL_Rect colliderRect, COLLIDER_TYPE type, Entity* owner = nullptr, iPoint offset = iPoint(0,0));
 	SDL_Rect colliderRect;										// El X i Y del Rect fan de offset !!!
 	COLLIDER_TYPE type;
 
@@ -26,8 +25,7 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
-	Collider* AddCollider(Entity* owner, SDL_Rect colliderRect, COLLIDER_TYPE type, iPoint offset);
-	Collider* AddTileCollider(SDL_Rect colliderRect, COLLIDER_TYPE type);
+	Collider* AddCollider(SDL_Rect colliderRect, COLLIDER_TYPE type, Entity* owner = nullptr, iPoint offset = iPoint(0,0));
 	Collider* AddTemporalCollider(SDL_Rect colliderRect, COLLIDER_TYPE type, int timer);
 	void deleteCollider(Collider* col);
 	void CleanCollidersEntity(Entity* entity);
