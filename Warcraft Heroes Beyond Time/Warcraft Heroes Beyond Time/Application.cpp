@@ -55,7 +55,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(fs);
 	AddModule(path);
 	AddModule(printer);
-	
+
 	AddModule(scene);
 	AddModule(colliders);
 	AddModule(console);

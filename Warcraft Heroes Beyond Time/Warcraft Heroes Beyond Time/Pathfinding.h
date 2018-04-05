@@ -6,8 +6,6 @@
 #include <vector>
 #include <queue>
 
-fPoint SillyMovementToPlayer(fPoint pos);
-
 struct pathNode
 {
 	pathNode(int cost, iPoint nodePos);

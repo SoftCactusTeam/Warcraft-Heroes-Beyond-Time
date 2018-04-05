@@ -4,19 +4,10 @@
 #include "PlayerEntity.h"
 #include "ModuleMapGenerator.h"
 #include "ModuleRender.h"
+#include "ModulePrinter.h"
 #include "Scene.h"
 
 #include "Brofiler\Brofiler.h"
-
-fPoint SillyMovementToPlayer(fPoint pos)
-{
-	fPoint res = { 1,1 };
-	if (App->scene->player->pos.x - pos.x < 0)
-		res.x = -1;
-	if (App->scene->player->pos.y - pos.y < 0)
-		res.y = -1;
-	return res;
-}
 
 // ---------------------------------------------------------------------------------------------------
 // ------------------------------------------ PATH NODE ----------------------------------------------
@@ -61,11 +52,8 @@ void Pathfinding::AddNodeToMap(int cost, iPoint point)
 
 void Pathfinding::PrintWalkableTiles()
 {
-
 	for (int i = 0; i < map.size(); i++)
-	{
 		App->render->DrawQuad({ map[i]->nodePos.x * (int)tileSize, map[i]->nodePos.y * (int)tileSize, (int)tileSize, (int)tileSize }, 255, 255, 0, 140);
-	}
 }
 
 void Pathfinding::LoadNeighbours(pathNode* node)
@@ -191,9 +179,9 @@ void PathVector::PrintAstar()
 {
 	int tileSize = App->map->getTileSize();
 	for (int i = 0; i < pathVec.size(); i++)
-		App->render->DrawQuad({ pathVec[i]->nodePos.x * (int)tileSize, pathVec[i]->nodePos.y * (int)tileSize, (int)tileSize, (int)tileSize }, 0, 150 , 255, 140);
+		App->printer->PrintQuad({ pathVec[i]->nodePos.x * (int)tileSize, pathVec[i]->nodePos.y * (int)tileSize, (int)tileSize, (int)tileSize }, Black);
 	for (int i = 0; i < walkPath.size(); i++)
-		App->render->DrawQuad({ walkPath[i]->nodePos.x * (int)tileSize, walkPath[i]->nodePos.y * (int)tileSize, (int)tileSize, (int)tileSize }, 0, 200, 255, 140);
+		App->printer->PrintQuad({ pathVec[i]->nodePos.x * (int)tileSize, pathVec[i]->nodePos.y * (int)tileSize, (int)tileSize, (int)tileSize }, Blue);
 }
 
 void PathVector::Clear()
@@ -204,9 +192,7 @@ void PathVector::Clear()
 
 bool PathVector::isEmpty()
 {
-	if (pathVec.size() <= 0)
-		return true;
-	else if (walkPath.size() <= 0)
+	if (pathVec.size() <= 0 || walkPath.size() <= 0)
 		return true;
 	return false;
 }
