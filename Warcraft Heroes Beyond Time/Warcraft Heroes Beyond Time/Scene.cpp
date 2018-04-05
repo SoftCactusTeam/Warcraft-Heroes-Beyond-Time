@@ -94,7 +94,6 @@ bool Scene::Start()
 			player = App->entities->AddPlayer({ 25*48,25*48 }, THRALL);
 
 			App->path->LoadPathMap();
-			App->entities->AddEnemy({ 80,80 }, FOOTMAN);
 
 			/*App->colliders->AddTileCollider({ 10,10,50,50 }, COLLIDER_TYPE::COLLIDER_UNWALKABLE);
 			App->colliders->AddTileCollider({ 10,70,50,50 }, COLLIDER_TYPE::COLLIDER_UNWALKABLE);*/

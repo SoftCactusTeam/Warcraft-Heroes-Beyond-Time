@@ -3,6 +3,8 @@
 #include "ModuleRender.h"
 #include "Console.h"
 
+#include "ModuleInput.h"
+
 #include "Brofiler\Brofiler.h"
 
 class ConsoleColliders : public ConsoleOrder
@@ -49,8 +51,13 @@ bool ModuleColliders::Awake(pugi::xml_node& consoleNode)
 bool ModuleColliders::Update(float dt)
 {
 	BROFILER_CATEGORY("Colliders Collision", Profiler::Color::Azure);
+	// TEMPORAL !!!
+	if (App->input->GetKey(SDL_SCANCODE_0) == KeyState::KEY_DOWN)
+		for (int i = 0; i < colliders.size(); i++)
+			printf_s("%i, ", colliders[i]->type);
 
-	for (int i = 0; i < colliders.size(); i++)
+
+	for (int i = GetTotalUnwalkableColliders(); i < colliders.size(); i++)
 		for (int col = i + 1; col < colliders.size(); col++)
 			if (CheckTipeCollMatrix(colliders[i]->type, colliders[col]->type))
 				if (CheckCollision(i, col))
@@ -152,44 +159,36 @@ void ModuleColliders::CleanCollidersEntity(Entity* entity)
 
 bool ModuleColliders::CheckTipeCollMatrix(COLLIDER_TYPE type, COLLIDER_TYPE type2)
 {
-	bool ret = false;
 	switch (type)
 	{
-	case COLLIDER_NONE:
-		ret = false;
-		break;
 	case COLLIDER_PLAYER:
-		if (type2 == COLLIDER_ENEMY || type2 == COLLIDER_ENEMY_ATAC || type2 == COLLIDER_UNWALKABLE)
-			ret = true;
+		if (type2 == COLLIDER_ENEMY || type2 == COLLIDER_ENEMY_ATAC || type2 == COLLIDER_WALKABLE)
+			return true;
 		else
-			ret = false;
+			return false;
 		break;
 	case COLLIDER_ENEMY:
 		if (type2 == COLLIDER_ENEMY || type2 == COLLIDER_PLAYER_ATAC || type2 == COLLIDER_PLAYER)
-			ret = true;
+			return true;
 		else
-			ret = false;
+			return false;
 		break;
 	case COLLIDER_PLAYER_ATAC:
 		if (type2 == COLLIDER_ENEMY || type2 == COLLIDER_ENEMY_ATAC)
-			ret = true;
+			return true;
 		else
-			ret = false;
+			return false;
 		break;
 	case COLLIDER_ENEMY_ATAC:
 		if (type2 == COLLIDER_PLAYER || type2 == COLLIDER_PLAYER_ATAC)
-			ret = true;
+			return true;
 		else
-			ret = false;
+			return false;
 		break;
-	case COLLIDER_UNWALKABLE:
-		ret = false;
-		break;
-	case COLLIDER_WALKABLE: 
-		ret = false;
+	default:
+		return false;
 		break;
 	}
-	return ret;
 }
 
 bool ModuleColliders::CheckCollision(int col1, int col2)
@@ -238,4 +237,15 @@ void ModuleColliders::PrintColliders(bool print)
 		for (int i = 0; i < temporalColliders.size(); i++)
 			App->render->DrawQuad({ temporalColliders[i]->colliderRect.x, temporalColliders[i]->colliderRect.y, temporalColliders[i]->colliderRect.w, temporalColliders[i]->colliderRect.h }, 255, 0, 255, 100);
 	}
+}
+
+int ModuleColliders::GetTotalUnwalkableColliders()
+{
+	int ret = 0;
+	for (int i = 0; i < colliders.size(); i++)
+		if (colliders[i]->type != COLLIDER_UNWALKABLE)
+			break;
+		else
+			ret++;
+	return ret;
 }
