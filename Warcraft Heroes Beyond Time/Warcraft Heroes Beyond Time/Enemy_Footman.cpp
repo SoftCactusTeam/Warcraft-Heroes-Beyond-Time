@@ -13,6 +13,7 @@
 #define CHARGE_DISTANCE		50
 #define CHARGE_SPEED		5
 #define CHARGE_COOLDOWN		3000
+#define CHARGE_PRETIME		1000
 #define ATAC_COOLDOWN		1000
 #define MOVEMENT_SPEED		3
 #define DEFENSE_DISTANCE	130
@@ -89,12 +90,13 @@ void Enemy_Footman::initAtac()
 void Enemy_Footman::initCharge()
 {
 	state = FOOTMAN_STATE::FOOTMAN_CHARGE;
-	accountantPrincipal = CHARGE_DISTANCE;
-	anim = &animCharge[LookAtPlayer()];
+	chargeTime = CHARGE_DISTANCE;
+	anim = &animPreCharge[LookAtPlayer()];
 	saveFirstAngle = LookAtPlayer();
 	anim->Reset();
 	chargeMovement = CaculateFPointAngle(App->scene->player->pos) * CHARGE_SPEED;
 	chargeCooldown = SDL_GetTicks() + CHARGE_COOLDOWN;
+	StopConcreteTime(CHARGE_PRETIME);
 }
 
 void Enemy_Footman::initDefense()
@@ -159,9 +161,11 @@ void Enemy_Footman::doAtac()
 
 void Enemy_Footman::doCharge()
 {
-	if (accountantPrincipal <= 0)
+	anim = &animCharge[LookAtPlayer()];
+
+	if (chargeTime <= 0)
 	{
-		anim = &animIdle[saveFirstAngle];
+		anim = &animPostCharge[saveFirstAngle];
 		StopConcreteTime(1000);
 		initIdle();
 	}
@@ -173,7 +177,7 @@ void Enemy_Footman::doCharge()
 		else
 		{
 			pos += chargeMovement;
-			accountantPrincipal -= CHARGE_SPEED;
+			chargeTime -= CHARGE_SPEED;
 			App->colliders->AddTemporalCollider({ (int)pos.x, (int)pos.y, 32, 32 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATAC, 10);
 		}
 	}
@@ -367,4 +371,69 @@ void Enemy_Footman::ChargeAnimations()
 	animCharge[FIXED_ANGLE::UP_LEFT].PushBack({ 229,273,76,68 });
 	animCharge[FIXED_ANGLE::UP_LEFT].speed = 0.1f;
 	animCharge[FIXED_ANGLE::UP_LEFT].loop = false;
+
+	animPreCharge[FIXED_ANGLE::UP].PushBack({ 305,273,76,68 });
+	animPreCharge[FIXED_ANGLE::UP].speed = 0.2f;
+	animPreCharge[FIXED_ANGLE::UP].loop = false;
+
+	animPreCharge[FIXED_ANGLE::UP_RIGHT].PushBack({ 381,273,76,68 });
+	animPreCharge[FIXED_ANGLE::UP_RIGHT].speed = 0.1f;
+	animPreCharge[FIXED_ANGLE::UP_RIGHT].loop = false;
+
+	animPreCharge[FIXED_ANGLE::RIGHT].PushBack({ 457,273,76,68 });
+	animPreCharge[FIXED_ANGLE::RIGHT].speed = 0.1f;
+	animPreCharge[FIXED_ANGLE::RIGHT].loop = false;
+
+	animPreCharge[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 533,273,76,68 });
+	animPreCharge[FIXED_ANGLE::DOWN_RIGHT].speed = 0.1f;
+	animPreCharge[FIXED_ANGLE::DOWN_RIGHT].loop = false;
+
+	animPreCharge[FIXED_ANGLE::DOWN].PushBack({ 609,273,76,68 });
+	animPreCharge[FIXED_ANGLE::DOWN].speed = 0.1f;
+	animPreCharge[FIXED_ANGLE::DOWN].loop = false;
+
+	animPreCharge[FIXED_ANGLE::DOWN_LEFT].PushBack({ 685,273,76,68 });
+	animPreCharge[FIXED_ANGLE::DOWN_LEFT].speed = 0.1f;
+	animPreCharge[FIXED_ANGLE::DOWN_LEFT].loop = false;
+
+	animPreCharge[FIXED_ANGLE::LEFT].PushBack({ 761,273,76,68 });
+	animPreCharge[FIXED_ANGLE::LEFT].speed = 0.1f;
+	animPreCharge[FIXED_ANGLE::LEFT].loop = false;
+
+	animPreCharge[FIXED_ANGLE::UP_LEFT].PushBack({ 837,273,76,68 });
+	animPreCharge[FIXED_ANGLE::UP_LEFT].speed = 0.1f;
+	animPreCharge[FIXED_ANGLE::UP_LEFT].loop = false;
+
+
+	animPostCharge[FIXED_ANGLE::UP].PushBack({ 229,1,76,68 });
+	animPostCharge[FIXED_ANGLE::UP].speed = 0.2f;
+	animPostCharge[FIXED_ANGLE::UP].loop = false;
+
+	animPostCharge[FIXED_ANGLE::UP_RIGHT].PushBack({ 533,1,76,68 });
+	animPostCharge[FIXED_ANGLE::UP_RIGHT].speed = 0.1f;
+	animPostCharge[FIXED_ANGLE::UP_RIGHT].loop = false;
+
+	animPostCharge[FIXED_ANGLE::RIGHT].PushBack({ 837,1,76,68 });
+	animPostCharge[FIXED_ANGLE::RIGHT].speed = 0.1f;
+	animPostCharge[FIXED_ANGLE::RIGHT].loop = false;
+
+	animPostCharge[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 153,69,76,68 });
+	animPostCharge[FIXED_ANGLE::DOWN_RIGHT].speed = 0.1f;
+	animPostCharge[FIXED_ANGLE::DOWN_RIGHT].loop = false;
+
+	animPostCharge[FIXED_ANGLE::DOWN].PushBack({ 457,69,76,68 });
+	animPostCharge[FIXED_ANGLE::DOWN].speed = 0.1f;
+	animPostCharge[FIXED_ANGLE::DOWN].loop = false;
+
+	animPostCharge[FIXED_ANGLE::DOWN_LEFT].PushBack({ 761,69,76,68 });
+	animPostCharge[FIXED_ANGLE::DOWN_LEFT].speed = 0.1f;
+	animPostCharge[FIXED_ANGLE::DOWN_LEFT].loop = false;
+
+	animPostCharge[FIXED_ANGLE::LEFT].PushBack({ 77,137,76,68 });
+	animPostCharge[FIXED_ANGLE::LEFT].speed = 0.1f;
+	animPostCharge[FIXED_ANGLE::LEFT].loop = false;
+
+	animPostCharge[FIXED_ANGLE::UP_LEFT].PushBack({ 381,137,76,68 });
+	animPostCharge[FIXED_ANGLE::UP_LEFT].speed = 0.1f;
+	animPostCharge[FIXED_ANGLE::UP_LEFT].loop = false;
 }
