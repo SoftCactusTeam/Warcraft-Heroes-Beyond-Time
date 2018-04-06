@@ -290,25 +290,25 @@ void Scene::CreateMainMenuScreen()
 	defLabel.color = White;
 	defLabel.fontName = "LifeCraft80";
 	defLabel.text = "PLAY";
-	App->gui->CreateLabel({ 60,20 }, defLabel, button, this);
+	App->gui->CreateLabel(getPosByResolution({ 60,20 }), defLabel, button, this);
 
 	//SETTINGS BUTTON
-	Button* button2 = (Button*)App->gui->CreateButton({ 250, 150.0f }, BType::SETTINGS, this);
+	Button* button2 = (Button*)App->gui->CreateButton(getPosByResolution({ 250, 150.0f }), BType::SETTINGS, this);
 
 	LabelInfo defLabel2;
 	defLabel2.color = White;
 	defLabel2.fontName = "Arial80";
 	defLabel2.text = "Settings";
-	App->gui->CreateLabel({ 40,17 }, defLabel2, button2, this);
+	App->gui->CreateLabel(getPosByResolution({ 40,17 }), defLabel2, button2, this);
 
 	//EXIT GAME BUTTON
-	Button* button3 = (Button*)App->gui->CreateButton({ 250, 250.0f }, BType::EXIT_GAME, this);
+	Button* button3 = (Button*)App->gui->CreateButton(getPosByResolution({ 250, 250.0f }), BType::EXIT_GAME, this);
 
 	LabelInfo defLabel3;
 	defLabel3.color = White;
 	defLabel3.fontName = "Arial40";
 	defLabel3.text = "Fuck u go fucking out of\n               here ;(";
-	App->gui->CreateLabel({ 13,20 }, defLabel3, button3, this);
+	App->gui->CreateLabel(getPosByResolution({ 13,20 }), defLabel3, button3, this);
 }
 
 void Scene::CreateSettingsScreen()
@@ -316,7 +316,7 @@ void Scene::CreateSettingsScreen()
 	//MUSIC VOLUME SLIDER
 	SliderInfo sinfo;
 	sinfo.type = Slider::SliderType::MUSIC_VOLUME;
-	Slider* slider = (Slider*)App->gui->CreateSlider({ 200, 95 }, sinfo, this, nullptr);
+	Slider* slider = (Slider*)App->gui->CreateSlider(getPosByResolution({ 200, 95 }), sinfo, this, nullptr);
 
 	LabelInfo defLabel3;
 	defLabel3.color = White;
@@ -334,7 +334,7 @@ void Scene::CreateSettingsScreen()
 	//FX VOLUME SLIDER
 	SliderInfo sinfo2;
 	sinfo2.type = Slider::SliderType::FX_VOLUME;
-	Slider* slider2 = (Slider*)App->gui->CreateSlider({ 200, 190 }, sinfo2, this, nullptr);
+	Slider* slider2 = (Slider*)App->gui->CreateSlider(getPosByResolution({ 200, 190 }), sinfo2, this, nullptr);
 
 	LabelInfo defLabel4;
 	defLabel4.color = White;
@@ -350,43 +350,43 @@ void Scene::CreateSettingsScreen()
 	App->gui->CreateLabel({ 0,-50 }, defLabel5, slider2, this);
 
 	//BACK BUTTON
-	Button* button3 = (Button*)App->gui->CreateButton({ 250, 250.0f }, BType::GO_MMENU, this);
+	Button* button3 = (Button*)App->gui->CreateButton(getPosByResolution({ 250, 250.0f }), BType::GO_MMENU, this);
 
 	LabelInfo defLabel2;
 	defLabel2.color = White;
 	defLabel2.fontName = "Arial80";
 	defLabel2.text = "Go Back ;)";
-	App->gui->CreateLabel({ 27,15 }, defLabel2, button3, this);
+	App->gui->CreateLabel(getPosByResolution({ 27,15 }), defLabel2, button3, this);
 }
 
 void Scene::CreatePauseMenu()
 {
-	fPoint localPos = fPoint(640 / 2 - 255 / 2, 360 / 2 - 296 / 2);
+	fPoint localPos = getPosByResolution({ 640 / 2 - 255 / 2, 360 / 2 - 296 / 2 });
 	PauseMenu = (GUIWindow*)App->gui->CreateGUIWindow(localPos, StoneWindow, this);
 
-	Button* Resume = (Button*)App->gui->CreateButton({ 255 / 2 - 158 / 2, 20.0f }, BType::RESUME, this, PauseMenu);
+	Button* Resume = (Button*)App->gui->CreateButton(getPosByResolution({ 255 / 2 - 158 / 2, 20.0f }), BType::RESUME, this, PauseMenu);
 
 	LabelInfo defLabel1;
 	defLabel1.color = White;
 	defLabel1.fontName = "Arial80";
 	defLabel1.text = "Resume";
-	App->gui->CreateLabel({ 35,15 }, defLabel1, Resume, this);
+	App->gui->CreateLabel(getPosByResolution({ 35,15 }), defLabel1, Resume, this);
 
-	Button* MainMenu = (Button*)App->gui->CreateButton({ 255 / 2 - 158 / 2, 110.0f }, BType::GO_MMENU, this, PauseMenu);
+	Button* MainMenu = (Button*)App->gui->CreateButton(getPosByResolution({ 255 / 2 - 158 / 2, 110.0f }), BType::GO_MMENU, this, PauseMenu);
 
 	LabelInfo defLabel2;
 	defLabel2.color = White;
 	defLabel2.fontName = "Arial40";
 	defLabel2.text = "Return to the Main Menu";
-	App->gui->CreateLabel({ 15,23 }, defLabel2, MainMenu, this);
+	App->gui->CreateLabel(getPosByResolution({ 15,23 }), defLabel2, MainMenu, this);
 
-	Button* SaveAndExit = (Button*)App->gui->CreateButton({ 255 / 2 - 158 / 2, 200.0f }, BType::EXIT_GAME, this, PauseMenu);
+	Button* SaveAndExit = (Button*)App->gui->CreateButton(getPosByResolution({ 255 / 2 - 158 / 2, 200.0f }), BType::EXIT_GAME, this, PauseMenu);
 
 	LabelInfo defLabel3;
 	defLabel3.color = White;
 	defLabel3.fontName = "Arial65";
 	defLabel3.text = "Save and Exit";
-	App->gui->CreateLabel({ 20,20 }, defLabel3, SaveAndExit, this);
+	App->gui->CreateLabel(getPosByResolution({ 20,20 }), defLabel3, SaveAndExit, this);
 }
 
 fPoint Scene::getPosByResolution(fPoint pos) const
@@ -394,7 +394,11 @@ fPoint Scene::getPosByResolution(fPoint pos) const
 	uint actualW = App->render->camera.w;
 	uint actualH = App->render->camera.h;
 
-	fPoint ret = { (actualW * pos.x) / 640, (actualH * pos.y) / 360 };
+	float percentX = (pos.x * 100) / 640;
+	float percentY = (pos.y * 100) / 360;
+
+
+	fPoint ret = { (actualW * percentX)/100, (actualH * percentY)/100};
 
 	return ret;
 }
