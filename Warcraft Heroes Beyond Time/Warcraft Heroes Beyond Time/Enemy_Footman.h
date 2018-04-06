@@ -44,6 +44,7 @@ public:
 	// Charge variables
 	fPoint		chargeMovement;
 	int			chargeCooldown = 0;
+	FIXED_ANGLE saveFirstAngle;
 	// Invulenarbility variables
 	bool		defensed = false;
 	int			defenseCooldown = 0;

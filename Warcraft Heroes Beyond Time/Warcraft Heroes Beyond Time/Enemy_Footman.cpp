@@ -8,14 +8,14 @@
 #include "Scene.h"
 
 #define DISTANCE_TO_MOVE	300
-#define DISTANCE_TO_CHARGE	120
+#define DISTANCE_TO_CHARGE	150
 #define DISTANCE_TO_ATAC	40
 #define CHARGE_DISTANCE		50
-#define CHARGE_SPEED		10
+#define CHARGE_SPEED		5
 #define CHARGE_COOLDOWN		3000
 #define ATAC_COOLDOWN		1000
-#define MOVEMENT_SPEED		5
-#define DEFENSE_DISTANCE	100
+#define MOVEMENT_SPEED		3
+#define DEFENSE_DISTANCE	130
 #define DEFENSE_TIME		1000
 #define DEFENSE_COOLDOWN	3000
 
@@ -91,6 +91,7 @@ void Enemy_Footman::initCharge()
 	state = FOOTMAN_STATE::FOOTMAN_CHARGE;
 	accountantPrincipal = CHARGE_DISTANCE;
 	anim = &animCharge[LookAtPlayer()];
+	saveFirstAngle = LookAtPlayer();
 	anim->Reset();
 	chargeMovement = CaculateFPointAngle(App->scene->player->pos) * CHARGE_SPEED;
 	chargeCooldown = SDL_GetTicks() + CHARGE_COOLDOWN;
@@ -160,6 +161,7 @@ void Enemy_Footman::doCharge()
 {
 	if (accountantPrincipal <= 0)
 	{
+		anim = &animIdle[saveFirstAngle];
 		StopConcreteTime(1000);
 		initIdle();
 	}
