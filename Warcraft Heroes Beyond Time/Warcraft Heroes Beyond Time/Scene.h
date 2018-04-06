@@ -2,6 +2,7 @@
 #define __SCENE_H__
 
 #include "Module.h"
+#include "p2Point.h"
 
 class GUIWindow;
 class PlayerEntity;
@@ -51,6 +52,9 @@ private:
 
 	bool restart = false;
 	int lvlIndex = 0;
+
+private:
+	fPoint getPosByResolution(fPoint pos) const;
 
 };
 

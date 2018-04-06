@@ -284,7 +284,7 @@ void Scene::CreateMainMenuScreen()
 {
 	
 	//PLAY BUTTON
-	Button* button = (Button*)App->gui->CreateButton({ 250, 50.0f }, BType::PLAY, this);
+	Button* button = (Button*)App->gui->CreateButton(getPosByResolution({ 250, 50.0f }), BType::PLAY, this);
 
 	LabelInfo defLabel;
 	defLabel.color = White;
@@ -387,4 +387,14 @@ void Scene::CreatePauseMenu()
 	defLabel3.fontName = "Arial65";
 	defLabel3.text = "Save and Exit";
 	App->gui->CreateLabel({ 20,20 }, defLabel3, SaveAndExit, this);
+}
+
+fPoint Scene::getPosByResolution(fPoint pos) const
+{
+	uint actualW = App->render->camera.w;
+	uint actualH = App->render->camera.h;
+
+	fPoint ret = { (actualW * pos.x) / 640, (actualH * pos.y) / 360 };
+
+	return ret;
 }

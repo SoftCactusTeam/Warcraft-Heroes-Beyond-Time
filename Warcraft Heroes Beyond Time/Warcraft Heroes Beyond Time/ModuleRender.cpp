@@ -64,7 +64,7 @@ bool Render::Awake(pugi::xml_node& renderNode)
 			uint width = 0, height = 0;
 			App->window->GetWindowSize(width, height);
 
-			ret = SDL_RenderSetLogicalSize(renderer, camera.w, camera.h);
+			ret = SDL_RenderSetLogicalSize(renderer, camera.w, camera.h) == 0;
 
 			SetBackgroundColor({ 0, 205, 193, 0 });
 		}
