@@ -47,27 +47,28 @@ bool Render::Awake(pugi::xml_node& renderNode)
 	else
 	{
 		SDL_DisplayMode dm;
-		SDL_GetDesktopDisplayMode(0, &dm);
+		if (SDL_GetDesktopDisplayMode(0, &dm) != 0)
+		{
+			ret = false;
+		}
+		else
+		{
+			int w, h;
+			camera.w = (dm.w * 640) / 1920/*App->window->screen_surface->w*/;
+			camera.h = (dm.h * 360) / 1080/*App->window->screen_surface->h*/;
+			camera.x = 0;
+			camera.y = 0;
+			fcamerax = 0;
+			fcameray = 0;
 
-		int w, h;
-		camera.w = (dm.w * 640) / 1920/*App->window->screen_surface->w*/;
-		camera.h = (dm.h * 360) / 1080/*App->window->screen_surface->h*/;
-		camera.x = 0;
-		camera.y = 0;
-		fcamerax = 0;
-		fcameray = 0;
+			uint width = 0, height = 0;
+			App->window->GetWindowSize(width, height);
 
-		
+			ret = SDL_RenderSetLogicalSize(renderer, camera.w, camera.h);
 
-		uint width = 0, height = 0;
-		App->window->GetWindowSize(width, height);
-
-		SDL_RenderSetLogicalSize(renderer, camera.w, camera.h);
+			SetBackgroundColor({ 0, 205, 193, 0 });
+		}
 	}
-
-	
-
-	SetBackgroundColor({ 0, 205, 193, 0 });
 
 	return ret;
 }
