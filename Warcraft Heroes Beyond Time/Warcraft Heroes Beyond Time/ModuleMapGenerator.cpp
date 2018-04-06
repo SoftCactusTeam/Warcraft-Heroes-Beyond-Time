@@ -71,18 +71,29 @@ bool MapGenerator::DrawMap() const
 
 	BROFILER_CATEGORY("Map Draw", Profiler::Color::Azure);
 
+	int x = 0, y = 0;
+	
+
 	for (uint i = 0u; i < totalSize && ret; ++i)
 	{
-		iPoint MapPos = { (nodes[i]->pos.x * (int)(this->tileSize)),  (nodes[i]->pos.y * (int)(this->tileSize))};
-
-		if (MapPos.x + (int)tileSize > -App->render->camera.x &&
-			MapPos.x - tileSize < -App->render->camera.x + App->render->camera.w &&
-			MapPos.y + (int)tileSize > -App->render->camera.y &&
-			MapPos.y - tileSize < -App->render->camera.y + App->render->camera.h)
-		{	
-			ret = App->printer->PrintSprite({ MapPos.x , MapPos.y }, mapTexture, nodes[i]->whatToBlit, nodes[i]->layerBelow);
+		if (x > -App->render->camera.x - tileSize &&
+			y > -App->render->camera.y - tileSize &&
+			x < -App->render->camera.x + App->render->camera.w + tileSize &&
+			y < -App->render->camera.y + App->render->camera.h + tileSize)
+		{
+		
+			ret = App->printer->PrintSprite({ x , y }, mapTexture, nodes[i]->whatToBlit, nodes[i]->layerBelow);
 		}
+
+		if (i % sizeX == 0)
+		{
+			x = 0;
+			y += tileSize - 2;
+		}
+		else
+			x += tileSize - 2;
 	}
+
 
 	return ret;
 }
