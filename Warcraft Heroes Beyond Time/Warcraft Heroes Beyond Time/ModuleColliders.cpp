@@ -3,6 +3,8 @@
 #include "ModuleRender.h"
 #include "Console.h"
 
+#include "Brofiler\Brofiler.h"
+
 class ConsoleColliders : public ConsoleOrder
 {
 	std::string orderName() { return "colliders"; }
@@ -36,16 +38,21 @@ ModuleColliders::ModuleColliders()
 	name = "colliders";
 }
 
-bool ModuleColliders::Awake(pugi::xml_node& consoleNode)
+void ModuleColliders::Init()
 {
-	ConsoleOrder* order = new ConsoleColliders();
-	App->console->AddConsoleOrderToList(order);
+	active = false;
+}
+
+bool ModuleColliders::Awake(pugi::xml_node& collidersNode)
+{
 	printColliders = false;
 	return true;
 }
 
 bool ModuleColliders::Update(float dt)
 {
+	BROFILER_CATEGORY("Colliders Collision", Profiler::Color::Azure);
+
 	for (int i = 0; i < colliders.size(); i++)
 		for (int col = i + 1; col < colliders.size(); col++)
 			if (CheckCollision(i, col))
@@ -92,10 +99,17 @@ bool ModuleColliders::PostUpdate()
 
 bool ModuleColliders::CleanUp()
 {
+	BROFILER_CATEGORY("ClearCOLLIDERS", Profiler::Color::Chocolate);
 	for (int i = 0; i < colliders.size(); i++)
 		delete colliders[i];
 	colliders.clear();
 	return true;
+}
+
+void ModuleColliders::AddCommands()
+{
+	ConsoleOrder* order = new ConsoleColliders();
+	App->console->AddConsoleOrderToList(order);
 }
 
 Collider* ModuleColliders::AddCollider(Entity* owner, SDL_Rect colliderRect, COLLIDER_TYPE type, iPoint offset)

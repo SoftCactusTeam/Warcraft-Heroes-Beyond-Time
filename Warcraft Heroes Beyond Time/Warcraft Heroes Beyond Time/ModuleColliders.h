@@ -25,6 +25,9 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
+	void Init();
+
+	void AddCommands();
 
 	Collider* AddCollider(Entity* owner, SDL_Rect colliderRect, COLLIDER_TYPE type, iPoint offset);
 	Collider* AddTileCollider(SDL_Rect colliderRect, COLLIDER_TYPE type);

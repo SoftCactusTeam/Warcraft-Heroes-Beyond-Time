@@ -5,6 +5,7 @@
 #include "Scene.h"
 #include "ModuleMapGenerator.h"
 #include "ModuleEntitySystem.h"
+#include "ModulePrinter.h"
 
 PlayerEntity::PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : DynamicEntity (coor, texture), type(type) {}
 
@@ -69,10 +70,15 @@ void PlayerEntity::PlayerStates(float dt)
 
 		CheckMapLimits();
 		CheckCulling();
+		if (drawFZ)
+			App->printer->PrintQuad(freeZone, { 255, 0, 0, 50 }, true, true);
 	}
 	else
 	{
 		CheckIddleStates();
+		if (drawFZ)
+			App->printer->PrintQuad(freeZone, { 255, 0, 0, 50 }, true, true);
+
 	}
 }
 
@@ -1341,8 +1347,7 @@ void PlayerEntity::CheckCulling()
 		freeZone.x = (int)freeZonex;
 		freeZone.y = (int)freeZoney;
 
-		//Uncomment line below to see the freeZone.
-		//App->render->DrawQuad(freeZone, 255, 0, 0, 50, true, true);
+		
 	}
 }
 
@@ -1405,4 +1410,9 @@ void PlayerEntity::SetDamage(int damage, bool setStateDamage)
 	if (setStateDamage)
 		damaged = true;
 	live -= damage;
+}
+
+void PlayerEntity::DrawFreeZone(bool boolean)
+{
+	drawFZ = boolean;
 }

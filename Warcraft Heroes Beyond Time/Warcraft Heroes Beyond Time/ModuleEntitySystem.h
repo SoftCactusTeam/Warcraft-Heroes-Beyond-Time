@@ -55,6 +55,8 @@ public:
 	void Save(pugi::xml_node&);
 	void Load(const pugi::xml_node&);
 
+	void AddCommands();
+
 	bool ClearEntitiesList();
 	bool UnloadTexturesVector();
 

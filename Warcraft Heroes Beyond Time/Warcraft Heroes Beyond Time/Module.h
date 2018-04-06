@@ -61,6 +61,9 @@ public:
 		return true;
 	}
 
+	virtual void AddCommands() 
+	{}
+
 	bool Activate()
 	{
 		bool ret = true;

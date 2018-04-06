@@ -6,7 +6,8 @@
 #include "Log.h"
 #include "Scene.h"
 #include "PlayerEntity.h"
-
+#include "ModuleColliders.h"
+#include "Brofiler\Brofiler.h"
 #include <time.h>
 
 #define VOID { 196,0,48,48 }
@@ -27,6 +28,7 @@ MapGenerator::~MapGenerator() {}
 
 bool MapGenerator::CleanUp()
 {
+	BROFILER_CATEGORY("ClearMAP", Profiler::Color::Chocolate);
 	bool ret = true;
 
 	LOG("Unloading Map Texture...");
@@ -48,6 +50,7 @@ bool MapGenerator::CleanUp()
 
 iPoint MapGenerator::GetRandomValidPoint()
 {
+	BROFILER_CATEGORY("GetRandomValidPoint", Profiler::Color::Chocolate);
 	int randNum = 0;
 
 	do
@@ -65,6 +68,8 @@ bool MapGenerator::PostUpdate()
 bool MapGenerator::DrawMap() const
 {
 	bool ret = true;
+
+	BROFILER_CATEGORY("Map Draw", Profiler::Color::Azure);
 
 	for (uint i = 0u; i < totalSize && ret; ++i)
 	{
@@ -95,6 +100,8 @@ bool MapGenerator::CheckBoundaries(const iPoint& pos) const
 
 bool MapGenerator::GenerateMap(MapData data)
 {
+	BROFILER_CATEGORY("Map Generation", Profiler::Color::Azure);
+
 	bool ret = true;
 
 	mapTexture = App->textures->Load(data.tilesetPath);
@@ -261,30 +268,39 @@ bool MapGenerator::GenerateWalls()
 				if (SDL_RectEquals(&nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)]->whatToBlit, &SDL_Rect(VOID)))
 				{
 					nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)]->whatToBlit = randomTile(false);
-					//Check type of node adn Update
-					//int type = CheckTypeOfNode(nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)]);
-					//UpdateNode(nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)], type);
+									
+					if (!nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)]->colliderInside)
+					{
+						App->colliders->AddTileCollider(SDL_Rect({ auxNode->pos.x * (int)tileSize, auxNode->pos.y * (int)tileSize - (int)tileSize, 48,48 }), COLLIDER_TYPE::COLLIDER_UNWALKABLE);
+						nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)]->colliderInside = true;
+					}
 				}
 
 				if (SDL_RectEquals(&nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)]->whatToBlit, &SDL_Rect(VOID)))
 				{
-					//Check type of node adn Update
-					//int type = CheckTypeOfNode(nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)]);
-					//UpdateNode(nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)], type);
+					if (!nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)]->colliderInside)
+					{
+						App->colliders->AddTileCollider(SDL_Rect({ auxNode->pos.x * (int)tileSize, auxNode->pos.y * (int)tileSize + (int)tileSize, 48,48 }), COLLIDER_TYPE::COLLIDER_UNWALKABLE);
+						nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)]->colliderInside = true;
+					}
 				}
 
 				if (SDL_RectEquals(&nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)]->whatToBlit, &SDL_Rect(VOID)))
 				{
-					//Check type of node adn Update
-					//int type = CheckTypeOfNode(nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)]);
-					//UpdateNode(nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)], type);
+					if (!nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)]->colliderInside)
+					{
+						App->colliders->AddTileCollider(SDL_Rect({ auxNode->pos.x * (int)tileSize + (int)tileSize, auxNode->pos.y * (int)tileSize, 48,48 }), COLLIDER_TYPE::COLLIDER_UNWALKABLE);
+						nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)]->colliderInside = true;
+					}
 				}
 
 				if (SDL_RectEquals(&nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)]->whatToBlit, &SDL_Rect(VOID)))
 				{
-					//Check type of node adn Update
-					//int type = CheckTypeOfNode(nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)]);
-					//UpdateNode(nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)], type);
+					if (!nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)]->colliderInside)
+					{
+						App->colliders->AddTileCollider(SDL_Rect({ auxNode->pos.x * (int)tileSize - (int)tileSize, auxNode->pos.y * (int)tileSize, 48,48 }), COLLIDER_TYPE::COLLIDER_UNWALKABLE);
+						nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)]->colliderInside = true;
+					}
 				}
 		}
 	}

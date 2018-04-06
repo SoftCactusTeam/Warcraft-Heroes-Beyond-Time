@@ -25,7 +25,9 @@ public:
 public:
 
 	virtual bool OnUIEvent(GUIElem* UIelem, UIEvents _event);
-
+	void CreateMainMenuScreen();
+	void CreateSettingsScreen();
+	void CreatePauseMenu();
 
 public:
 	enum class Stages
@@ -37,23 +39,18 @@ public:
 
 	} actual_scene = Stages::MAIN_MENU;
 
+	PlayerEntity* player = nullptr;
+	bool paused = false;
 
 
 private:
 
 	GUIWindow* PauseMenu = nullptr;
-
-	bool restart = false;
-
-	int lvlIndex = 0;
-
 	ChestEntity* lvlChest = nullptr;
 	PortalEntity* portal = nullptr;
 
-public:
-	PlayerEntity* player = nullptr;
-
-	bool paused = false;
+	bool restart = false;
+	int lvlIndex = 0;
 
 };
 

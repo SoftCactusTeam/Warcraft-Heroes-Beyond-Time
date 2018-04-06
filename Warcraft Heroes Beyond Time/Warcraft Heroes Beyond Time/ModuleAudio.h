@@ -41,8 +41,13 @@ public:
 public:
 
 	//uint sounds here
-	uint MusicVolumePercent = 50;
-	uint FXVolumePercent = 50;
+	uint ButtonHovered = 0;
+	uint ButtonClicked = 0;
+	//std::string BSO's
+	std::string MainMenuBSO;
+
+	uint MusicVolumePercent = 5;
+	uint FXVolumePercent = 5;
 
 private:
 	

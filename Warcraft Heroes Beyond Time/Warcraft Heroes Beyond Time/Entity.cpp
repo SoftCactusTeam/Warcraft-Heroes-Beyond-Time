@@ -16,10 +16,9 @@ bool Entity::Finish() { return true; }
 bool Entity::Draw()
 {
 	bool ret = true;
-	//REVISTAR !
-  //ret = App->render->Blit(texture, pos.x, pos.y, &anim->GetCurrentFrame());
 
 	ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), texture, anim->GetCurrentFrame());
+	
 	return ret;
 }
 

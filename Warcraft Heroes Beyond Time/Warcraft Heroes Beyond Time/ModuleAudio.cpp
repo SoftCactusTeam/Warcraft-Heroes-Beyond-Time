@@ -7,7 +7,7 @@
 #include "Scene.h"
 
 #include "SDL/include/SDL.h"
-#include "SDL_mixer\include\SDL_mixer.h"
+#include "SDL_mixer/include/SDL_mixer.h"
 #pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
 
 Audio::Audio() : Module()
@@ -35,8 +35,8 @@ bool Audio::Awake(pugi::xml_node& audioNode)
 		ret = false;
 	}
 
-	// load support for the JPG and PNG image formats
-	int flags = MIX_INIT_OGG;
+	// load support for the music formats
+	/*int flags = MIX_INIT_OGG;
 	int init = Mix_Init(flags);
 
 	if((init & flags) != flags)
@@ -44,23 +44,27 @@ bool Audio::Awake(pugi::xml_node& audioNode)
 		LOG("Could not initialize Mixer lib. Mix_Init: %s", Mix_GetError());
 		active = false;
 		ret = false;
-	}
+	}*/
 
 	//Initialize SDL_mixer
-	if(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+	if(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 4096) < 0)
 	{
 		LOG("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
 		active = false;
 		ret = false;
 	}
 	
-	//----------------------------------------------Load fx-------------------------------
+	//---------------------------------------Load fx-------------------------------
 	
+	//---------------------------------------Load Music----------------------------
+	ButtonClicked = LoadFx("audio/fx/Warcraft Adventures - Menu Select.ogg");
+	ButtonHovered = LoadFx("audio/fx/Warcraft Adventures - ButtonHovered.ogg");
+	MainMenuBSO = "audio/BSO's/Warcraft Adventures - Main Menu.ogg";
 
+	//---------------------------------------SetVolumes----------------------------
 
-	//----------------------------------------------SetVolumes----------------------------
-	Mix_Volume(-1, MIX_MAX_VOLUME * (FXVolumePercent / 100));
-	Mix_VolumeMusic(MIX_MAX_VOLUME * (MusicVolumePercent / 100));
+	Mix_Volume(-1, (MIX_MAX_VOLUME * FXVolumePercent) / 100);
+	Mix_VolumeMusic((MIX_MAX_VOLUME * MusicVolumePercent) / 100);
 
 
 
@@ -103,7 +107,6 @@ bool Audio::PlayMusic(const char* path, float fade_time)
 	{
 		if(fade_time > 0.0f)
 		{
-			Mix_VolumeMusic(64);
 			Mix_FadeOutMusic(int(fade_time * 1000.0f));
 		}
 		else
@@ -188,11 +191,11 @@ bool Audio::PlayFx(unsigned int id, int repeat)
 void Audio::setMusicVolume(uint percent)
 {
 	MusicVolumePercent = percent;
-	Mix_VolumeMusic(MIX_MAX_VOLUME * (MusicVolumePercent / 100));
+	Mix_VolumeMusic((MIX_MAX_VOLUME * MusicVolumePercent) / 100);
 }
 
 void Audio::setFXVolume(uint percent)
 {
 	FXVolumePercent = percent;
-	Mix_Volume(-1, MIX_MAX_VOLUME * (FXVolumePercent / 100));
+	Mix_Volume(-1, (MIX_MAX_VOLUME * FXVolumePercent) / 100);
 }

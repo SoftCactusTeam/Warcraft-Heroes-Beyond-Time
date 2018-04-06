@@ -28,6 +28,7 @@ struct MapNode
 	int cost = 0;
 	SDL_Rect whatToBlit = { 0,0,0,0 };
 	int layerBelow = 0;
+	bool colliderInside = false;
 };
 
 class MapGenerator : public Module

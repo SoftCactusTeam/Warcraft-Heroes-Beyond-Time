@@ -13,6 +13,7 @@
 #include "Pathfinding.h"
 #include "PlayerEntity.h"
 
+#include "Brofiler\Brofiler.h"
 
 #include "Label.h"
 #include "InputBox.h"
@@ -46,6 +47,8 @@ bool Scene::Awake(pugi::xml_node& sceneNode)
 {
 	ConsoleOrder* order = new ConsoleMap();
 	App->console->AddConsoleOrderToList(order);
+
+	App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
 	return true;
 }
 
@@ -57,57 +60,13 @@ bool Scene::Start()
 	{
 		case Stages::MAIN_MENU:
 		{
-			//PLAY BUTTON
-			Button* button = (Button*)App->gui->CreateButton({ 250, 50.0f }, BType::PLAY, this);
-
-			LabelInfo defLabel;
-			defLabel.color = White;
-			defLabel.fontName = "LifeCraft80";
-			defLabel.text = "PLAY";
-			App->gui->CreateLabel({ 60,20 }, defLabel, button, this);
-
-			//SETTINGS BUTTON
-			Button* button2 = (Button*)App->gui->CreateButton({ 250, 150.0f }, BType::SETTINGS, this);
-
-			LabelInfo defLabel2;
-			defLabel2.color = White;
-			defLabel2.fontName = "Arial80";
-			defLabel2.text = "Settings";
-			App->gui->CreateLabel({ 40,17 }, defLabel2, button2, this);
-
-			//EXIT GAME BUTTON
-			Button* button3 = (Button*)App->gui->CreateButton({ 250, 250.0f }, BType::EXIT_GAME, this);
-
-			LabelInfo defLabel3;
-			defLabel3.color = White;
-			defLabel3.fontName = "Arial40";
-			defLabel3.text = "Fuck u go fucking out of\n               here ;(";
-			App->gui->CreateLabel({ 13,20 }, defLabel3, button3, this);
+			CreateMainMenuScreen();
 
 			break;
 		}
 		case Stages::SETTINGS:
 		{
-			//MUSIC VOLUME SLIDER
-			SliderInfo sinfo;
-			sinfo.type = Slider::SliderType::MUSIC_VOLUME;
-			Slider* slider = (Slider*)App->gui->CreateSlider({ 200, 190 }, sinfo, this, nullptr);
-
-			LabelInfo defLabel3;
-			defLabel3.color = White;
-			defLabel3.fontName = "Arial80";
-			std::string temp = (char*)std::to_string(App->audio->MusicVolumePercent).data();
-			defLabel3.text = (char*)temp.data();
-			App->gui->CreateLabel({ 270,-3 }, defLabel3, slider, this);
-
-			//BACK BUTTON
-			Button* button3 = (Button*)App->gui->CreateButton({ 250, 250.0f }, BType::GO_MMENU, this);
-
-			LabelInfo defLabel2;
-			defLabel2.color = White;
-			defLabel2.fontName = "Arial80";
-			defLabel2.text = "Go Back ;)";
-			App->gui->CreateLabel({ 27,15 }, defLabel2, button3, this);
+			CreateSettingsScreen();
 
 			break;
 		}
@@ -118,6 +77,7 @@ bool Scene::Start()
 			App->console->Activate();
 			App->map->Activate();
 
+			BROFILER_CATEGORY("InGame Generation", Profiler::Color::Chocolate);
 			MapData mapInfo;
 			mapInfo.sizeX = 50;
 			mapInfo.sizeY = 50;
@@ -128,6 +88,7 @@ bool Scene::Start()
 			App->map->GenerateMap(mapInfo);
 
 			player = App->entities->AddPlayer({ 25*48,25*48 }, THRALL);
+
 			App->path->LoadPathMap();
 			App->entities->AddEnemy({ 80,80 }, FOOTMAN);
 
@@ -138,6 +99,7 @@ bool Scene::Start()
 			iPoint chestPos = App->map->GetRandomValidPoint();
 			lvlChest = App->entities->AddChest({ (float)chestPos.x * 48,(float)chestPos.y * 48 }, MID_CHEST);
 			portal = (PortalEntity*)App->entities->AddStaticEntity({ 25 * 48,25 * 48 }, PORTAL);
+			
 			break;
 		}
 
@@ -204,32 +166,7 @@ bool Scene::Update(float dt)
 				if (!paused)
 				{
 					paused = true;
-					fPoint localPos = fPoint(640 / 2 - 255 / 2, 360 / 2 - 296 / 2);
-					PauseMenu = (GUIWindow*)App->gui->CreateGUIWindow(localPos, StoneWindow, this);
-
-					Button* Resume = (Button*)App->gui->CreateButton({ 255 / 2 - 158 / 2, 20.0f }, BType::RESUME, this, PauseMenu);
-
-					LabelInfo defLabel1;
-					defLabel1.color = White;
-					defLabel1.fontName = "Arial80";
-					defLabel1.text = "Resume";
-					App->gui->CreateLabel({ 35,15 }, defLabel1, Resume, this);
-
-					Button* MainMenu = (Button*)App->gui->CreateButton({ 255 / 2 - 158 / 2, 110.0f }, BType::GO_MMENU, this, PauseMenu);
-
-					LabelInfo defLabel2;
-					defLabel2.color = White;
-					defLabel2.fontName = "Arial40";
-					defLabel2.text = "Return to the Main Menu";
-					App->gui->CreateLabel({ 15,23 }, defLabel2, MainMenu, this);
-
-					Button* SaveAndExit = (Button*)App->gui->CreateButton({ 255 / 2 - 158 / 2, 200.0f }, BType::EXIT_GAME, this, PauseMenu);
-
-					LabelInfo defLabel3;
-					defLabel3.color = White;
-					defLabel3.fontName = "Arial65";
-					defLabel3.text = "Save and Exit";
-					App->gui->CreateLabel({ 20,20 }, defLabel3, SaveAndExit, this);
+					CreatePauseMenu();
 				}
 				else
 				{
@@ -247,6 +184,7 @@ bool Scene::PostUpdate()
 	if (App->path->printWalkables == true)
 		App->path->PrintWalkableTiles();
 
+	BROFILER_CATEGORY("SceneRestart", Profiler::Color::Chocolate);
 	if (restart)
 	{
 		restart = false;
@@ -262,8 +200,8 @@ bool Scene::CleanUp()
 	App->map->DeActivate();
 	App->entities->DeActivate();
 	App->console->DeActivate();
-	App->colliders->DeActivate();
 	App->path->ClearMap();
+	App->colliders->DeActivate();
 
 
 	return true;
@@ -281,6 +219,11 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 			switch (_event)
 			{
 				case UIEvents::MOUSE_ENTER:
+				{
+					App->audio->PlayFx(App->audio->ButtonHovered);
+					button->atlasRect = Button1MouseHover;
+					break;
+				}
 				case UIEvents::MOUSE_RIGHT_UP:
 				{
 					button->atlasRect = Button1MouseHover;
@@ -288,6 +231,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 				}
 				case UIEvents::MOUSE_LEFT_CLICK:
 				{
+					App->audio->PlayFx(App->audio->ButtonClicked);
 					button->atlasRect = Button1Pressed;
 					button->MoveChilds({0.0f, 4.0f});
 					break;
@@ -316,6 +260,8 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 						restart = true;
 						break;
 					case BType::GO_MMENU:
+						if (actual_scene == Stages::INGAME)
+							App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
 						actual_scene = Stages::MAIN_MENU;
 						paused = false;
 						restart = true;
@@ -332,4 +278,113 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 		}
 	}
 	return ret;
+}
+
+void Scene::CreateMainMenuScreen()
+{
+	
+	//PLAY BUTTON
+	Button* button = (Button*)App->gui->CreateButton({ 250, 50.0f }, BType::PLAY, this);
+
+	LabelInfo defLabel;
+	defLabel.color = White;
+	defLabel.fontName = "LifeCraft80";
+	defLabel.text = "PLAY";
+	App->gui->CreateLabel({ 60,20 }, defLabel, button, this);
+
+	//SETTINGS BUTTON
+	Button* button2 = (Button*)App->gui->CreateButton({ 250, 150.0f }, BType::SETTINGS, this);
+
+	LabelInfo defLabel2;
+	defLabel2.color = White;
+	defLabel2.fontName = "Arial80";
+	defLabel2.text = "Settings";
+	App->gui->CreateLabel({ 40,17 }, defLabel2, button2, this);
+
+	//EXIT GAME BUTTON
+	Button* button3 = (Button*)App->gui->CreateButton({ 250, 250.0f }, BType::EXIT_GAME, this);
+
+	LabelInfo defLabel3;
+	defLabel3.color = White;
+	defLabel3.fontName = "Arial40";
+	defLabel3.text = "Fuck u go fucking out of\n               here ;(";
+	App->gui->CreateLabel({ 13,20 }, defLabel3, button3, this);
+}
+
+void Scene::CreateSettingsScreen()
+{
+	//MUSIC VOLUME SLIDER
+	SliderInfo sinfo;
+	sinfo.type = Slider::SliderType::MUSIC_VOLUME;
+	Slider* slider = (Slider*)App->gui->CreateSlider({ 200, 95 }, sinfo, this, nullptr);
+
+	LabelInfo defLabel3;
+	defLabel3.color = White;
+	defLabel3.fontName = "Arial80";
+	std::string temp = (char*)std::to_string(App->audio->MusicVolumePercent).data();
+	defLabel3.text = (char*)temp.data();
+	App->gui->CreateLabel({ 270,-3 }, defLabel3, slider, this);
+
+	LabelInfo defLabel;
+	defLabel.color = Black;
+	defLabel.fontName = "LifeCraft90";
+	defLabel.text = "Music Volume";
+	App->gui->CreateLabel({ 0,-50 }, defLabel, slider, this);
+
+	//FX VOLUME SLIDER
+	SliderInfo sinfo2;
+	sinfo2.type = Slider::SliderType::FX_VOLUME;
+	Slider* slider2 = (Slider*)App->gui->CreateSlider({ 200, 190 }, sinfo2, this, nullptr);
+
+	LabelInfo defLabel4;
+	defLabel4.color = White;
+	defLabel4.fontName = "Arial80";
+	std::string temp2 = (char*)std::to_string(App->audio->FXVolumePercent).data();
+	defLabel4.text = (char*)temp2.data();
+	App->gui->CreateLabel({ 270,-3 }, defLabel4, slider2, this);
+
+	LabelInfo defLabel5;
+	defLabel5.color = Black;
+	defLabel5.fontName = "LifeCraft90";
+	defLabel5.text = "FX Volume";
+	App->gui->CreateLabel({ 0,-50 }, defLabel5, slider2, this);
+
+	//BACK BUTTON
+	Button* button3 = (Button*)App->gui->CreateButton({ 250, 250.0f }, BType::GO_MMENU, this);
+
+	LabelInfo defLabel2;
+	defLabel2.color = White;
+	defLabel2.fontName = "Arial80";
+	defLabel2.text = "Go Back ;)";
+	App->gui->CreateLabel({ 27,15 }, defLabel2, button3, this);
+}
+
+void Scene::CreatePauseMenu()
+{
+	fPoint localPos = fPoint(640 / 2 - 255 / 2, 360 / 2 - 296 / 2);
+	PauseMenu = (GUIWindow*)App->gui->CreateGUIWindow(localPos, StoneWindow, this);
+
+	Button* Resume = (Button*)App->gui->CreateButton({ 255 / 2 - 158 / 2, 20.0f }, BType::RESUME, this, PauseMenu);
+
+	LabelInfo defLabel1;
+	defLabel1.color = White;
+	defLabel1.fontName = "Arial80";
+	defLabel1.text = "Resume";
+	App->gui->CreateLabel({ 35,15 }, defLabel1, Resume, this);
+
+	Button* MainMenu = (Button*)App->gui->CreateButton({ 255 / 2 - 158 / 2, 110.0f }, BType::GO_MMENU, this, PauseMenu);
+
+	LabelInfo defLabel2;
+	defLabel2.color = White;
+	defLabel2.fontName = "Arial40";
+	defLabel2.text = "Return to the Main Menu";
+	App->gui->CreateLabel({ 15,23 }, defLabel2, MainMenu, this);
+
+	Button* SaveAndExit = (Button*)App->gui->CreateButton({ 255 / 2 - 158 / 2, 200.0f }, BType::EXIT_GAME, this, PauseMenu);
+
+	LabelInfo defLabel3;
+	defLabel3.color = White;
+	defLabel3.fontName = "Arial65";
+	defLabel3.text = "Save and Exit";
+	App->gui->CreateLabel({ 20,20 }, defLabel3, SaveAndExit, this);
 }

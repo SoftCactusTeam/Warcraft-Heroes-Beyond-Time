@@ -6,6 +6,8 @@
 #include "ModuleRender.h"
 #include "Scene.h"
 
+#include "Brofiler\Brofiler.h"
+
 fPoint SillyMovementToPlayer(fPoint pos)
 {
 	fPoint res = { 1,1 };
@@ -35,6 +37,7 @@ Pathfinding::Pathfinding() { name = "pathfinding"; }
 
 void Pathfinding::LoadPathMap()
 {
+	BROFILER_CATEGORY("LoadPathfinding", Profiler::Color::Chocolate);
 	std::vector<MapNode*> tmpMapNodes = App->map->GetMapNodesAndInfo(mapWidth, mapHeight, tileSize);
 	for (int i = 0; i < tmpMapNodes.size(); i++)
 	{
@@ -46,6 +49,7 @@ void Pathfinding::LoadPathMap()
 
 void Pathfinding::ClearMap()
 {
+	BROFILER_CATEGORY("ClearPATHFINDING", Profiler::Color::Chocolate);
 	for (int i = 0; i < map.size(); i++)
 		delete map[i];
 	map.clear();
@@ -68,6 +72,7 @@ void Pathfinding::PrintWalkableTiles()
 
 void Pathfinding::LoadNeighbours()
 {
+	BROFILER_CATEGORY("LoadPathfindingNeighbours", Profiler::Color::Chocolate);
 	for (int i = 0; i < map.size(); i++)
 	{
 		if (ExistWalkableAtPos(iPoint(map[i]->nodePos.x + 1, map[i]->nodePos.y)) != -1)
@@ -97,6 +102,8 @@ PathVector::PathVector() {}
 
 bool PathVector::CalculatePathAstar(iPoint thisPos, iPoint tileToMove)
 {
+	BROFILER_CATEGORY("AStar Algorithm", Profiler::Color::Azure);
+
 	/// CLEAN VISITED
 	pathVec.clear();
 

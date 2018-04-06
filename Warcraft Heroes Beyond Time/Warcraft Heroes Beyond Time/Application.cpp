@@ -22,6 +22,8 @@
 #include "ModuleMapGenerator.h"
 #include "ModulePrinter.h"
 
+#include "Brofiler\Brofiler.h"
+
 Application::Application(int argc, char* args[]) : argc(argc), args(args)
 {
 	window = new Window();
@@ -185,7 +187,7 @@ bool Application::FinishUpdate()
 		avg_fps, last_frame_ms, frames_on_last_update, dt, seconds_since_startup, frame_count);
 	App->window->SetTitle(title);
 	
-
+	BROFILER_CATEGORY("MS Waiting", Profiler::Color::Chocolate);
 	if (capped_ms > 0 && last_frame_ms < capped_ms)
 	{
 		SDL_Delay(capped_ms - last_frame_ms);
@@ -223,12 +225,13 @@ bool Application::DoUpdate()
 	std::list<Module*>::const_iterator item;
 	Module* pModule = nullptr;
 
+	BROFILER_CATEGORY("AppUpdate", Profiler::Color::Chocolate);
 	for (item = modules.begin(); item != modules.end() && ret == true; ++item)
 	{
 		pModule = (*item);
 
 		if (pModule->isActive() == false
-			|| ((pModule != gui && pModule != scene) && scene->paused)) 
+			|| (((pModule != gui && pModule != scene) && scene->paused))) 
 		{
 			continue;
 		}
@@ -246,6 +249,7 @@ bool Application::PostUpdate()
 	std::list<Module*>::const_iterator item;
 	Module* pModule = nullptr;
 
+	BROFILER_CATEGORY("AppPostUpdate", Profiler::Color::Chocolate);
 	for (item = modules.begin(); item != modules.end() && ret == true; ++item)
 	{
 		pModule = (*item);
@@ -308,6 +312,15 @@ bool Application::LoadConfig(pugi::xml_document& doc)
 	RELEASE(buffer);
 
 	return result;
+}
+
+void Application::AddCommands()
+{
+	std::list<Module*>::const_iterator it;
+	for (it = modules.begin(); it != modules.end(); ++it)
+	{
+		(*it)->AddCommands();
+	}
 }
 
 void Application::Save()
