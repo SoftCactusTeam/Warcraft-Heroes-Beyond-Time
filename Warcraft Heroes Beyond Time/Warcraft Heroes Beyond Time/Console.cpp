@@ -69,11 +69,14 @@ bool Console::Update(float dt)
 {
 	bool ret = true;
 
+	box->Update(dt);
+
 	if(writting)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KeyState::KEY_DOWN)
 		{
 			ret = ExecConsoleOrder(box->text);
+			
 		}
 	}
 	
@@ -88,6 +91,8 @@ bool Console::PostUpdate()
 		rectConsoleQuad.x = -App->render->camera.x;
 		rectConsoleQuad.y = -App->render->camera.y;
 		ret = App->render->DrawQuad(rectConsoleQuad, 0, 0, 0, 200);
+		if (ret)
+			ret = box->Draw();
 	}
 	return ret;
 }
@@ -157,6 +162,7 @@ bool Console::ExecConsoleOrder(std::string name)
 	}
 
 	box->ClearBox();
+	SwitchWrittingState();
 	return true;
 }
 

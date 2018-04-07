@@ -128,7 +128,8 @@ GUIElem* ModuleGUI::CreateInputBox(fPoint localPos, InputBoxInfo& info, Module* 
 {
 	InputBox* inputBox = new InputBox(localPos, info, listener, parent);
 
-	elementsToSpawn.push_back((GUIElem*)inputBox);
+
+	/*elementsToSpawn.push_back((GUIElem*)inputBox);*/
 
 	return inputBox;
 }
