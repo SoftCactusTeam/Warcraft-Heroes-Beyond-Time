@@ -6,6 +6,8 @@
 #include "SDL/include/SDL_timer.h"
 #include "SDL/include/SDL_rect.h"
 
+#include "p2Point.h"
+
 #include "Globals.h"
 
 #define MAX_FRAMES 45
@@ -18,7 +20,7 @@ private:
 	int last_frame = 0;
 
 	SDL_Rect frames[MAX_FRAMES];
-	int distToFeet[MAX_FRAMES];
+	iPoint pivots[MAX_FRAMES];
 
 public:
 	float speed = 0.0f;
@@ -27,9 +29,9 @@ public:
 
 public:
 
-	void PushBack(const SDL_Rect& rect, int distToFeet = 0)
+	void PushBack(const SDL_Rect& rect, iPoint pivot = {0,0})
 	{
-		this->distToFeet[last_frame] = distToFeet;
+		pivots[last_frame] = pivot;
 		frames[last_frame++] = rect;
 	}
 
@@ -45,9 +47,9 @@ public:
 		return frames[(int)current_frame];
 	}
 
-	int GetCurrentDTF() const
+	iPoint GetCurrentPivot() const
 	{
-		return distToFeet[(int)current_frame];
+		return pivots[(int)current_frame];
 	}
 
 	SDL_Rect& GetCurrentRect()

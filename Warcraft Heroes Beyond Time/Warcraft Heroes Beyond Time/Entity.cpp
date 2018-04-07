@@ -17,7 +17,7 @@ bool Entity::Draw()
 {
 	bool ret = true;
 
-	ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), texture, anim->GetCurrentFrame());
+	ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), texture, anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, 0, anim->GetCurrentPivot());
 	
 	return ret;
 }

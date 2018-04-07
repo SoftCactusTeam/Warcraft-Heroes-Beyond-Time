@@ -7,7 +7,7 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 {
 	// Thrall idle animations
 
-	idleUp.PushBack({ 0,0,89,71 });
+	idleUp.PushBack({ 0,0,89,71 }, {0,0}); //Example: Introduce here the pivot.
 	idleUp.PushBack({ 89,0,89,71 });
 	idleUp.PushBack({ 178,0,89,71 });
 	idleUp.PushBack({ 267,0,89,71 });

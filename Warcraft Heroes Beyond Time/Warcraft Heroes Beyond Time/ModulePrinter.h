@@ -70,7 +70,6 @@ public:
 				return first_Sprite->layer > second_Sprite->layer;
 			else
 				return first_Sprite->pos.y + first_Sprite->SquaretoBlit.h > second_Sprite->pos.y + second_Sprite->SquaretoBlit.h;
-				//return first_Sprite->pos.y + first_Sprite->distToFeet > second_Sprite->pos.y + second_Sprite->distToFeet;
 		}
 		else if (first->type == DrawingElem::DElemType::QUAD && second->type == DrawingElem::DElemType::QUAD)
 		{
@@ -119,7 +118,7 @@ public:
 	};
 
 	//Note: Angle required is in degrees, in clockwise direction
-	bool PrintSprite(iPoint pos, SDL_Texture* texture, SDL_Rect SquaretoBlit, int layer = 0, int distToFeet = 0, Pivots pivot = Pivots::CENTER, float degangle = 0, iPoint custompivot = { 0,0 });
+	bool PrintSprite(iPoint pos, SDL_Texture* texture, SDL_Rect SquaretoBlit, int layer = 0, Pivots pivot = Pivots::UPPER_LEFT, float degangle = 0, iPoint custompivot = { 0,0 });
 	
 	bool PrintQuad(SDL_Rect rect, SDL_Color color, bool filled = false, bool use_camera = false);
 
