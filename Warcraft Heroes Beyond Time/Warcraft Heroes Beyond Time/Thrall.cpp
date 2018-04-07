@@ -129,32 +129,32 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 
 	// ---- attack animation ----
 
-	attackDown.PushBack({ 256,309,51,54 });
-	attackDown.PushBack({ 322,309,51,54 });
-	attackDown.PushBack({ 398,309,51,54 });
-	attackDown.PushBack({ 486,309,51,54 });
-	attackDown.PushBack({ 571,309,51,54 });
-	attackDown.speedFactor = 9.0f;
-
-	attackUp.PushBack({ 263,389,46,47 });
-	attackUp.PushBack({ 336,389,46,47 });
-	attackUp.PushBack({ 409,389,46,47 });
-	attackUp.PushBack({ 482,389,46,47 });
-	attackUp.PushBack({ 555,389,46,47 });
+	attackUp.PushBack({ 0 + 3,568 + 6,89,71 });
+	attackUp.PushBack({ 89 + 3,568 + 6,89,71 });
+	attackUp.PushBack({ 178 + 3,568 + 6,89,71 });
+	attackUp.PushBack({ 267 + 3,568 + 6,89,71 });
+	attackUp.PushBack({ 356 + 3,568 + 6,89,71 });
 	attackUp.speedFactor = 9.0f;
 
-	attackRight.PushBack({ 256,558,51,36 });
-	attackRight.PushBack({ 329,558,51,36 });
-	attackRight.PushBack({ 402,558,51,36 });
-	attackRight.PushBack({ 475,558,51,36 });
-	attackRight.PushBack({ 548,558,51,36 });
+	attackRight.PushBack({ 178,639,89,71 });
+	attackRight.PushBack({ 267,639,89,71 });
+	attackRight.PushBack({ 356,639,89,71 });
+	attackRight.PushBack({ 445,639,89,71 });
+	attackRight.PushBack({ 534,639,89,71 });
 	attackRight.speedFactor = 9.0f;
 
-	attackLeft.PushBack({ 260,626,59,39 });
-	attackLeft.PushBack({ 333,626,59,39 });
-	attackLeft.PushBack({ 406,626,59,39 });
-	attackLeft.PushBack({ 479,626,59,39 });
-	attackLeft.PushBack({ 552,626,59,39 });
+	attackDown.PushBack({ 356 + 8,710 + 5,89,71 });
+	attackDown.PushBack({ 445 + 8,710 + 5,89,71 });
+	attackDown.PushBack({ 534 + 8,710 + 5,89,71 });
+	attackDown.PushBack({ 623 + 11,710 + 5,89,71 });
+	attackDown.PushBack({ 0 + 8,781 + 5,89,71 });
+	attackDown.speedFactor = 9.0f;
+
+	attackLeft.PushBack({ 534 - 6,781 + 6,89,71 });
+	attackLeft.PushBack({ 623 - 6,781 + 6,89,71 });
+	//attackLeft.PushBack({ 0 ,852 + 6,89,71 });
+	attackLeft.PushBack({ 89 - 6, 852 + 6,89,71 });
+	attackLeft.PushBack({ 178 - 6,852 + 6,89,71 });
 	attackLeft.speedFactor = 9.0f;
 
 	skill.PushBack({ 0 + 5,923 - 5,89,71 + 5 });
