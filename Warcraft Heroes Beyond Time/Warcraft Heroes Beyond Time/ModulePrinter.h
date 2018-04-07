@@ -30,14 +30,15 @@ public:
 
 	iPoint pos = { 0,0 };
 	SDL_Texture* texture = nullptr;
-	SDL_Rect SquaretoBlit;
+	SDL_Rect SquaretoBlit = { 0,0,0,0 };
 	int layer = 0;
-	iPoint pivot;
-	float angle;
+	iPoint pivot = { 0,0 };
+	float angle = 0.0f;
+	int distToFeet = 0;
 
 public:
 
-	Sprite(iPoint& pos, SDL_Texture* texture, SDL_Rect& SquaretoBlit, int layer, iPoint pivot, float angle) : DrawingElem(DrawingElem::DElemType::SPRITE), pos(pos), texture(texture), SquaretoBlit(SquaretoBlit), layer(layer), pivot(pivot), angle(angle){}
+	Sprite(iPoint& pos, SDL_Texture* texture, SDL_Rect& SquaretoBlit, int distToFeet, int layer, iPoint pivot, float angle) : DrawingElem(DrawingElem::DElemType::SPRITE), pos(pos), texture(texture), SquaretoBlit(SquaretoBlit), distToFeet(distToFeet), layer(layer), pivot(pivot), angle(angle){}
 
 };
 
@@ -69,6 +70,7 @@ public:
 				return first_Sprite->layer > second_Sprite->layer;
 			else
 				return first_Sprite->pos.y + first_Sprite->SquaretoBlit.h > second_Sprite->pos.y + second_Sprite->SquaretoBlit.h;
+				//return first_Sprite->pos.y + first_Sprite->distToFeet > second_Sprite->pos.y + second_Sprite->distToFeet;
 		}
 		else if (first->type == DrawingElem::DElemType::QUAD && second->type == DrawingElem::DElemType::QUAD)
 		{
@@ -117,7 +119,7 @@ public:
 	};
 
 	//Note: Angle required is in degrees, in clockwise direction
-	bool PrintSprite(iPoint pos, SDL_Texture* texture, SDL_Rect SquaretoBlit, int layer = 0, Pivots pivot = Pivots::CENTER, float degangle = 0, iPoint custompivot = {0,0});
+	bool PrintSprite(iPoint pos, SDL_Texture* texture, SDL_Rect SquaretoBlit, int layer = 0, int distToFeet = 0, Pivots pivot = Pivots::CENTER, float degangle = 0, iPoint custompivot = { 0,0 });
 	
 	bool PrintQuad(SDL_Rect rect, SDL_Color color, bool filled = false, bool use_camera = false);
 

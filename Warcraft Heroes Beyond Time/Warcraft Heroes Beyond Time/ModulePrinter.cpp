@@ -58,7 +58,7 @@ bool ModulePrinter::CleanUp()
 	return DrawingQueue.empty();
 }
 
-bool ModulePrinter::PrintSprite(iPoint pos, SDL_Texture* texture, SDL_Rect SquaretoBlit, int layer, Pivots pivot, float degangle, iPoint custompivot)
+bool ModulePrinter::PrintSprite(iPoint pos, SDL_Texture* texture, SDL_Rect SquaretoBlit, int layer, int distToFeet, Pivots pivot, float degangle, iPoint custompivot)
 {
 	iPoint coordpivot;
 	switch (pivot)
@@ -115,7 +115,7 @@ bool ModulePrinter::PrintSprite(iPoint pos, SDL_Texture* texture, SDL_Rect Squar
 		}
 	}
 
-	Sprite* sprite = new Sprite(pos, texture, SquaretoBlit, layer, coordpivot, degangle);
+	Sprite* sprite = new Sprite(pos, texture, SquaretoBlit, distToFeet, layer, coordpivot, degangle);
 	DrawingQueue.push(sprite);
 
 	return true;

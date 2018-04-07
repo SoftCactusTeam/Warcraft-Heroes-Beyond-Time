@@ -18,6 +18,7 @@ private:
 	int last_frame = 0;
 
 	SDL_Rect frames[MAX_FRAMES];
+	int distToFeet[MAX_FRAMES];
 
 public:
 	float speed = 0.0f;
@@ -26,8 +27,9 @@ public:
 
 public:
 
-	void PushBack(const SDL_Rect& rect)
+	void PushBack(const SDL_Rect& rect, int distToFeet = 0)
 	{
+		this->distToFeet[last_frame] = distToFeet;
 		frames[last_frame++] = rect;
 	}
 
@@ -41,6 +43,11 @@ public:
 		}
 
 		return frames[(int)current_frame];
+	}
+
+	int GetCurrentDTF() const
+	{
+		return distToFeet[(int)current_frame];
 	}
 
 	SDL_Rect& GetCurrentRect()
