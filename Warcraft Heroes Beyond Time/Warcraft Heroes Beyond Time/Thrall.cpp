@@ -157,15 +157,15 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	attackLeft.PushBack({ 178 - 6,852 + 6,89,71 });
 	attackLeft.speedFactor = 9.0f;
 
-	skill.PushBack({ 0 + 5,923 - 5,89,71 + 5 });
-	skill.PushBack({ 89 + 5,923 - 5,89,71 + 5 });
-	skill.PushBack({ 178 + 5,923 - 5,89,71 + 5 });
-	skill.PushBack({ 267 + 5,923 - 5,89,71 + 5 });
-	skill.PushBack({ 356 + 5,923 - 5,89,71 + 5 });
-	skill.PushBack({ 445 + 5,923 - 5,89,71 + 5 });
-	skill.PushBack({ 534 + 5,923 - 5,89,71 + 5 });
-	skill.PushBack({ 0 + 5,994 - 5,89,71 + 5});
-	skill.PushBack({ 0 + 5,994 - 5,89,71 + 5 });
+	skill.PushBack({ 0 + 5,923 + 5,89,71 + 5 });
+	skill.PushBack({ 89 + 5,923 + 5,89,71 + 5 });
+	skill.PushBack({ 178 + 5,923 + 5,89,71 + 5 });
+	skill.PushBack({ 267 + 5,923 + 5,89,71 + 5 });
+	skill.PushBack({ 356 + 5,923 + 5,89,71 + 5 });
+	skill.PushBack({ 445 + 5,923 + 5,89,71 + 5 });
+	skill.PushBack({ 534 + 5,923 + 5,89,71 + 5 });
+	skill.PushBack({ 0 + 5,994 + 5,89,71 + 5});
+	skill.PushBack({ 0 + 5,994 + 5,89,71 + 5 });
 	skill.speedFactor = 8.0f;
 
 	damagedAnim.PushBack({ 664,612,47,44 });
