@@ -1302,11 +1302,11 @@ void PlayerEntity::InitCulling()
 	if (this == App->scene->player)
 	{
 		SDL_Rect currRect = anim->GetCurrentRect();
-		App->render->fcamerax = -1 * (this->pos.x + currRect.w / 2 - 640 / 2);
-		App->render->fcameray = -1 * (this->pos.y + currRect.h / 2 - 360 / 2);
+		App->render->fcamerax = -1 * (this->pos.x + currRect.w / 2 - App->render->camera.w / 2);
+		App->render->fcameray = -1 * (this->pos.y + currRect.h / 2 - App->render->camera.h / 2);
 
-		freeZonex = pos.x - 55 / 2;
-		freeZoney = pos.y - 55 / 2;
+		freeZonex = pos.x - 55/2;
+		freeZoney = pos.y - 55/2;
 
 		freeZone.x = pos.x - 55;
 		freeZone.y = pos.y - 55;
@@ -1319,30 +1319,52 @@ void PlayerEntity::CheckCulling()
 {
 	if (this == App->scene->player)
 	{
+		uint w, h;
+		int tilesize;
+		App->map->getSize(w, h);
+		tilesize = App->map->getTileSize();
 		SDL_Rect currentRect = anim->GetCurrentRect();
-		if (freeZonex > this->pos.x)
-		{
-			App->render->fcamerax += freeZonex - pos.x;
-			freeZonex = this->pos.x;
-		}
 
-		else if (freeZonex + freeZone.w < pos.x + currentRect.w)
+		if (freeZonex > this->pos.x && -App->render->camera.x > 0)
+		{
+			if (App->render->fcamerax + freeZonex - pos.x > 0)
+			{
+				freeZonex -= -App->render->fcamerax;
+				App->render->fcamerax = 0;
+			}
+			else
+			{
+				App->render->fcamerax += freeZonex - pos.x;
+				freeZonex = this->pos.x;
+			}
+		}
+		
+
+		else if (freeZonex + freeZone.w < pos.x + currentRect.w && - App->render->camera.x < w * (tilesize-2) - App->render->camera.w)
 		{
 			App->render->fcamerax -= (pos.x + currentRect.w) - (freeZonex + freeZone.w);
 			freeZonex = (this->pos.x + currentRect.w) - freeZone.w;
 		}
 
-		if (freeZoney > pos.y)
+		if (freeZoney > pos.y && -App->render->camera.y > 0)
 		{
-			App->render->fcameray += freeZoney - pos.y;
-			freeZoney = pos.y;
+			if (App->render->fcameray + freeZoney - pos.y > 0)
+			{
+				freeZoney -= -App->render->fcameray;
+				App->render->fcameray = 0;
+			}
+			else
+			{
+				App->render->fcameray += freeZoney - pos.y;
+				freeZoney = pos.y;
+			}
+			
 		}
-		else if (freeZoney + freeZone.h < pos.y + currentRect.h)
+		else if (freeZoney + freeZone.h < pos.y + currentRect.h && -App->render->camera.y + App->render->camera.h < h * (tilesize-2))
 		{
 			App->render->fcameray -= (pos.y + currentRect.h) - (freeZoney + freeZone.h);
 			freeZoney = pos.y + currentRect.h - freeZone.h;
 		}
-
 
 		freeZone.x = (int)freeZonex;
 		freeZone.y = (int)freeZoney;
@@ -1361,17 +1383,17 @@ void PlayerEntity::CheckMapLimits()
 		if (pos.x < 0)
 			pos.x = 0;
 
-		else if (pos.x + 55 > w * 48)
+		else if (pos.x + 55 > w * (48-2))
 		{
-			pos.x = w * 48 - 55;
+			pos.x = w * (48-2) - 55;
 		}
 
 		if (pos.y < 0)
 			pos.y = 0;
 
-		else if (pos.y + 47 > h * 48)
+		else if (pos.y + 47 > h * (48-2))
 		{
-			pos.y = h * 48 - 47;
+			pos.y = h * (48-2) - 47;
 		}
 	}	
 }

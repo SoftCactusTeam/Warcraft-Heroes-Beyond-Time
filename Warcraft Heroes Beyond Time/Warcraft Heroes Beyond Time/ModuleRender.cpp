@@ -252,22 +252,24 @@ void Render::CheckCameraLimits()
 	uint tilesize = App->map->getTileSize();
 	App->map->getSize(mapwidth, mapheight);
 
+	if (-fcamerax < 0)
+		fcamerax = 0;
+
+	else if (-fcamerax + camera.w >(mapwidth * (tilesize - 2) + (tilesize - 2)))
+	{
+		fcamerax = -1 * (int)(mapwidth * (tilesize - 2) + (tilesize - 2) - camera.w);
+	}
+
+	if (-fcameray < 0)
+		fcameray = 0;
+
+	else if (-fcameray + camera.h >(mapheight * (tilesize-2) + tilesize-2))
+	{
+		fcameray = -1 * (int)(mapheight * (tilesize - 2) + (tilesize - 2) - camera.h);
+	}
+	
 	camera.x = (int)fcamerax;
 	camera.y = (int)fcameray;
 
-	if (camera.x > 0)
-		camera.x = 0;
-
-	else if (-camera.x + camera.w > (mapwidth * tilesize))
-	{
-		camera.x = -1 * (int)(mapwidth * tilesize - camera.w);
-	}
-
-	if (camera.y > 0)
-		camera.y = 0;
-
-	else if (-camera.y + camera.h > (mapheight * tilesize))
-	{
-		camera.y = -1 * (int)(mapheight * tilesize - camera.h);
-	}
+	
 }
