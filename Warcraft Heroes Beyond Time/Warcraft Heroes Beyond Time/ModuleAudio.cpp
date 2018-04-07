@@ -55,10 +55,9 @@ bool Audio::Awake(pugi::xml_node& audioNode)
 	}
 	
 	//---------------------------------------Load fx-------------------------------
-	
+	ButtonClicked = LoadFx("audio/fx/ButtonClick.ogg");
+	ButtonHovered = LoadFx("audio/fx/ButtonMouseHover.ogg");
 	//---------------------------------------Load Music----------------------------
-	ButtonClicked = LoadFx("audio/fx/Warcraft Adventures - Menu Select.ogg");
-	ButtonHovered = LoadFx("audio/fx/Warcraft Adventures - ButtonHovered.ogg");
 	MainMenuBSO = "audio/BSO's/Warcraft Adventures - Main Menu.ogg";
 
 	//---------------------------------------SetVolumes----------------------------

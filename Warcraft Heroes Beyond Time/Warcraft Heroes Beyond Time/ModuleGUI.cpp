@@ -148,7 +148,7 @@ GUIElem* ModuleGUI::CreateSlider(fPoint localPos, SliderInfo sInfo, Module* list
 
 GUIElem* ModuleGUI::CreateGUIWindow(fPoint localPos, SDL_Rect type, Module* listener, GUIElem* parent)
 {
-	GUIWindow* window = new GUIWindow(localPos, StoneWindow, parent, listener);
+	GUIWindow* window = new GUIWindow(localPos, type, parent, listener);
 	elementsToSpawn.push_back(window);
 	return window;
 }

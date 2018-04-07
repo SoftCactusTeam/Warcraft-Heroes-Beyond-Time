@@ -182,12 +182,12 @@ bool EntitySystem::Start()
 {
 	BROFILER_CATEGORY("ActivateEntities", Profiler::Color::Chocolate);
 	LOG("Loading textures");
-	spritesheetsEntities.push_back(App->textures->Load("images/thrall_spritesheet.png"));
-	spritesheetsEntities.push_back(App->textures->Load("Sprites/Footman/Footman_sprite.png"));
-	spritesheetsEntities.push_back(App->textures->Load("all_items.png"));
-	spritesheetsEntities.push_back(App->textures->Load("Mines.png"));
-	spritesheetsEntities.push_back(App->textures->Load("Sprites/Archer/Archer_sprite.png"));
-	spritesheetsEntities.push_back(App->textures->Load("Sprites/Archer/Archer_Arrow.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/thrall_spritesheet.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/Footman/Footman_sprite.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/all_items.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/Mines.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/Archer/Archer_sprite.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/Archer/Archer_Arrow.png"));
 
 	bool ret = true;
 
