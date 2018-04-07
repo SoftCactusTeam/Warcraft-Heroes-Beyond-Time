@@ -58,8 +58,8 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	
 	AddModule(scene);
 	AddModule(colliders);
-	AddModule(console);
 	AddModule(gui);
+	AddModule(console);
 
 	// render last to swap buffer
 	AddModule(render);
