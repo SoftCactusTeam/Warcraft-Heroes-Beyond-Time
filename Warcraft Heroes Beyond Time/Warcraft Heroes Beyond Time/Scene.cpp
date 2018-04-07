@@ -77,6 +77,8 @@ bool Scene::Start()
 			App->console->Activate();
 			App->map->Activate();
 
+			
+
 			BROFILER_CATEGORY("InGame Generation", Profiler::Color::Chocolate);
 			MapData mapInfo;
 			mapInfo.sizeX = 50;
@@ -88,6 +90,7 @@ bool Scene::Start()
 			App->map->GenerateMap(mapInfo);
 
 			player = App->entities->AddPlayer({ 25*48,25*48 }, THRALL);
+			App->gui->CreateHPBar(player, { 10,5 });
 
 			App->path->LoadPathMap();
 			App->entities->AddEnemy({ 80,80 }, FOOTMAN);
@@ -126,6 +129,23 @@ bool Scene::Update(float dt)
 	{
 		App->Load();
 	}
+
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)
+	{
+		if (player->numStats.hp > 10)
+			player->numStats.hp -= 10;
+		else
+			player->numStats.hp = 0;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT)
+	{
+		if (player->numStats.energy > 10)
+			player->numStats.energy -= 10;
+		else
+			player->numStats.energy = 0;
+	}
+	
 
 
 //GENERATE A NEW MAP

@@ -138,13 +138,15 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 
 	//------------- Loading Stats -------------------------------------------------------------
 	pugi::xml_node thrall = entitiesNode.child("players").child("thrall");
-	thrallstats.hp = thrall.attribute("hp").as_uint(0);
+	thrallstats.maxhp = thrall.attribute("hp").as_uint(0);
+	thrallstats.hp = thrallstats.maxhp;
 	thrallstats.speed = thrall.attribute("speed").as_uint(0);
 	thrallstats.damage = thrall.attribute("damage").as_uint(0);
 	thrallstats.energyPercentbyHit = thrall.attribute("energy_percent_hit").as_uint(0);
 
 	pugi::xml_node footman = entitiesNode.child("enemies").child("footman");
-	footmanstats.hp = footman.attribute("hp").as_uint(0);
+	footmanstats.maxhp = footman.attribute("hp").as_uint(0);
+	footmanstats.hp = footmanstats.maxhp;
 	footmanstats.speed = footman.attribute("speed").as_uint(0);
 	footmanstats.damage = footman.attribute("damage").as_uint(0);
 	footmanstats.dropping_chance = footman.attribute("dropping_chance").as_uint(0);
@@ -152,7 +154,8 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	footmanstats.difficulty = footman.attribute("difficulty").as_uint(0);
 
 	pugi::xml_node archer = entitiesNode.child("enemies").child("archer");
-	archerstats.hp = archer.attribute("hp").as_uint(0);
+	archerstats.maxhp = archer.attribute("hp").as_uint(0);
+	archerstats.hp = archerstats.maxhp;
 	archerstats.speed = archer.attribute("speed").as_uint(0);
 	archerstats.damage = archer.attribute("damage").as_uint(0);
 	archerstats.dropping_chance = archer.attribute("dropping_chance").as_uint(0);
@@ -160,7 +163,8 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	archerstats.difficulty = archer.attribute("difficulty").as_uint(0);
 
 	pugi::xml_node wizard = entitiesNode.child("enemies").child("wizard");
-	wizardstats.hp = wizard.attribute("hp").as_uint(0);
+	wizardstats.maxhp = wizard.attribute("hp").as_uint(0);
+	wizardstats.hp = wizardstats.maxhp;
 	wizardstats.speed = wizard.attribute("speed").as_uint(0);
 	wizardstats.damage = wizard.attribute("damage").as_uint(0);
 	wizardstats.dropping_chance = wizard.attribute("dropping_chance").as_uint(0);
@@ -168,7 +172,8 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	wizardstats.difficulty = wizard.attribute("difficulty").as_uint(0);
 
 	pugi::xml_node darkknight = entitiesNode.child("enemies").child("dark_knight");
-	darkknightstats.hp = darkknight.attribute("hp").as_uint(0);
+	darkknightstats.maxhp = darkknight.attribute("hp").as_uint(0);
+	darkknightstats.hp = darkknightstats.maxhp;
 	darkknightstats.speed = darkknight.attribute("speed").as_uint(0);
 	darkknightstats.damage = darkknight.attribute("damage").as_uint(0);
 	darkknightstats.dropping_chance = darkknight.attribute("dropping_chance").as_uint(0);

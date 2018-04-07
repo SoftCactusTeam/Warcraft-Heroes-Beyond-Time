@@ -35,7 +35,8 @@ public:
 		WINDOW,
 		IMAGE,
 
-		STAT
+		STAT,
+		PLAYER_HP_BAR
 	};
 	
 protected:

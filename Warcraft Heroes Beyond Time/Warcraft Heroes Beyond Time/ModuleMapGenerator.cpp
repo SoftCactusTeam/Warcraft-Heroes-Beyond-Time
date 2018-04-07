@@ -71,29 +71,44 @@ bool MapGenerator::DrawMap() const
 
 	BROFILER_CATEGORY("Map Draw", Profiler::Color::Azure);
 
-	int x = 0, y = 0;
+	/*int x = -(tileSize - 2), y = 0;
 	
-
-	for (uint i = 0u; i < totalSize && ret; ++i)
+	for (int i = 0u; i < totalSize && ret; ++i)
 	{
-		if (x > -App->render->camera.x - tileSize &&
-			y > -App->render->camera.y - tileSize &&
-			x < -App->render->camera.x + App->render->camera.w + tileSize &&
-			y < -App->render->camera.y + App->render->camera.h + tileSize)
-		{
-		
-			ret = App->printer->PrintSprite({ x , y }, mapTexture, nodes[i]->whatToBlit, nodes[i]->layerBelow);
-		}
-
-		if (i % sizeX == 0)
+		if (i % 50 == 0 && i != 0)
 		{
 			x = 0;
 			y += tileSize - 2;
 		}
 		else
 			x += tileSize - 2;
-	}
 
+		if (x >= (-1 * App->render->camera.x) - tileSize &&
+			y >= (-1 * App->render->camera.y) - tileSize &&
+			x < -App->render->camera.x + App->render->camera.w + tileSize &&
+			y < -App->render->camera.y + App->render->camera.h + tileSize)
+		{
+			ret = App->printer->PrintSprite({ x , y }, mapTexture, nodes[i]->whatToBlit, nodes[i]->layerBelow);
+		}
+	}*/
+
+	
+	for (int index_y = 0; index_y < sizeY && ret; ++index_y)
+	{
+		for (int index_x = 0; index_x < sizeX && ret; ++index_x)
+		{
+			int x = index_x * (tileSize - 2);
+			int y = index_y * (tileSize - 2);
+
+			if (x >= (-1 * App->render->camera.x) - tileSize &&
+				y >= (-1 * App->render->camera.y) - tileSize &&
+				x < -App->render->camera.x + App->render->camera.w + tileSize &&
+				y < -App->render->camera.y + App->render->camera.h + tileSize)
+			
+				ret = App->printer->PrintSprite({ x, y }, mapTexture, nodes[index_x + index_y * sizeX]->whatToBlit, nodes[index_x + index_y * sizeX]->layerBelow);
+
+		}
+	}
 
 	return ret;
 }
