@@ -38,7 +38,7 @@ public:
 
 public:
 
-	Sprite(iPoint& pos, SDL_Texture* texture, SDL_Rect& SquaretoBlit, int distToFeet, int layer, iPoint pivot, float angle) : DrawingElem(DrawingElem::DElemType::SPRITE), pos(pos), texture(texture), SquaretoBlit(SquaretoBlit), distToFeet(distToFeet), layer(layer), pivot(pivot), angle(angle){}
+	Sprite(iPoint& pos, SDL_Texture* texture, SDL_Rect& SquaretoBlit, int layer, iPoint pivot, float angle) : DrawingElem(DrawingElem::DElemType::SPRITE), pos(pos), texture(texture), SquaretoBlit(SquaretoBlit), distToFeet(distToFeet), layer(layer), pivot(pivot), angle(angle){}
 
 };
 

@@ -115,7 +115,7 @@ bool ModulePrinter::PrintSprite(iPoint pos, SDL_Texture* texture, SDL_Rect Squar
 		}
 	}
 
-	Sprite* sprite = new Sprite(pos, texture, SquaretoBlit, distToFeet, layer, coordpivot, degangle);
+	Sprite* sprite = new Sprite(pos, texture, SquaretoBlit, layer, coordpivot, degangle);
 	DrawingQueue.push(sprite);
 
 	return true;
