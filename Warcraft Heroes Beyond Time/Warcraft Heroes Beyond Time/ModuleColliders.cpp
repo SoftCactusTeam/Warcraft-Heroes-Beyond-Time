@@ -43,43 +43,45 @@ bool ModuleColliders::Update(float dt)
 {
 	BROFILER_CATEGORY("Colliders Collision", Profiler::Color::Azure);
 
-	for (int i = 0; i < colliders.size(); i++)
-		if (colliders[i]->type != COLLIDER_UNWALKABLE)
-			for (int col = i + 1; col < colliders.size(); col++)
-				if (CheckTypeCollMatrix(colliders[i]->type, colliders[col]->type))
-					if (CheckCollision(i, col))
-					{
-						if (colliders[i]->owner != nullptr)
-							colliders[i]->owner->Collision(colliders[col]->type);
-						else
-							colliders[i]->collidingWith = colliders[col]->type;	// Aixo es quan el collider no te entity pero vol detectar
+	std::list<Collider*>::iterator first;
+	std::list<Collider*>::iterator second;
 
-						if (colliders[col]->owner != nullptr)
-							colliders[col]->owner->Collision(colliders[i]->type);
+	for (first = colliders.begin(); first != colliders.end(); ++first)
+		if ((*first)->type != COLLIDER_UNWALKABLE)
+			for (second = colliders.begin()++; second != colliders.end(); ++second)
+				if (CheckTypeCollMatrix((*first)->type, (*second)->type))
+					if (CheckCollision((*first), (*second)))
+					{
+						if ((*first) != nullptr)
+							(*first)->owner->Collision((*second)->type);
 						else
-							colliders[col]->collidingWith = colliders[i]->type;
+							(*first)->collidingWith = (*second)->type;	// Aixo es quan el collider no te entity pero vol detectar
+
+						if ((*second)->owner != nullptr)
+							(*second)->owner->Collision((*first)->type);
+						else
+							(*second)->collidingWith = (*first)->type;
 					}
+
 	// Comprobar colliders temporals
-	for (int i = 0; i < colliders.size(); i++)
-		for (int col = 0; col < temporalColliders.size(); col++)
-			if (CheckTypeCollMatrix(colliders[i]->type, colliders[col]->type))
-				if (ChechCollisionTemporalCollider(i, col))
+	for (first = colliders.begin(); first != colliders.end(); ++first)
+		for (second = temporalColliders.begin(); second != colliders.end(); ++second)
+			if (CheckTypeCollMatrix((*first)->type, (*second)->type))
+				if (CheckCollision((*first), (*second)))
 				{
-					if (colliders[i]->owner != nullptr)
-						colliders[i]->owner->Collision(temporalColliders[col]->type);
+					if ((*first)->owner != nullptr)
+						(*first)->owner->Collision((*second)->type);
 					else
-						colliders[i]->collidingWith = temporalColliders[col]->type;
+						(*first)->collidingWith = (*second)->type;
 				}
+
 	// Netejar colliders temporals
-	for (int i = 0; i < temporalColliders.size(); i++)
+	int i = 0;
+	for (second = temporalColliders.begin(); second != temporalColliders.end(); second++, ++i)
 		if (temporalColliderstimer[i] < SDL_GetTicks())
 		{
-			delete temporalColliders[i];
-			std::swap(temporalColliders[i], temporalColliders.back());
-			temporalColliders.pop_back();
-
-			std::swap(temporalColliderstimer[i], temporalColliderstimer.back());
-			temporalColliderstimer.pop_back();
+			temporalColliders.erase(second);
+			temporalColliderstimer.erase(temporalColliderstimer.begin() + i);
 		}
 	return true;
 }
@@ -166,37 +168,32 @@ bool ModuleColliders::CheckTypeCollMatrix(COLLIDER_TYPE type, COLLIDER_TYPE type
 	return false;
 }
 
-bool ModuleColliders::CheckCollision(int col1, int col2)
+bool ModuleColliders::CheckCollision(Collider* col1, Collider* col2)
 {
-	if (colliders[col1]->owner != nullptr && colliders[col2]->owner != nullptr)
-		return (colliders[col1]->owner->pos.x + colliders[col1]->colliderRect.x < colliders[col2]->owner->pos.x + colliders[col2]->colliderRect.x + colliders[col2]->colliderRect.w &&
-			colliders[col1]->owner->pos.x + colliders[col1]->colliderRect.x + colliders[col1]->colliderRect.w > colliders[col2]->owner->pos.x + colliders[col2]->colliderRect.x &&
-			colliders[col1]->owner->pos.y + colliders[col1]->colliderRect.y < colliders[col2]->owner->pos.y + colliders[col2]->colliderRect.y + colliders[col2]->colliderRect.h &&
-			colliders[col1]->owner->pos.y + colliders[col1]->colliderRect.y + colliders[col1]->colliderRect.h > colliders[col2]->owner->pos.y + colliders[col2]->colliderRect.y);
-	else if (colliders[col1]->owner != nullptr && colliders[col2]->owner == nullptr)
-		return (colliders[col1]->owner->pos.x + colliders[col1]->colliderRect.x < colliders[col2]->colliderRect.x + colliders[col2]->colliderRect.w &&
-			colliders[col1]->owner->pos.x + colliders[col1]->colliderRect.x + colliders[col1]->colliderRect.w > colliders[col2]->colliderRect.x &&
-			colliders[col1]->owner->pos.y + colliders[col1]->colliderRect.y < colliders[col2]->colliderRect.y + colliders[col2]->colliderRect.h &&
-			colliders[col1]->owner->pos.y + colliders[col1]->colliderRect.y + colliders[col1]->colliderRect.h > colliders[col2]->colliderRect.y);
-	else if (colliders[col1]->owner == nullptr && colliders[col2]->owner != nullptr)
-		return (colliders[col1]->colliderRect.x < colliders[col2]->owner->pos.x + colliders[col2]->colliderRect.x + colliders[col2]->colliderRect.w &&
-			colliders[col1]->colliderRect.x + colliders[col1]->colliderRect.w > colliders[col2]->owner->pos.x + colliders[col2]->colliderRect.x &&
-			colliders[col1]->colliderRect.y < colliders[col2]->owner->pos.y + colliders[col2]->colliderRect.y + colliders[col2]->colliderRect.h &&
-			colliders[col1]->colliderRect.y + colliders[col1]->colliderRect.h > colliders[col2]->owner->pos.y + colliders[col2]->colliderRect.y);
-}
+	if (col1->owner != nullptr && col2->owner != nullptr)
 
-bool ModuleColliders::ChechCollisionTemporalCollider(int col, int colTemporal)
-{
-	if (colliders[col]->owner != nullptr)
-	return (colliders[col]->owner->pos.x + colliders[col]->colliderRect.x < temporalColliders[colTemporal]->colliderRect.x + temporalColliders[colTemporal]->colliderRect.w &&
-		colliders[col]->owner->pos.x + colliders[col]->colliderRect.x + colliders[col]->colliderRect.w > temporalColliders[colTemporal]->colliderRect.x &&
-		colliders[col]->owner->pos.y + colliders[col]->colliderRect.y < temporalColliders[colTemporal]->colliderRect.y + temporalColliders[colTemporal]->colliderRect.h &&
-		colliders[col]->owner->pos.y + colliders[col]->colliderRect.y + colliders[col]->colliderRect.h > temporalColliders[colTemporal]->colliderRect.y);
-	else if (colliders[col]->owner == nullptr)
-		return (colliders[col]->colliderRect.x < temporalColliders[colTemporal]->colliderRect.x + temporalColliders[colTemporal]->colliderRect.w &&
-			colliders[col]->colliderRect.x + colliders[col]->colliderRect.w > temporalColliders[colTemporal]->colliderRect.x &&
-			colliders[col]->colliderRect.y < temporalColliders[colTemporal]->colliderRect.y + temporalColliders[colTemporal]->colliderRect.h &&
-			colliders[col]->colliderRect.y + colliders[col]->colliderRect.h > temporalColliders[colTemporal]->colliderRect.y);
+		return (col1->owner->pos.x + col1->colliderRect.x < col2->owner->pos.x + col2->colliderRect.x + col2->colliderRect.w &&
+			col1->owner->pos.x + col1->colliderRect.x + col2->colliderRect.w > col2->owner->pos.x + col2->colliderRect.x &&
+			col1->owner->pos.y + col1->colliderRect.y < col2->owner->pos.y + col2->colliderRect.y + col2->colliderRect.h &&
+			col1->owner->pos.y + col1->colliderRect.y + col1->colliderRect.h > col2->owner->pos.y + col2->colliderRect.y);
+
+	else if (col1->owner != nullptr && col2->owner == nullptr)
+		return (col1->owner->pos.x + col1->colliderRect.x < col2->colliderRect.x + col2->colliderRect.w &&
+			col1->owner->pos.x + col1->colliderRect.x + col1->colliderRect.w > col2->colliderRect.x &&
+			col1->owner->pos.y + col1->colliderRect.y < col2->colliderRect.y + col2->colliderRect.h &&
+			col1->owner->pos.y + col1->colliderRect.y + col1->colliderRect.h > col2->colliderRect.y);
+
+	else if (col1->owner == nullptr && col2->owner != nullptr)
+		return (col1->colliderRect.x < col2->owner->pos.x + col2->colliderRect.x + col2->colliderRect.w &&
+			col1->colliderRect.x + col1->colliderRect.w > col2->owner->pos.x + col2->colliderRect.x &&
+			col1->colliderRect.y < col2->owner->pos.y + col2->colliderRect.y + col2->colliderRect.h &&
+			col1->colliderRect.y + col1->colliderRect.h > col2->owner->pos.y + col2->colliderRect.y);
+
+	else if (col1->owner == nullptr && col2->owner == nullptr)
+		return (col1->colliderRect.x < col2->colliderRect.x + col2->colliderRect.w &&
+			col1->colliderRect.x + col1->colliderRect.w > col2->colliderRect.x &&
+			col1->colliderRect.y < col2->colliderRect.y + col2->colliderRect.h &&
+			col1->colliderRect.y + col1->colliderRect.h > col2->colliderRect.y);
 }
 
 void ModuleColliders::PrintColliders()

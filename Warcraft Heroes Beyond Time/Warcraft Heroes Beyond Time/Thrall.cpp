@@ -176,6 +176,8 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	live = 100;
 
 	numStats = App->entities->thrallstats;
+
+	anim = &idleDown;
 }
 
 bool Thrall::Update(float dt)

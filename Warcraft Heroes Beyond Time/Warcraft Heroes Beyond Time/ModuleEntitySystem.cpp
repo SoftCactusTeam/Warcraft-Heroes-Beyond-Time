@@ -365,7 +365,11 @@ PlayerEntity* EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
 	}
 
 	toSpawn.push_back(newEntity);
-	App->colliders->AddCollider({ 0,0,32,32 }, COLLIDER_PLAYER, newEntity, {20,20});
+	SDL_Rect col_rect = newEntity->anim->GetCurrentRect();
+	col_rect.x = 0;
+	col_rect.y = 0;
+
+	newEntity->setCol(App->colliders->AddCollider(col_rect, COLLIDER_PLAYER, newEntity, newEntity->anim->GetCurrentPivot()));
 	return newEntity;
 }
 
