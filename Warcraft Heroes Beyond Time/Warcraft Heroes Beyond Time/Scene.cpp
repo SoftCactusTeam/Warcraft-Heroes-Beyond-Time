@@ -45,9 +45,6 @@ Scene::~Scene(){}
 
 bool Scene::Awake(pugi::xml_node& sceneNode)
 {
-	ConsoleOrder* order = new ConsoleMap();
-	App->console->AddConsoleOrderToList(order);
-
 	App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
 
 	return true;
@@ -56,7 +53,7 @@ bool Scene::Awake(pugi::xml_node& sceneNode)
 bool Scene::Start()
 {
 	App->gui->Activate();
-	
+
 	switch (actual_scene)
 	{
 		case Stages::MAIN_MENU:
@@ -78,7 +75,7 @@ bool Scene::Start()
 			App->console->Activate();
 			App->map->Activate();
 
-			
+
 
 			BROFILER_CATEGORY("InGame Generation", Profiler::Color::Chocolate);
 			MapData mapInfo;
@@ -98,7 +95,7 @@ bool Scene::Start()
 			iPoint chestPos = App->map->GetRandomValidPoint();
 			lvlChest = App->entities->AddChest({ (float)chestPos.x * 48,(float)chestPos.y * 48 }, MID_CHEST);
 			portal = (PortalEntity*)App->entities->AddStaticEntity({ 25 * 48,25 * 48 }, PORTAL);
-			
+
 			break;
 		}
 
@@ -141,7 +138,7 @@ bool Scene::Update(float dt)
 		else
 			player->numStats.energy = 0;
 	}
-	
+
 
 
 //GENERATE A NEW MAP
@@ -299,7 +296,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 
 void Scene::CreateMainMenuScreen()
 {
-	
+
 	//PLAY BUTTON
 	Button* button = (Button*)App->gui->CreateButton(getPosByResolution({ 250, 50.0f }), BType::PLAY, this);
 
@@ -308,7 +305,7 @@ void Scene::CreateMainMenuScreen()
 	defLabel.fontName = "LifeCraft80";
 	defLabel.text = "PLAY";
 	App->gui->CreateLabel(getPosByResolution({ 55,10 }), defLabel, button, this);*/
-	
+
 	LabelInfo defLabel;
 	defLabel.color = White;
 	defLabel.fontName = "LifeCraft80";
@@ -424,4 +421,10 @@ fPoint Scene::getPosByResolution(fPoint pos) const
 	fPoint ret = { (actualW * percentX)/100, (actualH * percentY)/100};
 
 	return ret;
+}
+
+void Scene::AddCommands()
+{
+	ConsoleOrder* order = new ConsoleMap();
+	App->console->AddConsoleOrderToList(order);
 }

@@ -8,6 +8,8 @@
 
 #include <list>
 
+class Collider;
+
 class PlayerEntity : public DynamicEntity 
 {
 
@@ -48,6 +50,9 @@ protected:
 
 	} state;
 
+	Collider* pcol = nullptr;
+
+
 public:
 
 	PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture);
@@ -68,6 +73,8 @@ public:
 
 	virtual bool Finish();
 	virtual void Collision(COLLIDER_TYPE type);
+
+	void setCol(Collider* pcol);
 
 	void AddItem(Item item);
 	void IterateItems(ItemFunctions nameFunction);

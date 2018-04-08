@@ -6,6 +6,7 @@
 #include "ModuleMapGenerator.h"
 #include "ModuleEntitySystem.h"
 #include "ModulePrinter.h"
+#include "ModuleColliders.h"
 
 PlayerEntity::PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : DynamicEntity (coor, texture), type(type) {}
 
@@ -27,6 +28,11 @@ bool PlayerEntity::Update(float dt)
 bool PlayerEntity::Finish() { return true; }
 
 void PlayerEntity::Collision(COLLIDER_TYPE type){}
+
+void PlayerEntity::setCol(Collider* pcol)
+{
+	this->pcol = pcol;
+}
 
 fPoint PlayerEntity::CalculatePosFromBezier(fPoint startPos, fPoint handleA, float t, fPoint handleB, fPoint endPos)
 {

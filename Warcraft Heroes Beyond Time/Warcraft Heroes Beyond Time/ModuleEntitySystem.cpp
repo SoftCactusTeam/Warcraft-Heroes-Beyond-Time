@@ -235,7 +235,7 @@ bool EntitySystem::PostUpdate()
 {
 	bool ret = true;
 
-	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end() && ret; ++it)
+	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end() && ret;)
 	{
 		ret = (*it)->Draw();
 
@@ -243,7 +243,14 @@ bool EntitySystem::PostUpdate()
 			ret = (*it)->PostUpdate();
 
 		if ((*it)->destroy)
-			entities.remove((*it));
+		{
+			it = entities.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+		
 	}
 
 	return ret;
@@ -365,7 +372,11 @@ PlayerEntity* EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
 	}
 
 	toSpawn.push_back(newEntity);
-	App->colliders->AddCollider({ 0,0,32,32 }, COLLIDER_PLAYER, newEntity, {10,10});
+	SDL_Rect col_rect = newEntity->anim->GetCurrentRect();
+	col_rect.x = 0;
+	col_rect.y = 0;
+
+	newEntity->setCol(App->colliders->AddCollider(col_rect, COLLIDER_PLAYER, newEntity, newEntity->anim->GetCurrentPivot()));
 	return newEntity;
 }
 
@@ -450,6 +461,8 @@ void EntitySystem::AddCommands()
 
 void EntitySystem::ClearEnemies()
 {
+	//I need a fucking type to do this. Sorry for the madness.
+
 	/*std::list<Entity*>::iterator it;
 	for (it = entities.begin(); it != entities.end(); ++it)
 	{
