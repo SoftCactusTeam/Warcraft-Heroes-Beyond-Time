@@ -326,7 +326,7 @@ void EntitySystem::AddEnemy(fPoint coor, ENEMY_TYPE type)
 		break;
 	}
 	toSpawn.push_back(newEntity);
-	App->colliders->AddCollider((Entity*)newEntity, { 0,0,32,32 }, COLLIDER_ENEMY, { 20,20 });
+	App->colliders->AddCollider({ 0,0,32,32 }, COLLIDER_ENEMY, (Entity*)newEntity, { 20,20 });
 
 }
 
@@ -365,7 +365,7 @@ PlayerEntity* EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
 	}
 
 	toSpawn.push_back(newEntity);
-	App->colliders->AddCollider(newEntity, { 0,0,32,32 }, COLLIDER_PLAYER, {10,10});
+	App->colliders->AddCollider({ 0,0,32,32 }, COLLIDER_PLAYER, newEntity, {10,10});
 	return newEntity;
 }
 

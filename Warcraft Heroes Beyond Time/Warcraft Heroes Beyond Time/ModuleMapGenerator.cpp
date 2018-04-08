@@ -297,7 +297,7 @@ bool MapGenerator::GenerateWalls()
 									
 					if (!nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)]->colliderInside)
 					{
-						App->colliders->AddTileCollider(SDL_Rect({ auxNode->pos.x * (int)tileSize, auxNode->pos.y * (int)tileSize - (int)tileSize, 48,48 }), COLLIDER_TYPE::COLLIDER_UNWALKABLE);
+						App->colliders->AddCollider(SDL_Rect({ auxNode->pos.x * (int)(tileSize-2), auxNode->pos.y * (int)(tileSize - 2) - (int)(tileSize - 2), 48,48 }), COLLIDER_TYPE::COLLIDER_UNWALKABLE);
 						nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)]->colliderInside = true;
 					}
 				}
@@ -306,7 +306,7 @@ bool MapGenerator::GenerateWalls()
 				{
 					if (!nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)]->colliderInside)
 					{
-						App->colliders->AddTileCollider(SDL_Rect({ auxNode->pos.x * (int)tileSize, auxNode->pos.y * (int)tileSize + (int)tileSize, 48,48 }), COLLIDER_TYPE::COLLIDER_UNWALKABLE);
+						App->colliders->AddCollider(SDL_Rect({ auxNode->pos.x * (int)(tileSize - 2), auxNode->pos.y * (int)(tileSize - 2) + (int)(tileSize - 2), 48,48 }), COLLIDER_TYPE::COLLIDER_UNWALKABLE);
 						nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)]->colliderInside = true;
 					}
 				}
@@ -315,7 +315,7 @@ bool MapGenerator::GenerateWalls()
 				{
 					if (!nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)]->colliderInside)
 					{
-						App->colliders->AddTileCollider(SDL_Rect({ auxNode->pos.x * (int)tileSize + (int)tileSize, auxNode->pos.y * (int)tileSize, 48,48 }), COLLIDER_TYPE::COLLIDER_UNWALKABLE);
+						App->colliders->AddCollider(SDL_Rect({ auxNode->pos.x * (int)(tileSize - 2) + (int)(tileSize - 2), auxNode->pos.y * (int)(tileSize - 2), 48,48 }), COLLIDER_TYPE::COLLIDER_UNWALKABLE);
 						nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)]->colliderInside = true;
 					}
 				}
@@ -324,7 +324,7 @@ bool MapGenerator::GenerateWalls()
 				{
 					if (!nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)]->colliderInside)
 					{
-						App->colliders->AddTileCollider(SDL_Rect({ auxNode->pos.x * (int)tileSize - (int)tileSize, auxNode->pos.y * (int)tileSize, 48,48 }), COLLIDER_TYPE::COLLIDER_UNWALKABLE);
+						App->colliders->AddCollider(SDL_Rect({ auxNode->pos.x * (int)(tileSize - 2) - (int)(tileSize - 2), auxNode->pos.y * (int)(tileSize - 2), 48,48 }), COLLIDER_TYPE::COLLIDER_UNWALKABLE);
 						nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)]->colliderInside = true;
 					}
 				}
