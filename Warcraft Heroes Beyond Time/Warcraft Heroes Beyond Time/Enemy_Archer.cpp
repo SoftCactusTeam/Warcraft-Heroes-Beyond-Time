@@ -330,30 +330,27 @@ void Enemy_Archer::ShootArrow(fPoint desviation)
 	directionShoot.x /= total;
 	directionShoot.y /= total;
 
-	Enemy_Archer_Arrow* newArrow = new Enemy_Archer_Arrow(pos, App->entities->spritesheetsEntities[ARCHER_ARROW_SHEET], directionShoot * ARROW_SPEED, LookAtPlayer(), 1000);
+	Enemy_Archer_Arrow* newArrow = new Enemy_Archer_Arrow(pos, App->entities->spritesheetsEntities[PROJECTILE_SHEET], directionShoot * ARROW_SPEED, 1000);
 	arrowsVector.push_back(newArrow);
 }
 
-Enemy_Archer_Arrow::Enemy_Archer_Arrow(fPoint coor, SDL_Texture* texture, fPoint direction, FIXED_ANGLE angle, int deadTimer)
+Enemy_Archer_Arrow::Enemy_Archer_Arrow(fPoint coor, SDL_Texture* texture, fPoint direction, int deadTimer)
 {
 	this->pos = coor;
 	this->texture = texture;
 	this->direction = direction;
 	this->deadTimer = SDL_GetTicks() + deadTimer;
-	this->angle = angle;
+	this->angle = atan2(coor.y - App->scene->player->pos.y, coor.x - App->scene->player->pos.x);
+
+	if (angle > 0)
+		angle = angle * 360 / (2 * PI);
+	else
+		angle = (2 * PI + angle) * 360 / (2 * PI);
+	angle -= 90;
+	printf_s("%f\n", angle);
+
 	arrowCollider = App->colliders->AddCollider({ (int)coor.x,(int)coor.y,30,/*rect->h*/30 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATAC);
-
-	// Assignar els rects
-
-	rect[FIXED_ANGLE::UP] = { 0,0,32,32 };
-	rect[FIXED_ANGLE::UP_RIGHT] = { 32,0,32,32 };
-	rect[FIXED_ANGLE::RIGHT] = { 64,0,32,32 };
-	rect[FIXED_ANGLE::DOWN_RIGHT] = { 92,0,32,32 };
-	rect[FIXED_ANGLE::DOWN] = { 0,32,32,32 };
-	rect[FIXED_ANGLE::DOWN_LEFT] = { 32,32,32,32 };
-	rect[FIXED_ANGLE::LEFT] = { 64,32,32,32 };
-	rect[FIXED_ANGLE::UP_LEFT] = { 92,32,32,32 };
-
+	rect = { 808,110,32,32 };
 }
 
 void Enemy_Archer_Arrow::Update()
@@ -361,7 +358,7 @@ void Enemy_Archer_Arrow::Update()
 	if (SDL_GetTicks() < deadTimer)
 	{
 		this->pos += direction;
-		App->printer->PrintSprite(iPoint((int)pos.x, (int)pos.y), texture, rect[angle], 2);
+		App->printer->PrintSprite(iPoint((int)pos.x, (int)pos.y), texture, rect, 2, ModulePrinter::Pivots::CENTER, angle);
 		arrowCollider->colliderRect.x = (int)pos.x;
 		arrowCollider->colliderRect.y = (int)pos.y;
 		if (arrowCollider->collidingWith == COLLIDER_TYPE::COLLIDER_PLAYER ||

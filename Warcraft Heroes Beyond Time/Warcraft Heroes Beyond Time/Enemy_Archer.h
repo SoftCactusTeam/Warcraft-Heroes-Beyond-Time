@@ -19,7 +19,7 @@ enum ARCHER_STATE {
 
 class Enemy_Archer_Arrow {
 public:
-	Enemy_Archer_Arrow(fPoint coor, SDL_Texture* texture, fPoint direction, FIXED_ANGLE angle,int deadTimer = ARROW_DEAD_TIMER);
+	Enemy_Archer_Arrow(fPoint coor, SDL_Texture* texture, fPoint direction, int deadTimer = ARROW_DEAD_TIMER);
 
 	void Update();
 	void Finish();
@@ -28,11 +28,11 @@ public:
 	fPoint			pos;
 	fPoint			direction;
 	SDL_Texture*	texture;
-	SDL_Rect		rect[NUMBER_OF_ORIENTATIONS];
-	FIXED_ANGLE		angle;
+	SDL_Rect		rect;
 	int				deadTimer;
 	bool			destroy = false;
 	Collider*		arrowCollider = nullptr;
+	float angle;
 };
 
 class Enemy_Archer : public EnemyEntity

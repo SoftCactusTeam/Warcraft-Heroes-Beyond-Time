@@ -192,7 +192,7 @@ bool EntitySystem::Start()
 	spritesheetsEntities.push_back(App->textures->Load("sprites/all_items.png"));
 	spritesheetsEntities.push_back(App->textures->Load("sprites/Mines.png"));
 	spritesheetsEntities.push_back(App->textures->Load("sprites/Archer/Archer_sprite.png"));
-	spritesheetsEntities.push_back(App->textures->Load("sprites/Archer/Archer_Arrow.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/Projectiles.png"));
 
 	bool ret = true;
 
