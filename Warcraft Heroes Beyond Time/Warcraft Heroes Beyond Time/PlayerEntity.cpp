@@ -75,7 +75,7 @@ void PlayerEntity::PlayerStates(float dt)
 			JoyconStates(dt);
 
 		CheckMapLimits();
-		//CheckCulling();
+		CheckCulling();
 		if (drawFZ)
 			App->printer->PrintQuad(freeZone, { 255, 0, 0, 50 }, true, true);
 	}
