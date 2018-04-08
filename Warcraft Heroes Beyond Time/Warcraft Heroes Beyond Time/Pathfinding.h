@@ -6,14 +6,12 @@
 #include <vector>
 #include <queue>
 
-fPoint SillyMovementToPlayer(fPoint pos);
-
 struct pathNode
 {
 	pathNode(int cost, iPoint nodePos);
 	int cost = 0;
 	iPoint nodePos;
-	pathNode* neighbours[4] = { nullptr, nullptr, nullptr, nullptr };
+	std::vector<pathNode*> neighbours;
 	pathNode* parent = nullptr;
 };
 
@@ -27,8 +25,8 @@ public:
 	void AddNodeToMap(int cost, iPoint nodePos = { -1,-1 });
 	void PrintWalkableTiles();
 
-	void LoadNeighbours();
-	int ExistWalkableAtPos(iPoint pos);
+	void LoadNeighbours(pathNode* node);
+	int ExistWalkableAtPos(iPoint& pos);
 
 	uint tileSize = 0;
 	uint mapWidth = 0;
