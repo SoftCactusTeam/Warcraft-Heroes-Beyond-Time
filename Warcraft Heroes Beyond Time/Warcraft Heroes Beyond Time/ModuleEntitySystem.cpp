@@ -365,7 +365,7 @@ PlayerEntity* EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
 	}
 
 	toSpawn.push_back(newEntity);
-	App->colliders->AddCollider({ 0,0,32,32 }, COLLIDER_PLAYER, newEntity, {10,10});
+	App->colliders->AddCollider({ 0,0,32,32 }, COLLIDER_PLAYER, newEntity, {20,20});
 	return newEntity;
 }
 
