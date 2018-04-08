@@ -242,3 +242,24 @@ void ModuleColliders::AddCommands()
 	ConsoleOrder* order = new ConsoleColliders();
 	App->console->AddConsoleOrderToList(order);
 }
+
+bool ModuleColliders::isWallCollider(SDL_Rect here, Collider* colWith) const
+{
+	std::list<Collider*>::const_iterator it;
+	for (it = colliders.begin(); it != colliders.end(); ++it)
+	{
+		if ((*it)->type != COLLIDER_UNWALKABLE)
+			continue;
+
+		Collider* wall = (*it);
+		if (wall->colliderRect.x < here.x + here.w &&
+			wall->colliderRect.x + wall->colliderRect.w > here.x &&
+			wall->colliderRect.y < here.y + here.h &&
+			wall->colliderRect.y + wall->colliderRect.h > here.y)
+		{
+			colWith = wall;
+			return true;
+		}
+	}
+	return false;
+}
