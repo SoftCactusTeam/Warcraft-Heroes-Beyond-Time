@@ -49,6 +49,7 @@ bool Scene::Awake(pugi::xml_node& sceneNode)
 	App->console->AddConsoleOrderToList(order);
 
 	App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
+
 	return true;
 }
 
@@ -269,6 +270,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 					switch (button->btype)
 					{
 					case BType::PLAY:
+						App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
 						actual_scene = Stages::INGAME;
 						restart = true;
 						break;
@@ -306,11 +308,17 @@ void Scene::CreateMainMenuScreen()
 	//PLAY BUTTON
 	Button* button = (Button*)App->gui->CreateButton(getPosByResolution({ 250, 50.0f }), BType::PLAY, this);
 
-	LabelInfo defLabel;
+	/*LabelInfo defLabel;
 	defLabel.color = White;
 	defLabel.fontName = "LifeCraft80";
 	defLabel.text = "PLAY";
-	App->gui->CreateLabel(getPosByResolution({ 55,10 }), defLabel, button, this);
+	App->gui->CreateLabel(getPosByResolution({ 55,10 }), defLabel, button, this);*/
+	
+	LabelInfo defLabel;
+	defLabel.color = White;
+	defLabel.fontName = "LifeCraft80";
+	defLabel.text = "Start Demo";
+	App->gui->CreateLabel(getPosByResolution({ 33,11 }), defLabel, button, this);
 
 	//SETTINGS BUTTON
 	Button* button2 = (Button*)App->gui->CreateButton(getPosByResolution({ 250, 150.0f }), BType::SETTINGS, this);
@@ -354,7 +362,7 @@ void Scene::CreateSettingsScreen()
 	//FX VOLUME SLIDER
 	SliderInfo sinfo2;
 	sinfo2.type = Slider::SliderType::FX_VOLUME;
-	Slider* slider2 = (Slider*)App->gui->CreateSlider(getPosByResolution({ 190, 190 }), sinfo2, this, nullptr);
+	Slider* slider2 = (Slider*)App->gui->CreateSlider(getPosByResolution({ 185, 190 }), sinfo2, this, nullptr);
 
 	LabelInfo defLabel4;
 	defLabel4.color = White;
