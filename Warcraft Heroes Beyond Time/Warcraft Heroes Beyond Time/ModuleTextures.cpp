@@ -7,6 +7,8 @@
 #include "ModuleTextures.h"
 #include "FileSystem.h"
 
+#include "Brofiler\Brofiler.h"
+
 #include "SDL_image/include/SDL_image.h"
 #pragma comment( lib, "SDL_image/libx86/SDL2_image.lib" )
 
@@ -58,6 +60,7 @@ bool Textures::CleanUp()
 
 SDL_Texture* const Textures::Load(const char* path)
 {
+	BROFILER_CATEGORY("LoadTexture", Profiler::Color::Chocolate);
 	SDL_Texture* texture = NULL;
 	SDL_Surface* surface = IMG_Load_RW(App->fs->Load(path), 1);
 

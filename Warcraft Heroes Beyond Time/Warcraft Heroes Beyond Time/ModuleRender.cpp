@@ -38,6 +38,7 @@ bool Render::Awake(pugi::xml_node& renderNode)
 
 	renderer = SDL_CreateRenderer(App->window->window, -1, flags);
 
+
 	if(renderer == NULL)
 	{
 		LOG("Could not create the renderer! SDL_Error: %s\n", SDL_GetError());
@@ -45,20 +46,29 @@ bool Render::Awake(pugi::xml_node& renderNode)
 	}
 	else
 	{
-		camera.w = 640/*App->window->screen_surface->w*/;
-		camera.h = 360/*App->window->screen_surface->h*/;
-		camera.x = 0;
-		camera.y = 0;
-		fcamerax = 0;
-		fcameray = 0;
+		SDL_DisplayMode dm;
+		if (SDL_GetDesktopDisplayMode(0, &dm) != 0)
+		{
+			ret = false;
+		}
+		else
+		{
+			int w, h;
+			camera.w = (dm.w * 640) / 1920/*App->window->screen_surface->w*/;
+			camera.h = (dm.h * 360) / 1080/*App->window->screen_surface->h*/;
+			camera.x = 0;
+			camera.y = 0;
+			fcamerax = 0;
+			fcameray = 0;
+
+			uint width = 0, height = 0;
+			App->window->GetWindowSize(width, height);
+
+			ret = SDL_RenderSetLogicalSize(renderer, camera.w, camera.h) == 0;
+
+			SetBackgroundColor({ 0, 205, 193, 0 });
+		}
 	}
-
-	uint width = 0, height = 0;
-	App->window->GetWindowSize(width, height);
-
-	SDL_RenderSetLogicalSize(renderer, 640, 360);
-
-	SetBackgroundColor({ 0, 205, 193, 0 });
 
 	return ret;
 }
@@ -242,22 +252,24 @@ void Render::CheckCameraLimits()
 	uint tilesize = App->map->getTileSize();
 	App->map->getSize(mapwidth, mapheight);
 
+	if (-fcamerax < 0)
+		fcamerax = 0;
+
+	else if (-fcamerax + camera.w >(mapwidth * (tilesize - 2) + (tilesize - 2)))
+	{
+		fcamerax = -1 * (int)(mapwidth * (tilesize - 2) + (tilesize - 2) - camera.w);
+	}
+
+	if (-fcameray < 0)
+		fcameray = 0;
+
+	else if (-fcameray + camera.h >(mapheight * (tilesize-2) + tilesize-2))
+	{
+		fcameray = -1 * (int)(mapheight * (tilesize - 2) + (tilesize - 2) - camera.h);
+	}
+	
 	camera.x = (int)fcamerax;
 	camera.y = (int)fcameray;
 
-	if (camera.x > 0)
-		camera.x = 0;
-
-	else if (-camera.x + camera.w > (mapwidth * tilesize))
-	{
-		camera.x = -1 * (int)(mapwidth * tilesize - camera.w);
-	}
-
-	if (camera.y > 0)
-		camera.y = 0;
-
-	else if (-camera.y + camera.h > (mapheight * tilesize))
-	{
-		camera.y = -1 * (int)(mapheight * tilesize - camera.h);
-	}
+	
 }

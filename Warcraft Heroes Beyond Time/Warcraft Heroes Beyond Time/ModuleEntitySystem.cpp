@@ -25,22 +25,6 @@
 
 #include "Brofiler\Brofiler.h"
 
-class Entities_ConsoleOrder : public ConsoleOrder 
-{
-	std::string orderName() 
-	{ 
-		return "spawn"; 
-	}
-
-	void Exec(std::string parameter, int parameterNumeric) 
-	{
-		if (parameter == "footman")
-			App->entities->AddEnemy(App->scene->player->pos, FOOTMAN);
-		if (parameter == "archer")
-			App->entities->AddEnemy(App->scene->player->pos, ARCHER);
-	}
-};
-
 class Spawn_ConsoleOrder : public ConsoleOrder
 {
 	std::string orderName()
@@ -52,7 +36,7 @@ class Spawn_ConsoleOrder : public ConsoleOrder
 	{
 		if (parameter == "footman")
 		{
-
+			App->entities->AddEnemy({ App->scene->player->pos.x, App->scene->player->pos.y - 60 }, FOOTMAN);
 		}
 		else if (parameter == "thrall")
 		{
@@ -60,7 +44,7 @@ class Spawn_ConsoleOrder : public ConsoleOrder
 		}
 		else if (parameter == "archer")
 		{
-
+			App->entities->AddEnemy({ App->scene->player->pos.x, App->scene->player->pos.y - 60 }, ARCHER);
 		}
 
 		else if (parameter == "wizard")
@@ -75,7 +59,7 @@ class Spawn_ConsoleOrder : public ConsoleOrder
 		{
 
 		}
-		
+
 	}
 };
 
@@ -151,30 +135,18 @@ void EntitySystem::Init()
 bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 {
 	srand(time(NULL));
-	ConsoleOrder* txell_consoleOrder = new Entities_ConsoleOrder;
-	App->console->AddConsoleOrderToList(txell_consoleOrder);
-
-	ConsoleOrder* spawn_consoleOrder = new Spawn_ConsoleOrder;
-	App->console->AddConsoleOrderToList(spawn_consoleOrder);
-
-	ConsoleOrder* equip_consoleOrder = new Equip_ConsoleOrder;
-	App->console->AddConsoleOrderToList(equip_consoleOrder);
-
-	ConsoleOrder* clear_consoleOrder = new Clear_ConsoleOrder;
-	App->console->AddConsoleOrderToList(clear_consoleOrder);
-
-	ConsoleOrder* player_consoleOrder = new Player_ConsoleOrder;
-	App->console->AddConsoleOrderToList(player_consoleOrder);
 
 	//------------- Loading Stats -------------------------------------------------------------
 	pugi::xml_node thrall = entitiesNode.child("players").child("thrall");
-	thrallstats.hp = thrall.attribute("hp").as_uint(0);
+	thrallstats.maxhp = thrall.attribute("hp").as_uint(0);
+	thrallstats.hp = thrallstats.maxhp;
 	thrallstats.speed = thrall.attribute("speed").as_uint(0);
 	thrallstats.damage = thrall.attribute("damage").as_uint(0);
 	thrallstats.energyPercentbyHit = thrall.attribute("energy_percent_hit").as_uint(0);
 
 	pugi::xml_node footman = entitiesNode.child("enemies").child("footman");
-	footmanstats.hp = footman.attribute("hp").as_uint(0);
+	footmanstats.maxhp = footman.attribute("hp").as_uint(0);
+	footmanstats.hp = footmanstats.maxhp;
 	footmanstats.speed = footman.attribute("speed").as_uint(0);
 	footmanstats.damage = footman.attribute("damage").as_uint(0);
 	footmanstats.dropping_chance = footman.attribute("dropping_chance").as_uint(0);
@@ -182,7 +154,8 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	footmanstats.difficulty = footman.attribute("difficulty").as_uint(0);
 
 	pugi::xml_node archer = entitiesNode.child("enemies").child("archer");
-	archerstats.hp = archer.attribute("hp").as_uint(0);
+	archerstats.maxhp = archer.attribute("hp").as_uint(0);
+	archerstats.hp = archerstats.maxhp;
 	archerstats.speed = archer.attribute("speed").as_uint(0);
 	archerstats.damage = archer.attribute("damage").as_uint(0);
 	archerstats.dropping_chance = archer.attribute("dropping_chance").as_uint(0);
@@ -190,7 +163,8 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	archerstats.difficulty = archer.attribute("difficulty").as_uint(0);
 
 	pugi::xml_node wizard = entitiesNode.child("enemies").child("wizard");
-	wizardstats.hp = wizard.attribute("hp").as_uint(0);
+	wizardstats.maxhp = wizard.attribute("hp").as_uint(0);
+	wizardstats.hp = wizardstats.maxhp;
 	wizardstats.speed = wizard.attribute("speed").as_uint(0);
 	wizardstats.damage = wizard.attribute("damage").as_uint(0);
 	wizardstats.dropping_chance = wizard.attribute("dropping_chance").as_uint(0);
@@ -198,7 +172,8 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	wizardstats.difficulty = wizard.attribute("difficulty").as_uint(0);
 
 	pugi::xml_node darkknight = entitiesNode.child("enemies").child("dark_knight");
-	darkknightstats.hp = darkknight.attribute("hp").as_uint(0);
+	darkknightstats.maxhp = darkknight.attribute("hp").as_uint(0);
+	darkknightstats.hp = darkknightstats.maxhp;
 	darkknightstats.speed = darkknight.attribute("speed").as_uint(0);
 	darkknightstats.damage = darkknight.attribute("damage").as_uint(0);
 	darkknightstats.dropping_chance = darkknight.attribute("dropping_chance").as_uint(0);
@@ -210,13 +185,14 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 
 bool EntitySystem::Start()
 {
+	BROFILER_CATEGORY("ActivateEntities", Profiler::Color::Chocolate);
 	LOG("Loading textures");
-	spritesheetsEntities.push_back(App->textures->Load("images/thrall_spritesheet.png"));
-	spritesheetsEntities.push_back(App->textures->Load("Sprites/Footman/Footman_sprite.png"));
-	spritesheetsEntities.push_back(App->textures->Load("all_items.png"));
-	spritesheetsEntities.push_back(App->textures->Load("Mines.png"));
-	spritesheetsEntities.push_back(App->textures->Load("Sprites/Archer/Archer_sprite.png"));
-	spritesheetsEntities.push_back(App->textures->Load("Sprites/Archer/Archer_Arrow.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/thrall_spritesheet.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/Footman/Footman_sprite.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/all_items.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/Mines.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/Archer/Archer_sprite.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/Archer/Archer_Arrow.png"));
 
 	bool ret = true;
 
@@ -275,6 +251,7 @@ bool EntitySystem::PostUpdate()
 
 bool EntitySystem::CleanUp()
 {
+	BROFILER_CATEGORY("ClearENTITIES", Profiler::Color::Chocolate);
 	bool ret = true;
 
 	LOG("Entity System: CleanUp...");
@@ -388,7 +365,7 @@ PlayerEntity* EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
 	}
 
 	toSpawn.push_back(newEntity);
-	App->colliders->AddCollider({ 0,0,32,32 }, COLLIDER_PLAYER, newEntity,{10,10});
+	App->colliders->AddCollider({ 0,0,32,32 }, COLLIDER_PLAYER, newEntity, {10,10});
 	return newEntity;
 }
 
@@ -456,6 +433,21 @@ void EntitySystem::Load(const pugi::xml_node& eSystemNode)
 	return;
 }
 
+void EntitySystem::AddCommands()
+{
+	ConsoleOrder* spawn_consoleOrder = new Spawn_ConsoleOrder;
+	App->console->AddConsoleOrderToList(spawn_consoleOrder);
+
+	ConsoleOrder* equip_consoleOrder = new Equip_ConsoleOrder;
+	App->console->AddConsoleOrderToList(equip_consoleOrder);
+
+	ConsoleOrder* clear_consoleOrder = new Clear_ConsoleOrder;
+	App->console->AddConsoleOrderToList(clear_consoleOrder);
+
+	ConsoleOrder* player_consoleOrder = new Player_ConsoleOrder;
+	App->console->AddConsoleOrderToList(player_consoleOrder);
+}
+
 void EntitySystem::ClearEnemies()
 {
 	/*std::list<Entity*>::iterator it;
@@ -464,7 +456,6 @@ void EntitySystem::ClearEnemies()
 		if((*it)->)
 	}*/
 }
-
 
 int EntitySystem::GetRandomNumber(int rang)
 {

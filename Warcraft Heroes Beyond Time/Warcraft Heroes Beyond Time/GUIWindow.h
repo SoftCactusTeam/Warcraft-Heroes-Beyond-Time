@@ -6,7 +6,7 @@
 //atlasRect defines---------------------------
 
 #define StoneWindow {324, 472, 255, 296}
-
+#define WoodWindow  {1129, 48, 249, 286}
 //----------------------------------
 
 class GUIWindow : public GUIElem

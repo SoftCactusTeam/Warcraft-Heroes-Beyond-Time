@@ -49,6 +49,8 @@ public:
 	void Save();
 	void Load();
 
+	void AddCommands();
+
 private:
 
 	bool LoadConfig(pugi::xml_document&);

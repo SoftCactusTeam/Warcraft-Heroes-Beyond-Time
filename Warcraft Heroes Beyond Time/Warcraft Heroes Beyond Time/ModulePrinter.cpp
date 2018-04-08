@@ -31,7 +31,7 @@ bool ModulePrinter::PostUpdate()
 			case DrawingElem::DElemType::SPRITE:
 			{
 				Sprite* sprite = (Sprite*)delem;
-				App->render->Blit(sprite->texture, sprite->pos.x, sprite->pos.y, &sprite->SquaretoBlit, 1, 1, sprite->angle, sprite->pivot.x, sprite->pivot.y);
+				App->render->Blit(sprite->texture, sprite->pos.x - sprite->pivot.x, sprite->pos.y - sprite->pivot.y, &sprite->SquaretoBlit, 1, 1, sprite->angle, sprite->pivot.x, sprite->pivot.y);
 				break;
 			}
 			case DrawingElem::DElemType::QUAD:

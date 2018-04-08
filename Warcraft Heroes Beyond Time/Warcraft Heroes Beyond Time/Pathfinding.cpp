@@ -39,6 +39,7 @@ void Pathfinding::LoadPathMap()
 
 void Pathfinding::ClearMap()
 {
+	BROFILER_CATEGORY("ClearPATHFINDING", Profiler::Color::Chocolate);
 	for (int i = 0; i < map.size(); i++)
 		delete map[i];
 	map.clear();

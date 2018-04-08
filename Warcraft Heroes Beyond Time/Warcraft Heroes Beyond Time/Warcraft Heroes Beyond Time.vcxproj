@@ -144,6 +144,7 @@
     <ClCompile Include="InputBox.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ModulePrinter.cpp" />
+    <ClCompile Include="PlayerHPBar.cpp" />
     <ClCompile Include="Slider.cpp" />
     <ClCompile Include="ModuleMapGenerator.cpp" />
     <ClCompile Include="ModuleColliders.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="InputBox.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ModulePrinter.h" />
+    <ClInclude Include="PlayerHPBar.h" />
     <ClInclude Include="PortalEntity.h" />
     <ClInclude Include="Slider.h" />
     <ClInclude Include="ModuleMapGenerator.h" />

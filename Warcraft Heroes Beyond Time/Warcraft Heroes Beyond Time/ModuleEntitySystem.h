@@ -20,16 +20,20 @@ public:
 
 	struct PlayerStats
 	{
+		uint maxhp = 0;
 		uint hp = 0;
 		uint armor = 0;
 		uint speed = 0;
 		uint damage = 0;
+		uint energy = 100;
 		uint energyPercentbyHit = 0;
 		uint critChance = 0;
+
 	} thrallstats;
 
 	struct EnemyStats
 	{
+		uint maxhp = 0;
 		uint hp = 0;
 		uint speed = 0;
 		uint damage = 0;
@@ -54,6 +58,8 @@ public:
 
 	void Save(pugi::xml_node&);
 	void Load(const pugi::xml_node&);
+
+	void AddCommands();
 
 	bool ClearEntitiesList();
 	bool UnloadTexturesVector();
