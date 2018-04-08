@@ -75,7 +75,7 @@ void PlayerEntity::PlayerStates(float dt)
 			JoyconStates(dt);
 
 		CheckMapLimits();
-		//CheckCulling();
+		CheckCulling();
 		if (drawFZ)
 			App->printer->PrintQuad(freeZone, { 255, 0, 0, 50 }, true, true);
 	}
@@ -1308,14 +1308,16 @@ void PlayerEntity::InitCulling()
 	if (this == App->scene->player)
 	{
 		SDL_Rect currRect = anim->GetCurrentRect();
-		App->render->fcamerax = -1 * (this->pos.x + currRect.w / 2 - App->render->camera.w / 2);
-		App->render->fcameray = -1 * (this->pos.y + currRect.h / 2 - App->render->camera.h / 2);
+		iPoint pivot = anim->GetCurrentPivot();
 
-		freeZonex = pos.x - 55/2;
-		freeZoney = pos.y - 55/2;
+		App->render->fcamerax = -1 * (this->pos.x - pivot.x + currRect.w / 2 - App->render->camera.w / 2);
+		App->render->fcameray = -1 * (this->pos.y - pivot.y + currRect.h / 2 - App->render->camera.h / 2);
 
-		freeZone.x = pos.x - 55;
-		freeZone.y = pos.y - 55;
+		freeZonex = pos.x - pivot.x - 55/2;
+		freeZoney = pos.y - pivot.y - 55/2;
+
+		freeZone.x = pos.x - pivot.x - 55;
+		freeZone.y = pos.y - pivot.y - 55;
 		freeZone.w = 55 / 2 * 2 + 55;
 		freeZone.h = 55 / 2 * 2 + 47;
 	}
@@ -1330,46 +1332,48 @@ void PlayerEntity::CheckCulling()
 		App->map->getSize(w, h);
 		tilesize = App->map->getTileSize();
 		SDL_Rect currentRect = anim->GetCurrentRect();
+		iPoint pivot = anim->GetCurrentPivot();
+		fPoint topleft = { pos.x - pivot.x, pos.y - pivot.y };
 
-		if (freeZonex > this->pos.x - this->anim->GetCurrentPivot().x && -App->render->camera.x > 0)
+		if (freeZonex > topleft.x && -App->render->camera.x > 0)
 		{
-			if (App->render->fcamerax + freeZonex - pos.x - this->anim->GetCurrentPivot().x > 0)
+			if (App->render->fcamerax + freeZonex - topleft.x > 0)
 			{
 				freeZonex -= -App->render->fcamerax;
 				App->render->fcamerax = 0;
 			}
 			else
 			{
-				App->render->fcamerax += freeZonex - pos.x - this->anim->GetCurrentPivot().x;
-				freeZonex = this->pos.x;
+				App->render->fcamerax += freeZonex - topleft.x;
+				freeZonex = topleft.x;
 			}
 		}
 		
 
-		else if (freeZonex + freeZone.w < pos.x + currentRect.w - this->anim->GetCurrentPivot().x && - App->render->camera.x < w * (tilesize-2) - App->render->camera.w)
+		else if (freeZonex + freeZone.w < topleft.x + currentRect.w  && - App->render->camera.x < w * (tilesize-2) - App->render->camera.w)
 		{
-			App->render->fcamerax -= (pos.x + currentRect.w - this->anim->GetCurrentPivot().x) - (freeZonex + freeZone.w);
-			freeZonex = (this->pos.x + currentRect.w - this->anim->GetCurrentPivot().x) - freeZone.w;
+			App->render->fcamerax -= (topleft.x + currentRect.w ) - (freeZonex + freeZone.w);
+			freeZonex = (topleft.x + currentRect.w ) - freeZone.w;
 		}
 
-		if (freeZoney > pos.y - this->anim->GetCurrentPivot().y && -App->render->camera.y > 0)
+		if (freeZoney > topleft.y && -App->render->camera.y > 0)
 		{
-			if (App->render->fcameray + freeZoney - pos.y - this->anim->GetCurrentPivot().y > 0)
+			if (App->render->fcameray + freeZoney - topleft.y > 0)
 			{
 				freeZoney -= -App->render->fcameray;
 				App->render->fcameray = 0;
 			}
 			else
 			{
-				App->render->fcameray += freeZoney - pos.y - this->anim->GetCurrentPivot().y;
-				freeZoney = pos.y - this->anim->GetCurrentPivot().y;
+				App->render->fcameray += freeZoney - topleft.y;
+				freeZoney = topleft.y;
 			}
 			
 		}
-		else if (freeZoney + freeZone.h < pos.y + currentRect.h - this->anim->GetCurrentPivot().y && -App->render->camera.y + App->render->camera.h < h * (tilesize-2))
+		else if (freeZoney + freeZone.h < topleft.y + currentRect.h && -App->render->camera.y + App->render->camera.h < h * (tilesize-2))
 		{
-			App->render->fcameray -= (pos.y + currentRect.h - this->anim->GetCurrentPivot().y) - (freeZoney + freeZone.h);
-			freeZoney = pos.y + currentRect.h - this->anim->GetCurrentPivot().y - freeZone.h;
+			App->render->fcameray -= (topleft.y + currentRect.h ) - (freeZoney + freeZone.h);
+			freeZoney = topleft.y + currentRect.h  - freeZone.h;
 		}
 
 		freeZone.x = (int)freeZonex;
