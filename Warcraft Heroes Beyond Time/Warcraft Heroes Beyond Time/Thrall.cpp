@@ -49,6 +49,13 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	idleLeft.PushBack({ 267,213,89,71 });
 	idleLeft.speedFactor = 3.0f;
 
+	// TODO
+	/*idleUpLeft.PushBack({ 356,213,89,71 });
+	idleUpLeft.PushBack({ 445,213,89,71 });
+	idleUpLeft.PushBack({ 534,213,89,71 });
+	idleUpLeft.PushBack({ 623,213,89,71 });
+	idleUpLeft.speedFactor = 3.0f;*/
+
 	// Thrall walk animations
 
 	up.PushBack({ 0,284,89,71 });
@@ -135,6 +142,7 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	attackUp.PushBack({ 267 + 3,568 + 6,89,71 });
 	attackUp.PushBack({ 356 + 3,568 + 6,89,71 });
 	attackUp.speedFactor = 9.0f;
+	attackUp.loop = false;
 
 	attackRight.PushBack({ 178,639,89,71 });
 	attackRight.PushBack({ 267,639,89,71 });
@@ -142,6 +150,7 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	attackRight.PushBack({ 445,639,89,71 });
 	attackRight.PushBack({ 534,639,89,71 });
 	attackRight.speedFactor = 9.0f;
+	attackRight.loop = false;
 
 	attackDown.PushBack({ 356 + 8,710 + 5,89,71 });
 	attackDown.PushBack({ 445 + 8,710 + 5,89,71 });
@@ -149,6 +158,7 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	attackDown.PushBack({ 623 + 11,710 + 5,89,71 });
 	attackDown.PushBack({ 0 + 8,781 + 5,89,71 });
 	attackDown.speedFactor = 9.0f;
+	attackDown.loop = false;
 
 	attackLeft.PushBack({ 534 - 6,781 + 6,89,71 });
 	attackLeft.PushBack({ 623 - 6,781 + 6,89,71 });
@@ -156,6 +166,7 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	attackLeft.PushBack({ 89 - 6, 852 + 6,89,71 });
 	attackLeft.PushBack({ 178 - 6,852 + 6,89,71 });
 	attackLeft.speedFactor = 9.0f;
+	attackLeft.loop = false;
 
 	skill.PushBack({ 0 + 5,923 + 5,89,71 + 5 });
 	skill.PushBack({ 89 + 5,923 + 5,89,71 + 5 });
