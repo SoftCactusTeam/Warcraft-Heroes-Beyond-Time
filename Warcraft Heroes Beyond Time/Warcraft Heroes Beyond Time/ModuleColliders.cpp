@@ -101,8 +101,19 @@ bool ModuleColliders::PostUpdate()
 
 bool ModuleColliders::CleanUp()
 {
+	std::list<Collider*>::iterator it;
+	for (it = colliders.begin(); it != colliders.end(); ++it)
+	{
+		delete (*it);
+	}
 	colliders.clear();
+
+	for (it = temporalColliders.begin(); it != temporalColliders.end(); ++it)
+	{
+		delete (*it);
+	}
 	temporalColliders.clear();
+
 	temporalColliderstimer.clear();
 
 	return true;
@@ -134,7 +145,15 @@ Collider* ModuleColliders::AddTemporalCollider(SDL_Rect colliderRect, COLLIDER_T
 
 void ModuleColliders::deleteCollider(Collider* col)
 {
-	colliders.remove(col);
+	std::list<Collider*>::iterator it;
+	for (it = colliders.begin(); it != colliders.end(); ++it)
+	{
+		if ((*it) == col)
+		{
+			colliders.erase(it);
+			break;
+		}
+	}
 }
 
 void ModuleColliders::CleanCollidersEntity(Entity* entity)
