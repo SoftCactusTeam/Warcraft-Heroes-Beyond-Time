@@ -3,107 +3,107 @@
 #include "ModuleInput.h"
 #include "ModuleEntitySystem.h"
 
-Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEntity(coor, type, texture) 
+Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEntity(coor, type, texture)
 {
 	// Thrall idle animations
 
-	idleUp.PushBack({ 0,0,89,71 }, {0,0}); //Example: Introduce here the pivot.
-	idleUp.PushBack({ 89,0,89,71 });
-	idleUp.PushBack({ 178,0,89,71 });
-	idleUp.PushBack({ 267,0,89,71 });
+	idleUp.PushBack({ 26,15,42,39 }, { 14,13 }); //Example: Introduce here the pivot.
+	idleUp.PushBack({ 115,16,42,39 }, { 14,12 });
+	idleUp.PushBack({ 204,16,42,39 }, { 14,12 });
+	idleUp.PushBack({ 293,15,42,39 }, { 14,13 });
 	idleUp.speedFactor = 3.0f;
 
-	idleUpRight.PushBack({ 356,0,89,71 });
-	idleUpRight.PushBack({ 445,0,89,71 });
-	idleUpRight.PushBack({ 534,0,89,71 });
-	idleUpRight.PushBack({ 623,0,89,71 });
+	idleUpRight.PushBack({ 382,15,34,37 }, { 11,10 });
+	idleUpRight.PushBack({ 471,16,34,38 }, { 11,10 });
+	idleUpRight.PushBack({ 560,16,34,38 }, { 11,10 });
+	idleUpRight.PushBack({ 649,15,34,37 }, { 11,10 });
 	idleUpRight.speedFactor = 3.0f;
 
-	idleRight.PushBack({ 0,71,89,71 });
-	idleRight.PushBack({ 89,71,89,71 });
-	idleRight.PushBack({ 178,71,89,71 });
-	idleRight.PushBack({ 267,71,89,71 });
+	idleRight.PushBack({ 35,86,24,42 }, { 7,10 });
+	idleRight.PushBack({ 123,87,25,43 }, { 7,10 });
+	idleRight.PushBack({ 212,87,25,43 }, { 7,11 });
+	idleRight.PushBack({ 302,86,24,42 }, { 7,10 });
 	idleRight.speedFactor = 3.0f;
 
-	idleDownRight.PushBack({ 356,71,89,71 });
-	idleDownRight.PushBack({ 445,71,89,71 });
-	idleDownRight.PushBack({ 534,71,89,71 });
-	idleDownRight.PushBack({ 623,71,89,71 });
+	idleDownRight.PushBack({ 389,86,23,38 }, { 13,15 });
+	idleDownRight.PushBack({ 477,87,24,38 }, { 15,15 });
+	idleDownRight.PushBack({ 566,87,24,38 }, { 16,15 });
+	idleDownRight.PushBack({ 656,86,23,38 }, { 14,16 });
 	idleDownRight.speedFactor = 3.0f;
 
-	idleDown.PushBack({ 0 + 9,142,89,71 });
-	idleDown.PushBack({ 89 + 9,142,89,71 });
-	idleDown.PushBack({ 178 + 9,142,89,71 });
-	idleDown.PushBack({ 267 + 9,142,89,71 });
+	idleDown.PushBack({ 17,157,48,34 }, { 33,13 });
+	idleDown.PushBack({ 106,157,48,35 }, { 33,14 });
+	idleDown.PushBack({ 195,157,48,35 }, { 33,14 });
+	idleDown.PushBack({ 284,157,48,34 }, { 33,13 });
 	idleDown.speedFactor = 3.0f;
 
-	idleDownLeft.PushBack({ 356,142,89,71 });
-	idleDownLeft.PushBack({ 445,142,89,71 });
-	idleDownLeft.PushBack({ 534,142,89,71 });
-	idleDownLeft.PushBack({ 623,142,89,71 });
+	idleDownLeft.PushBack({ 384,162,30,29 }, { 15,14 });
+	idleDownLeft.PushBack({ 473,163,31,30 }, { 15,14 });
+	idleDownLeft.PushBack({ 562,163,31,30 }, { 15,15 });
+	idleDownLeft.PushBack({ 651,162,30,29 }, { 14,14 });
 	idleDownLeft.speedFactor = 3.0f;
 
-	idleLeft.PushBack({ 0,213,89,71 });
-	idleLeft.PushBack({ 89,213,89,71 });
-	idleLeft.PushBack({ 178,213,89,71 });
-	idleLeft.PushBack({ 267,213,89,71 });
+	idleLeft.PushBack({ 35,225,22,37 }, { 10,18 });
+	idleLeft.PushBack({ 124,227,23,36 }, { 10,18 });
+	idleLeft.PushBack({ 213,227,23,36 }, { 10,18 });
+	idleLeft.PushBack({ 302,225,22,37 }, { 10,19 });
 	idleLeft.speedFactor = 3.0f;
 
-	// TODO
-	/*idleUpLeft.PushBack({ 356,213,89,71 });
-	idleUpLeft.PushBack({ 445,213,89,71 });
-	idleUpLeft.PushBack({ 534,213,89,71 });
-	idleUpLeft.PushBack({ 623,213,89,71 });
-	idleUpLeft.speedFactor = 3.0f;*/
+
+	idleUpLeft.PushBack({ 387,233,26,34 }, { 15,11 });
+	idleUpLeft.PushBack({ 476,234,26,34 }, { 15,11 });
+	idleUpLeft.PushBack({ 565,234,26,34 }, { 15,11 });
+	idleUpLeft.PushBack({ 654,233,26,34 }, { 15,11 });
+	idleUpLeft.speedFactor = 3.0f;
+
 
 	// Thrall walk animations
-
-	up.PushBack({ 0,284,89,71 });
-	up.PushBack({ 89,284,89,71 });
-	up.PushBack({ 178,284,89,71 });
-	up.PushBack({ 267,284,89,71 });
+	up.PushBack({ 30,298,32,41 }, { 13,12 });
+	up.PushBack({ 118,299,33,39 }, { 14,11 });
+	up.PushBack({ 205,299,32,34 }, { 16,11 });
+	up.PushBack({ 294,298,34,36 }, { 16,12 });
 	up.speedFactor = 9.0f;
 
-	upRight.PushBack({ 356,284,89,71 });
-	upRight.PushBack({ 445,284,89,71 });
-	upRight.PushBack({ 534,284,89,71 });
-	upRight.PushBack({ 623,284,89,71 });
+	upRight.PushBack({ 384,301,26,41 }, { 13,10 });
+	upRight.PushBack({ 472,302,29,40 }, { 13,9 });
+	upRight.PushBack({ 558,302,46,35 }, { 17,10 });
+	upRight.PushBack({ 651,301,43,36 }, { 13,11 });
 	upRight.speedFactor = 9.0f;
 
-	right.PushBack({ 0,355,89,71 });
-	right.PushBack({ 89,355,89,71 });
-	right.PushBack({ 178,355,89,71 });
-	right.PushBack({ 267,355,89,71 });
+	right.PushBack({ 28,373,30,37 }, { 18,13 });
+	right.PushBack({ 118,372,26,40 }, { 17,15 });
+	right.PushBack({ 209,373,38,32 }, {16, 14});
+	right.PushBack({ 298,373,37,34 }, {16,14});
 	right.speedFactor = 9.0f;
 
-	downRight.PushBack({ 356,355,89,71 });
-	downRight.PushBack({ 445,355,89,71 });
-	downRight.PushBack({ 534,355,89,71 });
-	downRight.PushBack({ 623,355,89,71 });
+	downRight.PushBack({ 383,372,36,32 }, {23,16});
+	downRight.PushBack({ 474,372,34,35 }, {23,17});
+	downRight.PushBack({ 568,371,25,36 }, {18,17});
+	downRight.PushBack({ 656,372,29,34 }, {19,16});
 	downRight.speedFactor = 9.0f;
 
-	down.PushBack({ 0,426,89,71 });
-	down.PushBack({ 89,426,89,71 });
-	down.PushBack({ 178,426,89,71 });
-	down.PushBack({ 267,426,89,71 });
+	down.PushBack({ 24,447,37,32 }, {22,14});
+	down.PushBack({ 112,449,38,28 }, {23,12});
+	down.PushBack({ 202,449,38,30 }, {22,13});
+	down.PushBack({ 294,449,36,29 }, {19,12});
 	down.speedFactor = 9.0f;
 
-	downLeft.PushBack({ 356,426,89,71 });
-	downLeft.PushBack({ 445,426,89,71 });
-	downLeft.PushBack({ 534,426,89,71 });
-	downLeft.PushBack({ 623,426,89,71 });
+	downLeft.PushBack({ 389,446,25,30 }, {8,17});
+	downLeft.PushBack({ 473,447,31,28 }, {13,15});
+	downLeft.PushBack({ 555,447,41,32 }, {20,15});
+	downLeft.PushBack({ 644,447,39,33 }, {20,16});
 	downLeft.speedFactor = 9.0f;
 
-	left.PushBack({ 0,497,89,71 });
-	left.PushBack({ 89,497,89,71 });
-	left.PushBack({ 178,497,89,71 });
-	left.PushBack({ 267,497,89,71 });
+	left.PushBack({ 29,514,29,32 }, {17,9});
+	left.PushBack({ 121,514,25,34 }, {15,10});
+	left.PushBack({ 198,513,38,32 }, {27,10});
+	left.PushBack({ 287,512,37,33 }, {27,11});
 	left.speedFactor = 9.0f;
 
-	upLeft.PushBack({ 356,497,89,71 });
-	upLeft.PushBack({ 445,497,89,71 });
-	upLeft.PushBack({ 534,497,89,71 });
-	upLeft.PushBack({ 623,497,89,71 });
+	upLeft.PushBack({ 379,514,49,35 }, {20,10});
+	upLeft.PushBack({ 472,513,43,36 }, {16,11});
+	upLeft.PushBack({ 564,513,26,32 }, {13,10});
+	upLeft.PushBack({ 652,514,28,30 }, {15,8});
 	upLeft.speedFactor = 9.0f;
 
 	//

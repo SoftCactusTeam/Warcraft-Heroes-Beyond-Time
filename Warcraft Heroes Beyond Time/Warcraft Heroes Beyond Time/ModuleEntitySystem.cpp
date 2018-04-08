@@ -376,7 +376,7 @@ PlayerEntity* EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
 	col_rect.x = 0;
 	col_rect.y = 0;
 
-	newEntity->setCol(App->colliders->AddCollider(col_rect, COLLIDER_PLAYER, newEntity, newEntity->anim->GetCurrentPivot()));
+	newEntity->setCol(App->colliders->AddCollider(col_rect, COLLIDER_PLAYER, newEntity, { newEntity->anim->GetCurrentPivot().x * -1,  newEntity->anim->GetCurrentPivot().y * -1}));
 	return newEntity;
 }
 
