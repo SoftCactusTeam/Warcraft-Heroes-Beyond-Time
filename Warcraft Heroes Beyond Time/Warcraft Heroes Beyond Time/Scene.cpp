@@ -88,21 +88,21 @@ bool Scene::Start()
 			mapInfo.tilesetPath = "maps/Tiles.png";
 			lvlIndex++;
 
-			App->map->GenerateMap(mapInfo);
-
-			player = App->entities->AddPlayer({ 25*48,25*48 }, THRALL);
+			//App->map->GenerateMap(mapInfo);
+			App->map->GenerateBossMap();
+			player = App->entities->AddPlayer({ 1*48,1*48 }, THRALL);
 			App->gui->CreateHPBar(player, { 10,5 });
 
 			App->path->LoadPathMap();
-			App->entities->AddEnemy({ 80,80 }, FOOTMAN);
+			//App->entities->AddEnemy({ 80,80 }, FOOTMAN);
 
 			/*App->colliders->AddTileCollider({ 10,10,50,50 }, COLLIDER_TYPE::COLLIDER_UNWALKABLE);
 			App->colliders->AddTileCollider({ 10,70,50,50 }, COLLIDER_TYPE::COLLIDER_UNWALKABLE);*/
 
 
-			iPoint chestPos = App->map->GetRandomValidPoint();
-			lvlChest = App->entities->AddChest({ (float)chestPos.x * 48,(float)chestPos.y * 48 }, MID_CHEST);
-			portal = (PortalEntity*)App->entities->AddStaticEntity({ 25 * 48,25 * 48 }, PORTAL);
+			//iPoint chestPos = App->map->GetRandomValidPoint();
+			//lvlChest = App->entities->AddChest({ (float)chestPos.x * 48,(float)chestPos.y * 48 }, MID_CHEST);
+			//portal = (PortalEntity*)App->entities->AddStaticEntity({ 25 * 48,25 * 48 }, PORTAL);
 			
 			break;
 		}
