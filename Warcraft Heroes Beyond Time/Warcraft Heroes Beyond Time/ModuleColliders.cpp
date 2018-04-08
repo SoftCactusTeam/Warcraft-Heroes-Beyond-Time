@@ -43,12 +43,13 @@ bool ModuleColliders::Update(float dt)
 {
 	BROFILER_CATEGORY("Colliders Collision", Profiler::Color::Azure);
 
-	std::list<Collider*>::iterator first;
-	std::list<Collider*>::iterator second;
-
+	std::list<Collider*>::iterator first, second = colliders.begin();
+	advance(second, 1);
+	
+	//Check all non_temporal colliders between them
 	for (first = colliders.begin(); first != colliders.end(); ++first)
 		if ((*first)->type != COLLIDER_UNWALKABLE)
-			for (second = colliders.begin()++; second != colliders.end(); ++second)
+			for (second; second != colliders.end(); ++second)
 				if (CheckTypeCollMatrix((*first)->type, (*second)->type))
 					if (CheckCollision((*first), (*second)))
 					{
@@ -76,13 +77,21 @@ bool ModuleColliders::Update(float dt)
 				}
 
 	// Netejar colliders temporals
-	int i = 0;
-	for (second = temporalColliders.begin(); second != temporalColliders.end(); second++, ++i)
-		if (temporalColliderstimer[i] < SDL_GetTicks())
+	std::vector<int>::iterator timer_it = temporalColliderstimer.begin();
+	for (second = temporalColliders.begin(); second != temporalColliders.end();)
+	{
+		if (*(timer_it) < SDL_GetTicks())
 		{
-			temporalColliders.erase(second);
-			temporalColliderstimer.erase(temporalColliderstimer.begin() + i);
+			second = temporalColliders.erase(second);
+			timer_it = temporalColliderstimer.erase(timer_it);
 		}
+		else
+		{
+			++timer_it;
+			++second;
+		}
+	}
+		
 	return true;
 }
 
