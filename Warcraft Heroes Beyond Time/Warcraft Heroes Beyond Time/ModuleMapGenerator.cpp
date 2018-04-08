@@ -159,12 +159,7 @@ bool MapGenerator::GenerateBossMap()
 	for (int y = 0; y < sizeY; ++y)
 	{
 		for (int x = 0; x < sizeX; ++x)
-		{
-			MapNode* node = new MapNode({ (int)x,(int)y }, VOID);
-			node->layerBelow = -1;
-			nodes.push_back(node);
-		}
-
+			nodes.push_back(new MapNode({ x,y }, VOID));
 	}
 
 	pugi::xml_node sub_map_node = map_child.child("tileset");
@@ -176,18 +171,26 @@ bool MapGenerator::GenerateBossMap()
 		int gid = tile_gid.attribute("gid").as_int();
 
 		if (gid == 5)
+		{
 			nodes[contNodes]->whatToBlit = VOID;
+			nodes[contNodes]->layerBelow = 1;
+		}
 		else if (gid >= 6)
+		{
 			nodes[contNodes]->whatToBlit = FLOOR;
+			nodes[contNodes]->layerBelow = -1;
+		}
 		else
+		{
 			nodes[contNodes]->whatToBlit = WALL;
-
+			nodes[contNodes]->layerBelow = 0;
+		}
 		contNodes++;
 	}
 
 	mapTexture = App->textures->Load("maps/Tiles.png");
 
-	return false;
+	return true;
 }
 
 bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int seed)

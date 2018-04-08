@@ -141,6 +141,7 @@
     <ClCompile Include="Fonts.cpp" />
     <ClCompile Include="FileSystem.cpp" />
     <ClCompile Include="GUIImage.cpp" />
+    <ClCompile Include="Guldan.cpp" />
     <ClCompile Include="InputBox.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ModulePrinter.cpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="FileSystem.h" />
     <ClInclude Include="GUIElem.h" />
     <ClInclude Include="GUIImage.h" />
+    <ClInclude Include="Guldan.h" />
     <ClInclude Include="InputBox.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ModulePrinter.h" />

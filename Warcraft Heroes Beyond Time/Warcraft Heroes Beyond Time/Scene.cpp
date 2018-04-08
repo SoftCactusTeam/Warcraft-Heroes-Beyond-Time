@@ -88,21 +88,19 @@ bool Scene::Start()
 			mapInfo.tilesetPath = "maps/Tiles.png";
 			lvlIndex++;
 
-			//App->map->GenerateMap(mapInfo);
-			App->map->GenerateBossMap();
-			player = App->entities->AddPlayer({ 1*48,1*48 }, THRALL);
+			App->map->GenerateMap(mapInfo);
+			player = App->entities->AddPlayer({ 25*48,25*48 }, THRALL);
 			App->gui->CreateHPBar(player, { 10,5 });
 
 			App->path->LoadPathMap();
-			//App->entities->AddEnemy({ 80,80 }, FOOTMAN);
+			App->entities->AddEnemy({ 80,80 }, FOOTMAN);
 
 			/*App->colliders->AddTileCollider({ 10,10,50,50 }, COLLIDER_TYPE::COLLIDER_UNWALKABLE);
 			App->colliders->AddTileCollider({ 10,70,50,50 }, COLLIDER_TYPE::COLLIDER_UNWALKABLE);*/
 
-
-			//iPoint chestPos = App->map->GetRandomValidPoint();
-			//lvlChest = App->entities->AddChest({ (float)chestPos.x * 48,(float)chestPos.y * 48 }, MID_CHEST);
-			//portal = (PortalEntity*)App->entities->AddStaticEntity({ 25 * 48,25 * 48 }, PORTAL);
+			iPoint chestPos = App->map->GetRandomValidPoint();
+			lvlChest = App->entities->AddChest({ (float)chestPos.x * 48,(float)chestPos.y * 48 }, MID_CHEST);
+			portal = (PortalEntity*)App->entities->AddStaticEntity({ 25 * 48,25 * 48 }, PORTAL);
 			
 			break;
 		}
@@ -178,6 +176,18 @@ bool Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_8) == KEY_DOWN)
 		player->SetDamage(25, true);
 
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN && actual_scene == Stages::INGAME && !App->console->isWritting())
+	{
+		App->entities->ClearEntitiesList();
+		App->map->CleanUp();
+		App->map->GenerateBossMap();
+		player = App->entities->AddPlayer({ 15 * 48,20 * 48 }, THRALL);
+		App->gui->CreateHPBar(player, { 10,5 });
+
+		App->path->LoadPathMap();
+
+	}
+
 	//PAUSE GAME
 		if (actual_scene == Stages::INGAME)
 		{
@@ -223,7 +233,6 @@ bool Scene::CleanUp()
 	App->console->DeActivate();
 	App->path->ClearMap();
 	App->colliders->DeActivate();
-
 
 	return true;
 }
