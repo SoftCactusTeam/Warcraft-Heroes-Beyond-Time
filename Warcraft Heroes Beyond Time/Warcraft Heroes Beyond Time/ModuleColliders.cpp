@@ -63,16 +63,17 @@ bool ModuleColliders::Update(float dt)
 					}
 
 	// Comprobar colliders temporals
-	for (first = colliders.begin(); first != colliders.end(); ++first)
-		for (second = temporalColliders.begin(); second != colliders.end(); ++second)
-			if (CheckTypeCollMatrix((*first)->type, (*second)->type))
-				if (CheckCollision((*first), (*second)))
-				{
-					if ((*first)->owner != nullptr)
-						(*first)->owner->Collision((*second)->type);
-					else
-						(*first)->collidingWith = (*second)->type;
-				}
+	if (temporalColliders.size() > 0)
+		for (first = colliders.begin(); first != colliders.end(); ++first)
+			for (second = temporalColliders.begin(); second != colliders.end(); ++second)
+				if (CheckTypeCollMatrix((*first)->type, (*second)->type))
+					if (CheckCollision((*first), (*second)))
+					{
+						if ((*first)->owner != nullptr)
+							(*first)->owner->Collision((*second)->type);
+						else
+							(*first)->collidingWith = (*second)->type;
+					}
 
 	// Netejar colliders temporals
 	std::vector<int>::iterator timer_it = temporalColliderstimer.begin();
