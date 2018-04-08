@@ -33,8 +33,6 @@ ModuleColliders::ModuleColliders()
 
 bool ModuleColliders::Awake(pugi::xml_node& consoleNode)
 {
-	ConsoleOrder* order = new ConsoleColliders();
-	App->console->AddConsoleOrderToList(order);
 	printColliders = false;
 	return true;
 }
@@ -103,9 +101,10 @@ bool ModuleColliders::PostUpdate()
 
 bool ModuleColliders::CleanUp()
 {
-	for (int i = 0; i < colliders.size(); i++)
-		delete colliders[i];
 	colliders.clear();
+	temporalColliders.clear();
+	temporalColliderstimer.clear();
+
 	return true;
 }
 
@@ -135,21 +134,17 @@ Collider* ModuleColliders::AddTemporalCollider(SDL_Rect colliderRect, COLLIDER_T
 
 void ModuleColliders::deleteCollider(Collider* col)
 {
-	for (int i = 0; i < colliders.size(); i++)
-		if (colliders[i] == col)
-		{
-			delete colliders[i];
-			colliders.erase(colliders.begin() + i);
-		}
+	colliders.remove(col);
 }
 
 void ModuleColliders::CleanCollidersEntity(Entity* entity)
 {
-	for (int i = 0; i < colliders.size(); i++)
-		if (colliders[i]->owner == entity)
+	std::list<Collider*>::iterator it;
+	for (it = colliders.begin(); it != colliders.end(); ++it)
+		if ((*it)->owner == entity)
 		{
-			delete colliders[i];
-			colliders.erase(colliders.begin() + i);
+			colliders.erase(it);
+			break;
 		}
 }
 
@@ -209,13 +204,21 @@ void ModuleColliders::PrintColliders()
 {
 	if (printColliders)
 	{
-		for (int i = 0; i < colliders.size(); i++)
-			if (colliders[i]->owner != nullptr)
-				App->render->DrawQuad({ (int)colliders[i]->owner->pos.x + colliders[i]->colliderRect.x, (int)colliders[i]->owner->pos.y + colliders[i]->colliderRect.y, colliders[i]->colliderRect.w, colliders[i]->colliderRect.h }, 255, 255, 255, 100);
-			else
-				App->render->DrawQuad({colliders[i]->colliderRect.x, colliders[i]->colliderRect.y, colliders[i]->colliderRect.w, colliders[i]->colliderRect.h }, 255, 150, 255, 100);
+		std::list<Collider*>::iterator it;
 
-		for (int i = 0; i < temporalColliders.size(); i++)
-			App->render->DrawQuad({ temporalColliders[i]->colliderRect.x, temporalColliders[i]->colliderRect.y, temporalColliders[i]->colliderRect.w, temporalColliders[i]->colliderRect.h }, 255, 0, 255, 100);
+		for (it = colliders.begin(); it != colliders.end(); ++it)
+			if ((*it)->owner != nullptr)
+				App->render->DrawQuad({ (int)(*it)->owner->pos.x + (*it)->colliderRect.x, (int)(*it)->owner->pos.y + (*it)->colliderRect.y, (*it)->colliderRect.w, (*it)->colliderRect.h }, 255, 255, 255, 100);
+			else
+				App->render->DrawQuad({ (*it)->colliderRect.x, (*it)->colliderRect.y, (*it)->colliderRect.w, (*it)->colliderRect.h }, 255, 150, 255, 100);
+
+		for (it = temporalColliders.begin(); it != temporalColliders.end(); ++it)
+			App->render->DrawQuad({ (*it)->colliderRect.x, (*it)->colliderRect.y, (*it)->colliderRect.w, (*it)->colliderRect.h }, 255, 0, 255, 100);
 	}
+}
+
+void ModuleColliders::AddCommands()
+{
+	ConsoleOrder* order = new ConsoleColliders();
+	App->console->AddConsoleOrderToList(order);
 }

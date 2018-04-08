@@ -20,6 +20,12 @@ struct pathNode
 class Pathfinding : public Module
 {
 public:
+
+	void Init()
+	{
+		active = false;
+	}
+
 	Pathfinding();
 	void LoadPathMap();
 	void ClearMap(); 

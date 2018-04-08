@@ -45,9 +45,6 @@ Scene::~Scene(){}
 
 bool Scene::Awake(pugi::xml_node& sceneNode)
 {
-	ConsoleOrder* order = new ConsoleMap();
-	App->console->AddConsoleOrderToList(order);
-
 	App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
 
 	return true;
@@ -425,4 +422,10 @@ fPoint Scene::getPosByResolution(fPoint pos) const
 	fPoint ret = { (actualW * percentX)/100, (actualH * percentY)/100};
 
 	return ret;
+}
+
+void Scene::AddCommands()
+{
+	ConsoleOrder* order = new ConsoleMap();
+	App->console->AddConsoleOrderToList(order);
 }

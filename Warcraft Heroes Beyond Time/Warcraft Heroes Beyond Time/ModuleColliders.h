@@ -21,10 +21,17 @@ class ModuleColliders : public Module
 {
 public:
 	ModuleColliders();
+	
+	void Init()
+	{
+		active = false;
+	}
+
 	bool Awake(pugi::xml_node& consoleNode);
 	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
+	void AddCommands();
 
 	Collider* AddCollider(SDL_Rect colliderRect, COLLIDER_TYPE type, Entity* owner = nullptr, iPoint offset = iPoint(0,0));
 	Collider* AddTemporalCollider(SDL_Rect colliderRect, COLLIDER_TYPE type, int timer);

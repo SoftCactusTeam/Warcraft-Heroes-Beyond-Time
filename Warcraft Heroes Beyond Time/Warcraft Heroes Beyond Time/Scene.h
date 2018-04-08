@@ -22,6 +22,7 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
+	void AddCommands();
 
 public:
 
