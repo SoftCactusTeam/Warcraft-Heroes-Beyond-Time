@@ -71,12 +71,17 @@ public:
 	Animation animAtac[NUMBER_OF_ORIENTATIONS];
 	Animation animDeath[NUMBER_OF_ORIENTATIONS];
 
+	Animation animSmoke;
+
 	std::vector<Enemy_Archer_Arrow*> arrowsVector;
 
 private:
 	// Fast atac variables
 	int timeToShootAnother = 0;
 	int arrowToShoot = 0;
+	// TP variables
+	int tempoSmoke = -1;
+	fPoint posSmoke = { -1.f,-1.f };
 	// Scape variables
 	iPoint posToScape;
 };
