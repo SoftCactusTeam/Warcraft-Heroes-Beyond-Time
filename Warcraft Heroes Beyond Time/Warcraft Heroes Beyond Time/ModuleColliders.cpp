@@ -33,7 +33,6 @@ ModuleColliders::ModuleColliders()
 
 bool ModuleColliders::Awake(pugi::xml_node& consoleNode)
 {
-	printColliders = false;
 	return true;
 }
 
@@ -51,13 +50,14 @@ bool ModuleColliders::Update(float dt)
 				if (CheckTypeCollMatrix((*first)->type, (*second)->type))
 					if (CheckCollision((*first), (*second)))
 					{
+						//if ((*first)->type == COLLIDER_PLAYER)
 						if ((*first) != nullptr)
-							(*first)->owner->Collision((*second)->type);
+							(*first)->owner->Collision((*second));
 						else
 							(*first)->collidingWith = (*second)->type;	// Aixo es quan el collider no te entity pero vol detectar
 
 						if ((*second)->owner != nullptr)
-							(*second)->owner->Collision((*first)->type);
+							(*second)->owner->Collision((*first));
 						else
 							(*second)->collidingWith = (*first)->type;
 					}
@@ -70,7 +70,7 @@ bool ModuleColliders::Update(float dt)
 					if (CheckCollision((*first), (*second)))
 					{
 						if ((*first)->owner != nullptr)
-							(*first)->owner->Collision((*second)->type);
+							(*first)->owner->Collision((*second));
 						else
 							(*first)->collidingWith = (*second)->type;
 					}
@@ -173,7 +173,7 @@ bool ModuleColliders::CheckTypeCollMatrix(COLLIDER_TYPE type, COLLIDER_TYPE type
 	switch (type)
 	{
 	case COLLIDER_PLAYER:
-		if (type2 == COLLIDER_ENEMY || type2 == COLLIDER_ENEMY_ATAC || type2 == COLLIDER_WALKABLE)
+		if (type2 == COLLIDER_ENEMY || type2 == COLLIDER_ENEMY_ATAC || type2 == COLLIDER_UNWALKABLE)
 			return true;
 		break;
 	case COLLIDER_ENEMY:

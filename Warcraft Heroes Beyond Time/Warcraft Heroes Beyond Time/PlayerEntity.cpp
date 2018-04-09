@@ -27,8 +27,6 @@ bool PlayerEntity::Update(float dt)
 
 bool PlayerEntity::Finish() { return true; }
 
-void PlayerEntity::Collision(COLLIDER_TYPE type){}
-
 void PlayerEntity::setCol(Collider* pcol)
 {
 	this->pcol = pcol;
@@ -63,6 +61,29 @@ fPoint PlayerEntity::CalculatePosFromBezier(fPoint startPos, fPoint handleA, flo
 	res.y = firstArgument.y + secondArgument.y + thirdArgument.y + fourthArgument.y;
 
 	return res;
+}
+
+void PlayerEntity::ResetDash()
+{
+	state = states::PL_IDLE;
+	t = 0.0f;
+
+	if (anim == &dashRight)
+		anim = &idleRight;
+	else if (anim == &dashLeft)
+		anim = &idleLeft;
+	else if (anim == &dashUp)
+		anim = &idleUp;
+	else if (anim == &dashDown)
+		anim = &idleDown;
+	else if (anim == &dashUpRight)
+		anim = &idleUpRight;
+	else if (anim == &dashUpLeft)
+		anim = &idleUpLeft;
+	else if (anim == &dashDownRight)
+		anim = &idleDownRight;
+	else if (anim == &dashDownLeft)
+		anim = &idleDownLeft;
 }
 
 void PlayerEntity::PlayerStates(float dt)
@@ -256,25 +277,7 @@ void PlayerEntity::KeyboardStates(float dt)
 		}
 		else
 		{
-			state = states::PL_IDLE;
-			t = 0.0f;
-
-			if (anim == &dashRight)
-				anim = &idleRight;
-			else if (anim == &dashLeft)
-				anim = &idleLeft;
-			else if (anim == &dashUp)
-				anim = &idleUp;
-			else if (anim == &dashDown)
-				anim = &idleDown;
-			else if (anim == &dashUpRight)
-				anim = &idleUpRight;
-			else if (anim == &dashUpLeft)
-				anim = &idleUpLeft;
-			else if (anim == &dashDownRight)
-				anim = &idleDownRight;
-			else if (anim == &dashDownLeft)
-				anim = &idleDownLeft;
+			ResetDash();
 		}
 
 		break;
@@ -1334,4 +1337,87 @@ void PlayerEntity::SetDamage(int damage, bool setStateDamage)
 void PlayerEntity::DrawFreeZone(bool boolean)
 {
 	drawFZ = boolean;
+}
+
+void PlayerEntity::PushOut(Collider* wall)
+{
+	bool collideByRight = false, collideByLeft = false, collideByTop = false, collideByBottom = false;
+	SDL_Rect wall_r = wall->colliderRect;
+	SDL_Rect player_col = { pcol->colliderRect.x + (int)pos.x, pcol->colliderRect.y + (int)pos.y, pcol->colliderRect.w, pcol->colliderRect.h };
+
+	if (wall->colliderRect.x + wall->colliderRect.w/2 <= pcol->colliderRect.x + (int)pos.x)
+		collideByRight = true;
+
+	else if (wall->colliderRect.x + wall->colliderRect.w/2 > pcol->colliderRect.x + (int)pos.x + pcol->colliderRect.w)
+		collideByLeft = true;
+
+	if (wall->colliderRect.y + wall->colliderRect.h/2 < pcol->colliderRect.y + (int)pos.y)
+		collideByBottom = true;
+
+	else if (wall->colliderRect.y + wall->colliderRect.h/2 >= pcol->colliderRect.y + (int)pos.y + pcol->colliderRect.h)
+		collideByTop = true;
+
+	//4 main direction collisions
+	if (collideByRight && !collideByBottom && !collideByTop)
+	{
+		pos.x += (wall->colliderRect.x + wall->colliderRect.w - (pcol->colliderRect.x + (int)pos.x));
+	}
+	else if (collideByLeft && !collideByTop && !collideByBottom)
+	{
+		pos.x -= (pcol->colliderRect.x + pcol->colliderRect.w + pos.x) - wall->colliderRect.x;
+	}
+	else if (collideByTop && !collideByLeft && !collideByRight)
+	{
+		pos.y -= (pcol->colliderRect.y + (int)pos.y + pcol->colliderRect.h) - wall->colliderRect.y;
+	}
+	else if (collideByBottom && !collideByLeft && !collideByRight)
+	{
+		pos.y += wall->colliderRect.y + wall->colliderRect.h - (pcol->colliderRect.y + (int)pos.y);
+	}
+
+	//Combination between them (choose the closest direction)
+	else if (collideByTop && collideByRight)
+	{
+		if ( (player_col.y + player_col.h) - wall_r.y < (wall_r.x + wall_r.w - player_col.x))
+		{
+			pos.y -= (pcol->colliderRect.y + (int)pos.y + pcol->colliderRect.h) - wall->colliderRect.y;
+		}
+		else
+		{
+			pos.x += (wall->colliderRect.x + wall->colliderRect.w) - ((int)pos.x + pcol->colliderRect.x);
+		}
+	}
+	else if (collideByTop && collideByLeft)
+	{
+		if ((player_col.y + player_col.h) - wall_r.y < (player_col.x + player_col.w - wall_r.x))
+		{
+			pos.y -= (player_col.y + player_col.h) - wall_r.y;
+		}
+		else
+		{
+			pos.x -= player_col.x + player_col.w - wall_r.x;
+		}
+	}
+	else if (collideByBottom && collideByRight)
+	{
+		if ((wall_r.y + wall_r.h - player_col.y) < (wall_r.x + wall_r.w - player_col.x))
+		{
+			pos.y += (wall_r.y + wall_r.h - player_col.y);
+		}
+		else
+		{
+			pos.x += (wall_r.x + wall_r.w - player_col.x);
+		}
+	}
+	else if (collideByBottom && collideByLeft)
+	{
+		if ((wall_r.y + wall_r.h - player_col.y) < (player_col.x + player_col.w - wall_r.x))
+		{
+			pos.y += (wall_r.y + wall_r.h - player_col.y);
+		}
+		else
+		{
+			pos.x -= (player_col.x + player_col.w - wall_r.x);
+		}
+	}
 }

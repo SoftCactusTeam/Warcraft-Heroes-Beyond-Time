@@ -51,7 +51,7 @@ private:
 	std::vector<int> temporalColliderstimer;
 
 public:
-	bool printColliders = false;
+	bool printColliders = true;
 
 };
 

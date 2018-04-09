@@ -2,6 +2,7 @@
 #include "Thrall.h"
 #include "ModuleInput.h"
 #include "ModuleEntitySystem.h"
+#include "ModuleColliders.h"
 
 Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEntity(coor, type, texture)
 {
@@ -193,6 +194,7 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 
 	numStats = App->entities->thrallstats;
 
+	state = states::PL_IDLE;
 	anim = &idleDown;
 }
 
@@ -208,6 +210,8 @@ bool Thrall::Update(float dt)
 	if (anim != nullptr)
 		anim->speed = anim->speedFactor * percentage * dt;
 
+	UpdateCollider();
+
 	return true;
 }
 
@@ -216,12 +220,44 @@ bool Thrall::Finish()
 	return true;
 }
 
-void Thrall::Collision(COLLIDER_TYPE type)
+void Thrall::Collision(Collider* collideWith)
 {
-	switch (type)
+	switch (collideWith->type)
 	{
-	case COLLIDER_TYPE::COLLIDER_ENEMY_ATAC:
-		printf_s("ha rebut una hostia guapa");
-		break;
+		case COLLIDER_TYPE::COLLIDER_ENEMY_ATAC:
+		{
+			SetDamage(15, true);
+			break;
+		}
+		case COLLIDER_TYPE::COLLIDER_UNWALKABLE:
+		{
+			PushOut(collideWith);
+			if (state == states::PL_DASH)
+				ResetDash();
+			break;
+		}
 	}
+}
+	
+void Thrall::UpdateCollider()
+{
+	/*if (anim == &idleUp)
+	{
+		pcol->colliderRect.x = -6;
+		pcol->colliderRect.w = 13;
+		pcol->colliderRect.h = 23;
+	}
+	else if (anim == &idleDown)
+	{
+		pcol->colliderRect.x = -7;
+		pcol->colliderRect.w = 13;
+		pcol->colliderRect.h = 20;
+	}
+	else if (anim == &idleRight)
+	{
+		pcol->colliderRect.x = -6;
+		pcol->colliderRect.y = -5;
+		pcol->colliderRect.w = 13;
+		pcol->colliderRect.h = 20;
+	}*/
 }

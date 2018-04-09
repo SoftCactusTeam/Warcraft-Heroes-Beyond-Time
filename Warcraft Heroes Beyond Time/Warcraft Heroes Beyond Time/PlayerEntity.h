@@ -73,9 +73,6 @@ public:
 	void CheckMapLimits();
 
 	virtual bool Finish();
-	virtual void Collision(COLLIDER_TYPE type);
-
-	void setCol(Collider* pcol);
 
 	void AddItem(Item item);
 	void IterateItems(ItemFunctions nameFunction);
@@ -95,6 +92,7 @@ public:
 	float dashDistance = 150.0f;
 	float t = 0.0f;
 	fPoint startPos = { 0.0f, 0.0f };
+	void ResetDash();
 
 	//Camera culling
 	SDL_Rect freeZone;
@@ -103,7 +101,12 @@ public:
 	void CheckCulling();
 	bool drawFZ = false;
 	void DrawFreeZone(bool);
-	
+
+	//Collisions
+	virtual void UpdateCollider() {}
+	virtual void Collision(Collider* collideWith){}
+	void setCol(Collider* pcol);
+	void PushOut(Collider* wall);
 };
 
 #endif
