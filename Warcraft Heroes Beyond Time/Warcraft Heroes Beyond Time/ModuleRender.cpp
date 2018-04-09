@@ -249,7 +249,7 @@ bool Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uin
 void Render::CheckCameraLimits()
 {
 	uint mapwidth, mapheight;
-	uint tilesize = App->map->getTileSize();
+	uint tilesize = App->map->getTileSize()+2;
 	App->map->getSize(mapwidth, mapheight);
 
 	if (-fcamerax < 0)

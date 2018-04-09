@@ -1206,7 +1206,7 @@ void PlayerEntity::CheckCulling()
 		uint w, h;
 		int tilesize;
 		App->map->getSize(w, h);
-		tilesize = App->map->getTileSize();
+		tilesize = App->map->getTileSize()+2;
 		SDL_Rect currentRect = anim->GetCurrentRect();
 		iPoint pivot = anim->GetCurrentPivot();
 		fPoint topleft = { pos.x - pivot.x, pos.y - pivot.y };
