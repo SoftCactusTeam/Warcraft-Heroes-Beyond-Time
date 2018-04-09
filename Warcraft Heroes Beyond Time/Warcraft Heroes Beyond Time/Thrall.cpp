@@ -7,10 +7,10 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 {
 	// Thrall idle animations
 
-	idleUp.PushBack({ 26,15,42,39 }, { 14,13 }); //Example: Introduce here the pivot.
-	idleUp.PushBack({ 115,16,42,39 }, { 14,12 });
-	idleUp.PushBack({ 204,16,42,39 }, { 14,12 });
-	idleUp.PushBack({ 293,15,42,39 }, { 14,13 });
+	idleUp.PushBack({ 25,15,43,41 },  { 1,0 }); //Example: Introduce here the pivot.
+	idleUp.PushBack({ 114,15,43,41 }, { 1,0 });
+	idleUp.PushBack({ 203,15,43,41 }, { 1,0 });
+	idleUp.PushBack({ 292,15,43,41 }, { 1,0 });
 	idleUp.speedFactor = 3.0f;
 
 	idleUpRight.PushBack({ 382,15,34,37 }, { 11,10 });
@@ -19,10 +19,10 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	idleUpRight.PushBack({ 649,15,34,37 }, { 11,10 });
 	idleUpRight.speedFactor = 3.0f;
 
-	idleRight.PushBack({ 35,86,24,42 }, { 7,10 });
-	idleRight.PushBack({ 123,87,25,43 }, { 7,10 });
-	idleRight.PushBack({ 212,87,25,43 }, { 7,11 });
-	idleRight.PushBack({ 302,86,24,42 }, { 7,10 });
+	idleRight.PushBack({ 34,86,25,44 },  { 0,0 });
+	idleRight.PushBack({ 123,86,25,44 }, { 0,1 });
+	idleRight.PushBack({ 212,86,25,44 }, { 0,1 });
+	idleRight.PushBack({ 301,86,25,44 }, { 0,0 });
 	idleRight.speedFactor = 3.0f;
 
 	idleDownRight.PushBack({ 389,86,23,38 }, { 13,15 });
@@ -31,10 +31,10 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	idleDownRight.PushBack({ 656,86,23,38 }, { 14,16 });
 	idleDownRight.speedFactor = 3.0f;
 
-	idleDown.PushBack({ 17,157,48,34 }, { 33,13 });
-	idleDown.PushBack({ 106,157,48,35 }, { 33,14 });
-	idleDown.PushBack({ 195,157,48,35 }, { 33,14 });
-	idleDown.PushBack({ 284,157,48,34 }, { 33,13 });
+	idleDown.PushBack({ 17,157,48,39 },  { 16,0 });
+	idleDown.PushBack({ 106,157,48,39 }, { 16,0 });
+	idleDown.PushBack({ 195,157,48,39 }, { 16,0 });
+	idleDown.PushBack({ 284,157,48,39 }, { 16,0 });
 	idleDown.speedFactor = 3.0f;
 
 	idleDownLeft.PushBack({ 384,162,30,29 }, { 15,14 });
@@ -43,10 +43,10 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	idleDownLeft.PushBack({ 651,162,30,29 }, { 14,14 });
 	idleDownLeft.speedFactor = 3.0f;
 
-	idleLeft.PushBack({ 35,225,22,37 }, { 10,18 });
-	idleLeft.PushBack({ 124,227,23,36 }, { 10,18 });
-	idleLeft.PushBack({ 213,227,23,36 }, { 10,18 });
-	idleLeft.PushBack({ 302,225,22,37 }, { 10,19 });
+	idleLeft.PushBack({ 35,225,25,44 },  { 0,4 });
+	idleLeft.PushBack({ 124,225,25,44 }, { 0,5 });
+	idleLeft.PushBack({ 213,225,25,44 }, { 0,5 });
+	idleLeft.PushBack({ 302,225,25,44 }, { 0,4 });
 	idleLeft.speedFactor = 3.0f;
 
 
@@ -58,22 +58,22 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 
 
 	// Thrall walk animations
-	up.PushBack({ 30,298,32,41 }, { 13,12 });
-	up.PushBack({ 118,299,33,39 }, { 14,11 });
-	up.PushBack({ 205,299,32,34 }, { 16,11 });
-	up.PushBack({ 294,298,34,36 }, { 16,12 });
+	up.PushBack({ 30,298,43,41 }, { 0,0 });
+	up.PushBack({ 118,298,43,41 }, { 0,1 });
+	up.PushBack({ 206,298,43,41 }, { 0,1 });
+	up.PushBack({ 294,298,43,41 }, { 0,0 });
 	up.speedFactor = 9.0f;
 
-	upRight.PushBack({ 384,301,26,41 }, { 13,10 });
-	upRight.PushBack({ 472,302,29,40 }, { 13,9 });
-	upRight.PushBack({ 558,302,46,35 }, { 17,10 });
-	upRight.PushBack({ 651,301,43,36 }, { 13,11 });
+	upRight.PushBack({ 380,301,47,41 }, { 4,0 });
+	upRight.PushBack({ 469,301,47,41 }, { 3,1 });
+	upRight.PushBack({ 558,301,47,41 }, { 0,1 });
+	upRight.PushBack({ 647,301,47,41 }, { 4,0 });
 	upRight.speedFactor = 9.0f;
 
-	right.PushBack({ 28,373,30,37 }, { 18,13 });
-	right.PushBack({ 118,372,26,40 }, { 17,15 });
-	right.PushBack({ 209,373,38,32 }, {16, 14});
-	right.PushBack({ 298,373,37,34 }, {16,14});
+	right.PushBack({ 28,372,40,44 },  { 6, 0 });
+	right.PushBack({ 118,372,40,44 }, { 6, 1 });
+	right.PushBack({ 207,372,40,44 }, { 6, 0 });
+	right.PushBack({ 296,372,40,44 }, { 6, 0 });
 	right.speedFactor = 9.0f;
 
 	downRight.PushBack({ 383,372,36,32 }, {23,16});
@@ -82,10 +82,10 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	downRight.PushBack({ 656,372,29,34 }, {19,16});
 	downRight.speedFactor = 9.0f;
 
-	down.PushBack({ 24,447,37,32 }, {22,14});
-	down.PushBack({ 112,449,38,28 }, {23,12});
-	down.PushBack({ 202,449,38,30 }, {22,13});
-	down.PushBack({ 294,449,36,29 }, {19,12});
+	down.PushBack({ 15,447,48,39 }, {16,0});
+	down.PushBack({ 104,447,48,39 }, {16,2});
+	down.PushBack({ 193,447,48,39 }, {16,2});
+	down.PushBack({ 282,447,48,39 }, {16,2});
 	down.speedFactor = 9.0f;
 
 	downLeft.PushBack({ 389,446,25,30 }, {8,17});
@@ -94,10 +94,10 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	downLeft.PushBack({ 644,447,39,33 }, {20,16});
 	downLeft.speedFactor = 9.0f;
 
-	left.PushBack({ 29,514,29,32 }, {17,9});
-	left.PushBack({ 121,514,25,34 }, {15,10});
-	left.PushBack({ 198,513,38,32 }, {27,10});
-	left.PushBack({ 287,512,37,33 }, {27,11});
+	left.PushBack({ 20,512,40,36 },  { 10,0 });
+	left.PushBack({ 109,512,40,36 }, { 10,0 });
+	left.PushBack({ 198,512,40,36 }, { 10,0 });
+	left.PushBack({ 287,512,40,36 }, { 10,0 });
 	left.speedFactor = 9.0f;
 
 	upLeft.PushBack({ 379,514,49,35 }, {20,10});
