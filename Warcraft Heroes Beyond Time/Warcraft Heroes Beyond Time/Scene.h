@@ -30,6 +30,7 @@ public:
 	void CreateMainMenuScreen();
 	void CreateSettingsScreen();
 	void CreatePauseMenu();
+	void GoMainMenu();
 
 public:
 	enum class Stages

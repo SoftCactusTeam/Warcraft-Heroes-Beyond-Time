@@ -179,12 +179,17 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	skill.PushBack({ 0 + 5,994 + 5,89,71 + 5 });
 	skill.speedFactor = 8.0f;
 
-	damagedAnim.PushBack({ 664,612,47,44 });
-	damagedAnim.PushBack({ 718,612,47,44 });
-	damagedAnim.PushBack({ 773,612,47,56 });
-	damagedAnim.speedFactor = 9.0f;
+	deadUpRight.PushBack({ 119, 1022, 29,39 });
+	deadUpRight.PushBack({ 206, 1025,37,36 });
+	deadUpRight.PushBack({ 300,1031,45,30 });
+	deadUpRight.speedFactor = 3.0f;
+	deadUpRight.loop = false;
 
-	live = 100;
+	deadDownRight.PushBack({386, 1030, 32, 31});
+	deadDownRight.PushBack({467, 1027, 41, 34});
+	deadDownRight.PushBack({564, 1015, 35, 46});
+	deadDownRight.speedFactor = 3.0f;
+	deadDownRight.loop = false;
 
 	numStats = App->entities->thrallstats;
 
@@ -201,7 +206,7 @@ bool Thrall::Update(float dt)
 		percentage = App->input->GetPercentageFromAxis();
 	
 	if (anim != nullptr)
-	anim->speed = anim->speedFactor * percentage * dt;
+		anim->speed = anim->speedFactor * percentage * dt;
 
 	return true;
 }

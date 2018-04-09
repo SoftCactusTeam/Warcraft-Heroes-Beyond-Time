@@ -161,20 +161,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &skill;
 			break;
 		}
-		else if (live <= 0)
-		{
-			state = states::PL_DEAD;
-			animBefore = anim;
-			anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
-			break;
-		}
-		else if (damaged)
-		{
-			state = states::PL_DAMAGE;
-			animBefore = anim;
-			anim = &damagedAnim;
-			break;
-		}
+
 
 		break;
 
@@ -333,20 +320,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &skill;
 			break;
 		}
-		else if (live <= 0)
-		{
-			state = states::PL_DEAD;
-			animBefore = anim;
-			anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
-			break;
-		}
-		else if (damaged)
-		{
-			state = states::PL_DAMAGE;
-			animBefore = anim;
-			anim = &damagedAnim;
-			break;
-		}
+
 
 		break;
 
@@ -390,20 +364,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &skill;
 			break;
 		}
-		else if (live <= 0)
-		{
-			state = states::PL_DEAD;
-			animBefore = anim;
-			anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
-			break;
-		}
-		else if (damaged)
-		{
-			state = states::PL_DAMAGE;
-			animBefore = anim;
-			anim = &damagedAnim;
-			break;
-		}
+
 
 		break;
 
@@ -447,20 +408,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &skill;
 			break;
 		}
-		else if (live <= 0)
-		{
-			state = states::PL_DEAD;
-			animBefore = anim;
-			anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
-			break;
-		}
-		else if (damaged)
-		{
-			state = states::PL_DAMAGE;
-			animBefore = anim;
-			anim = &damagedAnim;
-			break;
-		}
+
 
 		break;
 
@@ -504,20 +452,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &skill;
 			break;
 		}
-		else if (live <= 0)
-		{
-			state = states::PL_DEAD;
-			animBefore = anim;
-			anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
-			break;
-		}
-		else if (damaged)
-		{
-			state = states::PL_DAMAGE;
-			animBefore = anim;
-			anim = &damagedAnim;
-			break;
-		}
+
 
 		break;
 
@@ -564,20 +499,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &skill;
 			break;
 		}
-		else if (live <= 0)
-		{
-			state = states::PL_DEAD;
-			animBefore = anim;
-			anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
-			break;
-		}
-		else if (damaged)
-		{
-			state = states::PL_DAMAGE;
-			animBefore = anim;
-			anim = &damagedAnim;
-			break;
-		}
+
 
 		break;
 
@@ -622,20 +544,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &skill;
 			break;
 		}
-		else if (live <= 0)
-		{
-			state = states::PL_DEAD;
-			animBefore = anim;
-			anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
-			break;
-		}
-		else if (damaged)
-		{
-			state = states::PL_DAMAGE;
-			animBefore = anim;
-			anim = &damagedAnim;
-			break;
-		}
+
 
 		break;
 
@@ -680,20 +589,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &skill;
 			break;
 		}
-		else if (live <= 0)
-		{
-			state = states::PL_DEAD;
-			animBefore = anim;
-			anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
-			break;
-		}
-		else if (damaged)
-		{
-			state = states::PL_DAMAGE;
-			animBefore = anim;
-			anim = &damagedAnim;
-			break;
-		}
+
 
 		break;
 
@@ -738,20 +634,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &skill;
 			break;
 		}
-		else if (live <= 0)
-		{
-			state = states::PL_DEAD;
-			animBefore = anim;
-			anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
-			break;
-		}
-		else if (damaged)
-		{
-			state = states::PL_DAMAGE;
-			animBefore = anim;
-			anim = &damagedAnim;
-			break;
-		}
+
 
 		break;
 
@@ -833,30 +716,41 @@ void PlayerEntity::KeyboardStates(float dt)
 		break;
 
 	case states::PL_DEAD:
-
-		if (anim->Finished())
+		if (anim->Finished() && anim != &deadDownRight)
 		{
 			anim->Reset();
-			// DO SOMETHING!!
-			damaged = false;
-			break;
+			animBefore = anim;
+			anim = &deadDownRight;
 		}
-
-		break;
-
-	case states::PL_DAMAGE:
-
-		if (anim->Finished())
+		else if (anim->Finished())
 		{
-			anim->Reset();
-			anim = &idleDown;
-			damaged = false;
-			state = states::PL_IDLE;
-			break;
+			deadinfloorcd += dt;
+			// PlayFX, Go to the main menu.
+			if (deadinfloorcd > 2)
+			{
+				anim->Reset();
+				deadinfloorcd = 0.0f;
+				App->scene->GoMainMenu();
+			}
 		}
-
 		break;
 	}
+
+
+	if (damaged)
+	{
+		int ret = SDL_SetTextureColorMod(App->entities->spritesheetsEntities[THRALL_SHEET], 255, 100, 100);
+		damagedCD += dt;
+		if (damagedCD > 1)
+		{
+			SDL_SetTextureColorMod(App->entities->spritesheetsEntities[THRALL_SHEET], 255, 255, 255);
+			damaged = false;
+			damagedCD = 0.0f;
+		}	
+	}
+
+		
+	
 }
 
 void PlayerEntity::JoyconStates(float dt)
@@ -890,20 +784,6 @@ void PlayerEntity::JoyconStates(float dt)
 			animBefore = anim;
 			anim = &skill;
 			state = states::PL_SKILL;
-			break;
-		}
-		else if (live <= 0)
-		{
-			state = states::PL_DEAD;
-			animBefore = anim;
-			anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
-			break;
-		}
-		else if (damaged)
-		{
-			state = states::PL_DAMAGE;
-			animBefore = anim;
-			anim = &damagedAnim;
 			break;
 		}
 
@@ -1087,20 +967,7 @@ void PlayerEntity::JoyconStates(float dt)
 				state = states::PL_SKILL;
 				break;
 			}
-			else if (live <= 0)
-			{
-				state = states::PL_DEAD;
-				animBefore = anim;
-				anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
-				break;
-			}
-			else if (damaged)
-			{
-				state = states::PL_DAMAGE;
-				animBefore = anim;
-				anim = &damagedAnim;
-				break;
-			}
+			
 
 			break;
 		}
@@ -1152,29 +1019,35 @@ void PlayerEntity::JoyconStates(float dt)
 		break;
 
 		case states::PL_DEAD:
-
-			if (anim->Finished())
+			if (anim->Finished() && anim != &deadDownRight)
 			{
 				anim->Reset();
-				// DO SOMETHING
-				damaged = false;
-				break;
+				animBefore = anim;
+				anim = &deadDownRight;
 			}
-
-			break;
-
-		case states::PL_DAMAGE:
-
-			if (anim->Finished())
+			else if (anim->Finished())
 			{
-				anim->Reset();
-				anim = &idleDown;
-				damaged = false;
-				state = states::PL_IDLE;
-				break;
+				deadinfloorcd += dt;
+				// PlayFX, Go to the main menu.
+				if (deadinfloorcd > 2)
+				{
+					anim->Reset();
+					deadinfloorcd = 0.0f;
+					App->scene->GoMainMenu();
+				}
 			}
-
 			break;
+	}
+
+	if (damaged)
+	{
+		damagedCD += dt;
+		if (damagedCD > 1)
+		{
+			SDL_SetTextureColorMod(App->entities->spritesheetsEntities[THRALL_SHEET], 255, 255, 255);
+			damaged = false;
+			damagedCD = 0.0f;
+		}
 	}
 }
 
@@ -1439,9 +1312,23 @@ void PlayerEntity::IterateItems(ItemFunctions nameFunction)
 
 void PlayerEntity::SetDamage(int damage, bool setStateDamage)
 {
-	if (setStateDamage)
-		damaged = true;
-	live -= damage;
+	if (numStats.hp > 0 && damaged == false)
+	{
+		if ((int)numStats.hp - damage <= 0)
+		{
+			numStats.hp = 0;
+			state = states::PL_DEAD;
+		}	
+		else
+		{
+			if (setStateDamage)
+			{
+				damaged = true;
+				SDL_SetTextureColorMod(App->entities->spritesheetsEntities[THRALL_SHEET], 255, 100, 100);
+			}
+			numStats.hp -= damage;
+		}	
+	}
 }
 
 void PlayerEntity::DrawFreeZone(bool boolean)

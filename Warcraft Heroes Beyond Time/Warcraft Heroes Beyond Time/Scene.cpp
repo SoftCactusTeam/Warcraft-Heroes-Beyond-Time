@@ -123,12 +123,9 @@ bool Scene::Update(float dt)
 		App->Load();
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
 	{
-		if (player->numStats.hp > 10)
-			player->numStats.hp -= 10;
-		else
-			player->numStats.hp = 0;
+		player->SetDamage(25, true);
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT)
@@ -166,9 +163,6 @@ bool Scene::Update(float dt)
 		lvlChest->OpenChest();
 		portal->OpenPortal();
 	}
-
-	if (App->input->GetKey(SDL_SCANCODE_8) == KEY_DOWN)
-		player->SetDamage(25, true);
 
 	//PAUSE GAME
 		if (actual_scene == Stages::INGAME)
@@ -411,20 +405,28 @@ void Scene::CreatePauseMenu()
 
 fPoint Scene::getPosByResolution(fPoint pos) const
 {
-	uint actualW = App->render->camera.w;
+	/*uint actualW = App->render->camera.w;
 	uint actualH = App->render->camera.h;
 
 	float percentX = (pos.x * 100) / 640;
 	float percentY = (pos.y * 100) / 360;
 
 
-	fPoint ret = { (actualW * percentX)/100, (actualH * percentY)/100};
+	fPoint ret = { (actualW * percentX)/100, (actualH * percentY)/100};*/
 
-	return ret;
+	return pos;
 }
 
 void Scene::AddCommands()
 {
 	ConsoleOrder* order = new ConsoleMap();
 	App->console->AddConsoleOrderToList(order);
+}
+
+void Scene::GoMainMenu()
+{
+	if (actual_scene == Stages::INGAME)
+		App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
+	actual_scene = Stages::MAIN_MENU;
+	restart = true;
 }

@@ -21,11 +21,13 @@ protected:
 	Animation dashRight, dashDown, dashUpRight, dashDownRight, dashDownLeft, dashUp, dashLeft, dashUpLeft;
 	Animation attackDown, attackUp, attackLeft, attackRight;
 	Animation skill;
-	Animation damagedAnim, dead;
+	Animation deadUpRight, deadDownRight;
 	Animation* animBefore = nullptr;
 	float speed = 250.0f;
 	bool move = true;
 	bool damaged = false;
+	float damagedCD = 0.0f;
+	float deadinfloorcd = 0.0f;
 
 	std::list<Item> itemsActive;
 
@@ -45,8 +47,7 @@ protected:
 		PL_DASH,
 		PL_ATTACK,
 		PL_SKILL,
-		PL_DEAD,
-		PL_DAMAGE
+		PL_DEAD
 
 	} state;
 
