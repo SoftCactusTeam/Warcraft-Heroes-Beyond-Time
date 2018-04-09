@@ -1208,8 +1208,11 @@ void PlayerEntity::CheckCulling()
 		App->map->getSize(w, h);
 		tilesize = App->map->getTileSize()+2;
 		SDL_Rect currentRect = anim->GetCurrentRect();
-		iPoint pivot = anim->GetCurrentPivot();
-		fPoint topleft = { pos.x - pivot.x, pos.y - pivot.y };
+		currentRect.w = pcol->colliderRect.w;
+		currentRect.h = pcol->colliderRect.h;
+		//iPoint pivot = anim->GetCurrentPivot();
+		iPoint pivot = { pcol->colliderRect.x, pcol->colliderRect.y };//false
+		fPoint topleft = { pos.x + pivot.x, pos.y + pivot.y };
 
 		if (freeZonex > topleft.x && -App->render->camera.x > 0)
 		{

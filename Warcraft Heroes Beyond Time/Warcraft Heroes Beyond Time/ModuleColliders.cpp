@@ -40,14 +40,13 @@ bool ModuleColliders::Update(float dt)
 {
 	BROFILER_CATEGORY("Colliders Collision", Profiler::Color::Azure);
 
-	std::list<Collider*>::iterator first, second = colliders.begin();
-	advance(second, 1);
+	std::list<Collider*>::iterator first, second;
 	
 	//Check all non_temporal colliders between them
 	for (first = colliders.begin(); first != colliders.end(); ++first)
 		if ((*first)->type != COLLIDER_UNWALKABLE)
-			for (second; second != colliders.end(); ++second)
-				if (CheckTypeCollMatrix((*first)->type, (*second)->type))
+			for (second = colliders.begin(); second != colliders.end(); ++second)
+				if (CheckTypeCollMatrix((*first)->type, (*second)->type) && (*first) != (*second))
 					if (CheckCollision((*first), (*second)))
 					{
 						if ((*first) != nullptr)

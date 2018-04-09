@@ -241,23 +241,61 @@ void Thrall::Collision(Collider* collideWith)
 	
 void Thrall::UpdateCollider()
 {
-	/*if (anim == &idleUp)
+	if (anim == &idleUp)
 	{
-		pcol->colliderRect.x = -6;
-		pcol->colliderRect.w = 13;
+		pcol->colliderRect.x = 7;
+		pcol->colliderRect.y = 0;
+		pcol->colliderRect.w = 15;
 		pcol->colliderRect.h = 23;
 	}
 	else if (anim == &idleDown)
 	{
-		pcol->colliderRect.x = -7;
-		pcol->colliderRect.w = 13;
+		pcol->colliderRect.x = 9;
+		pcol->colliderRect.y = 0;
+		pcol->colliderRect.w = 15;
 		pcol->colliderRect.h = 20;
 	}
 	else if (anim == &idleRight)
 	{
-		pcol->colliderRect.x = -6;
-		pcol->colliderRect.y = -5;
+		pcol->colliderRect.x = 4;
+		pcol->colliderRect.y = 2;
 		pcol->colliderRect.w = 13;
-		pcol->colliderRect.h = 20;
-	}*/
+		pcol->colliderRect.h = 23;
+	}
+	else if (anim == &idleLeft)
+	{
+		pcol->colliderRect.x = 4;
+		pcol->colliderRect.y = 2;
+		pcol->colliderRect.w = 15;
+		pcol->colliderRect.h = 23;
+	}
+	else if (anim == &idleUpLeft || anim == &idleUpRight || anim == &idleDownLeft || anim == &idleDownRight)
+	{
+		pcol->colliderRect.x = 4;
+		pcol->colliderRect.y = 2;
+		pcol->colliderRect.w = 15;
+		pcol->colliderRect.h = 23;
+	}
+	else if (anim == &upLeft)
+	{
+		pcol->colliderRect.x = 2;
+		pcol->colliderRect.y = 2;
+		pcol->colliderRect.w = 15;
+		pcol->colliderRect.h = 23;
+	}
+	else if (anim == &upRight)
+	{
+		pcol->colliderRect.x = 5;
+		pcol->colliderRect.y = 0;
+		pcol->colliderRect.w = 17;
+		pcol->colliderRect.h = 23;
+	}
+	else if (anim == &up || anim == &down)
+	{
+		pcol->colliderRect.x = 5;
+		pcol->colliderRect.y = 0;
+		pcol->colliderRect.w = 17;
+		pcol->colliderRect.h = 23;
+	}
+	
 }
