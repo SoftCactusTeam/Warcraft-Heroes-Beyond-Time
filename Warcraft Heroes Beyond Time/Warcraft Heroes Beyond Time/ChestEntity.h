@@ -11,6 +11,7 @@ public:
 	bool Update(float dt);
 	bool Finish();
 	bool OpenChest(); // it must return an item
+	bool PlayerNear(fPoint pos);
 	void UnLockChest();
 	inline bool IsLocked() const;
 

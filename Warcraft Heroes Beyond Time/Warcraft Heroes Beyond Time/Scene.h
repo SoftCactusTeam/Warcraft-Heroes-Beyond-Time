@@ -42,13 +42,14 @@ public:
 	} actual_scene = Stages::MAIN_MENU;
 
 	PlayerEntity* player = nullptr;
+	ChestEntity* lvlChest = nullptr;
 	bool paused = false;
 
 
 private:
 
 	GUIWindow* PauseMenu = nullptr;
-	ChestEntity* lvlChest = nullptr;
+
 	PortalEntity* portal = nullptr;
 
 	bool restart = false;

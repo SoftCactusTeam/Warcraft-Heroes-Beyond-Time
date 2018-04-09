@@ -162,9 +162,13 @@ bool Scene::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN)
 	{
-		lvlChest->UnLockChest();
-		lvlChest->OpenChest();
-		portal->OpenPortal();
+		if(lvlChest->PlayerNear(player->pos))
+		{ 
+			lvlChest->UnLockChest();
+			lvlChest->OpenChest();
+			portal->OpenPortal();
+		}
+		
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_8) == KEY_DOWN)
