@@ -20,6 +20,7 @@
 #include "Enemy_Footman.h"
 #include "Enemy_Archer.h"
 #include "PortalEntity.h"
+#include "Guldan.h"
 
 #include "Console.h"
 
@@ -330,12 +331,13 @@ void EntitySystem::AddEnemy(fPoint coor, ENEMY_TYPE type)
 
 }
 
-void EntitySystem::AddBoss(fPoint coor, BOSS_TYPE type)
+BossEntity* EntitySystem::AddBoss(fPoint coor, BOSS_TYPE type)
 {
 	BossEntity* newEntity = nullptr;
+
 	switch (type) {
 	case BOSS_TYPE::GULDAN:
-		newEntity = new BossEntity(coor, BOSS_TYPE::GULDAN, nullptr);
+		newEntity = new Guldan(coor, BOSS_TYPE::GULDAN, spritesheetsEntities[THRALL_SHEET]);
 		break;
 	case BOSS_TYPE::LICH_KING:
 		newEntity = new BossEntity(coor, BOSS_TYPE::LICH_KING, nullptr);
@@ -344,7 +346,8 @@ void EntitySystem::AddBoss(fPoint coor, BOSS_TYPE type)
 		newEntity = new BossEntity(coor, BOSS_TYPE::ILLIDAN, nullptr);
 		break;
 	}
-	toSpawn.push_back((Entity*)newEntity);
+	toSpawn.push_back(newEntity);
+	return newEntity;
 }
 
 PlayerEntity* EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
