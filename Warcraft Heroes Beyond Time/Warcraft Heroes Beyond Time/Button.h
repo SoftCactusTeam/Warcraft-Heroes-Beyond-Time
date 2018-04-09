@@ -5,9 +5,9 @@
 
 //atlasRect defines---------------------------
 
-#define Button1 {45,8,158,68}
-#define Button1MouseHover {216,8,158,68}
-#define Button1Pressed {384,8,158,68}
+#define Button1 {38,30,158,42}
+#define Button1MouseHover {205,30,158,42}
+#define Button1Pressed {374,30,158,42}
 
 //----------------------------------
 

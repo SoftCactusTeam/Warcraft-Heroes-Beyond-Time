@@ -17,7 +17,7 @@ class ConsoleColliders : public ConsoleOrder
 	}
 };
 
-Collider::Collider(Entity* owner, SDL_Rect colliderRect, COLLIDER_TYPE type, iPoint offset)
+Collider::Collider(SDL_Rect colliderRect, COLLIDER_TYPE type, Entity* owner, iPoint offset)
 {
 	this->owner = owner;
 	this->colliderRect = colliderRect;
@@ -26,26 +26,13 @@ Collider::Collider(Entity* owner, SDL_Rect colliderRect, COLLIDER_TYPE type, iPo
 	this->colliderRect.y += offset.y;
 }
 
-Collider::Collider(SDL_Rect colliderRect, COLLIDER_TYPE type)
-{
-	this->owner = nullptr;
-	this->colliderRect = colliderRect;
-	this->type = type;
-}
-
 ModuleColliders::ModuleColliders()
 {
 	name = "colliders";
 }
 
-void ModuleColliders::Init()
+bool ModuleColliders::Awake(pugi::xml_node& consoleNode)
 {
-	active = false;
-}
-
-bool ModuleColliders::Awake(pugi::xml_node& collidersNode)
-{
-	printColliders = false;
 	return true;
 }
 
@@ -53,57 +40,199 @@ bool ModuleColliders::Update(float dt)
 {
 	BROFILER_CATEGORY("Colliders Collision", Profiler::Color::Azure);
 
-	for (int i = 0; i < colliders.size(); i++)
-		for (int col = i + 1; col < colliders.size(); col++)
-			if (CheckCollision(i, col))
-			{
-				if (colliders[i]->owner != nullptr)
-					colliders[i]->owner->Collision(colliders[col]->type);
-				else
-					colliders[i]->collidingWith = colliders[col]->type;	// Aixo es quan el collider no te entity pero vol detectar
+	std::list<Collider*>::iterator first, second;
+	
+	//Check all non_temporal colliders between them
+	for (first = colliders.begin(); first != colliders.end(); ++first)
+		if ((*first)->type != COLLIDER_UNWALKABLE)
+			for (second = colliders.begin(); second != colliders.end(); ++second)
+				if (CheckTypeCollMatrix((*first)->type, (*second)->type) && (*first) != (*second))
+					if (CheckCollision((*first), (*second)))
+					{
+						if ((*first) != nullptr)
+							(*first)->owner->Collision((*second));
+						else
+							(*first)->collidingWith = (*second)->type;	// Aixo es quan el collider no te entity pero vol detectar
 
-				if (colliders[col]->owner != nullptr)
-					colliders[col]->owner->Collision(colliders[i]->type);
-				else
-					colliders[col]->collidingWith = colliders[i]->type;
-			}
+						if ((*second)->owner != nullptr)
+							(*second)->owner->Collision((*first));
+						else
+							(*second)->collidingWith = (*first)->type;
+					}
+
 	// Comprobar colliders temporals
-	for (int i = 0; i < colliders.size(); i++)
-		for (int col = 0; col < temporalColliders.size(); col++)
-			if (ChechCollisionTemporalCollider(i, col))
-			{
-				if (colliders[i]->owner != nullptr)
-					colliders[i]->owner->Collision(temporalColliders[col]->type);
-				else
-					colliders[i]->collidingWith = temporalColliders[col]->type;
-			}
-	// Netejar colliders temporals
-	for (int i = 0; i < temporalColliders.size(); i++)
-		if (temporalColliderstimer[i] < SDL_GetTicks())
-		{
-			delete temporalColliders[i];
-			std::swap(temporalColliders[i], temporalColliders.back());
-			temporalColliders.pop_back();
+	if (temporalColliders.size() > 0)
+		for (first = colliders.begin(); first != colliders.end(); ++first)
+			for (second = temporalColliders.begin(); second != colliders.end(); ++second)
+				if (CheckTypeCollMatrix((*first)->type, (*second)->type))
+					if (CheckCollision((*first), (*second)))
+					{
+						if ((*first)->owner != nullptr)
+							(*first)->owner->Collision((*second));
+						else
+							(*first)->collidingWith = (*second)->type;
+					}
 
-			std::swap(temporalColliderstimer[i], temporalColliderstimer.back());
-			temporalColliderstimer.pop_back();
+	// Netejar colliders temporals
+	std::vector<int>::iterator timer_it = temporalColliderstimer.begin();
+	for (second = temporalColliders.begin(); second != temporalColliders.end();)
+	{
+		if (*(timer_it) < SDL_GetTicks())
+		{
+			second = temporalColliders.erase(second);
+			timer_it = temporalColliderstimer.erase(timer_it);
 		}
+		else
+		{
+			++timer_it;
+			++second;
+		}
+	}
+		
 	return true;
 }
 
 bool ModuleColliders::PostUpdate()
 {
-	PrintColliders(printColliders);
+	PrintColliders();
 	return true;
 }
 
 bool ModuleColliders::CleanUp()
 {
-	BROFILER_CATEGORY("ClearCOLLIDERS", Profiler::Color::Chocolate);
-	for (int i = 0; i < colliders.size(); i++)
-		delete colliders[i];
+	std::list<Collider*>::iterator it;
+	for (it = colliders.begin(); it != colliders.end(); ++it)
+	{
+		delete (*it);
+	}
 	colliders.clear();
+
+	for (it = temporalColliders.begin(); it != temporalColliders.end(); ++it)
+	{
+		delete (*it);
+	}
+	temporalColliders.clear();
+
+	temporalColliderstimer.clear();
+
 	return true;
+}
+
+Collider* ModuleColliders::AddCollider(SDL_Rect colliderRect, COLLIDER_TYPE type, Entity* owner, iPoint offset)
+{
+	if (owner != nullptr)
+	{
+		Collider* aux = new Collider(colliderRect, type, owner, offset);
+		colliders.push_back(aux);
+		return aux;
+	}
+	else
+	{
+		Collider* aux = new Collider(colliderRect, type);
+		colliders.push_back(aux);
+		return aux;
+	}
+}
+
+Collider* ModuleColliders::AddTemporalCollider(SDL_Rect colliderRect, COLLIDER_TYPE type, int timer)
+{
+	Collider* aux = new Collider(colliderRect, type);
+	temporalColliders.push_back(aux);
+	temporalColliderstimer.push_back(timer + SDL_GetTicks());
+	return aux;
+}
+
+void ModuleColliders::deleteCollider(Collider* col)
+{
+	std::list<Collider*>::iterator it;
+	for (it = colliders.begin(); it != colliders.end(); ++it)
+	{
+		if ((*it) == col)
+		{
+			colliders.erase(it);
+			break;
+		}
+	}
+}
+
+void ModuleColliders::CleanCollidersEntity(Entity* entity)
+{
+	std::list<Collider*>::iterator it;
+	for (it = colliders.begin(); it != colliders.end(); ++it)
+		if ((*it)->owner == entity)
+		{
+			colliders.erase(it);
+			break;
+		}
+}
+
+bool ModuleColliders::CheckTypeCollMatrix(COLLIDER_TYPE type, COLLIDER_TYPE type2)
+{
+	switch (type)
+	{
+	case COLLIDER_PLAYER:
+		if (type2 == COLLIDER_ENEMY || type2 == COLLIDER_ENEMY_ATAC || type2 == COLLIDER_UNWALKABLE)
+			return true;
+		break;
+	case COLLIDER_ENEMY:
+		if (type2 == COLLIDER_ENEMY || type2 == COLLIDER_PLAYER_ATAC || type2 == COLLIDER_PLAYER)
+			return true;
+		break;
+	case COLLIDER_PLAYER_ATAC:
+		if (type2 == COLLIDER_ENEMY || type2 == COLLIDER_ENEMY_ATAC)
+			return true;
+		break;
+	case COLLIDER_ENEMY_ATAC:
+		if (type2 == COLLIDER_PLAYER || type2 == COLLIDER_PLAYER_ATAC)
+			return true;
+		break;
+	}
+	return false;
+}
+
+bool ModuleColliders::CheckCollision(Collider* col1, Collider* col2)
+{
+	if (col1->owner != nullptr && col2->owner != nullptr)
+
+		return (col1->owner->pos.x + col1->colliderRect.x < col2->owner->pos.x + col2->colliderRect.x + col2->colliderRect.w &&
+			col1->owner->pos.x + col1->colliderRect.x + col2->colliderRect.w > col2->owner->pos.x + col2->colliderRect.x &&
+			col1->owner->pos.y + col1->colliderRect.y < col2->owner->pos.y + col2->colliderRect.y + col2->colliderRect.h &&
+			col1->owner->pos.y + col1->colliderRect.y + col1->colliderRect.h > col2->owner->pos.y + col2->colliderRect.y);
+
+	else if (col1->owner != nullptr && col2->owner == nullptr)
+		return (col1->owner->pos.x + col1->colliderRect.x < col2->colliderRect.x + col2->colliderRect.w &&
+			col1->owner->pos.x + col1->colliderRect.x + col1->colliderRect.w > col2->colliderRect.x &&
+			col1->owner->pos.y + col1->colliderRect.y < col2->colliderRect.y + col2->colliderRect.h &&
+			col1->owner->pos.y + col1->colliderRect.y + col1->colliderRect.h > col2->colliderRect.y);
+
+	else if (col1->owner == nullptr && col2->owner != nullptr)
+		return (col1->colliderRect.x < col2->owner->pos.x + col2->colliderRect.x + col2->colliderRect.w &&
+			col1->colliderRect.x + col1->colliderRect.w > col2->owner->pos.x + col2->colliderRect.x &&
+			col1->colliderRect.y < col2->owner->pos.y + col2->colliderRect.y + col2->colliderRect.h &&
+			col1->colliderRect.y + col1->colliderRect.h > col2->owner->pos.y + col2->colliderRect.y);
+
+	else if (col1->owner == nullptr && col2->owner == nullptr)
+		return (col1->colliderRect.x < col2->colliderRect.x + col2->colliderRect.w &&
+			col1->colliderRect.x + col1->colliderRect.w > col2->colliderRect.x &&
+			col1->colliderRect.y < col2->colliderRect.y + col2->colliderRect.h &&
+			col1->colliderRect.y + col1->colliderRect.h > col2->colliderRect.y);
+}
+
+void ModuleColliders::PrintColliders()
+{
+	if (printColliders)
+	{
+		std::list<Collider*>::iterator it;
+
+		for (it = colliders.begin(); it != colliders.end(); ++it)
+			if ((*it)->owner != nullptr)
+				App->render->DrawQuad({ (int)(*it)->owner->pos.x + (*it)->colliderRect.x, (int)(*it)->owner->pos.y + (*it)->colliderRect.y, (*it)->colliderRect.w, (*it)->colliderRect.h }, 255, 255, 255, 100);
+			else
+				App->render->DrawQuad({ (*it)->colliderRect.x, (*it)->colliderRect.y, (*it)->colliderRect.w, (*it)->colliderRect.h }, 255, 150, 255, 100);
+
+		for (it = temporalColliders.begin(); it != temporalColliders.end(); ++it)
+			App->render->DrawQuad({ (*it)->colliderRect.x, (*it)->colliderRect.y, (*it)->colliderRect.w, (*it)->colliderRect.h }, 255, 0, 255, 100);
+	}
 }
 
 void ModuleColliders::AddCommands()
@@ -112,96 +241,23 @@ void ModuleColliders::AddCommands()
 	App->console->AddConsoleOrderToList(order);
 }
 
-Collider* ModuleColliders::AddCollider(Entity* owner, SDL_Rect colliderRect, COLLIDER_TYPE type, iPoint offset)
+bool ModuleColliders::isWallCollider(SDL_Rect here, Collider* colWith) const
 {
-	Collider* aux = new Collider(owner, colliderRect, type, offset);
-	colliders.push_back(aux);
-	return aux;
-}
-
-Collider* ModuleColliders::AddTileCollider(SDL_Rect colliderRect, COLLIDER_TYPE type)
-{
-	Collider* aux = new Collider(colliderRect, type);
-	colliders.push_back(aux);
-	return aux;
-}
-
-Collider* ModuleColliders::AddTemporalCollider(SDL_Rect colliderRect, COLLIDER_TYPE type, int timer)
-{
-	Collider* aux = new Collider(nullptr, colliderRect, type, {0,0});
-	temporalColliders.push_back(aux);
-	temporalColliderstimer.push_back(timer + SDL_GetTicks());
-	return aux;
-}
-
-bool ModuleColliders::deleteCollider(Collider* col)
-{
-	for (int i = 0; i < colliders.size(); i++)
-		if (colliders[i] == col)
-		{
-			delete colliders[i];
-			colliders.erase(colliders.begin() + i);
-		}
-	return true;
-}
-
-void ModuleColliders::CleanCollidersEntity(Entity* entity)
-{
-	for (int i = 0; i < colliders.size(); i++)
-		if (colliders[i]->owner == entity)
-		{
-			delete colliders[i];
-			colliders.erase(colliders.begin() + i);
-			//delete colliders[i];
-			//std::swap(colliders[i], colliders.back());
-			//colliders.pop_back();
-		}
-}
-
-bool ModuleColliders::CheckCollision(int col1, int col2)
-{
-	if (colliders[col1]->owner != nullptr && colliders[col2]->owner != nullptr)
-		return (colliders[col1]->owner->pos.x + colliders[col1]->colliderRect.x < colliders[col2]->owner->pos.x + colliders[col2]->colliderRect.x + colliders[col2]->colliderRect.w &&
-			colliders[col1]->owner->pos.x + colliders[col1]->colliderRect.x + colliders[col1]->colliderRect.w > colliders[col2]->owner->pos.x + colliders[col2]->colliderRect.x &&
-			colliders[col1]->owner->pos.y + colliders[col1]->colliderRect.y < colliders[col2]->owner->pos.y + colliders[col2]->colliderRect.y + colliders[col2]->colliderRect.h &&
-			colliders[col1]->owner->pos.y + colliders[col1]->colliderRect.y + colliders[col1]->colliderRect.h > colliders[col2]->owner->pos.y + colliders[col2]->colliderRect.y);
-	else if (colliders[col1]->owner != nullptr && colliders[col2]->owner == nullptr)
-		return (colliders[col1]->owner->pos.x + colliders[col1]->colliderRect.x < colliders[col2]->colliderRect.x + colliders[col2]->colliderRect.w &&
-			colliders[col1]->owner->pos.x + colliders[col1]->colliderRect.x + colliders[col1]->colliderRect.w > colliders[col2]->colliderRect.x &&
-			colliders[col1]->owner->pos.y + colliders[col1]->colliderRect.y < colliders[col2]->colliderRect.y + colliders[col2]->colliderRect.h &&
-			colliders[col1]->owner->pos.y + colliders[col1]->colliderRect.y + colliders[col1]->colliderRect.h > colliders[col2]->colliderRect.y);
-	else if (colliders[col1]->owner == nullptr && colliders[col2]->owner != nullptr)
-		return (colliders[col1]->colliderRect.x < colliders[col2]->owner->pos.x + colliders[col2]->colliderRect.x + colliders[col2]->colliderRect.w &&
-			colliders[col1]->colliderRect.x + colliders[col1]->colliderRect.w > colliders[col2]->owner->pos.x + colliders[col2]->colliderRect.x &&
-			colliders[col1]->colliderRect.y < colliders[col2]->owner->pos.y + colliders[col2]->colliderRect.y + colliders[col2]->colliderRect.h &&
-			colliders[col1]->colliderRect.y + colliders[col1]->colliderRect.h > colliders[col2]->owner->pos.y + colliders[col2]->colliderRect.y);
-}
-
-bool ModuleColliders::ChechCollisionTemporalCollider(int col, int colTemporal)
-{
-	if (colliders[col]->owner != nullptr)
-	return (colliders[col]->owner->pos.x + colliders[col]->colliderRect.x < temporalColliders[colTemporal]->colliderRect.x + temporalColliders[colTemporal]->colliderRect.w &&
-		colliders[col]->owner->pos.x + colliders[col]->colliderRect.x + colliders[col]->colliderRect.w > temporalColliders[colTemporal]->colliderRect.x &&
-		colliders[col]->owner->pos.y + colliders[col]->colliderRect.y < temporalColliders[colTemporal]->colliderRect.y + temporalColliders[colTemporal]->colliderRect.h &&
-		colliders[col]->owner->pos.y + colliders[col]->colliderRect.y + colliders[col]->colliderRect.h > temporalColliders[colTemporal]->colliderRect.y);
-	else if (colliders[col]->owner == nullptr)
-		return (colliders[col]->colliderRect.x < temporalColliders[colTemporal]->colliderRect.x + temporalColliders[colTemporal]->colliderRect.w &&
-			colliders[col]->colliderRect.x + colliders[col]->colliderRect.w > temporalColliders[colTemporal]->colliderRect.x &&
-			colliders[col]->colliderRect.y < temporalColliders[colTemporal]->colliderRect.y + temporalColliders[colTemporal]->colliderRect.h &&
-			colliders[col]->colliderRect.y + colliders[col]->colliderRect.h > temporalColliders[colTemporal]->colliderRect.y);
-}
-
-void ModuleColliders::PrintColliders(bool print)
-{
-	if (print)
+	std::list<Collider*>::const_iterator it;
+	for (it = colliders.begin(); it != colliders.end(); ++it)
 	{
-		for (int i = 0; i < colliders.size(); i++)
-			if (colliders[i]->owner != nullptr)
-				App->render->DrawQuad({ (int)colliders[i]->owner->pos.x + colliders[i]->colliderRect.x, (int)colliders[i]->owner->pos.y + colliders[i]->colliderRect.y, colliders[i]->colliderRect.w, colliders[i]->colliderRect.h }, 255, 255, 255, 100);
-			else
-				App->render->DrawQuad({colliders[i]->colliderRect.x, colliders[i]->colliderRect.y, colliders[i]->colliderRect.w, colliders[i]->colliderRect.h }, 255, 150, 255, 100);
+		if ((*it)->type != COLLIDER_UNWALKABLE)
+			continue;
 
-		for (int i = 0; i < temporalColliders.size(); i++)
-			App->render->DrawQuad({ temporalColliders[i]->colliderRect.x, temporalColliders[i]->colliderRect.y, temporalColliders[i]->colliderRect.w, temporalColliders[i]->colliderRect.h }, 255, 0, 255, 100);
+		Collider* wall = (*it);
+		if (wall->colliderRect.x < here.x + here.w &&
+			wall->colliderRect.x + wall->colliderRect.w > here.x &&
+			wall->colliderRect.y < here.y + here.h &&
+			wall->colliderRect.y + wall->colliderRect.h > here.y)
+		{
+			colWith = wall;
+			return true;
+		}
 	}
+	return false;
 }

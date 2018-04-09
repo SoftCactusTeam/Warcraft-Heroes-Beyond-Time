@@ -121,6 +121,9 @@
     <ClCompile Include="Enemy_Archer.cpp">
       <Filter>Entities\Dynamic Entities</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerHPBar.cpp">
+      <Filter>GUI\Warcraft Specific</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -257,6 +260,9 @@
     </ClInclude>
     <ClInclude Include="Enemy_Archer.h">
       <Filter>Entities\Dynamic Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerHPBar.h">
+      <Filter>GUI\Warcraft Specific</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

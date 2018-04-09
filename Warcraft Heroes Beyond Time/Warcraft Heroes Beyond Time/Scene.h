@@ -2,6 +2,7 @@
 #define __SCENE_H__
 
 #include "Module.h"
+#include "p2Point.h"
 
 class GUIWindow;
 class PlayerEntity;
@@ -21,6 +22,7 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
+	void AddCommands();
 
 public:
 
@@ -28,6 +30,7 @@ public:
 	void CreateMainMenuScreen();
 	void CreateSettingsScreen();
 	void CreatePauseMenu();
+	void GoMainMenu();
 
 public:
 	enum class Stages
@@ -51,6 +54,9 @@ private:
 
 	bool restart = false;
 	int lvlIndex = 0;
+
+private:
+	fPoint getPosByResolution(fPoint pos) const;
 
 };
 

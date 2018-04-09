@@ -138,13 +138,15 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 
 	//------------- Loading Stats -------------------------------------------------------------
 	pugi::xml_node thrall = entitiesNode.child("players").child("thrall");
-	thrallstats.hp = thrall.attribute("hp").as_uint(0);
+	thrallstats.maxhp = thrall.attribute("hp").as_uint(0);
+	thrallstats.hp = thrallstats.maxhp;
 	thrallstats.speed = thrall.attribute("speed").as_uint(0);
 	thrallstats.damage = thrall.attribute("damage").as_uint(0);
 	thrallstats.energyPercentbyHit = thrall.attribute("energy_percent_hit").as_uint(0);
 
 	pugi::xml_node footman = entitiesNode.child("enemies").child("footman");
-	footmanstats.hp = footman.attribute("hp").as_uint(0);
+	footmanstats.maxhp = footman.attribute("hp").as_uint(0);
+	footmanstats.hp = footmanstats.maxhp;
 	footmanstats.speed = footman.attribute("speed").as_uint(0);
 	footmanstats.damage = footman.attribute("damage").as_uint(0);
 	footmanstats.dropping_chance = footman.attribute("dropping_chance").as_uint(0);
@@ -152,7 +154,8 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	footmanstats.difficulty = footman.attribute("difficulty").as_uint(0);
 
 	pugi::xml_node archer = entitiesNode.child("enemies").child("archer");
-	archerstats.hp = archer.attribute("hp").as_uint(0);
+	archerstats.maxhp = archer.attribute("hp").as_uint(0);
+	archerstats.hp = archerstats.maxhp;
 	archerstats.speed = archer.attribute("speed").as_uint(0);
 	archerstats.damage = archer.attribute("damage").as_uint(0);
 	archerstats.dropping_chance = archer.attribute("dropping_chance").as_uint(0);
@@ -160,7 +163,8 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	archerstats.difficulty = archer.attribute("difficulty").as_uint(0);
 
 	pugi::xml_node wizard = entitiesNode.child("enemies").child("wizard");
-	wizardstats.hp = wizard.attribute("hp").as_uint(0);
+	wizardstats.maxhp = wizard.attribute("hp").as_uint(0);
+	wizardstats.hp = wizardstats.maxhp;
 	wizardstats.speed = wizard.attribute("speed").as_uint(0);
 	wizardstats.damage = wizard.attribute("damage").as_uint(0);
 	wizardstats.dropping_chance = wizard.attribute("dropping_chance").as_uint(0);
@@ -168,7 +172,8 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	wizardstats.difficulty = wizard.attribute("difficulty").as_uint(0);
 
 	pugi::xml_node darkknight = entitiesNode.child("enemies").child("dark_knight");
-	darkknightstats.hp = darkknight.attribute("hp").as_uint(0);
+	darkknightstats.maxhp = darkknight.attribute("hp").as_uint(0);
+	darkknightstats.hp = darkknightstats.maxhp;
 	darkknightstats.speed = darkknight.attribute("speed").as_uint(0);
 	darkknightstats.damage = darkknight.attribute("damage").as_uint(0);
 	darkknightstats.dropping_chance = darkknight.attribute("dropping_chance").as_uint(0);
@@ -182,12 +187,13 @@ bool EntitySystem::Start()
 {
 	BROFILER_CATEGORY("ActivateEntities", Profiler::Color::Chocolate);
 	LOG("Loading textures");
-	spritesheetsEntities.push_back(App->textures->Load("images/thrall_spritesheet.png"));
-	spritesheetsEntities.push_back(App->textures->Load("Sprites/Footman/Footman_sprite.png"));
-	spritesheetsEntities.push_back(App->textures->Load("all_items.png"));
-	spritesheetsEntities.push_back(App->textures->Load("Mines.png"));
-	spritesheetsEntities.push_back(App->textures->Load("Sprites/Archer/Archer_sprite.png"));
-	spritesheetsEntities.push_back(App->textures->Load("Sprites/Archer/Archer_Arrow.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/thrall_spritesheet.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/Footman/Footman_sprite.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/all_items.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/Mines.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/Archer/Archer_sprite.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/Projectiles.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/Archer/Archer_Smoke.png"));
 
 	bool ret = true;
 
@@ -230,7 +236,7 @@ bool EntitySystem::PostUpdate()
 {
 	bool ret = true;
 
-	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end() && ret; ++it)
+	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end() && ret;)
 	{
 		ret = (*it)->Draw();
 
@@ -238,7 +244,14 @@ bool EntitySystem::PostUpdate()
 			ret = (*it)->PostUpdate();
 
 		if ((*it)->destroy)
-			entities.remove((*it));
+		{
+			it = entities.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+		
 	}
 
 	return ret;
@@ -321,7 +334,7 @@ void EntitySystem::AddEnemy(fPoint coor, ENEMY_TYPE type)
 		break;
 	}
 	toSpawn.push_back(newEntity);
-	App->colliders->AddCollider((Entity*)newEntity, { 0,0,32,32 }, COLLIDER_ENEMY, { 20,20 });
+	App->colliders->AddCollider({ 0,0,32,32 }, COLLIDER_ENEMY, (Entity*)newEntity, { 20,20 });
 
 }
 
@@ -360,7 +373,11 @@ PlayerEntity* EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
 	}
 
 	toSpawn.push_back(newEntity);
-	App->colliders->AddCollider(newEntity, { 0,0,32,32 }, COLLIDER_PLAYER, {10,10});
+	SDL_Rect col_rect = newEntity->anim->GetCurrentRect();
+	col_rect.x = 0;
+	col_rect.y = 0;
+
+	newEntity->setCol(App->colliders->AddCollider(col_rect, COLLIDER_PLAYER, newEntity, { newEntity->anim->GetCurrentPivot().x * -1,  newEntity->anim->GetCurrentPivot().y * -1}));
 	return newEntity;
 }
 
@@ -445,6 +462,8 @@ void EntitySystem::AddCommands()
 
 void EntitySystem::ClearEnemies()
 {
+	//I need a fucking type to do this. Sorry for the madness.
+
 	/*std::list<Entity*>::iterator it;
 	for (it = entities.begin(); it != entities.end(); ++it)
 	{

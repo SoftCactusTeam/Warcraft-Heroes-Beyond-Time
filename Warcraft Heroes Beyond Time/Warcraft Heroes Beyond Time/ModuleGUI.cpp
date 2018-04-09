@@ -12,6 +12,7 @@
 #include "GUIWindow.h"
 #include "GUIImage.h"
 #include "Stat.h"
+#include "PlayerHPBar.h"
 
 #include "Brofiler\Brofiler.h"
 
@@ -72,7 +73,16 @@ bool ModuleGUI::PostUpdate()
 		std::list<GUIElem*>::iterator it;
 		for (it = elementsToKill.begin(); it != elementsToKill.end(); ++it)
 		{
-			GUIElemList.remove(*it);
+			std::list<GUIElem*>::iterator it_b;
+			for (it_b = GUIElemList.begin(); it_b != GUIElemList.end(); ++it_b)
+			{
+				if ((*it_b) == (*it))
+				{
+					delete (*it_b);
+					GUIElemList.erase(it_b);
+					break;
+				}
+			}
 		}
 		elementsToKill.clear();
 	}
@@ -127,7 +137,8 @@ GUIElem* ModuleGUI::CreateInputBox(fPoint localPos, InputBoxInfo& info, Module* 
 {
 	InputBox* inputBox = new InputBox(localPos, info, listener, parent);
 
-	elementsToSpawn.push_back((GUIElem*)inputBox);
+
+	/*elementsToSpawn.push_back((GUIElem*)inputBox);*/
 
 	return inputBox;
 }
@@ -148,7 +159,7 @@ GUIElem* ModuleGUI::CreateSlider(fPoint localPos, SliderInfo sInfo, Module* list
 
 GUIElem* ModuleGUI::CreateGUIWindow(fPoint localPos, SDL_Rect type, Module* listener, GUIElem* parent)
 {
-	GUIWindow* window = new GUIWindow(localPos, StoneWindow, parent, listener);
+	GUIWindow* window = new GUIWindow(localPos, type, parent, listener);
 	elementsToSpawn.push_back(window);
 	return window;
 }
@@ -193,6 +204,13 @@ GUIElem* ModuleGUI::CreateStatsWindow(PlayerEntity* player, fPoint localPos)
 	//return statswindow;
 
 	return &GUIElem();
+}
+
+GUIElem* ModuleGUI::CreateHPBar(PlayerEntity* player, fPoint localPos)
+{
+	PlayerHPBar* hpbar = new PlayerHPBar(player, localPos, nullptr);
+	elementsToSpawn.push_back(hpbar);
+	return hpbar;
 }
 
 SDL_Texture* ModuleGUI::getAtlas() const

@@ -45,6 +45,7 @@ public:
 	uint ButtonClicked = 0;
 	//std::string BSO's
 	std::string MainMenuBSO;
+	std::string InGameBSO;
 
 	uint MusicVolumePercent = 5;
 	uint FXVolumePercent = 5;
