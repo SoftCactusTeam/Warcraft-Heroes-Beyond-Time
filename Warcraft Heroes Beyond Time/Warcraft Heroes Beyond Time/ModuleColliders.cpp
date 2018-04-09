@@ -50,7 +50,6 @@ bool ModuleColliders::Update(float dt)
 				if (CheckTypeCollMatrix((*first)->type, (*second)->type))
 					if (CheckCollision((*first), (*second)))
 					{
-						//if ((*first)->type == COLLIDER_PLAYER)
 						if ((*first) != nullptr)
 							(*first)->owner->Collision((*second));
 						else
