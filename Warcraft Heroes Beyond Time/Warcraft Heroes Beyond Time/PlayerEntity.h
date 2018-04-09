@@ -21,11 +21,13 @@ protected:
 	Animation dashRight, dashDown, dashUpRight, dashDownRight, dashDownLeft, dashUp, dashLeft, dashUpLeft;
 	Animation attackDown, attackUp, attackLeft, attackRight;
 	Animation skill;
-	Animation damagedAnim, dead;
+	Animation deadUpRight, deadDownRight;
 	Animation* animBefore = nullptr;
 	float speed = 250.0f;
 	bool move = true;
 	bool damaged = false;
+	float damagedCD = 0.0f;
+	float deadinfloorcd = 0.0f;
 
 	std::list<Item> itemsActive;
 
@@ -45,8 +47,7 @@ protected:
 		PL_DASH,
 		PL_ATTACK,
 		PL_SKILL,
-		PL_DEAD,
-		PL_DAMAGE
+		PL_DEAD
 
 	} state;
 
@@ -72,9 +73,6 @@ public:
 	void CheckMapLimits();
 
 	virtual bool Finish();
-	virtual void Collision(COLLIDER_TYPE type);
-
-	void setCol(Collider* pcol);
 
 	void AddItem(Item item);
 	void IterateItems(ItemFunctions nameFunction);
@@ -94,6 +92,7 @@ public:
 	float dashDistance = 150.0f;
 	float t = 0.0f;
 	fPoint startPos = { 0.0f, 0.0f };
+	void ResetDash();
 
 	//Camera culling
 	SDL_Rect freeZone;
@@ -102,7 +101,12 @@ public:
 	void CheckCulling();
 	bool drawFZ = false;
 	void DrawFreeZone(bool);
-	
+
+	//Collisions
+	virtual void UpdateCollider() {}
+	virtual void Collision(Collider* collideWith){}
+	void setCol(Collider* pcol);
+	void PushOut(Collider* wall);
 };
 
 #endif

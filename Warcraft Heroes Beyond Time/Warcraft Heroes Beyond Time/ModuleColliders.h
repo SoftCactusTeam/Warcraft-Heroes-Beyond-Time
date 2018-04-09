@@ -37,7 +37,9 @@ public:
 	Collider* AddTemporalCollider(SDL_Rect colliderRect, COLLIDER_TYPE type, int timer);
 	void deleteCollider(Collider* col);
 	void CleanCollidersEntity(Entity* entity);
+	bool isWallCollider(SDL_Rect here, Collider* colWith = nullptr) const;
 
+private:
 	bool CheckTypeCollMatrix(COLLIDER_TYPE type, COLLIDER_TYPE type2);
 	bool CheckCollision(Collider* col1, Collider* col2);
 	void PrintColliders();

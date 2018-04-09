@@ -27,8 +27,6 @@ bool PlayerEntity::Update(float dt)
 
 bool PlayerEntity::Finish() { return true; }
 
-void PlayerEntity::Collision(COLLIDER_TYPE type){}
-
 void PlayerEntity::setCol(Collider* pcol)
 {
 	this->pcol = pcol;
@@ -63,6 +61,29 @@ fPoint PlayerEntity::CalculatePosFromBezier(fPoint startPos, fPoint handleA, flo
 	res.y = firstArgument.y + secondArgument.y + thirdArgument.y + fourthArgument.y;
 
 	return res;
+}
+
+void PlayerEntity::ResetDash()
+{
+	state = states::PL_IDLE;
+	t = 0.0f;
+
+	if (anim == &dashRight)
+		anim = &idleRight;
+	else if (anim == &dashLeft)
+		anim = &idleLeft;
+	else if (anim == &dashUp)
+		anim = &idleUp;
+	else if (anim == &dashDown)
+		anim = &idleDown;
+	else if (anim == &dashUpRight)
+		anim = &idleUpRight;
+	else if (anim == &dashUpLeft)
+		anim = &idleUpLeft;
+	else if (anim == &dashDownRight)
+		anim = &idleDownRight;
+	else if (anim == &dashDownLeft)
+		anim = &idleDownLeft;
 }
 
 void PlayerEntity::PlayerStates(float dt)
@@ -161,20 +182,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &skill;
 			break;
 		}
-		else if (live <= 0)
-		{
-			state = states::PL_DEAD;
-			animBefore = anim;
-			anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
-			break;
-		}
-		else if (damaged)
-		{
-			state = states::PL_DAMAGE;
-			animBefore = anim;
-			anim = &damagedAnim;
-			break;
-		}
+
 
 		break;
 
@@ -269,25 +277,7 @@ void PlayerEntity::KeyboardStates(float dt)
 		}
 		else
 		{
-			state = states::PL_IDLE;
-			t = 0.0f;
-
-			if (anim == &dashRight)
-				anim = &idleRight;
-			else if (anim == &dashLeft)
-				anim = &idleLeft;
-			else if (anim == &dashUp)
-				anim = &idleUp;
-			else if (anim == &dashDown)
-				anim = &idleDown;
-			else if (anim == &dashUpRight)
-				anim = &idleUpRight;
-			else if (anim == &dashUpLeft)
-				anim = &idleUpLeft;
-			else if (anim == &dashDownRight)
-				anim = &idleDownRight;
-			else if (anim == &dashDownLeft)
-				anim = &idleDownLeft;
+			ResetDash();
 		}
 
 		break;
@@ -333,20 +323,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &skill;
 			break;
 		}
-		else if (live <= 0)
-		{
-			state = states::PL_DEAD;
-			animBefore = anim;
-			anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
-			break;
-		}
-		else if (damaged)
-		{
-			state = states::PL_DAMAGE;
-			animBefore = anim;
-			anim = &damagedAnim;
-			break;
-		}
+
 
 		break;
 
@@ -390,20 +367,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &skill;
 			break;
 		}
-		else if (live <= 0)
-		{
-			state = states::PL_DEAD;
-			animBefore = anim;
-			anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
-			break;
-		}
-		else if (damaged)
-		{
-			state = states::PL_DAMAGE;
-			animBefore = anim;
-			anim = &damagedAnim;
-			break;
-		}
+
 
 		break;
 
@@ -447,20 +411,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &skill;
 			break;
 		}
-		else if (live <= 0)
-		{
-			state = states::PL_DEAD;
-			animBefore = anim;
-			anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
-			break;
-		}
-		else if (damaged)
-		{
-			state = states::PL_DAMAGE;
-			animBefore = anim;
-			anim = &damagedAnim;
-			break;
-		}
+
 
 		break;
 
@@ -504,20 +455,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &skill;
 			break;
 		}
-		else if (live <= 0)
-		{
-			state = states::PL_DEAD;
-			animBefore = anim;
-			anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
-			break;
-		}
-		else if (damaged)
-		{
-			state = states::PL_DAMAGE;
-			animBefore = anim;
-			anim = &damagedAnim;
-			break;
-		}
+
 
 		break;
 
@@ -564,20 +502,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &skill;
 			break;
 		}
-		else if (live <= 0)
-		{
-			state = states::PL_DEAD;
-			animBefore = anim;
-			anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
-			break;
-		}
-		else if (damaged)
-		{
-			state = states::PL_DAMAGE;
-			animBefore = anim;
-			anim = &damagedAnim;
-			break;
-		}
+
 
 		break;
 
@@ -622,20 +547,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &skill;
 			break;
 		}
-		else if (live <= 0)
-		{
-			state = states::PL_DEAD;
-			animBefore = anim;
-			anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
-			break;
-		}
-		else if (damaged)
-		{
-			state = states::PL_DAMAGE;
-			animBefore = anim;
-			anim = &damagedAnim;
-			break;
-		}
+
 
 		break;
 
@@ -680,20 +592,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &skill;
 			break;
 		}
-		else if (live <= 0)
-		{
-			state = states::PL_DEAD;
-			animBefore = anim;
-			anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
-			break;
-		}
-		else if (damaged)
-		{
-			state = states::PL_DAMAGE;
-			animBefore = anim;
-			anim = &damagedAnim;
-			break;
-		}
+
 
 		break;
 
@@ -738,20 +637,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			anim = &skill;
 			break;
 		}
-		else if (live <= 0)
-		{
-			state = states::PL_DEAD;
-			animBefore = anim;
-			anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
-			break;
-		}
-		else if (damaged)
-		{
-			state = states::PL_DAMAGE;
-			animBefore = anim;
-			anim = &damagedAnim;
-			break;
-		}
+
 
 		break;
 
@@ -833,30 +719,41 @@ void PlayerEntity::KeyboardStates(float dt)
 		break;
 
 	case states::PL_DEAD:
-
-		if (anim->Finished())
+		if (anim->Finished() && anim != &deadDownRight)
 		{
 			anim->Reset();
-			// DO SOMETHING!!
-			damaged = false;
-			break;
+			animBefore = anim;
+			anim = &deadDownRight;
 		}
-
-		break;
-
-	case states::PL_DAMAGE:
-
-		if (anim->Finished())
+		else if (anim->Finished())
 		{
-			anim->Reset();
-			anim = &idleDown;
-			damaged = false;
-			state = states::PL_IDLE;
-			break;
+			deadinfloorcd += dt;
+			// PlayFX, Go to the main menu.
+			if (deadinfloorcd > 2)
+			{
+				anim->Reset();
+				deadinfloorcd = 0.0f;
+				App->scene->GoMainMenu();
+			}
 		}
-
 		break;
 	}
+
+
+	if (damaged)
+	{
+		int ret = SDL_SetTextureColorMod(App->entities->spritesheetsEntities[THRALL_SHEET], 255, 100, 100);
+		damagedCD += dt;
+		if (damagedCD > 1)
+		{
+			SDL_SetTextureColorMod(App->entities->spritesheetsEntities[THRALL_SHEET], 255, 255, 255);
+			damaged = false;
+			damagedCD = 0.0f;
+		}	
+	}
+
+		
+	
 }
 
 void PlayerEntity::JoyconStates(float dt)
@@ -890,20 +787,6 @@ void PlayerEntity::JoyconStates(float dt)
 			animBefore = anim;
 			anim = &skill;
 			state = states::PL_SKILL;
-			break;
-		}
-		else if (live <= 0)
-		{
-			state = states::PL_DEAD;
-			animBefore = anim;
-			anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
-			break;
-		}
-		else if (damaged)
-		{
-			state = states::PL_DAMAGE;
-			animBefore = anim;
-			anim = &damagedAnim;
 			break;
 		}
 
@@ -1087,20 +970,7 @@ void PlayerEntity::JoyconStates(float dt)
 				state = states::PL_SKILL;
 				break;
 			}
-			else if (live <= 0)
-			{
-				state = states::PL_DEAD;
-				animBefore = anim;
-				anim = &damagedAnim; // SWAP TO DEAD ANIM WHEN ITS DONE
-				break;
-			}
-			else if (damaged)
-			{
-				state = states::PL_DAMAGE;
-				animBefore = anim;
-				anim = &damagedAnim;
-				break;
-			}
+			
 
 			break;
 		}
@@ -1152,29 +1022,35 @@ void PlayerEntity::JoyconStates(float dt)
 		break;
 
 		case states::PL_DEAD:
-
-			if (anim->Finished())
+			if (anim->Finished() && anim != &deadDownRight)
 			{
 				anim->Reset();
-				// DO SOMETHING
-				damaged = false;
-				break;
+				animBefore = anim;
+				anim = &deadDownRight;
 			}
-
-			break;
-
-		case states::PL_DAMAGE:
-
-			if (anim->Finished())
+			else if (anim->Finished())
 			{
-				anim->Reset();
-				anim = &idleDown;
-				damaged = false;
-				state = states::PL_IDLE;
-				break;
+				deadinfloorcd += dt;
+				// PlayFX, Go to the main menu.
+				if (deadinfloorcd > 2)
+				{
+					anim->Reset();
+					deadinfloorcd = 0.0f;
+					App->scene->GoMainMenu();
+				}
 			}
-
 			break;
+	}
+
+	if (damaged)
+	{
+		damagedCD += dt;
+		if (damagedCD > 1)
+		{
+			SDL_SetTextureColorMod(App->entities->spritesheetsEntities[THRALL_SHEET], 255, 255, 255);
+			damaged = false;
+			damagedCD = 0.0f;
+		}
 	}
 }
 
@@ -1308,14 +1184,16 @@ void PlayerEntity::InitCulling()
 	if (this == App->scene->player)
 	{
 		SDL_Rect currRect = anim->GetCurrentRect();
-		App->render->fcamerax = -1 * (this->pos.x + currRect.w / 2 - App->render->camera.w / 2);
-		App->render->fcameray = -1 * (this->pos.y + currRect.h / 2 - App->render->camera.h / 2);
+		iPoint pivot = anim->GetCurrentPivot();
 
-		freeZonex = pos.x - 55/2;
-		freeZoney = pos.y - 55/2;
+		App->render->fcamerax = -1 * (this->pos.x - pivot.x + currRect.w / 2 - App->render->camera.w / 2);
+		App->render->fcameray = -1 * (this->pos.y - pivot.y + currRect.h / 2 - App->render->camera.h / 2);
 
-		freeZone.x = pos.x - 55;
-		freeZone.y = pos.y - 55;
+		freeZonex = pos.x - pivot.x - 55/2;
+		freeZoney = pos.y - pivot.y - 55/2;
+
+		freeZone.x = pos.x - pivot.x - 55;
+		freeZone.y = pos.y - pivot.y - 55;
 		freeZone.w = 55 / 2 * 2 + 55;
 		freeZone.h = 55 / 2 * 2 + 47;
 	}
@@ -1328,48 +1206,53 @@ void PlayerEntity::CheckCulling()
 		uint w, h;
 		int tilesize;
 		App->map->getSize(w, h);
-		tilesize = App->map->getTileSize();
+		tilesize = App->map->getTileSize()+2;
 		SDL_Rect currentRect = anim->GetCurrentRect();
+		currentRect.w = pcol->colliderRect.w;
+		currentRect.h = pcol->colliderRect.h;
+		//iPoint pivot = anim->GetCurrentPivot();
+		iPoint pivot = { pcol->colliderRect.x, pcol->colliderRect.y };//false
+		fPoint topleft = { pos.x + pivot.x, pos.y + pivot.y };
 
-		if (freeZonex > this->pos.x - this->anim->GetCurrentPivot().x && -App->render->camera.x > 0)
+		if (freeZonex > topleft.x && -App->render->camera.x > 0)
 		{
-			if (App->render->fcamerax + freeZonex - pos.x - this->anim->GetCurrentPivot().x > 0)
+			if (App->render->fcamerax + freeZonex - topleft.x > 0)
 			{
 				freeZonex -= -App->render->fcamerax;
 				App->render->fcamerax = 0;
 			}
 			else
 			{
-				App->render->fcamerax += freeZonex - pos.x - this->anim->GetCurrentPivot().x;
-				freeZonex = this->pos.x;
+				App->render->fcamerax += freeZonex - topleft.x;
+				freeZonex = topleft.x;
 			}
 		}
 		
 
-		else if (freeZonex + freeZone.w < pos.x + currentRect.w - this->anim->GetCurrentPivot().x && - App->render->camera.x < w * (tilesize-2) - App->render->camera.w)
+		else if (freeZonex + freeZone.w < topleft.x + currentRect.w  && - App->render->camera.x < w * (tilesize-2) - App->render->camera.w)
 		{
-			App->render->fcamerax -= (pos.x + currentRect.w - this->anim->GetCurrentPivot().x) - (freeZonex + freeZone.w);
-			freeZonex = (this->pos.x + currentRect.w - this->anim->GetCurrentPivot().x) - freeZone.w;
+			App->render->fcamerax -= (topleft.x + currentRect.w ) - (freeZonex + freeZone.w);
+			freeZonex = (topleft.x + currentRect.w ) - freeZone.w;
 		}
 
-		if (freeZoney > pos.y - this->anim->GetCurrentPivot().y && -App->render->camera.y > 0)
+		if (freeZoney > topleft.y && -App->render->camera.y > 0)
 		{
-			if (App->render->fcameray + freeZoney - pos.y - this->anim->GetCurrentPivot().y > 0)
+			if (App->render->fcameray + freeZoney - topleft.y > 0)
 			{
 				freeZoney -= -App->render->fcameray;
 				App->render->fcameray = 0;
 			}
 			else
 			{
-				App->render->fcameray += freeZoney - pos.y - this->anim->GetCurrentPivot().y;
-				freeZoney = pos.y - this->anim->GetCurrentPivot().y;
+				App->render->fcameray += freeZoney - topleft.y;
+				freeZoney = topleft.y;
 			}
 			
 		}
-		else if (freeZoney + freeZone.h < pos.y + currentRect.h - this->anim->GetCurrentPivot().y && -App->render->camera.y + App->render->camera.h < h * (tilesize-2))
+		else if (freeZoney + freeZone.h < topleft.y + currentRect.h && -App->render->camera.y + App->render->camera.h < h * (tilesize-2))
 		{
-			App->render->fcameray -= (pos.y + currentRect.h - this->anim->GetCurrentPivot().y) - (freeZoney + freeZone.h);
-			freeZoney = pos.y + currentRect.h - this->anim->GetCurrentPivot().y - freeZone.h;
+			App->render->fcameray -= (topleft.y + currentRect.h ) - (freeZoney + freeZone.h);
+			freeZoney = topleft.y + currentRect.h  - freeZone.h;
 		}
 
 		freeZone.x = (int)freeZonex;
@@ -1435,12 +1318,109 @@ void PlayerEntity::IterateItems(ItemFunctions nameFunction)
 
 void PlayerEntity::SetDamage(int damage, bool setStateDamage)
 {
-	if (setStateDamage)
-		damaged = true;
-	live -= damage;
+	if (numStats.hp > 0 && damaged == false)
+	{
+		if ((int)numStats.hp - damage <= 0)
+		{
+			numStats.hp = 0;
+			state = states::PL_DEAD;
+		}	
+		else
+		{
+			if (setStateDamage)
+			{
+				damaged = true;
+				SDL_SetTextureColorMod(App->entities->spritesheetsEntities[THRALL_SHEET], 255, 100, 100);
+			}
+			numStats.hp -= damage;
+		}	
+	}
 }
 
 void PlayerEntity::DrawFreeZone(bool boolean)
 {
 	drawFZ = boolean;
+}
+
+void PlayerEntity::PushOut(Collider* wall)
+{
+	bool collideByRight = false, collideByLeft = false, collideByTop = false, collideByBottom = false;
+	SDL_Rect wall_r = wall->colliderRect;
+	SDL_Rect player_col = { pcol->colliderRect.x + (int)pos.x, pcol->colliderRect.y + (int)pos.y, pcol->colliderRect.w, pcol->colliderRect.h };
+
+	if (wall->colliderRect.x + wall->colliderRect.w/2 <= pcol->colliderRect.x + (int)pos.x)
+		collideByRight = true;
+
+	else if (wall->colliderRect.x + wall->colliderRect.w/2 > pcol->colliderRect.x + (int)pos.x + pcol->colliderRect.w)
+		collideByLeft = true;
+
+	if (wall->colliderRect.y + wall->colliderRect.h/2 < pcol->colliderRect.y + (int)pos.y)
+		collideByBottom = true;
+
+	else if (wall->colliderRect.y + wall->colliderRect.h/2 >= pcol->colliderRect.y + (int)pos.y + pcol->colliderRect.h)
+		collideByTop = true;
+
+	//4 main direction collisions
+	if (collideByRight && !collideByBottom && !collideByTop)
+	{
+		pos.x += (wall->colliderRect.x + wall->colliderRect.w - (pcol->colliderRect.x + (int)pos.x));
+	}
+	else if (collideByLeft && !collideByTop && !collideByBottom)
+	{
+		pos.x -= (pcol->colliderRect.x + pcol->colliderRect.w + pos.x) - wall->colliderRect.x;
+	}
+	else if (collideByTop && !collideByLeft && !collideByRight)
+	{
+		pos.y -= (pcol->colliderRect.y + (int)pos.y + pcol->colliderRect.h) - wall->colliderRect.y;
+	}
+	else if (collideByBottom && !collideByLeft && !collideByRight)
+	{
+		pos.y += wall->colliderRect.y + wall->colliderRect.h - (pcol->colliderRect.y + (int)pos.y);
+	}
+
+	//Combination between them (choose the closest direction)
+	else if (collideByTop && collideByRight)
+	{
+		if ( (player_col.y + player_col.h) - wall_r.y < (wall_r.x + wall_r.w - player_col.x))
+		{
+			pos.y -= (pcol->colliderRect.y + (int)pos.y + pcol->colliderRect.h) - wall->colliderRect.y;
+		}
+		else
+		{
+			pos.x += (wall->colliderRect.x + wall->colliderRect.w) - ((int)pos.x + pcol->colliderRect.x);
+		}
+	}
+	else if (collideByTop && collideByLeft)
+	{
+		if ((player_col.y + player_col.h) - wall_r.y < (player_col.x + player_col.w - wall_r.x))
+		{
+			pos.y -= (player_col.y + player_col.h) - wall_r.y;
+		}
+		else
+		{
+			pos.x -= player_col.x + player_col.w - wall_r.x;
+		}
+	}
+	else if (collideByBottom && collideByRight)
+	{
+		if ((wall_r.y + wall_r.h - player_col.y) < (wall_r.x + wall_r.w - player_col.x))
+		{
+			pos.y += (wall_r.y + wall_r.h - player_col.y);
+		}
+		else
+		{
+			pos.x += (wall_r.x + wall_r.w - player_col.x);
+		}
+	}
+	else if (collideByBottom && collideByLeft)
+	{
+		if ((wall_r.y + wall_r.h - player_col.y) < (player_col.x + player_col.w - wall_r.x))
+		{
+			pos.y += (wall_r.y + wall_r.h - player_col.y);
+		}
+		else
+		{
+			pos.x -= (player_col.x + player_col.w - wall_r.x);
+		}
+	}
 }

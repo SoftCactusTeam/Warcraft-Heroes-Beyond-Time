@@ -2,108 +2,109 @@
 #include "Thrall.h"
 #include "ModuleInput.h"
 #include "ModuleEntitySystem.h"
+#include "ModuleColliders.h"
 
-Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEntity(coor, type, texture) 
+Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEntity(coor, type, texture)
 {
 	// Thrall idle animations
 
-	idleUp.PushBack({ 0,0,89,71 }, {0,0}); //Example: Introduce here the pivot.
-	idleUp.PushBack({ 89,0,89,71 });
-	idleUp.PushBack({ 178,0,89,71 });
-	idleUp.PushBack({ 267,0,89,71 });
+	idleUp.PushBack({ 25,15,43,41 },  { 1,0 }); //Example: Introduce here the pivot.
+	idleUp.PushBack({ 114,15,43,41 }, { 1,0 });
+	idleUp.PushBack({ 203,15,43,41 }, { 1,0 });
+	idleUp.PushBack({ 292,15,43,41 }, { 1,0 });
 	idleUp.speedFactor = 3.0f;
 
-	idleUpRight.PushBack({ 356,0,89,71 });
-	idleUpRight.PushBack({ 445,0,89,71 });
-	idleUpRight.PushBack({ 534,0,89,71 });
-	idleUpRight.PushBack({ 623,0,89,71 });
+	idleUpRight.PushBack({ 382,15,34,40 }, { 0,0 });
+	idleUpRight.PushBack({ 471,15,34,40 }, { 0,1 });
+	idleUpRight.PushBack({ 560,15,34,40 }, { 0,1 });
+	idleUpRight.PushBack({ 649,15,34,40 }, { 0,0 });
 	idleUpRight.speedFactor = 3.0f;
 
-	idleRight.PushBack({ 0,71,89,71 });
-	idleRight.PushBack({ 89,71,89,71 });
-	idleRight.PushBack({ 178,71,89,71 });
-	idleRight.PushBack({ 267,71,89,71 });
+	idleRight.PushBack({ 34,86,25,44 },  { 0,0 });
+	idleRight.PushBack({ 123,86,25,44 }, { 0,1 });
+	idleRight.PushBack({ 212,86,25,44 }, { 0,1 });
+	idleRight.PushBack({ 301,86,25,44 }, { 0,0 });
 	idleRight.speedFactor = 3.0f;
 
-	idleDownRight.PushBack({ 356,71,89,71 });
-	idleDownRight.PushBack({ 445,71,89,71 });
-	idleDownRight.PushBack({ 534,71,89,71 });
-	idleDownRight.PushBack({ 623,71,89,71 });
+	idleDownRight.PushBack({ 389,86,24,40 }, { 0,0 });
+	idleDownRight.PushBack({ 477,86,24,40 }, { 0,0 });
+	idleDownRight.PushBack({ 566,86,24,40 }, { 0,0 });
+	idleDownRight.PushBack({ 656,86,24,40 }, { 0,0 });
 	idleDownRight.speedFactor = 3.0f;
 
-	idleDown.PushBack({ 0 + 9,142,89,71 });
-	idleDown.PushBack({ 89 + 9,142,89,71 });
-	idleDown.PushBack({ 178 + 9,142,89,71 });
-	idleDown.PushBack({ 267 + 9,142,89,71 });
+	idleDown.PushBack({ 17,157,48,39 },  { 16,0 });
+	idleDown.PushBack({ 106,157,48,39 }, { 16,0 });
+	idleDown.PushBack({ 195,157,48,39 }, { 16,0 });
+	idleDown.PushBack({ 284,157,48,39 }, { 16,0 });
 	idleDown.speedFactor = 3.0f;
 
-	idleDownLeft.PushBack({ 356,142,89,71 });
-	idleDownLeft.PushBack({ 445,142,89,71 });
-	idleDownLeft.PushBack({ 534,142,89,71 });
-	idleDownLeft.PushBack({ 623,142,89,71 });
+	idleDownLeft.PushBack({ 384,162,30,29 }, { 5,0 });
+	idleDownLeft.PushBack({ 473,162,30,29 }, { 5,0 });
+	idleDownLeft.PushBack({ 562,162,30,29 }, { 5,0 });
+	idleDownLeft.PushBack({ 651,162,30,29 }, { 5,0 });
 	idleDownLeft.speedFactor = 3.0f;
 
-	idleLeft.PushBack({ 0,213,89,71 });
-	idleLeft.PushBack({ 89,213,89,71 });
-	idleLeft.PushBack({ 178,213,89,71 });
-	idleLeft.PushBack({ 267,213,89,71 });
+	idleLeft.PushBack({ 35,225,25,44 },  { 0,4 });
+	idleLeft.PushBack({ 124,225,25,44 }, { 0,5 });
+	idleLeft.PushBack({ 213,225,25,44 }, { 0,5 });
+	idleLeft.PushBack({ 302,225,25,44 }, { 0,4 });
 	idleLeft.speedFactor = 3.0f;
 
-	// TODO
-	/*idleUpLeft.PushBack({ 356,213,89,71 });
-	idleUpLeft.PushBack({ 445,213,89,71 });
-	idleUpLeft.PushBack({ 534,213,89,71 });
-	idleUpLeft.PushBack({ 623,213,89,71 });
-	idleUpLeft.speedFactor = 3.0f;*/
+
+	idleUpLeft.PushBack({ 387,233,31,35 }, { 2,0 });
+	idleUpLeft.PushBack({ 476,233,31,35 }, { 2,0 });
+	idleUpLeft.PushBack({ 565,233,31,35 }, { 2,0 });
+	idleUpLeft.PushBack({ 654,233,31,35 }, { 2,0 });
+	idleUpLeft.speedFactor = 3.0f;
+
 
 	// Thrall walk animations
-
-	up.PushBack({ 0,284,89,71 });
-	up.PushBack({ 89,284,89,71 });
-	up.PushBack({ 178,284,89,71 });
-	up.PushBack({ 267,284,89,71 });
+	up.PushBack({ 30,298,43,41 }, { 0,0 });
+	up.PushBack({ 118,298,43,41 }, { 0,1 });
+	up.PushBack({ 206,298,43,41 }, { 0,1 });
+	up.PushBack({ 294,298,43,41 }, { 0,0 });
 	up.speedFactor = 9.0f;
 
-	upRight.PushBack({ 356,284,89,71 });
-	upRight.PushBack({ 445,284,89,71 });
-	upRight.PushBack({ 534,284,89,71 });
-	upRight.PushBack({ 623,284,89,71 });
+	upRight.PushBack({ 380,301,47,41 }, { 5,0 });
+	upRight.PushBack({ 468,301,47,41 }, { 5,1 });
+	upRight.PushBack({ 558,301,47,41 }, { 5,1 });
+	upRight.PushBack({ 647,301,47,41 }, { 5,0 });
 	upRight.speedFactor = 9.0f;
 
-	right.PushBack({ 0,355,89,71 });
-	right.PushBack({ 89,355,89,71 });
-	right.PushBack({ 178,355,89,71 });
-	right.PushBack({ 267,355,89,71 });
+	right.PushBack({ 28,372,40,44 },  { 6, 0 });
+	right.PushBack({ 118,372,40,44 }, { 6, 1 });
+	right.PushBack({ 207,372,40,44 }, { 6, 0 });
+	right.PushBack({ 296,372,40,44 }, { 6, 0 });
 	right.speedFactor = 9.0f;
 
-	downRight.PushBack({ 356,355,89,71 });
-	downRight.PushBack({ 445,355,89,71 });
-	downRight.PushBack({ 534,355,89,71 });
-	downRight.PushBack({ 623,355,89,71 });
+	downRight.PushBack({ 383,371,36,40 }, { 8, 1 });
+	downRight.PushBack({ 472,371,36,40 }, { 8, 1 });
+	downRight.PushBack({ 561,371,36,40 }, { 8, 0 });
+	downRight.PushBack({ 650,371,36,40 }, { 8, 1 });
 	downRight.speedFactor = 9.0f;
 
-	down.PushBack({ 0,426,89,71 });
-	down.PushBack({ 89,426,89,71 });
-	down.PushBack({ 178,426,89,71 });
-	down.PushBack({ 267,426,89,71 });
+	down.PushBack({ 15,447,48,39 }, {16,0});
+	down.PushBack({ 104,447,48,39 }, {16,2});
+	down.PushBack({ 193,447,48,39 }, {16,2});
+	down.PushBack({ 282,447,48,39 }, {16,2});
 	down.speedFactor = 9.0f;
 
-	downLeft.PushBack({ 356,426,89,71 });
-	downLeft.PushBack({ 445,426,89,71 });
-	downLeft.PushBack({ 534,426,89,71 });
-	downLeft.PushBack({ 623,426,89,71 });
+	downLeft.PushBack({ 377,446,41,33 }, { 10, 2 });
+	downLeft.PushBack({ 466,446,41,33 }, { 10, 2 });
+	downLeft.PushBack({ 555,446,41,33 }, { 10, 2 });
+	downLeft.PushBack({ 644,446,41,33 }, { 10, 2 });
 	downLeft.speedFactor = 9.0f;
 
-	left.PushBack({ 0,497,89,71 });
-	left.PushBack({ 89,497,89,71 });
-	left.PushBack({ 178,497,89,71 });
-	left.PushBack({ 267,497,89,71 });
+	left.PushBack({ 20,512,40,36 },  { 10,0 });
+	left.PushBack({ 109,512,40,36 }, { 10,0 });
+	left.PushBack({ 198,512,40,36 }, { 10,0 });
+	left.PushBack({ 287,512,40,36 }, { 10,0 });
 	left.speedFactor = 9.0f;
 
-	upLeft.PushBack({ 356,497,89,71 });
-	upLeft.PushBack({ 445,497,89,71 });
-	upLeft.PushBack({ 534,497,89,71 });
-	upLeft.PushBack({ 623,497,89,71 });
+	upLeft.PushBack({ 379,513,49,36 }, { 9,0 });
+	upLeft.PushBack({ 468,513,49,36 }, { 9,0 });
+	upLeft.PushBack({ 557,513,49,36 }, { 9,0 });
+	upLeft.PushBack({ 646,513,49,36 }, { 9,0 });
 	upLeft.speedFactor = 9.0f;
 
 	//
@@ -179,15 +180,21 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	skill.PushBack({ 0 + 5,994 + 5,89,71 + 5 });
 	skill.speedFactor = 8.0f;
 
-	damagedAnim.PushBack({ 664,612,47,44 });
-	damagedAnim.PushBack({ 718,612,47,44 });
-	damagedAnim.PushBack({ 773,612,47,56 });
-	damagedAnim.speedFactor = 9.0f;
+	deadUpRight.PushBack({ 119, 1022, 29,39 });
+	deadUpRight.PushBack({ 206, 1025,37,36 });
+	deadUpRight.PushBack({ 300,1031,45,30 });
+	deadUpRight.speedFactor = 3.0f;
+	deadUpRight.loop = false;
 
-	live = 100;
+	deadDownRight.PushBack({386, 1030, 32, 31});
+	deadDownRight.PushBack({467, 1027, 41, 34});
+	deadDownRight.PushBack({564, 1015, 35, 46});
+	deadDownRight.speedFactor = 3.0f;
+	deadDownRight.loop = false;
 
 	numStats = App->entities->thrallstats;
 
+	state = states::PL_IDLE;
 	anim = &idleDown;
 }
 
@@ -201,7 +208,9 @@ bool Thrall::Update(float dt)
 		percentage = App->input->GetPercentageFromAxis();
 	
 	if (anim != nullptr)
-	anim->speed = anim->speedFactor * percentage * dt;
+		anim->speed = anim->speedFactor * percentage * dt;
+
+	UpdateCollider();
 
 	return true;
 }
@@ -211,12 +220,82 @@ bool Thrall::Finish()
 	return true;
 }
 
-void Thrall::Collision(COLLIDER_TYPE type)
+void Thrall::Collision(Collider* collideWith)
 {
-	switch (type)
+	switch (collideWith->type)
 	{
-	case COLLIDER_TYPE::COLLIDER_ENEMY_ATAC:
-		printf_s("ha rebut una hostia guapa");
-		break;
+		case COLLIDER_TYPE::COLLIDER_ENEMY_ATAC:
+		{
+			SetDamage(15, true);
+			break;
+		}
+		case COLLIDER_TYPE::COLLIDER_UNWALKABLE:
+		{
+			PushOut(collideWith);
+			if (state == states::PL_DASH)
+				ResetDash();
+			break;
+		}
 	}
+}
+	
+void Thrall::UpdateCollider()
+{
+	if (anim == &idleUp)
+	{
+		pcol->colliderRect.x = 7;
+		pcol->colliderRect.y = 0;
+		pcol->colliderRect.w = 15;
+		pcol->colliderRect.h = 23;
+	}
+	else if (anim == &idleDown)
+	{
+		pcol->colliderRect.x = 9;
+		pcol->colliderRect.y = 0;
+		pcol->colliderRect.w = 15;
+		pcol->colliderRect.h = 20;
+	}
+	else if (anim == &idleRight)
+	{
+		pcol->colliderRect.x = 4;
+		pcol->colliderRect.y = 2;
+		pcol->colliderRect.w = 13;
+		pcol->colliderRect.h = 23;
+	}
+	else if (anim == &idleLeft)
+	{
+		pcol->colliderRect.x = 4;
+		pcol->colliderRect.y = 2;
+		pcol->colliderRect.w = 15;
+		pcol->colliderRect.h = 23;
+	}
+	else if (anim == &idleUpLeft || anim == &idleUpRight || anim == &idleDownLeft || anim == &idleDownRight)
+	{
+		pcol->colliderRect.x = 4;
+		pcol->colliderRect.y = 2;
+		pcol->colliderRect.w = 15;
+		pcol->colliderRect.h = 23;
+	}
+	else if (anim == &upLeft)
+	{
+		pcol->colliderRect.x = 2;
+		pcol->colliderRect.y = 2;
+		pcol->colliderRect.w = 15;
+		pcol->colliderRect.h = 23;
+	}
+	else if (anim == &upRight)
+	{
+		pcol->colliderRect.x = 5;
+		pcol->colliderRect.y = 0;
+		pcol->colliderRect.w = 17;
+		pcol->colliderRect.h = 23;
+	}
+	else if (anim == &up || anim == &down)
+	{
+		pcol->colliderRect.x = 5;
+		pcol->colliderRect.y = 0;
+		pcol->colliderRect.w = 17;
+		pcol->colliderRect.h = 23;
+	}
+	
 }

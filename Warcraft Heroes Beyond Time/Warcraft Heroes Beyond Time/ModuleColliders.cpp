@@ -33,7 +33,6 @@ ModuleColliders::ModuleColliders()
 
 bool ModuleColliders::Awake(pugi::xml_node& consoleNode)
 {
-	printColliders = false;
 	return true;
 }
 
@@ -41,23 +40,22 @@ bool ModuleColliders::Update(float dt)
 {
 	BROFILER_CATEGORY("Colliders Collision", Profiler::Color::Azure);
 
-	std::list<Collider*>::iterator first, second = colliders.begin();
-	advance(second, 1);
+	std::list<Collider*>::iterator first, second;
 	
 	//Check all non_temporal colliders between them
 	for (first = colliders.begin(); first != colliders.end(); ++first)
 		if ((*first)->type != COLLIDER_UNWALKABLE)
-			for (second; second != colliders.end(); ++second)
-				if (CheckTypeCollMatrix((*first)->type, (*second)->type))
+			for (second = colliders.begin(); second != colliders.end(); ++second)
+				if (CheckTypeCollMatrix((*first)->type, (*second)->type) && (*first) != (*second))
 					if (CheckCollision((*first), (*second)))
 					{
 						if ((*first) != nullptr)
-							(*first)->owner->Collision((*second)->type);
+							(*first)->owner->Collision((*second));
 						else
 							(*first)->collidingWith = (*second)->type;	// Aixo es quan el collider no te entity pero vol detectar
 
 						if ((*second)->owner != nullptr)
-							(*second)->owner->Collision((*first)->type);
+							(*second)->owner->Collision((*first));
 						else
 							(*second)->collidingWith = (*first)->type;
 					}
@@ -70,7 +68,7 @@ bool ModuleColliders::Update(float dt)
 					if (CheckCollision((*first), (*second)))
 					{
 						if ((*first)->owner != nullptr)
-							(*first)->owner->Collision((*second)->type);
+							(*first)->owner->Collision((*second));
 						else
 							(*first)->collidingWith = (*second)->type;
 					}
@@ -173,7 +171,7 @@ bool ModuleColliders::CheckTypeCollMatrix(COLLIDER_TYPE type, COLLIDER_TYPE type
 	switch (type)
 	{
 	case COLLIDER_PLAYER:
-		if (type2 == COLLIDER_ENEMY || type2 == COLLIDER_ENEMY_ATAC || type2 == COLLIDER_WALKABLE)
+		if (type2 == COLLIDER_ENEMY || type2 == COLLIDER_ENEMY_ATAC || type2 == COLLIDER_UNWALKABLE)
 			return true;
 		break;
 	case COLLIDER_ENEMY:
@@ -241,4 +239,25 @@ void ModuleColliders::AddCommands()
 {
 	ConsoleOrder* order = new ConsoleColliders();
 	App->console->AddConsoleOrderToList(order);
+}
+
+bool ModuleColliders::isWallCollider(SDL_Rect here, Collider* colWith) const
+{
+	std::list<Collider*>::const_iterator it;
+	for (it = colliders.begin(); it != colliders.end(); ++it)
+	{
+		if ((*it)->type != COLLIDER_UNWALKABLE)
+			continue;
+
+		Collider* wall = (*it);
+		if (wall->colliderRect.x < here.x + here.w &&
+			wall->colliderRect.x + wall->colliderRect.w > here.x &&
+			wall->colliderRect.y < here.y + here.h &&
+			wall->colliderRect.y + wall->colliderRect.h > here.y)
+		{
+			colWith = wall;
+			return true;
+		}
+	}
+	return false;
 }
