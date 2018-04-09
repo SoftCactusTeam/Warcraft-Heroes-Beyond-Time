@@ -53,15 +53,20 @@ inline bool ChestEntity::IsLocked() const
 
 bool ChestEntity::PlayerNear(fPoint pos)
 {
-	float norm;
-	float result = App->scene->lvlChest->pos.x - pos.x;
-	float result2 = result * result;
-	float result3 = App->scene->lvlChest->pos.y - pos.y;
-	float result4 = result3 * result3;
-	float result5 = result2 + result4;
-	norm = sqrt(result5);
-	if(norm <= 100)
-		return true;
+	if (App->scene->lvlChest != nullptr)
+	{
+		float norm;
+		float result = App->scene->lvlChest->pos.x - pos.x;
+		float result2 = result * result;
+		float result3 = App->scene->lvlChest->pos.y - pos.y;
+		float result4 = result3 * result3;
+		float result5 = result2 + result4;
+		norm = sqrt(result5);
+		if (norm <= 40)
+			return true;
+		else
+			return false;
+	}
 	else
 		return false;
 }
