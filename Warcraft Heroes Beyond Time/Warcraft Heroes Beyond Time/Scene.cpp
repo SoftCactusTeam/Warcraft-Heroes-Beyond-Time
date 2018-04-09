@@ -168,7 +168,7 @@ bool Scene::Update(float dt)
 		if (actual_scene == Stages::INGAME)
 		{
 			if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN ||
-				App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_START) == KEY_DOWN) //Start button, idk
+				App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_START) == KEY_DOWN)
 			{
 				if (!paused)
 				{
@@ -187,7 +187,6 @@ bool Scene::Update(float dt)
 
 bool Scene::PostUpdate()
 {
-	// TODO -- fer que es pintin els walkables
 	if (App->path->printWalkables == true)
 		App->path->PrintWalkableTiles();
 
