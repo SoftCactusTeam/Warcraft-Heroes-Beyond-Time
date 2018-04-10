@@ -182,7 +182,7 @@ bool Scene::Update(float dt)
 		App->map->CleanUp();
 		App->map->GenerateBossMap();
 		player = App->entities->AddPlayer({ 14 * 48,20 * 48 }, THRALL);
-		App->gui->CreateHPBar(player, { 10,5 });
+		//App->gui->CreateHPBar(player, { 10,5 });
 		App->entities->AddBoss({ 14 * 48,5 * 48 },BOSS_TYPE::GULDAN);
 		App->path->LoadPathMap();
 		lvlChest = App->entities->AddChest({ 15 * 48 - 16,18 * 48 }, MID_CHEST);

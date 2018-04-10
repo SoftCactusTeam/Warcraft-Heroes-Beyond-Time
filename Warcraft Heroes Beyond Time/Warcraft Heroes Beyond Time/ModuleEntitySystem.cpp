@@ -194,6 +194,7 @@ bool EntitySystem::Start()
 	spritesheetsEntities.push_back(App->textures->Load("sprites/Mines.png"));
 	spritesheetsEntities.push_back(App->textures->Load("sprites/Archer/Archer_sprite.png"));
 	spritesheetsEntities.push_back(App->textures->Load("sprites/Archer/Archer_Arrow.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/Boss_Guldan.png"));
 
 	bool ret = true;
 
@@ -337,7 +338,7 @@ BossEntity* EntitySystem::AddBoss(fPoint coor, BOSS_TYPE type)
 
 	switch (type) {
 	case BOSS_TYPE::GULDAN:
-		newEntity = new Guldan(coor, BOSS_TYPE::GULDAN, spritesheetsEntities[THRALL_SHEET]);
+		newEntity = new Guldan(coor, BOSS_TYPE::GULDAN, spritesheetsEntities[GULDAN_SHEET]);
 		break;
 	case BOSS_TYPE::LICH_KING:
 		newEntity = new BossEntity(coor, BOSS_TYPE::LICH_KING, nullptr);
