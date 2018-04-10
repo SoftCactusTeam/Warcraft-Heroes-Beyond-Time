@@ -145,29 +145,61 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	attackUp.speedFactor = 9.0f;
 	attackUp.loop = false;
 
-	attackRight.PushBack({ 178,639,89,71 });
-	attackRight.PushBack({ 267,639,89,71 });
-	attackRight.PushBack({ 356,639,89,71 });
-	attackRight.PushBack({ 445,639,89,71 });
-	attackRight.PushBack({ 534,639,89,71 });
+	attackUpRight.PushBack({ 466,582,45,46 }, { 7,7 });
+	attackUpRight.PushBack({ 556,582,45,46 }, { 7,7 });
+	attackUpRight.PushBack({ 645,582,45,46 }, { 7,7 });
+	attackUpRight.PushBack({ 24,652,45,46  }, { 7,7 });
+	attackUpRight.PushBack({ 113,652,45,46 }, { 7,7 });
+	attackUpRight.speedFactor = 9.0f;
+	attackUpRight.loop = false;
+
+	attackRight.PushBack({ 198,658,50,36 }, { 14,0 });
+	attackRight.PushBack({ 287,658,50,36 }, { 14,1 });
+	attackRight.PushBack({ 376,658,50,36 }, { 14,0 });
+	attackRight.PushBack({ 466,658,50,36 }, { 14,0 }); 
+	attackRight.PushBack({ 555,658,50,36 }, { 14,0 });
 	attackRight.speedFactor = 9.0f;
 	attackRight.loop = false;
 
-	attackDown.PushBack({ 356 + 8,710 + 5,89,71 });
-	attackDown.PushBack({ 445 + 8,710 + 5,89,71 });
-	attackDown.PushBack({ 534 + 8,710 + 5,89,71 });
-	attackDown.PushBack({ 623 + 11,710 + 5,89,71 });
-	attackDown.PushBack({ 0 + 8,781 + 5,89,71 });
+	attackDownRight.PushBack({ 635,657,56,44 }, { 20,2 });
+	attackDownRight.PushBack({ 12,727,56,44  }, { 20,2 });
+	attackDownRight.PushBack({ 100,727,56,44 }, { 20,2 });
+	attackDownRight.PushBack({ 189,727,56,44 }, { 20,0 });
+	attackDownRight.PushBack({ 279,727,56,44 }, { 20,0 });
+	attackDownRight.speedFactor = 9.0f;
+	attackDownRight.loop = false;
+
+	attackDown.PushBack({ 374,717,52,54 }, { 15,14 });
+	attackDown.PushBack({ 464,717,52,54 }, { 15,14 });
+	attackDown.PushBack({ 551,717,52,54 }, { 15,14 });
+	attackDown.PushBack({ 641,717,52,54 }, { 15,14 });
+	attackDown.PushBack({ 18 ,796,52,54 }, { 15,5});
 	attackDown.speedFactor = 9.0f;
 	attackDown.loop = false;
 
-	attackLeft.PushBack({ 534 - 6,781 + 6,89,71 });
-	attackLeft.PushBack({ 623 - 6,781 + 6,89,71 });
-	//attackLeft.PushBack({ 0 ,852 + 6,89,71 });
-	attackLeft.PushBack({ 89 - 6, 852 + 6,89,71 });
-	attackLeft.PushBack({ 178 - 6,852 + 6,89,71 });
+	attackDownLeft.PushBack({ 112,790,48,50 }, { 15,18 });
+	attackDownLeft.PushBack({ 201,790,48,50 }, { 15,18 });
+	attackDownLeft.PushBack({ 290,790,48,50 }, { 15,18 });
+	attackDownLeft.PushBack({ 377,790,48,50 }, { 15,18 });
+	attackDownLeft.PushBack({ 466,790,48,50 }, { 15,18 });
+	attackDownLeft.speedFactor = 9.0f;
+	attackDownLeft.loop = false;
+
+	attackLeft.PushBack({ 552,797,54,39 }, { 13,7 });
+	attackLeft.PushBack({ 641,797,54,39 }, { 13,7 });
+	attackLeft.PushBack({ 15 ,868,54,39 }, { 13,7 });
+	attackLeft.PushBack({ 102,868,54,39 }, { 17,7 });
+	attackLeft.PushBack({ 191,868,54,39 }, { 17,7 });
 	attackLeft.speedFactor = 9.0f;
 	attackLeft.loop = false;
+
+	attackUpLeft.PushBack({ 289,866,51,44 }, { 8, 10});
+	attackUpLeft.PushBack({ 381,866,51,44 }, { 8, 10});
+	attackUpLeft.PushBack({ 469,866,51,44 }, { 8, 9});
+	attackUpLeft.PushBack({ 551,866,51,44 }, { 16, 9});
+	attackUpLeft.PushBack({ 640,866,51,44 }, { 16, 9});
+	attackUpLeft.speedFactor = 9.0f;
+	attackUpLeft.loop = false;
 
 	skill.PushBack({ 0 + 5,923 + 5,89,71 + 5 });
 	skill.PushBack({ 89 + 5,923 + 5,89,71 + 5 });

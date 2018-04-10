@@ -649,11 +649,24 @@ void PlayerEntity::KeyboardStates(float dt)
 		else if (animBefore == &idleUp || animBefore == &up)
 			anim = &attackUp;
 
-		else if (animBefore == &idleLeft || animBefore == &left || animBefore == &upLeft || animBefore == &downLeft || animBefore == &idleDownLeft || animBefore == &idleUpLeft)
+		else if (animBefore == &idleUpRight || animBefore == &upRight)
+			anim = &attackUpRight;
+
+		else if (animBefore == &idleRight || animBefore == &right)
+			anim = &attackRight;
+
+		else if (animBefore == &idleDownRight || animBefore == &downRight)
+			anim = &attackDownRight;
+
+		else if (animBefore == &idleDownLeft || animBefore == &downLeft)
+			anim = &attackDownLeft;
+
+		else if (animBefore == &idleLeft || animBefore == &left)
 			anim = &attackLeft;
 
-		else if (animBefore == &idleRight || animBefore == &right || animBefore == &idleUpRight || animBefore == &idleDownRight || animBefore == &upRight || animBefore == &downRight)
-			anim = &attackRight;
+		else if (animBefore == &idleUpLeft || animBefore == &upLeft)
+			anim = &attackUpLeft;
+		
 
 		if (anim->Finished())
 		{

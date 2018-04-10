@@ -19,7 +19,7 @@ protected:
 	Animation idleDown, idleUp, idleLeft, idleRight, idleUpRight, idleUpLeft, idleDownRight, idleDownLeft;
 	Animation up, down, left, right, upLeft, upRight, downLeft, downRight;
 	Animation dashRight, dashDown, dashUpRight, dashDownRight, dashDownLeft, dashUp, dashLeft, dashUpLeft;
-	Animation attackDown, attackUp, attackLeft, attackRight;
+	Animation attackDown, attackDownLeft, attackDownRight, attackUp, attackUpRight, attackUpLeft, attackLeft, attackRight;
 	Animation skill;
 	Animation deadUpRight, deadDownRight;
 	Animation* animBefore = nullptr;
