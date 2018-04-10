@@ -55,7 +55,6 @@ public:
 	inline int Get(int x, int y) const;
 	bool CheckBoundaries(const iPoint& pos) const;
 	bool GenerateMap(MapData data);
-	bool GenerateBossMap(); 
 	bool ExecuteAlgorithm(MapNode* startNode, uint iterations, int seed);
 	SDL_Rect randomTile(bool isFloor);
 	bool GenerateWalls();

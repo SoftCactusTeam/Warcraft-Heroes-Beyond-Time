@@ -27,8 +27,8 @@ public:
 	Item(char* name, ItemType type, uint rarity);
 	~Item();
 
-	virtual bool GetItem();
-	virtual bool UpdateLogic();
-	virtual bool ByeByeItem();
+	bool GetItem();
+	bool UpdateLogic();
+	bool ByeByeItem();
 
 };

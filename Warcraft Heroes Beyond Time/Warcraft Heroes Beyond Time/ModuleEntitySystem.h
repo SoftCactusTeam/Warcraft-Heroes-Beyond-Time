@@ -13,7 +13,6 @@ class Entity;
 class PlayerEntity;
 class ChestEntity;
 class StaticEntity;
-class BossEntity;
 
 class EntitySystem : public Module
 {
@@ -67,7 +66,7 @@ public:
 
 	PlayerEntity* AddPlayer(fPoint coor, PLAYER_TYPE type);
 	void AddEnemy(fPoint coor, ENEMY_TYPE type);
-	BossEntity* AddBoss(fPoint coor, BOSS_TYPE type);
+	void AddBoss(fPoint coor, BOSS_TYPE type);
 	void AddConsumable(fPoint coor, CONSUMABLE_TYPE type);
 	ChestEntity* AddChest(fPoint coor, CHEST_TYPE type);
 	StaticEntity* AddStaticEntity(fPoint coor, STATIC_ENTITY_TYPE type);

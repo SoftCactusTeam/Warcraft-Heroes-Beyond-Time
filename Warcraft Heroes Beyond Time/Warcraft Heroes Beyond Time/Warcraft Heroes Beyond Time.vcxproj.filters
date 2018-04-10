@@ -82,6 +82,9 @@
     <ClCompile Include="Slider.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
+    <ClCompile Include="BossEntity.cpp">
+      <Filter>Entities\Dynamic Entities</Filter>
+    </ClCompile>
     <ClCompile Include="Enemy_Footman.cpp">
       <Filter>Entities\Dynamic Entities</Filter>
     </ClCompile>
@@ -120,12 +123,6 @@
     </ClCompile>
     <ClCompile Include="PlayerHPBar.cpp">
       <Filter>GUI\Warcraft Specific</Filter>
-    </ClCompile>
-    <ClCompile Include="BossEntity.cpp">
-      <Filter>Entities\Dynamic Entities\Bosses</Filter>
-    </ClCompile>
-    <ClCompile Include="Guldan.cpp">
-      <Filter>Entities\Dynamic Entities\Bosses</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -225,6 +222,9 @@
     <ClInclude Include="Slider.h">
       <Filter>GUI</Filter>
     </ClInclude>
+    <ClInclude Include="BossEntity.h">
+      <Filter>Entities\Dynamic Entities</Filter>
+    </ClInclude>
     <ClInclude Include="Enemy_Footman.h">
       <Filter>Entities\Dynamic Entities</Filter>
     </ClInclude>
@@ -264,12 +264,6 @@
     <ClInclude Include="PlayerHPBar.h">
       <Filter>GUI\Warcraft Specific</Filter>
     </ClInclude>
-    <ClInclude Include="BossEntity.h">
-      <Filter>Entities\Dynamic Entities\Bosses</Filter>
-    </ClInclude>
-    <ClInclude Include="Guldan.h">
-      <Filter>Entities\Dynamic Entities\Bosses</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />
@@ -295,9 +289,6 @@
     </Filter>
     <Filter Include="GUI\Warcraft Specific">
       <UniqueIdentifier>{a44ceca3-55bf-4adb-bcf5-e831248165a6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Entities\Dynamic Entities\Bosses">
-      <UniqueIdentifier>{074fa10c-3dad-4b8c-8d4d-d832213d8f68}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

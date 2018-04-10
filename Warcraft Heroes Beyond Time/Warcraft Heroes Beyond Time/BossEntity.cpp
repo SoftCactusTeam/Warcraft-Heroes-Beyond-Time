@@ -4,6 +4,6 @@ BossEntity::BossEntity(fPoint coor, BOSS_TYPE type, SDL_Texture* texture) : Dyna
 
 bool BossEntity::Start() { return true; }
 
-bool BossEntity::Update(float dt) { return true; }
+bool BossEntity::Update() { return true; }
 
 bool BossEntity::Finish() { return true; }

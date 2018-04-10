@@ -8,14 +8,15 @@
 #include "Scene.h"
 
 #define DISTANCE_TO_MOVE	300
-#define DISTANCE_TO_CHARGE	120
+#define DISTANCE_TO_CHARGE	150
 #define DISTANCE_TO_ATAC	40
 #define CHARGE_DISTANCE		50
-#define CHARGE_SPEED		10
+#define CHARGE_SPEED		5
 #define CHARGE_COOLDOWN		3000
+#define CHARGE_PRETIME		1000
 #define ATAC_COOLDOWN		1000
-#define MOVEMENT_SPEED		5
-#define DEFENSE_DISTANCE	100
+#define MOVEMENT_SPEED		3
+#define DEFENSE_DISTANCE	130
 #define DEFENSE_TIME		1000
 #define DEFENSE_COOLDOWN	3000
 
@@ -52,13 +53,10 @@ bool Enemy_Footman::Update(float dt)
 		doCharge();
 		break;
 	default:
-		state = FOOTMAN_STATE::FOOTMAN_IDLE;
-		pathVector.Clear();
+		initIdle();
 		break;
 	}
-
 	pathVector.PrintAstar();
-
 	return true;
 }
 
@@ -86,17 +84,19 @@ void Enemy_Footman::initAtac()
 	accountantPrincipal = SDL_GetTicks() + ATAC_COOLDOWN;
 	anim = &animAtac[LookAtPlayer()];
 	anim->Reset();
-	App->colliders->AddTemporalCollider({ (int)pos.x, (int)pos.y, 64, 64 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATAC, ATAC_COOLDOWN);
+	App->colliders->AddTemporalCollider({ (int)pos.x, (int)pos.y, 64, 64 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATTACK, ATAC_COOLDOWN);
 }
 
 void Enemy_Footman::initCharge()
 {
 	state = FOOTMAN_STATE::FOOTMAN_CHARGE;
-	accountantPrincipal = CHARGE_DISTANCE;
-	anim = &animCharge[LookAtPlayer()];
+	chargeTime = CHARGE_DISTANCE;
+	anim = &animPreCharge[LookAtPlayer()];
+	saveFirstAngle = LookAtPlayer();
 	anim->Reset();
 	chargeMovement = CaculateFPointAngle(App->scene->player->pos) * CHARGE_SPEED;
 	chargeCooldown = SDL_GetTicks() + CHARGE_COOLDOWN;
+	StopConcreteTime(CHARGE_PRETIME);
 }
 
 void Enemy_Footman::initDefense()
@@ -140,10 +140,10 @@ void Enemy_Footman::doWalk()
 	{
 		if (pathVector.isEmpty())
 		{
-			pathVector.CalculatePathAstar(iPoint((int)this->pos.x, (int)this->pos.y), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y));
-			pathVector.CalculateWay(iPoint((int)this->pos.x, (int)this->pos.y), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y));
-			//pathVector.CalculatePathAstar(iPoint((int)this->pos.x - (anim->GetCurrentRect().w / 2), (int)this->pos.y - (anim->GetCurrentRect().h)), iPoint((int)App->scene->player->pos.x - (App->scene->player->anim->GetCurrentRect().w / 2), (int)App->scene->player->pos.y - (App->scene->player->anim->GetCurrentRect().h)));
-			//pathVector.CalculateWay(iPoint((int)this->pos.x - (anim->GetCurrentRect().w / 2), (int)this->pos.y - (anim->GetCurrentRect().h)), iPoint((int)App->scene->player->pos.x - (App->scene->player->anim->GetCurrentRect().w / 2), (int)App->scene->player->pos.y - (App->scene->player->anim->GetCurrentRect().h)));
+			//pathVector.CalculatePathAstar(iPoint((int)this->pos.x, (int)this->pos.y), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y));
+			//pathVector.CalculateWay(iPoint((int)this->pos.x, (int)this->pos.y), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y));
+			pathVector.CalculatePathAstar(iPoint((int)this->pos.x + (anim->GetCurrentRect().w / 2), (int)this->pos.y + (anim->GetCurrentRect().h / 2)), iPoint((int)App->scene->player->pos.x + (App->scene->player->anim->GetCurrentRect().w / 2), (int)App->scene->player->pos.y + (App->scene->player->anim->GetCurrentRect().h / 2)));
+			pathVector.CalculateWay(iPoint((int)this->pos.x + (anim->GetCurrentRect().w / 2), (int)this->pos.y + (anim->GetCurrentRect().h / 2)), iPoint((int)App->scene->player->pos.x + (App->scene->player->anim->GetCurrentRect().w / 2), (int)App->scene->player->pos.y + (App->scene->player->anim->GetCurrentRect().h / 2)));
 		}
 		else
 		{
@@ -161,8 +161,11 @@ void Enemy_Footman::doAtac()
 
 void Enemy_Footman::doCharge()
 {
-	if (accountantPrincipal <= 0)
+	anim = &animCharge[LookAtPlayer()];
+
+	if (chargeTime <= 0)
 	{
+		anim = &animPostCharge[saveFirstAngle];
 		StopConcreteTime(1000);
 		initIdle();
 	}
@@ -174,8 +177,8 @@ void Enemy_Footman::doCharge()
 		else
 		{
 			pos += chargeMovement;
-			accountantPrincipal -= CHARGE_SPEED;
-			App->colliders->AddTemporalCollider({ (int)pos.x, (int)pos.y, 32, 32 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATAC, 10);
+			chargeTime -= CHARGE_SPEED;
+			App->colliders->AddTemporalCollider({ (int)pos.x, (int)pos.y, 32, 32 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATTACK, 10);
 		}
 	}
 }
@@ -368,4 +371,69 @@ void Enemy_Footman::ChargeAnimations()
 	animCharge[FIXED_ANGLE::UP_LEFT].PushBack({ 229,273,76,68 });
 	animCharge[FIXED_ANGLE::UP_LEFT].speed = 0.1f;
 	animCharge[FIXED_ANGLE::UP_LEFT].loop = false;
+
+	animPreCharge[FIXED_ANGLE::UP].PushBack({ 305,273,76,68 });
+	animPreCharge[FIXED_ANGLE::UP].speed = 0.2f;
+	animPreCharge[FIXED_ANGLE::UP].loop = false;
+
+	animPreCharge[FIXED_ANGLE::UP_RIGHT].PushBack({ 381,273,76,68 });
+	animPreCharge[FIXED_ANGLE::UP_RIGHT].speed = 0.1f;
+	animPreCharge[FIXED_ANGLE::UP_RIGHT].loop = false;
+
+	animPreCharge[FIXED_ANGLE::RIGHT].PushBack({ 457,273,76,68 });
+	animPreCharge[FIXED_ANGLE::RIGHT].speed = 0.1f;
+	animPreCharge[FIXED_ANGLE::RIGHT].loop = false;
+
+	animPreCharge[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 533,273,76,68 });
+	animPreCharge[FIXED_ANGLE::DOWN_RIGHT].speed = 0.1f;
+	animPreCharge[FIXED_ANGLE::DOWN_RIGHT].loop = false;
+
+	animPreCharge[FIXED_ANGLE::DOWN].PushBack({ 609,273,76,68 });
+	animPreCharge[FIXED_ANGLE::DOWN].speed = 0.1f;
+	animPreCharge[FIXED_ANGLE::DOWN].loop = false;
+
+	animPreCharge[FIXED_ANGLE::DOWN_LEFT].PushBack({ 685,273,76,68 });
+	animPreCharge[FIXED_ANGLE::DOWN_LEFT].speed = 0.1f;
+	animPreCharge[FIXED_ANGLE::DOWN_LEFT].loop = false;
+
+	animPreCharge[FIXED_ANGLE::LEFT].PushBack({ 761,273,76,68 });
+	animPreCharge[FIXED_ANGLE::LEFT].speed = 0.1f;
+	animPreCharge[FIXED_ANGLE::LEFT].loop = false;
+
+	animPreCharge[FIXED_ANGLE::UP_LEFT].PushBack({ 837,273,76,68 });
+	animPreCharge[FIXED_ANGLE::UP_LEFT].speed = 0.1f;
+	animPreCharge[FIXED_ANGLE::UP_LEFT].loop = false;
+
+
+	animPostCharge[FIXED_ANGLE::UP].PushBack({ 229,1,76,68 });
+	animPostCharge[FIXED_ANGLE::UP].speed = 0.2f;
+	animPostCharge[FIXED_ANGLE::UP].loop = false;
+
+	animPostCharge[FIXED_ANGLE::UP_RIGHT].PushBack({ 533,1,76,68 });
+	animPostCharge[FIXED_ANGLE::UP_RIGHT].speed = 0.1f;
+	animPostCharge[FIXED_ANGLE::UP_RIGHT].loop = false;
+
+	animPostCharge[FIXED_ANGLE::RIGHT].PushBack({ 837,1,76,68 });
+	animPostCharge[FIXED_ANGLE::RIGHT].speed = 0.1f;
+	animPostCharge[FIXED_ANGLE::RIGHT].loop = false;
+
+	animPostCharge[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 153,69,76,68 });
+	animPostCharge[FIXED_ANGLE::DOWN_RIGHT].speed = 0.1f;
+	animPostCharge[FIXED_ANGLE::DOWN_RIGHT].loop = false;
+
+	animPostCharge[FIXED_ANGLE::DOWN].PushBack({ 457,69,76,68 });
+	animPostCharge[FIXED_ANGLE::DOWN].speed = 0.1f;
+	animPostCharge[FIXED_ANGLE::DOWN].loop = false;
+
+	animPostCharge[FIXED_ANGLE::DOWN_LEFT].PushBack({ 761,69,76,68 });
+	animPostCharge[FIXED_ANGLE::DOWN_LEFT].speed = 0.1f;
+	animPostCharge[FIXED_ANGLE::DOWN_LEFT].loop = false;
+
+	animPostCharge[FIXED_ANGLE::LEFT].PushBack({ 77,137,76,68 });
+	animPostCharge[FIXED_ANGLE::LEFT].speed = 0.1f;
+	animPostCharge[FIXED_ANGLE::LEFT].loop = false;
+
+	animPostCharge[FIXED_ANGLE::UP_LEFT].PushBack({ 381,137,76,68 });
+	animPostCharge[FIXED_ANGLE::UP_LEFT].speed = 0.1f;
+	animPostCharge[FIXED_ANGLE::UP_LEFT].loop = false;
 }
