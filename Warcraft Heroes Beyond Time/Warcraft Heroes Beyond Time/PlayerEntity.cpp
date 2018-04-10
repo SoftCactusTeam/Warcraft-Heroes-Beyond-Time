@@ -173,6 +173,7 @@ void PlayerEntity::KeyboardStates(float dt)
 		{
 			state = states::PL_ATTACK;
 			animBefore = anim;
+			Attack();
 			break;
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
@@ -314,6 +315,7 @@ void PlayerEntity::KeyboardStates(float dt)
 		{
 			state = states::PL_ATTACK;
 			animBefore = anim;
+			Attack();
 			break;
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
@@ -358,6 +360,7 @@ void PlayerEntity::KeyboardStates(float dt)
 		{
 			state = states::PL_ATTACK;
 			animBefore = anim;
+			Attack();
 			break;
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
@@ -402,6 +405,7 @@ void PlayerEntity::KeyboardStates(float dt)
 		{
 			state = states::PL_ATTACK;
 			animBefore = anim;
+			Attack();
 			break;
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
@@ -446,6 +450,7 @@ void PlayerEntity::KeyboardStates(float dt)
 		{
 			state = states::PL_ATTACK;
 			animBefore = anim;
+			Attack();
 			break;
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
@@ -493,6 +498,7 @@ void PlayerEntity::KeyboardStates(float dt)
 		{
 			state = states::PL_ATTACK;
 			animBefore = anim;
+			Attack();
 			break;
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
@@ -538,6 +544,7 @@ void PlayerEntity::KeyboardStates(float dt)
 		{
 			state = states::PL_ATTACK;
 			animBefore = anim;
+			Attack();
 			break;
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
@@ -583,6 +590,7 @@ void PlayerEntity::KeyboardStates(float dt)
 		{
 			state = states::PL_ATTACK;
 			animBefore = anim;
+			Attack();
 			break;
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
@@ -628,6 +636,7 @@ void PlayerEntity::KeyboardStates(float dt)
 		{
 			state = states::PL_ATTACK;
 			animBefore = anim;
+			Attack();
 			break;
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
@@ -792,6 +801,7 @@ void PlayerEntity::JoyconStates(float dt)
 		{
 			animBefore = anim;
 			state = states::PL_ATTACK;
+			Attack();
 			break;
 		}
 
@@ -971,7 +981,7 @@ void PlayerEntity::JoyconStates(float dt)
 			{
 				animBefore = anim;
 				state = states::PL_ATTACK;
-
+				Attack();
 				break;
 
 			}

@@ -3,6 +3,9 @@
 
 #include "PlayerEntity.h"
 
+
+class Collider;
+
 class Thrall : public PlayerEntity {
 private:
 public:
@@ -14,7 +17,12 @@ public:
 
 private:
 	void UpdateCollider();
+	void UpdateAttackCollider();
+	void Attack();
 	
+private:
+	Collider * attackCollider = nullptr;
+	bool attacking = false;
 };
 
 #endif

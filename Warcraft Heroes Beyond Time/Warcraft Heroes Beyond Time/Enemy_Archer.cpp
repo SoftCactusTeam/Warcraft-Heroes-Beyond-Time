@@ -358,7 +358,7 @@ Enemy_Archer_Arrow::Enemy_Archer_Arrow(fPoint coor, SDL_Texture* texture, fPoint
 		angle = (2 * PI + angle) * 360 / (2 * PI);
 	angle -= 90;
 
-	arrowCollider = App->colliders->AddCollider({ (int)coor.x,(int)coor.y,30,/*rect->h*/30 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATTACK, nullptr, { 0,0 }, Collider::ATTACK_TYPE::ARROW);
+	arrowCollider = App->colliders->AddCollider({ (int)coor.x,(int)coor.y,30,/*rect->h*/30 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATTACK, nullptr, { 0,0 }, Collider::ATTACK_TYPE::ENEMY_ARROW);
 	rect = { 808,110,32,32 };
 }
 

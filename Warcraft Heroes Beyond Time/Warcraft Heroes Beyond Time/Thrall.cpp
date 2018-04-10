@@ -142,6 +142,7 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	attackUp.PushBack({ 202,580,46,47 }, { 4,9 });
 	attackUp.PushBack({ 291,580,46,47 }, { 4,8 });
 	attackUp.PushBack({ 380,580,46,47 }, { 4,8 });
+	//attackUp.speedFactor = 9.0f;
 	attackUp.speedFactor = 9.0f;
 	attackUp.loop = false;
 
@@ -244,6 +245,9 @@ bool Thrall::Update(float dt)
 
 	UpdateCollider();
 
+	if (attacking)
+		UpdateAttackCollider();
+
 	return true;
 }
 
@@ -330,4 +334,23 @@ void Thrall::UpdateCollider()
 		pcol->colliderRect.h = 23;
 	}
 	
+}
+
+void Thrall::Attack()
+{
+	attacking = true;
+	attackCollider = App->colliders->AddCollider({ 0,0,0,0 }, COLLIDER_PLAYER_ATTACK, nullptr, { 0,0 }, Collider::ATTACK_TYPE::PLAYER_MELEE);
+}
+
+void Thrall::UpdateAttackCollider()
+{
+	if (anim = &attackUp)
+	{
+
+	}
+
+
+
+
+
 }
