@@ -104,7 +104,7 @@ private:
 	uint				prev_last_sec_frame_count = 0;
 	uint				last_sec_frame_count = 0;
 	uint				frame_count = 0;
-	float				capped_ms = 1/60;
+	double				capped_ms = (1/(float)60)*1000;
 
 	mutable bool savegame = false;
 	bool loadgame = false;

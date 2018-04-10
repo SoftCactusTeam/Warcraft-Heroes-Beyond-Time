@@ -12,6 +12,7 @@
 #include "PortalEntity.h"
 #include "Pathfinding.h"
 #include "PlayerEntity.h"
+#include "ModulePrinter.h"
 
 #include "Brofiler\Brofiler.h"
 
@@ -74,7 +75,7 @@ bool Scene::Start()
 			App->entities->Activate();
 			App->console->Activate();
 			App->map->Activate();
-
+			App->printer->Activate();
 
 
 			BROFILER_CATEGORY("InGame Generation", Profiler::Color::Chocolate);
@@ -182,11 +183,19 @@ bool Scene::Update(float dt)
 				}
 			}
 		}
+		
+		
 	return true;
 }
 
 bool Scene::PostUpdate()
 {
+	if (actual_scene == Stages::MAIN_MENU || actual_scene == Stages::SETTINGS)
+	{
+		SDL_Rect back = { 0,0,640,360 };
+		App->render->DrawQuad(back, 0, 205, 193, 255, true, false);
+	}
+
 	if (App->path->printWalkables == true)
 		App->path->PrintWalkableTiles();
 
@@ -255,7 +264,6 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 					switch (button->btype)
 					{
 					case BType::PLAY:
-						App->render->SetBackgroundColor({ 0, 0, 0, 0 });
 						App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
 						actual_scene = Stages::INGAME;
 						restart = true;
@@ -273,7 +281,6 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 						actual_scene = Stages::MAIN_MENU;
 						paused = false;
 						restart = true;
-						App->render->SetBackgroundColor({ 0, 205, 193, 0 });
 						break;
 					case BType::RESUME:
 						paused = false;

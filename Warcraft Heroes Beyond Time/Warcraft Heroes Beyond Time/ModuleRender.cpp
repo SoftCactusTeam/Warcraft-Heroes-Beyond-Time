@@ -46,30 +46,14 @@ bool Render::Awake(pugi::xml_node& renderNode)
 	}
 	else
 	{
-		SDL_DisplayMode dm;
-		if (SDL_GetDesktopDisplayMode(0, &dm) != 0)
-		{
-			ret = false;
-		}
-		else
-		{
-			int w, h;
-			//camera.w = (dm.w * 640) / 1920/*App->window->screen_surface->w*/;
-			//camera.h = (dm.h * 360) / 1080/*App->window->screen_surface->h*/;
-			camera.w = 640;
-			camera.h = 360;
-			camera.x = 0;
-			camera.y = 0;
-			fcamerax = 0;
-			fcameray = 0;
+		camera.w = 640;
+		camera.h = 360;
+		camera.x = 0;
+		camera.y = 0;
+		fcamerax = 0;
+		fcameray = 0;
 
-			uint width = 0, height = 0;
-			App->window->GetWindowSize(width, height);
-
-			ret = SDL_RenderSetLogicalSize(renderer, 640, 360) == 0;
-
-			SetBackgroundColor({ 0, 205, 193, 0 });
-		}
+		ret = SDL_RenderSetLogicalSize(renderer, 640, 360) == 0;
 	}
 
 	return ret;
@@ -92,7 +76,8 @@ bool Render::PreUpdate()
 
 bool Render::Update(float dt)
 {
-	CheckCameraLimits();
+	if(App->map->isActive())
+		CheckCameraLimits();
 
 	return true;
 }
