@@ -12,6 +12,7 @@
 #include "PortalEntity.h"
 #include "Pathfinding.h"
 #include "PlayerEntity.h"
+#include "ModulePrinter.h"
 
 #include "Brofiler\Brofiler.h"
 
@@ -74,7 +75,7 @@ bool Scene::Start()
 			App->entities->Activate();
 			App->console->Activate();
 			App->map->Activate();
-
+			App->printer->Activate();
 
 
 			BROFILER_CATEGORY("InGame Generation", Profiler::Color::Chocolate);
@@ -151,12 +152,6 @@ bool Scene::Update(float dt)
 		// RESTART THIS MODULE AND THE ENTIRE GAME // GO TO MAIN MENU
 	}
 
-	//CONTROLLER RUMBLES
-	if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
-	{
-		App->input->PlayJoyRumble(0.75f, 100);
-	}
-
 	if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN)
 	{
 		lvlChest->UnLockChest();
@@ -182,11 +177,19 @@ bool Scene::Update(float dt)
 				}
 			}
 		}
+		
+		
 	return true;
 }
 
 bool Scene::PostUpdate()
 {
+	if (actual_scene == Stages::MAIN_MENU || actual_scene == Stages::SETTINGS)
+	{
+		SDL_Rect back = { 0,0,640,360 };
+		App->render->DrawQuad(back, 0, 205, 193, 255, true, false);
+	}
+
 	if (App->path->printWalkables == true)
 		App->path->PrintWalkableTiles();
 

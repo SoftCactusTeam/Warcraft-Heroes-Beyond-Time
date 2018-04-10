@@ -36,6 +36,12 @@ bool ModuleColliders::Awake(pugi::xml_node& consoleNode)
 	return true;
 }
 
+bool ModuleColliders::Start()
+{
+	printColliders = true;
+	return true;
+}
+
 bool ModuleColliders::Update(float dt)
 {
 	BROFILER_CATEGORY("Colliders Collision", Profiler::Color::Azure);
@@ -49,7 +55,7 @@ bool ModuleColliders::Update(float dt)
 				if (CheckTypeCollMatrix((*first)->type, (*second)->type) && (*first) != (*second))
 					if (CheckCollision((*first), (*second)))
 					{
-						if ((*first) != nullptr)
+						if ((*first) != nullptr && (*first)->owner != nullptr)
 							(*first)->owner->Collision((*second));
 						else
 							(*first)->collidingWith = (*second)->type;	// Aixo es quan el collider no te entity pero vol detectar
@@ -118,7 +124,7 @@ bool ModuleColliders::CleanUp()
 	return true;
 }
 
-Collider* ModuleColliders::AddCollider(SDL_Rect colliderRect, COLLIDER_TYPE type, Entity* owner, iPoint offset)
+Collider* ModuleColliders::AddCollider(SDL_Rect colliderRect, COLLIDER_TYPE type, Entity* owner, iPoint offset, Collider::ATTACK_TYPE attackType)
 {
 	if (owner != nullptr)
 	{
@@ -129,6 +135,7 @@ Collider* ModuleColliders::AddCollider(SDL_Rect colliderRect, COLLIDER_TYPE type
 	else
 	{
 		Collider* aux = new Collider(colliderRect, type);
+		aux->attackType = attackType;
 		colliders.push_back(aux);
 		return aux;
 	}
@@ -171,19 +178,19 @@ bool ModuleColliders::CheckTypeCollMatrix(COLLIDER_TYPE type, COLLIDER_TYPE type
 	switch (type)
 	{
 	case COLLIDER_PLAYER:
-		if (type2 == COLLIDER_ENEMY || type2 == COLLIDER_ENEMY_ATAC || type2 == COLLIDER_UNWALKABLE)
+		if (type2 == COLLIDER_ENEMY || type2 == COLLIDER_ENEMY_ATTACK || type2 == COLLIDER_UNWALKABLE)
 			return true;
 		break;
 	case COLLIDER_ENEMY:
-		if (type2 == COLLIDER_ENEMY || type2 == COLLIDER_PLAYER_ATAC || type2 == COLLIDER_PLAYER)
+		if (type2 == COLLIDER_ENEMY || type2 == COLLIDER_PLAYER_ATTACK || type2 == COLLIDER_PLAYER)
 			return true;
 		break;
-	case COLLIDER_PLAYER_ATAC:
-		if (type2 == COLLIDER_ENEMY || type2 == COLLIDER_ENEMY_ATAC)
+	case COLLIDER_PLAYER_ATTACK:
+		if (type2 == COLLIDER_ENEMY || type2 == COLLIDER_ENEMY_ATTACK)
 			return true;
 		break;
-	case COLLIDER_ENEMY_ATAC:
-		if (type2 == COLLIDER_PLAYER || type2 == COLLIDER_PLAYER_ATAC)
+	case COLLIDER_ENEMY_ATTACK:
+		if (type2 == COLLIDER_PLAYER || type2 == COLLIDER_PLAYER_ATTACK)
 			return true;
 		break;
 	}

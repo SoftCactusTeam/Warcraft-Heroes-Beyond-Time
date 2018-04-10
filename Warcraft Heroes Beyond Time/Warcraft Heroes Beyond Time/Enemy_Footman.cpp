@@ -84,7 +84,7 @@ void Enemy_Footman::initAtac()
 	accountantPrincipal = SDL_GetTicks() + ATAC_COOLDOWN;
 	anim = &animAtac[LookAtPlayer()];
 	anim->Reset();
-	App->colliders->AddTemporalCollider({ (int)pos.x, (int)pos.y, 64, 64 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATAC, ATAC_COOLDOWN);
+	App->colliders->AddTemporalCollider({ (int)pos.x, (int)pos.y, 64, 64 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATTACK, ATAC_COOLDOWN);
 }
 
 void Enemy_Footman::initCharge()
@@ -178,7 +178,7 @@ void Enemy_Footman::doCharge()
 		{
 			pos += chargeMovement;
 			chargeTime -= CHARGE_SPEED;
-			App->colliders->AddTemporalCollider({ (int)pos.x, (int)pos.y, 32, 32 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATAC, 10);
+			App->colliders->AddTemporalCollider({ (int)pos.x, (int)pos.y, 32, 32 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATTACK, 10);
 		}
 	}
 }

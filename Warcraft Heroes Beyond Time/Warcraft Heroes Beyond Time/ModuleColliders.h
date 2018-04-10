@@ -9,9 +9,18 @@
 
 struct Collider
 {
+	enum class ATTACK_TYPE
+	{
+		NONE,
+		ENEMY_ARROW,
+		ENEMY_MELEE,
+		PLAYER_MELEE
+	};
+
 	Collider(SDL_Rect colliderRect, COLLIDER_TYPE type, Entity* owner = nullptr, iPoint offset = iPoint(0,0));
 	SDL_Rect colliderRect;										// El X i Y del Rect fan de offset !!!
 	COLLIDER_TYPE type;
+	ATTACK_TYPE attackType = ATTACK_TYPE::NONE;
 
 	Entity* owner = nullptr;
 	COLLIDER_TYPE collidingWith = COLLIDER_TYPE::COLLIDER_NONE;	// when isn't property of an entity
@@ -28,12 +37,13 @@ public:
 	}
 
 	bool Awake(pugi::xml_node& consoleNode);
+	bool Start();
 	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
 	void AddCommands();
 
-	Collider* AddCollider(SDL_Rect colliderRect, COLLIDER_TYPE type, Entity* owner = nullptr, iPoint offset = iPoint(0,0));
+	Collider* AddCollider(SDL_Rect colliderRect, COLLIDER_TYPE type, Entity* owner = nullptr, iPoint offset = iPoint(0,0), Collider::ATTACK_TYPE attackType = Collider::ATTACK_TYPE::NONE);
 	Collider* AddTemporalCollider(SDL_Rect colliderRect, COLLIDER_TYPE type, int timer);
 	void deleteCollider(Collider* col);
 	void CleanCollidersEntity(Entity* entity);

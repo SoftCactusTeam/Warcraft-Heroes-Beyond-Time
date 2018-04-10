@@ -94,6 +94,10 @@ class ModulePrinter : public Module
 {
 public:
 
+	void Init()
+	{
+		active = false;
+	}
 	bool Awake(pugi::xml_node&);
 	bool Start();
 	bool PreUpdate();

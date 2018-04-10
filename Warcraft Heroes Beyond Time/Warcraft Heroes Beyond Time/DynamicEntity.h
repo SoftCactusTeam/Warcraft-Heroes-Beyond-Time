@@ -9,6 +9,7 @@ public:
 
 	virtual bool Start();
 	virtual bool Update(float dt);
+	virtual bool PostUpdate() { return true; }
 	virtual bool Finish();
 	virtual void Collision(Collider* collideWith) {}
 
