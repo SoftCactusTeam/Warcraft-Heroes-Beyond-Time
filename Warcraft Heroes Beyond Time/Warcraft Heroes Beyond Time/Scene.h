@@ -8,6 +8,7 @@ class GUIWindow;
 class PlayerEntity;
 class ChestEntity;
 class PortalEntity;
+class WCPaperItem;
 
 class Scene : public Module
 {
@@ -43,6 +44,7 @@ public:
 
 	PlayerEntity* player = nullptr;
 	ChestEntity* lvlChest = nullptr;
+	WCPaperItem* paper = nullptr;
 	bool paused = false;
 
 
