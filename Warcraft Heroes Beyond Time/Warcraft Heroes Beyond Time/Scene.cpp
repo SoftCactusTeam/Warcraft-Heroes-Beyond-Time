@@ -255,6 +255,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 					switch (button->btype)
 					{
 					case BType::PLAY:
+						App->render->SetBackgroundColor({ 0, 0, 0, 0 });
 						App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
 						actual_scene = Stages::INGAME;
 						restart = true;
@@ -272,6 +273,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 						actual_scene = Stages::MAIN_MENU;
 						paused = false;
 						restart = true;
+						App->render->SetBackgroundColor({ 0, 205, 193, 0 });
 						break;
 					case BType::RESUME:
 						paused = false;
