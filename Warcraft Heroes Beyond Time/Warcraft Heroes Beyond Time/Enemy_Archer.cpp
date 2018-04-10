@@ -44,6 +44,12 @@ bool Enemy_Archer::Update(float dt)
 		else
 			return true;
 
+	if (false)
+	{
+		anim = &animIdle[DOWN];
+		return true;
+	}
+
 	switch (state)
 	{
 	case ARCHER_STATE::ARCHER_IDLE:
