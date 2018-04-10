@@ -224,7 +224,7 @@ void Thrall::Collision(Collider* collideWith)
 {
 	switch (collideWith->type)
 	{
-		case COLLIDER_TYPE::COLLIDER_ENEMY_ATAC:
+		case COLLIDER_TYPE::COLLIDER_ENEMY_ATTACK:
 		{
 			SetDamage(15, true);
 			break;
