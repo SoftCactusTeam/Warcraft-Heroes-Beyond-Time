@@ -141,8 +141,6 @@ public:
 
 				pos.x = pos.x + radius * cos(startAngle * factor);
 				pos.y = pos.y + radius * sin(startAngle * factor);
-
-				radius += 0.1f * dt;
 			}
 			timeUntilRunAway += 1 * dt;
 		}

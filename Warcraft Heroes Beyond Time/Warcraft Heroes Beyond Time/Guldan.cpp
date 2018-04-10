@@ -100,7 +100,6 @@ bool Guldan::Update(float dt)
 		{
 			delete *it;
 			createNewBalls = true;
-			
 		}
 		
 	}	
