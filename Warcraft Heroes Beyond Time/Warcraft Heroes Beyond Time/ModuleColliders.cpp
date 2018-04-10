@@ -164,13 +164,15 @@ void ModuleColliders::deleteCollider(Collider* col)
 
 void ModuleColliders::CleanCollidersEntity(Entity* entity)
 {
-	std::list<Collider*>::iterator it;
-	for (it = colliders.begin(); it != colliders.end(); ++it)
-		if ((*it)->owner == entity)
-		{
-			colliders.erase(it);
-			break;
-		}
+	if (entity != nullptr) {
+		std::list<Collider*>::iterator it;
+		for (it = colliders.begin(); it != colliders.end(); ++it)
+			if ((*it)->owner == entity)
+			{
+				colliders.erase(it);
+				break;
+			}
+	}
 }
 
 bool ModuleColliders::CheckTypeCollMatrix(COLLIDER_TYPE type, COLLIDER_TYPE type2)

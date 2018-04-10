@@ -245,6 +245,7 @@ bool EntitySystem::PostUpdate()
 
 		if ((*it)->destroy)
 		{
+			App->colliders->CleanCollidersEntity((*it));
 			it = entities.erase(it);
 		}
 		else
