@@ -94,6 +94,8 @@ public:
 	float t = 0.0f;
 	fPoint startPos = { 0.0f, 0.0f };
 	void ResetDash();
+	float DashCD = 0.0f;
+
 
 	//Camera culling
 	SDL_Rect freeZone;

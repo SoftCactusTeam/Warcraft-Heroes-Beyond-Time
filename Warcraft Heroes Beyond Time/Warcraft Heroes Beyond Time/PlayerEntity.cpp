@@ -67,6 +67,7 @@ void PlayerEntity::ResetDash()
 {
 	state = states::PL_IDLE;
 	t = 0.0f;
+	DashCD = 1.0f;
 
 	if (anim == &dashRight)
 		anim = &idleRight;
@@ -155,10 +156,10 @@ void PlayerEntity::KeyboardStates(float dt)
 				state = states::PL_RIGHT;
 				anim = &right;
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && t == 0.0f)
+			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && t == 0.0f && DashCD == 0.0f)
 			{
+				DashCD = 0.0f;
 				startPos = pos;
-				state = states::PL_DASH;
 				animBefore = anim;
 			}
 			else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
@@ -283,7 +284,7 @@ void PlayerEntity::KeyboardStates(float dt)
 				state = states::PL_UP_LEFT;
 				anim = &upLeft;
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
 			{
 				startPos = pos;
 				state = states::PL_DASH;
@@ -322,7 +323,7 @@ void PlayerEntity::KeyboardStates(float dt)
 				state = states::PL_DOWN_LEFT;
 				anim = &downLeft;
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
 			{
 				startPos = pos;
 				state = states::PL_DASH;
@@ -361,7 +362,7 @@ void PlayerEntity::KeyboardStates(float dt)
 				state = states::PL_DOWN_LEFT;
 				anim = &downLeft;
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
 			{
 				startPos = pos;
 				state = states::PL_DASH;
@@ -400,7 +401,7 @@ void PlayerEntity::KeyboardStates(float dt)
 				state = states::PL_DOWN_RIGHT;
 				anim = &downRight;
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
 			{
 				startPos = pos;
 				state = states::PL_DASH;
@@ -441,7 +442,7 @@ void PlayerEntity::KeyboardStates(float dt)
 				state = states::PL_UP;
 				anim = &up;
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
 			{
 				startPos = pos;
 				state = states::PL_DASH;
@@ -481,7 +482,7 @@ void PlayerEntity::KeyboardStates(float dt)
 				state = states::PL_UP;
 				anim = &up;
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
 			{
 				startPos = pos;
 				state = states::PL_DASH;
@@ -521,7 +522,7 @@ void PlayerEntity::KeyboardStates(float dt)
 				state = states::PL_DOWN;
 				anim = &down;
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
 			{
 				startPos = pos;
 				state = states::PL_DASH;
@@ -561,7 +562,7 @@ void PlayerEntity::KeyboardStates(float dt)
 				state = states::PL_DOWN;
 				anim = &down;
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
 			{
 				startPos = pos;
 				state = states::PL_DASH;
@@ -692,6 +693,13 @@ void PlayerEntity::KeyboardStates(float dt)
 		
 	}
 
+	if (DashCD > 0.0f)
+	{
+		DashCD -= dt;
+		if (DashCD < 0.0f)
+			DashCD = 0.0f;
+	}
+
 	if (damaged)
 	{
 		int ret = SDL_SetTextureColorMod(App->entities->spritesheetsEntities[THRALL_SHEET], 255, 100, 100);
@@ -703,9 +711,6 @@ void PlayerEntity::KeyboardStates(float dt)
 			damagedCD = 0.0f;
 		}	
 	}
-
-		
-	
 }
 
 void PlayerEntity::JoyconStates(float dt)
@@ -719,8 +724,9 @@ void PlayerEntity::JoyconStates(float dt)
 				state = states::PL_MOVE;
 			}
 
-			else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN && t == 0.0f)
+			else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN && t == 0.0f && DashCD == 0.0f)
 			{
+				App->input->PlayJoyRumble(0.75f, 100);
 				startPos = pos;
 				state = states::PL_DASH;
 				animBefore = anim;
@@ -846,7 +852,7 @@ void PlayerEntity::JoyconStates(float dt)
 					state = states::PL_MOVE;
 					anim = animBefore;
 				}
-
+				DashCD = 1.0f;
 				animBefore = nullptr;
 				t = 0.0f;
 			}
@@ -856,8 +862,9 @@ void PlayerEntity::JoyconStates(float dt)
 
 		case states::PL_MOVE:
 		{
-			if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN && t == 0.0f)
+			if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN && t == 0.0f && DashCD == 0.0f)
 			{
+				App->input->PlayJoyRumble(0.75f, 100);
 				animBefore = anim;
 				startPos = pos;
 				state = states::PL_DASH;
@@ -1001,6 +1008,13 @@ void PlayerEntity::JoyconStates(float dt)
 			break;
 		}
 			
+	}
+
+	if (DashCD > 0.0f)
+	{
+		DashCD -= dt;
+		if (DashCD < 0.0f)
+			DashCD = 0.0f;
 	}
 
 	if (damaged)

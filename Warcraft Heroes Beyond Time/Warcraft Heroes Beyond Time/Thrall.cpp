@@ -173,7 +173,7 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	attackDown.PushBack({ 464,717,52,54 }, { 15,14 });
 	attackDown.PushBack({ 551,717,52,54 }, { 15,14 });
 	attackDown.PushBack({ 641,717,52,54 }, { 15,14 });
-	attackDown.PushBack({ 18 ,796,52,54 }, { 15,5});
+	attackDown.PushBack({ 18,796,52,54 }, { 15,5});
 	attackDown.speedFactor = 9.0f;
 	attackDown.loop = false;
 

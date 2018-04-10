@@ -152,12 +152,6 @@ bool Scene::Update(float dt)
 		// RESTART THIS MODULE AND THE ENTIRE GAME // GO TO MAIN MENU
 	}
 
-	//CONTROLLER RUMBLES
-	if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
-	{
-		App->input->PlayJoyRumble(0.75f, 100);
-	}
-
 	if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN)
 	{
 		lvlChest->UnLockChest();
