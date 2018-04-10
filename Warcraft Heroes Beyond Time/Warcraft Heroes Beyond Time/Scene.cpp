@@ -180,6 +180,7 @@ bool Scene::Update(float dt)
 	{
 		App->entities->ClearEntitiesList();
 		App->map->CleanUp();
+		App->gui->CleanUp();
 		App->map->GenerateBossMap();
 		player = App->entities->AddPlayer({ 14 * 48,20 * 48 }, THRALL);
 		//App->gui->CreateHPBar(player, { 10,5 });

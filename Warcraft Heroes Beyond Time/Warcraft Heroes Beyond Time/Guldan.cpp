@@ -11,6 +11,15 @@ Guldan::Guldan(fPoint coor, BOSS_TYPE type, SDL_Texture* texture) : BossEntity(c
 	idle.PushBack({ 277,1,68,68 });
 	idle.speedFactor = 9.0f;
 
+	teleport.PushBack({ 484,73,68,68 });
+	teleport.PushBack({ 554,73,68,68 });
+	teleport.PushBack({ 623,73,68,68 });
+	teleport.PushBack({ 697,73,68,68 });
+	teleport.PushBack({ 697,73,68,68 });
+	teleport.PushBack({ 697,73,68,68 });
+	teleport.PushBack({ 697,73,68,68 });
+	teleport.PushBack({ 697,73,68,68 });
+
 	live = 1000;
 	anim = &idle;
 }
@@ -67,6 +76,17 @@ bool Guldan::Update(float dt)
 
 	anim->speed = anim->speedFactor * dt;
 
+	if (createNewBalls)
+	{
+		createNewBalls = false;
+		fellBallsList.clear();
+		CreateFelBalls({ pos.x, pos.y });
+		for (std::list<FelBall*>::const_iterator it = fellBallsList.begin(); it != fellBallsList.end(); ++it)
+		{
+			(*it)->StartMovement();
+		}
+	}
+
 	for (std::list<FelBall*>::const_iterator it = fellBallsList.begin(); it != fellBallsList.end(); ++it)
 	{
 		(*it)->Update(dt);
@@ -79,14 +99,11 @@ bool Guldan::Update(float dt)
 		if ((*it)->dead)
 		{
 			delete *it;
-			//fellBallsList.remove(it++);
+			createNewBalls = true;
+			
 		}
-	}
-
-	if (fellBallsList.size() <= 0)
-	{
-		CreateFelBalls({ pos.x, pos.y });
-	}
+		
+	}	
 
 	return true;
 }

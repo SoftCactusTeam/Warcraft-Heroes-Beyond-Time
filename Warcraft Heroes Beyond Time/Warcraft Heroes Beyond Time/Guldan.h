@@ -12,8 +12,9 @@ class Guldan : public BossEntity
 {
 private:
 
+	bool createNewBalls = false;
 	SDL_Texture* effectsTexture = nullptr;
-	Animation idle;
+	Animation idle, teleport;
 	iPoint tpPoints[5] = { {15,5},{ 8,7 },{ 22,7 },{ 11,12 },{ 19,12 } };
 	iPoint nextTpPos = {0,0};
 
@@ -63,8 +64,8 @@ public:
 	int rotation[360];
 	int rotationCont = 0;
 
-	SDL_Texture* tex;
-	Animation* anim;
+	SDL_Texture* tex = nullptr;
+	Animation* anim = nullptr;
 
 public:
 
@@ -80,6 +81,7 @@ public:
 
 		anim = &felAnim;
 	}
+
 	~FelBall() {};
 	void StartCountDownToDie() { startDying = true; };
 	void StartMovement() { 
@@ -104,6 +106,7 @@ public:
 
 		rotationCont = startAngle;
 	};
+
 	void Update(float dt)
 	{
 		if (startDying)
@@ -120,9 +123,10 @@ public:
 			{
 				circleIterator = 0;
 				contCirclesDone++;
-				if (contCirclesDone >= 2)
+				if (contCirclesDone >= 1)
 				{
 					startMovement = false;
+					StartCountDownToDie();
 				}
 			}
 			rotationCont++;
@@ -131,7 +135,7 @@ public:
 		}
 		else
 		{
-			if (timeUntilRunAway >= 2.0f)
+			if (timeUntilRunAway >= 1.0f)
 			{
 				float factor = (float)M_PI / 180.0f;
 
@@ -139,8 +143,6 @@ public:
 				pos.y = pos.y + radius * sin(startAngle * factor);
 
 				radius += 0.1f * dt;
-
-				rotation;
 			}
 			timeUntilRunAway += 1 * dt;
 		}
