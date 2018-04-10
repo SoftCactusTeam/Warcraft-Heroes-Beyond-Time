@@ -20,6 +20,7 @@
 #include "Enemy_Footman.h"
 #include "Enemy_Archer.h"
 #include "PortalEntity.h"
+#include "Guldan.h"
 
 #include "Console.h"
 
@@ -192,8 +193,8 @@ bool EntitySystem::Start()
 	spritesheetsEntities.push_back(App->textures->Load("sprites/all_items.png"));
 	spritesheetsEntities.push_back(App->textures->Load("sprites/Mines.png"));
 	spritesheetsEntities.push_back(App->textures->Load("sprites/Archer/Archer_sprite.png"));
-	spritesheetsEntities.push_back(App->textures->Load("sprites/Projectiles.png"));
-	spritesheetsEntities.push_back(App->textures->Load("sprites/Archer/Archer_Smoke.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/Archer/Archer_Arrow.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/Boss_Guldan.png"));
 
 	bool ret = true;
 
@@ -236,7 +237,7 @@ bool EntitySystem::PostUpdate()
 {
 	bool ret = true;
 
-	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end() && ret;)
+	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end() && ret; ++it)
 	{
 		ret = (*it)->Draw();
 
@@ -244,14 +245,7 @@ bool EntitySystem::PostUpdate()
 			ret = (*it)->PostUpdate();
 
 		if ((*it)->destroy)
-		{
-			it = entities.erase(it);
-		}
-		else
-		{
-			++it;
-		}
-		
+			entities.remove((*it));
 	}
 
 	return ret;
@@ -338,12 +332,13 @@ void EntitySystem::AddEnemy(fPoint coor, ENEMY_TYPE type)
 
 }
 
-void EntitySystem::AddBoss(fPoint coor, BOSS_TYPE type)
+BossEntity* EntitySystem::AddBoss(fPoint coor, BOSS_TYPE type)
 {
 	BossEntity* newEntity = nullptr;
+
 	switch (type) {
 	case BOSS_TYPE::GULDAN:
-		newEntity = new BossEntity(coor, BOSS_TYPE::GULDAN, nullptr);
+		newEntity = new Guldan(coor, BOSS_TYPE::GULDAN, spritesheetsEntities[GULDAN_SHEET]);
 		break;
 	case BOSS_TYPE::LICH_KING:
 		newEntity = new BossEntity(coor, BOSS_TYPE::LICH_KING, nullptr);
@@ -352,7 +347,8 @@ void EntitySystem::AddBoss(fPoint coor, BOSS_TYPE type)
 		newEntity = new BossEntity(coor, BOSS_TYPE::ILLIDAN, nullptr);
 		break;
 	}
-	toSpawn.push_back((Entity*)newEntity);
+	toSpawn.push_back(newEntity);
+	return newEntity;
 }
 
 PlayerEntity* EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
@@ -373,11 +369,7 @@ PlayerEntity* EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
 	}
 
 	toSpawn.push_back(newEntity);
-	SDL_Rect col_rect = newEntity->anim->GetCurrentRect();
-	col_rect.x = 0;
-	col_rect.y = 0;
-
-	newEntity->setCol(App->colliders->AddCollider(col_rect, COLLIDER_PLAYER, newEntity, { newEntity->anim->GetCurrentPivot().x * -1,  newEntity->anim->GetCurrentPivot().y * -1}));
+	App->colliders->AddCollider({ 0,0,32,32 }, COLLIDER_PLAYER, newEntity, {10,10});
 	return newEntity;
 }
 
@@ -462,8 +454,6 @@ void EntitySystem::AddCommands()
 
 void EntitySystem::ClearEnemies()
 {
-	//I need a fucking type to do this. Sorry for the madness.
-
 	/*std::list<Entity*>::iterator it;
 	for (it = entities.begin(); it != entities.end(); ++it)
 	{

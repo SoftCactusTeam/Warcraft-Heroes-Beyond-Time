@@ -87,3 +87,5 @@ uint DynamicEntity::DistanceToObejective(fPoint objectiveCoor)
 	uint totalY = this->pos.y - objectiveCoor.y;
 	return sqrt((totalX * totalX) + (totalY * totalY));
 }
+
+void DynamicEntity::Collision(COLLIDER_TYPE type) {}

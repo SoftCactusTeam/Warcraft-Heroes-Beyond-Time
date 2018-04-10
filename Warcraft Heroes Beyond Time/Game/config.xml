@@ -50,7 +50,7 @@
   </input>
 
   <renderer>
-    <vsync active = "false"/>
+    <vsync active = "true"/>
   </renderer>
 
   <textures>

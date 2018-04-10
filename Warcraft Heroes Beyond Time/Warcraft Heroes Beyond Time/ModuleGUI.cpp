@@ -73,16 +73,7 @@ bool ModuleGUI::PostUpdate()
 		std::list<GUIElem*>::iterator it;
 		for (it = elementsToKill.begin(); it != elementsToKill.end(); ++it)
 		{
-			std::list<GUIElem*>::iterator it_b;
-			for (it_b = GUIElemList.begin(); it_b != GUIElemList.end(); ++it_b)
-			{
-				if ((*it_b) == (*it))
-				{
-					delete (*it_b);
-					GUIElemList.erase(it_b);
-					break;
-				}
-			}
+			GUIElemList.remove(*it);
 		}
 		elementsToKill.clear();
 	}

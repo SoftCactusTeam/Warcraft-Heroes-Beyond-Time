@@ -39,15 +39,11 @@ public:
 	Animation animIdle[NUMBER_OF_ORIENTATIONS];
 	Animation animWalk[NUMBER_OF_ORIENTATIONS];
 	Animation animAtac[NUMBER_OF_ORIENTATIONS];
-	Animation animPreCharge[NUMBER_OF_ORIENTATIONS];
 	Animation animCharge[NUMBER_OF_ORIENTATIONS];
-	Animation animPostCharge[NUMBER_OF_ORIENTATIONS];
 
 	// Charge variables
 	fPoint		chargeMovement;
 	int			chargeCooldown = 0;
-	int			chargeTime = 0;
-	FIXED_ANGLE saveFirstAngle;
 	// Invulenarbility variables
 	bool		defensed = false;
 	int			defenseCooldown = 0;

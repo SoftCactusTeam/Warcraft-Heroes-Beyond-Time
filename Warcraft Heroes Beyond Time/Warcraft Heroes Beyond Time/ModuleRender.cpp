@@ -46,14 +46,28 @@ bool Render::Awake(pugi::xml_node& renderNode)
 	}
 	else
 	{
-		camera.w = 640;
-		camera.h = 360;
-		camera.x = 0;
-		camera.y = 0;
-		fcamerax = 0;
-		fcameray = 0;
+		SDL_DisplayMode dm;
+		if (SDL_GetDesktopDisplayMode(0, &dm) != 0)
+		{
+			ret = false;
+		}
+		else
+		{
+			int w, h;
+			camera.w = (dm.w * 640) / 1920/*App->window->screen_surface->w*/;
+			camera.h = (dm.h * 360) / 1080/*App->window->screen_surface->h*/;
+			camera.x = 0;
+			camera.y = 0;
+			fcamerax = 0;
+			fcameray = 0;
 
-		ret = SDL_RenderSetLogicalSize(renderer, 640, 360) == 0;
+			uint width = 0, height = 0;
+			App->window->GetWindowSize(width, height);
+
+			ret = SDL_RenderSetLogicalSize(renderer, camera.w, camera.h) == 0;
+
+			SetBackgroundColor({ 0, 205, 193, 0 });
+		}
 	}
 
 	return ret;
@@ -76,8 +90,7 @@ bool Render::PreUpdate()
 
 bool Render::Update(float dt)
 {
-	if(App->map->isActive())
-		CheckCameraLimits();
+	CheckCameraLimits();
 
 	return true;
 }
@@ -236,7 +249,7 @@ bool Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uin
 void Render::CheckCameraLimits()
 {
 	uint mapwidth, mapheight;
-	uint tilesize = App->map->getTileSize()+2;
+	uint tilesize = App->map->getTileSize();
 	App->map->getSize(mapwidth, mapheight);
 
 	if (-fcamerax < 0)
