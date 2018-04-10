@@ -111,37 +111,37 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 
 	// ------- Dash animations -------
 
-	dashUp.PushBack({ 267,284,89,71 });
+	dashUp.PushBack({ 206,298,43,41 }, { 0,1 });
 	dashUp.speed = 0.2f;
 
-	dashUpRight.PushBack({ 534,284,89,71 });
+	dashUpRight.PushBack({ 558,301,47,41 }, { 5,1 });
 	dashUpRight.speed = 0.2f;
 
-	dashRight.PushBack({ 267,355,89,71 });
+	dashRight.PushBack({ 207,372,40,44 }, { 6, 0 });
 	dashRight.speed = 0.2f;
 
-	dashDownRight.PushBack({ 534,355,89,71 });
+	dashDownRight.PushBack({ 561,371,36,40 }, { 8, 0 });
 	dashDownRight.speed = 0.2f;
 
-	dashDown.PushBack({ 178,426,89,71 });
+	dashDown.PushBack({ 193,447,48,39 }, { 16,2 });
 	dashDown.speed = 0.2f;
 
-	dashDownLeft.PushBack({ 534,426,89,71 });
+	dashDownLeft.PushBack({ 555,446,41,33 }, { 10, 2 });
 	dashDownRight.speed = 0.2f;
 
-	dashLeft.PushBack({ 178,497,89,71 });
+	dashLeft.PushBack({ 198,512,40,36 }, { 10,0 });
 	dashLeft.speed = 0.2f;
 
-	dashUpLeft.PushBack({ 534,497,89,71 });
+	dashUpLeft.PushBack({ 557,513,49,36 }, { 9,0 });
 	dashUpLeft.speed = 0.2f;
 
 	// ---- attack animation ----
 
-	attackUp.PushBack({ 0 + 3,568 + 6,89,71 });
-	attackUp.PushBack({ 89 + 3,568 + 6,89,71 });
-	attackUp.PushBack({ 178 + 3,568 + 6,89,71 });
-	attackUp.PushBack({ 267 + 3,568 + 6,89,71 });
-	attackUp.PushBack({ 356 + 3,568 + 6,89,71 });
+	attackUp.PushBack({ 24,580,46,47 },  { 4,9 });
+	attackUp.PushBack({ 114,580,46,47 }, { 4,10});
+	attackUp.PushBack({ 202,580,46,47 }, { 4,9 });
+	attackUp.PushBack({ 291,580,46,47 }, { 4,8 });
+	attackUp.PushBack({ 380,580,46,47 }, { 4,8 });
 	attackUp.speedFactor = 9.0f;
 	attackUp.loop = false;
 
