@@ -13,9 +13,14 @@ class Guldan : public BossEntity
 private:
 
 	bool createNewBalls = false;
+	bool readeForTimeNewBalls = false;
+	float timeForNewBalls = 0.0f;
+	bool readyToTP = false;
+	bool startTimeForTP = false;
+	float floatTimeForTp = 0.0f;
 	SDL_Texture* effectsTexture = nullptr;
-	Animation idle, teleport;
-	iPoint tpPoints[5] = { {15,5},{ 8,7 },{ 22,7 },{ 11,12 },{ 19,12 } };
+	Animation idle, teleport, inverseTeleport;
+	iPoint tpPoints[5] = { {14,4},{ 7,6 },{ 21,6 },{ 10,11 },{ 18,11 } };
 	iPoint nextTpPos = {0,0};
 
 	std::list<FelBall*> fellBallsList;
@@ -26,6 +31,7 @@ private:
 		IDLE,
 		FEL_BALLS,
 		TELEPORT,
+		INVERSETELEPORT,
 		DEAD,
 		METEOR
 	} statesBoss = BossStates::NON_STATE;
@@ -45,12 +51,13 @@ public:
 struct FelBall
 {
 public:
+	float ballSpeed = 400.0f;
 	fPoint pos = { 0,0 };
 	int startAngle = 0;
 	int angleInside = 0;
 	fPoint positionsToMove[360];
 	float radius = 0.0f;
-	int live = 100;
+	int live = 200;
 	SDL_Rect rect;
 	Animation felAnim;
 	bool startDying = false;
@@ -137,13 +144,46 @@ public:
 		{
 			if (timeUntilRunAway >= 1.0f)
 			{
-				float factor = (float)M_PI / 180.0f;
+				if (startAngle == 0)
+				{
+					pos.x += ballSpeed * dt;
+				}
+				else if (startAngle == 45)
+				{
+					pos.x += ballSpeed/2 * dt;
+					pos.y += ballSpeed/2 * dt;
+				}
+				else if (startAngle == 90)
+				{
+					pos.y += ballSpeed * dt;
+				} 
+				else if (startAngle == 135)
+				{
+					pos.x -= ballSpeed/2 * dt;
+					pos.y += ballSpeed/2 * dt;
+				}
+				else if (startAngle == 180)
+				{
+					pos.x -= ballSpeed * dt;
+				}
+				else if (startAngle == 225)
+				{
+					pos.x -= ballSpeed/2 * dt;
+					pos.y -= ballSpeed/2 * dt;
+				}
+				else if (startAngle == 270)
+				{
+					pos.y -= ballSpeed * dt;
+				}
+				else if (startAngle == 315)
+				{
+					pos.x += ballSpeed/2 * dt;
+					pos.y -= ballSpeed/2 * dt;
+				}
 
-				pos.x = pos.x + radius * cos(startAngle * factor);
-				pos.y = pos.y + radius * sin(startAngle * factor);
-			}
+			}	 
 			timeUntilRunAway += 1 * dt;
-		}
+		}		 
 
 		anim->speed = anim->speedFactor * dt;
 	}

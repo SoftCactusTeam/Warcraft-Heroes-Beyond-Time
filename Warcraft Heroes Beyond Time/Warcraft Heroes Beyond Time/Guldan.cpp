@@ -15,10 +15,31 @@ Guldan::Guldan(fPoint coor, BOSS_TYPE type, SDL_Texture* texture) : BossEntity(c
 	teleport.PushBack({ 554,73,68,68 });
 	teleport.PushBack({ 623,73,68,68 });
 	teleport.PushBack({ 697,73,68,68 });
-	teleport.PushBack({ 697,73,68,68 });
-	teleport.PushBack({ 697,73,68,68 });
-	teleport.PushBack({ 697,73,68,68 });
-	teleport.PushBack({ 697,73,68,68 });
+	teleport.PushBack({ 767,73,68,68 });
+	teleport.PushBack({ 837,73,68,68 });
+	teleport.PushBack({ 907,73,68,68 });
+	teleport.PushBack({ 3,146,68,68 });
+	teleport.PushBack({ 149,146,68,68 });
+	teleport.PushBack({ 226,146,68,68 });
+	teleport.PushBack({ 294,146,68,68 });
+	teleport.PushBack({ 353,146,68,68 });
+	teleport.PushBack({ 705,146,68,68 });
+	teleport.speedFactor = 9.0f;
+
+	inverseTeleport.PushBack({ 484,73,68,68 });
+	inverseTeleport.PushBack({ 554,73,68,68 });
+	inverseTeleport.PushBack({ 623,73,68,68 });
+	inverseTeleport.PushBack({ 697,73,68,68 });
+	inverseTeleport.PushBack({ 767,73,68,68 });
+	inverseTeleport.PushBack({ 837,73,68,68 });
+	inverseTeleport.PushBack({ 907,73,68,68 });
+	inverseTeleport.PushBack({ 3,146,68,68 });
+	inverseTeleport.PushBack({ 149,146,68,68 });
+	inverseTeleport.PushBack({ 226,146,68,68 });
+	inverseTeleport.PushBack({ 294,146,68,68 });
+	inverseTeleport.PushBack({ 353,146,68,68 });
+	inverseTeleport.PushBack({ 705,146,68,68 });
+	inverseTeleport.speedFactor = 9.0f;
 
 	live = 1000;
 	anim = &idle;
@@ -47,15 +68,34 @@ bool Guldan::Start()
 
 bool Guldan::Update(float dt)
 {
+	if (startTimeForTP)
+	{
+		fellBallsList.clear();
+		floatTimeForTp += 1.0f + dt;
+
+	}
+
+	if (readeForTimeNewBalls)
+	{
+		timeForNewBalls += 1.0f * dt;
+		if (timeForNewBalls >= 2.0f)
+		{
+			readeForTimeNewBalls = false;
+			timeForNewBalls = 0.0f;
+			createNewBalls = true;
+		}
+	}
 
 	switch (statesBoss)
 	{
 		case BossStates::IDLE:
 		{
-
-			if (live == 1000)
+			if (floatTimeForTp >= 2.0f)
 			{
 				statesBoss = BossStates::TELEPORT;
+				anim = &teleport;
+				floatTimeForTp = 0.0f;
+				startTimeForTP = false;
 				break;
 			}
 
@@ -64,10 +104,32 @@ bool Guldan::Update(float dt)
 		case BossStates::TELEPORT:
 		{
 
-			//if anim current frame == tal
-				//tpPoints[rand() % 5];
-			//if current == end
-				//state == idle
+			if (anim->Finished())
+			{
+				createNewBalls = false;
+				int randomtp = rand() % 5;
+				pos.x = tpPoints[randomtp].x * 48;
+				pos.y = tpPoints[randomtp].y * 48;
+				anim = &inverseTeleport;
+				teleport.Reset();;
+				statesBoss = BossStates::INVERSETELEPORT;
+				break;
+			}
+
+			break;
+		}
+
+		case BossStates::INVERSETELEPORT:
+		{
+
+			if (anim->Finished())
+			{
+				anim = &idle;
+				statesBoss = BossStates::IDLE;
+				readeForTimeNewBalls = true;
+				inverseTeleport.Reset();
+				break;
+			}
 
 			break;
 		}
@@ -79,13 +141,13 @@ bool Guldan::Update(float dt)
 	if (createNewBalls)
 	{
 		createNewBalls = false;
-		fellBallsList.clear();
 		CreateFelBalls({ pos.x, pos.y });
 		for (std::list<FelBall*>::const_iterator it = fellBallsList.begin(); it != fellBallsList.end(); ++it)
 		{
 			(*it)->StartMovement();
 		}
 	}
+	
 
 	for (std::list<FelBall*>::const_iterator it = fellBallsList.begin(); it != fellBallsList.end(); ++it)
 	{
@@ -99,10 +161,10 @@ bool Guldan::Update(float dt)
 		if ((*it)->dead)
 		{
 			delete *it;
-			createNewBalls = true;
+			startTimeForTP = true;
 		}
 		
-	}	
+	}
 
 	return true;
 }
