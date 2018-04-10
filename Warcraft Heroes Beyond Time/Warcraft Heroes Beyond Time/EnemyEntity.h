@@ -3,6 +3,7 @@
 
 #include "DynamicEntity.h"
 #include "Pathfinding.h"
+#include "ModuleEntitySystem.h"
 
 #define NUMBER_OF_ORIENTATIONS 8
 

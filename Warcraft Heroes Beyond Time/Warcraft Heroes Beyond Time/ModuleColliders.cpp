@@ -36,6 +36,12 @@ bool ModuleColliders::Awake(pugi::xml_node& consoleNode)
 	return true;
 }
 
+bool ModuleColliders::Start()
+{
+	printColliders = true;
+	return true;
+}
+
 bool ModuleColliders::Update(float dt)
 {
 	BROFILER_CATEGORY("Colliders Collision", Profiler::Color::Azure);

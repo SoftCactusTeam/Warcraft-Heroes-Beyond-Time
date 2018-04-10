@@ -912,7 +912,6 @@ void PlayerEntity::JoyconStates(float dt)
 				state = states::PL_ATTACK;
 				Attack();
 				break;
-
 			}
 
 			else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_Y) == KEY_DOWN)
@@ -922,7 +921,7 @@ void PlayerEntity::JoyconStates(float dt)
 				state = states::PL_SKILL;
 				break;
 			}
-			
+			break;
 		}
 		
 		case states::PL_ATTACK:

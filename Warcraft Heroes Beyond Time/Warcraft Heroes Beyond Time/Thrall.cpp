@@ -142,7 +142,6 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	attackUp.PushBack({ 202,580,46,47 }, { 4,9 });
 	attackUp.PushBack({ 291,580,46,47 }, { 4,8 });
 	attackUp.PushBack({ 380,580,46,47 }, { 4,8 });
-	//attackUp.speedFactor = 9.0f;
 	attackUp.speedFactor = 9.0f;
 	attackUp.loop = false;
 
@@ -251,6 +250,19 @@ bool Thrall::Update(float dt)
 	return true;
 }
 
+bool Thrall::PostUpdate()
+{
+	if (anim == &attackUp || anim == &attackDown || anim == &attackRight || anim == &attackLeft || anim == &attackUpLeft || anim == &attackUpRight || anim == &attackDownLeft || anim == &attackDownRight)
+	{
+		if (anim->Finished())
+		{
+			attacking = false;
+			App->colliders->deleteCollider(attackCollider);
+		}
+	}
+	return true;
+}
+
 bool Thrall::Finish()
 {	
 	return true;
@@ -339,18 +351,66 @@ void Thrall::UpdateCollider()
 void Thrall::Attack()
 {
 	attacking = true;
-	attackCollider = App->colliders->AddCollider({ 0,0,0,0 }, COLLIDER_PLAYER_ATTACK, nullptr, { 0,0 }, Collider::ATTACK_TYPE::PLAYER_MELEE);
+	attackCollider = App->colliders->AddCollider({ -10, -10,20,20 }, COLLIDER_PLAYER_ATTACK, nullptr, { 0,0 }, Collider::ATTACK_TYPE::PLAYER_MELEE);
 }
 
 void Thrall::UpdateAttackCollider()
 {
-	if (anim = &attackUp)
+	if (anim == &attackUp)
 	{
-
+		if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 291,580,46,47 })))
+		{
+			attackCollider->colliderRect = {(int)pos.x - 5, (int)pos.y - 10, 38, 30};
+		}
 	}
-
-
-
-
-
+	else if (anim == &attackDown)
+	{
+		if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 641,717,52,54 })))
+		{
+			attackCollider->colliderRect = { (int)pos.x - 15, (int)pos.y + 10, 40, 30 };
+		}
+	}
+	else if (anim == &attackRight)
+	{
+		if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 466,658,50,36 })))
+		{
+			attackCollider->colliderRect = { (int)pos.x, (int)pos.y + 10, 40, 30 };
+		}
+	}
+	else if (anim == &attackLeft)
+	{
+		if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 102,868,54,39 })))
+		{
+			attackCollider->colliderRect = { (int)pos.x - 18, (int)pos.y - 10, 23, 35 };
+		}
+	}
+	else if (anim == &attackUpLeft)
+	{
+		if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 551,866,51,44 })))
+		{
+			attackCollider->colliderRect = { (int)pos.x - 18, (int)pos.y - 10, 50, 35 };
+		}
+	}
+	else if (anim == &attackUpRight)
+	{
+		if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 24,652,45,46 })))
+		{
+			attackCollider->colliderRect = { (int)pos.x, (int)pos.y - 10, 40, 35 };
+		}
+	}
+	else if (anim == &attackDownLeft)
+	{
+		if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 377,790,48,50 })))
+		{
+			attackCollider->colliderRect = { (int)pos.x-15, (int)pos.y-15, 40, 45 };
+		}
+	}
+	else if (anim == &attackDownRight)
+	{
+		if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 189,727,56,44 })))
+		{
+			attackCollider->colliderRect = { (int)pos.x, (int)pos.y, 40, 45 };
+		}
+	}
+	
 }

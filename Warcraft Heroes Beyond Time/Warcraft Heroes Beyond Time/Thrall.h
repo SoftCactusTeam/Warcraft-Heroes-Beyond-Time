@@ -12,6 +12,7 @@ public:
 	Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture);
 
 	bool Update(float dt);
+	bool PostUpdate();
 	bool Finish();
 	void Collision(Collider* collideWith);
 
