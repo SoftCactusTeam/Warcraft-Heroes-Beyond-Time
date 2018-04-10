@@ -12,7 +12,6 @@
 #include "PortalEntity.h"
 #include "Pathfinding.h"
 #include "PlayerEntity.h"
-#include "WCPaperItem.h"
 
 #include "Brofiler\Brofiler.h"
 
