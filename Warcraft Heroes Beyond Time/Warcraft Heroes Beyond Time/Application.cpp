@@ -95,6 +95,8 @@ bool Application::Awake()
 	pugi::xml_node gameConfig = doc.first_child();
 
 	//Here goes App configuration
+	pugi::xml_node appNode = gameConfig.child("App");
+	capped_ms = (1 / appNode.child("fps_cap").attribute("value").as_float(60)) * 1000;
 
 	std::list<Module*>::const_iterator item;
 
