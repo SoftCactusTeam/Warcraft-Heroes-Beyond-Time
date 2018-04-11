@@ -20,6 +20,7 @@
 #include "Enemy_Footman.h"
 #include "Enemy_Archer.h"
 #include "PortalEntity.h"
+#include "Guldan.h"
 
 #include "Console.h"
 
@@ -194,6 +195,7 @@ bool EntitySystem::Start()
 	spritesheetsEntities.push_back(App->textures->Load("sprites/Archer/Archer_sprite.png"));
 	spritesheetsEntities.push_back(App->textures->Load("sprites/Projectiles.png"));
 	spritesheetsEntities.push_back(App->textures->Load("sprites/Archer/Archer_Smoke.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/Boss_Guldan.png"));
 
 	bool ret = true;
 
@@ -339,12 +341,12 @@ void EntitySystem::AddEnemy(fPoint coor, ENEMY_TYPE type)
 
 }
 
-void EntitySystem::AddBoss(fPoint coor, BOSS_TYPE type)
+BossEntity* EntitySystem::AddBoss(fPoint coor, BOSS_TYPE type)
 {
 	BossEntity* newEntity = nullptr;
 	switch (type) {
 	case BOSS_TYPE::GULDAN:
-		newEntity = new BossEntity(coor, BOSS_TYPE::GULDAN, nullptr);
+		newEntity = new Guldan(coor, BOSS_TYPE::GULDAN, spritesheetsEntities[GULDAN_SHEET]);
 		break;
 	case BOSS_TYPE::LICH_KING:
 		newEntity = new BossEntity(coor, BOSS_TYPE::LICH_KING, nullptr);
@@ -353,7 +355,9 @@ void EntitySystem::AddBoss(fPoint coor, BOSS_TYPE type)
 		newEntity = new BossEntity(coor, BOSS_TYPE::ILLIDAN, nullptr);
 		break;
 	}
-	toSpawn.push_back((Entity*)newEntity);
+	toSpawn.push_back(newEntity);
+
+	return newEntity;
 }
 
 PlayerEntity* EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
