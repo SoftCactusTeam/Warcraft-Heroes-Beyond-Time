@@ -342,7 +342,7 @@ void MapGenerator::getSize(uint& w, uint& h)
 
 int MapGenerator::getTileSize()
 {
-	return tileSize-2;
+	return (int)tileSize;
 }
 
 std::vector<MapNode*> MapGenerator::GetMapNodesAndInfo(uint& sizeX, uint& sizeY, uint& tileSize)

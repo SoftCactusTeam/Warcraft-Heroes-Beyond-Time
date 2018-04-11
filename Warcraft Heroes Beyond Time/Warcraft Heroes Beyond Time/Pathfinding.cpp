@@ -60,15 +60,25 @@ void Pathfinding::PrintWalkableTiles()
 void Pathfinding::LoadNeighbours(pathNode* node)
 {
 	BROFILER_CATEGORY("LoadPathfindingNeighbours", Profiler::Color::Chocolate);
-	
-		if (ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y)) != -1)
-			node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y))]);
-		if (ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y)) != -1)
-			node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y))]);
-		if (ExistWalkableAtPos(iPoint(node->nodePos.x, node->nodePos.y + 1)) != -1)
-			node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x, node->nodePos.y + 1))]);
-		if (ExistWalkableAtPos(iPoint(node->nodePos.x, node->nodePos.y - 1)) != -1)
-			node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x, node->nodePos.y - 1))]);
+
+	// Frontals
+	if (ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y)) != -1)
+		node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y))]);
+	if (ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y)) != -1)
+		node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y))]);
+	if (ExistWalkableAtPos(iPoint(node->nodePos.x, node->nodePos.y + 1)) != -1)
+		node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x, node->nodePos.y + 1))]);
+	if (ExistWalkableAtPos(iPoint(node->nodePos.x, node->nodePos.y - 1)) != -1)
+		node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x, node->nodePos.y - 1))]);
+	// Diagonals
+	if (ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y + 1)) != -1)
+		node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y + 1))]);
+	if (ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y - 1)) != -1)
+		node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y - 1))]);
+	if (ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y + 1)) != -1)
+		node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y + 1))]);
+	if (ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y - 1)) != -1)
+		node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y - 1))]);
 }
 
 int Pathfinding::ExistWalkableAtPos(iPoint& pos)
@@ -97,14 +107,13 @@ bool PathVector::CalculatePathAstar(iPoint thisPos, iPoint tileToMove)
 	tileToMove = iPoint(tileToMove.x / App->map->getTileSize() , tileToMove.y / App->map->getTileSize());
 
 	/// SI L'OBJECTIU ESTA FORA DEL PATH WALKABLE FORA
-	if (App->path->ExistWalkableAtPos(tileToMove) == -1)
+	if (App->path->ExistWalkableAtPos(tileToMove) == -1 || App->path->ExistWalkableAtPos(thisPos) == -1)
 		return false;
 
 	/// INIT QUEUES & FIRST PUSH
 	std::priority_queue<pathNode*, std::vector<pathNode*>, pathNodeComparison> frontQueue;
 	std::vector<pathNode*> visitedQueue;
-	if (App->path->ExistWalkableAtPos(thisPos) == -1)
-		return false;
+
 	frontQueue.push(App->path->map[App->path->ExistWalkableAtPos(thisPos)]);
 	visitedQueue.push_back(App->path->map[App->path->ExistWalkableAtPos(thisPos)]);
 	
