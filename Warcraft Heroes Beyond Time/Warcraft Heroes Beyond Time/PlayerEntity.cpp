@@ -8,7 +8,10 @@
 #include "ModulePrinter.h"
 #include "ModuleColliders.h"
 
-PlayerEntity::PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : DynamicEntity (coor, texture), type(type) {}
+PlayerEntity::PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : DynamicEntity (coor, texture), type(type) 
+{
+	App->entities->LoadCDs(DashConfigCD, damagedConfigCD, deadinfloorConfigCD);
+}
 
 bool PlayerEntity::Start()
 {
@@ -67,7 +70,7 @@ void PlayerEntity::ResetDash()
 {
 	state = states::PL_IDLE;
 	t = 0.0f;
-	DashCD = 1.0f;
+	DashCD = DashConfigCD;
 
 	if (anim == &dashRight)
 		anim = &idleRight;
@@ -158,7 +161,6 @@ void PlayerEntity::KeyboardStates(float dt)
 			}
 			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && t == 0.0f && DashCD == 0.0f)
 			{
-				DashCD = 0.0f;
 				startPos = pos;
 				animBefore = anim;
 			}
@@ -168,11 +170,12 @@ void PlayerEntity::KeyboardStates(float dt)
 				animBefore = anim;
 				Attack();
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN && numStats.energy == 100)
 			{
 				state = states::PL_SKILL;
 				animBefore = anim;
 				anim = &skill;
+				numStats.energy = 0;
 				UseSkill();
 			}
 			break;
@@ -297,11 +300,12 @@ void PlayerEntity::KeyboardStates(float dt)
 				animBefore = anim;
 				Attack();
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN && numStats.energy == 100)
 			{
 				state = states::PL_SKILL;
 				animBefore = anim;
 				anim = &skill;
+				numStats.energy = 0;
 				UseSkill();
 			}
 			break;
@@ -337,12 +341,13 @@ void PlayerEntity::KeyboardStates(float dt)
 				animBefore = anim;
 				Attack();
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN && numStats.energy == 100)
 			{
 				state = states::PL_SKILL;
 				animBefore = anim;
-				UseSkill();
 				anim = &skill;
+				numStats.energy = 0;
+				UseSkill();
 			}
 			break;
 		}
@@ -377,11 +382,12 @@ void PlayerEntity::KeyboardStates(float dt)
 				animBefore = anim;
 				Attack();
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN && numStats.energy == 100)
 			{
 				state = states::PL_SKILL;
 				animBefore = anim;
 				anim = &skill;
+				numStats.energy = 0;
 				UseSkill();
 			}
 			break;
@@ -417,11 +423,12 @@ void PlayerEntity::KeyboardStates(float dt)
 				animBefore = anim;
 				Attack();
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN && numStats.energy == 100)
 			{
 				state = states::PL_SKILL;
 				animBefore = anim;
 				anim = &skill;
+				numStats.energy = 0;
 				UseSkill();
 			}
 			break;
@@ -459,11 +466,12 @@ void PlayerEntity::KeyboardStates(float dt)
 				animBefore = anim;
 				Attack();
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN && numStats.energy == 100)
 			{
 				state = states::PL_SKILL;
 				animBefore = anim;
 				anim = &skill;
+				numStats.energy = 0;
 				UseSkill();
 			}
 			break;
@@ -500,11 +508,12 @@ void PlayerEntity::KeyboardStates(float dt)
 				animBefore = anim;
 				Attack();
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN && numStats.energy == 100)
 			{
 				state = states::PL_SKILL;
 				animBefore = anim;
 				anim = &skill;
+				numStats.energy = 0;
 				UseSkill();
 			}
 			break;
@@ -541,11 +550,12 @@ void PlayerEntity::KeyboardStates(float dt)
 				animBefore = anim;
 				Attack();
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN && numStats.energy == 100)
 			{
 				state = states::PL_SKILL;
 				animBefore = anim;
 				anim = &skill;
+				numStats.energy = 0;
 				UseSkill();
 			}
 			break;
@@ -582,11 +592,12 @@ void PlayerEntity::KeyboardStates(float dt)
 				animBefore = anim;
 				Attack();
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN && numStats.energy == 100)
 			{
 				state = states::PL_SKILL;
 				animBefore = anim;
 				anim = &skill;
+				numStats.energy = 0;
 				UseSkill();
 			}
 			break;
@@ -690,7 +701,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			{
 				deadinfloorcd += dt;
 				// PlayFX, Go to the main menu.
-				if (deadinfloorcd > 2)
+				if (deadinfloorcd > deadinfloorConfigCD)
 				{
 					anim->Reset();
 					deadinfloorcd = 0.0f;
@@ -713,7 +724,7 @@ void PlayerEntity::KeyboardStates(float dt)
 	{
 		int ret = SDL_SetTextureColorMod(App->entities->spritesheetsEntities[THRALL_SHEET], 255, 100, 100);
 		damagedCD += dt;
-		if (damagedCD > 1)
+		if (damagedCD > damagedConfigCD)
 		{
 			SDL_SetTextureColorMod(App->entities->spritesheetsEntities[THRALL_SHEET], 255, 255, 255);
 			damaged = false;
@@ -748,11 +759,13 @@ void PlayerEntity::JoyconStates(float dt)
 				Attack();
 			}
 
-			else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_Y) == KEY_DOWN)
+			else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_Y) == KEY_DOWN && numStats.energy == 100)
 			{
 				animBefore = anim;
 				anim = &skill;
+				numStats.energy = 0;
 				state = states::PL_SKILL;
+				UseSkill();
 			}
 			break;
 		}
@@ -861,7 +874,7 @@ void PlayerEntity::JoyconStates(float dt)
 					state = states::PL_MOVE;
 					anim = animBefore;
 				}
-				DashCD = 1.0f;
+				DashCD = DashConfigCD;
 				animBefore = nullptr;
 				t = 0.0f;
 			}
@@ -930,12 +943,13 @@ void PlayerEntity::JoyconStates(float dt)
 				break;
 			}
 
-			else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_Y) == KEY_DOWN)
+			else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_Y) == KEY_DOWN && numStats.energy == 100)
 			{
 				animBefore = anim;
 				anim = &skill;
+				numStats.energy = 0;
 				state = states::PL_SKILL;
-				break;
+				UseSkill();
 			}
 			break;
 		}
@@ -1007,7 +1021,7 @@ void PlayerEntity::JoyconStates(float dt)
 			{
 				deadinfloorcd += dt;
 				// PlayFX, Go to the main menu.
-				if (deadinfloorcd > 2)
+				if (deadinfloorcd > deadinfloorConfigCD)
 				{
 					anim->Reset();
 					deadinfloorcd = 0.0f;
@@ -1029,7 +1043,7 @@ void PlayerEntity::JoyconStates(float dt)
 	if (damaged)
 	{
 		damagedCD += dt;
-		if (damagedCD > 1)
+		if (damagedCD > damagedConfigCD)
 		{
 			SDL_SetTextureColorMod(App->entities->spritesheetsEntities[THRALL_SHEET], 255, 255, 255);
 			damaged = false;
@@ -1407,4 +1421,12 @@ void PlayerEntity::PushOut(Collider* wall)
 			pos.x -= (player_col.x + player_col.w - wall_r.x);
 		}
 	}
+}
+
+void PlayerEntity::IncreaseEnergy(int percent)
+{
+	if (numStats.energy + percent <= 100)
+		numStats.energy += percent;
+	else
+		numStats.energy = 100;
 }

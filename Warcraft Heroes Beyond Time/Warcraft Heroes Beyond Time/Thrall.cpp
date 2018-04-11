@@ -257,16 +257,19 @@ bool Thrall::PostUpdate()
 {
 	if (anim == &attackUp || anim == &attackDown || anim == &attackRight || anim == &attackLeft || anim == &attackUpLeft || anim == &attackUpRight || anim == &attackDownLeft || anim == &attackDownRight)
 	{
-		if (anim->Finished() || attackCollider->collidingWith != COLLIDER_NONE)
+		if (anim->Finished() || (attackCollider != nullptr && attackCollider->collidingWith == COLLIDER_ENEMY))
 		{
+			if ((attackCollider != nullptr && attackCollider->collidingWith == COLLIDER_ENEMY))
+				IncreaseEnergy(20);
 			attacking = false;
 			App->colliders->deleteCollider(attackCollider);
+			attackCollider = nullptr;
 		}
 	}
 
-	else if (anim == &skill)
+	if (anim == &skill)
 	{
-		if (anim->Finished() || skillCollider->collidingWith != COLLIDER_NONE)
+		if (anim->Finished() || (skillCollider != nullptr && skillCollider->collidingWith != COLLIDER_NONE))
 		{
 			skillOn = false;
 			App->colliders->deleteCollider(skillCollider);

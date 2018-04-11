@@ -23,11 +23,21 @@ protected:
 	Animation skill;
 	Animation deadUpRight, deadDownRight;
 	Animation* animBefore = nullptr;
+
 	float speed = 250.0f;
 	bool move = true;
 	bool damaged = false;
+
+	float damagedConfigCD = 0.0f; //This will be the one loaded from config.xml
 	float damagedCD = 0.0f;
+
+	float DashConfigCD = 0.0f;
+	float DashCD = 0.0f;
+
+	float deadinfloorConfigCD = 0.0f;
 	float deadinfloorcd = 0.0f;
+
+	Collider* pcol = nullptr;
 
 	std::list<Item> itemsActive;
 
@@ -51,7 +61,7 @@ protected:
 
 	} state;
 
-	Collider* pcol = nullptr;
+	
 
 
 public:
@@ -77,7 +87,10 @@ public:
 
 	void AddItem(Item item);
 	void IterateItems(ItemFunctions nameFunction);
+	
+	//Stats functions
 	void SetDamage(int damage, bool setStateDamage);
+	void IncreaseEnergy(int percent);
 
 	//This function calculates player position given a Bezier Curve
 	fPoint CalculatePosFromBezier(fPoint startPos, fPoint handleA, float t, fPoint handleB, fPoint endPos);
@@ -94,7 +107,7 @@ public:
 	float t = 0.0f;
 	fPoint startPos = { 0.0f, 0.0f };
 	void ResetDash();
-	float DashCD = 0.0f;
+	
 
 
 	//Camera culling
