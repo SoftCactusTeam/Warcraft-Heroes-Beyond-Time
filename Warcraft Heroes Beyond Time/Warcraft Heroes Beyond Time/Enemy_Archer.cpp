@@ -301,11 +301,6 @@ void Enemy_Archer::doWalk()
 		{
 			if (pathVector.CalculatePathAstar(iPoint((int)this->pos.x + 25 /* w / 2*/ + 20 /*offset*/, (int)this->pos.y + 20), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y)))
 				pathVector.CalculateWay(iPoint((int)this->pos.x + 25 /* w / 2*/ + 20 /*offset*/, (int)this->pos.y + 20), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y));
-			else
-			{
-				pathVector.Clear();
-				initBackJump();
-			}
 		}
 		else
 		{
