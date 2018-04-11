@@ -192,7 +192,7 @@ bool ModuleColliders::CheckTypeCollMatrix(COLLIDER_TYPE type, COLLIDER_TYPE type
 			return true;
 		break;
 	case COLLIDER_ENEMY_ATTACK:
-		if (type2 == COLLIDER_PLAYER || type2 == COLLIDER_PLAYER_ATTACK)
+		if (type2 == COLLIDER_PLAYER || type2 == COLLIDER_PLAYER_ATTACK || type2 == COLLIDER_UNWALKABLE)
 			return true;
 		break;
 	}

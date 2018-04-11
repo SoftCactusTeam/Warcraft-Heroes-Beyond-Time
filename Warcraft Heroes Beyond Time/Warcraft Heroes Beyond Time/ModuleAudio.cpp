@@ -66,7 +66,6 @@ bool Audio::Awake(pugi::xml_node& audioNode)
 	Mix_VolumeMusic((MIX_MAX_VOLUME * MusicVolumePercent) / 100);
 
 
-
 	return ret;
 }
 
