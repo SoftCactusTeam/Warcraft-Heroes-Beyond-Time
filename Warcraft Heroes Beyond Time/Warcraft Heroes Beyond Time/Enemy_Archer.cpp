@@ -19,15 +19,18 @@
 #define MOVEMENT_SPEED			3
 #define ARROW_SPEED				10
 #define JUMP_BACK_COOLDOWN		300
-#define DISTANCE_TO_JUMPBACK	20
+#define DISTANCE_TO_JUMPBACK	50
 #define SCAPE_TIME				5000
 #define DISTANCE_TO_GO_SCAPE	60
+#define ARCHER_LIVE				100
+#define TIME_DYING				500
 
 Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture) : EnemyEntity(coor, character, texture) {}
 
 bool Enemy_Archer::Start()
 {
 	ChargeAnimations();
+	live = ARCHER_LIVE;
 	state = ARCHER_STATE::ARCHER_IDLE;
 	return true;
 }
@@ -40,6 +43,12 @@ bool Enemy_Archer::Update(float dt)
 			stop = false;
 		else
 			return true;
+
+	if (false)
+	{
+		anim = &animIdle[DOWN];
+		return true;
+	}
 
 	switch (state)
 	{
@@ -63,6 +72,9 @@ bool Enemy_Archer::Update(float dt)
 		break;
 	case ARCHER_STATE::ARCHER_SCAPE:
 		doScape();
+		break;
+	case ARCHER_STATE::ARCHER_DIE:
+		doDie();
 		break;
 	default:
 		initIdle();
@@ -92,6 +104,24 @@ bool Enemy_Archer::PostUpdate()
 bool Enemy_Archer::Finish()
 {
 	return true;
+}
+
+void Enemy_Archer::Collision(Collider* collideWith)
+{
+	if (collideWith->type == COLLIDER_TYPE::COLLIDER_PLAYER_ATTACK)
+	{
+		
+		switch (collideWith->attackType)
+		{
+		case  Collider::ATTACK_TYPE::PLAYER_MELEE:
+			live -= 40;
+			if (live <= 0)
+				initDie();
+			else
+				initBackJump();
+			break;
+		}
+	}
 }
 
 // ---------------------------------------------------------------------------------
@@ -165,7 +195,7 @@ void Enemy_Archer::initBackJump()
 			randomY -= 3;
 			randomY *= -1;
 		}
-		if (App->path->ExistWalkableAtPos(iPoint((int)pos.x / App->map->getTileSize() - randomX + anim->GetCurrentRect().w, (int)pos.y / App->map->getTileSize() - randomY + anim->GetCurrentRect().h)))
+		if (App->path->ExistWalkableAtPos(iPoint(((int)pos.x + anim->GetCurrentRect().w)/ App->map->getTileSize() + randomX, ((int)pos.y  + anim->GetCurrentRect().h) / App->map->getTileSize() + randomY)) != -1)
 		{
 			posSmoke = pos;
 			tempoSmoke = 300 + SDL_GetTicks();
@@ -217,6 +247,15 @@ void Enemy_Archer::initScape()
 		}
 }
 
+void Enemy_Archer::initDie()
+{
+	state = ARCHER_STATE::ARCHER_DIE;
+	accountantPrincipal = SDL_GetTicks() + TIME_DYING;
+	anim = &animDeath[LookAtPlayer()];
+	anim->Reset();
+	pathVector.Clear();
+}
+
 // ---------------------------------------------------------------------------------
 // ----------------  UPDATE(DO) STATE_MACHIN FUNCTIONS  ----------------------------
 // ---------------------------------------------------------------------------------
@@ -260,8 +299,13 @@ void Enemy_Archer::doWalk()
 	{
 		if (pathVector.isEmpty())
 		{
-			pathVector.CalculatePathAstar(iPoint((int)this->pos.x, (int)this->pos.y), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y));
-			pathVector.CalculateWay(iPoint((int)this->pos.x, (int)this->pos.y), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y));
+			if (pathVector.CalculatePathAstar(iPoint((int)this->pos.x + 25 /* w / 2*/ + 20 /*offset*/, (int)this->pos.y + 20), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y)))
+				pathVector.CalculateWay(iPoint((int)this->pos.x + 25 /* w / 2*/ + 20 /*offset*/, (int)this->pos.y + 20), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y));
+			else
+			{
+				pathVector.Clear();
+				initBackJump();
+			}
 		}
 		else
 		{
@@ -324,6 +368,12 @@ void Enemy_Archer::doScape()
 	}
 }
 
+void Enemy_Archer::doDie()
+{
+	if (SDL_GetTicks() > accountantPrincipal)
+		destroy = true;
+}
+
 void Enemy_Archer::ShootArrow(fPoint desviation)
 {
 	fPoint directionShoot = App->scene->player->pos;
@@ -339,8 +389,8 @@ void Enemy_Archer::ShootArrow(fPoint desviation)
 		total *= -1;
 	directionShoot.x /= total;
 	directionShoot.y /= total;
-
-	Enemy_Archer_Arrow* newArrow = new Enemy_Archer_Arrow(pos, App->entities->spritesheetsEntities[PROJECTILE_SHEET], directionShoot * ARROW_SPEED, 1000);
+	fPoint position = fPoint(pos.x + anim->GetCurrentRect().w / 2, pos.y + anim->GetCurrentRect().h / 2);
+	Enemy_Archer_Arrow* newArrow = new Enemy_Archer_Arrow(position, App->entities->spritesheetsEntities[PROJECTILE_SHEET], directionShoot * ARROW_SPEED, 1000);
 	arrowsVector.push_back(newArrow);
 }
 
@@ -358,7 +408,7 @@ Enemy_Archer_Arrow::Enemy_Archer_Arrow(fPoint coor, SDL_Texture* texture, fPoint
 		angle = (2 * PI + angle) * 360 / (2 * PI);
 	angle -= 90;
 
-	arrowCollider = App->colliders->AddCollider({ (int)coor.x,(int)coor.y,30,/*rect->h*/30 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATTACK, nullptr, { 0,0 }, Collider::ATTACK_TYPE::ENEMY_ARROW);
+	arrowCollider = App->colliders->AddCollider({ (int)coor.x,(int)coor.y,5,5 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATTACK, nullptr, { 0,0 }, Collider::ATTACK_TYPE::ENEMY_ARROW);
 	rect = { 808,110,32,32 };
 }
 
@@ -526,41 +576,49 @@ void Enemy_Archer::ChargeAnimations()
 	animDeath[FIXED_ANGLE::UP_RIGHT].PushBack({ 1,41,53,39 });
 	animDeath[FIXED_ANGLE::UP_RIGHT].PushBack({ 176,166,44,43 });
 	animDeath[FIXED_ANGLE::UP_RIGHT].speed = 0.1f;
+	animDeath[FIXED_ANGLE::UP_RIGHT].loop = false;
 	//south-east 
 	animDeath[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 48,543,44,50 });
 	animDeath[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 45,345,46,46 });
 	animDeath[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 92,394,47,47 });
 	animDeath[FIXED_ANGLE::DOWN_RIGHT].speed = 0.1f;
+	animDeath[FIXED_ANGLE::DOWN_RIGHT].loop = false;
 	//south-west
 	animDeath[FIXED_ANGLE::DOWN_LEFT].PushBack({ 1,491,44,48 });
 	animDeath[FIXED_ANGLE::DOWN_LEFT].PushBack({ 93,346,46,46 });
 	animDeath[FIXED_ANGLE::DOWN_LEFT].PushBack({ 183,401,48,47 });
 	animDeath[FIXED_ANGLE::DOWN_LEFT].speed = 0.1f;
+	animDeath[FIXED_ANGLE::DOWN_LEFT].loop = false;
 	//north-west
 	animDeath[FIXED_ANGLE::UP_LEFT].PushBack({ 181,450,47,48 });
 	animDeath[FIXED_ANGLE::UP_LEFT].PushBack({ 56,41,53,39 });
 	animDeath[FIXED_ANGLE::UP_LEFT].PushBack({ 1,209,44,50 });
 	animDeath[FIXED_ANGLE::UP_LEFT].speed = 0.1f;
+	animDeath[FIXED_ANGLE::UP_LEFT].loop = false;
 	//north
 	animDeath[FIXED_ANGLE::UP].PushBack({ 92,443,47,48 });
 	animDeath[FIXED_ANGLE::UP].PushBack({ 1,41,53,39 });
 	animDeath[FIXED_ANGLE::UP].PushBack({ 176,166,44,43 });
 	animDeath[FIXED_ANGLE::UP].speed = 0.1f;
+	animDeath[FIXED_ANGLE::UP].loop = false;
 	//south
 	animDeath[FIXED_ANGLE::DOWN].PushBack({ 1,491,44,48 });
 	animDeath[FIXED_ANGLE::DOWN].PushBack({ 93,346,46,46 });
 	animDeath[FIXED_ANGLE::DOWN].PushBack({ 183,401,48,47 });
 	animDeath[FIXED_ANGLE::DOWN].speed = 0.1f;
+	animDeath[FIXED_ANGLE::DOWN].loop = false;
 	//east
 	animDeath[FIXED_ANGLE::RIGHT].PushBack({ 92,443,47,48 });
 	animDeath[FIXED_ANGLE::RIGHT].PushBack({ 1,41,53,39 });
 	animDeath[FIXED_ANGLE::RIGHT].PushBack({ 176,166,44,43 });
 	animDeath[FIXED_ANGLE::RIGHT].speed = 0.1f;
+	animDeath[FIXED_ANGLE::RIGHT].loop = false;
 	//west
 	animDeath[FIXED_ANGLE::LEFT].PushBack({ 1,491,44,48 });
 	animDeath[FIXED_ANGLE::LEFT].PushBack({ 93,346,46,46 });
 	animDeath[FIXED_ANGLE::LEFT].PushBack({ 183,401,48,47 });
 	animDeath[FIXED_ANGLE::LEFT].speed = 0.1f;
+	animDeath[FIXED_ANGLE::LEFT].loop = false;
 
 
 	animSmoke.PushBack({ 1,77,52,42 });
