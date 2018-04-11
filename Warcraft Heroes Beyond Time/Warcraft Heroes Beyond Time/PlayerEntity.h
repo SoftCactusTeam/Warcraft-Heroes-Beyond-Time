@@ -9,8 +9,6 @@
 #include <list>
 
 class Collider;
-class WCItem;
-class ItemType;
 
 class PlayerEntity : public DynamicEntity 
 {
@@ -79,7 +77,6 @@ public:
 	void setCol(Collider* pcol);
 
 	void AddItem(Item item);
-	void NewItem(char* name, ItemType type, uint rarity);
 	void IterateItems(ItemFunctions nameFunction);
 	void SetDamage(int damage, bool setStateDamage);
 
@@ -105,9 +102,6 @@ public:
 	void CheckCulling();
 	bool drawFZ = false;
 	void DrawFreeZone(bool);
-
-	//marranades de morgado
-	WCItem* paper = nullptr;
 	
 };
 

@@ -7,16 +7,17 @@ enum ItemFunctions
 	ByeByeItem
 };
 
-enum class ItemType
-{
-	no_item_type = -1,
-	active_item_type,
-	passive_item_type
-};
-
 class Item
 {
 protected:
+
+	enum class ItemType
+	{
+		no_item_type = -1,
+		active_item_type,
+		passive_item_type
+	} type;
+
 	char* name = nullptr;
 	uint rarity = 0u;
 
