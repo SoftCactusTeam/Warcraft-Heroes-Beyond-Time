@@ -14,6 +14,8 @@
 #include "PlayerEntity.h"
 #include "Item.h"
 #include "WCItem.h"
+#include "ModuleTextures.h"
+#include "ModulePrinter.h"
 
 #include "Brofiler\Brofiler.h"
 
@@ -55,6 +57,7 @@ bool Scene::Awake(pugi::xml_node& sceneNode)
 bool Scene::Start()
 {
 	App->gui->Activate();
+	texture = App->textures->Load("sprites/all_items.png");
 
 	switch (actual_scene)
 	{
@@ -171,11 +174,19 @@ bool Scene::Update(float dt)
 			lvlChest->OpenChest();
 			portal->OpenPortal();
 			paper = new WCItem("wcpaper", ItemType::passive_item_type, 0);
+			paper_fake = paper;
 		}
-		
-		if (!player->itemsActive.empty())
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+	{
+		if (lvlChest->PlayerNear(player->pos))
 		{
-			player->AddItem((WCItem)*paper);
+			if (paper_fake != nullptr)
+			{
+				player->AddItem((WCItem)*paper);
+				paper_fake = nullptr;
+			}
 		}
 	}
 
@@ -200,6 +211,12 @@ bool Scene::Update(float dt)
 				}
 			}
 		}
+
+		if (paper_fake != nullptr)
+		{
+			App->printer->PrintSprite({ (int)lvlChest->pos.x,(int)lvlChest->pos.y }, texture, SDL_Rect({ 34,84,27,31 }), 1);
+		}
+
 	return true;
 }
 

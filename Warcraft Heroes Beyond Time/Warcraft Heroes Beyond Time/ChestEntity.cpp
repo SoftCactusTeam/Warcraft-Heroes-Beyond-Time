@@ -62,7 +62,7 @@ bool ChestEntity::PlayerNear(fPoint pos)
 		float result4 = result3 * result3;
 		float result5 = result2 + result4;
 		norm = sqrt(result5);
-		if (norm <= 40)
+		if (norm <= 80)
 			return true;
 		else
 			return false;
