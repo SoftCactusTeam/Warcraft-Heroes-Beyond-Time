@@ -171,9 +171,12 @@ bool Scene::Update(float dt)
 			lvlChest->OpenChest();
 			portal->OpenPortal();
 			paper = new WCItem("wcpaper", ItemType::passive_item_type, 0);
-			player->AddItem((WCItem)*paper);
 		}
 		
+		if (!player->itemsActive.empty())
+		{
+			player->AddItem((WCItem)*paper);
+		}
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_8) == KEY_DOWN)

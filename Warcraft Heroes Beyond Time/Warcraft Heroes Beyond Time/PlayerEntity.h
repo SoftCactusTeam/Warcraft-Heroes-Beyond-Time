@@ -27,8 +27,7 @@ protected:
 	bool move = true;
 	bool damaged = false;
 
-	std::list<Item> itemsActive;
-
+	
 	enum class states
 	{
 		PL_NON_STATE,
@@ -102,6 +101,10 @@ public:
 	void CheckCulling();
 	bool drawFZ = false;
 	void DrawFreeZone(bool);
+
+	//items
+	std::list<Item> itemsActive;
+
 	
 };
 
