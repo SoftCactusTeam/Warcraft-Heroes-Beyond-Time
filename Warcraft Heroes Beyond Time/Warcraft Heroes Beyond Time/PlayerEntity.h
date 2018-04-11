@@ -9,6 +9,7 @@
 #include <list>
 
 class Collider;
+struct SDL_Texture;
 
 class PlayerEntity : public DynamicEntity 
 {
@@ -104,6 +105,8 @@ public:
 
 	//items
 	std::list<Item> itemsActive;
+	std::list<iPoint> wcpaper;
+	SDL_Texture* venom;
 
 	
 };
