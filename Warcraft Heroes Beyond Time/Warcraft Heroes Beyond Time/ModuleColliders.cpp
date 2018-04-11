@@ -164,11 +164,13 @@ void ModuleColliders::deleteCollider(Collider* col)
 
 void ModuleColliders::CleanCollidersEntity(Entity* entity)
 {
-	if (entity != nullptr) {
+	if (entity != nullptr) 
+	{
 		std::list<Collider*>::iterator it;
 		for (it = colliders.begin(); it != colliders.end(); ++it)
 			if ((*it)->owner == entity)
 			{
+				delete (*it);
 				colliders.erase(it);
 				break;
 			}
