@@ -8,8 +8,6 @@
 
 #include <list>
 
-class Collider;
-
 class PlayerEntity : public DynamicEntity 
 {
 
@@ -19,15 +17,13 @@ protected:
 	Animation idleDown, idleUp, idleLeft, idleRight, idleUpRight, idleUpLeft, idleDownRight, idleDownLeft;
 	Animation up, down, left, right, upLeft, upRight, downLeft, downRight;
 	Animation dashRight, dashDown, dashUpRight, dashDownRight, dashDownLeft, dashUp, dashLeft, dashUpLeft;
-	Animation attackDown, attackDownLeft, attackDownRight, attackUp, attackUpRight, attackUpLeft, attackLeft, attackRight;
+	Animation attackDown, attackUp, attackLeft, attackRight;
 	Animation skill;
-	Animation deadUpRight, deadDownRight;
+	Animation damagedAnim, dead;
 	Animation* animBefore = nullptr;
 	float speed = 250.0f;
 	bool move = true;
 	bool damaged = false;
-	float damagedCD = 0.0f;
-	float deadinfloorcd = 0.0f;
 
 	std::list<Item> itemsActive;
 
@@ -47,12 +43,10 @@ protected:
 		PL_DASH,
 		PL_ATTACK,
 		PL_SKILL,
-		PL_DEAD
+		PL_DEAD,
+		PL_DAMAGE
 
 	} state;
-
-	Collider* pcol = nullptr;
-
 
 public:
 
@@ -64,7 +58,6 @@ public:
 
 	virtual bool Start();
 	virtual bool Update(float dt);
-	virtual bool PostUpdate() { return true; }
 	void PlayerStates(float dt);
 	void KeyboardStates(float dt);
 	void JoyconStates(float dt);
@@ -74,6 +67,7 @@ public:
 	void CheckMapLimits();
 
 	virtual bool Finish();
+	virtual void Collision(COLLIDER_TYPE type);
 
 	void AddItem(Item item);
 	void IterateItems(ItemFunctions nameFunction);
@@ -93,9 +87,6 @@ public:
 	float dashDistance = 150.0f;
 	float t = 0.0f;
 	fPoint startPos = { 0.0f, 0.0f };
-	void ResetDash();
-	float DashCD = 0.0f;
-
 
 	//Camera culling
 	SDL_Rect freeZone;
@@ -104,13 +95,7 @@ public:
 	void CheckCulling();
 	bool drawFZ = false;
 	void DrawFreeZone(bool);
-
-	//Collisions
-	virtual void UpdateCollider() {}
-	virtual void Collision(Collider* collideWith){}
-	void setCol(Collider* pcol);
-	void PushOut(Collider* wall);
-	virtual void Attack() {}
+	
 };
 
 #endif

@@ -8,10 +8,11 @@ public:
 	BossEntity(fPoint coor, BOSS_TYPE type, SDL_Texture* texture);
 
 	bool Start();
-	bool Update();
+	bool Update(float dt);
 	bool Finish();
 
-public:
+private:
+
 	BOSS_TYPE type = BOSS_TYPE::NON_BOSS;
 };
 

@@ -7,6 +7,7 @@
 #include "Scene.h"
 #include "PlayerEntity.h"
 #include "ModuleColliders.h"
+#include "FileSystem.h"
 #include "Brofiler\Brofiler.h"
 #include <time.h>
 
@@ -55,7 +56,7 @@ iPoint MapGenerator::GetRandomValidPoint()
 
 	do
 		randNum = rand() % (nodes.size() - 0 + 1);
-	while (!nodes[randNum]->layerBelow || nodes[randNum]->pos == nodes[Get(sizeX / 2, sizeY / 2)]->pos);
+	while (nodes[randNum]->layerBelow != -1 || nodes[randNum]->pos == nodes[Get(sizeX / 2, sizeY / 2)]->pos);
 
 	return nodes[randNum]->pos;
 }
@@ -70,28 +71,6 @@ bool MapGenerator::DrawMap() const
 	bool ret = true;
 
 	BROFILER_CATEGORY("Map Draw", Profiler::Color::Azure);
-
-	/*int x = -(tileSize - 2), y = 0;
-	
-	for (int i = 0u; i < totalSize && ret; ++i)
-	{
-		if (i % 50 == 0 && i != 0)
-		{
-			x = 0;
-			y += tileSize - 2;
-		}
-		else
-			x += tileSize - 2;
-
-		if (x >= (-1 * App->render->camera.x) - tileSize &&
-			y >= (-1 * App->render->camera.y) - tileSize &&
-			x < -App->render->camera.x + App->render->camera.w + tileSize &&
-			y < -App->render->camera.y + App->render->camera.h + tileSize)
-		{
-			ret = App->printer->PrintSprite({ x , y }, mapTexture, nodes[i]->whatToBlit, nodes[i]->layerBelow);
-		}
-	}*/
-
 	
 	for (int index_y = 0; index_y < sizeY && ret; ++index_y)
 	{
@@ -160,6 +139,58 @@ bool MapGenerator::GenerateMap(MapData data)
 	}
 
 	return ret;
+}
+
+bool MapGenerator::GenerateBossMap()
+{
+	pugi::xml_document doc_map;
+	pugi::xml_node map_child;
+
+	char* buffer;
+	uint size = App->fs->Load("guldanMap.tmx", &buffer);
+	doc_map.load_buffer(buffer, size);
+	RELEASE(buffer);
+
+	map_child = doc_map.child("map");
+	
+	sizeX = map_child.attribute("width").as_uint();
+	sizeY = map_child.attribute("height").as_uint();
+
+	for (int y = 0; y < sizeY; ++y)
+	{
+		for (int x = 0; x < sizeX; ++x)
+			nodes.push_back(new MapNode({ x,y }, VOID));
+	}
+
+	pugi::xml_node sub_map_node = map_child.child("tileset");
+	tileSize = sub_map_node.attribute("tilewidth").as_int();
+
+	int contNodes = 0;
+	for (pugi::xml_node tile_gid = map_child.child("layer").child("data").child("tile"); tile_gid; tile_gid = tile_gid.next_sibling("tile"))
+	{
+		int gid = tile_gid.attribute("gid").as_int();
+
+		if (gid == 5)
+		{
+			nodes[contNodes]->whatToBlit = VOID;
+			nodes[contNodes]->layerBelow = 1;
+		}
+		else if (gid >= 6)
+		{
+			nodes[contNodes]->whatToBlit = FLOOR;
+			nodes[contNodes]->layerBelow = -1;
+		}
+		else
+		{
+			nodes[contNodes]->whatToBlit = WALL;
+			nodes[contNodes]->layerBelow = 0;
+		}
+		contNodes++;
+	}
+
+	mapTexture = App->textures->Load("maps/Tiles.png");
+
+	return true;
 }
 
 bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int seed)
@@ -342,7 +373,7 @@ void MapGenerator::getSize(uint& w, uint& h)
 
 int MapGenerator::getTileSize()
 {
-	return tileSize-2;
+	return tileSize;
 }
 
 std::vector<MapNode*> MapGenerator::GetMapNodesAndInfo(uint& sizeX, uint& sizeY, uint& tileSize)

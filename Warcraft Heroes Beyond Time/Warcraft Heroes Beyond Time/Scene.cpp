@@ -12,7 +12,6 @@
 #include "PortalEntity.h"
 #include "Pathfinding.h"
 #include "PlayerEntity.h"
-#include "ModulePrinter.h"
 
 #include "Brofiler\Brofiler.h"
 
@@ -46,6 +45,9 @@ Scene::~Scene(){}
 
 bool Scene::Awake(pugi::xml_node& sceneNode)
 {
+	ConsoleOrder* order = new ConsoleMap();
+	App->console->AddConsoleOrderToList(order);
+
 	App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
 
 	return true;
@@ -54,7 +56,7 @@ bool Scene::Awake(pugi::xml_node& sceneNode)
 bool Scene::Start()
 {
 	App->gui->Activate();
-
+	
 	switch (actual_scene)
 	{
 		case Stages::MAIN_MENU:
@@ -75,8 +77,8 @@ bool Scene::Start()
 			App->entities->Activate();
 			App->console->Activate();
 			App->map->Activate();
-			App->printer->Activate();
 
+			
 
 			BROFILER_CATEGORY("InGame Generation", Profiler::Color::Chocolate);
 			MapData mapInfo;
@@ -87,16 +89,19 @@ bool Scene::Start()
 			lvlIndex++;
 
 			App->map->GenerateMap(mapInfo);
-
 			player = App->entities->AddPlayer({ 25*48,25*48 }, THRALL);
 			App->gui->CreateHPBar(player, { 10,5 });
 
 			App->path->LoadPathMap();
+			App->entities->AddEnemy({ 80,80 }, FOOTMAN);
+
+			/*App->colliders->AddTileCollider({ 10,10,50,50 }, COLLIDER_TYPE::COLLIDER_UNWALKABLE);
+			App->colliders->AddTileCollider({ 10,70,50,50 }, COLLIDER_TYPE::COLLIDER_UNWALKABLE);*/
 
 			iPoint chestPos = App->map->GetRandomValidPoint();
 			lvlChest = App->entities->AddChest({ (float)chestPos.x * 48,(float)chestPos.y * 48 }, MID_CHEST);
 			portal = (PortalEntity*)App->entities->AddStaticEntity({ 25 * 48,25 * 48 }, PORTAL);
-
+			
 			break;
 		}
 
@@ -124,9 +129,12 @@ bool Scene::Update(float dt)
 		App->Load();
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)
 	{
-		player->SetDamage(25, true);
+		if (player->numStats.hp > 10)
+			player->numStats.hp -= 10;
+		else
+			player->numStats.hp = 0;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT)
@@ -136,7 +144,7 @@ bool Scene::Update(float dt)
 		else
 			player->numStats.energy = 0;
 	}
-
+	
 
 
 //GENERATE A NEW MAP
@@ -152,6 +160,12 @@ bool Scene::Update(float dt)
 		// RESTART THIS MODULE AND THE ENTIRE GAME // GO TO MAIN MENU
 	}
 
+	//CONTROLLER RUMBLES
+	if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
+	{
+		App->input->PlayJoyRumble(0.75f, 100);
+	}
+
 	if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN)
 	{
 		lvlChest->UnLockChest();
@@ -159,11 +173,29 @@ bool Scene::Update(float dt)
 		portal->OpenPortal();
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_8) == KEY_DOWN)
+		player->SetDamage(25, true);
+
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN && actual_scene == Stages::INGAME && !App->console->isWritting())
+	{
+		App->entities->ClearEntitiesList();
+		App->map->CleanUp();
+		App->gui->CleanUp();
+		App->map->GenerateBossMap();
+		player = App->entities->AddPlayer({ 14 * 48,20 * 48 }, THRALL);
+		//App->gui->CreateHPBar(player, { 10,5 });
+		App->entities->AddBoss({ 14 * 48,5 * 48 },BOSS_TYPE::GULDAN);
+		App->path->LoadPathMap();
+		lvlChest = App->entities->AddChest({ 15 * 48 - 16,18 * 48 }, MID_CHEST);
+		lvlChest->UnLockChest();
+
+	}
+
 	//PAUSE GAME
 		if (actual_scene == Stages::INGAME)
 		{
 			if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN ||
-				App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_START) == KEY_DOWN)
+				App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_START) == KEY_DOWN) //Start button, idk
 			{
 				if (!paused)
 				{
@@ -177,19 +209,12 @@ bool Scene::Update(float dt)
 				}
 			}
 		}
-		
-		
 	return true;
 }
 
 bool Scene::PostUpdate()
 {
-	if (actual_scene == Stages::MAIN_MENU || actual_scene == Stages::SETTINGS)
-	{
-		SDL_Rect back = { 0,0,640,360 };
-		App->render->DrawQuad(back, 0, 205, 193, 255, true, false);
-	}
-
+	// TODO -- fer que es pintin els walkables
 	if (App->path->printWalkables == true)
 		App->path->PrintWalkableTiles();
 
@@ -211,7 +236,6 @@ bool Scene::CleanUp()
 	App->console->DeActivate();
 	App->path->ClearMap();
 	App->colliders->DeActivate();
-
 
 	return true;
 }
@@ -292,7 +316,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 
 void Scene::CreateMainMenuScreen()
 {
-
+	
 	//PLAY BUTTON
 	Button* button = (Button*)App->gui->CreateButton(getPosByResolution({ 250, 50.0f }), BType::PLAY, this);
 
@@ -301,7 +325,7 @@ void Scene::CreateMainMenuScreen()
 	defLabel.fontName = "LifeCraft80";
 	defLabel.text = "PLAY";
 	App->gui->CreateLabel(getPosByResolution({ 55,10 }), defLabel, button, this);*/
-
+	
 	LabelInfo defLabel;
 	defLabel.color = White;
 	defLabel.fontName = "LifeCraft80";
@@ -407,28 +431,14 @@ void Scene::CreatePauseMenu()
 
 fPoint Scene::getPosByResolution(fPoint pos) const
 {
-	/*uint actualW = App->render->camera.w;
+	uint actualW = App->render->camera.w;
 	uint actualH = App->render->camera.h;
 
 	float percentX = (pos.x * 100) / 640;
 	float percentY = (pos.y * 100) / 360;
 
 
-	fPoint ret = { (actualW * percentX)/100, (actualH * percentY)/100};*/
+	fPoint ret = { (actualW * percentX)/100, (actualH * percentY)/100};
 
-	return pos;
-}
-
-void Scene::AddCommands()
-{
-	ConsoleOrder* order = new ConsoleMap();
-	App->console->AddConsoleOrderToList(order);
-}
-
-void Scene::GoMainMenu()
-{
-	if (actual_scene == Stages::INGAME)
-		App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
-	actual_scene = Stages::MAIN_MENU;
-	restart = true;
+	return ret;
 }
