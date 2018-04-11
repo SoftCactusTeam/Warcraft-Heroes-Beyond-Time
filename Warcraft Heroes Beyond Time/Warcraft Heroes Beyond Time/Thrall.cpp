@@ -142,7 +142,7 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	attackUp.PushBack({ 202,580,46,47 }, { 4,9 });
 	attackUp.PushBack({ 291,580,46,47 }, { 4,8 });
 	attackUp.PushBack({ 380,580,46,47 }, { 4,8 });
-	attackUp.speedFactor = 9.0f;
+	attackUp.speedFactor = 15.0f;
 	attackUp.loop = false;
 
 	attackUpRight.PushBack({ 466,582,45,46 }, { 7,7 });
@@ -150,7 +150,7 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	attackUpRight.PushBack({ 645,582,45,46 }, { 7,7 });
 	attackUpRight.PushBack({ 24,652,45,46  }, { 7,7 });
 	attackUpRight.PushBack({ 113,652,45,46 }, { 7,7 });
-	attackUpRight.speedFactor = 9.0f;
+	attackUpRight.speedFactor = 15.0f;
 	attackUpRight.loop = false;
 
 	attackRight.PushBack({ 198,658,50,36 }, { 14,0 });
@@ -158,7 +158,7 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	attackRight.PushBack({ 376,658,50,36 }, { 14,0 });
 	attackRight.PushBack({ 466,658,50,36 }, { 14,0 }); 
 	attackRight.PushBack({ 555,658,50,36 }, { 14,0 });
-	attackRight.speedFactor = 9.0f;
+	attackRight.speedFactor = 15.0f;
 	attackRight.loop = false;
 
 	attackDownRight.PushBack({ 635,657,56,44 }, { 20,2 });
@@ -166,7 +166,7 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	attackDownRight.PushBack({ 100,727,56,44 }, { 20,2 });
 	attackDownRight.PushBack({ 189,727,56,44 }, { 20,0 });
 	attackDownRight.PushBack({ 279,727,56,44 }, { 20,0 });
-	attackDownRight.speedFactor = 9.0f;
+	attackDownRight.speedFactor = 15.0f;
 	attackDownRight.loop = false;
 
 	attackDown.PushBack({ 374,717,52,54 }, { 15,14 });
@@ -174,7 +174,7 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	attackDown.PushBack({ 551,717,52,54 }, { 15,14 });
 	attackDown.PushBack({ 641,717,52,54 }, { 15,14 });
 	attackDown.PushBack({ 18,796,52,54 }, { 15,5});
-	attackDown.speedFactor = 9.0f;
+	attackDown.speedFactor = 15.0f;
 	attackDown.loop = false;
 
 	attackDownLeft.PushBack({ 112,790,48,50 }, { 15,18 });
@@ -182,7 +182,7 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	attackDownLeft.PushBack({ 290,790,48,50 }, { 15,18 });
 	attackDownLeft.PushBack({ 377,790,48,50 }, { 15,18 });
 	attackDownLeft.PushBack({ 466,790,48,50 }, { 15,18 });
-	attackDownLeft.speedFactor = 9.0f;
+	attackDownLeft.speedFactor = 15.0f;
 	attackDownLeft.loop = false;
 
 	attackLeft.PushBack({ 552,797,54,39 }, { 13,7 });
@@ -190,7 +190,7 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	attackLeft.PushBack({ 15 ,868,54,39 }, { 13,7 });
 	attackLeft.PushBack({ 102,868,54,39 }, { 17,7 });
 	attackLeft.PushBack({ 191,868,54,39 }, { 17,7 });
-	attackLeft.speedFactor = 9.0f;
+	attackLeft.speedFactor = 15.0f;
 	attackLeft.loop = false;
 
 	attackUpLeft.PushBack({ 289,866,51,44 }, { 8, 10});
@@ -198,7 +198,7 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	attackUpLeft.PushBack({ 469,866,51,44 }, { 8, 9});
 	attackUpLeft.PushBack({ 551,866,51,44 }, { 16, 9});
 	attackUpLeft.PushBack({ 640,866,51,44 }, { 16, 9});
-	attackUpLeft.speedFactor = 9.0f;
+	attackUpLeft.speedFactor = 15.0f;
 	attackUpLeft.loop = false;
 
 	skill.PushBack({ 0 + 5,923 + 5,89,71 + 5 });
@@ -247,6 +247,9 @@ bool Thrall::Update(float dt)
 	if (attacking)
 		UpdateAttackCollider();
 
+	else if (skillOn)
+		UpdateSkillCollider();
+
 	return true;
 }
 
@@ -254,12 +257,22 @@ bool Thrall::PostUpdate()
 {
 	if (anim == &attackUp || anim == &attackDown || anim == &attackRight || anim == &attackLeft || anim == &attackUpLeft || anim == &attackUpRight || anim == &attackDownLeft || anim == &attackDownRight)
 	{
-		if (anim->Finished())
+		if (anim->Finished() || attackCollider->collidingWith != COLLIDER_NONE)
 		{
 			attacking = false;
 			App->colliders->deleteCollider(attackCollider);
 		}
 	}
+
+	else if (anim == &skill)
+	{
+		if (anim->Finished() || skillCollider->collidingWith != COLLIDER_NONE)
+		{
+			skillOn = false;
+			App->colliders->deleteCollider(skillCollider);
+		}
+	}
+
 	return true;
 }
 
@@ -274,7 +287,8 @@ void Thrall::Collision(Collider* collideWith)
 	{
 		case COLLIDER_TYPE::COLLIDER_ENEMY_ATTACK:
 		{
-			SetDamage(15, true);
+			if(collideWith->attackType == Collider::ATTACK_TYPE::ENEMY_ARROW)
+				SetDamage(30, true);
 			break;
 		}
 		case COLLIDER_TYPE::COLLIDER_UNWALKABLE:
@@ -413,4 +427,36 @@ void Thrall::UpdateAttackCollider()
 		}
 	}
 	
+}
+
+void Thrall::UseSkill()
+{
+	skillOn = true;
+	skillCollider = App->colliders->AddCollider({ -100, -100, 5, 5 }, COLLIDER_PLAYER_ATTACK, nullptr, { 0,0 }, Collider::ATTACK_TYPE::THRALL_SKILL);
+}
+
+void Thrall::UpdateSkillCollider()
+{
+	if (anim == &skill)
+	{
+		if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 445 + 5,923 + 5,89,71 + 5 })))
+		{
+			skillCollider->colliderRect = { (int)pos.x + 10, (int)pos.y + 10, 30,30 };
+		}
+
+		else if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 445 + 5,923 + 5,89,71 + 5 })))
+		{
+			skillCollider->colliderRect = { (int)pos.x + 10, (int)pos.y + 10, 30,30 };
+		}
+
+		else if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 445 + 5,923 + 5,89,71 + 5 })))
+		{
+			skillCollider->colliderRect = { (int)pos.x + 10, (int)pos.y + 10, 30,30 };
+		}
+
+		else if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 445 + 5,923 + 5,89,71 + 5 })))
+		{
+			skillCollider->colliderRect = { (int)pos.x + 10, (int)pos.y + 10, 30,30 };
+		}
+	}
 }

@@ -14,7 +14,8 @@ struct Collider
 		NONE,
 		ENEMY_ARROW,
 		ENEMY_MELEE,
-		PLAYER_MELEE
+		PLAYER_MELEE,
+		THRALL_SKILL
 	};
 
 	Collider(SDL_Rect colliderRect, COLLIDER_TYPE type, Entity* owner = nullptr, iPoint offset = iPoint(0,0));

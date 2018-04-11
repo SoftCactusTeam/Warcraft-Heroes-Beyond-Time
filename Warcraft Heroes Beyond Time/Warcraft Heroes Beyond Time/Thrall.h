@@ -20,10 +20,14 @@ private:
 	void UpdateCollider();
 	void UpdateAttackCollider();
 	void Attack();
+	void UseSkill();
+	void UpdateSkillCollider();
 	
 private:
-	Collider * attackCollider = nullptr;
+	Collider* attackCollider = nullptr;
+	Collider* skillCollider = nullptr;
 	bool attacking = false;
+	bool skillOn = false;
 };
 
 #endif

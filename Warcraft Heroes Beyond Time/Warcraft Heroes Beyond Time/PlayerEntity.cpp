@@ -173,6 +173,7 @@ void PlayerEntity::KeyboardStates(float dt)
 				state = states::PL_SKILL;
 				animBefore = anim;
 				anim = &skill;
+				UseSkill();
 			}
 			break;
 		}
@@ -301,6 +302,7 @@ void PlayerEntity::KeyboardStates(float dt)
 				state = states::PL_SKILL;
 				animBefore = anim;
 				anim = &skill;
+				UseSkill();
 			}
 			break;
 		}
@@ -339,6 +341,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			{
 				state = states::PL_SKILL;
 				animBefore = anim;
+				UseSkill();
 				anim = &skill;
 			}
 			break;
@@ -379,6 +382,7 @@ void PlayerEntity::KeyboardStates(float dt)
 				state = states::PL_SKILL;
 				animBefore = anim;
 				anim = &skill;
+				UseSkill();
 			}
 			break;
 		}
@@ -418,6 +422,7 @@ void PlayerEntity::KeyboardStates(float dt)
 				state = states::PL_SKILL;
 				animBefore = anim;
 				anim = &skill;
+				UseSkill();
 			}
 			break;
 		}
@@ -459,6 +464,7 @@ void PlayerEntity::KeyboardStates(float dt)
 				state = states::PL_SKILL;
 				animBefore = anim;
 				anim = &skill;
+				UseSkill();
 			}
 			break;
 		}
@@ -499,6 +505,7 @@ void PlayerEntity::KeyboardStates(float dt)
 				state = states::PL_SKILL;
 				animBefore = anim;
 				anim = &skill;
+				UseSkill();
 			}
 			break;
 		}
@@ -539,6 +546,7 @@ void PlayerEntity::KeyboardStates(float dt)
 				state = states::PL_SKILL;
 				animBefore = anim;
 				anim = &skill;
+				UseSkill();
 			}
 			break;
 		}
@@ -579,6 +587,7 @@ void PlayerEntity::KeyboardStates(float dt)
 				state = states::PL_SKILL;
 				animBefore = anim;
 				anim = &skill;
+				UseSkill();
 			}
 			break;
 		}

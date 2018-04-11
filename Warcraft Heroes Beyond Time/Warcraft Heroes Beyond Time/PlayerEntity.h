@@ -111,6 +111,7 @@ public:
 	void setCol(Collider* pcol);
 	void PushOut(Collider* wall);
 	virtual void Attack() {}
+	virtual void UseSkill() {}
 };
 
 #endif
