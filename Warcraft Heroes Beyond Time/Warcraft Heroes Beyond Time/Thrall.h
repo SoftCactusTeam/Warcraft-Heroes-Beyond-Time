@@ -3,30 +3,31 @@
 
 #include "PlayerEntity.h"
 
+
+class Collider;
+
 class Thrall : public PlayerEntity {
 private:
 public:
 	Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture);
 
 	bool Update(float dt);
+	bool PostUpdate();
 	bool Finish();
+	void Collision(Collider* collideWith);
 
-<<<<<<< HEAD
-	void Collision(COLLIDER_TYPE type);
-=======
 private:
 	void UpdateCollider();
 	void UpdateAttackCollider();
 	void Attack();
 	void UseSkill();
 	void UpdateSkillCollider();
-	
+
 private:
-	Collider* attackCollider = nullptr;
+	Collider * attackCollider = nullptr;
 	Collider* skillCollider = nullptr;
 	bool attacking = false;
 	bool skillOn = false;
->>>>>>> master
 };
 
 #endif

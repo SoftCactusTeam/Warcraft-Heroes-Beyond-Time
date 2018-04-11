@@ -22,6 +22,7 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
+	void AddCommands();
 
 public:
 
@@ -29,6 +30,7 @@ public:
 	void CreateMainMenuScreen();
 	void CreateSettingsScreen();
 	void CreatePauseMenu();
+	void GoMainMenu();
 
 public:
 	enum class Stages
@@ -46,7 +48,7 @@ public:
 
 private:
 
-	GUIWindow* PauseMenu = nullptr;
+	GUIWindow * PauseMenu = nullptr;
 	ChestEntity* lvlChest = nullptr;
 	PortalEntity* portal = nullptr;
 

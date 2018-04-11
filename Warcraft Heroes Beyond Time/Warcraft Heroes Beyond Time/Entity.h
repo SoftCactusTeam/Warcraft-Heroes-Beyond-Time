@@ -6,6 +6,8 @@
 #include "EntitiesEnums.h"
 #include "Animation.h"
 
+class Collider;
+
 class Entity {
 public:
 	Entity() {}
@@ -17,7 +19,7 @@ public:
 	virtual bool Finish();
 	virtual bool Draw();
 
-	virtual void Collision(COLLIDER_TYPE type);
+	virtual void Collision(Collider* collideWith) {}
 	void StopConcreteTime(int time);
 public:
 	fPoint pos = { 0,0 };

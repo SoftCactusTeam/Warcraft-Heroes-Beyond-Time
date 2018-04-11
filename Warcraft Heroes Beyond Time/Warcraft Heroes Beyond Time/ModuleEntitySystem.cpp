@@ -20,7 +20,6 @@
 #include "Enemy_Footman.h"
 #include "Enemy_Archer.h"
 #include "PortalEntity.h"
-#include "Guldan.h"
 
 #include "Console.h"
 
@@ -110,7 +109,7 @@ class Player_ConsoleOrder : public ConsoleOrder
 		{
 			//Activate Godmode
 		}
-			
+
 		else if (parameter == "godmodeoff")
 		{
 			//DeActivate Godmode
@@ -119,7 +118,7 @@ class Player_ConsoleOrder : public ConsoleOrder
 		{
 			App->scene->player->DrawFreeZone((bool)parameterNumeric);
 		}
-			
+
 	}
 };
 
@@ -193,8 +192,8 @@ bool EntitySystem::Start()
 	spritesheetsEntities.push_back(App->textures->Load("sprites/all_items.png"));
 	spritesheetsEntities.push_back(App->textures->Load("sprites/Mines.png"));
 	spritesheetsEntities.push_back(App->textures->Load("sprites/Archer/Archer_sprite.png"));
-	spritesheetsEntities.push_back(App->textures->Load("sprites/Archer/Archer_Arrow.png"));
-	spritesheetsEntities.push_back(App->textures->Load("sprites/Boss_Guldan.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/Projectiles.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/Archer/Archer_Smoke.png"));
 
 	bool ret = true;
 
@@ -207,10 +206,10 @@ bool EntitySystem::Start()
 }
 
 bool EntitySystem::PreUpdate()
-{	
+{
 	if (toSpawn.size() >= 0)
 	{
-		for(std::list<Entity*>::iterator it = toSpawn.begin(); it != toSpawn.end(); ++it)
+		for (std::list<Entity*>::iterator it = toSpawn.begin(); it != toSpawn.end(); ++it)
 		{
 			(*it)->Start();
 			entities.push_back(*it);
@@ -237,17 +236,14 @@ bool EntitySystem::PostUpdate()
 {
 	bool ret = true;
 
-	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end() && ret; ++it)
+	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end() && ret;)
 	{
 		ret = (*it)->Draw();
 
-		if(ret)
+		if (ret)
 			ret = (*it)->PostUpdate();
 
 		if ((*it)->destroy)
-<<<<<<< HEAD
-			entities.remove((*it));
-=======
 		{
 			App->colliders->CleanCollidersEntity((*it));
 			it = entities.erase(it);
@@ -256,8 +252,7 @@ bool EntitySystem::PostUpdate()
 		{
 			++it;
 		}
-		
->>>>>>> master
+
 	}
 
 	return ret;
@@ -272,7 +267,7 @@ bool EntitySystem::CleanUp()
 
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end() && ret; ++it)
 		ret = (*it)->Finish();
-	
+
 	if (ret)
 		ret = ClearEntitiesList();
 
@@ -344,13 +339,12 @@ void EntitySystem::AddEnemy(fPoint coor, ENEMY_TYPE type)
 
 }
 
-BossEntity* EntitySystem::AddBoss(fPoint coor, BOSS_TYPE type)
+void EntitySystem::AddBoss(fPoint coor, BOSS_TYPE type)
 {
 	BossEntity* newEntity = nullptr;
-
 	switch (type) {
 	case BOSS_TYPE::GULDAN:
-		newEntity = new Guldan(coor, BOSS_TYPE::GULDAN, spritesheetsEntities[GULDAN_SHEET]);
+		newEntity = new BossEntity(coor, BOSS_TYPE::GULDAN, nullptr);
 		break;
 	case BOSS_TYPE::LICH_KING:
 		newEntity = new BossEntity(coor, BOSS_TYPE::LICH_KING, nullptr);
@@ -359,8 +353,7 @@ BossEntity* EntitySystem::AddBoss(fPoint coor, BOSS_TYPE type)
 		newEntity = new BossEntity(coor, BOSS_TYPE::ILLIDAN, nullptr);
 		break;
 	}
-	toSpawn.push_back(newEntity);
-	return newEntity;
+	toSpawn.push_back((Entity*)newEntity);
 }
 
 PlayerEntity* EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
@@ -381,7 +374,11 @@ PlayerEntity* EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
 	}
 
 	toSpawn.push_back(newEntity);
-	App->colliders->AddCollider({ 0,0,32,32 }, COLLIDER_PLAYER, newEntity, {10,10});
+	SDL_Rect col_rect = newEntity->anim->GetCurrentRect();
+	col_rect.x = 0;
+	col_rect.y = 0;
+
+	newEntity->setCol(App->colliders->AddCollider(col_rect, COLLIDER_PLAYER, newEntity, { newEntity->anim->GetCurrentPivot().x * -1,  newEntity->anim->GetCurrentPivot().y * -1 }));
 	return newEntity;
 }
 
@@ -402,7 +399,7 @@ void EntitySystem::AddConsumable(fPoint coor, CONSUMABLE_TYPE type)
 	toSpawn.push_back((Entity*)newEntity);
 }
 
-ChestEntity* EntitySystem::AddChest(fPoint coor, CHEST_TYPE type) 
+ChestEntity* EntitySystem::AddChest(fPoint coor, CHEST_TYPE type)
 {
 	BROFILER_CATEGORY("AddChest", Profiler::Color::Chocolate);
 	ChestEntity* newEntity = nullptr;
@@ -466,10 +463,12 @@ void EntitySystem::AddCommands()
 
 void EntitySystem::ClearEnemies()
 {
+	//I need a fucking type to do this. Sorry for the madness.
+
 	/*std::list<Entity*>::iterator it;
 	for (it = entities.begin(); it != entities.end(); ++it)
 	{
-		if((*it)->)
+	if((*it)->)
 	}*/
 }
 

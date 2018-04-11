@@ -41,7 +41,6 @@ Guldan::Guldan(fPoint coor, BOSS_TYPE type, SDL_Texture* texture) : BossEntity(c
 	inverseTeleport.PushBack({ 705,146,68,68 });
 	inverseTeleport.speedFactor = 9.0f;
 
-	live = 1000;
 	anim = &idle;
 }
 

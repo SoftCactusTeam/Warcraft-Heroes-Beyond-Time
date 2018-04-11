@@ -20,7 +20,7 @@ enum ARCHER_STATE {
 
 class Enemy_Archer_Arrow {
 public:
-	Enemy_Archer_Arrow(fPoint coor, SDL_Texture* texture, fPoint direction, FIXED_ANGLE angle,int deadTimer = ARROW_DEAD_TIMER);
+	Enemy_Archer_Arrow(fPoint coor, SDL_Texture* texture, fPoint direction, int deadTimer = ARROW_DEAD_TIMER);
 
 	void Update();
 	void Finish();
@@ -29,11 +29,11 @@ public:
 	fPoint			pos;
 	fPoint			direction;
 	SDL_Texture*	texture;
-	SDL_Rect		rect[NUMBER_OF_ORIENTATIONS];
-	FIXED_ANGLE		angle;
+	SDL_Rect		rect;
 	int				deadTimer;
 	bool			destroy = false;
 	Collider*		arrowCollider = nullptr;
+	float angle;
 };
 
 class Enemy_Archer : public EnemyEntity
@@ -67,7 +67,7 @@ public:
 	void doDie();
 
 	void ChargeAnimations();
-	void ShootArrow(fPoint desviation = fPoint(0,0));
+	void ShootArrow(fPoint desviation = fPoint(0, 0));
 
 public:
 	ARCHER_STATE state;
@@ -76,12 +76,17 @@ public:
 	Animation animAtac[NUMBER_OF_ORIENTATIONS];
 	Animation animDeath[NUMBER_OF_ORIENTATIONS];
 
+	Animation animSmoke;
+
 	std::vector<Enemy_Archer_Arrow*> arrowsVector;
 
 private:
 	// Fast atac variables
 	int timeToShootAnother = 0;
 	int arrowToShoot = 0;
+	// TP variables
+	int tempoSmoke = -1;
+	fPoint posSmoke = { -1.f,-1.f };
 	// Scape variables
 	iPoint posToScape;
 

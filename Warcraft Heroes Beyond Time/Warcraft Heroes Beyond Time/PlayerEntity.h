@@ -8,7 +8,9 @@
 
 #include <list>
 
-class PlayerEntity : public DynamicEntity 
+class Collider;
+
+class PlayerEntity : public DynamicEntity
 {
 
 protected:
@@ -17,13 +19,15 @@ protected:
 	Animation idleDown, idleUp, idleLeft, idleRight, idleUpRight, idleUpLeft, idleDownRight, idleDownLeft;
 	Animation up, down, left, right, upLeft, upRight, downLeft, downRight;
 	Animation dashRight, dashDown, dashUpRight, dashDownRight, dashDownLeft, dashUp, dashLeft, dashUpLeft;
-	Animation attackDown, attackUp, attackLeft, attackRight;
+	Animation attackDown, attackDownLeft, attackDownRight, attackUp, attackUpRight, attackUpLeft, attackLeft, attackRight;
 	Animation skill;
-	Animation damagedAnim, dead;
+	Animation deadUpRight, deadDownRight;
 	Animation* animBefore = nullptr;
 	float speed = 250.0f;
 	bool move = true;
 	bool damaged = false;
+	float damagedCD = 0.0f;
+	float deadinfloorcd = 0.0f;
 
 	std::list<Item> itemsActive;
 
@@ -43,10 +47,12 @@ protected:
 		PL_DASH,
 		PL_ATTACK,
 		PL_SKILL,
-		PL_DEAD,
-		PL_DAMAGE
+		PL_DEAD
 
 	} state;
+
+	Collider* pcol = nullptr;
+
 
 public:
 
@@ -58,6 +64,7 @@ public:
 
 	virtual bool Start();
 	virtual bool Update(float dt);
+	virtual bool PostUpdate() { return true; }
 	void PlayerStates(float dt);
 	void KeyboardStates(float dt);
 	void JoyconStates(float dt);
@@ -67,7 +74,6 @@ public:
 	void CheckMapLimits();
 
 	virtual bool Finish();
-	virtual void Collision(COLLIDER_TYPE type);
 
 	void AddItem(Item item);
 	void IterateItems(ItemFunctions nameFunction);
@@ -75,7 +81,7 @@ public:
 
 	//This function calculates player position given a Bezier Curve
 	fPoint CalculatePosFromBezier(fPoint startPos, fPoint handleA, float t, fPoint handleB, fPoint endPos);
-	
+
 	Animation* GetAnimFromAngle(float angle, bool dashOn = false);
 	bool IsPlayerMoving();
 
@@ -87,6 +93,9 @@ public:
 	float dashDistance = 150.0f;
 	float t = 0.0f;
 	fPoint startPos = { 0.0f, 0.0f };
+	void ResetDash();
+	float DashCD = 0.0f;
+
 
 	//Camera culling
 	SDL_Rect freeZone;
@@ -95,18 +104,14 @@ public:
 	void CheckCulling();
 	bool drawFZ = false;
 	void DrawFreeZone(bool);
-<<<<<<< HEAD
-	
-=======
 
 	//Collisions
 	virtual void UpdateCollider() {}
-	virtual void Collision(Collider* collideWith){}
+	virtual void Collision(Collider* collideWith) {}
 	void setCol(Collider* pcol);
 	void PushOut(Collider* wall);
 	virtual void Attack() {}
 	virtual void UseSkill() {}
->>>>>>> master
 };
 
 #endif

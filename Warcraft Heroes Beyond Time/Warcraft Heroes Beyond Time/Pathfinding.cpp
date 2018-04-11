@@ -4,19 +4,10 @@
 #include "PlayerEntity.h"
 #include "ModuleMapGenerator.h"
 #include "ModuleRender.h"
+#include "ModulePrinter.h"
 #include "Scene.h"
 
 #include "Brofiler\Brofiler.h"
-
-fPoint SillyMovementToPlayer(fPoint pos)
-{
-	fPoint res = { 1,1 };
-	if (App->scene->player->pos.x - pos.x < 0)
-		res.x = -1;
-	if (App->scene->player->pos.y - pos.y < 0)
-		res.y = -1;
-	return res;
-}
 
 // ---------------------------------------------------------------------------------------------------
 // ------------------------------------------ PATH NODE ----------------------------------------------
@@ -44,7 +35,6 @@ void Pathfinding::LoadPathMap()
 		if (tmpMapNodes[i]->cost == -1)
 			AddNodeToMap(tmpMapNodes[i]->cost, tmpMapNodes[i]->pos);
 	}
-	LoadNeighbours();
 }
 
 void Pathfinding::ClearMap()
@@ -63,33 +53,13 @@ void Pathfinding::AddNodeToMap(int cost, iPoint point)
 
 void Pathfinding::PrintWalkableTiles()
 {
-
 	for (int i = 0; i < map.size(); i++)
-<<<<<<< HEAD
-	{
-		App->render->DrawQuad({ map[i]->nodePos.x * (int)tileSize, map[i]->nodePos.y * (int)tileSize, (int)tileSize, (int)tileSize }, 255, 255, 0, 140);
-	}
-=======
-		App->render->DrawQuad({ map[i]->nodePos.x * ((int)tileSize-2), map[i]->nodePos.y * ((int)tileSize-2), ((int)tileSize), ((int)tileSize) }, 255, 255, 0, 140);
->>>>>>> master
+		App->render->DrawQuad({ map[i]->nodePos.x * ((int)tileSize - 2), map[i]->nodePos.y * ((int)tileSize - 2), ((int)tileSize), ((int)tileSize) }, 255, 255, 0, 140);
 }
 
-void Pathfinding::LoadNeighbours()
+void Pathfinding::LoadNeighbours(pathNode* node)
 {
 	BROFILER_CATEGORY("LoadPathfindingNeighbours", Profiler::Color::Chocolate);
-<<<<<<< HEAD
-	for (int i = 0; i < map.size(); i++)
-	{
-		if (ExistWalkableAtPos(iPoint(map[i]->nodePos.x + 1, map[i]->nodePos.y)) != -1)
-			map[i]->neighbours[0] = map[ExistWalkableAtPos(iPoint(map[i]->nodePos.x + 1, map[i]->nodePos.y))];
-		if (ExistWalkableAtPos(iPoint(map[i]->nodePos.x - 1, map[i]->nodePos.y)) != -1)
-			map[i]->neighbours[1] = map[ExistWalkableAtPos(iPoint(map[i]->nodePos.x - 1, map[i]->nodePos.y))];
-		if (ExistWalkableAtPos(iPoint(map[i]->nodePos.x, map[i]->nodePos.y + 1)) != -1)
-			map[i]->neighbours[2] = map[ExistWalkableAtPos(iPoint(map[i]->nodePos.x, map[i]->nodePos.y + 1))];
-		if (ExistWalkableAtPos(iPoint(map[i]->nodePos.x, map[i]->nodePos.y - 1)) != -1)
-			map[i]->neighbours[3] = map[ExistWalkableAtPos(iPoint(map[i]->nodePos.x, map[i]->nodePos.y - 1))];
-	}
-=======
 
 	// Frontals
 	if (ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y)) != -1)
@@ -109,10 +79,9 @@ void Pathfinding::LoadNeighbours()
 		node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y + 1))]);
 	if (ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y - 1)) != -1)
 		node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y - 1))]);
->>>>>>> master
 }
 
-int Pathfinding::ExistWalkableAtPos(iPoint pos)
+int Pathfinding::ExistWalkableAtPos(iPoint& pos)
 {
 	for (int i = 0; i < map.size(); i++)
 		if (map[i]->nodePos == pos)
@@ -134,8 +103,8 @@ bool PathVector::CalculatePathAstar(iPoint thisPos, iPoint tileToMove)
 	pathVec.clear();
 
 	/// SET SIZE & POSITIONS
-	thisPos = iPoint(thisPos.x / App->map->getTileSize() , thisPos.y / App->map->getTileSize());
-	tileToMove = iPoint(tileToMove.x / App->map->getTileSize() , tileToMove.y / App->map->getTileSize());
+	thisPos = iPoint(thisPos.x / App->map->getTileSize(), thisPos.y / App->map->getTileSize());
+	tileToMove = iPoint(tileToMove.x / App->map->getTileSize(), tileToMove.y / App->map->getTileSize());
 
 	/// SI L'OBJECTIU ESTA FORA DEL PATH WALKABLE FORA
 	if (App->path->ExistWalkableAtPos(tileToMove) == -1 || App->path->ExistWalkableAtPos(thisPos) == -1)
@@ -147,7 +116,7 @@ bool PathVector::CalculatePathAstar(iPoint thisPos, iPoint tileToMove)
 
 	frontQueue.push(App->path->map[App->path->ExistWalkableAtPos(thisPos)]);
 	visitedQueue.push_back(App->path->map[App->path->ExistWalkableAtPos(thisPos)]);
-	
+
 	/// BUCLE
 	while (frontQueue.empty() == false)
 	{
@@ -157,47 +126,33 @@ bool PathVector::CalculatePathAstar(iPoint thisPos, iPoint tileToMove)
 		if (current->nodePos == tileToMove)
 			break;
 		// Calcular veins
-		for (int i = 0; i < 4; i++)
-			if (current->neighbours[i] != nullptr)
-			{
-				/// Comprobar si ja esta a visited
-				bool isVisited = false;
-				for (int i2 = 0; i2 < visitedQueue.size() && isVisited == false; i2++)
-					if (visitedQueue[i2] == current->neighbours[i]) {
-						isVisited = true;
-						break;
-					}
-				/// Si no es visitada fer la resta
-				if (isVisited == false)
-				{
-					int a = (current->neighbours[i]->nodePos.x) - tileToMove.x;
-					if (a < 0)
-						a *= -1;
-					int b = (current->neighbours[i]->nodePos.y) - tileToMove.y;
-					if (b < 0)
-						b *= -1;
-					int distanceToObjective = a + b;
-					current->neighbours[i]->cost = 1 + distanceToObjective;
-					current->neighbours[i]->parent = current;
-					frontQueue.push(current->neighbours[i]);
-					visitedQueue.push_back(current->neighbours[i]);
+		App->path->LoadNeighbours(current);
+		for (int i = 0; i < current->neighbours.size(); i++)
+		{
+			/// Comprobar si ja esta a visited
+			bool isVisited = false;
+			for (int i2 = 0; i2 < visitedQueue.size() && isVisited == false; i2++)
+				if (visitedQueue[i2] == current->neighbours[i]) {
+					isVisited = true;
+					break;
 				}
-				//else
-				//{
-				//	int a = current->neighbours[i]->nodePos.x - tileToMove.x;
-				//	if (a < 0)
-				//		a *= -1;
-				//	int b = current->neighbours[i]->nodePos.y - tileToMove.y;
-				//	if (b < 0)
-				//		b *= -1;
-				//	int distanceToObjective = a + b;
-				//	if ((current->neighbours[i]->cost + current->cost + distanceToObjective) < (current->neighbours[i]->cost))
-				//	{
-				//		frontQueue.push(current->neighbours[i]);
-				//		current->neighbours[i]->parent = current;
-				//	}
-				//}
+			/// Si no es visitada fer la resta
+			if (isVisited == false)
+			{
+				int a = (current->neighbours[i]->nodePos.x) - tileToMove.x;
+				if (a < 0)
+					a *= -1;
+				int b = (current->neighbours[i]->nodePos.y) - tileToMove.y;
+				if (b < 0)
+					b *= -1;
+				int distanceToObjective = a + b;
+				current->neighbours[i]->cost = 1 + distanceToObjective;
+				current->neighbours[i]->parent = current;
+				frontQueue.push(current->neighbours[i]);
+				visitedQueue.push_back(current->neighbours[i]);
 			}
+		}
+		current->neighbours.clear();
 	}
 	pathVec = visitedQueue;
 	return true;
@@ -235,15 +190,9 @@ void PathVector::PrintAstar()
 {
 	int tileSize = App->map->getTileSize();
 	for (int i = 0; i < pathVec.size(); i++)
-<<<<<<< HEAD
-		App->render->DrawQuad({ pathVec[i]->nodePos.x * (int)tileSize, pathVec[i]->nodePos.y * (int)tileSize, (int)tileSize, (int)tileSize }, 0, 150 , 255, 140);
+		App->printer->PrintQuad({ pathVec[i]->nodePos.x * (int)tileSize, pathVec[i]->nodePos.y * (int)tileSize - 2, (int)tileSize, (int)tileSize }, Black);
 	for (int i = 0; i < walkPath.size(); i++)
-		App->render->DrawQuad({ walkPath[i]->nodePos.x * (int)tileSize, walkPath[i]->nodePos.y * (int)tileSize, (int)tileSize, (int)tileSize }, 0, 200, 255, 140);
-=======
-		App->printer->PrintQuad({ pathVec[i]->nodePos.x * (int)tileSize, pathVec[i]->nodePos.y * (int)tileSize-2, (int)tileSize, (int)tileSize }, Black);
-	for (int i = 0; i < walkPath.size(); i++)
-		App->printer->PrintQuad({ pathVec[i]->nodePos.x * (int)tileSize, pathVec[i]->nodePos.y * (int)tileSize-2, (int)tileSize, (int)tileSize }, Blue);
->>>>>>> master
+		App->printer->PrintQuad({ pathVec[i]->nodePos.x * (int)tileSize, pathVec[i]->nodePos.y * (int)tileSize - 2, (int)tileSize, (int)tileSize }, Blue);
 }
 
 void PathVector::Clear()
@@ -254,9 +203,7 @@ void PathVector::Clear()
 
 bool PathVector::isEmpty()
 {
-	if (pathVec.size() <= 0)
-		return true;
-	else if (walkPath.size() <= 0)
+	if (pathVec.size() <= 0 || walkPath.size() <= 0)
 		return true;
 	return false;
 }
