@@ -5,13 +5,13 @@
 
 #include "ModuleTextures.h"
 #include <list>
+#include <algorithm>
 
 struct FelBall;
 
 class Guldan : public BossEntity
 {
 private:
-
 	bool createNewBalls = false;
 	bool readeForTimeNewBalls = false;
 	float timeForNewBalls = 0.0f;
@@ -19,10 +19,10 @@ private:
 	bool startTimeForTP = false;
 	float floatTimeForTp = 0.0f;
 	SDL_Texture* effectsTexture = nullptr;
-	Animation idle, teleport, inverseTeleport;
+	Animation idle, teleport, inverseTeleport, dead;
 	iPoint tpPoints[5] = { {14,4},{ 7,6 },{ 21,6 },{ 10,11 },{ 18,11 } };
 	iPoint nextTpPos = {0,0};
-
+	int hp = 0;
 	std::list<FelBall*> fellBallsList;
 	
 	enum class BossStates
@@ -33,7 +33,6 @@ private:
 		TELEPORT,
 		INVERSETELEPORT,
 		DEAD,
-		METEOR
 	} statesBoss = BossStates::NON_STATE;
 
 public:
@@ -73,7 +72,6 @@ public:
 
 	SDL_Texture* tex = nullptr;
 	Animation* anim = nullptr;
-
 public:
 
 	FelBall(fPoint pos, int radius, int angle, SDL_Texture* tex, int angleInside) : pos(pos), radius(radius), startAngle(angle), tex(tex), angleInside(angleInside)
@@ -90,6 +88,7 @@ public:
 	}
 
 	~FelBall() {};
+
 	void StartCountDownToDie() { startDying = true; };
 	void StartMovement() { 
 		startMovement = true;
@@ -191,11 +190,4 @@ public:
 	{
 		App->printer->PrintSprite(iPoint((int)pos.x, (int)pos.y), tex, anim->GetCurrentFrame(), 1, ModulePrinter::Pivots::CENTER, rotation[rotationCont]);
 	}
-};
-
-struct Meteor
-{
-	SDL_Rect rect;
-
-	void Update() {};
 };

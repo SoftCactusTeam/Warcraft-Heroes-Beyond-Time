@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="48" tileheight="48" nextobjectid="1">
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="48" tileheight="48" nextobjectid="1">
  <tileset firstgid="1" name="More_Tiles" tilewidth="48" tileheight="48" spacing="1" tilecount="25" columns="5">
-  <image source="../../../../../Desktop/Tiles.png" width="256" height="256"/>
+  <image source="../../../More_Tiles.png" width="256" height="256"/>
  </tileset>
  <layer name="Capa de Patrones 1" width="30" height="30">
   <data>
@@ -170,7 +170,7 @@
    <tile gid="6"/>
    <tile gid="7"/>
    <tile gid="6"/>
-   <tile gid="1"/>
+   <tile gid="6"/>
    <tile gid="7"/>
    <tile gid="7"/>
    <tile gid="6"/>
@@ -223,21 +223,21 @@
    <tile gid="6"/>
    <tile gid="6"/>
    <tile gid="7"/>
-   <tile gid="1"/>
    <tile gid="6"/>
    <tile gid="6"/>
    <tile gid="6"/>
-   <tile gid="7"/>
    <tile gid="6"/>
-   <tile gid="7"/>
-   <tile gid="7"/>
    <tile gid="7"/>
    <tile gid="6"/>
    <tile gid="7"/>
    <tile gid="7"/>
    <tile gid="7"/>
+   <tile gid="6"/>
    <tile gid="7"/>
-   <tile gid="1"/>
+   <tile gid="7"/>
+   <tile gid="7"/>
+   <tile gid="7"/>
+   <tile gid="6"/>
    <tile gid="7"/>
    <tile gid="7"/>
    <tile gid="7"/>
@@ -376,7 +376,7 @@
    <tile gid="7"/>
    <tile gid="7"/>
    <tile gid="6"/>
-   <tile gid="1"/>
+   <tile gid="6"/>
    <tile gid="6"/>
    <tile gid="6"/>
    <tile gid="7"/>
@@ -384,7 +384,7 @@
    <tile gid="6"/>
    <tile gid="6"/>
    <tile gid="6"/>
-   <tile gid="1"/>
+   <tile gid="6"/>
    <tile gid="7"/>
    <tile gid="7"/>
    <tile gid="7"/>

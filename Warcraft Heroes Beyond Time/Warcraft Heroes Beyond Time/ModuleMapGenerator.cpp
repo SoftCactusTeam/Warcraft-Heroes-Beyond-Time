@@ -172,6 +172,7 @@ bool MapGenerator::GenerateBossMap()
 
 		if (gid == 5)
 		{
+			App->colliders->AddCollider(SDL_Rect({ nodes[contNodes]->pos.x * (int)(tileSize - 2), (nodes[contNodes]->pos.y + 1) * (int)(tileSize - 2) - (int)(tileSize - 2), 48,48 }), COLLIDER_TYPE::COLLIDER_UNWALKABLE);
 			nodes[contNodes]->whatToBlit = VOID;
 			nodes[contNodes]->layerBelow = 1;
 		}
@@ -182,6 +183,7 @@ bool MapGenerator::GenerateBossMap()
 		}
 		else
 		{
+			App->colliders->AddCollider(SDL_Rect({ nodes[contNodes]->pos.x * (int)(tileSize - 2), (nodes[contNodes]->pos.y + 1) * (int)(tileSize - 2) - (int)(tileSize - 2), 48,48 }), COLLIDER_TYPE::COLLIDER_UNWALKABLE);
 			nodes[contNodes]->whatToBlit = WALL;
 			nodes[contNodes]->layerBelow = 0;
 		}

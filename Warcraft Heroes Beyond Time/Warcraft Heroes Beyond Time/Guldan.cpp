@@ -1,6 +1,7 @@
 #include "BossEntity.h"
 #include "Guldan.h"
 #include <time.h>
+#include "ModuleInput.h"
 
 Guldan::Guldan(fPoint coor, BOSS_TYPE type, SDL_Texture* texture) : BossEntity(coor, type, texture)
 {
@@ -41,7 +42,25 @@ Guldan::Guldan(fPoint coor, BOSS_TYPE type, SDL_Texture* texture) : BossEntity(c
 	inverseTeleport.PushBack({ 705,146,68,68 });
 	inverseTeleport.speedFactor = 9.0f;
 
+	dead.PushBack({ 2,283,60,64 });
+	dead.PushBack({ 71,283,60,64 });
+	dead.PushBack({ 140,283,60,64 });
+	dead.PushBack({ 209,283,60,64 });
+	dead.PushBack({ 278,283,60,64 });
+	dead.PushBack({ 347,283,60,64 });
+	dead.PushBack({ 416,283,60,64 });
+	dead.PushBack({ 487,283,60,64 });
+	dead.PushBack({ 555,283,60,64 });
+	dead.PushBack({ 624,283,60,64 });
+	dead.PushBack({ 691,283,60,64 });
+	dead.PushBack({ 760,283,60,64 });
+	dead.PushBack({ 829,283,60,64 });
+	dead.PushBack({ 898,283,60,64 });
+	dead.loop = false;
+	dead.speedFactor = 9.0f;
 	anim = &idle;
+
+	hp = 1000;
 }
 
 Guldan::~Guldan()
@@ -80,6 +99,8 @@ bool Guldan::Update(float dt)
 		if (timeForNewBalls >= 2.0f)
 		{
 			readeForTimeNewBalls = false;
+			readyToTP = false;
+			startTimeForTP = false;
 			timeForNewBalls = 0.0f;
 			createNewBalls = true;
 		}
@@ -89,6 +110,18 @@ bool Guldan::Update(float dt)
 	{
 		case BossStates::IDLE:
 		{
+
+			if (App->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
+			{
+				anim = &dead;
+				floatTimeForTp = 0.0f;
+				startTimeForTP = 0.0f;
+				createNewBalls = false;
+				readeForTimeNewBalls = false;
+				statesBoss = BossStates::DEAD;
+				break;
+			}
+
 			if (floatTimeForTp >= 2.0f)
 			{
 				statesBoss = BossStates::TELEPORT;
@@ -133,6 +166,14 @@ bool Guldan::Update(float dt)
 			break;
 		}
 
+		case BossStates::DEAD:
+		{
+
+			fellBallsList.clear();
+
+			break;
+		}
+
 	}
 
 	anim->speed = anim->speedFactor * dt;
@@ -164,7 +205,6 @@ bool Guldan::Update(float dt)
 		}
 		
 	}
-
 	return true;
 }
 
@@ -183,13 +223,13 @@ bool Guldan::CreateFelBalls(fPoint pos)
 	fellBallsList.push_back(new FelBall({ pos.x + 23 / 2, pos.y + 23 / 2 }, 60, 90, effectsTexture, 90));
 
 	fellBallsList.push_back(new FelBall({ pos.x + 23 / 2, pos.y + 23 / 2 }, 60, 135, effectsTexture, 90));
-														
+																				 
 	fellBallsList.push_back(new FelBall({ pos.x + 23 / 2, pos.y + 23 / 2 }, 60, 180, effectsTexture, 90));
-														
+																				 
 	fellBallsList.push_back(new FelBall({ pos.x + 23 / 2, pos.y + 23 / 2 }, 60, 225, effectsTexture, 90));
-														
+																				  
 	fellBallsList.push_back(new FelBall({ pos.x + 23 / 2, pos.y + 23 / 2 }, 60, 270, effectsTexture, 90));
-														
+																									 																					 
 	fellBallsList.push_back(new FelBall({ pos.x + 23 / 2, pos.y + 23 / 2 }, 60, 315, effectsTexture, 90));
 
 	return true;
