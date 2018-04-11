@@ -138,8 +138,12 @@ bool Guldan::Update(float dt)
 
 			if (anim->Finished())
 			{
+				int randomtp;
 				createNewBalls = false;
-				int randomtp = rand() % 5;
+				do
+				{
+					randomtp = rand() % 5;
+				} while (tpPoints[randomtp].x == (int)pos.x/48 && tpPoints[randomtp].y == (int)pos.y/48);
 				pos.x = tpPoints[randomtp].x * 48;
 				pos.y = tpPoints[randomtp].y * 48;
 				anim = &inverseTeleport;

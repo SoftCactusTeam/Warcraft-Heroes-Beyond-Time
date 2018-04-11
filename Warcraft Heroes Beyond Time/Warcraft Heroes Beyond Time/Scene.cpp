@@ -161,7 +161,7 @@ bool Scene::Update(float dt)
 		App->map->GenerateBossMap();
 		player = App->entities->AddPlayer({ 14 * 48,14 * 48, }, THRALL);
 		App->gui->CreateHPBar(player, { 10,5 });
-		App->entities->AddBoss({ 14 * 48,5 * 48, }, GULDAN);
+		App->entities->AddBoss({ 14 * 48,4 * 48 }, GULDAN);
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN)
