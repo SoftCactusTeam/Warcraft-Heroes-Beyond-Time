@@ -43,6 +43,7 @@ public:
 	//uint sounds here
 	uint ButtonHovered = 0;
 	uint ButtonClicked = 0;
+	uint ArrowSound = 0;
 	//std::string BSO's
 	std::string MainMenuBSO;
 	std::string InGameBSO;

@@ -8,6 +8,7 @@
 #include "Scene.h"
 #include "ModuleInput.h"
 #include "ModulePrinter.h"
+#include "ModuleAudio.h"
 
 #define DISTANCE_TO_MOVE		400
 #define DISTANCE_TO_ATAC		150
@@ -115,6 +116,7 @@ void Enemy_Archer::Collision(Collider* collideWith)
 		{
 		case  Collider::ATTACK_TYPE::PLAYER_MELEE:
 			live -= 40;
+			App->audio->PlayFx(1);
 			if (live <= 0)
 				initDie();
 			else
@@ -371,6 +373,7 @@ void Enemy_Archer::doDie()
 
 void Enemy_Archer::ShootArrow(fPoint desviation)
 {
+	App->audio->PlayFx(3);
 	fPoint directionShoot = App->scene->player->pos;
 	directionShoot.x -= pos.x + desviation.x;
 	directionShoot.y -= pos.y + desviation.y;
