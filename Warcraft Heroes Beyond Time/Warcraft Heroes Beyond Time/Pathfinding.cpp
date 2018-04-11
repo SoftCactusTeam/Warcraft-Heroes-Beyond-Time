@@ -155,6 +155,7 @@ bool PathVector::CalculatePathAstar(iPoint thisPos, iPoint tileToMove)
 		current->neighbours.clear();
 	}
 	pathVec = visitedQueue;
+	return true;
 }
 
 bool PathVector::CalculateWay(iPoint thisPos, iPoint tileToMove)
