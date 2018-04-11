@@ -7,6 +7,8 @@
 #include "ModuleEntitySystem.h"
 #include "ModulePrinter.h"
 #include "ModuleColliders.h"
+#include "Application.h"
+#include "ModuleTextures.h"
 
 PlayerEntity::PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : DynamicEntity (coor, texture), type(type) {}
 
@@ -15,6 +17,8 @@ bool PlayerEntity::Start()
 	anim = &idleDown;
 	state = states::PL_IDLE;
 
+	venom = App->textures->Load("sprites/venom");
+
 	InitCulling();
 
 	return true;
@@ -22,6 +26,10 @@ bool PlayerEntity::Start()
 
 bool PlayerEntity::Update(float dt) 
 { 
+	if (App->scene->paper != nullptr)
+	{
+
+	}
 	return true; 
 }
 
