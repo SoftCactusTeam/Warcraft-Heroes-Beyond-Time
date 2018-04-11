@@ -12,6 +12,8 @@
 #include "PortalEntity.h"
 #include "Pathfinding.h"
 #include "PlayerEntity.h"
+#include "Item.h"
+#include "WCItem.h"
 
 #include "Brofiler\Brofiler.h"
 
@@ -95,7 +97,7 @@ bool Scene::Start()
 			iPoint chestPos = App->map->GetRandomValidPoint();
 			lvlChest = App->entities->AddChest({ (float)chestPos.x * 48,(float)chestPos.y * 48 }, MID_CHEST);
 			portal = (PortalEntity*)App->entities->AddStaticEntity({ 25 * 48,25 * 48 }, PORTAL);
-			//paper = 
+			
 
 			break;
 		}
@@ -168,6 +170,8 @@ bool Scene::Update(float dt)
 			lvlChest->UnLockChest();
 			lvlChest->OpenChest();
 			portal->OpenPortal();
+			paper = new WCItem("wcpaper", ItemType::passive_item_type, 0);
+			player->AddItem((WCItem)*paper);
 		}
 		
 	}

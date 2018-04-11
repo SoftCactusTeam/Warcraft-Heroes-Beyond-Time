@@ -1,8 +1,8 @@
-#pragma once
-#include "Item.h"
+#ifndef _WC_ITEM_
+#define _WC_ITEM_
 
-class WCItem :
-	public Item
+#include "Item.h"
+class WCItem : public Item
 {
 public:
 	WCItem();
@@ -10,3 +10,4 @@ public:
 	~WCItem();
 };
 
+#endif
