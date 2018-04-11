@@ -8,6 +8,18 @@
 
 struct Collider
 {
+<<<<<<< HEAD
+=======
+	enum class ATTACK_TYPE
+	{
+		NONE,
+		ENEMY_ARROW,
+		ENEMY_MELEE,
+		PLAYER_MELEE,
+		THRALL_SKILL
+	};
+
+>>>>>>> master
 	Collider(SDL_Rect colliderRect, COLLIDER_TYPE type, Entity* owner = nullptr, iPoint offset = iPoint(0,0));
 	SDL_Rect colliderRect;										// El X i Y del Rect fan de offset !!!
 	COLLIDER_TYPE type;

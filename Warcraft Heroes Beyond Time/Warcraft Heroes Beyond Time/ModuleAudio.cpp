@@ -57,6 +57,8 @@ bool Audio::Awake(pugi::xml_node& audioNode)
 	//---------------------------------------Load fx-------------------------------
 	ButtonClicked = LoadFx("audio/fx/ButtonClick.ogg");
 	ButtonHovered = LoadFx("audio/fx/ButtonMouseHover.ogg");
+	ArrowSound = LoadFx("audio/fx/Arrow_shoot.ogg");
+
 	//---------------------------------------Load Music----------------------------
 	MainMenuBSO = "audio/BSO's/Warcraft HBT - Main Menu.ogg";
 	InGameBSO = "audio/BSO's/Warcraft HBT - Level.ogg";
@@ -64,7 +66,6 @@ bool Audio::Awake(pugi::xml_node& audioNode)
 
 	Mix_Volume(-1, (MIX_MAX_VOLUME * FXVolumePercent) / 100);
 	Mix_VolumeMusic((MIX_MAX_VOLUME * MusicVolumePercent) / 100);
-
 
 
 	return ret;

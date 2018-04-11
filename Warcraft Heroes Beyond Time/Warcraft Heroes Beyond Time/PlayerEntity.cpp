@@ -89,8 +89,70 @@ void PlayerEntity::KeyboardStates(float dt)
 	case states::PL_IDLE:
 		if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT))
 		{
+<<<<<<< HEAD
 			state = states::PL_UP_RIGHT;
 			anim = &upRight;
+=======
+			if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT))
+			{
+				state = states::PL_UP_RIGHT;
+				anim = &upRight;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+			{
+				state = states::PL_UP_LEFT;
+				anim = &upLeft;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			{
+				state = states::PL_DOWN_RIGHT;
+				anim = &downRight;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+			{
+				state = states::PL_DOWN_LEFT;
+				anim = &downLeft;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+			{
+				state = states::PL_UP;
+				anim = &up;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+			{
+				state = states::PL_DOWN;
+				anim = &down;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+			{
+				state = states::PL_LEFT;
+				anim = &left;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			{
+				state = states::PL_RIGHT;
+				anim = &right;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && t == 0.0f && DashCD == 0.0f)
+			{
+				DashCD = 0.0f;
+				startPos = pos;
+				animBefore = anim;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+			{
+				state = states::PL_ATTACK;
+				animBefore = anim;
+				Attack();
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+			{
+				state = states::PL_SKILL;
+				animBefore = anim;
+				anim = &skill;
+				UseSkill();
+			}
+>>>>>>> master
 			break;
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
@@ -101,26 +163,179 @@ void PlayerEntity::KeyboardStates(float dt)
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 		{
+<<<<<<< HEAD
 			state = states::PL_DOWN_RIGHT;
 			anim = &downRight;
+=======
+			pos.y -= speed * dt;
+
+			if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_UP))
+			{
+				state = states::PL_IDLE;
+				anim = &idleUp;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			{
+				state = states::PL_UP_RIGHT;
+				anim = &upRight;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+			{
+				state = states::PL_UP_LEFT;
+				anim = &upLeft;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
+			{
+				startPos = pos;
+				state = states::PL_DASH;
+				animBefore = anim;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+			{
+				state = states::PL_ATTACK;
+				animBefore = anim;
+				Attack();
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+			{
+				state = states::PL_SKILL;
+				animBefore = anim;
+				anim = &skill;
+				UseSkill();
+			}
+>>>>>>> master
 			break;
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		{
+<<<<<<< HEAD
 			state = states::PL_DOWN_LEFT;
 			anim = &downLeft;
+=======
+			pos.y += speed * dt;
+			if (App->input->GetKey(SDL_SCANCODE_S) == KEY_UP)
+			{
+				state = states::PL_IDLE;
+				anim = &idleDown;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			{
+				state = states::PL_DOWN_RIGHT;
+				anim = &downRight;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+			{
+				state = states::PL_DOWN_LEFT;
+				anim = &downLeft;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
+			{
+				startPos = pos;
+				state = states::PL_DASH;
+				animBefore = anim;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+			{
+				state = states::PL_ATTACK;
+				animBefore = anim;
+				Attack();
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+			{
+				state = states::PL_SKILL;
+				animBefore = anim;
+				UseSkill();
+				anim = &skill;
+			}
+>>>>>>> master
 			break;
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 		{
+<<<<<<< HEAD
 			state = states::PL_UP;
 			anim = &up;
+=======
+			pos.x -= speed * dt;
+			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
+			{
+				state = states::PL_IDLE;
+				anim = &idleLeft;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+			{
+				state = states::PL_UP_LEFT;
+				anim = &upLeft;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+			{
+				state = states::PL_DOWN_LEFT;
+				anim = &downLeft;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
+			{
+				startPos = pos;
+				state = states::PL_DASH;
+				animBefore = anim;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+			{
+				state = states::PL_ATTACK;
+				animBefore = anim;
+				Attack();
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+			{
+				state = states::PL_SKILL;
+				animBefore = anim;
+				anim = &skill;
+				UseSkill();
+			}
+>>>>>>> master
 			break;
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 		{
+<<<<<<< HEAD
 			state = states::PL_DOWN;
 			anim = &down;
+=======
+			pos.x += speed * dt;
+			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
+			{
+				state = states::PL_IDLE;
+				anim = &idleRight;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+			{
+				state = states::PL_UP_RIGHT;
+				anim = &upRight;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+			{
+				state = states::PL_DOWN_RIGHT;
+				anim = &downRight;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
+			{
+				startPos = pos;
+				state = states::PL_DASH;
+				animBefore = anim;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+			{
+				state = states::PL_ATTACK;
+				animBefore = anim;
+				Attack();
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+			{
+				state = states::PL_SKILL;
+				animBefore = anim;
+				anim = &skill;
+				UseSkill();
+			}
+>>>>>>> master
 			break;
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
@@ -196,7 +411,17 @@ void PlayerEntity::KeyboardStates(float dt)
 			}
 			else if (animBefore == &idleUp || animBefore == &up)
 			{
+<<<<<<< HEAD
 				pos.y = startPos.y - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
+=======
+				state = states::PL_SKILL;
+				animBefore = anim;
+				anim = &skill;
+				UseSkill();
+			}
+			break;
+		}
+>>>>>>> master
 
 				anim = &dashUp;
 				float x = 0.05f / dt;
@@ -250,6 +475,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			}
 			else if (animBefore == &idleUpLeft || animBefore == &upLeft)
 			{
+<<<<<<< HEAD
 				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
 
 				pos.x = startPos.x - dashDistance * 0.75f * bezierPoint.y;
@@ -259,6 +485,12 @@ void PlayerEntity::KeyboardStates(float dt)
 				float x = 0.05f / dt;
 				t += (x * dt);
 				break;
+=======
+				state = states::PL_SKILL;
+				animBefore = anim;
+				anim = &skill;
+				UseSkill();
+>>>>>>> master
 			}
 		}
 		else
@@ -282,6 +514,7 @@ void PlayerEntity::KeyboardStates(float dt)
 				anim = &idleDownRight;
 			else if (anim == &dashDownLeft)
 				anim = &idleDownLeft;
+<<<<<<< HEAD
 		}
 
 		break;
@@ -293,12 +526,83 @@ void PlayerEntity::KeyboardStates(float dt)
 		{
 			state = states::PL_IDLE;
 			anim = &idleUp;
+=======
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_UP)
+			{
+				state = states::PL_LEFT;
+				anim = &left;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
+			{
+				state = states::PL_DOWN;
+				anim = &down;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
+			{
+				startPos = pos;
+				state = states::PL_DASH;
+				animBefore = anim;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+			{
+				state = states::PL_ATTACK;
+				animBefore = anim;
+				Attack();
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+			{
+				state = states::PL_SKILL;
+				animBefore = anim;
+				anim = &skill;
+				UseSkill();
+			}
+>>>>>>> master
 			break;
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 		{
+<<<<<<< HEAD
 			state = states::PL_UP_RIGHT;
 			anim = &upRight;
+=======
+			pos.x += speed * 0.75f * dt;
+			pos.y += speed * 0.75f * dt;
+			if (App->input->GetKey(SDL_SCANCODE_S) == KEY_UP && App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
+			{
+				state = states::PL_IDLE;
+				anim = &idleDownRight;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_UP)
+			{
+				state = states::PL_RIGHT;
+				anim = &right;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
+			{
+				state = states::PL_DOWN;
+				anim = &down;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
+			{
+				startPos = pos;
+				state = states::PL_DASH;
+				animBefore = anim;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+			{
+				state = states::PL_ATTACK;
+				animBefore = anim;
+				Attack();
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+			{
+				state = states::PL_SKILL;
+				animBefore = anim;
+				anim = &skill;
+				UseSkill();
+			}
+>>>>>>> master
 			break;
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)

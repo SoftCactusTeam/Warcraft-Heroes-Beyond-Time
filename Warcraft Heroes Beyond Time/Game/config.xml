@@ -3,7 +3,7 @@
 <Game>
 
   <App>
-
+    <fps_cap value = "60"/>
   </App>
 
   <console>

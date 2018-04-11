@@ -95,7 +95,18 @@ public:
 	void CheckCulling();
 	bool drawFZ = false;
 	void DrawFreeZone(bool);
+<<<<<<< HEAD
 	
+=======
+
+	//Collisions
+	virtual void UpdateCollider() {}
+	virtual void Collision(Collider* collideWith){}
+	void setCol(Collider* pcol);
+	void PushOut(Collider* wall);
+	virtual void Attack() {}
+	virtual void UseSkill() {}
+>>>>>>> master
 };
 
 #endif

@@ -65,14 +65,19 @@ void Pathfinding::PrintWalkableTiles()
 {
 
 	for (int i = 0; i < map.size(); i++)
+<<<<<<< HEAD
 	{
 		App->render->DrawQuad({ map[i]->nodePos.x * (int)tileSize, map[i]->nodePos.y * (int)tileSize, (int)tileSize, (int)tileSize }, 255, 255, 0, 140);
 	}
+=======
+		App->render->DrawQuad({ map[i]->nodePos.x * ((int)tileSize-2), map[i]->nodePos.y * ((int)tileSize-2), ((int)tileSize), ((int)tileSize) }, 255, 255, 0, 140);
+>>>>>>> master
 }
 
 void Pathfinding::LoadNeighbours()
 {
 	BROFILER_CATEGORY("LoadPathfindingNeighbours", Profiler::Color::Chocolate);
+<<<<<<< HEAD
 	for (int i = 0; i < map.size(); i++)
 	{
 		if (ExistWalkableAtPos(iPoint(map[i]->nodePos.x + 1, map[i]->nodePos.y)) != -1)
@@ -84,6 +89,27 @@ void Pathfinding::LoadNeighbours()
 		if (ExistWalkableAtPos(iPoint(map[i]->nodePos.x, map[i]->nodePos.y - 1)) != -1)
 			map[i]->neighbours[3] = map[ExistWalkableAtPos(iPoint(map[i]->nodePos.x, map[i]->nodePos.y - 1))];
 	}
+=======
+
+	// Frontals
+	if (ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y)) != -1)
+		node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y))]);
+	if (ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y)) != -1)
+		node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y))]);
+	if (ExistWalkableAtPos(iPoint(node->nodePos.x, node->nodePos.y + 1)) != -1)
+		node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x, node->nodePos.y + 1))]);
+	if (ExistWalkableAtPos(iPoint(node->nodePos.x, node->nodePos.y - 1)) != -1)
+		node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x, node->nodePos.y - 1))]);
+	// Diagonals
+	if (ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y + 1)) != -1)
+		node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y + 1))]);
+	if (ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y - 1)) != -1)
+		node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y - 1))]);
+	if (ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y + 1)) != -1)
+		node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y + 1))]);
+	if (ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y - 1)) != -1)
+		node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y - 1))]);
+>>>>>>> master
 }
 
 int Pathfinding::ExistWalkableAtPos(iPoint pos)
@@ -112,14 +138,13 @@ bool PathVector::CalculatePathAstar(iPoint thisPos, iPoint tileToMove)
 	tileToMove = iPoint(tileToMove.x / App->map->getTileSize() , tileToMove.y / App->map->getTileSize());
 
 	/// SI L'OBJECTIU ESTA FORA DEL PATH WALKABLE FORA
-	if (App->path->ExistWalkableAtPos(tileToMove) == -1)
+	if (App->path->ExistWalkableAtPos(tileToMove) == -1 || App->path->ExistWalkableAtPos(thisPos) == -1)
 		return false;
 
 	/// INIT QUEUES & FIRST PUSH
 	std::priority_queue<pathNode*, std::vector<pathNode*>, pathNodeComparison> frontQueue;
 	std::vector<pathNode*> visitedQueue;
-	if (App->path->ExistWalkableAtPos(thisPos) == -1)
-		return false;
+
 	frontQueue.push(App->path->map[App->path->ExistWalkableAtPos(thisPos)]);
 	visitedQueue.push_back(App->path->map[App->path->ExistWalkableAtPos(thisPos)]);
 	
@@ -175,6 +200,7 @@ bool PathVector::CalculatePathAstar(iPoint thisPos, iPoint tileToMove)
 			}
 	}
 	pathVec = visitedQueue;
+	return true;
 }
 
 bool PathVector::CalculateWay(iPoint thisPos, iPoint tileToMove)
@@ -209,9 +235,15 @@ void PathVector::PrintAstar()
 {
 	int tileSize = App->map->getTileSize();
 	for (int i = 0; i < pathVec.size(); i++)
+<<<<<<< HEAD
 		App->render->DrawQuad({ pathVec[i]->nodePos.x * (int)tileSize, pathVec[i]->nodePos.y * (int)tileSize, (int)tileSize, (int)tileSize }, 0, 150 , 255, 140);
 	for (int i = 0; i < walkPath.size(); i++)
 		App->render->DrawQuad({ walkPath[i]->nodePos.x * (int)tileSize, walkPath[i]->nodePos.y * (int)tileSize, (int)tileSize, (int)tileSize }, 0, 200, 255, 140);
+=======
+		App->printer->PrintQuad({ pathVec[i]->nodePos.x * (int)tileSize, pathVec[i]->nodePos.y * (int)tileSize-2, (int)tileSize, (int)tileSize }, Black);
+	for (int i = 0; i < walkPath.size(); i++)
+		App->printer->PrintQuad({ pathVec[i]->nodePos.x * (int)tileSize, pathVec[i]->nodePos.y * (int)tileSize-2, (int)tileSize, (int)tileSize }, Blue);
+>>>>>>> master
 }
 
 void PathVector::Clear()

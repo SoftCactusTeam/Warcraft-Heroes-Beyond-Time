@@ -11,7 +11,22 @@ public:
 	bool Update(float dt);
 	bool Finish();
 
+<<<<<<< HEAD
 	void Collision(COLLIDER_TYPE type);
+=======
+private:
+	void UpdateCollider();
+	void UpdateAttackCollider();
+	void Attack();
+	void UseSkill();
+	void UpdateSkillCollider();
+	
+private:
+	Collider* attackCollider = nullptr;
+	Collider* skillCollider = nullptr;
+	bool attacking = false;
+	bool skillOn = false;
+>>>>>>> master
 };
 
 #endif

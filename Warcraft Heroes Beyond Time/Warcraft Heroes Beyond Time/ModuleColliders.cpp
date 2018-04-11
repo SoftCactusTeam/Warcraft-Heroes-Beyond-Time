@@ -33,8 +33,16 @@ ModuleColliders::ModuleColliders()
 
 bool ModuleColliders::Awake(pugi::xml_node& consoleNode)
 {
+<<<<<<< HEAD
 	ConsoleOrder* order = new ConsoleColliders();
 	App->console->AddConsoleOrderToList(order);
+=======
+	return true;
+}
+
+bool ModuleColliders::Start()
+{
+>>>>>>> master
 	printColliders = false;
 	return true;
 }
@@ -134,12 +142,26 @@ void ModuleColliders::deleteCollider(Collider* col)
 
 void ModuleColliders::CleanCollidersEntity(Entity* entity)
 {
+<<<<<<< HEAD
 	for (int i = 0; i < colliders.size(); i++)
 		if (colliders[i]->owner == entity)
 		{
 			delete colliders[i];
 			colliders.erase(colliders.begin() + i);
 		}
+=======
+	if (entity != nullptr) 
+	{
+		std::list<Collider*>::iterator it;
+		for (it = colliders.begin(); it != colliders.end(); ++it)
+			if ((*it)->owner == entity)
+			{
+				delete (*it);
+				colliders.erase(it);
+				break;
+			}
+	}
+>>>>>>> master
 }
 
 bool ModuleColliders::CheckTypeCollMatrix(COLLIDER_TYPE type, COLLIDER_TYPE type2)
@@ -158,8 +180,13 @@ bool ModuleColliders::CheckTypeCollMatrix(COLLIDER_TYPE type, COLLIDER_TYPE type
 		if (type2 == COLLIDER_ENEMY || type2 == COLLIDER_ENEMY_ATAC)
 			return true;
 		break;
+<<<<<<< HEAD
 	case COLLIDER_ENEMY_ATAC:
 		if (type2 == COLLIDER_PLAYER || type2 == COLLIDER_PLAYER_ATAC)
+=======
+	case COLLIDER_ENEMY_ATTACK:
+		if (type2 == COLLIDER_PLAYER || type2 == COLLIDER_PLAYER_ATTACK || type2 == COLLIDER_UNWALKABLE)
+>>>>>>> master
 			return true;
 		break;
 	}

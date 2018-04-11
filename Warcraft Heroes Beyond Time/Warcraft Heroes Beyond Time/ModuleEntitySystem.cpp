@@ -245,7 +245,19 @@ bool EntitySystem::PostUpdate()
 			ret = (*it)->PostUpdate();
 
 		if ((*it)->destroy)
+<<<<<<< HEAD
 			entities.remove((*it));
+=======
+		{
+			App->colliders->CleanCollidersEntity((*it));
+			it = entities.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+		
+>>>>>>> master
 	}
 
 	return ret;
@@ -328,7 +340,7 @@ void EntitySystem::AddEnemy(fPoint coor, ENEMY_TYPE type)
 		break;
 	}
 	toSpawn.push_back(newEntity);
-	App->colliders->AddCollider({ 0,0,32,32 }, COLLIDER_ENEMY, (Entity*)newEntity, { 20,20 });
+	App->colliders->AddCollider({ -16,-16,32,32 }, COLLIDER_ENEMY, (Entity*)newEntity, { 20,20 });
 
 }
 
