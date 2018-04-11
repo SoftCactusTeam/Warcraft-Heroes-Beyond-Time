@@ -54,7 +54,7 @@ void Pathfinding::AddNodeToMap(int cost, iPoint point)
 void Pathfinding::PrintWalkableTiles()
 {
 	for (int i = 0; i < map.size(); i++)
-		App->render->DrawQuad({ map[i]->nodePos.x * ((int)tileSize), map[i]->nodePos.y * ((int)tileSize), ((int)tileSize+2), ((int)tileSize+2) }, 255, 255, 0, 140);
+		App->render->DrawQuad({ map[i]->nodePos.x * ((int)tileSize-2), map[i]->nodePos.y * ((int)tileSize-2), ((int)tileSize-2), ((int)tileSize-2) }, 255, 255, 0, 140);
 }
 
 void Pathfinding::LoadNeighbours(pathNode* node)
@@ -180,9 +180,9 @@ void PathVector::PrintAstar()
 {
 	int tileSize = App->map->getTileSize();
 	for (int i = 0; i < pathVec.size(); i++)
-		App->printer->PrintQuad({ pathVec[i]->nodePos.x * (int)tileSize, pathVec[i]->nodePos.y * (int)tileSize, (int)tileSize+2, (int)tileSize+2 }, Black);
+		App->printer->PrintQuad({ pathVec[i]->nodePos.x * (int)tileSize, pathVec[i]->nodePos.y * (int)tileSize, (int)tileSize, (int)tileSize }, Black);
 	for (int i = 0; i < walkPath.size(); i++)
-		App->printer->PrintQuad({ pathVec[i]->nodePos.x * (int)tileSize, pathVec[i]->nodePos.y * (int)tileSize, (int)tileSize+2, (int)tileSize+2 }, Blue);
+		App->printer->PrintQuad({ pathVec[i]->nodePos.x * (int)tileSize, pathVec[i]->nodePos.y * (int)tileSize, (int)tileSize, (int)tileSize }, Blue);
 }
 
 void PathVector::Clear()

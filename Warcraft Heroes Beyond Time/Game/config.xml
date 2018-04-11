@@ -63,7 +63,7 @@
     <fullscreen active = "false"/>
     <borderless active = "false"/>
     <resizable active = "true"/>
-    <fullscreen_window active = "false"/>
+    <fullscreen_window active = "true"/>
   </window>
 
 </Game> 
