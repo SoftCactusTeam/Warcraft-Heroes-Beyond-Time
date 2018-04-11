@@ -108,6 +108,9 @@ public:
 	std::list<iPoint> wcpaper;
 	SDL_Texture* venom;
 
+	//time
+	int time = 0;
+	int cont = 0;
 	
 };
 

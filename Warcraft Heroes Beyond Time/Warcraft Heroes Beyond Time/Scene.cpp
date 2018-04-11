@@ -186,6 +186,7 @@ bool Scene::Update(float dt)
 			{
 				player->AddItem((WCItem)*paper);
 				paper_fake = nullptr;
+				paper->got_paper = true;
 			}
 		}
 	}

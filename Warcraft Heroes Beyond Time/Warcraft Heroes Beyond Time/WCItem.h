@@ -8,6 +8,9 @@ public:
 	WCItem();
 	WCItem(char* name, ItemType type, uint rarity);
 	~WCItem();
+
+public:
+	bool got_paper = false;
 };
 
 #endif

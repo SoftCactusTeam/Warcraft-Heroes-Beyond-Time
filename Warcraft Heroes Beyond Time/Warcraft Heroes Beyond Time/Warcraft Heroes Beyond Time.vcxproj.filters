@@ -124,7 +124,9 @@
     <ClCompile Include="PlayerHPBar.cpp">
       <Filter>GUI\Warcraft Specific</Filter>
     </ClCompile>
-    <ClCompile Include="WCItem.cpp" />
+    <ClCompile Include="WCItem.cpp">
+      <Filter>Entities\Static Entities\Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -265,7 +267,9 @@
     <ClInclude Include="PlayerHPBar.h">
       <Filter>GUI\Warcraft Specific</Filter>
     </ClInclude>
-    <ClInclude Include="WCItem.h" />
+    <ClInclude Include="WCItem.h">
+      <Filter>Entities\Static Entities\Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />
