@@ -7,6 +7,8 @@
 #include "ModuleEntitySystem.h"
 #include "ModulePrinter.h"
 #include "ModuleColliders.h"
+#include "WCItem.h"
+#include "Item.h"
 
 PlayerEntity::PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : DynamicEntity (coor, texture), type(type) {}
 
@@ -1407,6 +1409,11 @@ void PlayerEntity::CheckMapLimits()
 void PlayerEntity::AddItem(Item item)
 {
 	itemsActive.push_back(item);
+}
+
+void PlayerEntity::NewItem(char* name, ItemType type, uint rarity)
+{
+	paper = new WCItem(name, type, rarity);
 }
 
 void PlayerEntity::IterateItems(ItemFunctions nameFunction)
