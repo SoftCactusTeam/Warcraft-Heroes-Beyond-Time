@@ -349,6 +349,6 @@ std::vector<MapNode*> MapGenerator::GetMapNodesAndInfo(uint& sizeX, uint& sizeY,
 {
 	sizeX = this->sizeX;
 	sizeY = this->sizeY;
-	tileSize = this->tileSize;
+	tileSize = this->tileSize-2;
 	return nodes;
 }
