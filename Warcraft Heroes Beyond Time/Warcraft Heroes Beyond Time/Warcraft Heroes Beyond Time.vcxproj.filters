@@ -124,6 +124,9 @@
     <ClCompile Include="PlayerHPBar.cpp">
       <Filter>GUI\Warcraft Specific</Filter>
     </ClCompile>
+    <ClCompile Include="BossHPBar.cpp">
+      <Filter>GUI\Warcraft Specific</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -262,6 +265,9 @@
       <Filter>Entities\Dynamic Entities</Filter>
     </ClInclude>
     <ClInclude Include="PlayerHPBar.h">
+      <Filter>GUI\Warcraft Specific</Filter>
+    </ClInclude>
+    <ClInclude Include="BossHPBar.h">
       <Filter>GUI\Warcraft Specific</Filter>
     </ClInclude>
   </ItemGroup>
