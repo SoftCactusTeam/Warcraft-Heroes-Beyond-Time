@@ -257,7 +257,7 @@ bool Thrall::PostUpdate()
 {
 	if (anim == &attackUp || anim == &attackDown || anim == &attackRight || anim == &attackLeft || anim == &attackUpLeft || anim == &attackUpRight || anim == &attackDownLeft || anim == &attackDownRight)
 	{
-		if (anim->Finished() || attackCollider->collidingWith != COLLIDER_NONE)
+		if (anim->Finished() || attackCollider->collidingWith == COLLIDER_ENEMY)
 		{
 			attacking = false;
 			App->colliders->deleteCollider(attackCollider);
@@ -266,7 +266,7 @@ bool Thrall::PostUpdate()
 
 	else if (anim == &skill)
 	{
-		if (anim->Finished() || skillCollider->collidingWith != COLLIDER_NONE)
+		if (anim->Finished() || skillCollider->collidingWith == COLLIDER_ENEMY)
 		{
 			skillOn = false;
 			App->colliders->deleteCollider(skillCollider);
@@ -300,7 +300,7 @@ void Thrall::Collision(Collider* collideWith)
 	}
 	case COLLIDER_TYPE::COLLIDER_FELBALL:
 	{
-		SetDamage(30, true);
+		SetDamage(50, true);
 		break;
 	}
 	}

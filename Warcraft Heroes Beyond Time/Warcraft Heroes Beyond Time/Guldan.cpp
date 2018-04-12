@@ -2,6 +2,8 @@
 #include "Guldan.h"
 #include <time.h>
 #include "ModuleInput.h"
+#include "Scene.h"
+#include "PlayerEntity.h"
 
 Guldan::Guldan(fPoint coor, BOSS_TYPE type, SDL_Texture* texture) : BossEntity(coor, type, texture)
 {
@@ -98,6 +100,16 @@ Guldan::Guldan(fPoint coor, BOSS_TYPE type, SDL_Texture* texture) : BossEntity(c
 	generatingBallsInverse.loop = false;
 	generatingBallsInverse.speedFactor = 9.0f;
 
+	hello.PushBack({ 208,71,68,68 });
+	hello.PushBack({ 276,71,68,68 });
+	hello.PushBack({ 346,71,68,68 });
+	hello.PushBack({ 415,71,68,68 });
+	hello.PushBack({ 346,71,68,68 });
+	hello.PushBack({ 276,71,68,68 });
+	hello.PushBack({ 208,71,68,68 });
+	hello.loop = false;
+	hello.speedFactor = 9.0f;
+
 	anim = &idle;
 
 	hp = 1000;
@@ -111,52 +123,46 @@ Guldan::~Guldan()
 
 bool Guldan::Start()
 {
-	bossCol = App->colliders->AddCollider({ (int)pos.x, (int)pos.y,60,64 }, COLLIDER_TYPE::COLLIDER_GULDAN);
+	bossCol = App->colliders->AddCollider({ 0, 0,60,64 }, COLLIDER_TYPE::COLLIDER_ENEMY, this);
 
 	effectsTexture = App->textures->Load("sprites/Guldan_Effects.png");
 
 	srand(time(NULL));
 	statesBoss = BossStates::IDLE;
 
-	CreateFelBalls({ pos.x, pos.y });
-
-	for (std::list<FelBall*>::const_iterator it = fellBallsList.begin(); it != fellBallsList.end(); ++it)
-	{
-		(*it)->StartMovement();
-	}
+	
 
 	return true;
 }
 
 bool Guldan::Update(float dt)
 {
-	bossCol->colliderRect = { (int)pos.x,(int)pos.y,60,64 };
-
-	if (startTimeForTP)
+	if (firstEncounter)
 	{
-		fellBallsList.clear();
-		floatTimeForTp += 1.0f + dt;
-
-	}
-
-	if (readeForTimeNewBalls)
-	{
-		timeForNewBalls += 1.0f * dt;
-		if (timeForNewBalls >= 2.0f)
+		if (startTimeForTP)
 		{
-			readeForTimeNewBalls = false;
-			readyToTP = false;
-			startTimeForTP = false;
-			timeForNewBalls = 0.0f;
-			createNewBalls = true;
-		}
-	}
+			fellBallsList.clear();
+			floatTimeForTp += 1.0f + dt;
 
-	switch (statesBoss)
-	{
+		}
+
+		if (readeForTimeNewBalls)
+		{
+			timeForNewBalls += 1.0f * dt;
+			if (timeForNewBalls >= 2.0f)
+			{
+				readeForTimeNewBalls = false;
+				readyToTP = false;
+				startTimeForTP = false;
+				timeForNewBalls = 0.0f;
+				createNewBalls = true;
+			}
+		}
+
+		switch (statesBoss)
+		{
 		case BossStates::IDLE:
 		{
-
 			if (hp <= 0)
 			{
 				anim = &dead;
@@ -197,7 +203,7 @@ bool Guldan::Update(float dt)
 				do
 				{
 					randomtp = rand() % 5;
-				} while (tpPoints[randomtp].x == (int)pos.x/48 && tpPoints[randomtp].y == (int)pos.y/48);
+				} while (tpPoints[randomtp].x == (int)pos.x / 48 && tpPoints[randomtp].y == (int)pos.y / 48);
 				pos.x = tpPoints[randomtp].x * 48;
 				pos.y = tpPoints[randomtp].y * 48;
 				anim = &inverseTeleport;
@@ -264,38 +270,55 @@ bool Guldan::Update(float dt)
 
 			}
 			break;
+		}
+
+		if (readyforfornewballs)
+		{
+			createNewBalls = false;
+			readyforfornewballs = false;
+			CreateFelBalls({ pos.x, pos.y });
+			for (std::list<FelBall*>::const_iterator it = fellBallsList.begin(); it != fellBallsList.end(); ++it)
+			{
+				(*it)->StartMovement();
+			}
+		}
+
+
+		for (std::list<FelBall*>::const_iterator it = fellBallsList.begin(); it != fellBallsList.end(); ++it)
+		{
+			(*it)->Update(dt);
+			(*it)->BlitFel();
+		}
+
+
+		for (std::list<FelBall*>::const_iterator it = fellBallsList.begin(); it != fellBallsList.end(); ++it)
+		{
+			if ((*it)->dead)
+			{
+				delete *it;
+				startTimeForTP = true;
+			}
+
+		}
+	}
+	else
+	{
+		if (pos.DistanceTo(App->scene->player->pos) < 140.0f)
+		{
+			anim = &hello;
+		}
+		if (anim == &hello)
+		{
+			if (anim->Finished())
+			{
+				firstEncounter = true;
+				anim = &idle;
+				startTimeForTP = true;
+			}
+		}
 	}
 
 	anim->speed = anim->speedFactor * dt;
-
-	if (readyforfornewballs)
-	{
-		createNewBalls = false;
-		readyforfornewballs = false;
-		CreateFelBalls({ pos.x, pos.y });
-		for (std::list<FelBall*>::const_iterator it = fellBallsList.begin(); it != fellBallsList.end(); ++it)
-		{
-			(*it)->StartMovement();
-		}
-	}
-	
-
-	for (std::list<FelBall*>::const_iterator it = fellBallsList.begin(); it != fellBallsList.end(); ++it)
-	{
-		(*it)->Update(dt);
-		(*it)->BlitFel();
-	}
-
-
-	for (std::list<FelBall*>::const_iterator it = fellBallsList.begin(); it != fellBallsList.end(); ++it)
-	{
-		if ((*it)->dead)
-		{
-			delete *it;
-			startTimeForTP = true;
-		}
-		
-	}
 	return true;
 }
 
@@ -336,7 +359,7 @@ bool Guldan::CreateFelBalls(fPoint pos)
 	return true;
 }
 
-void Guldan::Collision(Collider * collideWith)
+void Guldan::Collision(Collider* collideWith)
 {
 	switch (collideWith->type)
 	{
@@ -344,8 +367,8 @@ void Guldan::Collision(Collider * collideWith)
 	{
 		if (collideWith->attackType == Collider::ATTACK_TYPE::PLAYER_MELEE)
 		{
-			hp -= 10000;
-
+			if (anim == &idle || anim == &generateingBalls || anim == &generatingBallsInverse)
+				hp -= 10000;
 		}
 		break;
 	}

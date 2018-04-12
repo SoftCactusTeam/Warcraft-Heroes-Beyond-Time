@@ -14,6 +14,8 @@ struct FelBall;
 class Guldan : public BossEntity
 {
 private:
+	bool firstEncounter = false;
+
 	Collider* bossCol = nullptr;
 	bool createNewBalls = false;
 	bool readyforfornewballs = false;
@@ -23,7 +25,7 @@ private:
 	bool startTimeForTP = false;
 	float floatTimeForTp = 0.0f;
 	SDL_Texture* effectsTexture = nullptr;
-	Animation idle, teleport, inverseTeleport, dead, generateingBalls, generatingBallsInverse;
+	Animation idle, teleport, inverseTeleport, dead, generateingBalls, generatingBallsInverse, hello;
 	iPoint tpPoints[5] = { {14,4},{ 7,6 },{ 21,6 },{ 10,11 },{ 18,11 } };
 	iPoint nextTpPos = {0,0};
 	int hp = 0;

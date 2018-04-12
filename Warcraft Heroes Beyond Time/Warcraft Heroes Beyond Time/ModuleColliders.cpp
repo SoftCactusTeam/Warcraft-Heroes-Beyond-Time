@@ -190,7 +190,7 @@ bool ModuleColliders::CheckTypeCollMatrix(COLLIDER_TYPE type, COLLIDER_TYPE type
 			return true;
 		break;
 	case COLLIDER_PLAYER_ATTACK:
-		if (type2 == COLLIDER_ENEMY || type2 == COLLIDER_ENEMY_ATTACK || type2 == COLLIDER_GULDAN)
+		if (type2 == COLLIDER_ENEMY || type2 == COLLIDER_ENEMY_ATTACK)
 			return true;
 		break;
 	case COLLIDER_ENEMY_ATTACK:
@@ -199,10 +199,6 @@ bool ModuleColliders::CheckTypeCollMatrix(COLLIDER_TYPE type, COLLIDER_TYPE type
 		break;
 	case COLLIDER_FELBALL:
 		if (type2 == COLLIDER_PLAYER)
-			return true;
-		break;
-	case COLLIDER_GULDAN:
-		if (type2 == COLLIDER_PLAYER_ATTACK)
 			return true;
 		break;
 	}
