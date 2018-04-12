@@ -5,6 +5,7 @@
 #include "Scene.h"
 #include "WCItem.h"
 #include "ModulePrinter.h"
+#include "ModuleColliders.h"
 
 Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEntity(coor, type, texture) 
 {
@@ -216,13 +217,17 @@ bool Thrall::Update(float dt)
 			if (cont < 18)
 			{
 				wcpaper.push_front({ (int)App->scene->player->pos.x,(int)App->scene->player->pos.y });
+				//paper_collider.push_front(App->colliders->AddCollider(SDL_Rect({ (int)App->scene->player->pos.x,(int)App->scene->player->pos.y,32,32 }), COLLIDER_PLAYER_ATAC, nullptr, {0,0}));
 				cont += 1;
 			}
+				
+			
 			if (cont == 18)
 			{
 				cont -= 1;
 				wcpaper.pop_back();
-				
+				//App->colliders->deleteCollider(paper_collider.back());
+				paper_collider.pop_back();
 			}
 		}
 		std::list<iPoint>::iterator it = wcpaper.begin();

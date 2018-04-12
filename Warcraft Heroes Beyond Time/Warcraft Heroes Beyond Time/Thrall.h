@@ -15,6 +15,7 @@ public:
 
 	//items
 	std::list<iPoint> wcpaper;
+	std::list<Collider*> paper_collider;
 
 	//time
 	float time = 0.0f;
