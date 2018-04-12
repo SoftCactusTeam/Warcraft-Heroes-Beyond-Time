@@ -215,8 +215,7 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	skill.PushBack({ 548,933,61,67 }, { 15,21 });
 	skill.PushBack({ 637,933,61,67 }, { 15,21 });
 	skill.PushBack({ 13,1006,61,67 }, { 16,19 });
-
-	skill.speedFactor = 8.0f;
+	skill.speedFactor = 11.0f;
 
 	deadUpRight.PushBack({ 119, 1022, 29,39 });
 	deadUpRight.PushBack({ 206, 1025,37,36 });
@@ -307,7 +306,7 @@ bool Thrall::PostUpdate()
 
 	if (anim == &skill)
 	{
-		if (anim->Finished() || (skillCollider != nullptr && skillCollider->collidingWith != COLLIDER_NONE))
+		if (anim->Finished())
 		{
 			skillOn = false;
 			App->colliders->deleteCollider(skillCollider);
@@ -485,24 +484,9 @@ void Thrall::UpdateSkillCollider()
 {
 	if (anim == &skill)
 	{
-		if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 445 + 5,923 + 5,89,71 + 5 })))
+		if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 459,933,61,67 })))
 		{
-			skillCollider->colliderRect = { (int)pos.x + 10, (int)pos.y + 10, 30,30 };
-		}
-
-		else if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 445 + 5,923 + 5,89,71 + 5 })))
-		{
-			skillCollider->colliderRect = { (int)pos.x + 10, (int)pos.y + 10, 30,30 };
-		}
-
-		else if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 445 + 5,923 + 5,89,71 + 5 })))
-		{
-			skillCollider->colliderRect = { (int)pos.x + 10, (int)pos.y + 10, 30,30 };
-		}
-
-		else if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 445 + 5,923 + 5,89,71 + 5 })))
-		{
-			skillCollider->colliderRect = { (int)pos.x + 10, (int)pos.y + 10, 30,30 };
+			skillCollider->colliderRect = { (int)pos.x -35, (int)pos.y -35, 100,100 };
 		}
 	}
 }
