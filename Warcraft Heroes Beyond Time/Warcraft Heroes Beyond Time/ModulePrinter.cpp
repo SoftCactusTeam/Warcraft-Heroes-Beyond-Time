@@ -31,7 +31,9 @@ bool ModulePrinter::PostUpdate()
 			case DrawingElem::DElemType::SPRITE:
 			{
 				Sprite* sprite = (Sprite*)delem;
+				SDL_SetTextureColorMod(sprite->texture, sprite->color.r, sprite->color.g, sprite->color.b);
 				App->render->Blit(sprite->texture, sprite->pos.x - sprite->pivot.x, sprite->pos.y - sprite->pivot.y, &sprite->SquaretoBlit, 1, 1, sprite->angle, sprite->pivot.x, sprite->pivot.y);
+				SDL_SetTextureColorMod(sprite->texture, 255, 255, 255);
 				break;
 			}
 			case DrawingElem::DElemType::QUAD:
@@ -58,7 +60,7 @@ bool ModulePrinter::CleanUp()
 	return DrawingQueue.empty();
 }
 
-bool ModulePrinter::PrintSprite(iPoint pos, SDL_Texture* texture, SDL_Rect SquaretoBlit, int layer, Pivots pivot, float degangle, iPoint custompivot)
+bool ModulePrinter::PrintSprite(iPoint pos, SDL_Texture* texture, SDL_Rect SquaretoBlit, int layer, Pivots pivot, float degangle, iPoint custompivot, SDL_Color color)
 {
 	iPoint coordpivot;
 	switch (pivot)
@@ -114,8 +116,7 @@ bool ModulePrinter::PrintSprite(iPoint pos, SDL_Texture* texture, SDL_Rect Squar
 			break;
 		}
 	}
-
-	Sprite* sprite = new Sprite(pos, texture, SquaretoBlit, layer, coordpivot, degangle);
+	Sprite* sprite = new Sprite(pos, texture, SquaretoBlit, layer, coordpivot, degangle, color);
 	DrawingQueue.push(sprite);
 
 	return true;

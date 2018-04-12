@@ -126,15 +126,14 @@ bool Scene::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
 	{
-		player->SetDamage(25, true);
+		if (player != nullptr)
+			player->SetDamage(25, true);
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT)
 	{
-		if (player->numStats.energy > 10)
-			player->numStats.energy -= 10;
-		else
-			player->numStats.energy = 0;
+		if(player != nullptr)
+			player->numStats.energy = 100;
 	}
 
 
