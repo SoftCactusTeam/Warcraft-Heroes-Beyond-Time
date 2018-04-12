@@ -16,13 +16,14 @@ class Guldan : public BossEntity
 private:
 	Collider* bossCol = nullptr;
 	bool createNewBalls = false;
+	bool readyforfornewballs = false;
 	bool readeForTimeNewBalls = false;
 	float timeForNewBalls = 0.0f;
 	bool readyToTP = false;
 	bool startTimeForTP = false;
 	float floatTimeForTp = 0.0f;
 	SDL_Texture* effectsTexture = nullptr;
-	Animation idle, teleport, inverseTeleport, dead;
+	Animation idle, teleport, inverseTeleport, dead, generateingBalls, generatingBallsInverse;
 	iPoint tpPoints[5] = { {14,4},{ 7,6 },{ 21,6 },{ 10,11 },{ 18,11 } };
 	iPoint nextTpPos = {0,0};
 	int hp = 0;
@@ -36,6 +37,7 @@ private:
 		TELEPORT,
 		INVERSETELEPORT,
 		DEAD,
+		GENERATINGBALLS,
 	} statesBoss = BossStates::NON_STATE;
 
 public:
@@ -101,8 +103,8 @@ public:
 		App->colliders->deleteCollider(felCol);
 	};
 
-	
 	void StartCountDownToDie() { startDying = true; };
+
 	void StartMovement() { 
 		startMovement = true;
 
@@ -122,7 +124,6 @@ public:
 			}
 			rotation[i] = angleInside + i;
 		}
-
 		rotationCont = startAngle;
 	};
 

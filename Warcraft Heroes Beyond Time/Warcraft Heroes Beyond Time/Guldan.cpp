@@ -72,6 +72,32 @@ Guldan::Guldan(fPoint coor, BOSS_TYPE type, SDL_Texture* texture) : BossEntity(c
 	dead.PushBack({ 898,283,60,64 });
 	dead.loop = false;
 	dead.speedFactor = 9.0f;
+
+	generateingBalls.PushBack({ 484,1,68,68 });
+	generateingBalls.PushBack({ 553,1,68,68 });
+	generateingBalls.PushBack({ 623,1,68,68 });
+	generateingBalls.PushBack({ 692,1,68,68 });
+	generateingBalls.PushBack({ 760,1,68,68 });
+	generateingBalls.PushBack({ 830,1,68,68 });
+	generateingBalls.PushBack({ 898,1,68,68 });
+	generateingBalls.PushBack({ 830,1,68,68 });
+	generateingBalls.PushBack({ 898,1,68,68 });
+	generateingBalls.loop = false;		
+	generateingBalls.speedFactor = 9.0f;
+
+
+	generatingBallsInverse.PushBack({ 898,1,68,68 });
+	generatingBallsInverse.PushBack({ 830,1,68,68 });
+	generatingBallsInverse.PushBack({ 898,1,68,68 });
+	generatingBallsInverse.PushBack({ 830,1,68,68 });
+	generatingBallsInverse.PushBack({ 760,1,68,68 });
+	generatingBallsInverse.PushBack({ 692,1,68,68 });
+	generatingBallsInverse.PushBack({ 623,1,68,68 });
+	generatingBallsInverse.PushBack({ 553,1,68,68 });
+	generatingBallsInverse.PushBack({ 484,1,68,68 });
+	generatingBallsInverse.loop = false;
+	generatingBallsInverse.speedFactor = 9.0f;
+
 	anim = &idle;
 
 	hp = 1000;
@@ -151,6 +177,14 @@ bool Guldan::Update(float dt)
 				break;
 			}
 
+			if (createNewBalls)
+			{
+				anim = &generateingBalls;
+				createNewBalls = false;
+				statesBoss = BossStates::GENERATINGBALLS;
+				break;
+			}
+
 			break;
 		}
 		case BossStates::TELEPORT:
@@ -206,13 +240,38 @@ bool Guldan::Update(float dt)
 			break;
 		}
 
+		case BossStates::GENERATINGBALLS:
+
+			if (anim == &generateingBalls)
+			{
+				if (anim->Finished())
+				{
+					anim->Reset();
+					anim = &generatingBallsInverse;
+					readyforfornewballs = true;
+					break;
+				}
+			}
+			else if (anim == &generatingBallsInverse)
+			{
+				if (anim->Finished())
+				{
+					anim->Reset();
+					anim = &idle;
+					statesBoss = BossStates::IDLE;
+					break;
+				}
+
+			}
+			break;
 	}
 
 	anim->speed = anim->speedFactor * dt;
 
-	if (createNewBalls)
+	if (readyforfornewballs)
 	{
 		createNewBalls = false;
+		readyforfornewballs = false;
 		CreateFelBalls({ pos.x, pos.y });
 		for (std::list<FelBall*>::const_iterator it = fellBallsList.begin(); it != fellBallsList.end(); ++it)
 		{
