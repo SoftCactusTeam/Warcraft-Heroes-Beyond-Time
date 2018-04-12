@@ -33,6 +33,7 @@ bool Enemy_Archer::Start()
 	ChargeAnimations();
 	live = ARCHER_LIVE;
 	state = ARCHER_STATE::ARCHER_IDLE;
+	anim = &animIdle[LookAtPlayer()];
 	return true;
 }
 

@@ -175,10 +175,6 @@ bool Scene::Update(float dt)
 					App->gui->DestroyElem(PauseMenu);
 				}
 			}
-			if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN)
-			{
-				paused = !paused;
-			}
 		}
 		
 		
