@@ -233,7 +233,7 @@ bool Application::DoUpdate()
 		pModule = (*item);
 
 		if (pModule->isActive() == false
-			|| (((pModule != gui && pModule != scene) && scene->paused))) 
+			|| (((pModule != gui && pModule != scene && pModule != console) && scene->paused))) 
 		{
 			continue;
 		}
