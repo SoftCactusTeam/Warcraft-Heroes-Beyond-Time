@@ -36,7 +36,8 @@ public:
 		IMAGE,
 
 		STAT,
-		PLAYER_HP_BAR
+		PLAYER_HP_BAR, 
+		BOSS_HP_BAR
 	};
 	
 protected:

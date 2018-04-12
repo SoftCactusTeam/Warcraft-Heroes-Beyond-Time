@@ -29,6 +29,9 @@ public:
 	// Play a music file
 	bool PlayMusic(const char* path, float fade_time = DEFAULT_MUSIC_FADE_TIME);
 
+	//Pause a playing music
+	bool PauseMusic(float fade_time = DEFAULT_MUSIC_FADE_TIME);
+
 	// Load a WAV in memory
 	unsigned int LoadFx(const char* path);
 
@@ -44,6 +47,11 @@ public:
 	uint ButtonHovered = 0;
 	uint ButtonClicked = 0;
 	uint ArrowSound = 0;
+	uint Thrall_Dash_FX = 0;
+	uint Thrall_Die_FX = 0;
+	uint Thrall_Hit_FX = 0;
+	uint Thrall_Hitted_FX = 0;
+	uint Thrall_EnergyMax_FX = 0;
 	//std::string BSO's
 	std::string MainMenuBSO;
 	std::string InGameBSO;

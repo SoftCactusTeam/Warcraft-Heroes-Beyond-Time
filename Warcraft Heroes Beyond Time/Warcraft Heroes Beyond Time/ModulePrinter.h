@@ -35,10 +35,11 @@ public:
 	iPoint pivot = { 0,0 };
 	float angle = 0.0f;
 	int distToFeet = 0;
+	SDL_Color color = { 0,0,0,0 };
 
 public:
 
-	Sprite(iPoint& pos, SDL_Texture* texture, SDL_Rect& SquaretoBlit, int layer, iPoint pivot, float angle) : DrawingElem(DrawingElem::DElemType::SPRITE), pos(pos), texture(texture), SquaretoBlit(SquaretoBlit), distToFeet(distToFeet), layer(layer), pivot(pivot), angle(angle){}
+	Sprite(iPoint& pos, SDL_Texture* texture, SDL_Rect& SquaretoBlit, int layer, iPoint pivot, float angle, SDL_Color color) : DrawingElem(DrawingElem::DElemType::SPRITE), pos(pos), texture(texture), SquaretoBlit(SquaretoBlit), distToFeet(distToFeet), layer(layer), pivot(pivot), angle(angle), color(color){}
 
 };
 
@@ -118,7 +119,7 @@ public:
 	};
 
 	//Note: Angle required is in degrees, in clockwise direction
-	bool PrintSprite(iPoint pos, SDL_Texture* texture, SDL_Rect SquaretoBlit, int layer = 0, Pivots pivot = Pivots::UPPER_LEFT, float degangle = 0, iPoint custompivot = { 0,0 });
+	bool PrintSprite(iPoint pos, SDL_Texture* texture, SDL_Rect SquaretoBlit, int layer = 0, Pivots pivot = Pivots::UPPER_LEFT, float degangle = 0, iPoint custompivot = { 0,0 }, SDL_Color color = { 255,255,255,255 });
 	
 	bool PrintQuad(SDL_Rect rect, SDL_Color color, bool filled = false, bool use_camera = false);
 

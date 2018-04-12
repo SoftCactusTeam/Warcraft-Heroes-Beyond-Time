@@ -26,7 +26,7 @@ public:
 		uint armor = 0;
 		uint speed = 0;
 		uint damage = 0;
-		uint energy = 100;
+		uint energy = 0;
 		uint energyPercentbyHit = 0;
 		uint critChance = 0;
 
@@ -75,10 +75,25 @@ public:
 	void ClearEnemies();
 	int GetRandomNumber(int rang);
 
+	void LoadCDs(float& dashCD, float& invpostdamaged, float& timepostdead)
+	{
+		dashCD = this->dashCD;
+		invpostdamaged = this->invpostdamaged;
+		timepostdead = this->timepostdead;
+	}
+
+
+
 	std::vector<SDL_Texture*> spritesheetsEntities;
+
+
 private:
 	std::list<Entity*>		entities;
 	std::list<Entity*>		toSpawn;
+
+	float dashCD = 0.0f;
+	float invpostdamaged = 0.0f;
+	float timepostdead = 0.0f;
 
 };
 

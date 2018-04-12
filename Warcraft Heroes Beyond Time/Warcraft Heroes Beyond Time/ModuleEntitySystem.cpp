@@ -181,6 +181,11 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	darkknightstats.range = darkknight.attribute("range").as_uint(0);
 	darkknightstats.difficulty = darkknight.attribute("difficulty").as_uint(0);
 
+	//Loading CD'S---------------------------------------------------------------------------
+	dashCD = entitiesNode.child("players").child("cds").attribute("dash").as_float(1);
+	timepostdead = entitiesNode.child("players").child("cds").attribute("deadinfloor").as_float(2);
+	invpostdamaged = entitiesNode.child("players").child("cds").attribute("invulpostdamaged").as_float(1);
+
 	return true;
 }
 

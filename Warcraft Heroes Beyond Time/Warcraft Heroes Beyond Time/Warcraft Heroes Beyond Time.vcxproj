@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{2781B1EC-1D8B-4816-86D8-8A9200ECBEFC}</ProjectGuid>
     <RootNamespace>Warcraft Heroes Beyond Time</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -128,6 +128,7 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="BossEntity.cpp" />
+    <ClCompile Include="BossHPBar.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="ChestEntity.cpp" />
     <ClCompile Include="ConsumableEntity.cpp" />
@@ -169,11 +170,13 @@
     <ClCompile Include="StaticEntity.cpp" />
     <ClCompile Include="Thrall.cpp" />
     <ClCompile Include="GUIWindow.cpp" />
+    <ClCompile Include="WCItem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="BossEntity.h" />
+    <ClInclude Include="BossHPBar.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="ChestEntity.h" />
     <ClInclude Include="ConsumableEntity.h" />
@@ -220,6 +223,7 @@
     <ClInclude Include="StaticEntity.h" />
     <ClInclude Include="Thrall.h" />
     <ClInclude Include="GUIWindow.h" />
+    <ClInclude Include="WCItem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GUIElem.cpp" />

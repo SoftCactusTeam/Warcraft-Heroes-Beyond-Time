@@ -3,6 +3,11 @@
 #include "ModuleInput.h"
 #include "ModuleEntitySystem.h"
 #include "ModuleColliders.h"
+#include "ModuleAudio.h"
+#include "Scene.h"
+#include "WCItem.h"
+#include "ModulePrinter.h"
+#include "ModuleColliders.h"
 
 Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEntity(coor, type, texture)
 {
@@ -201,6 +206,7 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	attackUpLeft.speedFactor = 15.0f;
 	attackUpLeft.loop = false;
 
+<<<<<<< HEAD
 	skill.PushBack({ 0 + 5,923 + 5,89,71 + 5 });
 	skill.PushBack({ 89 + 5,923 + 5,89,71 + 5 });
 	skill.PushBack({ 178 + 5,923 + 5,89,71 + 5 });
@@ -210,6 +216,17 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	skill.PushBack({ 534 + 5,923 + 5,89,71 + 5 });
 	skill.PushBack({ 0 + 5,994 + 5,89,71 + 5 });
 	skill.PushBack({ 0 + 5,994 + 5,89,71 + 5 });
+=======
+	skill.PushBack({ 13 ,933,61,67 }, { 16,21 });
+	skill.PushBack({ 102,933,61,67 }, { 16,21 });
+	skill.PushBack({ 191,933,61,67 }, { 16,21 });
+	skill.PushBack({ 280,933,61,67 }, { 16,21 });
+	skill.PushBack({ 370,933,61,67 }, { 15,21 });
+	skill.PushBack({ 459,933,61,67 }, { 15,21 });
+	skill.PushBack({ 548,933,61,67 }, { 15,21 });
+	skill.PushBack({ 637,933,61,67 }, { 15,21 });
+	skill.PushBack({ 13,1006,61,67 }, { 16,19 });
+>>>>>>> master
 	skill.speedFactor = 8.0f;
 
 	deadUpRight.PushBack({ 119, 1022, 29,39 });
@@ -250,6 +267,34 @@ bool Thrall::Update(float dt)
 	else if (skillOn)
 		UpdateSkillCollider();
 
+	if (App->scene->paper != nullptr && App->scene->paper->got_paper)
+	{
+		time += 1 * dt;
+		if (time >= 0.1)
+		{
+			time = 0;
+			if (cont < 18)
+			{
+				wcpaper.push_front({ (int)App->scene->player->pos.x,(int)App->scene->player->pos.y });
+				paper_collider.push_front(App->colliders->AddCollider(SDL_Rect({ (int)App->scene->player->pos.x,(int)App->scene->player->pos.y,32,32 }), COLLIDER_PLAYER_ATTACK, nullptr, {0,0}, Collider::ATTACK_TYPE::SHIT));
+				cont += 1;
+			}
+			if (cont == 18)
+			{
+				cont -= 1;
+				wcpaper.pop_back();
+				App->colliders->deleteCollider(paper_collider.back());
+				paper_collider.pop_back();
+			}
+			}
+		std::list<iPoint>::iterator it = wcpaper.begin();
+		
+		for (; it != wcpaper.end(); ++it)
+		{
+			App->printer->PrintSprite({ it->x, it->y }, App->scene->venom, SDL_Rect({ 0,0,32,32 }), -1);
+		}
+	}
+
 	return true;
 }
 
@@ -257,16 +302,31 @@ bool Thrall::PostUpdate()
 {
 	if (anim == &attackUp || anim == &attackDown || anim == &attackRight || anim == &attackLeft || anim == &attackUpLeft || anim == &attackUpRight || anim == &attackDownLeft || anim == &attackDownRight)
 	{
+<<<<<<< HEAD
 		if (anim->Finished() || attackCollider->collidingWith == COLLIDER_ENEMY)
+=======
+		if (anim->Finished() || (attackCollider != nullptr && attackCollider->collidingWith == COLLIDER_ENEMY))
+>>>>>>> master
 		{
+			if ((attackCollider != nullptr && attackCollider->collidingWith == COLLIDER_ENEMY))
+			{
+				IncreaseEnergy(20);
+				App->audio->PlayFx(App->audio->Thrall_Hit_FX);
+			}
+				
 			attacking = false;
 			App->colliders->deleteCollider(attackCollider);
+			attackCollider = nullptr;
 		}
 	}
 
-	else if (anim == &skill)
+	if (anim == &skill)
 	{
+<<<<<<< HEAD
 		if (anim->Finished() || skillCollider->collidingWith == COLLIDER_ENEMY)
+=======
+		if (anim->Finished() || (skillCollider != nullptr && skillCollider->collidingWith != COLLIDER_NONE))
+>>>>>>> master
 		{
 			skillOn = false;
 			App->colliders->deleteCollider(skillCollider);

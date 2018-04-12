@@ -16,10 +16,16 @@ bool Entity::Finish() { return true; }
 bool Entity::Draw()
 {
 	bool ret = true;
+<<<<<<< HEAD
 
 	anim->GetCurrentFrame();
 	ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), texture, anim->GetCurrentRect(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, 0, anim->GetCurrentPivot());
 
+=======
+	
+	ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), texture, anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, 0, anim->GetCurrentPivot());
+	
+>>>>>>> master
 	return ret;
 }
 

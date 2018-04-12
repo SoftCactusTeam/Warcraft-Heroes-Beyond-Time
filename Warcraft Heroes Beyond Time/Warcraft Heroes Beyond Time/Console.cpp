@@ -176,12 +176,14 @@ void Console::SwitchWrittingState()
 	writting = !writting;
 	if (writting)
 	{
+		App->scene->paused = true;
 		box->EnableInput();
 		App->scene->player->Walk(false);
 	}
 		
 	else
 	{
+		App->scene->paused = false;
 		box->DisableInput();
 		box->ClearBox();
 		App->scene->player->Walk(true);

@@ -18,6 +18,7 @@ public:
 	uint DistanceToPlayer();
 public:
 	ENEMY_TYPE type = ENEMY_TYPE::NON_ENEMY;
+	EntitySystem::EnemyStats numStats;
 
 protected:
 	PathVector pathVector;

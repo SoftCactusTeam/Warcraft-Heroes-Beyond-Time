@@ -33,6 +33,7 @@ bool Enemy_Archer::Start()
 	ChargeAnimations();
 	live = ARCHER_LIVE;
 	state = ARCHER_STATE::ARCHER_IDLE;
+	anim = &animIdle[LookAtPlayer()];
 	return true;
 }
 
@@ -116,13 +117,16 @@ void Enemy_Archer::Collision(Collider* collideWith)
 		{
 		case  Collider::ATTACK_TYPE::PLAYER_MELEE:
 			live -= 40;
-			App->audio->PlayFx(1);
-			if (live <= 0)
-				initDie();
-			else
-				initBackJump();
+			break;
+		case Collider::ATTACK_TYPE::SHIT:
+			live -= 5;
 			break;
 		}
+
+		if (live <= 0)
+			initDie();
+		else
+			initBackJump();
 	}
 }
 
@@ -373,7 +377,7 @@ void Enemy_Archer::doDie()
 
 void Enemy_Archer::ShootArrow(fPoint desviation)
 {
-	App->audio->PlayFx(3);
+	App->audio->PlayFx(App->audio->ArrowSound);
 	fPoint directionShoot = App->scene->player->pos;
 	directionShoot.x -= pos.x + desviation.x;
 	directionShoot.y -= pos.y + desviation.y;
@@ -419,7 +423,6 @@ void Enemy_Archer_Arrow::Update()
 		arrowCollider->colliderRect.x = (int)pos.x;
 		arrowCollider->colliderRect.y = (int)pos.y;
 		if (arrowCollider->collidingWith == COLLIDER_TYPE::COLLIDER_PLAYER ||
-			arrowCollider->collidingWith == COLLIDER_TYPE::COLLIDER_PLAYER_ATTACK ||
 			arrowCollider->collidingWith == COLLIDER_TYPE::COLLIDER_UNWALKABLE)
 			destroy = true;
 	}
