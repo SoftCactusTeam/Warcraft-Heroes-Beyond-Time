@@ -172,7 +172,7 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 		srand(time(NULL));
 
 	startNode->whatToBlit = randomTile(true);
-	startNode->layerBelow = -1;
+	startNode->layerBelow = -2;
 	startNode->cost = -1;
 	visited.push_back(startNode);
 
@@ -186,12 +186,12 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 		if ((randNum == 0 || randNum == 1 || randNum == 3) && CheckBoundaries({ auxNode->pos.x + 1, auxNode->pos.y }))
 		{
 			auxNode = nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)];
-			if (auxNode->layerBelow != -1)
+			if (auxNode->layerBelow != -2)
 			{
 				auxNode->whatToBlit = randomTile(true);
 				auxNode->cost = -1;
 				visited.push_back(auxNode);
-				auxNode->layerBelow = -1;
+				auxNode->layerBelow = -2;
 				i++;
 			}
 		}
@@ -199,12 +199,12 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 		else if ((randNum == 4 || randNum == 5 || randNum == 6) && CheckBoundaries({ auxNode->pos.x - 1, auxNode->pos.y }))
 		{
 			auxNode = nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)];
-			if (auxNode->layerBelow != -1)
+			if (auxNode->layerBelow != -2)
 			{
 				auxNode->whatToBlit = randomTile(true);
 				auxNode->cost = -1;
 				visited.push_back(auxNode);
-				auxNode->layerBelow = -1;
+				auxNode->layerBelow = -2;
 				i++;
 			}
 		}
@@ -212,12 +212,12 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 		else if ((randNum == 7 || randNum == 8) && CheckBoundaries({ auxNode->pos.x, auxNode->pos.y + 1 }))
 		{
 			auxNode = nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)];
-			if (auxNode->layerBelow != -1)
+			if (auxNode->layerBelow != -2)
 			{
 				auxNode->whatToBlit = randomTile(true);
 				auxNode->cost = -1;
 				visited.push_back(auxNode);
-				auxNode->layerBelow = -1;
+				auxNode->layerBelow = -2;
 				i++;
 			}
 		}
@@ -225,12 +225,12 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 		else if ((randNum == 9 || randNum == 10) && CheckBoundaries({ auxNode->pos.x, auxNode->pos.y - 1 }))
 		{
 			auxNode = nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)];
-			if (auxNode->layerBelow != -1)
+			if (auxNode->layerBelow != -2)
 			{
 				auxNode->whatToBlit = randomTile(true);
 				auxNode->cost = -1;
 				visited.push_back(auxNode);
-				auxNode->layerBelow = -1;
+				auxNode->layerBelow = -2;
 				i++;
 			}
 		}

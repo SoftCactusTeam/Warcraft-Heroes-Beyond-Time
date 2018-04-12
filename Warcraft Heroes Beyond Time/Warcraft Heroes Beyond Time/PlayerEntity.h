@@ -9,6 +9,7 @@
 #include <list>
 
 class Collider;
+struct SDL_Texture;
 
 class PlayerEntity : public DynamicEntity 
 {
@@ -39,7 +40,7 @@ protected:
 
 	Collider* pcol = nullptr;
 
-	std::list<Item> itemsActive;
+	
 
 	enum class states
 	{
@@ -126,6 +127,10 @@ public:
 	void PushOut(Collider* wall);
 	virtual void Attack() {}
 	virtual void UseSkill() {}
+
+	//items
+	std::list<iPoint> wcpaper;
+	std::list<Item> itemsActive;
 };
 
 #endif

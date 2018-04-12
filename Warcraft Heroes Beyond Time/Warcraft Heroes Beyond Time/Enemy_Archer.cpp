@@ -117,13 +117,16 @@ void Enemy_Archer::Collision(Collider* collideWith)
 		{
 		case  Collider::ATTACK_TYPE::PLAYER_MELEE:
 			live -= 40;
-			//App->audio->PlayFx(App->audio->loquesea);
-			if (live <= 0)
-				initDie();
-			else
-				initBackJump();
+			break;
+		case Collider::ATTACK_TYPE::SHIT:
+			live -= 5;
 			break;
 		}
+
+		if (live <= 0)
+			initDie();
+		else
+			initBackJump();
 	}
 }
 
@@ -420,7 +423,6 @@ void Enemy_Archer_Arrow::Update()
 		arrowCollider->colliderRect.x = (int)pos.x;
 		arrowCollider->colliderRect.y = (int)pos.y;
 		if (arrowCollider->collidingWith == COLLIDER_TYPE::COLLIDER_PLAYER ||
-			arrowCollider->collidingWith == COLLIDER_TYPE::COLLIDER_PLAYER_ATTACK ||
 			arrowCollider->collidingWith == COLLIDER_TYPE::COLLIDER_UNWALKABLE)
 			destroy = true;
 	}

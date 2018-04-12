@@ -13,6 +13,7 @@ public:
 	bool OpenChest(); // it must return an item
 	void UnLockChest();
 	inline bool IsLocked() const;
+	bool PlayerNear(fPoint pos);
 
 private:
 	CHEST_TYPE type = CHEST_TYPE::NON_CHEST;

@@ -4,6 +4,10 @@
 #include "ModuleEntitySystem.h"
 #include "ModuleColliders.h"
 #include "ModuleAudio.h"
+#include "Scene.h"
+#include "WCItem.h"
+#include "ModulePrinter.h"
+#include "ModuleColliders.h"
 
 Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEntity(coor, type, texture)
 {
@@ -250,6 +254,34 @@ bool Thrall::Update(float dt)
 
 	else if (skillOn)
 		UpdateSkillCollider();
+
+	if (App->scene->paper != nullptr && App->scene->paper->got_paper)
+	{
+		time += 1 * dt;
+		if (time >= 0.1)
+		{
+			time = 0;
+			if (cont < 18)
+			{
+				wcpaper.push_front({ (int)App->scene->player->pos.x,(int)App->scene->player->pos.y });
+				paper_collider.push_front(App->colliders->AddCollider(SDL_Rect({ (int)App->scene->player->pos.x,(int)App->scene->player->pos.y,32,32 }), COLLIDER_PLAYER_ATTACK, nullptr, {0,0}, Collider::ATTACK_TYPE::SHIT));
+				cont += 1;
+			}
+			if (cont == 18)
+			{
+				cont -= 1;
+				wcpaper.pop_back();
+				App->colliders->deleteCollider(paper_collider.back());
+				paper_collider.pop_back();
+			}
+			}
+		std::list<iPoint>::iterator it = wcpaper.begin();
+		
+		for (; it != wcpaper.end(); ++it)
+		{
+			App->printer->PrintSprite({ it->x, it->y }, App->scene->venom, SDL_Rect({ 0,0,32,32 }), -1);
+		}
+	}
 
 	return true;
 }

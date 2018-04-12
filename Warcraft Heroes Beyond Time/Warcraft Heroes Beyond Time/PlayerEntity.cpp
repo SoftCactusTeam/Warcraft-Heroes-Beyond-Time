@@ -8,6 +8,8 @@
 #include "ModulePrinter.h"
 #include "ModuleColliders.h"
 #include "ModuleAudio.h"
+#include "Application.h"
+#include "ModuleTextures.h"
 
 PlayerEntity::PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : DynamicEntity (coor, texture), type(type) 
 {
