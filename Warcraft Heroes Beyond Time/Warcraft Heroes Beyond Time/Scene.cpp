@@ -12,12 +12,6 @@
 #include "PortalEntity.h"
 #include "Pathfinding.h"
 #include "PlayerEntity.h"
-
-
-#include "Item.h"
-#include "WCItem.h"
-#include "ModuleTextures.h"
-
 #include "ModulePrinter.h"
 
 #include "Brofiler\Brofiler.h"
@@ -60,8 +54,6 @@ bool Scene::Awake(pugi::xml_node& sceneNode)
 bool Scene::Start()
 {
 	App->gui->Activate();
-	texture = App->textures->Load("sprites/all_items.png");
-	venom = App->textures->Load("sprites/venom.png");
 
 	switch (actual_scene)
 	{
@@ -104,7 +96,6 @@ bool Scene::Start()
 			iPoint chestPos = App->map->GetRandomValidPoint();
 			lvlChest = App->entities->AddChest({ (float)chestPos.x * 48,(float)chestPos.y * 48 }, MID_CHEST);
 			portal = (PortalEntity*)App->entities->AddStaticEntity({ 25 * 48,25 * 48 }, PORTAL);
-			
 
 			break;
 		}
@@ -162,27 +153,9 @@ bool Scene::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN)
 	{
-		if(lvlChest->PlayerNear(player->pos))
-		{ 
-			lvlChest->UnLockChest();
-			lvlChest->OpenChest();
-			portal->OpenPortal();
-			paper = new WCItem("wcpaper", ItemType::passive_item_type, 0);
-			paper_fake = paper;
-		}
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
-	{
-		if (lvlChest->PlayerNear(player->pos))
-		{
-			if (paper_fake != nullptr)
-			{
-				player->AddItem((WCItem)*paper);
-				paper_fake = nullptr;
-				paper->got_paper = true;
-			}
-		}
+		lvlChest->UnLockChest();
+		lvlChest->OpenChest();
+		portal->OpenPortal();
 	}
 
 	//PAUSE GAME
@@ -207,14 +180,8 @@ bool Scene::Update(float dt)
 				paused = !paused;
 			}
 		}
-
-
-		if (paper_fake != nullptr)
-		{
-			App->printer->PrintSprite({ (int)lvlChest->pos.x,(int)lvlChest->pos.y }, texture, SDL_Rect({ 34,84,27,31 }), 1);
-		}
-
-
+		
+		
 	return true;
 }
 

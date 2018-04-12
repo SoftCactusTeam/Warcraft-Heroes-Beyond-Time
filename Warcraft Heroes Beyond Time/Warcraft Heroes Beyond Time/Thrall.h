@@ -16,7 +16,6 @@ public:
 	bool Finish();
 	void Collision(Collider* collideWith);
 
-
 private:
 	void UpdateCollider();
 	void UpdateAttackCollider();
@@ -29,17 +28,6 @@ private:
 	Collider* skillCollider = nullptr;
 	bool attacking = false;
 	bool skillOn = false;
-
-	void Collision(COLLIDER_TYPE type);
-
-	//items
-	std::list<iPoint> wcpaper;
-	std::list<Collider*> paper_collider;
-
-	//time
-	float time = 0.0f;
-	int cont = 0;
-
 };
 
 #endif

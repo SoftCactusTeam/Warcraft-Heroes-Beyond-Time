@@ -7,13 +7,7 @@
 #include "ModuleEntitySystem.h"
 #include "ModulePrinter.h"
 #include "ModuleColliders.h"
-
 #include "ModuleAudio.h"
-
-#include "Application.h"
-#include "ModuleTextures.h"
-#include "WCItem.h"
-
 
 PlayerEntity::PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : DynamicEntity (coor, texture), type(type) 
 {
@@ -24,8 +18,8 @@ bool PlayerEntity::Start()
 {
 	anim = &idleDown;
 	state = states::PL_IDLE;
-	InitCulling();
 
+	InitCulling();
 
 	return true;
 }
