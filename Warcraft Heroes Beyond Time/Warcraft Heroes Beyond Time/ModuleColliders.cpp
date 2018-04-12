@@ -38,7 +38,7 @@ bool ModuleColliders::Awake(pugi::xml_node& consoleNode)
 
 bool ModuleColliders::Start()
 {
-	printColliders = false;
+	printColliders = true;
 	return true;
 }
 

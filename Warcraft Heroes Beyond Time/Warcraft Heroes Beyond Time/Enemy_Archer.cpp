@@ -115,12 +115,17 @@ void Enemy_Archer::Collision(Collider* collideWith)
 		
 		switch (collideWith->attackType)
 		{
-		case  Collider::ATTACK_TYPE::PLAYER_MELEE:
+			case  Collider::ATTACK_TYPE::PLAYER_MELEE:
 			live -= 40;
 			break;
-		case Collider::ATTACK_TYPE::SHIT:
+			case Collider::ATTACK_TYPE::SHIT:
 			live -= 5;
 			break;
+			case Collider::ATTACK_TYPE::THRALL_SKILL:
+			{
+				live -= 100;
+				break;
+			}
 		}
 
 		if (live <= 0)
