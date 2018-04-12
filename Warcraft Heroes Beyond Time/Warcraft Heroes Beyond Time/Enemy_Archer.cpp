@@ -116,7 +116,7 @@ void Enemy_Archer::Collision(Collider* collideWith)
 		{
 		case  Collider::ATTACK_TYPE::PLAYER_MELEE:
 			live -= 40;
-			App->audio->PlayFx(1);
+			//App->audio->PlayFx(App->audio->loquesea);
 			if (live <= 0)
 				initDie();
 			else
@@ -373,7 +373,7 @@ void Enemy_Archer::doDie()
 
 void Enemy_Archer::ShootArrow(fPoint desviation)
 {
-	App->audio->PlayFx(3);
+	App->audio->PlayFx(App->audio->ArrowSound);
 	fPoint directionShoot = App->scene->player->pos;
 	directionShoot.x -= pos.x + desviation.x;
 	directionShoot.y -= pos.y + desviation.y;

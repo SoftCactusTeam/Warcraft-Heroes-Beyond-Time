@@ -3,6 +3,7 @@
 #include "ModuleInput.h"
 #include "ModuleEntitySystem.h"
 #include "ModuleColliders.h"
+#include "ModuleAudio.h"
 
 Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEntity(coor, type, texture)
 {
@@ -260,7 +261,11 @@ bool Thrall::PostUpdate()
 		if (anim->Finished() || (attackCollider != nullptr && attackCollider->collidingWith == COLLIDER_ENEMY))
 		{
 			if ((attackCollider != nullptr && attackCollider->collidingWith == COLLIDER_ENEMY))
+			{
 				IncreaseEnergy(20);
+				App->audio->PlayFx(App->audio->Thrall_Hit_FX);
+			}
+				
 			attacking = false;
 			App->colliders->deleteCollider(attackCollider);
 			attackCollider = nullptr;

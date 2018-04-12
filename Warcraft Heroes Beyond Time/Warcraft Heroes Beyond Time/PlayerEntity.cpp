@@ -7,6 +7,7 @@
 #include "ModuleEntitySystem.h"
 #include "ModulePrinter.h"
 #include "ModuleColliders.h"
+#include "ModuleAudio.h"
 
 PlayerEntity::PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : DynamicEntity (coor, texture), type(type) 
 {
@@ -161,6 +162,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			}
 			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && t == 0.0f && DashCD == 0.0f)
 			{
+				App->audio->PlayFx(App->audio->Thrall_Dash_FX);
 				startPos = pos;
 				animBefore = anim;
 			}
@@ -290,6 +292,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			}
 			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
 			{
+				App->audio->PlayFx(App->audio->Thrall_Dash_FX);
 				startPos = pos;
 				state = states::PL_DASH;
 				animBefore = anim;
@@ -331,6 +334,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			}
 			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
 			{
+				App->audio->PlayFx(App->audio->Thrall_Dash_FX);
 				startPos = pos;
 				state = states::PL_DASH;
 				animBefore = anim;
@@ -372,6 +376,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			}
 			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
 			{
+				App->audio->PlayFx(App->audio->Thrall_Dash_FX);
 				startPos = pos;
 				state = states::PL_DASH;
 				animBefore = anim;
@@ -413,6 +418,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			}
 			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
 			{
+				App->audio->PlayFx(App->audio->Thrall_Dash_FX);
 				startPos = pos;
 				state = states::PL_DASH;
 				animBefore = anim;
@@ -456,6 +462,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			}
 			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
 			{
+				App->audio->PlayFx(App->audio->Thrall_Dash_FX);
 				startPos = pos;
 				state = states::PL_DASH;
 				animBefore = anim;
@@ -498,6 +505,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			}
 			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
 			{
+				App->audio->PlayFx(App->audio->Thrall_Dash_FX);
 				startPos = pos;
 				state = states::PL_DASH;
 				animBefore = anim;
@@ -540,6 +548,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			}
 			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
 			{
+				App->audio->PlayFx(App->audio->Thrall_Dash_FX);
 				startPos = pos;
 				state = states::PL_DASH;
 				animBefore = anim;
@@ -582,6 +591,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			}
 			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
 			{
+				App->audio->PlayFx(App->audio->Thrall_Dash_FX);
 				startPos = pos;
 				state = states::PL_DASH;
 				animBefore = anim;
@@ -746,6 +756,7 @@ void PlayerEntity::JoyconStates(float dt)
 
 			else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN && t == 0.0f && DashCD == 0.0f)
 			{
+				App->audio->PlayFx(App->audio->Thrall_Dash_FX);
 				App->input->PlayJoyRumble(0.75f, 100);
 				startPos = pos;
 				state = states::PL_DASH;
@@ -886,6 +897,7 @@ void PlayerEntity::JoyconStates(float dt)
 		{
 			if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN && t == 0.0f && DashCD == 0.0f)
 			{
+				App->audio->PlayFx(App->audio->Thrall_Dash_FX);
 				App->input->PlayJoyRumble(0.75f, 100);
 				animBefore = anim;
 				startPos = pos;
@@ -1322,14 +1334,14 @@ void PlayerEntity::SetDamage(int damage, bool setStateDamage)
 		{
 			numStats.hp = 0;
 			state = states::PL_DEAD;
+			App->audio->PauseMusic(0.5);
+			App->audio->PlayFx(App->audio->Thrall_Die_FX);
 		}	
 		else
 		{
-			if (setStateDamage)
-			{
-				damaged = true;
-				SDL_SetTextureColorMod(App->entities->spritesheetsEntities[THRALL_SHEET], 255, 100, 100);
-			}
+			App->audio->PlayFx(App->audio->Thrall_Hitted_FX);
+			damaged = true;
+			SDL_SetTextureColorMod(App->entities->spritesheetsEntities[THRALL_SHEET], 255, 100, 100);
 			numStats.hp -= damage;
 		}	
 	}
@@ -1425,8 +1437,13 @@ void PlayerEntity::PushOut(Collider* wall)
 
 void PlayerEntity::IncreaseEnergy(int percent)
 {
-	if (numStats.energy + percent <= 100)
+	if (numStats.energy + percent < 100)
 		numStats.energy += percent;
-	else
+
+	else if(numStats.energy < 100)
+	{
 		numStats.energy = 100;
+		App->audio->PlayFx(App->audio->Thrall_EnergyMax_FX);
+	}
+		
 }
