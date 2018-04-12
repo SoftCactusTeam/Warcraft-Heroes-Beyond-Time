@@ -9,6 +9,7 @@
 #include <list>
 
 class Collider;
+struct SDL_Texture;
 
 class PlayerEntity : public DynamicEntity 
 {
@@ -28,6 +29,7 @@ protected:
 	bool move = true;
 	bool damaged = false;
 
+
 	float damagedConfigCD = 0.0f; //This will be the one loaded from config.xml
 	float damagedCD = 0.0f;
 
@@ -40,6 +42,9 @@ protected:
 	Collider* pcol = nullptr;
 
 	std::list<Item> itemsActive;
+
+
+	
 
 	enum class states
 	{
@@ -119,6 +124,7 @@ public:
 	bool drawFZ = false;
 	void DrawFreeZone(bool);
 
+
 	//Collisions
 	virtual void UpdateCollider() {}
 	virtual void Collision(Collider* collideWith){}
@@ -126,6 +132,7 @@ public:
 	void PushOut(Collider* wall);
 	virtual void Attack() {}
 	virtual void UseSkill() {}
+
 };
 
 #endif

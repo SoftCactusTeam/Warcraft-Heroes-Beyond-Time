@@ -124,8 +124,13 @@
     <ClCompile Include="PlayerHPBar.cpp">
       <Filter>GUI\Warcraft Specific</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="BossHPBar.cpp">
       <Filter>GUI\Warcraft Specific</Filter>
+=======
+    <ClCompile Include="WCItem.cpp">
+      <Filter>Entities\Static Entities\Item</Filter>
+>>>>>>> Items
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -267,8 +272,13 @@
     <ClInclude Include="PlayerHPBar.h">
       <Filter>GUI\Warcraft Specific</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="BossHPBar.h">
       <Filter>GUI\Warcraft Specific</Filter>
+=======
+    <ClInclude Include="WCItem.h">
+      <Filter>Entities\Static Entities\Item</Filter>
+>>>>>>> Items
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -295,6 +305,9 @@
     </Filter>
     <Filter Include="GUI\Warcraft Specific">
       <UniqueIdentifier>{a44ceca3-55bf-4adb-bcf5-e831248165a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Static Entities\Item">
+      <UniqueIdentifier>{97edc93c-39e1-4515-b959-f4d1efb1bce8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

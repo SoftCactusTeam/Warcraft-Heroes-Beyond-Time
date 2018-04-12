@@ -1,4 +1,10 @@
 #include "ChestEntity.h"
+#include "Application.h"
+#include "Scene.h"
+#include "PlayerEntity.h"
+#include <math.h>
+#include "p2Point.h"
+
 
 ChestEntity::ChestEntity(fPoint coor, CHEST_TYPE type, SDL_Texture* texture) : StaticEntity(coor, texture), type(type)
 {
@@ -43,4 +49,24 @@ void ChestEntity::UnLockChest()
 inline bool ChestEntity::IsLocked() const
 {
 	return locked;
+}
+
+bool ChestEntity::PlayerNear(fPoint pos)
+{
+	if (App->scene->lvlChest != nullptr)
+	{
+		float norm;
+		float result = App->scene->lvlChest->pos.x - pos.x;
+		float result2 = result * result;
+		float result3 = App->scene->lvlChest->pos.y - pos.y;
+		float result4 = result3 * result3;
+		float result5 = result2 + result4;
+		norm = sqrt(result5);
+		if (norm <= 80)
+			return true;
+		else
+			return false;
+	}
+	else
+		return false;
 }

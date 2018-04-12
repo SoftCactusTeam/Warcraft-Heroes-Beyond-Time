@@ -8,6 +8,10 @@ class GUIWindow;
 class PlayerEntity;
 class ChestEntity;
 class PortalEntity;
+class Item;
+class WCItem;
+
+struct SDL_rect;
 
 class Scene : public Module
 {
@@ -43,13 +47,18 @@ public:
 	} actual_scene = Stages::MAIN_MENU;
 
 	PlayerEntity* player = nullptr;
+	ChestEntity* lvlChest = nullptr;
+	WCItem* paper = nullptr;
+	WCItem* paper_fake = nullptr;
 	bool paused = false;
+	SDL_Texture* texture = nullptr;
+	SDL_Texture* venom;
 
 
 private:
 
 	GUIWindow* PauseMenu = nullptr;
-	ChestEntity* lvlChest = nullptr;
+
 	PortalEntity* portal = nullptr;
 
 	bool restart = false;
