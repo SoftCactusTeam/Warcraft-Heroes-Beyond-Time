@@ -117,7 +117,13 @@ void Enemy_Archer::Collision(Collider* collideWith)
 		{
 		case  Collider::ATTACK_TYPE::PLAYER_MELEE:
 			live -= 40;
-			//App->audio->PlayFx(App->audio->loquesea);
+			if (live <= 0)
+				initDie();
+			else
+				initBackJump();
+			break;
+		case Collider::ATTACK_TYPE::THRALL_SKILL:
+			live -= 70;
 			if (live <= 0)
 				initDie();
 			else
@@ -376,6 +382,7 @@ void Enemy_Archer::ShootArrow(fPoint desviation)
 {
 	App->audio->PlayFx(App->audio->ArrowSound);
 	fPoint directionShoot = App->scene->player->pos;
+
 	directionShoot.x -= pos.x + desviation.x;
 	directionShoot.y -= pos.y + desviation.y;
 	fPoint copyToDivideDirectionShoot = directionShoot;
@@ -400,21 +407,20 @@ Enemy_Archer_Arrow::Enemy_Archer_Arrow(fPoint coor, SDL_Texture* texture, fPoint
 	this->direction = direction;
 	this->deadTimer = SDL_GetTicks() + deadTimer;
 	this->angle = atan2(coor.y - App->scene->player->pos.y, coor.x - App->scene->player->pos.x);
-	coldWithWall = false;
-
 	if (angle > 0)
 		angle = angle * 360 / (2 * PI);
 	else
 		angle = (2 * PI + angle) * 360 / (2 * PI);
 	angle -= 90;
 
+	tempoAtWall = -1;
 	arrowCollider = App->colliders->AddCollider({ (int)coor.x,(int)coor.y,5,5 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATTACK, nullptr, { 0,0 }, Collider::ATTACK_TYPE::ENEMY_ARROW);
 	rect = { 808,110,32,32 };
 }
 
 void Enemy_Archer_Arrow::Update()
 {
-	if (coldWithWall == true)
+	if (tempoAtWall != -1)
 	{
 		if (tempoAtWall < SDL_GetTicks())
 			destroy = true;
@@ -429,15 +435,11 @@ void Enemy_Archer_Arrow::Update()
 		if (arrowCollider->collidingWith == COLLIDER_TYPE::COLLIDER_PLAYER ||
 			arrowCollider->collidingWith == COLLIDER_TYPE::COLLIDER_PLAYER_ATTACK)
 			destroy = true;
-		else if (arrowCollider->collidingWith == COLLIDER_TYPE::COLLIDER_UNWALKABLE) {
+		else if (arrowCollider->collidingWith == COLLIDER_TYPE::COLLIDER_UNWALKABLE)
 			tempoAtWall = TEMPO_ARROW_ATWALL + SDL_GetTicks();
-			coldWithWall = true;
-		}
 	}
 	else
-	{
 		destroy = true;
-	}
 }
 
 void Enemy_Archer_Arrow::Finish()
