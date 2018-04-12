@@ -16,10 +16,7 @@ struct Collider
 		ENEMY_MELEE,
 		PLAYER_MELEE,
 		THRALL_SKILL,
-<<<<<<< HEAD
-=======
 		SHIT
->>>>>>> master
 	};
 
 	Collider(SDL_Rect colliderRect, COLLIDER_TYPE type, Entity* owner = nullptr, iPoint offset = iPoint(0, 0));

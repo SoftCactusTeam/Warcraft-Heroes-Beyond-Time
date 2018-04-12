@@ -56,7 +56,7 @@ iPoint MapGenerator::GetRandomValidPoint()
 
 	do
 		randNum = rand() % (nodes.size() - 0 + 1);
-	while (nodes[randNum]->layerBelow != -1 || nodes[randNum]->pos == nodes[Get(sizeX / 2, sizeY / 2)]->pos);
+	while (nodes[randNum]->layerBelow != -2 || nodes[randNum]->pos == nodes[Get(sizeX / 2, sizeY / 2)]->pos);
 
 	return nodes[randNum]->pos;
 }
@@ -179,7 +179,7 @@ bool MapGenerator::GenerateBossMap()
 		else if (gid >= 6)
 		{
 			nodes[contNodes]->whatToBlit = FLOOR;
-			nodes[contNodes]->layerBelow = -1;
+			nodes[contNodes]->layerBelow = -2;
 		}
 		else
 		{

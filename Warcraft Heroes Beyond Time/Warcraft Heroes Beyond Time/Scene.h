@@ -57,12 +57,8 @@ public:
 
 private:
 
-<<<<<<< HEAD
-	GUIWindow * PauseMenu = nullptr;
-	ChestEntity* lvlChest = nullptr;
-=======
 	GUIWindow* PauseMenu = nullptr;
->>>>>>> master
+
 	PortalEntity* portal = nullptr;
 
 	bool restart = false;

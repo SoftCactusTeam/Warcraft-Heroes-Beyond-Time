@@ -206,17 +206,6 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	attackUpLeft.speedFactor = 15.0f;
 	attackUpLeft.loop = false;
 
-<<<<<<< HEAD
-	skill.PushBack({ 0 + 5,923 + 5,89,71 + 5 });
-	skill.PushBack({ 89 + 5,923 + 5,89,71 + 5 });
-	skill.PushBack({ 178 + 5,923 + 5,89,71 + 5 });
-	skill.PushBack({ 267 + 5,923 + 5,89,71 + 5 });
-	skill.PushBack({ 356 + 5,923 + 5,89,71 + 5 });
-	skill.PushBack({ 445 + 5,923 + 5,89,71 + 5 });
-	skill.PushBack({ 534 + 5,923 + 5,89,71 + 5 });
-	skill.PushBack({ 0 + 5,994 + 5,89,71 + 5 });
-	skill.PushBack({ 0 + 5,994 + 5,89,71 + 5 });
-=======
 	skill.PushBack({ 13 ,933,61,67 }, { 16,21 });
 	skill.PushBack({ 102,933,61,67 }, { 16,21 });
 	skill.PushBack({ 191,933,61,67 }, { 16,21 });
@@ -226,7 +215,7 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	skill.PushBack({ 548,933,61,67 }, { 15,21 });
 	skill.PushBack({ 637,933,61,67 }, { 15,21 });
 	skill.PushBack({ 13,1006,61,67 }, { 16,19 });
->>>>>>> master
+
 	skill.speedFactor = 8.0f;
 
 	deadUpRight.PushBack({ 119, 1022, 29,39 });
@@ -302,11 +291,7 @@ bool Thrall::PostUpdate()
 {
 	if (anim == &attackUp || anim == &attackDown || anim == &attackRight || anim == &attackLeft || anim == &attackUpLeft || anim == &attackUpRight || anim == &attackDownLeft || anim == &attackDownRight)
 	{
-<<<<<<< HEAD
-		if (anim->Finished() || attackCollider->collidingWith == COLLIDER_ENEMY)
-=======
 		if (anim->Finished() || (attackCollider != nullptr && attackCollider->collidingWith == COLLIDER_ENEMY))
->>>>>>> master
 		{
 			if ((attackCollider != nullptr && attackCollider->collidingWith == COLLIDER_ENEMY))
 			{
@@ -322,11 +307,7 @@ bool Thrall::PostUpdate()
 
 	if (anim == &skill)
 	{
-<<<<<<< HEAD
-		if (anim->Finished() || skillCollider->collidingWith == COLLIDER_ENEMY)
-=======
 		if (anim->Finished() || (skillCollider != nullptr && skillCollider->collidingWith != COLLIDER_NONE))
->>>>>>> master
 		{
 			skillOn = false;
 			App->colliders->deleteCollider(skillCollider);

@@ -171,6 +171,11 @@ bool Guldan::Update(float dt)
 				createNewBalls = false;
 				readeForTimeNewBalls = false;
 				statesBoss = BossStates::DEAD;
+				if (bossCol != nullptr)
+				{
+					App->colliders->deleteCollider(bossCol);
+					bossCol = nullptr;
+				}
 				break;
 			}
 
@@ -333,7 +338,11 @@ bool Guldan::Finish()
 		}
 
 	}
-	App->colliders->deleteCollider(bossCol);
+	if (bossCol != nullptr)
+	{
+		App->colliders->deleteCollider(bossCol);
+		bossCol = nullptr;
+	}
 	App->textures->UnLoad(effectsTexture);
 	return true;
 }
