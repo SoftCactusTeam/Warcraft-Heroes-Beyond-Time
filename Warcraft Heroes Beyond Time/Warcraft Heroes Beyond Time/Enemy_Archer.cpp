@@ -25,6 +25,7 @@
 #define DISTANCE_TO_GO_SCAPE	60
 #define ARCHER_LIVE				100
 #define TIME_DYING				500
+#define TEMPO_ARROW_ATWALL		500
 
 Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture) : EnemyEntity(coor, character, texture) {}
 
@@ -399,6 +400,7 @@ Enemy_Archer_Arrow::Enemy_Archer_Arrow(fPoint coor, SDL_Texture* texture, fPoint
 	this->direction = direction;
 	this->deadTimer = SDL_GetTicks() + deadTimer;
 	this->angle = atan2(coor.y - App->scene->player->pos.y, coor.x - App->scene->player->pos.x);
+	coldWithWall = false;
 
 	if (angle > 0)
 		angle = angle * 360 / (2 * PI);
@@ -412,16 +414,25 @@ Enemy_Archer_Arrow::Enemy_Archer_Arrow(fPoint coor, SDL_Texture* texture, fPoint
 
 void Enemy_Archer_Arrow::Update()
 {
-	if (SDL_GetTicks() < deadTimer)
+	if (coldWithWall == true)
+	{
+		if (tempoAtWall < SDL_GetTicks())
+			destroy = true;
+		App->printer->PrintSprite(iPoint((int)pos.x, (int)pos.y), texture, rect, 2, ModulePrinter::Pivots::CENTER, angle);
+	}
+	else if (SDL_GetTicks() < deadTimer)
 	{
 		this->pos += direction;
 		App->printer->PrintSprite(iPoint((int)pos.x, (int)pos.y), texture, rect, 2, ModulePrinter::Pivots::CENTER, angle);
 		arrowCollider->colliderRect.x = (int)pos.x;
 		arrowCollider->colliderRect.y = (int)pos.y;
 		if (arrowCollider->collidingWith == COLLIDER_TYPE::COLLIDER_PLAYER ||
-			arrowCollider->collidingWith == COLLIDER_TYPE::COLLIDER_PLAYER_ATTACK ||
-			arrowCollider->collidingWith == COLLIDER_TYPE::COLLIDER_UNWALKABLE)
+			arrowCollider->collidingWith == COLLIDER_TYPE::COLLIDER_PLAYER_ATTACK)
 			destroy = true;
+		else if (arrowCollider->collidingWith == COLLIDER_TYPE::COLLIDER_UNWALKABLE) {
+			tempoAtWall = TEMPO_ARROW_ATWALL + SDL_GetTicks();
+			coldWithWall = true;
+		}
 	}
 	else
 	{

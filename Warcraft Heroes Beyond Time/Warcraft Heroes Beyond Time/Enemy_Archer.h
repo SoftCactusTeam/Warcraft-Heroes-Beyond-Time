@@ -34,6 +34,9 @@ public:
 	bool			destroy = false;
 	Collider*		arrowCollider = nullptr;
 	float angle;
+	// Perque es quedi clavada a la pared
+	bool coldWithWall = false;
+	int tempoAtWall = -1;
 };
 
 class Enemy_Archer : public EnemyEntity
