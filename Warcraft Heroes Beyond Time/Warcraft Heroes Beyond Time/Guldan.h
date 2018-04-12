@@ -7,11 +7,14 @@
 #include <list>
 #include <algorithm>
 
+#include "ModuleColliders.h"
+
 struct FelBall;
 
 class Guldan : public BossEntity
 {
 private:
+	Collider* bossCol = nullptr;
 	bool createNewBalls = false;
 	bool readeForTimeNewBalls = false;
 	float timeForNewBalls = 0.0f;
@@ -72,10 +75,15 @@ public:
 
 	SDL_Texture* tex = nullptr;
 	Animation* anim = nullptr;
+
+	Collider* felCol = nullptr;
 public:
 
 	FelBall(fPoint pos, int radius, int angle, SDL_Texture* tex, int angleInside) : pos(pos), radius(radius), startAngle(angle), tex(tex), angleInside(angleInside)
 	{
+
+		felCol = App->colliders->AddCollider({ (int)pos.x, (int)pos.y,18,23 }, COLLIDER_TYPE::COLLIDER_FELBALL);
+
 		felAnim.PushBack({ 19,32,18,23 });
 		felAnim.PushBack({ 69,32,18,23 });
 		felAnim.PushBack({ 118,32,18,23 });
@@ -87,7 +95,9 @@ public:
 		anim = &felAnim;
 	}
 
-	~FelBall() {};
+	~FelBall() {
+		App->colliders->deleteCollider(felCol);
+	};
 
 	void StartCountDownToDie() { startDying = true; };
 	void StartMovement() { 
@@ -115,6 +125,8 @@ public:
 
 	void Update(float dt)
 	{
+		felCol->colliderRect = { (int)pos.x, (int)pos.y, 18,23 };
+
 		if (startDying)
 			live -= 1 * dt;
 

@@ -75,6 +75,8 @@ Guldan::Guldan(fPoint coor, BOSS_TYPE type, SDL_Texture* texture) : BossEntity(c
 	anim = &idle;
 
 	hp = 1000;
+
+	
 }
 
 Guldan::~Guldan()
@@ -83,6 +85,8 @@ Guldan::~Guldan()
 
 bool Guldan::Start()
 {
+	bossCol = App->colliders->AddCollider({ (int)pos.x, (int)pos.y,60,64 }, COLLIDER_TYPE::COLLIDER_GULDAN);
+
 	effectsTexture = App->textures->Load("sprites/Guldan_Effects.png");
 
 	srand(time(NULL));
@@ -100,6 +104,8 @@ bool Guldan::Start()
 
 bool Guldan::Update(float dt)
 {
+	bossCol->colliderRect = { (int)pos.x,(int)pos.y,60,64 };
+
 	if (startTimeForTP)
 	{
 		fellBallsList.clear();
@@ -125,7 +131,7 @@ bool Guldan::Update(float dt)
 		case BossStates::IDLE:
 		{
 
-			if (App->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
+			if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
 			{
 				anim = &dead;
 				floatTimeForTp = 0.0f;
@@ -186,7 +192,15 @@ bool Guldan::Update(float dt)
 
 		case BossStates::DEAD:
 		{
+			for (std::list<FelBall*>::const_iterator it = fellBallsList.begin(); it != fellBallsList.end(); ++it)
+			{
+				if ((*it)->dead)
+				{
+					delete *it;
+					startTimeForTP = true;
+				}
 
+			}
 			fellBallsList.clear();
 
 			break;
@@ -228,6 +242,16 @@ bool Guldan::Update(float dt)
 
 bool Guldan::Finish()
 {
+	for (std::list<FelBall*>::const_iterator it = fellBallsList.begin(); it != fellBallsList.end(); ++it)
+	{
+		if ((*it)->dead)
+		{
+			delete *it;
+			startTimeForTP = true;
+		}
+
+	}
+	App->colliders->deleteCollider(bossCol);
 	App->textures->UnLoad(effectsTexture);
 	return true;
 }

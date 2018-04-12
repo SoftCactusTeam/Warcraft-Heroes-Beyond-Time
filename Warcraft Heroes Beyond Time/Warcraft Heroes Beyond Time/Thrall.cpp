@@ -298,6 +298,11 @@ void Thrall::Collision(Collider* collideWith)
 			ResetDash();
 		break;
 	}
+	case COLLIDER_TYPE::COLLIDER_FELBALL:
+	{
+		SetDamage(30, true);
+		break;
+	}
 	}
 }
 
