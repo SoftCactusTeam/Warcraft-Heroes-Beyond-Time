@@ -41,12 +41,14 @@ private:
 public:
 	Guldan(fPoint coor, BOSS_TYPE type, SDL_Texture* texture);
 	~Guldan();
-
+	
 	bool Start();
 	bool Update(float dt);
 	bool Finish();
 
 	bool CreateFelBalls(fPoint pos);
+
+	void Collision(Collider* collideWith);
 
 };
 
@@ -99,6 +101,7 @@ public:
 		App->colliders->deleteCollider(felCol);
 	};
 
+	
 	void StartCountDownToDie() { startDying = true; };
 	void StartMovement() { 
 		startMovement = true;

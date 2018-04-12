@@ -131,7 +131,7 @@ bool Guldan::Update(float dt)
 		case BossStates::IDLE:
 		{
 
-			if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
+			if (hp <= 0)
 			{
 				anim = &dead;
 				floatTimeForTp = 0.0f;
@@ -275,4 +275,20 @@ bool Guldan::CreateFelBalls(fPoint pos)
 	fellBallsList.push_back(new FelBall({ pos.x + 23 / 2, pos.y + 23 / 2 }, 60, 315, effectsTexture, 90));
 
 	return true;
+}
+
+void Guldan::Collision(Collider * collideWith)
+{
+	switch (collideWith->type)
+	{
+	case COLLIDER_TYPE::COLLIDER_PLAYER_ATTACK:
+	{
+		if (collideWith->attackType == Collider::ATTACK_TYPE::PLAYER_MELEE)
+		{
+			hp -= 10000;
+
+		}
+		break;
+	}
+	}
 }
