@@ -732,11 +732,9 @@ void PlayerEntity::KeyboardStates(float dt)
 
 	if (damaged)
 	{
-		int ret = SDL_SetTextureColorMod(App->entities->spritesheetsEntities[THRALL_SHEET], 255, 100, 100);
 		damagedCD += dt;
 		if (damagedCD > damagedConfigCD)
 		{
-			SDL_SetTextureColorMod(App->entities->spritesheetsEntities[THRALL_SHEET], 255, 255, 255);
 			damaged = false;
 			damagedCD = 0.0f;
 		}	
@@ -1446,4 +1444,16 @@ void PlayerEntity::IncreaseEnergy(int percent)
 		App->audio->PlayFx(App->audio->Thrall_EnergyMax_FX);
 	}
 		
+}
+
+bool PlayerEntity::Draw()
+{
+	bool ret = true;
+
+	if (damaged)
+		ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), texture, anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, 0, anim->GetCurrentPivot(), { 255,100,100,255 });
+	else
+		ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), texture, anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, 0, anim->GetCurrentPivot());
+
+	return ret;
 }

@@ -75,6 +75,7 @@ public:
 	virtual bool Start();
 	virtual bool Update(float dt);
 	virtual bool PostUpdate() { return true; }
+	bool Draw();
 	void PlayerStates(float dt);
 	void KeyboardStates(float dt);
 	void JoyconStates(float dt);
