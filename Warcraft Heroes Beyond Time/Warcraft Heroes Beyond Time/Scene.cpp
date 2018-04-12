@@ -95,14 +95,14 @@ bool Scene::Start()
 
 		App->map->GenerateMap(mapInfo);
 
-		player = App->entities->AddPlayer({ 25 * 48,25 * 48 }, THRALL);
+		player = App->entities->AddPlayer({ 25 * 46,25 * 46}, THRALL);
 		App->gui->CreateHPBar(player, { 10,5 });
 
 		App->path->LoadPathMap();
 
 		iPoint chestPos = App->map->GetRandomValidPoint();
 		lvlChest = App->entities->AddChest({ (float)chestPos.x * 48,(float)chestPos.y * 48 }, MID_CHEST);
-		portal = (PortalEntity*)App->entities->AddStaticEntity({ 25 * 48,25 * 48 }, PORTAL);
+		portal = (PortalEntity*)App->entities->AddStaticEntity({ 25 * 46,25 * 46 }, PORTAL);
 
 		break;
 	}
