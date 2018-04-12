@@ -12,6 +12,13 @@ public:
 	bool Finish();
 
 	void Collision(COLLIDER_TYPE type);
+
+	//items
+	std::list<iPoint> wcpaper;
+
+	//time
+	float time = 0.0f;
+	int cont = 0;
 };
 
 #endif

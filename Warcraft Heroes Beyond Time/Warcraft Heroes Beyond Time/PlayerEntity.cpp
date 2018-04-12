@@ -17,43 +17,14 @@ bool PlayerEntity::Start()
 {
 	anim = &idleDown;
 	state = states::PL_IDLE;
-
-	venom = App->textures->Load("sprites/venom");
-
 	InitCulling();
+
 
 	return true;
 }
 
 bool PlayerEntity::Update(float dt) 
 { 
-	if (App->scene->paper->got_paper)
-	{
-		time += dt;
-		if (time >= 1000)
-		{
-			time = 0;
-			if(cont<5)
-			{
-				wcpaper.push_front({ (int)App->scene->player->pos.x,(int)App->scene->player->pos.y });
-				cont += 1;
-			}
-			if (cont == 5)
-			{
-				cont -= 1;
-				wcpaper.pop_back();
-			}
-
-			std::list<iPoint>::iterator it = wcpaper.begin();
-
-			for (; it != wcpaper.end(); ++it)
-			{
-				App->printer->PrintSprite({it->x, it->y}, venom, SDL_Rect({ 0,0,32,32 }), 1);
-			}
-			
-			
-		}
-	}
 	return true; 
 }
 

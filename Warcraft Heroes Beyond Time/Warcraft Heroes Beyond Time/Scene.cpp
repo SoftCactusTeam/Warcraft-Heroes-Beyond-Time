@@ -58,6 +58,7 @@ bool Scene::Start()
 {
 	App->gui->Activate();
 	texture = App->textures->Load("sprites/all_items.png");
+	venom = App->textures->Load("sprites/venom.png");
 
 	switch (actual_scene)
 	{

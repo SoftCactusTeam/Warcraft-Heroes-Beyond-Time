@@ -2,6 +2,9 @@
 #include "Thrall.h"
 #include "ModuleInput.h"
 #include "ModuleEntitySystem.h"
+#include "Scene.h"
+#include "WCItem.h"
+#include "ModulePrinter.h"
 
 Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEntity(coor, type, texture) 
 {
@@ -202,6 +205,33 @@ bool Thrall::Update(float dt)
 	
 	if (anim != nullptr)
 	anim->speed = anim->speedFactor * percentage * dt;
+
+
+	if (App->scene->paper != nullptr && App->scene->paper->got_paper)
+	{
+		time += 1 * dt;
+		if (time >= 0.1)
+		{
+			time = 0;
+			if (cont < 18)
+			{
+				wcpaper.push_front({ (int)App->scene->player->pos.x,(int)App->scene->player->pos.y });
+				cont += 1;
+			}
+			if (cont == 18)
+			{
+				cont -= 1;
+				wcpaper.pop_back();
+				
+			}
+		}
+		std::list<iPoint>::iterator it = wcpaper.begin();
+
+		for (; it != wcpaper.end(); ++it)
+		{
+			App->printer->PrintSprite({ it->x, it->y }, App->scene->venom, SDL_Rect({ 0,0,32,32 }), 1);
+		}
+	}
 
 	return true;
 }

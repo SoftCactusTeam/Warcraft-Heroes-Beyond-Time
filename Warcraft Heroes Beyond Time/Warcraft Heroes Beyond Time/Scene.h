@@ -51,6 +51,7 @@ public:
 	WCItem* paper_fake = nullptr;
 	bool paused = false;
 	SDL_Texture* texture = nullptr;
+	SDL_Texture* venom;
 
 
 private:
