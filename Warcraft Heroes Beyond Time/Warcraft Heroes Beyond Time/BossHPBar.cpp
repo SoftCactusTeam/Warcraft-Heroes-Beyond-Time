@@ -22,9 +22,14 @@ bool BossHPBar::Update(float dt)
 
 bool BossHPBar::Draw()
 {
-	//Blit Bar
-	App->render->Blit(App->gui->getAtlas(), localPos.x, localPos.y, &atlasRect, 1, 0);
+	bool ret = true;
 
 	//Blit red part
-	App->render->Blit(App->gui->getAtlas(), localPos.x + 1, localPos.y + 1, &actualrect, 1, 0);
+	 ret = App->render->Blit(App->gui->getAtlas(), localPos.x + 1, localPos.y + 1, &actualrect, 1, 0);
+
+	//Blit Bar
+	 if(ret)
+		ret = App->render->Blit(App->gui->getAtlas(), localPos.x, localPos.y, &atlasRect, 1, 0);
+
+	return ret;
 }

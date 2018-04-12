@@ -11,7 +11,7 @@ public:
 
 	BossHPBar() {}
 	BossHPBar(BossEntity* boss, fPoint localPos, GUIElem* parent = nullptr);
-	virtual ~BossHPBar();
+	virtual ~BossHPBar() {}
 
 	bool Update(float dt);
 	bool Draw();
