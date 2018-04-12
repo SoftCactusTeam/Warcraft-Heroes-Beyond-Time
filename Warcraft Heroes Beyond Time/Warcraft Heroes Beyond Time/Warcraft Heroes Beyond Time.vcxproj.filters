@@ -3,7 +3,6 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Button.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
@@ -82,9 +81,6 @@
     <ClCompile Include="Slider.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="BossEntity.cpp">
-      <Filter>Entities\Dynamic Entities</Filter>
-    </ClCompile>
     <ClCompile Include="Enemy_Footman.cpp">
       <Filter>Entities\Dynamic Entities</Filter>
     </ClCompile>
@@ -124,6 +120,22 @@
     <ClCompile Include="PlayerHPBar.cpp">
       <Filter>GUI\Warcraft Specific</Filter>
     </ClCompile>
+<<<<<<< HEAD
+    <ClCompile Include="BossEntity.cpp">
+      <Filter>Entities\Dynamic Entities\Bosses</Filter>
+    </ClCompile>
+    <ClCompile Include="Guldan.cpp">
+      <Filter>Entities\Dynamic Entities\Bosses</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp" />
+=======
+    <ClCompile Include="BossHPBar.cpp">
+      <Filter>GUI\Warcraft Specific</Filter>
+    </ClCompile>
+    <ClCompile Include="WCItem.cpp">
+      <Filter>Entities\Static Entities\Item</Filter>
+    </ClCompile>
+>>>>>>> master
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -222,9 +234,6 @@
     <ClInclude Include="Slider.h">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="BossEntity.h">
-      <Filter>Entities\Dynamic Entities</Filter>
-    </ClInclude>
     <ClInclude Include="Enemy_Footman.h">
       <Filter>Entities\Dynamic Entities</Filter>
     </ClInclude>
@@ -264,6 +273,20 @@
     <ClInclude Include="PlayerHPBar.h">
       <Filter>GUI\Warcraft Specific</Filter>
     </ClInclude>
+<<<<<<< HEAD
+    <ClInclude Include="BossEntity.h">
+      <Filter>Entities\Dynamic Entities\Bosses</Filter>
+    </ClInclude>
+    <ClInclude Include="Guldan.h">
+      <Filter>Entities\Dynamic Entities\Bosses</Filter>
+=======
+    <ClInclude Include="BossHPBar.h">
+      <Filter>GUI\Warcraft Specific</Filter>
+    </ClInclude>
+    <ClInclude Include="WCItem.h">
+      <Filter>Entities\Static Entities\Item</Filter>
+>>>>>>> master
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />
@@ -289,6 +312,14 @@
     </Filter>
     <Filter Include="GUI\Warcraft Specific">
       <UniqueIdentifier>{a44ceca3-55bf-4adb-bcf5-e831248165a6}</UniqueIdentifier>
+    </Filter>
+<<<<<<< HEAD
+    <Filter Include="Entities\Dynamic Entities\Bosses">
+      <UniqueIdentifier>{074fa10c-3dad-4b8c-8d4d-d832213d8f68}</UniqueIdentifier>
+=======
+    <Filter Include="Entities\Static Entities\Item">
+      <UniqueIdentifier>{bce8a54d-ed1f-46fc-9fc2-4b5c348da630}</UniqueIdentifier>
+>>>>>>> master
     </Filter>
   </ItemGroup>
 </Project>

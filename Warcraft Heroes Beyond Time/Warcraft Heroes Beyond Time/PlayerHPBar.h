@@ -10,8 +10,6 @@
 #define FULL_ENERGY_COLOR {66, 883, 182, 7}
 
 class PlayerEntity;
-class GUIImage;
-class Label;
 
 class PlayerHPBar : public GUIElem
 {

@@ -20,10 +20,24 @@ private:
 	void UpdateCollider();
 	void UpdateAttackCollider();
 	void Attack();
-	
+	void UseSkill();
+	void UpdateSkillCollider();
+
 private:
 	Collider * attackCollider = nullptr;
+	Collider* skillCollider = nullptr;
 	bool attacking = false;
+	bool skillOn = false;
+
+public:
+
+	//items
+	std::list<iPoint> wcpaper;
+	std::list<Collider*> paper_collider;
+	
+	//time
+	float time = 0.0f;
+	int cont = 0;
 };
 
 #endif

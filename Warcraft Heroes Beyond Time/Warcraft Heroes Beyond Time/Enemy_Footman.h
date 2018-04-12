@@ -3,7 +3,7 @@
 
 #include "EnemyEntity.h"
 
-enum FOOTMAN_STATE{
+enum FOOTMAN_STATE {
 	FOOTMAN_IDLE,
 	FOOTMAN_WALK,
 	FOOTMAN_ATAC,

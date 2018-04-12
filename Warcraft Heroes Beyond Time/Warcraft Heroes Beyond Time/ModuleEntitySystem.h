@@ -13,6 +13,7 @@ class Entity;
 class PlayerEntity;
 class ChestEntity;
 class StaticEntity;
+class BossEntity;
 
 class EntitySystem : public Module
 {
@@ -25,7 +26,7 @@ public:
 		uint armor = 0;
 		uint speed = 0;
 		uint damage = 0;
-		uint energy = 100;
+		uint energy = 0;
 		uint energyPercentbyHit = 0;
 		uint critChance = 0;
 
@@ -66,7 +67,7 @@ public:
 
 	PlayerEntity* AddPlayer(fPoint coor, PLAYER_TYPE type);
 	void AddEnemy(fPoint coor, ENEMY_TYPE type);
-	void AddBoss(fPoint coor, BOSS_TYPE type);
+	BossEntity* AddBoss(fPoint coor, BOSS_TYPE type);
 	void AddConsumable(fPoint coor, CONSUMABLE_TYPE type);
 	ChestEntity* AddChest(fPoint coor, CHEST_TYPE type);
 	StaticEntity* AddStaticEntity(fPoint coor, STATIC_ENTITY_TYPE type);
@@ -74,10 +75,25 @@ public:
 	void ClearEnemies();
 	int GetRandomNumber(int rang);
 
+	void LoadCDs(float& dashCD, float& invpostdamaged, float& timepostdead)
+	{
+		dashCD = this->dashCD;
+		invpostdamaged = this->invpostdamaged;
+		timepostdead = this->timepostdead;
+	}
+
+
+
 	std::vector<SDL_Texture*> spritesheetsEntities;
+
+
 private:
 	std::list<Entity*>		entities;
-	std::list<Entity*>		toSpawn; 
+	std::list<Entity*>		toSpawn;
+
+	float dashCD = 0.0f;
+	float invpostdamaged = 0.0f;
+	float timepostdead = 0.0f;
 
 };
 

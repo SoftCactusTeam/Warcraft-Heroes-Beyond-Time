@@ -54,21 +54,31 @@ void Pathfinding::AddNodeToMap(int cost, iPoint point)
 void Pathfinding::PrintWalkableTiles()
 {
 	for (int i = 0; i < map.size(); i++)
-		App->render->DrawQuad({ map[i]->nodePos.x * ((int)tileSize-2), map[i]->nodePos.y * ((int)tileSize-2), ((int)tileSize-2), ((int)tileSize-2) }, 255, 255, 0, 140);
+		App->render->DrawQuad({ map[i]->nodePos.x * ((int)tileSize - 2), map[i]->nodePos.y * ((int)tileSize - 2), ((int)tileSize), ((int)tileSize) }, 255, 255, 0, 140);
 }
 
 void Pathfinding::LoadNeighbours(pathNode* node)
 {
 	BROFILER_CATEGORY("LoadPathfindingNeighbours", Profiler::Color::Chocolate);
-	
-		if (ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y)) != -1)
-			node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y))]);
-		if (ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y)) != -1)
-			node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y))]);
-		if (ExistWalkableAtPos(iPoint(node->nodePos.x, node->nodePos.y + 1)) != -1)
-			node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x, node->nodePos.y + 1))]);
-		if (ExistWalkableAtPos(iPoint(node->nodePos.x, node->nodePos.y - 1)) != -1)
-			node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x, node->nodePos.y - 1))]);
+
+	// Frontals
+	if (ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y)) != -1)
+		node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y))]);
+	if (ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y)) != -1)
+		node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y))]);
+	if (ExistWalkableAtPos(iPoint(node->nodePos.x, node->nodePos.y + 1)) != -1)
+		node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x, node->nodePos.y + 1))]);
+	if (ExistWalkableAtPos(iPoint(node->nodePos.x, node->nodePos.y - 1)) != -1)
+		node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x, node->nodePos.y - 1))]);
+	// Diagonals
+	if (ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y + 1)) != -1)
+		node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y + 1))]);
+	if (ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y - 1)) != -1)
+		node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y - 1))]);
+	if (ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y + 1)) != -1)
+		node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y + 1))]);
+	if (ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y - 1)) != -1)
+		node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y - 1))]);
 }
 
 int Pathfinding::ExistWalkableAtPos(iPoint& pos)
@@ -93,21 +103,20 @@ bool PathVector::CalculatePathAstar(iPoint thisPos, iPoint tileToMove)
 	pathVec.clear();
 
 	/// SET SIZE & POSITIONS
-	thisPos = iPoint(thisPos.x / App->map->getTileSize() , thisPos.y / App->map->getTileSize());
-	tileToMove = iPoint(tileToMove.x / App->map->getTileSize() , tileToMove.y / App->map->getTileSize());
+	thisPos = iPoint(thisPos.x / App->map->getTileSize(), thisPos.y / App->map->getTileSize());
+	tileToMove = iPoint(tileToMove.x / App->map->getTileSize(), tileToMove.y / App->map->getTileSize());
 
 	/// SI L'OBJECTIU ESTA FORA DEL PATH WALKABLE FORA
-	if (App->path->ExistWalkableAtPos(tileToMove) == -1)
+	if (App->path->ExistWalkableAtPos(tileToMove) == -1 || App->path->ExistWalkableAtPos(thisPos) == -1)
 		return false;
 
 	/// INIT QUEUES & FIRST PUSH
 	std::priority_queue<pathNode*, std::vector<pathNode*>, pathNodeComparison> frontQueue;
 	std::vector<pathNode*> visitedQueue;
-	if (App->path->ExistWalkableAtPos(thisPos) == -1)
-		return false;
+
 	frontQueue.push(App->path->map[App->path->ExistWalkableAtPos(thisPos)]);
 	visitedQueue.push_back(App->path->map[App->path->ExistWalkableAtPos(thisPos)]);
-	
+
 	/// BUCLE
 	while (frontQueue.empty() == false)
 	{
@@ -146,6 +155,7 @@ bool PathVector::CalculatePathAstar(iPoint thisPos, iPoint tileToMove)
 		current->neighbours.clear();
 	}
 	pathVec = visitedQueue;
+	return true;
 }
 
 bool PathVector::CalculateWay(iPoint thisPos, iPoint tileToMove)
@@ -180,9 +190,9 @@ void PathVector::PrintAstar()
 {
 	int tileSize = App->map->getTileSize();
 	for (int i = 0; i < pathVec.size(); i++)
-		App->printer->PrintQuad({ pathVec[i]->nodePos.x * (int)tileSize, pathVec[i]->nodePos.y * (int)tileSize, (int)tileSize, (int)tileSize }, Black);
+		App->printer->PrintQuad({ pathVec[i]->nodePos.x * (int)tileSize, pathVec[i]->nodePos.y * (int)tileSize - 2, (int)tileSize, (int)tileSize }, Black);
 	for (int i = 0; i < walkPath.size(); i++)
-		App->printer->PrintQuad({ pathVec[i]->nodePos.x * (int)tileSize, pathVec[i]->nodePos.y * (int)tileSize, (int)tileSize, (int)tileSize }, Blue);
+		App->printer->PrintQuad({ pathVec[i]->nodePos.x * (int)tileSize, pathVec[i]->nodePos.y * (int)tileSize - 2, (int)tileSize, (int)tileSize }, Blue);
 }
 
 void PathVector::Clear()

@@ -26,7 +26,7 @@ public:
 
 	Pathfinding();
 	void LoadPathMap();
-	void ClearMap(); 
+	void ClearMap();
 
 	void AddNodeToMap(int cost, iPoint nodePos = { -1,-1 });
 	void PrintWalkableTiles();

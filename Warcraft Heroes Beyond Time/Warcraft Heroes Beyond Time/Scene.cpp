@@ -13,6 +13,10 @@
 #include "Pathfinding.h"
 #include "PlayerEntity.h"
 #include "ModulePrinter.h"
+#include "Item.h"
+#include "WCItem.h"
+#include "ModuleTextures.h"
+
 
 #include "Brofiler\Brofiler.h"
 
@@ -42,7 +46,7 @@ Scene::Scene()
 	name = "scene";
 }
 
-Scene::~Scene(){}
+Scene::~Scene() {}
 
 bool Scene::Awake(pugi::xml_node& sceneNode)
 {
@@ -55,50 +59,53 @@ bool Scene::Start()
 {
 	App->gui->Activate();
 
+	texture = App->textures->Load("sprites/all_items.png");
+	venom = App->textures->Load("sprites/venom.png");
+
 	switch (actual_scene)
 	{
-		case Stages::MAIN_MENU:
-		{
-			CreateMainMenuScreen();
+	case Stages::MAIN_MENU:
+	{
+		CreateMainMenuScreen();
 
-			break;
-		}
-		case Stages::SETTINGS:
-		{
-			CreateSettingsScreen();
+		break;
+	}
+	case Stages::SETTINGS:
+	{
+		CreateSettingsScreen();
 
-			break;
-		}
-		case Stages::INGAME:
-		{
-			App->colliders->Activate();
-			App->entities->Activate();
-			App->console->Activate();
-			App->map->Activate();
-			App->printer->Activate();
+		break;
+	}
+	case Stages::INGAME:
+	{
+		App->colliders->Activate();
+		App->entities->Activate();
+		App->console->Activate();
+		App->map->Activate();
+		App->printer->Activate();
 
 
-			BROFILER_CATEGORY("InGame Generation", Profiler::Color::Chocolate);
-			MapData mapInfo;
-			mapInfo.sizeX = 50;
-			mapInfo.sizeY = 50;
-			mapInfo.iterations = 600;
-			mapInfo.tilesetPath = "maps/Tiles.png";
-			lvlIndex++;
+		BROFILER_CATEGORY("InGame Generation", Profiler::Color::Chocolate);
+		MapData mapInfo;
+		mapInfo.sizeX = 50;
+		mapInfo.sizeY = 50;
+		mapInfo.iterations = 600;
+		mapInfo.tilesetPath = "maps/Tiles.png";
+		lvlIndex++;
 
-			App->map->GenerateMap(mapInfo);
+		App->map->GenerateMap(mapInfo);
 
-			player = App->entities->AddPlayer({ 25*48,25*48 }, THRALL);
-			App->gui->CreateHPBar(player, { 10,5 });
+		player = App->entities->AddPlayer({ 25 * 46,25 * 46}, THRALL);
+		App->gui->CreateHPBar(player, { 10,5 });
 
-			App->path->LoadPathMap();
+		App->path->LoadPathMap();
 
-			iPoint chestPos = App->map->GetRandomValidPoint();
-			lvlChest = App->entities->AddChest({ (float)chestPos.x * 48,(float)chestPos.y * 48 }, MID_CHEST);
-			portal = (PortalEntity*)App->entities->AddStaticEntity({ 25 * 48,25 * 48 }, PORTAL);
+		iPoint chestPos = App->map->GetRandomValidPoint();
+		lvlChest = App->entities->AddChest({ (float)chestPos.x * 48,(float)chestPos.y * 48 }, MID_CHEST);
+		portal = (PortalEntity*)App->entities->AddStaticEntity({ 25 * 46,25 * 46 }, PORTAL);
 
-			break;
-		}
+		break;
+	}
 
 	}
 
@@ -126,25 +133,24 @@ bool Scene::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
 	{
-		player->SetDamage(25, true);
+		if (player != nullptr)
+			player->SetDamage(25, true);
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT)
 	{
-		if (player->numStats.energy > 10)
-			player->numStats.energy -= 10;
-		else
-			player->numStats.energy = 0;
+		if(player != nullptr)
+			player->numStats.energy = 100;
 	}
 
 
 
-//GENERATE A NEW MAP
+	//GENERATE A NEW MAP
 	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && actual_scene == Stages::INGAME && lvlIndex != 8 && !App->console->isWritting())
 	{
 		restart = true;
 	}
-	else if(App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && actual_scene == Stages::INGAME && lvlIndex == 8 && !App->console->isWritting())
+	else if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && actual_scene == Stages::INGAME && lvlIndex == 8 && !App->console->isWritting())
 	{
 		lvlIndex = 0;
 		actual_scene = Stages::MAIN_MENU;
@@ -152,33 +158,75 @@ bool Scene::Update(float dt)
 		// RESTART THIS MODULE AND THE ENTIRE GAME // GO TO MAIN MENU
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F1))
 	{
-		lvlChest->UnLockChest();
-		lvlChest->OpenChest();
-		portal->OpenPortal();
+		App->colliders->CleanUp();
+		App->gui->CleanUp();
+		App->entities->ClearEntitiesList();
+		App->map->CleanUp();
+		App->map->GenerateBossMap();
+		player = App->entities->AddPlayer({ 14 * 48,14 * 48, }, THRALL);
+		App->gui->CreateHPBar(player, { 10,5 });
+		App->entities->AddBoss({ 14 * 48,4 * 48 }, GULDAN);
 	}
 
-	//PAUSE GAME
-		if (actual_scene == Stages::INGAME)
+	if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN)
+	{
+		if (lvlChest->PlayerNear(player->pos))
 		{
-			if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN ||
-				App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_START) == KEY_DOWN)
+			lvlChest->UnLockChest();
+			lvlChest->OpenChest();
+			portal->OpenPortal();
+			paper = new WCItem("wcpaper", ItemType::passive_item_type, 0);
+			player->AddItem((WCItem)*paper);
+			paper_fake = paper;
+		}
+
+		if (!player->itemsActive.empty())
+		{
+			player->AddItem((WCItem)*paper);
+		}
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+	{
+		if (lvlChest->PlayerNear(player->pos))
+		{
+			if (paper_fake != nullptr)
 			{
-				if (!paused)
-				{
-					paused = true;
-					CreatePauseMenu();
-				}
-				else
-				{
-					paused = false;
-					App->gui->DestroyElem(PauseMenu);
-				}
+				player->AddItem((WCItem)*paper);
+				paper_fake = nullptr;
+				paper->got_paper = true;
 			}
 		}
-		
-		
+	}
+
+	if (paper_fake != nullptr)
+	{
+		App->printer->PrintSprite({ (int)lvlChest->pos.x,(int)lvlChest->pos.y }, texture, SDL_Rect({ 34,84,27,31 }), 1);
+	}
+	
+
+	//PAUSE GAME
+	if (actual_scene == Stages::INGAME)
+	{
+		if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN ||
+			App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_START) == KEY_DOWN)
+		{
+			if (!paused)
+			{
+				paused = true;
+				CreatePauseMenu();
+			}
+			else
+			{
+				paused = false;
+				App->gui->DestroyElem(PauseMenu);
+			}
+		}
+	}
+
+
 	return true;
 }
 
@@ -222,70 +270,70 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 	bool ret = true;
 	switch (UIelem->type)
 	{
-		case GUIElem::GUIElemType::BUTTON:
+	case GUIElem::GUIElemType::BUTTON:
+	{
+		Button* button = (Button*)UIelem;
+		switch (_event)
 		{
-			Button* button = (Button*)UIelem;
-			switch (_event)
+		case UIEvents::MOUSE_ENTER:
+		{
+			App->audio->PlayFx(App->audio->ButtonHovered);
+			button->atlasRect = Button1MouseHover;
+			break;
+		}
+		case UIEvents::MOUSE_RIGHT_UP:
+		{
+			button->atlasRect = Button1MouseHover;
+			break;
+		}
+		case UIEvents::MOUSE_LEFT_CLICK:
+		{
+			App->audio->PlayFx(App->audio->ButtonClicked);
+			button->atlasRect = Button1Pressed;
+			button->MoveChilds({ 0.0f, 1.0f });
+			break;
+		}
+		case UIEvents::MOUSE_LEAVE:
+		case UIEvents::NO_EVENT:
+		{
+			button->atlasRect = Button1;
+			break;
+		}
+		case UIEvents::MOUSE_LEFT_UP:
+		{
+			button->atlasRect = Button1MouseHover;
+			button->MoveChilds({ 0.0f, -1.0f });
+			switch (button->btype)
 			{
-				case UIEvents::MOUSE_ENTER:
-				{
-					App->audio->PlayFx(App->audio->ButtonHovered);
-					button->atlasRect = Button1MouseHover;
-					break;
-				}
-				case UIEvents::MOUSE_RIGHT_UP:
-				{
-					button->atlasRect = Button1MouseHover;
-					break;
-				}
-				case UIEvents::MOUSE_LEFT_CLICK:
-				{
-					App->audio->PlayFx(App->audio->ButtonClicked);
-					button->atlasRect = Button1Pressed;
-					button->MoveChilds({0.0f, 1.0f});
-					break;
-				}
-				case UIEvents::MOUSE_LEAVE:
-				case UIEvents::NO_EVENT:
-				{
-					button->atlasRect = Button1;
-					break;
-				}
-				case UIEvents::MOUSE_LEFT_UP:
-				{
-					button->atlasRect = Button1MouseHover;
-					button->MoveChilds({ 0.0f, -1.0f });
-					switch (button->btype)
-					{
-					case BType::PLAY:
-						App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
-						actual_scene = Stages::INGAME;
-						restart = true;
-						break;
-					case BType::EXIT_GAME:
-						return false;
-						break;
-					case BType::SETTINGS:
-						actual_scene = Stages::SETTINGS;
-						restart = true;
-						break;
-					case BType::GO_MMENU:
-						if (actual_scene == Stages::INGAME)
-							App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
-						actual_scene = Stages::MAIN_MENU;
-						paused = false;
-						restart = true;
-						break;
-					case BType::RESUME:
-						paused = false;
-						App->gui->DestroyElem(PauseMenu);
-						break;
-					}
-					break;
-				}
+			case BType::PLAY:
+				App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
+				actual_scene = Stages::INGAME;
+				restart = true;
+				break;
+			case BType::EXIT_GAME:
+				return false;
+				break;
+			case BType::SETTINGS:
+				actual_scene = Stages::SETTINGS;
+				restart = true;
+				break;
+			case BType::GO_MMENU:
+				if (actual_scene == Stages::INGAME)
+					App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
+				actual_scene = Stages::MAIN_MENU;
+				paused = false;
+				restart = true;
+				break;
+			case BType::RESUME:
+				paused = false;
+				App->gui->DestroyElem(PauseMenu);
+				break;
 			}
 			break;
 		}
+		}
+		break;
+	}
 	}
 	return ret;
 }
@@ -409,11 +457,8 @@ fPoint Scene::getPosByResolution(fPoint pos) const
 {
 	/*uint actualW = App->render->camera.w;
 	uint actualH = App->render->camera.h;
-
 	float percentX = (pos.x * 100) / 640;
 	float percentY = (pos.y * 100) / 360;
-
-
 	fPoint ret = { (actualW * percentX)/100, (actualH * percentY)/100};*/
 
 	return pos;

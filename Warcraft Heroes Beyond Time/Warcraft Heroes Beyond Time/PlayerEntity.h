@@ -9,8 +9,9 @@
 #include <list>
 
 class Collider;
+struct SDL_Texture;
 
-class PlayerEntity : public DynamicEntity 
+class PlayerEntity : public DynamicEntity
 {
 
 protected:
@@ -23,13 +24,23 @@ protected:
 	Animation skill;
 	Animation deadUpRight, deadDownRight;
 	Animation* animBefore = nullptr;
+
 	float speed = 250.0f;
 	bool move = true;
 	bool damaged = false;
+
+	float damagedConfigCD = 0.0f; //This will be the one loaded from config.xml
 	float damagedCD = 0.0f;
+
+	float DashConfigCD = 0.0f;
+	float DashCD = 0.0f;
+
+	float deadinfloorConfigCD = 0.0f;
 	float deadinfloorcd = 0.0f;
 
-	std::list<Item> itemsActive;
+	Collider* pcol = nullptr;
+
+	
 
 	enum class states
 	{
@@ -51,7 +62,7 @@ protected:
 
 	} state;
 
-	Collider* pcol = nullptr;
+	
 
 
 public:
@@ -65,6 +76,7 @@ public:
 	virtual bool Start();
 	virtual bool Update(float dt);
 	virtual bool PostUpdate() { return true; }
+	bool Draw();
 	void PlayerStates(float dt);
 	void KeyboardStates(float dt);
 	void JoyconStates(float dt);
@@ -77,11 +89,14 @@ public:
 
 	void AddItem(Item item);
 	void IterateItems(ItemFunctions nameFunction);
+	
+	//Stats functions
 	void SetDamage(int damage, bool setStateDamage);
+	void IncreaseEnergy(int percent);
 
 	//This function calculates player position given a Bezier Curve
 	fPoint CalculatePosFromBezier(fPoint startPos, fPoint handleA, float t, fPoint handleB, fPoint endPos);
-	
+
 	Animation* GetAnimFromAngle(float angle, bool dashOn = false);
 	bool IsPlayerMoving();
 
@@ -94,7 +109,7 @@ public:
 	float t = 0.0f;
 	fPoint startPos = { 0.0f, 0.0f };
 	void ResetDash();
-	float DashCD = 0.0f;
+	
 
 
 	//Camera culling
@@ -107,10 +122,15 @@ public:
 
 	//Collisions
 	virtual void UpdateCollider() {}
-	virtual void Collision(Collider* collideWith){}
+	virtual void Collision(Collider* collideWith) {}
 	void setCol(Collider* pcol);
 	void PushOut(Collider* wall);
 	virtual void Attack() {}
+	virtual void UseSkill() {}
+
+	//items
+	std::list<iPoint> wcpaper;
+	std::list<Item> itemsActive;
 };
 
 #endif

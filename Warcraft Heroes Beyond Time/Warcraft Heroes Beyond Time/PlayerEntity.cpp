@@ -7,8 +7,14 @@
 #include "ModuleEntitySystem.h"
 #include "ModulePrinter.h"
 #include "ModuleColliders.h"
+#include "ModuleAudio.h"
+#include "Application.h"
+#include "ModuleTextures.h"
 
-PlayerEntity::PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : DynamicEntity (coor, texture), type(type) {}
+PlayerEntity::PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : DynamicEntity(coor, texture), type(type)
+{
+	App->entities->LoadCDs(DashConfigCD, damagedConfigCD, deadinfloorConfigCD);
+}
 
 bool PlayerEntity::Start()
 {
@@ -20,9 +26,9 @@ bool PlayerEntity::Start()
 	return true;
 }
 
-bool PlayerEntity::Update(float dt) 
-{ 
-	return true; 
+bool PlayerEntity::Update(float dt)
+{
+	return true;
 }
 
 bool PlayerEntity::Finish() { return true; }
@@ -42,7 +48,7 @@ fPoint PlayerEntity::CalculatePosFromBezier(fPoint startPos, fPoint handleA, flo
 
 	fPoint firstArgument;
 	firstArgument.x = subT3 * startPos.x;
-	firstArgument.y = subT3 * startPos.y ;
+	firstArgument.y = subT3 * startPos.y;
 
 	fPoint secondArgument;
 	secondArgument.x = 3.0f * t * subT2 * handleA.x;
@@ -67,7 +73,7 @@ void PlayerEntity::ResetDash()
 {
 	state = states::PL_IDLE;
 	t = 0.0f;
-	DashCD = 1.0f;
+	DashCD = DashConfigCD;
 
 	if (anim == &dashRight)
 		anim = &idleRight;
@@ -114,583 +120,609 @@ void PlayerEntity::KeyboardStates(float dt)
 {
 	switch (state)
 	{
-		case states::PL_IDLE:
+	case states::PL_IDLE:
+	{
+		if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT))
 		{
-			if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT))
-			{
-				state = states::PL_UP_RIGHT;
-				anim = &upRight;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-			{
-				state = states::PL_UP_LEFT;
-				anim = &upLeft;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-			{
-				state = states::PL_DOWN_RIGHT;
-				anim = &downRight;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-			{
-				state = states::PL_DOWN_LEFT;
-				anim = &downLeft;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-			{
-				state = states::PL_UP;
-				anim = &up;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-			{
-				state = states::PL_DOWN;
-				anim = &down;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-			{
-				state = states::PL_LEFT;
-				anim = &left;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-			{
-				state = states::PL_RIGHT;
-				anim = &right;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && t == 0.0f && DashCD == 0.0f)
-			{
-				DashCD = 0.0f;
-				startPos = pos;
-				animBefore = anim;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
-			{
-				state = states::PL_ATTACK;
-				animBefore = anim;
-				Attack();
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
-			{
-				state = states::PL_SKILL;
-				animBefore = anim;
-				anim = &skill;
-			}
-			break;
+			state = states::PL_UP_RIGHT;
+			anim = &upRight;
 		}
-		
-		case states::PL_DASH:
+		else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		{
-			if (t <= 1.0f && t >= 0.0f)
-			{
-				if (animBefore == &idleRight || animBefore == &right)
-				{
-					pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
-
-					anim = &dashRight;
-					float x = 0.05f / dt;
-					t += (x * dt);
-				}
-				else if (animBefore == &idleLeft || animBefore == &left)
-				{
-					pos.x = startPos.x - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
-
-					anim = &dashLeft;
-					float x = 0.05f / dt;
-					t += (x * dt);
-				}
-				else if (animBefore == &idleUp || animBefore == &up)
-				{
-					pos.y = startPos.y - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
-
-					anim = &dashUp;
-					float x = 0.05f / dt;
-					t += (x * dt);
-				}
-				else if (animBefore == &idleDown || animBefore == &down)
-				{
-					pos.y = startPos.y + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
-
-					anim = &dashDown;
-					float x = 0.05f / dt;
-					t += (x * dt);
-				}
-				else if (animBefore == &idleUpRight || animBefore == &upRight)
-				{
-					fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
-
-					pos.x = startPos.x + dashDistance * 0.75f * bezierPoint.y;
-					pos.y = startPos.y - dashDistance * 0.75f * bezierPoint.y;
-
-					anim = &dashUpRight;
-					float x = 0.05f / dt;
-					t += (x * dt);
-				}
-				else if (animBefore == &idleDownRight || animBefore == &downRight)
-				{
-					fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
-
-					pos.x = startPos.x + dashDistance * 0.75f * bezierPoint.y;
-					pos.y = startPos.y + dashDistance * 0.75f * bezierPoint.y;
-
-					anim = &dashDownRight;
-					float x = 0.05f / dt;
-					t += (x * dt);
-				}
-				else if (animBefore == &idleDownLeft || animBefore == &downLeft)
-				{
-					fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
-
-					pos.x = startPos.x - dashDistance * 0.75f * bezierPoint.y;
-					pos.y = startPos.y + dashDistance * 0.75f * bezierPoint.y;
-
-					anim = &dashDownLeft;
-					float x = 0.05f / dt;
-					t += (x * dt);
-				}
-				else if (animBefore == &idleUpLeft || animBefore == &upLeft)
-				{
-					fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
-
-					pos.x = startPos.x - dashDistance * 0.75f * bezierPoint.y;
-					pos.y = startPos.y - dashDistance * 0.75f * bezierPoint.y;
-
-					anim = &dashUpLeft;
-					float x = 0.05f / dt;
-					t += (x * dt);
-				}
-			}
-			else
-			{
-				ResetDash();
-			}
-			break;
+			state = states::PL_UP_LEFT;
+			anim = &upLeft;
 		}
-
-		case states::PL_UP:
+		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 		{
-			pos.y -= speed * dt;
-
-			if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_UP))
-			{
-				state = states::PL_IDLE;
-				anim = &idleUp;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-			{
-				state = states::PL_UP_RIGHT;
-				anim = &upRight;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-			{
-				state = states::PL_UP_LEFT;
-				anim = &upLeft;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
-			{
-				startPos = pos;
-				state = states::PL_DASH;
-				animBefore = anim;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
-			{
-				state = states::PL_ATTACK;
-				animBefore = anim;
-				Attack();
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
-			{
-				state = states::PL_SKILL;
-				animBefore = anim;
-				anim = &skill;
-			}
-			break;
+			state = states::PL_DOWN_RIGHT;
+			anim = &downRight;
 		}
-
-		case states::PL_DOWN:
+		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		{
-			pos.y += speed * dt;
-			if (App->input->GetKey(SDL_SCANCODE_S) == KEY_UP)
-			{
-				state = states::PL_IDLE;
-				anim = &idleDown;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-			{
-				state = states::PL_DOWN_RIGHT;
-				anim = &downRight;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-			{
-				state = states::PL_DOWN_LEFT;
-				anim = &downLeft;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
-			{
-				startPos = pos;
-				state = states::PL_DASH;
-				animBefore = anim;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
-			{
-				state = states::PL_ATTACK;
-				animBefore = anim;
-				Attack();
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
-			{
-				state = states::PL_SKILL;
-				animBefore = anim;
-				anim = &skill;
-			}
-			break;
+			state = states::PL_DOWN_LEFT;
+			anim = &downLeft;
 		}
-		
-		case states::PL_LEFT:
+		else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 		{
-			pos.x -= speed * dt;
-			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
-			{
-				state = states::PL_IDLE;
-				anim = &idleLeft;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-			{
-				state = states::PL_UP_LEFT;
-				anim = &upLeft;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-			{
-				state = states::PL_DOWN_LEFT;
-				anim = &downLeft;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
-			{
-				startPos = pos;
-				state = states::PL_DASH;
-				animBefore = anim;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
-			{
-				state = states::PL_ATTACK;
-				animBefore = anim;
-				Attack();
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
-			{
-				state = states::PL_SKILL;
-				animBefore = anim;
-				anim = &skill;
-			}
-			break;
+			state = states::PL_UP;
+			anim = &up;
 		}
-
-		case states::PL_RIGHT:
+		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 		{
-			pos.x += speed * dt;
-			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
-			{
-				state = states::PL_IDLE;
-				anim = &idleRight;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-			{
-				state = states::PL_UP_RIGHT;
-				anim = &upRight;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-			{
-				state = states::PL_DOWN_RIGHT;
-				anim = &downRight;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
-			{
-				startPos = pos;
-				state = states::PL_DASH;
-				animBefore = anim;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
-			{
-				state = states::PL_ATTACK;
-				animBefore = anim;
-				Attack();
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
-			{
-				state = states::PL_SKILL;
-				animBefore = anim;
-				anim = &skill;
-			}
-			break;
+			state = states::PL_DOWN;
+			anim = &down;
 		}
-
-		case states::PL_UP_LEFT:
+		else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		{
-			pos.x -= speed * 0.75f * dt;
-			pos.y -= speed * 0.75f * dt;
-
-			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_UP && App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
-			{
-				state = states::PL_IDLE;
-				anim = &idleUpLeft;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
-			{
-				state = states::PL_LEFT;
-				anim = &left;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
-			{
-				state = states::PL_UP;
-				anim = &up;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
-			{
-				startPos = pos;
-				state = states::PL_DASH;
-				animBefore = anim;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
-			{
-				state = states::PL_ATTACK;
-				animBefore = anim;
-				Attack();
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
-			{
-				state = states::PL_SKILL;
-				animBefore = anim;
-				anim = &skill;
-			}
-			break;
+			state = states::PL_LEFT;
+			anim = &left;
 		}
-
-		case states::PL_UP_RIGHT:
+		else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 		{
-			pos.x += speed * 0.75f * dt;
-			pos.y -= speed * 0.75f * dt;
-			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_UP && App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
-			{
-				state = states::PL_IDLE;
-				anim = &idleUpRight;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
-			{
-				state = states::PL_RIGHT;
-				anim = &right;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
-			{
-				state = states::PL_UP;
-				anim = &up;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
-			{
-				startPos = pos;
-				state = states::PL_DASH;
-				animBefore = anim;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
-			{
-				state = states::PL_ATTACK;
-				animBefore = anim;
-				Attack();
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
-			{
-				state = states::PL_SKILL;
-				animBefore = anim;
-				anim = &skill;
-			}
-			break;
+			state = states::PL_RIGHT;
+			anim = &right;
 		}
-		
-		case states::PL_DOWN_LEFT:
+		else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && t == 0.0f && DashCD == 0.0f)
 		{
-			pos.x -= speed * 0.75f * dt;
-			pos.y += speed * 0.75f * dt;
-			if (App->input->GetKey(SDL_SCANCODE_S) == KEY_UP && App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
-			{
-				state = states::PL_IDLE;
-				anim = &idleDownLeft;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_UP)
-			{
-				state = states::PL_LEFT;
-				anim = &left;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
-			{
-				state = states::PL_DOWN;
-				anim = &down;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
-			{
-				startPos = pos;
-				state = states::PL_DASH;
-				animBefore = anim;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
-			{
-				state = states::PL_ATTACK;
-				animBefore = anim;
-				Attack();
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
-			{
-				state = states::PL_SKILL;
-				animBefore = anim;
-				anim = &skill;
-			}
-			break;
+			App->audio->PlayFx(App->audio->Thrall_Dash_FX);
+			startPos = pos;
+			animBefore = anim;
 		}
-		
-		case states::PL_DOWN_RIGHT:
+		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
 		{
-			pos.x += speed * 0.75f * dt;
-			pos.y += speed * 0.75f * dt;
-			if (App->input->GetKey(SDL_SCANCODE_S) == KEY_UP && App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
-			{
-				state = states::PL_IDLE;
-				anim = &idleDownRight;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_UP)
-			{
-				state = states::PL_RIGHT;
-				anim = &right;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
-			{
-				state = states::PL_DOWN;
-				anim = &down;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
-			{
-				startPos = pos;
-				state = states::PL_DASH;
-				animBefore = anim;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
-			{
-				state = states::PL_ATTACK;
-				animBefore = anim;
-				Attack();
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
-			{
-				state = states::PL_SKILL;
-				animBefore = anim;
-				anim = &skill;
-			}
-			break;
+			state = states::PL_ATTACK;
+			animBefore = anim;
+			Attack();
 		}
-	
-		case states::PL_ATTACK:
+		else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN && numStats.energy == 100)
 		{
-			if (animBefore == &idleDown || animBefore == &down)
-				anim = &attackDown;
+			state = states::PL_SKILL;
+			animBefore = anim;
+			anim = &skill;
+			numStats.energy = 0;
+			UseSkill();
+		}
+		break;
+	}
 
-			else if (animBefore == &idleUp || animBefore == &up)
-				anim = &attackUp;
+	case states::PL_DASH:
+	{
+		if (t <= 1.0f && t >= 0.0f)
+		{
+			if (animBefore == &idleRight || animBefore == &right)
+			{
+				pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
 
-			else if (animBefore == &idleUpRight || animBefore == &upRight)
-				anim = &attackUpRight;
-
-			else if (animBefore == &idleRight || animBefore == &right)
-				anim = &attackRight;
-
-			else if (animBefore == &idleDownRight || animBefore == &downRight)
-				anim = &attackDownRight;
-
-			else if (animBefore == &idleDownLeft || animBefore == &downLeft)
-				anim = &attackDownLeft;
-
+				anim = &dashRight;
+				float x = 0.05f / dt;
+				t += (x * dt);
+			}
 			else if (animBefore == &idleLeft || animBefore == &left)
-				anim = &attackLeft;
-
-			else if (animBefore == &idleUpLeft || animBefore == &upLeft)
-				anim = &attackUpLeft;
-
-			if (anim->Finished())
 			{
-				anim->Reset();
+				pos.x = startPos.x - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
 
-				if (animBefore == &left)
-					anim = &idleLeft;
-				else if (animBefore == &up)
-					anim = &idleUp;
-				else if (animBefore == &down)
-					anim = &idleDown;
-				else if (animBefore == &right)
-					anim = &idleRight;
-				else if (animBefore == &upRight)
-					anim = &idleUpRight;
-				else if (animBefore == &upLeft)
-					anim = &idleUpLeft;
-				else if (animBefore == &downLeft)
-					anim = &idleDownLeft;
-				else if (animBefore == &downRight)
-					anim = &idleDownRight;
-				else
-					anim = animBefore;
-
-				state = states::PL_IDLE;
+				anim = &dashLeft;
+				float x = 0.05f / dt;
+				t += (x * dt);
 			}
-
-			break;
-		}
-
-		case states::PL_SKILL:
-		{
-			if (anim->Finished())
+			else if (animBefore == &idleUp || animBefore == &up)
 			{
-				anim->Reset();
+				pos.y = startPos.y - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
+
+				anim = &dashUp;
+				float x = 0.05f / dt;
+				t += (x * dt);
+			}
+			else if (animBefore == &idleDown || animBefore == &down)
+			{
+				pos.y = startPos.y + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
+
+				anim = &dashDown;
+				float x = 0.05f / dt;
+				t += (x * dt);
+			}
+			else if (animBefore == &idleUpRight || animBefore == &upRight)
+			{
+				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+
+				pos.x = startPos.x + dashDistance * 0.75f * bezierPoint.y;
+				pos.y = startPos.y - dashDistance * 0.75f * bezierPoint.y;
+
+				anim = &dashUpRight;
+				float x = 0.05f / dt;
+				t += (x * dt);
+			}
+			else if (animBefore == &idleDownRight || animBefore == &downRight)
+			{
+				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+
+				pos.x = startPos.x + dashDistance * 0.75f * bezierPoint.y;
+				pos.y = startPos.y + dashDistance * 0.75f * bezierPoint.y;
+
+				anim = &dashDownRight;
+				float x = 0.05f / dt;
+				t += (x * dt);
+			}
+			else if (animBefore == &idleDownLeft || animBefore == &downLeft)
+			{
+				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+
+				pos.x = startPos.x - dashDistance * 0.75f * bezierPoint.y;
+				pos.y = startPos.y + dashDistance * 0.75f * bezierPoint.y;
+
+				anim = &dashDownLeft;
+				float x = 0.05f / dt;
+				t += (x * dt);
+			}
+			else if (animBefore == &idleUpLeft || animBefore == &upLeft)
+			{
+				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+
+				pos.x = startPos.x - dashDistance * 0.75f * bezierPoint.y;
+				pos.y = startPos.y - dashDistance * 0.75f * bezierPoint.y;
+
+				anim = &dashUpLeft;
+				float x = 0.05f / dt;
+				t += (x * dt);
+			}
+		}
+		else
+		{
+			ResetDash();
+		}
+		break;
+	}
+
+	case states::PL_UP:
+	{
+		pos.y -= speed * dt;
+
+		if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_UP))
+		{
+			state = states::PL_IDLE;
+			anim = &idleUp;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		{
+			state = states::PL_UP_RIGHT;
+			anim = &upRight;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		{
+			state = states::PL_UP_LEFT;
+			anim = &upLeft;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
+		{
+			App->audio->PlayFx(App->audio->Thrall_Dash_FX);
+			startPos = pos;
+			state = states::PL_DASH;
+			animBefore = anim;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+		{
+			state = states::PL_ATTACK;
+			animBefore = anim;
+			Attack();
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN && numStats.energy == 100)
+		{
+			state = states::PL_SKILL;
+			animBefore = anim;
+			anim = &skill;
+			numStats.energy = 0;
+			UseSkill();
+		}
+		break;
+	}
+
+	case states::PL_DOWN:
+	{
+		pos.y += speed * dt;
+		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_UP)
+		{
+			state = states::PL_IDLE;
+			anim = &idleDown;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		{
+			state = states::PL_DOWN_RIGHT;
+			anim = &downRight;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		{
+			state = states::PL_DOWN_LEFT;
+			anim = &downLeft;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
+		{
+			App->audio->PlayFx(App->audio->Thrall_Dash_FX);
+			startPos = pos;
+			state = states::PL_DASH;
+			animBefore = anim;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+		{
+			state = states::PL_ATTACK;
+			animBefore = anim;
+			Attack();
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN && numStats.energy == 100)
+		{
+			state = states::PL_SKILL;
+			animBefore = anim;
+			anim = &skill;
+			numStats.energy = 0;
+			UseSkill();
+		}
+		break;
+	}
+
+	case states::PL_LEFT:
+	{
+		pos.x -= speed * dt;
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
+		{
+			state = states::PL_IDLE;
+			anim = &idleLeft;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+		{
+			state = states::PL_UP_LEFT;
+			anim = &upLeft;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+		{
+			state = states::PL_DOWN_LEFT;
+			anim = &downLeft;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
+		{
+			App->audio->PlayFx(App->audio->Thrall_Dash_FX);
+			startPos = pos;
+			state = states::PL_DASH;
+			animBefore = anim;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+		{
+			state = states::PL_ATTACK;
+			animBefore = anim;
+			Attack();
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN && numStats.energy == 100)
+		{
+			state = states::PL_SKILL;
+			animBefore = anim;
+			anim = &skill;
+			numStats.energy = 0;
+			UseSkill();
+		}
+		break;
+	}
+
+	case states::PL_RIGHT:
+	{
+		pos.x += speed * dt;
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
+		{
+			state = states::PL_IDLE;
+			anim = &idleRight;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+		{
+			state = states::PL_UP_RIGHT;
+			anim = &upRight;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+		{
+			state = states::PL_DOWN_RIGHT;
+			anim = &downRight;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
+		{
+			App->audio->PlayFx(App->audio->Thrall_Dash_FX);
+			startPos = pos;
+			state = states::PL_DASH;
+			animBefore = anim;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+		{
+			state = states::PL_ATTACK;
+			animBefore = anim;
+			Attack();
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN && numStats.energy == 100)
+		{
+			state = states::PL_SKILL;
+			animBefore = anim;
+			anim = &skill;
+			numStats.energy = 0;
+			UseSkill();
+		}
+		break;
+	}
+
+	case states::PL_UP_LEFT:
+	{
+		pos.x -= speed * 0.75f * dt;
+		pos.y -= speed * 0.75f * dt;
+
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_UP && App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
+		{
+			state = states::PL_IDLE;
+			anim = &idleUpLeft;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
+		{
+			state = states::PL_LEFT;
+			anim = &left;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
+		{
+			state = states::PL_UP;
+			anim = &up;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
+		{
+			App->audio->PlayFx(App->audio->Thrall_Dash_FX);
+			startPos = pos;
+			state = states::PL_DASH;
+			animBefore = anim;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+		{
+			state = states::PL_ATTACK;
+			animBefore = anim;
+			Attack();
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN && numStats.energy == 100)
+		{
+			state = states::PL_SKILL;
+			animBefore = anim;
+			anim = &skill;
+			numStats.energy = 0;
+			UseSkill();
+		}
+		break;
+	}
+
+	case states::PL_UP_RIGHT:
+	{
+		pos.x += speed * 0.75f * dt;
+		pos.y -= speed * 0.75f * dt;
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_UP && App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
+		{
+			state = states::PL_IDLE;
+			anim = &idleUpRight;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
+		{
+			state = states::PL_RIGHT;
+			anim = &right;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
+		{
+			state = states::PL_UP;
+			anim = &up;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
+		{
+			App->audio->PlayFx(App->audio->Thrall_Dash_FX);
+			startPos = pos;
+			state = states::PL_DASH;
+			animBefore = anim;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+		{
+			state = states::PL_ATTACK;
+			animBefore = anim;
+			Attack();
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN && numStats.energy == 100)
+		{
+			state = states::PL_SKILL;
+			animBefore = anim;
+			anim = &skill;
+			numStats.energy = 0;
+			UseSkill();
+		}
+		break;
+	}
+
+	case states::PL_DOWN_LEFT:
+	{
+		pos.x -= speed * 0.75f * dt;
+		pos.y += speed * 0.75f * dt;
+		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_UP && App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
+		{
+			state = states::PL_IDLE;
+			anim = &idleDownLeft;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_UP)
+		{
+			state = states::PL_LEFT;
+			anim = &left;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
+		{
+			state = states::PL_DOWN;
+			anim = &down;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
+		{
+			App->audio->PlayFx(App->audio->Thrall_Dash_FX);
+			startPos = pos;
+			state = states::PL_DASH;
+			animBefore = anim;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+		{
+			state = states::PL_ATTACK;
+			animBefore = anim;
+			Attack();
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN && numStats.energy == 100)
+		{
+			state = states::PL_SKILL;
+			animBefore = anim;
+			anim = &skill;
+			numStats.energy = 0;
+			UseSkill();
+		}
+		break;
+	}
+
+	case states::PL_DOWN_RIGHT:
+	{
+		pos.x += speed * 0.75f * dt;
+		pos.y += speed * 0.75f * dt;
+		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_UP && App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
+		{
+			state = states::PL_IDLE;
+			anim = &idleDownRight;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_UP)
+		{
+			state = states::PL_RIGHT;
+			anim = &right;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
+		{
+			state = states::PL_DOWN;
+			anim = &down;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && DashCD == 0.0f)
+		{
+			App->audio->PlayFx(App->audio->Thrall_Dash_FX);
+			startPos = pos;
+			state = states::PL_DASH;
+			animBefore = anim;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+		{
+			state = states::PL_ATTACK;
+			animBefore = anim;
+			Attack();
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN && numStats.energy == 100)
+		{
+			state = states::PL_SKILL;
+			animBefore = anim;
+			anim = &skill;
+			numStats.energy = 0;
+			UseSkill();
+		}
+		break;
+	}
+
+	case states::PL_ATTACK:
+	{
+		if (animBefore == &idleDown || animBefore == &down)
+			anim = &attackDown;
+
+		else if (animBefore == &idleUp || animBefore == &up)
+			anim = &attackUp;
+
+		else if (animBefore == &idleUpRight || animBefore == &upRight)
+			anim = &attackUpRight;
+
+		else if (animBefore == &idleRight || animBefore == &right)
+			anim = &attackRight;
+
+		else if (animBefore == &idleDownRight || animBefore == &downRight)
+			anim = &attackDownRight;
+
+		else if (animBefore == &idleDownLeft || animBefore == &downLeft)
+			anim = &attackDownLeft;
+
+		else if (animBefore == &idleLeft || animBefore == &left)
+			anim = &attackLeft;
+
+		else if (animBefore == &idleUpLeft || animBefore == &upLeft)
+			anim = &attackUpLeft;
+
+		if (anim->Finished())
+		{
+			anim->Reset();
+
+			if (animBefore == &left)
+				anim = &idleLeft;
+			else if (animBefore == &up)
+				anim = &idleUp;
+			else if (animBefore == &down)
+				anim = &idleDown;
+			else if (animBefore == &right)
+				anim = &idleRight;
+			else if (animBefore == &upRight)
+				anim = &idleUpRight;
+			else if (animBefore == &upLeft)
+				anim = &idleUpLeft;
+			else if (animBefore == &downLeft)
+				anim = &idleDownLeft;
+			else if (animBefore == &downRight)
+				anim = &idleDownRight;
+			else
 				anim = animBefore;
 
-				if (animBefore == &left)
-					anim = &idleLeft;
-				else if (animBefore == &up)
-					anim = &idleUp;
-				else if (animBefore == &down)
-					anim = &idleDown;
-				else if (animBefore == &right)
-					anim = &idleRight;
-				else if (animBefore == &upRight)
-					anim = &idleUpRight;
-				else if (animBefore == &upLeft)
-					anim = &idleUpLeft;
-				else if (animBefore == &downLeft)
-					anim = &idleDownLeft;
-				else if (animBefore == &downRight)
-					anim = &idleDownRight;
-				else
-					anim = animBefore;
-
-				state = states::PL_IDLE;
-			}
-			break;
+			state = states::PL_IDLE;
 		}
 
-		case states::PL_DEAD:
+		break;
+	}
+
+	case states::PL_SKILL:
+	{
+		if (anim->Finished())
 		{
-			if (anim->Finished() && anim != &deadDownRight)
+			anim->Reset();
+			anim = animBefore;
+
+			if (animBefore == &left)
+				anim = &idleLeft;
+			else if (animBefore == &up)
+				anim = &idleUp;
+			else if (animBefore == &down)
+				anim = &idleDown;
+			else if (animBefore == &right)
+				anim = &idleRight;
+			else if (animBefore == &upRight)
+				anim = &idleUpRight;
+			else if (animBefore == &upLeft)
+				anim = &idleUpLeft;
+			else if (animBefore == &downLeft)
+				anim = &idleDownLeft;
+			else if (animBefore == &downRight)
+				anim = &idleDownRight;
+			else
+				anim = animBefore;
+
+			state = states::PL_IDLE;
+		}
+		break;
+	}
+
+	case states::PL_DEAD:
+	{
+		if (anim->Finished() && anim != &deadDownRight)
+		{
+			anim->Reset();
+			animBefore = anim;
+			anim = &deadDownRight;
+		}
+		else if (anim->Finished())
+		{
+			deadinfloorcd += dt;
+			// PlayFX, Go to the main menu.
+			if (deadinfloorcd > deadinfloorConfigCD)
 			{
 				anim->Reset();
-				animBefore = anim;
-				anim = &deadDownRight;
+				deadinfloorcd = 0.0f;
+				App->scene->GoMainMenu();
 			}
-			else if (anim->Finished())
-			{
-				deadinfloorcd += dt;
-				// PlayFX, Go to the main menu.
-				if (deadinfloorcd > 2)
-				{
-					anim->Reset();
-					deadinfloorcd = 0.0f;
-					App->scene->GoMainMenu();
-				}
-			}
-			break;
 		}
-		
+		break;
+	}
+
 	}
 
 	if (DashCD > 0.0f)
@@ -702,14 +734,12 @@ void PlayerEntity::KeyboardStates(float dt)
 
 	if (damaged)
 	{
-		int ret = SDL_SetTextureColorMod(App->entities->spritesheetsEntities[THRALL_SHEET], 255, 100, 100);
 		damagedCD += dt;
-		if (damagedCD > 1)
+		if (damagedCD > damagedConfigCD)
 		{
-			SDL_SetTextureColorMod(App->entities->spritesheetsEntities[THRALL_SHEET], 255, 255, 255);
 			damaged = false;
 			damagedCD = 0.0f;
-		}	
+		}
 	}
 }
 
@@ -717,297 +747,302 @@ void PlayerEntity::JoyconStates(float dt)
 {
 	switch (state)
 	{
-		case states::PL_IDLE:
+	case states::PL_IDLE:
+	{
+		if (App->input->GetXAxis() != 0 || App->input->GetYAxis() != 0)
 		{
-			if (App->input->GetXAxis() != 0 || App->input->GetYAxis() != 0)
-			{
-				state = states::PL_MOVE;
-			}
-
-			else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN && t == 0.0f && DashCD == 0.0f)
-			{
-				App->input->PlayJoyRumble(0.75f, 100);
-				startPos = pos;
-				state = states::PL_DASH;
-				animBefore = anim;
-			}
-
-			else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_X) == KEY_DOWN)
-			{
-				animBefore = anim;
-				state = states::PL_ATTACK;
-				Attack();
-			}
-
-			else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_Y) == KEY_DOWN)
-			{
-				animBefore = anim;
-				anim = &skill;
-				state = states::PL_SKILL;
-			}
-			break;
+			state = states::PL_MOVE;
 		}
-		
 
-		case states::PL_DASH:
+		else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN && t == 0.0f && DashCD == 0.0f)
 		{
-			if (t <= 1.0f && t >= 0.0f)
+			App->audio->PlayFx(App->audio->Thrall_Dash_FX);
+			App->input->PlayJoyRumble(0.75f, 100);
+			startPos = pos;
+			state = states::PL_DASH;
+			animBefore = anim;
+		}
+
+		else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_X) == KEY_DOWN)
+		{
+			animBefore = anim;
+			state = states::PL_ATTACK;
+			Attack();
+		}
+
+		else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_Y) == KEY_DOWN && numStats.energy == 100)
+		{
+			animBefore = anim;
+			anim = &skill;
+			numStats.energy = 0;
+			state = states::PL_SKILL;
+			UseSkill();
+		}
+		break;
+	}
+
+
+	case states::PL_DASH:
+	{
+		if (t <= 1.0f && t >= 0.0f)
+		{
+			if (animBefore == &idleRight)
 			{
-				if (animBefore == &idleRight)
-				{
-					pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
-					anim = &dashRight;
+				pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
+				anim = &dashRight;
 
-				}
-				else if (animBefore == &idleLeft)
-				{
-					pos.x = startPos.x - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
-					anim = &dashLeft; //
-				}
-				else if (animBefore == &idleUp)
-				{
-					pos.y = startPos.y - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
-					anim = &dashUp; //
-				}
-				else if (animBefore == &idleDown)
-				{
-					pos.y = startPos.y + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
-					anim = &dashDown;
-				}
-				else if (animBefore == &idleUpRight)
-				{
-					fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+			}
+			else if (animBefore == &idleLeft)
+			{
+				pos.x = startPos.x - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
+				anim = &dashLeft; //
+			}
+			else if (animBefore == &idleUp)
+			{
+				pos.y = startPos.y - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
+				anim = &dashUp; //
+			}
+			else if (animBefore == &idleDown)
+			{
+				pos.y = startPos.y + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
+				anim = &dashDown;
+			}
+			else if (animBefore == &idleUpRight)
+			{
+				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
 
-					pos.x = startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(315.0f));
-					pos.y = startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(315.0f));
+				pos.x = startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(315.0f));
+				pos.y = startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(315.0f));
 
-					anim = &dashUpRight;
-				}
-				else if (animBefore == &idleUpLeft)
-				{
-					fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+				anim = &dashUpRight;
+			}
+			else if (animBefore == &idleUpLeft)
+			{
+				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
 
-					pos.x = startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(225.0f));
-					pos.y = startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(225.0f));
+				pos.x = startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(225.0f));
+				pos.y = startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(225.0f));
 
-					anim = &dashUpLeft; //
-				}
-				else if (animBefore == &idleDownRight)
-				{
-					fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+				anim = &dashUpLeft; //
+			}
+			else if (animBefore == &idleDownRight)
+			{
+				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
 
-					pos.x = startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(45.0f));
-					pos.y = startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(45.0f));
+				pos.x = startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(45.0f));
+				pos.y = startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(45.0f));
 
-					anim = &dashDownRight;
-				}
-				else if (animBefore == &idleDownLeft)
-				{
-					fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+				anim = &dashDownRight;
+			}
+			else if (animBefore == &idleDownLeft)
+			{
+				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
 
-					pos.x = startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(135.0f));
-					pos.y = startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(135.0f));
+				pos.x = startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(135.0f));
+				pos.y = startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(135.0f));
 
-					anim = &dashDownLeft;
-				}
-				else
-				{
-					pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance * cos(DEG_2_RAD(angle));
-					pos.y = startPos.y + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance * sin(DEG_2_RAD(angle));
-
-					anim = GetAnimFromAngle(angle, true);
-				}
-
-				float x = 0.05f / dt;
-				t += (x * dt);
-
+				anim = &dashDownLeft;
 			}
 			else
 			{
-				if (App->input->InsideDeadZone())
-				{
-					state = states::PL_IDLE;
+				pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance * cos(DEG_2_RAD(angle));
+				pos.y = startPos.y + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance * sin(DEG_2_RAD(angle));
 
-					if (anim == &dashRight)
-						anim = &idleRight;
-					else if (anim == &dashDown)
-						anim = &idleDown;
-					else if (anim == &dashUpRight)
-						anim = &idleUpRight;
-					else if (anim == &dashDownLeft)
-						anim = &idleDownLeft;
-					else if (anim == &dashDownRight)
-						anim = &idleDownRight;
-					else if (anim == &dashUpRight)
-						anim = &idleUpRight;
-					else if (anim == &dashLeft)
-						anim = &idleLeft;
-					else if (anim == &dashUpLeft)
-						anim = &idleUpLeft;
-					else if (anim == &dashUp)
-						anim = &idleUp;
-				}
-				else
-				{
-					state = states::PL_MOVE;
-					anim = animBefore;
-				}
-				DashCD = 1.0f;
-				animBefore = nullptr;
-				t = 0.0f;
+				anim = GetAnimFromAngle(angle, true);
 			}
 
-			break;
+			float x = 0.05f / dt;
+			t += (x * dt);
+
+		}
+		else
+		{
+			if (App->input->InsideDeadZone())
+			{
+				state = states::PL_IDLE;
+
+				if (anim == &dashRight)
+					anim = &idleRight;
+				else if (anim == &dashDown)
+					anim = &idleDown;
+				else if (anim == &dashUpRight)
+					anim = &idleUpRight;
+				else if (anim == &dashDownLeft)
+					anim = &idleDownLeft;
+				else if (anim == &dashDownRight)
+					anim = &idleDownRight;
+				else if (anim == &dashUpRight)
+					anim = &idleUpRight;
+				else if (anim == &dashLeft)
+					anim = &idleLeft;
+				else if (anim == &dashUpLeft)
+					anim = &idleUpLeft;
+				else if (anim == &dashUp)
+					anim = &idleUp;
+			}
+			else
+			{
+				state = states::PL_MOVE;
+				anim = animBefore;
+			}
+			DashCD = DashConfigCD;
+			animBefore = nullptr;
+			t = 0.0f;
 		}
 
-		case states::PL_MOVE:
+		break;
+	}
+
+	case states::PL_MOVE:
+	{
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN && t == 0.0f && DashCD == 0.0f)
 		{
-			if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN && t == 0.0f && DashCD == 0.0f)
-			{
-				App->input->PlayJoyRumble(0.75f, 100);
-				animBefore = anim;
-				startPos = pos;
-				state = states::PL_DASH;
-
-				float X = App->input->GetXAxis() / MAX_JAXIS_VALUE;
-				float Y = App->input->GetYAxis() / MAX_JAXIS_VALUE;
-
-				angle = App->input->GetAngleFromAxis();
-
-				break;
-			}
+			App->audio->PlayFx(App->audio->Thrall_Dash_FX);
+			App->input->PlayJoyRumble(0.75f, 100);
+			animBefore = anim;
+			startPos = pos;
+			state = states::PL_DASH;
 
 			float X = App->input->GetXAxis() / MAX_JAXIS_VALUE;
 			float Y = App->input->GetYAxis() / MAX_JAXIS_VALUE;
 
-			pos.x += X * speed * dt;
-			pos.y += Y * speed * dt;
-
 			angle = App->input->GetAngleFromAxis();
 
-			Animation* tmpAnim = GetAnimFromAngle(angle);
+			break;
+		}
 
-			if (tmpAnim != nullptr)
-				anim = tmpAnim;
+		float X = App->input->GetXAxis() / MAX_JAXIS_VALUE;
+		float Y = App->input->GetYAxis() / MAX_JAXIS_VALUE;
 
-			if (App->input->GetXAxis() == 0 && App->input->GetYAxis() == 0)
-			{
-				if (anim == &up)
-					anim = &idleUp;
-				if (anim == &down)
-					anim = &idleDown;
-				else if (anim == &right)
-					anim = &idleRight;
-				else if (anim == &left)
-					anim = &idleLeft;
-				else if (anim == &upRight)
-					anim = &idleUpRight;
-				else if (anim == &upLeft)
-					anim = &idleUpLeft;
-				else if (anim == &downRight)
-					anim = &idleDownRight;
-				else if (anim == &downLeft)
-					anim = &idleDownLeft;
+		pos.x += X * speed * dt;
+		pos.y += Y * speed * dt;
 
+		angle = App->input->GetAngleFromAxis();
+
+		Animation* tmpAnim = GetAnimFromAngle(angle);
+
+		if (tmpAnim != nullptr)
+			anim = tmpAnim;
+
+		if (App->input->GetXAxis() == 0 && App->input->GetYAxis() == 0)
+		{
+			if (anim == &up)
+				anim = &idleUp;
+			if (anim == &down)
+				anim = &idleDown;
+			else if (anim == &right)
+				anim = &idleRight;
+			else if (anim == &left)
+				anim = &idleLeft;
+			else if (anim == &upRight)
+				anim = &idleUpRight;
+			else if (anim == &upLeft)
+				anim = &idleUpLeft;
+			else if (anim == &downRight)
+				anim = &idleDownRight;
+			else if (anim == &downLeft)
+				anim = &idleDownLeft;
+
+			state = states::PL_IDLE;
+			break;
+		}
+
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_X) == KEY_DOWN)
+		{
+			animBefore = anim;
+			state = states::PL_ATTACK;
+			Attack();
+			break;
+		}
+
+		else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_Y) == KEY_DOWN && numStats.energy == 100)
+		{
+			animBefore = anim;
+			anim = &skill;
+			numStats.energy = 0;
+			state = states::PL_SKILL;
+			UseSkill();
+		}
+		break;
+	}
+
+	case states::PL_ATTACK:
+	{
+		if (animBefore == &idleDown || animBefore == &down)
+			anim = &attackDown;
+
+		else if (animBefore == &idleUp || animBefore == &up)
+			anim = &attackUp;
+
+		else if (animBefore == &idleLeft || animBefore == &left)
+			anim = &attackLeft;
+
+		else if (animBefore == &idleRight || animBefore == &right)
+			anim = &attackRight;
+
+		else if (animBefore == &upLeft || animBefore == &idleUpLeft)
+			anim = &attackUpLeft;
+
+		else if (animBefore == &upRight || animBefore == &idleUpRight)
+			anim = &attackUpRight;
+
+		else if (animBefore == &downLeft || animBefore == &idleDownLeft)
+			anim = &attackDownLeft;
+
+		else if (animBefore == &downRight || animBefore == &idleDownRight)
+			anim = &attackDownRight;
+
+		if (anim->Finished())
+		{
+			anim->Reset();
+			anim = animBefore;
+
+			if (animBefore == &left || animBefore == &up || animBefore == &right || animBefore == &down || animBefore == &upRight || animBefore == &upLeft || animBefore == &downLeft || animBefore == &downRight)
+				state = states::PL_MOVE;
+			else
 				state = states::PL_IDLE;
-				break;
-			}
-
-			if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_X) == KEY_DOWN)
-			{
-				animBefore = anim;
-				state = states::PL_ATTACK;
-				Attack();
-				break;
-			}
-
-			else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_Y) == KEY_DOWN)
-			{
-				animBefore = anim;
-				anim = &skill;
-				state = states::PL_SKILL;
-				break;
-			}
-			break;
 		}
-		
-		case states::PL_ATTACK:
+		break;
+	}
+
+	case states::PL_SKILL:
+	{
+		if (anim->Finished())
 		{
-			if (animBefore == &idleDown || animBefore == &down)
-				anim = &attackDown;
 
-			else if (animBefore == &idleUp || animBefore == &up)
-				anim = &attackUp;
+			anim->Reset();
+			anim = animBefore;
 
-			else if (animBefore == &idleLeft || animBefore == &left)
-				anim = &attackLeft;
+			if (animBefore == &left || animBefore == &up || animBefore == &right || animBefore == &down || animBefore == &upRight || animBefore == &upLeft || animBefore == &downLeft || animBefore == &downRight)
+				state = states::PL_MOVE;
+			else
+				state = states::PL_IDLE;
+		}
+		break;
+	}
 
-			else if (animBefore == &idleRight || animBefore == &right)
-				anim = &attackRight;
-
-			else if (animBefore == &upLeft || animBefore == &idleUpLeft)
-				anim = &attackUpLeft;
-
-			else if (animBefore == &upRight || animBefore == &idleUpRight)
-				anim = &attackUpRight;
-
-			else if (animBefore == &downLeft || animBefore == &idleDownLeft)
-				anim = &attackDownLeft;
-
-			else if (animBefore == &downRight || animBefore == &idleDownRight)
-				anim = &attackDownRight;
-
-			if (anim->Finished())
+	case states::PL_DEAD:
+	{
+		if (anim->Finished() && anim != &deadDownRight)
+		{
+			anim->Reset();
+			animBefore = anim;
+			anim = &deadDownRight;
+		}
+		else if (anim->Finished())
+		{
+			deadinfloorcd += dt;
+			// PlayFX, Go to the main menu.
+			if (deadinfloorcd > deadinfloorConfigCD)
 			{
 				anim->Reset();
-				anim = animBefore;
-
-				if (animBefore == &left || animBefore == &up || animBefore == &right || animBefore == &down || animBefore == &upRight || animBefore == &upLeft || animBefore == &downLeft || animBefore == &downRight)
-					state = states::PL_MOVE;
-				else
-					state = states::PL_IDLE;
+				deadinfloorcd = 0.0f;
+				App->scene->GoMainMenu();
 			}
-			break;
 		}
+		break;
+	}
 
-		case states::PL_SKILL:
-		{
-			if (anim->Finished())
-			{
-
-				anim->Reset();
-				anim = animBefore;
-
-				if (animBefore == &left || animBefore == &up || animBefore == &right || animBefore == &down || animBefore == &upRight || animBefore == &upLeft || animBefore == &downLeft || animBefore == &downRight)
-					state = states::PL_MOVE;
-				else
-					state = states::PL_IDLE;
-			}
-			break;
-		}
-			
-		case states::PL_DEAD:
-		{
-			if (anim->Finished() && anim != &deadDownRight)
-			{
-				anim->Reset();
-				animBefore = anim;
-				anim = &deadDownRight;
-			}
-			else if (anim->Finished())
-			{
-				deadinfloorcd += dt;
-				// PlayFX, Go to the main menu.
-				if (deadinfloorcd > 2)
-				{
-					anim->Reset();
-					deadinfloorcd = 0.0f;
-					App->scene->GoMainMenu();
-				}
-			}
-			break;
-		}
-			
 	}
 
 	if (DashCD > 0.0f)
@@ -1020,7 +1055,7 @@ void PlayerEntity::JoyconStates(float dt)
 	if (damaged)
 	{
 		damagedCD += dt;
-		if (damagedCD > 1)
+		if (damagedCD > damagedConfigCD)
 		{
 			SDL_SetTextureColorMod(App->entities->spritesheetsEntities[THRALL_SHEET], 255, 255, 255);
 			damaged = false;
@@ -1079,7 +1114,7 @@ Animation* PlayerEntity::GetAnimFromAngle(float angle, bool dashOn)
 		else
 			animToReturn = &dashUp;
 	}
-		
+
 	else if (angle >= 67.5f && angle < 112.5f)
 	{
 		if (!dashOn)
@@ -1164,8 +1199,8 @@ void PlayerEntity::InitCulling()
 		App->render->fcamerax = -1 * (this->pos.x - pivot.x + currRect.w / 2 - App->render->camera.w / 2);
 		App->render->fcameray = -1 * (this->pos.y - pivot.y + currRect.h / 2 - App->render->camera.h / 2);
 
-		freeZonex = pos.x - pivot.x - 55/2;
-		freeZoney = pos.y - pivot.y - 55/2;
+		freeZonex = pos.x - pivot.x - 55 / 2;
+		freeZoney = pos.y - pivot.y - 55 / 2;
 
 		freeZone.x = pos.x - pivot.x - 55;
 		freeZone.y = pos.y - pivot.y - 55;
@@ -1181,7 +1216,7 @@ void PlayerEntity::CheckCulling()
 		uint w, h;
 		int tilesize;
 		App->map->getSize(w, h);
-		tilesize = App->map->getTileSize()+2;
+		tilesize = App->map->getTileSize() + 2;
 		SDL_Rect currentRect = anim->GetCurrentRect();
 		currentRect.w = pcol->colliderRect.w;
 		currentRect.h = pcol->colliderRect.h;
@@ -1202,12 +1237,12 @@ void PlayerEntity::CheckCulling()
 				freeZonex = topleft.x;
 			}
 		}
-		
 
-		else if (freeZonex + freeZone.w < topleft.x + currentRect.w  && - App->render->camera.x < w * (tilesize-2) - App->render->camera.w)
+
+		else if (freeZonex + freeZone.w < topleft.x + currentRect.w  && -App->render->camera.x < w * (tilesize - 2) - App->render->camera.w)
 		{
-			App->render->fcamerax -= (topleft.x + currentRect.w ) - (freeZonex + freeZone.w);
-			freeZonex = (topleft.x + currentRect.w ) - freeZone.w;
+			App->render->fcamerax -= (topleft.x + currentRect.w) - (freeZonex + freeZone.w);
+			freeZonex = (topleft.x + currentRect.w) - freeZone.w;
 		}
 
 		if (freeZoney > topleft.y && -App->render->camera.y > 0)
@@ -1222,18 +1257,18 @@ void PlayerEntity::CheckCulling()
 				App->render->fcameray += freeZoney - topleft.y;
 				freeZoney = topleft.y;
 			}
-			
+
 		}
-		else if (freeZoney + freeZone.h < topleft.y + currentRect.h && -App->render->camera.y + App->render->camera.h < h * (tilesize-2))
+		else if (freeZoney + freeZone.h < topleft.y + currentRect.h && -App->render->camera.y + App->render->camera.h < h * (tilesize - 2))
 		{
-			App->render->fcameray -= (topleft.y + currentRect.h ) - (freeZoney + freeZone.h);
-			freeZoney = topleft.y + currentRect.h  - freeZone.h;
+			App->render->fcameray -= (topleft.y + currentRect.h) - (freeZoney + freeZone.h);
+			freeZoney = topleft.y + currentRect.h - freeZone.h;
 		}
 
 		freeZone.x = (int)freeZonex;
 		freeZone.y = (int)freeZoney;
 
-		
+
 	}
 }
 
@@ -1247,19 +1282,19 @@ void PlayerEntity::CheckMapLimits()
 		if (pos.x - this->anim->GetCurrentPivot().x < 0)
 			pos.x = 0 + this->anim->GetCurrentPivot().x;
 
-		else if (pos.x + 55 - this->anim->GetCurrentPivot().x > w * (48-2))
+		else if (pos.x + 55 - this->anim->GetCurrentPivot().x > w * (48 - 2))
 		{
-			pos.x = w * (48-2) - 55 + this->anim->GetCurrentPivot().x;
+			pos.x = w * (48 - 2) - 55 + this->anim->GetCurrentPivot().x;
 		}
 
 		if (pos.y - this->anim->GetCurrentPivot().y < 0)
 			pos.y = 0 + this->anim->GetCurrentPivot().y;
 
-		else if (pos.y + 47 - this->anim->GetCurrentPivot().y > h * (48-2))
+		else if (pos.y + 47 - this->anim->GetCurrentPivot().y > h * (48 - 2))
 		{
-			pos.y = h * (48-2) - 47 + this->anim->GetCurrentPivot().y;
+			pos.y = h * (48 - 2) - 47 + this->anim->GetCurrentPivot().y;
 		}
-	}	
+	}
 }
 
 void PlayerEntity::AddItem(Item item)
@@ -1299,16 +1334,16 @@ void PlayerEntity::SetDamage(int damage, bool setStateDamage)
 		{
 			numStats.hp = 0;
 			state = states::PL_DEAD;
-		}	
+			App->audio->PauseMusic(0.5);
+			App->audio->PlayFx(App->audio->Thrall_Die_FX);
+		}
 		else
 		{
-			if (setStateDamage)
-			{
-				damaged = true;
-				SDL_SetTextureColorMod(App->entities->spritesheetsEntities[THRALL_SHEET], 255, 100, 100);
-			}
+			App->audio->PlayFx(App->audio->Thrall_Hitted_FX);
+			damaged = true;
+			SDL_SetTextureColorMod(App->entities->spritesheetsEntities[THRALL_SHEET], 255, 100, 100);
 			numStats.hp -= damage;
-		}	
+		}
 	}
 }
 
@@ -1323,16 +1358,16 @@ void PlayerEntity::PushOut(Collider* wall)
 	SDL_Rect wall_r = wall->colliderRect;
 	SDL_Rect player_col = { pcol->colliderRect.x + (int)pos.x, pcol->colliderRect.y + (int)pos.y, pcol->colliderRect.w, pcol->colliderRect.h };
 
-	if (wall->colliderRect.x + wall->colliderRect.w/2 <= pcol->colliderRect.x + (int)pos.x)
+	if (wall->colliderRect.x + wall->colliderRect.w / 2 <= pcol->colliderRect.x + (int)pos.x)
 		collideByRight = true;
 
-	else if (wall->colliderRect.x + wall->colliderRect.w/2 > pcol->colliderRect.x + (int)pos.x + pcol->colliderRect.w)
+	else if (wall->colliderRect.x + wall->colliderRect.w / 2 > pcol->colliderRect.x + (int)pos.x + pcol->colliderRect.w)
 		collideByLeft = true;
 
-	if (wall->colliderRect.y + wall->colliderRect.h/2 < pcol->colliderRect.y + (int)pos.y)
+	if (wall->colliderRect.y + wall->colliderRect.h / 2 < pcol->colliderRect.y + (int)pos.y)
 		collideByBottom = true;
 
-	else if (wall->colliderRect.y + wall->colliderRect.h/2 >= pcol->colliderRect.y + (int)pos.y + pcol->colliderRect.h)
+	else if (wall->colliderRect.y + wall->colliderRect.h / 2 >= pcol->colliderRect.y + (int)pos.y + pcol->colliderRect.h)
 		collideByTop = true;
 
 	//4 main direction collisions
@@ -1356,7 +1391,7 @@ void PlayerEntity::PushOut(Collider* wall)
 	//Combination between them (choose the closest direction)
 	else if (collideByTop && collideByRight)
 	{
-		if ( (player_col.y + player_col.h) - wall_r.y < (wall_r.x + wall_r.w - player_col.x))
+		if ((player_col.y + player_col.h) - wall_r.y < (wall_r.x + wall_r.w - player_col.x))
 		{
 			pos.y -= (pcol->colliderRect.y + (int)pos.y + pcol->colliderRect.h) - wall->colliderRect.y;
 		}
@@ -1398,4 +1433,29 @@ void PlayerEntity::PushOut(Collider* wall)
 			pos.x -= (player_col.x + player_col.w - wall_r.x);
 		}
 	}
+}
+
+void PlayerEntity::IncreaseEnergy(int percent)
+{
+	if (numStats.energy + percent < 100)
+		numStats.energy += percent;
+
+	else if (numStats.energy < 100)
+	{
+		numStats.energy = 100;
+		App->audio->PlayFx(App->audio->Thrall_EnergyMax_FX);
+	}
+
+}
+
+bool PlayerEntity::Draw()
+{
+	bool ret = true;
+
+	if (damaged)
+		ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), texture, anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, 0, anim->GetCurrentPivot(), { 255,100,100,255 });
+	else
+		ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), texture, anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, 0, anim->GetCurrentPivot());
+
+	return ret;
 }

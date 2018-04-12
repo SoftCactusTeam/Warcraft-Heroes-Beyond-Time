@@ -14,10 +14,12 @@ struct Collider
 		NONE,
 		ENEMY_ARROW,
 		ENEMY_MELEE,
-		PLAYER_MELEE
+		PLAYER_MELEE,
+		THRALL_SKILL,
+		SHIT
 	};
 
-	Collider(SDL_Rect colliderRect, COLLIDER_TYPE type, Entity* owner = nullptr, iPoint offset = iPoint(0,0));
+	Collider(SDL_Rect colliderRect, COLLIDER_TYPE type, Entity* owner = nullptr, iPoint offset = iPoint(0, 0));
 	SDL_Rect colliderRect;										// El X i Y del Rect fan de offset !!!
 	COLLIDER_TYPE type;
 	ATTACK_TYPE attackType = ATTACK_TYPE::NONE;
@@ -30,7 +32,7 @@ class ModuleColliders : public Module
 {
 public:
 	ModuleColliders();
-	
+
 	void Init()
 	{
 		active = false;
@@ -43,7 +45,7 @@ public:
 	bool CleanUp();
 	void AddCommands();
 
-	Collider* AddCollider(SDL_Rect colliderRect, COLLIDER_TYPE type, Entity* owner = nullptr, iPoint offset = iPoint(0,0), Collider::ATTACK_TYPE attackType = Collider::ATTACK_TYPE::NONE);
+	Collider* AddCollider(SDL_Rect colliderRect, COLLIDER_TYPE type, Entity* owner = nullptr, iPoint offset = iPoint(0, 0), Collider::ATTACK_TYPE attackType = Collider::ATTACK_TYPE::NONE);
 	Collider* AddTemporalCollider(SDL_Rect colliderRect, COLLIDER_TYPE type, int timer);
 	void deleteCollider(Collider* col);
 	void CleanCollidersEntity(Entity* entity);

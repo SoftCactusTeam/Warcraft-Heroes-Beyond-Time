@@ -55,8 +55,15 @@ bool Audio::Awake(pugi::xml_node& audioNode)
 	}
 	
 	//---------------------------------------Load fx-------------------------------
-	ButtonClicked = LoadFx("audio/fx/ButtonClick.ogg");
-	ButtonHovered = LoadFx("audio/fx/ButtonMouseHover.ogg");
+	ButtonClicked = LoadFx("audio/fx/gui/ButtonClick.ogg");
+	ButtonHovered = LoadFx("audio/fx/gui/ButtonMouseHover.ogg");
+	ArrowSound = LoadFx("audio/fx/enemies/Arrow_shoot.ogg");
+	Thrall_Dash_FX = LoadFx("audio/fx/thrall/T_dash_fx.ogg");
+	Thrall_Die_FX = LoadFx("audio/fx/thrall/T_die_fx.ogg");
+	Thrall_EnergyMax_FX = LoadFx("audio/fx/thrall/T_maxenergy_fx.ogg");
+	Thrall_Hitted_FX = LoadFx("audio/fx/thrall/T_hitted_fx.ogg");
+	Thrall_Hit_FX = LoadFx("audio/fx/thrall/T_hit_fx.ogg");
+
 	//---------------------------------------Load Music----------------------------
 	MainMenuBSO = "audio/BSO's/Warcraft HBT - Main Menu.ogg";
 	InGameBSO = "audio/BSO's/Warcraft HBT - Level.ogg";
@@ -64,7 +71,6 @@ bool Audio::Awake(pugi::xml_node& audioNode)
 
 	Mix_Volume(-1, (MIX_MAX_VOLUME * FXVolumePercent) / 100);
 	Mix_VolumeMusic((MIX_MAX_VOLUME * MusicVolumePercent) / 100);
-
 
 
 	return ret;
@@ -146,6 +152,22 @@ bool Audio::PlayMusic(const char* path, float fade_time)
 
 	LOG("Successfully playing %s", path);
 	return ret;
+}
+
+bool Audio::PauseMusic(float fade_time)
+{
+	if (music != NULL)
+	{
+		if (fade_time > 0.0f)
+		{
+			Mix_FadeOutMusic(int(fade_time * 1000.0f));
+		}
+		else
+		{
+			Mix_HaltMusic();
+		}
+	}
+	return Mix_PlayingMusic() == 0;
 }
 
 // Load WAV

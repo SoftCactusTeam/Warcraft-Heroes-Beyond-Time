@@ -38,7 +38,7 @@ bool ModuleColliders::Awake(pugi::xml_node& consoleNode)
 
 bool ModuleColliders::Start()
 {
-	printColliders = true;
+	printColliders = false;
 	return true;
 }
 
@@ -47,7 +47,7 @@ bool ModuleColliders::Update(float dt)
 	BROFILER_CATEGORY("Colliders Collision", Profiler::Color::Azure);
 
 	std::list<Collider*>::iterator first, second;
-	
+
 	//Check all non_temporal colliders between them
 	for (first = colliders.begin(); first != colliders.end(); ++first)
 		if ((*first)->type != COLLIDER_UNWALKABLE)
@@ -94,7 +94,7 @@ bool ModuleColliders::Update(float dt)
 			++second;
 		}
 	}
-		
+
 	return true;
 }
 
@@ -164,13 +164,17 @@ void ModuleColliders::deleteCollider(Collider* col)
 
 void ModuleColliders::CleanCollidersEntity(Entity* entity)
 {
-	std::list<Collider*>::iterator it;
-	for (it = colliders.begin(); it != colliders.end(); ++it)
-		if ((*it)->owner == entity)
-		{
-			colliders.erase(it);
-			break;
-		}
+	if (entity != nullptr)
+	{
+		std::list<Collider*>::iterator it;
+		for (it = colliders.begin(); it != colliders.end(); ++it)
+			if ((*it)->owner == entity)
+			{
+				delete (*it);
+				colliders.erase(it);
+				break;
+			}
+	}
 }
 
 bool ModuleColliders::CheckTypeCollMatrix(COLLIDER_TYPE type, COLLIDER_TYPE type2)
@@ -178,7 +182,7 @@ bool ModuleColliders::CheckTypeCollMatrix(COLLIDER_TYPE type, COLLIDER_TYPE type
 	switch (type)
 	{
 	case COLLIDER_PLAYER:
-		if (type2 == COLLIDER_ENEMY || type2 == COLLIDER_ENEMY_ATTACK || type2 == COLLIDER_UNWALKABLE)
+		if (type2 == COLLIDER_ENEMY || type2 == COLLIDER_ENEMY_ATTACK || type2 == COLLIDER_UNWALKABLE || type2 == COLLIDER_FELBALL)
 			return true;
 		break;
 	case COLLIDER_ENEMY:
@@ -190,7 +194,11 @@ bool ModuleColliders::CheckTypeCollMatrix(COLLIDER_TYPE type, COLLIDER_TYPE type
 			return true;
 		break;
 	case COLLIDER_ENEMY_ATTACK:
-		if (type2 == COLLIDER_PLAYER || type2 == COLLIDER_PLAYER_ATTACK)
+		if (type2 == COLLIDER_PLAYER || type2 == COLLIDER_PLAYER_ATTACK || type2 == COLLIDER_UNWALKABLE)
+			return true;
+		break;
+	case COLLIDER_FELBALL:
+		if (type2 == COLLIDER_PLAYER)
 			return true;
 		break;
 	}

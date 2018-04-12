@@ -7,6 +7,7 @@
 #include "Scene.h"
 #include "PlayerEntity.h"
 #include "ModuleColliders.h"
+#include "FileSystem.h"
 #include "Brofiler\Brofiler.h"
 #include <time.h>
 
@@ -55,7 +56,7 @@ iPoint MapGenerator::GetRandomValidPoint()
 
 	do
 		randNum = rand() % (nodes.size() - 0 + 1);
-	while (!nodes[randNum]->layerBelow || nodes[randNum]->pos == nodes[Get(sizeX / 2, sizeY / 2)]->pos);
+	while (nodes[randNum]->layerBelow != -2 || nodes[randNum]->pos == nodes[Get(sizeX / 2, sizeY / 2)]->pos);
 
 	return nodes[randNum]->pos;
 }
@@ -70,28 +71,6 @@ bool MapGenerator::DrawMap() const
 	bool ret = true;
 
 	BROFILER_CATEGORY("Map Draw", Profiler::Color::Azure);
-
-	/*int x = -(tileSize - 2), y = 0;
-	
-	for (int i = 0u; i < totalSize && ret; ++i)
-	{
-		if (i % 50 == 0 && i != 0)
-		{
-			x = 0;
-			y += tileSize - 2;
-		}
-		else
-			x += tileSize - 2;
-
-		if (x >= (-1 * App->render->camera.x) - tileSize &&
-			y >= (-1 * App->render->camera.y) - tileSize &&
-			x < -App->render->camera.x + App->render->camera.w + tileSize &&
-			y < -App->render->camera.y + App->render->camera.h + tileSize)
-		{
-			ret = App->printer->PrintSprite({ x , y }, mapTexture, nodes[i]->whatToBlit, nodes[i]->layerBelow);
-		}
-	}*/
-
 	
 	for (int index_y = 0; index_y < sizeY && ret; ++index_y)
 	{
@@ -162,6 +141,60 @@ bool MapGenerator::GenerateMap(MapData data)
 	return ret;
 }
 
+bool MapGenerator::GenerateBossMap()
+{
+	pugi::xml_document doc_map;
+	pugi::xml_node map_child;
+
+	char* buffer;
+	uint size = App->fs->Load("guldanMap.tmx", &buffer);
+	doc_map.load_buffer(buffer, size);
+	RELEASE(buffer);
+
+	map_child = doc_map.child("map");
+	
+	sizeX = map_child.attribute("width").as_uint();
+	sizeY = map_child.attribute("height").as_uint();
+
+	for (int y = 0; y < sizeY; ++y)
+	{
+		for (int x = 0; x < sizeX; ++x)
+			nodes.push_back(new MapNode({ x,y }, VOID));
+	}
+
+	pugi::xml_node sub_map_node = map_child.child("tileset");
+	tileSize = sub_map_node.attribute("tilewidth").as_int();
+
+	int contNodes = 0;
+	for (pugi::xml_node tile_gid = map_child.child("layer").child("data").child("tile"); tile_gid; tile_gid = tile_gid.next_sibling("tile"))
+	{
+		int gid = tile_gid.attribute("gid").as_int();
+
+		if (gid == 5)
+		{
+			App->colliders->AddCollider(SDL_Rect({ nodes[contNodes]->pos.x * (int)(tileSize - 2), (nodes[contNodes]->pos.y + 1) * (int)(tileSize - 2) - (int)(tileSize - 2), 48,48 }), COLLIDER_TYPE::COLLIDER_UNWALKABLE);
+			nodes[contNodes]->whatToBlit = VOID;
+			nodes[contNodes]->layerBelow = 1;
+		}
+		else if (gid >= 6)
+		{
+			nodes[contNodes]->whatToBlit = FLOOR;
+			nodes[contNodes]->layerBelow = -2;
+		}
+		else
+		{
+			App->colliders->AddCollider(SDL_Rect({ nodes[contNodes]->pos.x * (int)(tileSize - 2), (nodes[contNodes]->pos.y + 1) * (int)(tileSize - 2) - (int)(tileSize - 2), 48,48 }), COLLIDER_TYPE::COLLIDER_UNWALKABLE);
+			nodes[contNodes]->whatToBlit = WALL;
+			nodes[contNodes]->layerBelow = 0;
+		}
+		contNodes++;
+	}
+
+	mapTexture = App->textures->Load("maps/Tiles.png");
+
+	return true;
+}
+
 bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int seed)
 {
 	LOG("Executing map Algorithm...");
@@ -172,7 +205,7 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 		srand(time(NULL));
 
 	startNode->whatToBlit = randomTile(true);
-	startNode->layerBelow = -1;
+	startNode->layerBelow = -2;
 	startNode->cost = -1;
 	visited.push_back(startNode);
 
@@ -186,12 +219,12 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 		if ((randNum == 0 || randNum == 1 || randNum == 3) && CheckBoundaries({ auxNode->pos.x + 1, auxNode->pos.y }))
 		{
 			auxNode = nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)];
-			if (auxNode->layerBelow != -1)
+			if (auxNode->layerBelow != -2)
 			{
 				auxNode->whatToBlit = randomTile(true);
 				auxNode->cost = -1;
 				visited.push_back(auxNode);
-				auxNode->layerBelow = -1;
+				auxNode->layerBelow = -2;
 				i++;
 			}
 		}
@@ -199,12 +232,12 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 		else if ((randNum == 4 || randNum == 5 || randNum == 6) && CheckBoundaries({ auxNode->pos.x - 1, auxNode->pos.y }))
 		{
 			auxNode = nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)];
-			if (auxNode->layerBelow != -1)
+			if (auxNode->layerBelow != -2)
 			{
 				auxNode->whatToBlit = randomTile(true);
 				auxNode->cost = -1;
 				visited.push_back(auxNode);
-				auxNode->layerBelow = -1;
+				auxNode->layerBelow = -2;
 				i++;
 			}
 		}
@@ -212,12 +245,12 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 		else if ((randNum == 7 || randNum == 8) && CheckBoundaries({ auxNode->pos.x, auxNode->pos.y + 1 }))
 		{
 			auxNode = nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)];
-			if (auxNode->layerBelow != -1)
+			if (auxNode->layerBelow != -2)
 			{
 				auxNode->whatToBlit = randomTile(true);
 				auxNode->cost = -1;
 				visited.push_back(auxNode);
-				auxNode->layerBelow = -1;
+				auxNode->layerBelow = -2;
 				i++;
 			}
 		}
@@ -225,12 +258,12 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 		else if ((randNum == 9 || randNum == 10) && CheckBoundaries({ auxNode->pos.x, auxNode->pos.y - 1 }))
 		{
 			auxNode = nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)];
-			if (auxNode->layerBelow != -1)
+			if (auxNode->layerBelow != -2)
 			{
 				auxNode->whatToBlit = randomTile(true);
 				auxNode->cost = -1;
 				visited.push_back(auxNode);
-				auxNode->layerBelow = -1;
+				auxNode->layerBelow = -2;
 				i++;
 			}
 		}
@@ -342,7 +375,7 @@ void MapGenerator::getSize(uint& w, uint& h)
 
 int MapGenerator::getTileSize()
 {
-	return tileSize-2;
+	return (int)tileSize;
 }
 
 std::vector<MapNode*> MapGenerator::GetMapNodesAndInfo(uint& sizeX, uint& sizeY, uint& tileSize)

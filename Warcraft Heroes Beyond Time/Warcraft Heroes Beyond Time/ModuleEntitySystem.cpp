@@ -20,6 +20,7 @@
 #include "Enemy_Footman.h"
 #include "Enemy_Archer.h"
 #include "PortalEntity.h"
+#include "Guldan.h"
 
 #include "Console.h"
 
@@ -109,7 +110,7 @@ class Player_ConsoleOrder : public ConsoleOrder
 		{
 			//Activate Godmode
 		}
-			
+
 		else if (parameter == "godmodeoff")
 		{
 			//DeActivate Godmode
@@ -118,7 +119,7 @@ class Player_ConsoleOrder : public ConsoleOrder
 		{
 			App->scene->player->DrawFreeZone((bool)parameterNumeric);
 		}
-			
+
 	}
 };
 
@@ -180,6 +181,11 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	darkknightstats.range = darkknight.attribute("range").as_uint(0);
 	darkknightstats.difficulty = darkknight.attribute("difficulty").as_uint(0);
 
+	//Loading CD'S---------------------------------------------------------------------------
+	dashCD = entitiesNode.child("players").child("cds").attribute("dash").as_float(1);
+	timepostdead = entitiesNode.child("players").child("cds").attribute("deadinfloor").as_float(2);
+	invpostdamaged = entitiesNode.child("players").child("cds").attribute("invulpostdamaged").as_float(1);
+
 	return true;
 }
 
@@ -194,6 +200,7 @@ bool EntitySystem::Start()
 	spritesheetsEntities.push_back(App->textures->Load("sprites/Archer/Archer_sprite.png"));
 	spritesheetsEntities.push_back(App->textures->Load("sprites/Projectiles.png"));
 	spritesheetsEntities.push_back(App->textures->Load("sprites/Archer/Archer_Smoke.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/Boss_Guldan.png"));
 
 	bool ret = true;
 
@@ -206,10 +213,10 @@ bool EntitySystem::Start()
 }
 
 bool EntitySystem::PreUpdate()
-{	
+{
 	if (toSpawn.size() >= 0)
 	{
-		for(std::list<Entity*>::iterator it = toSpawn.begin(); it != toSpawn.end(); ++it)
+		for (std::list<Entity*>::iterator it = toSpawn.begin(); it != toSpawn.end(); ++it)
 		{
 			(*it)->Start();
 			entities.push_back(*it);
@@ -240,18 +247,19 @@ bool EntitySystem::PostUpdate()
 	{
 		ret = (*it)->Draw();
 
-		if(ret)
+		if (ret)
 			ret = (*it)->PostUpdate();
 
 		if ((*it)->destroy)
 		{
+			App->colliders->CleanCollidersEntity((*it));
 			it = entities.erase(it);
 		}
 		else
 		{
 			++it;
 		}
-		
+
 	}
 
 	return ret;
@@ -266,7 +274,7 @@ bool EntitySystem::CleanUp()
 
 	for (std::list<Entity*>::iterator it = entities.begin(); it != entities.end() && ret; ++it)
 		ret = (*it)->Finish();
-	
+
 	if (ret)
 		ret = ClearEntitiesList();
 
@@ -334,16 +342,16 @@ void EntitySystem::AddEnemy(fPoint coor, ENEMY_TYPE type)
 		break;
 	}
 	toSpawn.push_back(newEntity);
-	App->colliders->AddCollider({ 0,0,32,32 }, COLLIDER_ENEMY, (Entity*)newEntity, { 20,20 });
+	App->colliders->AddCollider({ -16,-16,32,32 }, COLLIDER_ENEMY, (Entity*)newEntity, { 20,20 });
 
 }
 
-void EntitySystem::AddBoss(fPoint coor, BOSS_TYPE type)
+BossEntity* EntitySystem::AddBoss(fPoint coor, BOSS_TYPE type)
 {
 	BossEntity* newEntity = nullptr;
 	switch (type) {
 	case BOSS_TYPE::GULDAN:
-		newEntity = new BossEntity(coor, BOSS_TYPE::GULDAN, nullptr);
+		newEntity = new Guldan(coor, BOSS_TYPE::GULDAN, spritesheetsEntities[GULDAN_SHEET]);
 		break;
 	case BOSS_TYPE::LICH_KING:
 		newEntity = new BossEntity(coor, BOSS_TYPE::LICH_KING, nullptr);
@@ -352,7 +360,9 @@ void EntitySystem::AddBoss(fPoint coor, BOSS_TYPE type)
 		newEntity = new BossEntity(coor, BOSS_TYPE::ILLIDAN, nullptr);
 		break;
 	}
-	toSpawn.push_back((Entity*)newEntity);
+	toSpawn.push_back(newEntity);
+
+	return newEntity;
 }
 
 PlayerEntity* EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
@@ -377,7 +387,7 @@ PlayerEntity* EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
 	col_rect.x = 0;
 	col_rect.y = 0;
 
-	newEntity->setCol(App->colliders->AddCollider(col_rect, COLLIDER_PLAYER, newEntity, { newEntity->anim->GetCurrentPivot().x * -1,  newEntity->anim->GetCurrentPivot().y * -1}));
+	newEntity->setCol(App->colliders->AddCollider(col_rect, COLLIDER_PLAYER, newEntity, { newEntity->anim->GetCurrentPivot().x * -1,  newEntity->anim->GetCurrentPivot().y * -1 }));
 	return newEntity;
 }
 
@@ -398,7 +408,7 @@ void EntitySystem::AddConsumable(fPoint coor, CONSUMABLE_TYPE type)
 	toSpawn.push_back((Entity*)newEntity);
 }
 
-ChestEntity* EntitySystem::AddChest(fPoint coor, CHEST_TYPE type) 
+ChestEntity* EntitySystem::AddChest(fPoint coor, CHEST_TYPE type)
 {
 	BROFILER_CATEGORY("AddChest", Profiler::Color::Chocolate);
 	ChestEntity* newEntity = nullptr;
@@ -467,7 +477,7 @@ void EntitySystem::ClearEnemies()
 	/*std::list<Entity*>::iterator it;
 	for (it = entities.begin(); it != entities.end(); ++it)
 	{
-		if((*it)->)
+	if((*it)->)
 	}*/
 }
 

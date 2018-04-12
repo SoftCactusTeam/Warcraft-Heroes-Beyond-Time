@@ -14,7 +14,8 @@ enum ARCHER_STATE {
 	ARCHER_TRI_ATAC,
 	ARCHER_FASTSHOOT_ATAC,
 	ARCHER_BACKJUMP,
-	ARCHER_SCAPE
+	ARCHER_SCAPE,
+	ARCHER_DIE
 };
 
 class Enemy_Archer_Arrow {
@@ -44,6 +45,8 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 	bool Finish();
+	void Collision(Collider* collideWith);
+
 
 	void initIdle();
 	void initWalk();
@@ -52,6 +55,7 @@ public:
 	void initFastAtac();
 	void initBackJump();
 	void initScape();
+	void initDie();
 
 	void doIdle();
 	void doWalk();
@@ -60,9 +64,10 @@ public:
 	void doFastAtac();
 	void doBackJump();
 	void doScape();
+	void doDie();
 
 	void ChargeAnimations();
-	void ShootArrow(fPoint desviation = fPoint(0,0));
+	void ShootArrow(fPoint desviation = fPoint(0, 0));
 
 public:
 	ARCHER_STATE state;
@@ -84,6 +89,8 @@ private:
 	fPoint posSmoke = { -1.f,-1.f };
 	// Scape variables
 	iPoint posToScape;
+
+	int live = 0;
 };
 
 #endif
