@@ -28,7 +28,7 @@ bool Label::Draw()
 {
 	bool result = true;
 
-	result = App->render->Blit(texturetoBlit, (int)(this->screenPos.x - App->render->camera.x), (int)(this->screenPos.y - App->render->camera.y), nullptr, 0.3);
+	result = App->render->Blit(texturetoBlit, (int)(this->screenPos.x - App->render->camera.x), (int)(this->screenPos.y - App->render->camera.y), nullptr, 0.3, 1, 0, 0, 0, true);
 
 	if (result)
 		result = DrawChilds();
