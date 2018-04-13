@@ -466,8 +466,8 @@ void Scene::GeneratePortal()
 {
 	fPoint position;
 
-	position.x = (int)(player->pos.x / 48);
-	position.y = (int)(player->pos.y / 48);
+	position.x = (int)((player->pos.x  +15)/ 48);
+	position.y = (int)((player->pos.y +15 )/ 48);
 
 	portal = (PortalEntity*)App->entities->AddStaticEntity({ position.x * 48, position.y * 48 }, PORTAL);
 }
