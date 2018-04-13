@@ -33,7 +33,7 @@ _IMPORTANT: do not modify, change or add any folder or file as you might not be 
 - X: attack
 - Z: skill
 - SPACE: dash
-- 9 pick item
+- 9: pick item
 - ESC: pause
 
 ## Team members  
