@@ -3,20 +3,30 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Button.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
     <ClCompile Include="Color.cpp">
       <Filter>Helpers</Filter>
     </ClCompile>
-    <ClCompile Include="Console.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="DynamicEntity.cpp">
-      <Filter>Entities</Filter>
-    </ClCompile>
     <ClCompile Include="Entity.cpp">
       <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="GUIElem.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GUIImage.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GUIWindow.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="InputBox.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Console.cpp">
+      <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="FileSystem.cpp">
       <Filter>Modules</Filter>
@@ -24,28 +34,19 @@
     <ClCompile Include="Fonts.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="GUIElem.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="InputBox.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="GUIWindow.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
     <ClCompile Include="Label.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
     <ClCompile Include="Log.cpp">
       <Filter>Helpers</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleColliders.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
     <ClCompile Include="ModuleAudio.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="ModuleEntitySystem.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleColliders.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="ModuleGUI.cpp">
@@ -55,6 +56,9 @@
       <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="ModuleMapGenerator.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModulePrinter.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="ModuleRender.cpp">
@@ -69,9 +73,6 @@
     <ClCompile Include="Pathfinding.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="StaticEntity.cpp">
-      <Filter>Entities</Filter>
-    </ClCompile>
     <ClCompile Include="PugiXml\src\pugixml.cpp">
       <Filter>Helpers</Filter>
     </ClCompile>
@@ -81,80 +82,67 @@
     <ClCompile Include="Slider.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy_Footman.cpp">
-      <Filter>Entities\Dynamic Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyEntity.cpp">
-      <Filter>Entities\Dynamic Entities</Filter>
-    </ClCompile>
     <ClCompile Include="ChestEntity.cpp">
-      <Filter>Entities\Static Entities</Filter>
+      <Filter>Entities\Static</Filter>
     </ClCompile>
     <ClCompile Include="ConsumableEntity.cpp">
-      <Filter>Entities\Static Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="Item.cpp">
-      <Filter>Entities\Static Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerEntity.cpp">
-      <Filter>Entities\Dynamic Entities</Filter>
+      <Filter>Entities\Static</Filter>
     </ClCompile>
     <ClCompile Include="PortalEntity.cpp">
-      <Filter>Entities\Static Entities</Filter>
+      <Filter>Entities\Static</Filter>
     </ClCompile>
-    <ClCompile Include="Thrall.cpp">
-      <Filter>Entities\Dynamic Entities</Filter>
+    <ClCompile Include="StaticEntity.cpp">
+      <Filter>Entities\Static</Filter>
     </ClCompile>
-    <ClCompile Include="ModulePrinter.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="GUIImage.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Stat.cpp">
-      <Filter>GUI\Warcraft Specific</Filter>
+    <ClCompile Include="DynamicEntity.cpp">
+      <Filter>Entities\Dynamic</Filter>
     </ClCompile>
     <ClCompile Include="Enemy_Archer.cpp">
-      <Filter>Entities\Dynamic Entities</Filter>
+      <Filter>Entities\Dynamic\Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerHPBar.cpp">
-      <Filter>GUI\Warcraft Specific</Filter>
+    <ClCompile Include="Enemy_Footman.cpp">
+      <Filter>Entities\Dynamic\Enemies</Filter>
     </ClCompile>
-<<<<<<< HEAD
+    <ClCompile Include="EnemyEntity.cpp">
+      <Filter>Entities\Dynamic\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerEntity.cpp">
+      <Filter>Entities\Dynamic\Players</Filter>
+    </ClCompile>
+    <ClCompile Include="Thrall.cpp">
+      <Filter>Entities\Dynamic\Players</Filter>
+    </ClCompile>
     <ClCompile Include="BossEntity.cpp">
-      <Filter>Entities\Dynamic Entities\Bosses</Filter>
+      <Filter>Entities\Dynamic\Enemies\Bosses</Filter>
     </ClCompile>
     <ClCompile Include="Guldan.cpp">
-      <Filter>Entities\Dynamic Entities\Bosses</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp" />
-=======
-    <ClCompile Include="BossHPBar.cpp">
-      <Filter>GUI\Warcraft Specific</Filter>
+      <Filter>Entities\Dynamic\Enemies\Bosses</Filter>
     </ClCompile>
     <ClCompile Include="WCItem.cpp">
-      <Filter>Entities\Static Entities\Item</Filter>
+      <Filter>Items</Filter>
     </ClCompile>
->>>>>>> master
+    <ClCompile Include="Item.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
+    <ClCompile Include="BossHPBar.cpp">
+      <Filter>GUI\Warcraft specific</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerHPBar.cpp">
+      <Filter>GUI\Warcraft specific</Filter>
+    </ClCompile>
+    <ClCompile Include="Stat.cpp">
+      <Filter>GUI\Warcraft specific</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="Scene.h" />
-    <ClInclude Include="Button.h">
-      <Filter>GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="GUIElem.h">
-      <Filter>GUI</Filter>
-    </ClInclude>
     <ClInclude Include="Animation.h">
       <Filter>Helpers</Filter>
     </ClInclude>
-    <ClInclude Include="Console.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="DynamicEntity.h">
-      <Filter>Entities</Filter>
+    <ClInclude Include="Button.h">
+      <Filter>GUI</Filter>
     </ClInclude>
     <ClInclude Include="EntitiesEnums.h">
       <Filter>Entities</Filter>
@@ -162,14 +150,11 @@
     <ClInclude Include="Entity.h">
       <Filter>Entities</Filter>
     </ClInclude>
-    <ClInclude Include="FileSystem.h">
-      <Filter>Modules</Filter>
+    <ClInclude Include="GUIElem.h">
+      <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="Fonts.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Globals.h">
-      <Filter>Helpers</Filter>
+    <ClInclude Include="GUIImage.h">
+      <Filter>GUI</Filter>
     </ClInclude>
     <ClInclude Include="GUIWindow.h">
       <Filter>GUI</Filter>
@@ -177,10 +162,22 @@
     <ClInclude Include="InputBox.h">
       <Filter>GUI</Filter>
     </ClInclude>
+    <ClInclude Include="Console.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="FileSystem.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Fonts.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
     <ClInclude Include="Label.h">
       <Filter>GUI</Filter>
     </ClInclude>
     <ClInclude Include="Log.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Globals.h">
       <Filter>Helpers</Filter>
     </ClInclude>
     <ClInclude Include="ModuleAudio.h">
@@ -201,6 +198,9 @@
     <ClInclude Include="ModuleMapGenerator.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="ModulePrinter.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
     <ClInclude Include="ModuleRender.h">
       <Filter>Modules</Filter>
     </ClInclude>
@@ -219,9 +219,6 @@
     <ClInclude Include="p2Point.h">
       <Filter>Helpers</Filter>
     </ClInclude>
-    <ClInclude Include="StaticEntity.h">
-      <Filter>Entities</Filter>
-    </ClInclude>
     <ClInclude Include="PugiXml\src\pugiconfig.hpp">
       <Filter>Helpers</Filter>
     </ClInclude>
@@ -234,92 +231,94 @@
     <ClInclude Include="Slider.h">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy_Footman.h">
-      <Filter>Entities\Dynamic Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyEntity.h">
-      <Filter>Entities\Dynamic Entities</Filter>
-    </ClInclude>
     <ClInclude Include="ChestEntity.h">
-      <Filter>Entities\Static Entities</Filter>
+      <Filter>Entities\Static</Filter>
     </ClInclude>
     <ClInclude Include="ConsumableEntity.h">
-      <Filter>Entities\Static Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>Entities\Static Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerEntity.h">
-      <Filter>Entities\Dynamic Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="Thrall.h">
-      <Filter>Entities\Dynamic Entities</Filter>
+      <Filter>Entities\Static</Filter>
     </ClInclude>
     <ClInclude Include="PortalEntity.h">
-      <Filter>Entities\Static Entities</Filter>
+      <Filter>Entities\Static</Filter>
     </ClInclude>
-    <ClInclude Include="ModulePrinter.h">
-      <Filter>Modules</Filter>
+    <ClInclude Include="StaticEntity.h">
+      <Filter>Entities\Static</Filter>
     </ClInclude>
-    <ClInclude Include="GUIImage.h">
-      <Filter>GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Stat.h">
-      <Filter>GUI\Warcraft Specific</Filter>
+    <ClInclude Include="DynamicEntity.h">
+      <Filter>Entities\Dynamic</Filter>
     </ClInclude>
     <ClInclude Include="Enemy_Archer.h">
-      <Filter>Entities\Dynamic Entities</Filter>
+      <Filter>Entities\Dynamic\Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerHPBar.h">
-      <Filter>GUI\Warcraft Specific</Filter>
+    <ClInclude Include="Enemy_Footman.h">
+      <Filter>Entities\Dynamic\Enemies</Filter>
     </ClInclude>
-<<<<<<< HEAD
+    <ClInclude Include="EnemyEntity.h">
+      <Filter>Entities\Dynamic\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Thrall.h">
+      <Filter>Entities\Dynamic\Players</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerEntity.h">
+      <Filter>Entities\Dynamic\Players</Filter>
+    </ClInclude>
     <ClInclude Include="BossEntity.h">
-      <Filter>Entities\Dynamic Entities\Bosses</Filter>
+      <Filter>Entities\Dynamic\Enemies\Bosses</Filter>
     </ClInclude>
     <ClInclude Include="Guldan.h">
-      <Filter>Entities\Dynamic Entities\Bosses</Filter>
-=======
-    <ClInclude Include="BossHPBar.h">
-      <Filter>GUI\Warcraft Specific</Filter>
+      <Filter>Entities\Dynamic\Enemies\Bosses</Filter>
     </ClInclude>
     <ClInclude Include="WCItem.h">
-      <Filter>Entities\Static Entities\Item</Filter>
->>>>>>> master
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="BossHPBar.h">
+      <Filter>GUI\Warcraft specific</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerHPBar.h">
+      <Filter>GUI\Warcraft specific</Filter>
+    </ClInclude>
+    <ClInclude Include="Stat.h">
+      <Filter>GUI\Warcraft specific</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="GUI">
-      <UniqueIdentifier>{f49a21f8-0db6-4222-b7d8-062a70a313f2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Entities">
-      <UniqueIdentifier>{9aeb19c3-6b29-42c2-a6e6-5a6c92129295}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Helpers">
-      <UniqueIdentifier>{badd3289-8c8c-4cb8-8520-2bfaeda885be}</UniqueIdentifier>
+      <UniqueIdentifier>{d7452352-0d91-4e6c-adb8-9e051e07cbeb}</UniqueIdentifier>
     </Filter>
     <Filter Include="Modules">
-      <UniqueIdentifier>{2447cab7-8f4a-4270-bf8f-a28f3985bf56}</UniqueIdentifier>
+      <UniqueIdentifier>{d8fd6569-0ace-4631-927d-568d6328d384}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Entities\Dynamic Entities">
-      <UniqueIdentifier>{37c81e92-729e-406c-9a04-6e43ebae08b6}</UniqueIdentifier>
+    <Filter Include="GUI">
+      <UniqueIdentifier>{cff4cf8a-0b90-4f30-b52b-8df9b9833c95}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Entities\Static Entities">
-      <UniqueIdentifier>{93bbfb31-6dae-4cff-89d6-b7ecc916c4dd}</UniqueIdentifier>
+    <Filter Include="Entities">
+      <UniqueIdentifier>{aaae5f8b-1173-48ea-865c-ab0e7b82b523}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GUI\Warcraft Specific">
-      <UniqueIdentifier>{a44ceca3-55bf-4adb-bcf5-e831248165a6}</UniqueIdentifier>
+    <Filter Include="Entities\Static">
+      <UniqueIdentifier>{b77028ee-9307-4d98-b979-9ddddbaf50ac}</UniqueIdentifier>
     </Filter>
-<<<<<<< HEAD
-    <Filter Include="Entities\Dynamic Entities\Bosses">
-      <UniqueIdentifier>{074fa10c-3dad-4b8c-8d4d-d832213d8f68}</UniqueIdentifier>
-=======
-    <Filter Include="Entities\Static Entities\Item">
-      <UniqueIdentifier>{bce8a54d-ed1f-46fc-9fc2-4b5c348da630}</UniqueIdentifier>
->>>>>>> master
+    <Filter Include="Entities\Dynamic">
+      <UniqueIdentifier>{3be82bcf-87e5-4c6c-9ace-3c09c05e374b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Dynamic\Enemies">
+      <UniqueIdentifier>{48a9c521-56a5-466e-acb6-4f7f0604453d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Dynamic\Players">
+      <UniqueIdentifier>{6842e5f4-fd92-47c6-bb1b-2e36762357f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Dynamic\Enemies\Bosses">
+      <UniqueIdentifier>{44347374-0b85-412c-a2e9-bc2a192ea994}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Items">
+      <UniqueIdentifier>{5117433a-3ce3-4063-9f79-624269922acc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\Warcraft specific">
+      <UniqueIdentifier>{1f4bce41-22a8-4a52-935a-5cc805b8fc9b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
