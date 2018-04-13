@@ -52,9 +52,11 @@ public:
 	uint Thrall_Hit_FX = 0;
 	uint Thrall_Hitted_FX = 0;
 	uint Thrall_EnergyMax_FX = 0;
+	uint Thrall_AttackFX = 0;
 	//std::string BSO's
 	std::string MainMenuBSO;
 	std::string InGameBSO;
+	std::string GuldanBSO;
 
 	uint MusicVolumePercent = 5;
 	uint FXVolumePercent = 5;

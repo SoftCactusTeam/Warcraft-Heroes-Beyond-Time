@@ -31,7 +31,7 @@
     </enemies>
 
     <players>
-      <cds dash = "1" deadinfloor = "2" invulpostdamaged = "1"/>
+      <cds dash = "0" deadinfloor = "2" invulpostdamaged = "1"/>
       <thrall hp = "200" speed = "40" damage = "60" energy_percent_hit = "5"/>
     </players>
 
