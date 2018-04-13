@@ -201,8 +201,7 @@ void Enemy_Archer::initBackJump()
 	anim->Reset();
 	pathVector.Clear();
 
-	iPoint posToTP = { -1,-1 };
-	for (int i = 0; i < 10 || App->path->ExistWalkableAtPos(posToTP) == -1; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		int randomX = App->entities->GetRandomNumber(6);
 		if (randomX > 3)
@@ -216,7 +215,7 @@ void Enemy_Archer::initBackJump()
 			randomY -= 3;
 			randomY *= -1;
 		}
-		if (App->path->ExistWalkableAtPos(iPoint(((int)pos.x + anim->GetCurrentRect().w)/ App->map->getTileSize() + randomX, ((int)pos.y  + anim->GetCurrentRect().h) / App->map->getTileSize() + randomY)) != -1)
+		if (App->path->ExistWalkableAtPos(iPoint(((int)pos.x + anim->GetCurrentRect().w / 2)/ (App->map->getTileSize() - 2) + randomX, ((int)pos.y  + anim->GetCurrentRect().h / 2) / (App->map->getTileSize() - 2) + randomY)) != -1)
 		{
 			posSmoke = pos;
 			tempoSmoke = 300 + SDL_GetTicks();
