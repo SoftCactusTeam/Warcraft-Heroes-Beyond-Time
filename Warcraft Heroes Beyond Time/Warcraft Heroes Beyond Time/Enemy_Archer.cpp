@@ -10,6 +10,8 @@
 #include "ModulePrinter.h"
 #include "ModuleAudio.h"
 
+#include "ModuleRender.h"
+
 #define DISTANCE_TO_MOVE		400
 #define DISTANCE_TO_ATAC		150
 #define ATAC_COOLDOWN			1000
@@ -108,6 +110,14 @@ bool Enemy_Archer::Finish()
 	return true;
 }
 
+bool Enemy_Archer::Draw()
+{
+	bool ret = true;
+	anim->GetCurrentFrame();
+	ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), texture, anim->GetCurrentRect(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, 0, anim->GetCurrentPivot());
+	return ret;
+}
+
 void Enemy_Archer::Collision(Collider* collideWith)
 {
 	if (collideWith->type == COLLIDER_TYPE::COLLIDER_PLAYER_ATTACK)
@@ -116,6 +126,7 @@ void Enemy_Archer::Collision(Collider* collideWith)
 		switch (collideWith->attackType)
 		{
 		case  Collider::ATTACK_TYPE::PLAYER_MELEE:
+			App->audio->PlayFx(App->audio->ArcherDeath);
 			live -= 40;
 			if (live <= 0)
 				initDie();
@@ -123,6 +134,7 @@ void Enemy_Archer::Collision(Collider* collideWith)
 				initBackJump();
 			break;
 		case Collider::ATTACK_TYPE::THRALL_SKILL:
+			App->audio->PlayFx(App->audio->ArcherDeath);
 			live -= 70;
 			if (live <= 0)
 				initDie();
@@ -308,12 +320,12 @@ void Enemy_Archer::doWalk()
 	{
 		if (pathVector.isEmpty())
 		{
-			if (pathVector.CalculatePathAstar(iPoint((int)this->pos.x + 25 /* w / 2*/ + 20 /*offset*/, (int)this->pos.y + 20), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y)))
-				pathVector.CalculateWay(iPoint((int)this->pos.x + 25 /* w / 2*/ + 20 /*offset*/, (int)this->pos.y + 20), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y));
+			if (pathVector.CalculatePathAstar(iPoint(((int)pos.x + (anim->GetCurrentRect().w / 2)), ((int)pos.y + (anim->GetCurrentRect().h / 2))), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y)))
+				pathVector.CalculateWay(iPoint(((int)pos.x + (anim->GetCurrentRect().w / 2)), ((int)pos.y + (anim->GetCurrentRect().h / 2))), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y));
 		}
 		else
 		{
-			iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x, (int)pos.y));
+			iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x + (anim->GetCurrentRect().w / 2), (int)pos.y + (anim->GetCurrentRect().h / 2)));
 			this->pos += fPoint((float)move.x * MOVEMENT_SPEED, (float)move.y * MOVEMENT_SPEED);
 		}
 	}

@@ -88,7 +88,7 @@ bool Scene::Start()
 
 			App->map->GenerateMap(mapInfo);
 
-			player = App->entities->AddPlayer({ 25*48,25*48 }, THRALL);
+			player = App->entities->AddPlayer({ 25*46,25*46 }, THRALL);
 			App->gui->CreateHPBar(player, { 10,5 });
 
 			App->path->LoadPathMap();

@@ -47,6 +47,7 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 	bool Finish();
+	bool Draw();
 	void Collision(Collider* collideWith);
 
 
