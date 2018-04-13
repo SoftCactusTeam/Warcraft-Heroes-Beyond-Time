@@ -89,7 +89,7 @@ bool Scene::Start()
 			MapData mapInfo;
 			mapInfo.sizeX = 50;
 			mapInfo.sizeY = 50;
-			mapInfo.iterations = 600;
+			mapInfo.iterations = 300;
 			mapInfo.tilesetPath = "maps/Tiles.png";
 			lvlIndex++;
 
@@ -100,10 +100,9 @@ bool Scene::Start()
 
 			App->path->LoadPathMap();
 
-			iPoint chestPos = App->map->GetRandomValidPoint();
-			lvlChest = App->entities->AddChest({ (float)chestPos.x * 48,(float)chestPos.y * 48 }, MID_CHEST);
-			portal = (PortalEntity*)App->entities->AddStaticEntity({ 25 * 46,25 * 46 }, PORTAL);
-
+			
+			lvlChest = App->entities->AddChest({ (float)player->pos.x,(float)player->pos.y }, MID_CHEST);
+			lvlChest->UnLockChest();
 			break;
 		}
 		case Stages::BOSS_ROOM:
@@ -171,15 +170,8 @@ bool Scene::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN)
 	{
-		if (lvlChest->PlayerNear(player->pos))
-		{
-			lvlChest->UnLockChest();
-			lvlChest->OpenChest();
-			portal->OpenPortal();
-			paper = &WCItem("wcpaper", ItemType::passive_item_type, 0);
-			player->AddItem((WCItem)*paper);
-			paper_fake = paper;
-		}
+		GeneratePortal();
+				
 
 		if (!player->itemsActive.empty())
 		{
@@ -191,12 +183,22 @@ bool Scene::Update(float dt)
 	{
 		if (lvlChest->PlayerNear(player->pos))
 		{
-			if (paper_fake != nullptr)
+
+			lvlChest->OpenChest();
+			paper = &WCItem("wcpaper", ItemType::passive_item_type, 0);
+			player->AddItem((WCItem)*paper);
+			paper_fake = paper;
+
+			if (paper_fake != nullptr && paper->got_paper == false)
 			{
 				player->AddItem((WCItem)*paper);
-				paper_fake = nullptr;
+				//paper_fake = nullptr;
 				paper->got_paper = true;
 			}
+		}
+		if (portal != nullptr && portal->PlayerNear(player->pos))
+		{
+			portal->OpenPortal();
 		}
 	}
 
@@ -458,6 +460,16 @@ void Scene::AddCommands()
 {
 	ConsoleOrder* order = new ConsoleMap();
 	App->console->AddConsoleOrderToList(order);
+}
+
+void Scene::GeneratePortal()
+{
+	fPoint position;
+
+	position.x = (int)(player->pos.x / 48);
+	position.y = (int)(player->pos.y / 48);
+
+	portal = (PortalEntity*)App->entities->AddStaticEntity({ position.x * 48, position.y * 48 }, PORTAL);
 }
 
 void Scene::GoMainMenu()

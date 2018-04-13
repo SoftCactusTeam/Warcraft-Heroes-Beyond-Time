@@ -13,6 +13,7 @@ public:
 	bool Update(float dt);
 	bool Finish();
 	void OpenPortal();
+	bool PlayerNear(fPoint pos);
 
 	Collider* portalCol=nullptr;
 	bool locked = true;
