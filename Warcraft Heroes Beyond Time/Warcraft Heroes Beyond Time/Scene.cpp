@@ -100,11 +100,6 @@ bool Scene::Start()
 
 			App->path->LoadPathMap();
 
-<<<<<<< HEAD
-			iPoint chestPos = App->map->GetRandomValidPoint();
-			lvlChest = App->entities->AddChest({ (float)chestPos.x * 46,(float)chestPos.y * 46 }, MID_CHEST);
-			portal = (PortalEntity*)App->entities->AddStaticEntity({ 25 * 46,25 * 46 }, PORTAL);
-
 			iPoint enemy = App->map->GetRandomValidPoint();
 			App->entities->AddEnemy({ (float)enemy.x * 46, (float)enemy.y * 46 }, ARCHER);
 
@@ -123,11 +118,9 @@ bool Scene::Start()
 			enemy = App->map->GetRandomValidPoint();
 			App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
 
-=======
 			
 			lvlChest = App->entities->AddChest({ (float)player->pos.x,(float)player->pos.y }, MID_CHEST);
 			lvlChest->UnLockChest();
->>>>>>> Portal
 			break;
 		}
 		case Stages::BOSS_ROOM:
