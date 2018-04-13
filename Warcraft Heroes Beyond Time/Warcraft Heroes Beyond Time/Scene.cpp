@@ -262,7 +262,8 @@ bool Scene::PostUpdate()
 	if (actual_scene == Stages::MAIN_MENU || actual_scene == Stages::SETTINGS)
 	{
 		SDL_Rect back = { 0,0,640,360 };
-		App->render->DrawQuad(back, 0, 205, 193, 255, true, false);
+		//App->render->DrawQuad(back, 0, 205, 193, 255, true, false);
+		App->render->DrawQuad(back, 64, 66, 159, 255, true, false);
 	}
 
 	if (App->path->printWalkables == true)
@@ -371,7 +372,7 @@ void Scene::CreateMainMenuScreen()
 {
 
 	//PLAY BUTTON
-	Button* button = (Button*)App->gui->CreateButton({ 250, 50.0f }, BType::PLAY, this);
+	Button* button = (Button*)App->gui->CreateButton({ 640 / 2 - 158 / 2, 50.0f }, BType::PLAY, this);
 
 	/*LabelInfo defLabel;
 	defLabel.color = White;
@@ -386,7 +387,7 @@ void Scene::CreateMainMenuScreen()
 	App->gui->CreateLabel({ 33,11 }, defLabel, button, this);
 
 	//SETTINGS BUTTON
-	Button* button2 = (Button*)App->gui->CreateButton({ 250, 150.0f }, BType::SETTINGS, this);
+	Button* button2 = (Button*)App->gui->CreateButton({ 640 / 2 - 158 / 2, 150.0f }, BType::SETTINGS, this);
 
 	LabelInfo defLabel2;
 	defLabel2.color = White;
@@ -395,7 +396,7 @@ void Scene::CreateMainMenuScreen()
 	App->gui->CreateLabel({ 42,10 }, defLabel2, button2, this);
 
 	//EXIT GAME BUTTON
-	Button* button3 = (Button*)App->gui->CreateButton({ 250, 250.0f }, BType::EXIT_GAME, this);
+	Button* button3 = (Button*)App->gui->CreateButton({ 640 / 2 - 158 / 2, 250.0f }, BType::EXIT_GAME, this);
 
 	LabelInfo defLabel3;
 	defLabel3.color = White;
@@ -409,7 +410,7 @@ void Scene::CreateSettingsScreen()
 	//MUSIC VOLUME SLIDER
 	SliderInfo sinfo;
 	sinfo.type = Slider::SliderType::MUSIC_VOLUME;
-	Slider* slider = (Slider*)App->gui->CreateSlider({ 185, 95 }, sinfo, this, nullptr);
+	Slider* slider = (Slider*)App->gui->CreateSlider({ 183, 95 }, sinfo, this, nullptr);
 
 	LabelInfo defLabel3;
 	defLabel3.color = White;
@@ -427,7 +428,7 @@ void Scene::CreateSettingsScreen()
 	//FX VOLUME SLIDER
 	SliderInfo sinfo2;
 	sinfo2.type = Slider::SliderType::FX_VOLUME;
-	Slider* slider2 = (Slider*)App->gui->CreateSlider({ 185, 190 }, sinfo2, this, nullptr);
+	Slider* slider2 = (Slider*)App->gui->CreateSlider({ 183, 190 }, sinfo2, this, nullptr);
 
 	LabelInfo defLabel4;
 	defLabel4.color = White;
@@ -443,7 +444,7 @@ void Scene::CreateSettingsScreen()
 	App->gui->CreateLabel({ 0,-35 }, defLabel5, slider2, this);
 
 	//BACK BUTTON
-	Button* button3 = (Button*)App->gui->CreateButton({ 240, 250.0f }, BType::GO_MMENU, this);
+	Button* button3 = (Button*)App->gui->CreateButton({ 640 / 2 - 158 / 2, 250.0f }, BType::GO_MMENU, this);
 
 	LabelInfo defLabel2;
 	defLabel2.color = White;
