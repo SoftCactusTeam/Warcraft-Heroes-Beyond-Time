@@ -89,7 +89,7 @@ bool Scene::Start()
 			MapData mapInfo;
 			mapInfo.sizeX = 50;
 			mapInfo.sizeY = 50;
-			mapInfo.iterations = 600;
+			mapInfo.iterations = 300;
 			mapInfo.tilesetPath = "maps/Tiles.png";
 			lvlIndex++;
 
@@ -101,8 +101,26 @@ bool Scene::Start()
 			App->path->LoadPathMap();
 
 			iPoint chestPos = App->map->GetRandomValidPoint();
-			lvlChest = App->entities->AddChest({ (float)chestPos.x * 48,(float)chestPos.y * 48 }, MID_CHEST);
+			lvlChest = App->entities->AddChest({ (float)chestPos.x * 46,(float)chestPos.y * 46 }, MID_CHEST);
 			portal = (PortalEntity*)App->entities->AddStaticEntity({ 25 * 46,25 * 46 }, PORTAL);
+
+			iPoint enemy = App->map->GetRandomValidPoint();
+			App->entities->AddEnemy({ (float)enemy.x * 46, (float)enemy.y * 46 }, ARCHER);
+
+			enemy = App->map->GetRandomValidPoint();
+			App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
+
+			enemy = App->map->GetRandomValidPoint();
+			App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
+
+			enemy = App->map->GetRandomValidPoint();
+			App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
+
+			enemy = App->map->GetRandomValidPoint();
+			App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
+
+			enemy = App->map->GetRandomValidPoint();
+			App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
 
 			break;
 		}
@@ -115,7 +133,7 @@ bool Scene::Start()
 			App->printer->Activate();
 
 			App->map->GenerateBossMap();
-			player = App->entities->AddPlayer({ 14 * 48,14 * 48, }, THRALL);
+			player = App->entities->AddPlayer({ 15 * 46,16 * 46, }, THRALL);
 			App->gui->CreateHPBar(player, { 10,5 });
 			BossEntity* guldan = App->entities->AddBoss({ 14 * 48,5 * 48 }, GULDAN);
 			App->gui->CreateBossHPBar(guldan, { 640 / 2 - 312 / 2,320 });
