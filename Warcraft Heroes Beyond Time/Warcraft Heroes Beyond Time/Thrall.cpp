@@ -328,7 +328,7 @@ void Thrall::Collision(Collider* collideWith)
 	{
 	case COLLIDER_TYPE::COLLIDER_ENEMY_ATTACK:
 	{
-		if (collideWith->attackType == Collider::ATTACK_TYPE::ENEMY_ARROW)
+		if (collideWith->attackType == Collider::ATTACK_TYPE::ENEMY_ARROW && state!=states::PL_DASH)
 			SetDamage(30, true);
 		break;
 	}
@@ -341,12 +341,13 @@ void Thrall::Collision(Collider* collideWith)
 	}
 	case COLLIDER_TYPE::COLLIDER_FELBALL:
 	{
-		SetDamage(50, true);
+		if(state!=states::PL_DASH)
+			SetDamage(50, true);
 		break;
 	}
 	case COLLIDER_TYPE::COLLIDER_ENEMY:
 	{
-		if (collideWith->owner->isGuldan)
+		if (collideWith->owner->isGuldan && state != states::PL_DASH)
 			SetDamage(50, true);
 		break;
 	}
