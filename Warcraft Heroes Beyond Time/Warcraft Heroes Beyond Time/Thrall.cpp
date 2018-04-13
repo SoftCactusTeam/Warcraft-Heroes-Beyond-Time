@@ -348,6 +348,7 @@ void Thrall::Collision(Collider* collideWith)
 	{
 		if (collideWith->owner->isGuldan)
 			SetDamage(50, true);
+		break;
 	}
 	case COLLIDER_TYPE::COLLIDER_PORTAL:
 		if (App->scene->portal->locked == false)

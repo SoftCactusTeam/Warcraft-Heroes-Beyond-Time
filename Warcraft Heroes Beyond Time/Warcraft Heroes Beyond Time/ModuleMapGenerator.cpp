@@ -147,7 +147,7 @@ bool MapGenerator::GenerateBossMap()
 	pugi::xml_node map_child;
 
 	char* buffer;
-	uint size = App->fs->Load("guldanMap.tmx", &buffer);
+	uint size = App->fs->Load("maps/guldanMap.tmx", &buffer);
 	doc_map.load_buffer(buffer, size);
 	RELEASE(buffer);
 
