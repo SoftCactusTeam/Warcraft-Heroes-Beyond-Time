@@ -94,7 +94,6 @@ bool Scene::Start()
 			lvlIndex++;
 
 			App->map->GenerateMap(mapInfo);
-
 			player = App->entities->AddPlayer({ 25 * 46,25 * 46}, THRALL);
 			App->gui->CreateHPBar(player, { 10,5 });
 

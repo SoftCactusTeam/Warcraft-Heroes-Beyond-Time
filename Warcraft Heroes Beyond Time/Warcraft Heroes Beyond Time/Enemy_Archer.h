@@ -28,12 +28,14 @@ public:
 public:
 	fPoint			pos;
 	fPoint			direction;
-	SDL_Texture*	texture;
 	SDL_Rect		rect;
+	SDL_Texture*	texture;
+	Collider*		arrowCollider = nullptr;
+
 	int				deadTimer;
 	bool			destroy = false;
-	Collider*		arrowCollider = nullptr;
-	float angle;
+	float			angle;
+	int				tempoAtWall = -1;
 };
 
 class Enemy_Archer : public EnemyEntity
@@ -45,6 +47,7 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 	bool Finish();
+	bool Draw();
 	void Collision(Collider* collideWith);
 
 

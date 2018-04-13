@@ -10,6 +10,8 @@
 #include "ModulePrinter.h"
 #include "ModuleAudio.h"
 
+#include "ModuleRender.h"
+
 #define DISTANCE_TO_MOVE		400
 #define DISTANCE_TO_ATAC		150
 #define ATAC_COOLDOWN			1000
@@ -25,6 +27,7 @@
 #define DISTANCE_TO_GO_SCAPE	60
 #define ARCHER_LIVE				100
 #define TIME_DYING				500
+#define TEMPO_ARROW_ATWALL		500
 
 Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture) : EnemyEntity(coor, character, texture) {}
 
@@ -108,6 +111,14 @@ bool Enemy_Archer::Finish()
 	return true;
 }
 
+bool Enemy_Archer::Draw()
+{
+	bool ret = true;
+	anim->GetCurrentFrame();
+	ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), texture, anim->GetCurrentRect(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, 0, anim->GetCurrentPivot());
+	return ret;
+}
+
 void Enemy_Archer::Collision(Collider* collideWith)
 {
 	if (collideWith->type == COLLIDER_TYPE::COLLIDER_PLAYER_ATTACK)
@@ -115,8 +126,21 @@ void Enemy_Archer::Collision(Collider* collideWith)
 
 		switch (collideWith->attackType)
 		{
-			case  Collider::ATTACK_TYPE::PLAYER_MELEE:
+		case  Collider::ATTACK_TYPE::PLAYER_MELEE:
+			App->audio->PlayFx(App->audio->ArcherDeath);
 			live -= 40;
+			if (live <= 0)
+				initDie();
+			else
+				initBackJump();
+			break;
+		case Collider::ATTACK_TYPE::THRALL_SKILL:
+			App->audio->PlayFx(App->audio->ArcherDeath);
+			live -= 70;
+			if (live <= 0)
+				initDie();
+			else
+				initBackJump();
 			break;
 			case Collider::ATTACK_TYPE::SHIT:
 			live -= 5;
@@ -191,8 +215,7 @@ void Enemy_Archer::initBackJump()
 	anim->Reset();
 	pathVector.Clear();
 
-	iPoint posToTP = { -1,-1 };
-	for (int i = 0; i < 10 || App->path->ExistWalkableAtPos(posToTP) == -1; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		int randomX = App->entities->GetRandomNumber(6);
 		if (randomX > 3)
@@ -206,7 +229,7 @@ void Enemy_Archer::initBackJump()
 			randomY -= 3;
 			randomY *= -1;
 		}
-		if (App->path->ExistWalkableAtPos(iPoint(((int)pos.x + anim->GetCurrentRect().w) / App->map->getTileSize() + randomX, ((int)pos.y + anim->GetCurrentRect().h) / App->map->getTileSize() + randomY)) != -1)
+		if (App->path->ExistWalkableAtPos(iPoint(((int)pos.x + anim->GetCurrentRect().w / 2)/ (App->map->getTileSize() - 2) + randomX, ((int)pos.y  + anim->GetCurrentRect().h / 2) / (App->map->getTileSize() - 2) + randomY)) != -1)
 		{
 			posSmoke = pos;
 			tempoSmoke = 300 + SDL_GetTicks();
@@ -310,12 +333,12 @@ void Enemy_Archer::doWalk()
 	{
 		if (pathVector.isEmpty())
 		{
-			if (pathVector.CalculatePathAstar(iPoint((int)this->pos.x + 25 /* w / 2*/ + 20 /*offset*/, (int)this->pos.y + 20), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y)))
-				pathVector.CalculateWay(iPoint((int)this->pos.x + 25 /* w / 2*/ + 20 /*offset*/, (int)this->pos.y + 20), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y));
+			if (pathVector.CalculatePathAstar(iPoint(((int)pos.x + (anim->GetCurrentRect().w / 2)), ((int)pos.y + (anim->GetCurrentRect().h / 2))), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y)))
+				pathVector.CalculateWay(iPoint(((int)pos.x + (anim->GetCurrentRect().w / 2)), ((int)pos.y + (anim->GetCurrentRect().h / 2))), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y));
 		}
 		else
 		{
-			iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x, (int)pos.y));
+			iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x + (anim->GetCurrentRect().w / 2), (int)pos.y + (anim->GetCurrentRect().h / 2)));
 			this->pos += fPoint((float)move.x * MOVEMENT_SPEED, (float)move.y * MOVEMENT_SPEED);
 		}
 	}
@@ -384,6 +407,7 @@ void Enemy_Archer::ShootArrow(fPoint desviation)
 {
 	App->audio->PlayFx(App->audio->ArrowSound);
 	fPoint directionShoot = App->scene->player->pos;
+
 	directionShoot.x -= pos.x + desviation.x;
 	directionShoot.y -= pos.y + desviation.y;
 	fPoint copyToDivideDirectionShoot = directionShoot;
@@ -408,33 +432,39 @@ Enemy_Archer_Arrow::Enemy_Archer_Arrow(fPoint coor, SDL_Texture* texture, fPoint
 	this->direction = direction;
 	this->deadTimer = SDL_GetTicks() + deadTimer;
 	this->angle = atan2(coor.y - App->scene->player->pos.y, coor.x - App->scene->player->pos.x);
-
 	if (angle > 0)
 		angle = angle * 360 / (2 * PI);
 	else
 		angle = (2 * PI + angle) * 360 / (2 * PI);
 	angle -= 90;
 
+	tempoAtWall = -1;
 	arrowCollider = App->colliders->AddCollider({ (int)coor.x,(int)coor.y,5,5 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATTACK, nullptr, { 0,0 }, Collider::ATTACK_TYPE::ENEMY_ARROW);
 	rect = { 808,110,32,32 };
 }
 
 void Enemy_Archer_Arrow::Update()
 {
-	if (SDL_GetTicks() < deadTimer)
+	if (tempoAtWall != -1)
+	{
+		if (tempoAtWall < SDL_GetTicks())
+			destroy = true;
+		App->printer->PrintSprite(iPoint((int)pos.x, (int)pos.y), texture, rect, 2, ModulePrinter::Pivots::CENTER, angle);
+	}
+	else if (SDL_GetTicks() < deadTimer)
 	{
 		this->pos += direction;
 		App->printer->PrintSprite(iPoint((int)pos.x, (int)pos.y), texture, rect, 2, ModulePrinter::Pivots::CENTER, angle);
 		arrowCollider->colliderRect.x = (int)pos.x;
 		arrowCollider->colliderRect.y = (int)pos.y;
 		if (arrowCollider->collidingWith == COLLIDER_TYPE::COLLIDER_PLAYER ||
-			arrowCollider->collidingWith == COLLIDER_TYPE::COLLIDER_UNWALKABLE)
+			arrowCollider->collidingWith == COLLIDER_TYPE::COLLIDER_PLAYER_ATTACK)
 			destroy = true;
+		else if (arrowCollider->collidingWith == COLLIDER_TYPE::COLLIDER_UNWALKABLE)
+			tempoAtWall = TEMPO_ARROW_ATWALL + SDL_GetTicks();
 	}
 	else
-	{
 		destroy = true;
-	}
 }
 
 void Enemy_Archer_Arrow::Finish()

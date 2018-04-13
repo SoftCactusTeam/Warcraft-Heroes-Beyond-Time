@@ -69,7 +69,7 @@ typedef struct SDL_Rect
 
 /**
  *  \brief Returns true if point resides inside a rectangle.
- */
+ */	
 SDL_FORCE_INLINE SDL_bool SDL_PointInRect(const SDL_Point *p, const SDL_Rect *r)
 {
     return ( (p->x >= r->x) && (p->x < (r->x + r->w)) &&
