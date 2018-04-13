@@ -114,6 +114,7 @@ bool Scene::Start()
 			App->map->Activate();
 			App->printer->Activate();
 
+			App->audio->PlayMusic(App->audio->GuldanBSO.data(), 1);
 			App->map->GenerateBossMap();
 			player = App->entities->AddPlayer({ 14 * 48,14 * 48, }, THRALL);
 			App->gui->CreateHPBar(player, { 10,5 });
@@ -153,8 +154,8 @@ bool Scene::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT)
 	{
-		if(player != nullptr)
-			player->numStats.energy = 100;
+		if (player != nullptr)
+			player->IncreaseEnergy(100);
 	}
 
 	//GENERATE A NEW MAP

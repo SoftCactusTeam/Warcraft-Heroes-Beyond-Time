@@ -416,6 +416,8 @@ void Thrall::UpdateCollider()
 
 void Thrall::Attack()
 {
+	if (!attacking)
+		App->audio->PlayFx(App->audio->Thrall_AttackFX);
 	attacking = true;
 	attackCollider = App->colliders->AddCollider({ -10, -10,20,20 }, COLLIDER_PLAYER_ATTACK, nullptr, { 0,0 }, Collider::ATTACK_TYPE::PLAYER_MELEE);
 }

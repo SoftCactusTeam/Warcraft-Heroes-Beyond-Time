@@ -63,10 +63,11 @@ bool Audio::Awake(pugi::xml_node& audioNode)
 	Thrall_EnergyMax_FX = LoadFx("audio/fx/thrall/T_maxenergy_fx.ogg");
 	Thrall_Hitted_FX = LoadFx("audio/fx/thrall/T_hitted_fx.ogg");
 	Thrall_Hit_FX = LoadFx("audio/fx/thrall/T_hit_fx.ogg");
-
+	Thrall_AttackFX = LoadFx("audio/fx/thrall/T_attack_fx.ogg");
 	//---------------------------------------Load Music----------------------------
 	MainMenuBSO = "audio/BSO's/Warcraft HBT - Main Menu.ogg";
 	InGameBSO = "audio/BSO's/Warcraft HBT - Level.ogg";
+	GuldanBSO = "audio/BSO's/Warcraft HBT - Guldan.ogg";
 	//---------------------------------------SetVolumes----------------------------
 
 	Mix_Volume(-1, (MIX_MAX_VOLUME * FXVolumePercent) / 100);

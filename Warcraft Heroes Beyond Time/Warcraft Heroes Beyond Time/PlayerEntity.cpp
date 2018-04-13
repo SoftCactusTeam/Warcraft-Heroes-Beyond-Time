@@ -1035,7 +1035,7 @@ void PlayerEntity::JoyconStates(float dt)
 
 	case states::PL_DEAD:
 	{
-		if (anim->Finished() && anim != &deadDownRight)
+		if (anim != &deadDownRight)
 		{
 			anim->Reset();
 			animBefore = anim;
@@ -1354,6 +1354,7 @@ void PlayerEntity::SetDamage(int damage, bool setStateDamage)
 		if ((int)numStats.hp - damage <= 0)
 		{
 			numStats.hp = 0;
+			ResetDash();
 			state = states::PL_DEAD;
 			App->audio->PauseMusic(0.5);
 			App->audio->PlayFx(App->audio->Thrall_Die_FX);
