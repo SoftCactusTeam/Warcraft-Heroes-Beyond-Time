@@ -145,11 +145,6 @@ void Enemy_Archer::Collision(Collider* collideWith)
 			case Collider::ATTACK_TYPE::SHIT:
 			live -= 5;
 			break;
-			case Collider::ATTACK_TYPE::THRALL_SKILL:
-			{
-				live -= 100;
-				break;
-			}
 		}
 
 		if (live <= 0)
