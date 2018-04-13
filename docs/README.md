@@ -19,9 +19,22 @@ _IMPORTANT: do not modify, change or add any folder or file as you might not be 
 
 ## Controls  
 
+### Gamepad
+- LEFT STICK: move
+- A BUTTON: dash
+- X BUTTON: attack
+- Y BUTTON: skill
+- B BUTTON: pick item, open chest and go through portal
+- START: pause game
 
-## Innovations  
-
+### Mouse and keyboard
+- LEFT CLICK: select in menus
+- WASD: move
+- X: attack
+- Z: skill
+- SPACE: dash
+- 9 pick item
+- ESC: pause
 
 ## Team members  
 
@@ -70,4 +83,6 @@ _Morgado Expósito, Arnau's responsability and Github account_
 * Code repository: GitHub  
 * Others: Adobe Photoshop CS6, Aseprite and MS Paint  
 
-## Credits for artwork, music/sound fx and fonts  
+## Credits for artwork, music/sound fx and fonts
+
+To be added...
