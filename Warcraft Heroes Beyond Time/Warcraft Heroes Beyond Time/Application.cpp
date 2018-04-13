@@ -60,6 +60,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(colliders);
 	AddModule(gui);
 	AddModule(console);
+	
 
 	// render last to swap buffer
 	AddModule(render);

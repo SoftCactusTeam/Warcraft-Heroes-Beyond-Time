@@ -473,7 +473,7 @@ void Scene::AddCommands()
 
 void Scene::GoMainMenu()
 {
-	if (actual_scene == Stages::INGAME)
+	if (actual_scene == Stages::INGAME || actual_scene == Stages::BOSS_ROOM)
 		App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
 	actual_scene = Stages::MAIN_MENU;
 	restart = true;
