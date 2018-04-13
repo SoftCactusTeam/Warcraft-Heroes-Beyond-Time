@@ -64,48 +64,64 @@ bool Scene::Start()
 
 	switch (actual_scene)
 	{
-	case Stages::MAIN_MENU:
-	{
-		CreateMainMenuScreen();
+		case Stages::MAIN_MENU:
+		{
+			CreateMainMenuScreen();
 
-		break;
-	}
-	case Stages::SETTINGS:
-	{
-		CreateSettingsScreen();
+			break;
+		}
+		case Stages::SETTINGS:
+		{
+			CreateSettingsScreen();
 
-		break;
-	}
-	case Stages::INGAME:
-	{
-		App->colliders->Activate();
-		App->entities->Activate();
-		App->console->Activate();
-		App->map->Activate();
-		App->printer->Activate();
+			break;
+		}
+		case Stages::INGAME:
+		{
+			App->colliders->Activate();
+			App->entities->Activate();
+			App->console->Activate();
+			App->map->Activate();
+			App->printer->Activate();
 
 
-		BROFILER_CATEGORY("InGame Generation", Profiler::Color::Chocolate);
-		MapData mapInfo;
-		mapInfo.sizeX = 50;
-		mapInfo.sizeY = 50;
-		mapInfo.iterations = 600;
-		mapInfo.tilesetPath = "maps/Tiles.png";
-		lvlIndex++;
+			BROFILER_CATEGORY("InGame Generation", Profiler::Color::Chocolate);
+			MapData mapInfo;
+			mapInfo.sizeX = 50;
+			mapInfo.sizeY = 50;
+			mapInfo.iterations = 600;
+			mapInfo.tilesetPath = "maps/Tiles.png";
+			lvlIndex++;
 
-		App->map->GenerateMap(mapInfo);
+			App->map->GenerateMap(mapInfo);
 
-		player = App->entities->AddPlayer({ 25 * 46,25 * 46}, THRALL);
-		App->gui->CreateHPBar(player, { 10,5 });
+			player = App->entities->AddPlayer({ 25 * 46,25 * 46}, THRALL);
+			App->gui->CreateHPBar(player, { 10,5 });
 
-		App->path->LoadPathMap();
+			App->path->LoadPathMap();
 
-		iPoint chestPos = App->map->GetRandomValidPoint();
-		lvlChest = App->entities->AddChest({ (float)chestPos.x * 48,(float)chestPos.y * 48 }, MID_CHEST);
-		portal = (PortalEntity*)App->entities->AddStaticEntity({ 25 * 46,25 * 46 }, PORTAL);
+			iPoint chestPos = App->map->GetRandomValidPoint();
+			lvlChest = App->entities->AddChest({ (float)chestPos.x * 48,(float)chestPos.y * 48 }, MID_CHEST);
+			portal = (PortalEntity*)App->entities->AddStaticEntity({ 25 * 46,25 * 46 }, PORTAL);
 
-		break;
-	}
+			break;
+		}
+		case Stages::BOSS_ROOM:
+		{
+			App->colliders->Activate();
+			App->entities->Activate();
+			App->console->Activate();
+			App->map->Activate();
+			App->printer->Activate();
+
+			App->map->GenerateBossMap();
+			player = App->entities->AddPlayer({ 14 * 48,14 * 48, }, THRALL);
+			App->gui->CreateHPBar(player, { 10,5 });
+			BossEntity* guldan = App->entities->AddBoss({ 14 * 48,4 * 48 }, GULDAN);
+			App->gui->CreateBossHPBar(guldan, { 640/2-312/2,320 });
+
+			break;
+		}
 
 	}
 
@@ -143,31 +159,16 @@ bool Scene::Update(float dt)
 			player->numStats.energy = 100;
 	}
 
-
-
 	//GENERATE A NEW MAP
-	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && actual_scene == Stages::INGAME && lvlIndex != 8 && !App->console->isWritting())
+	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && actual_scene == Stages::INGAME && !App->console->isWritting())
 	{
 		restart = true;
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && actual_scene == Stages::INGAME && lvlIndex == 8 && !App->console->isWritting())
-	{
-		lvlIndex = 0;
-		actual_scene = Stages::MAIN_MENU;
-		restart = true;
-		// RESTART THIS MODULE AND THE ENTIRE GAME // GO TO MAIN MENU
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_F1))
+	if (App->input->GetKey(SDL_SCANCODE_F1) && actual_scene == Stages::INGAME)
 	{
-		App->colliders->CleanUp();
-		App->gui->CleanUp();
-		App->entities->ClearEntitiesList();
-		App->map->CleanUp();
-		App->map->GenerateBossMap();
-		player = App->entities->AddPlayer({ 14 * 48,14 * 48, }, THRALL);
-		App->gui->CreateHPBar(player, { 10,5 });
-		App->entities->AddBoss({ 14 * 48,4 * 48 }, GULDAN);
+		actual_scene = Stages::BOSS_ROOM;
+		restart = true;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN)
@@ -208,7 +209,7 @@ bool Scene::Update(float dt)
 	
 
 	//PAUSE GAME
-	if (actual_scene == Stages::INGAME)
+	if (actual_scene == Stages::INGAME || actual_scene == Stages::BOSS_ROOM)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN ||
 			App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_START) == KEY_DOWN)
@@ -260,6 +261,8 @@ bool Scene::CleanUp()
 	App->path->ClearMap();
 	App->colliders->DeActivate();
 
+	App->textures->UnLoad(venom);
+	App->textures->UnLoad(texture);
 
 	return true;
 }

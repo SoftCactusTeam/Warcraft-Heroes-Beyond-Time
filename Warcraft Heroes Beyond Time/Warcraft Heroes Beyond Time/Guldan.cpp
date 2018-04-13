@@ -112,9 +112,8 @@ Guldan::Guldan(fPoint coor, BOSS_TYPE type, SDL_Texture* texture) : BossEntity(c
 
 	anim = &idle;
 
-	hp = 1000;
-
-	
+	numStats.hp = 1000;
+	numStats.maxhp = 1000;
 }
 
 Guldan::~Guldan()
@@ -163,7 +162,7 @@ bool Guldan::Update(float dt)
 		{
 		case BossStates::IDLE:
 		{
-			if (hp <= 0)
+			if (numStats.hp <= 0)
 			{
 				anim = &dead;
 				floatTimeForTp = 0.0f;
@@ -372,14 +371,14 @@ void Guldan::Collision(Collider* collideWith)
 {
 	switch (collideWith->type)
 	{
-	case COLLIDER_TYPE::COLLIDER_PLAYER_ATTACK:
-	{
-		if (collideWith->attackType == Collider::ATTACK_TYPE::PLAYER_MELEE)
+		case COLLIDER_TYPE::COLLIDER_PLAYER_ATTACK:
 		{
-			if (anim == &idle || anim == &generateingBalls || anim == &generatingBallsInverse)
-				hp -= 10000;
+			if (collideWith->attackType == Collider::ATTACK_TYPE::PLAYER_MELEE)
+			{
+				if (anim == &idle || anim == &generateingBalls || anim == &generatingBallsInverse)
+					numStats.hp -= numStats.hp;
+			}
+			break;
 		}
-		break;
-	}
 	}
 }

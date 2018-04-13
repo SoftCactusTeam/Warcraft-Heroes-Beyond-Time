@@ -25,11 +25,11 @@ bool BossHPBar::Draw()
 	bool ret = true;
 
 	//Blit red part
-	 ret = App->render->Blit(App->gui->getAtlas(), localPos.x + 1, localPos.y + 1, &actualrect, 1, 0);
+	 ret = App->render->Blit(App->gui->getAtlas(), localPos.x + 1 - App->render->camera.x, localPos.y + 1 - App->render->camera.y, &actualrect);
 
 	//Blit Bar
 	 if(ret)
-		ret = App->render->Blit(App->gui->getAtlas(), localPos.x, localPos.y, &atlasRect, 1, 0);
+		ret = App->render->Blit(App->gui->getAtlas(), localPos.x - App->render->camera.x, localPos.y - App->render->camera.y, &atlasRect);
 
 	return ret;
 }
