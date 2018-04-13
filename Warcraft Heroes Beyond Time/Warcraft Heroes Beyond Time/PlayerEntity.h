@@ -38,6 +38,10 @@ protected:
 	float deadinfloorConfigCD = 0.0f;
 	float deadinfloorcd = 0.0f;
 
+	bool win = false;
+	float afterWinConfigCounter = 5.0f;
+	float afterWinCounter = 0.0f;
+
 	Collider* pcol = nullptr;
 
 	
@@ -58,7 +62,8 @@ protected:
 		PL_DASH,
 		PL_ATTACK,
 		PL_SKILL,
-		PL_DEAD
+		PL_DEAD,
+		PL_WIN
 
 	} state;
 
@@ -127,6 +132,14 @@ public:
 	void PushOut(Collider* wall);
 	virtual void Attack() {}
 	virtual void UseSkill() {}
+
+	//Win
+	void Win()
+	{
+		win = true;
+		state = states::PL_WIN;
+		anim = &idleDown;
+	}
 
 	//items
 	std::list<iPoint> wcpaper;

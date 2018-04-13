@@ -41,7 +41,8 @@ public:
 		NO_STAGE,
 		MAIN_MENU,
 		SETTINGS,
-		INGAME
+		INGAME,
+		BOSS_ROOM
 
 	} actual_scene = Stages::MAIN_MENU;
 

@@ -13,6 +13,7 @@
 #include "GUIImage.h"
 #include "Stat.h"
 #include "PlayerHPBar.h"
+#include "BossHPBar.h"
 
 #include "Brofiler\Brofiler.h"
 
@@ -202,6 +203,13 @@ GUIElem* ModuleGUI::CreateHPBar(PlayerEntity* player, fPoint localPos)
 	PlayerHPBar* hpbar = new PlayerHPBar(player, localPos, nullptr);
 	elementsToSpawn.push_back(hpbar);
 	return hpbar;
+}
+
+GUIElem* ModuleGUI::CreateBossHPBar(BossEntity* boss, fPoint localPos)
+{
+	BossHPBar* bhpbar = new BossHPBar(boss, localPos, nullptr);
+	elementsToSpawn.push_back(bhpbar);
+	return bhpbar;
 }
 
 SDL_Texture* ModuleGUI::getAtlas() const

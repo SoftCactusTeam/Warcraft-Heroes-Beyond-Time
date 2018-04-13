@@ -16,6 +16,7 @@ struct SliderInfo;
 enum class BType;
 
 class PlayerEntity;
+class BossEntity;
 
 
 class ModuleGUI : public Module
@@ -41,6 +42,7 @@ public:
 	GUIElem* CreateGUIImage(fPoint localPos, SDL_Rect atlasRect, Module* listener, GUIElem* parent = nullptr);
 	GUIElem* CreateStatsWindow(PlayerEntity* player, fPoint localPos);
 	GUIElem* CreateHPBar(PlayerEntity* player, fPoint localPos);
+	GUIElem* CreateBossHPBar(BossEntity* boss, fPoint localPos);
 
 	bool DestroyElem(GUIElem* element);
 	SDL_Texture* getAtlas() const;
