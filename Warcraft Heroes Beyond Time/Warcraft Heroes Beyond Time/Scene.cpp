@@ -118,11 +118,9 @@ bool Scene::Start()
 			player = App->entities->AddPlayer({ 14 * 48,14 * 48, }, THRALL);
 			App->gui->CreateHPBar(player, { 10,5 });
 			BossEntity* guldan = App->entities->AddBoss({ 14 * 48,4 * 48 }, GULDAN);
-			App->gui->CreateBossHPBar(guldan, { 640/2-312/2,320 });
-
+			App->gui->CreateBossHPBar(guldan, { 640 / 2 - 312 / 2,320 });
 			break;
 		}
-
 	}
 
 	return true;

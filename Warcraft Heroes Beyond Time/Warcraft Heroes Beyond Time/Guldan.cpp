@@ -164,6 +164,7 @@ bool Guldan::Update(float dt)
 		{
 			if (numStats.hp <= 0)
 			{
+				App->scene->player->Win();
 				anim = &dead;
 				floatTimeForTp = 0.0f;
 				startTimeForTP = 0.0f;
