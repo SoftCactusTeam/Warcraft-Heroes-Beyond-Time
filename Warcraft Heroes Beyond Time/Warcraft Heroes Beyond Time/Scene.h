@@ -26,6 +26,7 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 	void AddCommands();
+	void GeneratePortal();
 
 public:
 
