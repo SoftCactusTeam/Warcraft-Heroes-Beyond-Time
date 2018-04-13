@@ -437,9 +437,11 @@ StaticEntity* EntitySystem::AddStaticEntity(fPoint coor, STATIC_ENTITY_TYPE type
 	{
 	case STATIC_ENTITY_TYPE::PORTAL:
 		newEntity = new PortalEntity(coor, STATIC_ENTITY_TYPE::PORTAL, spritesheetsEntities[MINES_SHEET]);
+		newEntity->portalCol = App->colliders->AddCollider({ (int)newEntity->pos.x, (int)newEntity->pos.y, 130, 130 }, COLLIDER_PORTAL);
 		break;
 	}
 	toSpawn.push_back(newEntity);
+	
 
 	return newEntity;
 }

@@ -3,6 +3,8 @@
 
 #include "StaticEntity.h"
 
+class Collider;
+
 class PortalEntity : public StaticEntity {
 public:
 	PortalEntity(fPoint coor, STATIC_ENTITY_TYPE type, SDL_Texture* texture);
@@ -12,10 +14,12 @@ public:
 	bool Finish();
 	void OpenPortal();
 
+	Collider* portalCol=nullptr;
+	bool locked = true;
 private:
 	STATIC_ENTITY_TYPE type = STATIC_ENTITY_TYPE::NON_SENTITY;
 	Animation portal;
-	bool locked = true;
+	
 };
 
 #endif

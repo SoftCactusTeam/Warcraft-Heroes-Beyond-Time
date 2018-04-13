@@ -34,7 +34,7 @@ public:
 	void CreateSettingsScreen();
 	void CreatePauseMenu();
 	void GoMainMenu();
-
+	void GoBossRoom();
 public:
 	enum class Stages
 	{
@@ -56,17 +56,15 @@ public:
 	SDL_Texture* venom = nullptr;
 	SDL_Texture* texture = nullptr;
 
+	PortalEntity* portal = nullptr;
 private:
 
 	GUIWindow* PauseMenu = nullptr;
 
-	PortalEntity* portal = nullptr;
+	
 
 	bool restart = false;
 	int lvlIndex = 0;
-
-private:
-	fPoint getPosByResolution(fPoint pos) const;
 
 };
 

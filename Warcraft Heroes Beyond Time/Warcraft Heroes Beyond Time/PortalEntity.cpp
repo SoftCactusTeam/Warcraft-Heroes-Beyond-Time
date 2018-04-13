@@ -32,4 +32,5 @@ bool PortalEntity::Finish()
 void PortalEntity::OpenPortal()
 {
 	portal.speedFactor = 1.0f;
+	locked = false;
 }

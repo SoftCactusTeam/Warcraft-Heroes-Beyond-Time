@@ -8,6 +8,7 @@
 #include "WCItem.h"
 #include "ModulePrinter.h"
 #include "ModuleColliders.h"
+#include "PortalEntity.h"
 
 Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEntity(coor, type, texture)
 {
@@ -343,6 +344,12 @@ void Thrall::Collision(Collider* collideWith)
 		SetDamage(50, true);
 		break;
 	}
+	case COLLIDER_TYPE::COLLIDER_PORTAL:
+		if (App->scene->portal->locked == false)
+		{
+			App->scene->GoBossRoom();
+		}
+		break;
 	}
 }
 
