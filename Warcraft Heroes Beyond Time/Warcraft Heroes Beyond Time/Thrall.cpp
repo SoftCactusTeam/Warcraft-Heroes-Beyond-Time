@@ -275,7 +275,7 @@ bool Thrall::Update(float dt)
 				App->colliders->deleteCollider(paper_collider.back());
 				paper_collider.pop_back();
 			}
-			}
+		}
 		std::list<iPoint>::iterator it = wcpaper.begin();
 		
 		for (; it != wcpaper.end(); ++it)
@@ -343,6 +343,11 @@ void Thrall::Collision(Collider* collideWith)
 	{
 		SetDamage(50, true);
 		break;
+	}
+	case COLLIDER_TYPE::COLLIDER_ENEMY:
+	{
+		if (collideWith->owner->isGuldan)
+			SetDamage(50, true);
 	}
 	case COLLIDER_TYPE::COLLIDER_PORTAL:
 		if (App->scene->portal->locked == false)

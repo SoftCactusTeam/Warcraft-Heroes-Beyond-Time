@@ -26,7 +26,7 @@ private:
 	float floatTimeForTp = 0.0f;
 	SDL_Texture* effectsTexture = nullptr;
 	Animation idle, teleport, inverseTeleport, dead, generateingBalls, generatingBallsInverse, hello;
-	iPoint tpPoints[5] = { {14,4},{ 7,6 },{ 21,6 },{ 10,11 },{ 18,11 } };
+	iPoint tpPoints[5] = { {14,5},{ 10,6 },{ 16,6 },{ 10,8 },{ 16,8 } };
 	iPoint nextTpPos = {0,0};
 	int hp = 0;
 	std::list<FelBall*> fellBallsList;

@@ -28,6 +28,9 @@ public:
 	int accountantPrincipal = -1;
 	bool destroy = false;
 	bool stop = false;
+
+	//to_delete
+	bool isGuldan = false;
 };
 
 #endif
