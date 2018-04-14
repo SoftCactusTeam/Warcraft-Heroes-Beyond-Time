@@ -4,6 +4,7 @@
 #include "ModuleInput.h"
 #include "Scene.h"
 #include "PlayerEntity.h"
+#include "ModuleAudio.h"
 
 Guldan::Guldan(fPoint coor, BOSS_TYPE type, SDL_Texture* texture) : BossEntity(coor, type, texture)
 {
@@ -131,8 +132,6 @@ bool Guldan::Start()
 	srand(time(NULL));
 	statesBoss = BossStates::IDLE;
 
-	
-
 	return true;
 }
 
@@ -179,6 +178,7 @@ bool Guldan::Update(float dt)
 				createNewBalls = false;
 				readeForTimeNewBalls = false;
 				statesBoss = BossStates::DEAD;
+				App->audio->PlayFx(App->audio->GuldanDieFX);
 				if (bossCol != nullptr)
 				{
 					App->colliders->deleteCollider(bossCol);
@@ -189,6 +189,7 @@ bool Guldan::Update(float dt)
 
 			if (floatTimeForTp >= 2.0f)
 			{
+				App->audio->PlayFx(App->audio->GuldanTPFX);
 				bossCol->colliderRect = { 0,0,0,0 };
 				statesBoss = BossStates::TELEPORT;
 				anim = &teleport;
@@ -209,9 +210,9 @@ bool Guldan::Update(float dt)
 		}
 		case BossStates::TELEPORT:
 		{
-
 			if (anim->Finished())
 			{
+				App->audio->PlayFx(App->audio->GuldanTPFX);
 				int randomtp;
 				createNewBalls = false;
 				do
@@ -272,6 +273,7 @@ bool Guldan::Update(float dt)
 				createNewBalls = false;
 				readeForTimeNewBalls = false;
 				statesBoss = BossStates::DEAD;
+				App->audio->PlayFx(App->audio->GuldanDieFX);
 				if (bossCol != nullptr)
 				{
 					App->colliders->deleteCollider(bossCol);
@@ -341,6 +343,8 @@ bool Guldan::Update(float dt)
 		}
 		if (anim == &hello)
 		{
+			if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({208, 71, 68, 68})))
+				App->audio->PlayFx(App->audio->GuldanEncounterFX);
 			if (anim->Finished())
 			{
 				firstEncounter = true;
@@ -405,7 +409,7 @@ void Guldan::Collision(Collider* collideWith)
 			{
 				if (anim == &idle || anim == &generateingBalls || anim == &generatingBallsInverse)
 				{
-					if ((int)numStats.hp - 10 <= 0)
+					if ((int)numStats.hp - numStats.hp <= 0)
 						numStats.hp = 0;
 					else
 						numStats.hp -= 10;
@@ -418,8 +422,15 @@ void Guldan::Collision(Collider* collideWith)
 					if ((int)numStats.hp - 50 <= 0)
 						numStats.hp = 0;
 					else
-						numStats.hp -= 5;
+						numStats.hp -= 50;
 				}
+			}
+			else if (collideWith->attackType == Collider::ATTACK_TYPE::SHIT)
+			{
+				if ((int)numStats.hp - 2 <= 0)
+					numStats.hp = 0;
+				else
+					numStats.hp -= 2;
 			}
 			break;
 		}
