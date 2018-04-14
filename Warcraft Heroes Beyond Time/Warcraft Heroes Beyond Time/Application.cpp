@@ -21,6 +21,7 @@
 #include "ModuleGUI.h"
 #include "ModuleMapGenerator.h"
 #include "ModulePrinter.h"
+#include "ModuleItems.h"
 
 #include "Brofiler\Brofiler.h"
 
@@ -41,6 +42,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	colliders = new ModuleColliders();
 	path = new Pathfinding();
 	printer = new ModulePrinter();
+	items = new ModuleItems();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -50,6 +52,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(textures);
 	AddModule(map);
 	AddModule(entities);
+	AddModule(items);
 	AddModule(audio);
 	AddModule(fonts);
 	AddModule(fs);
