@@ -90,12 +90,12 @@ void Enemy_Footman::initAtac()
 void Enemy_Footman::initCharge()
 {
 	state = FOOTMAN_STATE::FOOTMAN_CHARGE;
-	chargeTime = CHARGE_DISTANCE;
 	anim = &animPreCharge[LookAtPlayer()];
-	saveFirstAngle = LookAtPlayer();
 	anim->Reset();
+	saveFirstAngle = LookAtPlayer();
 	chargeMovement = CaculateFPointAngle(App->scene->player->pos) * CHARGE_SPEED;
 	chargeCooldown = SDL_GetTicks() + CHARGE_COOLDOWN;
+	chargeTime = CHARGE_DISTANCE;
 	StopConcreteTime(CHARGE_PRETIME);
 	collider = App->colliders->AddCollider({ ((int)pos.x + anim->GetCurrentRect().w / 2) + (int)transformFixedAngleTofPoint(LookAtPlayer()).x * 10 - 10, ((int)pos.y + anim->GetCurrentRect().h / 2) + (int)transformFixedAngleTofPoint(LookAtPlayer()).y * 10 - 10, 24, 24 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATTACK);
 }
@@ -171,6 +171,8 @@ void Enemy_Footman::doCharge()
 		anim = &animPostCharge[saveFirstAngle];
 		StopConcreteTime(1000);
 		initIdle();
+		App->colliders->deleteCollider(collider);
+		collider = nullptr;
 	}
 	else
 	{

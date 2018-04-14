@@ -83,8 +83,8 @@ fPoint DynamicEntity::CaculateFPointAngle(fPoint objectiveCoor)
 
 uint DynamicEntity::DistanceToObejective(fPoint objectiveCoor)
 {
-	uint totalX = (pos.x + anim->GetCurrentRect().w / 2) - objectiveCoor.x;
-	uint totalY = (pos.y + anim->GetCurrentRect().h / 2) - objectiveCoor.y;
+	uint totalX = (pos.x + anim->GetCurrentRect().w / 2 ) - objectiveCoor.x;
+	uint totalY = (pos.y + anim->GetCurrentRect().h / 2 ) - objectiveCoor.y;
 	return sqrt((totalX * totalX) + (totalY * totalY));
 }
 

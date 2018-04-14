@@ -71,14 +71,14 @@ void Pathfinding::LoadNeighbours(pathNode* node)
 	if (ExistWalkableAtPos(iPoint(node->nodePos.x, node->nodePos.y - 1)) != -1)
 		node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x, node->nodePos.y - 1))]);
 	// Diagonals
-	if (ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y + 1)) != -1)
-		node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y + 1))]);
-	if (ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y - 1)) != -1)
-		node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y - 1))]);
-	if (ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y + 1)) != -1)
-		node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y + 1))]);
-	if (ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y - 1)) != -1)
-		node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y - 1))]);
+	//if (ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y + 1)) != -1)
+	//	node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y + 1))]);
+	//if (ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y - 1)) != -1)
+	//	node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x + 1, node->nodePos.y - 1))]);
+	//if (ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y + 1)) != -1)
+	//	node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y + 1))]);
+	//if (ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y - 1)) != -1)
+	//	node->neighbours.push_back(map[ExistWalkableAtPos(iPoint(node->nodePos.x - 1, node->nodePos.y - 1))]);
 }
 
 int Pathfinding::ExistWalkableAtPos(iPoint& pos)
