@@ -439,10 +439,10 @@ void Guldan::Collision(Collider* collideWith)
 			}
 			else if (collideWith->attackType == Collider::ATTACK_TYPE::SHIT)
 			{
-				if (numStats.hp -  (5 * App->dt) <= 0)
+				if (numStats.hp -  (1 * App->dt) <= 0)
 					numStats.hp = 0;
 				else
-					numStats.hp -= 5 * App->dt;
+					numStats.hp -= 1 * App->dt;
 			}
 			break;
 		}
