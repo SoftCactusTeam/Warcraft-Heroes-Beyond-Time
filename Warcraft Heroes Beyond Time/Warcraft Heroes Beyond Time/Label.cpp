@@ -9,8 +9,9 @@ Label::Label(fPoint position, LabelInfo& info, GUIElem* parent, Module* listener
 {
 	text = info.text;
 	font = App->fonts->getFontbyName(info.fontName);
-	texturetoBlit = App->fonts->Print(text.c_str(), info.color, font);
+	texturetoBlit = App->fonts->Print(text.c_str(), info.color, font, info.multilabelWidth);
 	color = info.color;
+	multilabelWidth = info.multilabelWidth;
 }
 
 Label::~Label() {}
@@ -63,7 +64,7 @@ void Label::EditText(std::string text, SDL_Color color)
 {
 	this->text = text;
 	SDL_DestroyTexture(texturetoBlit);
-	texturetoBlit = App->fonts->Print(text.data(), (ColorEquals({0,0,0,0}, color) ? this->color : color), font);
+	texturetoBlit = App->fonts->Print(text.data(), (ColorEquals({0,0,0,0}, color) ? this->color : color), font, multilabelWidth);
 }
 
 

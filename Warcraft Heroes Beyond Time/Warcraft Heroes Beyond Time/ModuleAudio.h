@@ -59,6 +59,7 @@ public:
 	uint GuldanTPFX = 0u;
 	uint GuldanDieFX = 0u;
 	uint GuldanFireBallFX = 0u;
+	uint GuldanBalls_Ori = 0u;
 	uint PaperItemFX = 0u;
 	uint OpeningChestFX = 0u;
 	uint UnlockPortalFX = 0u;
@@ -67,6 +68,7 @@ public:
 	std::string MainMenuBSO;
 	std::string InGameBSO;
 	std::string GuldanBSO;
+	std::string WinBSO;
 
 	uint MusicVolumePercent = 10;
 	uint FXVolumePercent = 10;

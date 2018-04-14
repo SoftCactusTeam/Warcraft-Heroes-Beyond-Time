@@ -51,6 +51,9 @@ public:
 	// Invulenarbility variables
 	bool		defensed = false;
 	int			defenseCooldown = 0;
+
+private:
+	Collider* collider = nullptr;
 };
 
 #endif

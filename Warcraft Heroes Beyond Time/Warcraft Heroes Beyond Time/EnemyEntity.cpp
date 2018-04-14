@@ -50,5 +50,5 @@ FIXED_ANGLE EnemyEntity::LookAtPlayer()
 
 uint EnemyEntity::DistanceToPlayer()
 {
-	return DistanceToObejective(App->scene->player->pos);
+	return DistanceToObejective(fPoint(App->scene->player->pos.x, App->scene->player->pos.y));
 }
