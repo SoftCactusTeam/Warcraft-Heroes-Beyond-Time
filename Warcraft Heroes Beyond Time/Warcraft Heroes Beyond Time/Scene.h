@@ -61,7 +61,7 @@ public:
 private:
 
 	GUIWindow* PauseMenu = nullptr;
-
+	uint currentPercentAudio = 0u;
 	
 
 	bool restart = false;

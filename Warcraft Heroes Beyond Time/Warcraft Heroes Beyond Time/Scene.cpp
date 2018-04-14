@@ -62,6 +62,8 @@ bool Scene::Start()
 	texture = App->textures->Load("sprites/all_items.png");
 	venom = App->textures->Load("sprites/venom.png");
 
+	currentPercentAudio = App->audio->MusicVolumePercent;
+
 	switch (actual_scene)
 	{
 		case Stages::MAIN_MENU:
@@ -118,7 +120,8 @@ bool Scene::Start()
 			App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
 
 			
-			lvlChest = App->entities->AddChest({ (float)player->pos.x,(float)player->pos.y }, MID_CHEST);
+			iPoint chestPos = App->map->GetRandomValidPointProxy(30);
+			lvlChest = App->entities->AddChest({ (float)chestPos.x * 46,(float)chestPos.y * 46 }, MID_CHEST);
 			lvlChest->UnLockChest();
 			break;
 		}
@@ -219,11 +222,16 @@ bool Scene::Update(float dt)
 			if (!paused)
 			{
 				paused = true;
+				currentPercentAudio = App->audio->MusicVolumePercent;
+				App->audio->setMusicVolume((uint)(currentPercentAudio * 0.2f));
 				CreatePauseMenu();
+		
 			}
 			else
 			{
 				paused = false;
+				// Decreasing audio when pause game
+				App->audio->setMusicVolume(currentPercentAudio);
 				App->gui->DestroyElem(PauseMenu);
 			}
 		}
@@ -333,6 +341,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 			case BType::RESUME:
 				paused = false;
 				App->gui->DestroyElem(PauseMenu);
+				App->audio->setMusicVolume(currentPercentAudio);
 				break;
 			}
 			break;
@@ -431,6 +440,7 @@ void Scene::CreateSettingsScreen()
 
 void Scene::CreatePauseMenu()
 {
+
 	fPoint localPos = { 640 / 2 - 249 / 2, 360 / 2 - 286 / 2 };
 	PauseMenu = (GUIWindow*)App->gui->CreateGUIWindow(localPos, WoodWindow, this);
 
@@ -469,12 +479,9 @@ void Scene::GeneratePortal()
 {
 	if (portal == nullptr)
 	{
-		fPoint position;
+		iPoint position = App->map->GetRandomValidPointProxy(20);
 
-		position.x = (int)((player->pos.x + 15) / 48);
-		position.y = (int)((player->pos.y + 15) / 48);
-
-		portal = (PortalEntity*)App->entities->AddStaticEntity({ position.x * 48, position.y * 48 }, PORTAL);
+		portal = (PortalEntity*)App->entities->AddStaticEntity({ (float)position.x * 46, (float)position.y * 46 }, PORTAL);
 	}
 }
 
