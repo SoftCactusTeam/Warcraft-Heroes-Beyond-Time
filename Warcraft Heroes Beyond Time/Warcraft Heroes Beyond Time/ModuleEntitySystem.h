@@ -35,7 +35,7 @@ public:
 	struct EnemyStats
 	{
 		uint maxhp = 0;
-		uint hp = 0;
+		float hp = 0;
 		uint speed = 0;
 		uint damage = 0;
 		uint range = 0;
@@ -85,7 +85,7 @@ public:
 
 
 	std::vector<SDL_Texture*> spritesheetsEntities;
-
+	int enemiescount = 0;
 
 private:
 	std::list<Entity*>		entities;

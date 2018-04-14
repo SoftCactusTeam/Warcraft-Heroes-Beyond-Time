@@ -5,6 +5,7 @@
 #include "Scene.h"
 #include "PlayerEntity.h"
 #include "ModuleAudio.h"
+#include "Application.h"
 
 Guldan::Guldan(fPoint coor, BOSS_TYPE type, SDL_Texture* texture) : BossEntity(coor, type, texture)
 {
@@ -409,7 +410,7 @@ void Guldan::Collision(Collider* collideWith)
 			{
 				if (anim == &idle || anim == &generateingBalls || anim == &generatingBallsInverse)
 				{
-					if ((int)numStats.hp - numStats.hp <= 0)
+					if (numStats.hp - 10 <= 0)
 						numStats.hp = 0;
 					else
 						numStats.hp -= 10;
@@ -427,10 +428,10 @@ void Guldan::Collision(Collider* collideWith)
 			}
 			else if (collideWith->attackType == Collider::ATTACK_TYPE::SHIT)
 			{
-				if ((int)numStats.hp - 2 <= 0)
+				if (numStats.hp -  (5 * App->dt) <= 0)
 					numStats.hp = 0;
 				else
-					numStats.hp -= 2;
+					numStats.hp -= 5 * App->dt;
 			}
 			break;
 		}

@@ -130,19 +130,23 @@ void Enemy_Archer::Collision(Collider* collideWith)
 			App->audio->PlayFx(App->audio->ArcherDeath);
 			live -= 40;
 			if (live <= 0)
+			{
 				if (state != ARCHER_STATE::ARCHER_DIE)
 					initDie();
-				else
-					initBackJump();
+			}	
+			else
+				initBackJump();
 			break;
 		case Collider::ATTACK_TYPE::THRALL_SKILL:
 			App->audio->PlayFx(App->audio->ArcherDeath);
 			live -= 100;
 			if (live <= 0)
+			{
 				if (state != ARCHER_STATE::ARCHER_DIE)
 					initDie();
-				else
-					initBackJump();
+			}
+			else
+				initBackJump();
 			break;
 		case Collider::ATTACK_TYPE::SHIT:
 			live -= 5 * App->dt;
@@ -397,7 +401,11 @@ void Enemy_Archer::doScape()
 void Enemy_Archer::doDie()
 {
 	if (SDL_GetTicks() > accountantPrincipal)
+	{
 		destroy = true;
+		App->entities->enemiescount--;
+	}
+		
 }
 
 void Enemy_Archer::ShootArrow(fPoint desviation)
