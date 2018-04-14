@@ -154,11 +154,6 @@ bool Scene::PreUpdate()
 
 bool Scene::Update(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
-	{
-		App->audio->PlayFx(App->audio->GuldanFireBallFX);
-	}
-
 	//TESTING SAVES
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
