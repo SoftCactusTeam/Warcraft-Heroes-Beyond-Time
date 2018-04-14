@@ -61,7 +61,7 @@ public:
 	bool GenerateWalls();
 	bool CleanUp();
 	iPoint GetRandomValidPoint();
-	iPoint GetRandomValidPointProxy();
+	iPoint GetRandomValidPointProxy(int distance);
 
 	void getSize(uint& w, uint& h);
 	int getTileSize();
