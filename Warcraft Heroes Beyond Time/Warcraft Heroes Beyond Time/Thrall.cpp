@@ -216,7 +216,7 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	skill.PushBack({ 548,933,61,67 }, { 15,21 });
 	skill.PushBack({ 637,933,61,67 }, { 15,21 });
 	skill.PushBack({ 13,1006,61,67 }, { 16,19 });
-	skill.speedFactor = 11.0f;
+	skill.speedFactor = 20.0f;
 
 	deadUpRight.PushBack({ 119, 1022, 29,39 });
 	deadUpRight.PushBack({ 206, 1025,37,36 });
