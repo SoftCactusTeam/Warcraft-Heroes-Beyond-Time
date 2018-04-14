@@ -189,38 +189,23 @@ bool Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN)
 	{
 		GeneratePortal();
-				
-
-		if (!player->itemsActive.empty())
-		{
-			player->AddItem((WCItem)*paper);
-		}
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN || App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN)
 	{
 		if (lvlChest->PlayerNear(player->pos))
 		{
-
-			lvlChest->OpenChest();
-			paper = &WCItem("wcpaper", ItemType::passive_item_type, 0);
-			player->AddItem((WCItem)*paper);
-			paper_fake = paper;
-
-			if (paper_fake != nullptr && paper->got_paper == false)
+			if (lvlChest->opened == false)
+				lvlChest->OpenChest();
+			else
 			{
-				player->AddItem((WCItem)*paper);
-				//paper_fake = nullptr;
-				paper->got_paper = true;
+				paper = &WCItem("wcpaper", ItemType::passive_item_type, 1);
+				player->AddItem(*paper);
 			}
-		}
-		if (portal != nullptr && portal->PlayerNear(player->pos))
-		{
-			portal->OpenPortal();
+				
 		}
 	}
-
-	if (paper_fake != nullptr)
+	if ( lvlChest != nullptr && lvlChest->opened && player->itemsActive.empty())
 	{
 		App->printer->PrintSprite({ (int)lvlChest->pos.x,(int)lvlChest->pos.y }, texture, SDL_Rect({ 34,84,27,31 }), 1);
 	}
@@ -483,12 +468,15 @@ void Scene::AddCommands()
 
 void Scene::GeneratePortal()
 {
-	fPoint position;
+	if (portal == nullptr)
+	{
+		fPoint position;
 
-	position.x = (int)((player->pos.x  +15)/ 48);
-	position.y = (int)((player->pos.y +15 )/ 48);
+		position.x = (int)((player->pos.x + 15) / 48);
+		position.y = (int)((player->pos.y + 15) / 48);
 
-	portal = (PortalEntity*)App->entities->AddStaticEntity({ position.x * 48, position.y * 48 }, PORTAL);
+		portal = (PortalEntity*)App->entities->AddStaticEntity({ position.x * 48, position.y * 48 }, PORTAL);
+	}
 }
 
 void Scene::GoMainMenu()

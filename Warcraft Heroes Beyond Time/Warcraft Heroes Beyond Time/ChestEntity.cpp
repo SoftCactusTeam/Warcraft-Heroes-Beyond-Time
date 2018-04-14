@@ -36,7 +36,7 @@ bool ChestEntity::OpenChest()
 {
 	if (!locked)
 		chest.Start(2.0f);
-	
+	opened = true;
 	return !locked;
 }
 
