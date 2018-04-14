@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModulePrinter.h"
 #include "ModuleEntitySystem.h"
+#include "ModuleAudio.h"
 
 #include "ModuleTextures.h"
 #include <list>
@@ -15,6 +16,8 @@ class Guldan : public BossEntity
 {
 private:
 	bool firstEncounter = false;
+	bool soundBalls = false;
+	float timerBalls = 0.0f;
 
 	Collider* bossCol = nullptr;
 	bool createNewBalls = false;
