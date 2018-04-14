@@ -4,6 +4,7 @@
 #include "PlayerEntity.h"
 #include <math.h>
 #include "p2Point.h"
+#include "ModuleAudio.h"
 
 ChestEntity::ChestEntity(fPoint coor, CHEST_TYPE type, SDL_Texture* texture) : StaticEntity(coor, texture), type(type)
 {
@@ -34,6 +35,8 @@ bool ChestEntity::Finish() { return true; }
 
 bool ChestEntity::OpenChest()
 {
+	App->audio->PlayFx(App->audio->OpeningChestFX);
+
 	if (!locked)
 		chest.Start(2.0f);
 	opened = true;
