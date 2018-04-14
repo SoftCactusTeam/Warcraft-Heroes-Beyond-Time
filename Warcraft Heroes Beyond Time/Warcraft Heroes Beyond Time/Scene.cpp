@@ -118,7 +118,7 @@ bool Scene::Start()
 			App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
 
 			
-			iPoint chestPos = App->map->GetRandomValidPointProxy();
+			iPoint chestPos = App->map->GetRandomValidPointProxy(30);
 			lvlChest = App->entities->AddChest({ (float)chestPos.x * 46,(float)chestPos.y * 46 }, MID_CHEST);
 			lvlChest->UnLockChest();
 			break;
@@ -470,12 +470,9 @@ void Scene::GeneratePortal()
 {
 	if (portal == nullptr)
 	{
-		fPoint position;
+		iPoint position = App->map->GetRandomValidPointProxy(20);
 
-		position.x = (int)((player->pos.x + 15) / 48);
-		position.y = (int)((player->pos.y + 15) / 48);
-
-		portal = (PortalEntity*)App->entities->AddStaticEntity({ position.x * 48, position.y * 48 }, PORTAL);
+		portal = (PortalEntity*)App->entities->AddStaticEntity({ (float)position.x * 46, (float)position.y * 46 }, PORTAL);
 	}
 }
 
