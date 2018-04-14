@@ -256,7 +256,7 @@ bool Thrall::Update(float dt)
 	else if (skillOn)
 		UpdateSkillCollider();
 
-	if (App->scene->paper != nullptr && App->scene->paper->got_paper)
+	if (App->scene->paper != nullptr && !App->scene->player->itemsActive.empty())
 	{
 		time += 1 * dt;
 		if (time >= 0.1)

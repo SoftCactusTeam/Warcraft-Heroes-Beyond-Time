@@ -15,6 +15,7 @@ public:
 	inline bool IsLocked() const;
 	bool PlayerNear(fPoint pos);
 
+	bool opened = false;
 private:
 	CHEST_TYPE type = CHEST_TYPE::NON_CHEST;
 	Animation chest;
