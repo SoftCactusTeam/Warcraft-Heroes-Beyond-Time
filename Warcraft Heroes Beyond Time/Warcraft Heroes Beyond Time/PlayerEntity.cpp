@@ -165,6 +165,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && t == 0.0f && DashCD == 0.0f)
 			{
 				App->audio->PlayFx(App->audio->Thrall_Dash_FX);
+				state = states::PL_DASH;
 				startPos = pos;
 				animBefore = anim;
 			}

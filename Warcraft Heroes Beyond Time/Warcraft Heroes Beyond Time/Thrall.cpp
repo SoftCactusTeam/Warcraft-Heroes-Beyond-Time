@@ -492,6 +492,8 @@ void Thrall::UpdateAttackCollider()
 
 void Thrall::UseSkill()
 {
+	if (skillOn == false)
+		App->audio->PlayFx(App->audio->Thrall_SkillFX);
 	skillOn = true;
 	skillCollider = App->colliders->AddCollider({ -100, -100, 5, 5 }, COLLIDER_PLAYER_ATTACK, nullptr, { 0,0 }, Collider::ATTACK_TYPE::THRALL_SKILL);
 }

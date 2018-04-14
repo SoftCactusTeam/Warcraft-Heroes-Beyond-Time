@@ -64,6 +64,7 @@ bool Audio::Awake(pugi::xml_node& audioNode)
 	Thrall_Hitted_FX = LoadFx("audio/fx/thrall/T_hitted_fx.ogg");
 	Thrall_Hit_FX = LoadFx("audio/fx/thrall/T_hit_fx.ogg");
 	Thrall_AttackFX = LoadFx("audio/fx/thrall/T_attack_fx.ogg");
+	Thrall_SkillFX = LoadFx("audio/fx/thrall/T_skill_fx.ogg");
 	ArcherDeath = LoadFx("audio/fx/enemies/ArcherDeath.ogg");
 	//---------------------------------------Load Music----------------------------
 	MainMenuBSO = "audio/BSO's/Warcraft HBT - Main Menu.ogg";
