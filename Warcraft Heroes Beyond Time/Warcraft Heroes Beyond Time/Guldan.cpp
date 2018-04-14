@@ -178,6 +178,7 @@ bool Guldan::Update(float dt)
 				createNewBalls = false;
 				readeForTimeNewBalls = false;
 				statesBoss = BossStates::DEAD;
+				App->audio->PlayFx(App->audio->GuldanDieFX);
 				if (bossCol != nullptr)
 				{
 					App->colliders->deleteCollider(bossCol);
@@ -272,6 +273,7 @@ bool Guldan::Update(float dt)
 				createNewBalls = false;
 				readeForTimeNewBalls = false;
 				statesBoss = BossStates::DEAD;
+				App->audio->PlayFx(App->audio->GuldanDieFX);
 				if (bossCol != nullptr)
 				{
 					App->colliders->deleteCollider(bossCol);
@@ -407,7 +409,7 @@ void Guldan::Collision(Collider* collideWith)
 			{
 				if (anim == &idle || anim == &generateingBalls || anim == &generatingBallsInverse)
 				{
-					if ((int)numStats.hp - 10 <= 0)
+					if ((int)numStats.hp - numStats.hp <= 0)
 						numStats.hp = 0;
 					else
 						numStats.hp -= 10;

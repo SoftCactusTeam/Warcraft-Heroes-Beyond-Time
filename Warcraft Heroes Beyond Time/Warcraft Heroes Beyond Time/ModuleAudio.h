@@ -57,6 +57,7 @@ public:
 	uint ArcherDeath = 0u;
 	uint GuldanEncounterFX = 0u;
 	uint GuldanTPFX = 0u;
+	uint GuldanDieFX = 0u;
 	//std::string BSO's
 	std::string MainMenuBSO;
 	std::string InGameBSO;
