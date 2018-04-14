@@ -58,6 +58,7 @@ public:
 	uint GuldanEncounterFX = 0u;
 	uint GuldanTPFX = 0u;
 	uint GuldanDieFX = 0u;
+	uint GuldanFireBallFX = 0u;
 	//std::string BSO's
 	std::string MainMenuBSO;
 	std::string InGameBSO;

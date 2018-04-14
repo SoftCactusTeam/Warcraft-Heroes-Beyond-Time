@@ -4,7 +4,6 @@
 #include "ModuleInput.h"
 #include "Scene.h"
 #include "PlayerEntity.h"
-#include "ModuleAudio.h"
 
 Guldan::Guldan(fPoint coor, BOSS_TYPE type, SDL_Texture* texture) : BossEntity(coor, type, texture)
 {
@@ -137,7 +136,17 @@ bool Guldan::Start()
 
 bool Guldan::Update(float dt)
 {
+	if (soundBalls)
+	{
+		timerBalls += 1.0f * dt;
 
+		if (timerBalls >= 8.0f)
+		{
+			App->audio->PlayFx(App->audio->GuldanFireBallFX);
+			timerBalls = 0.0f;
+			soundBalls = false;
+		}
+	}
 	if (fellBallsList.size() <= 0)
 		ballsOnTheAir = false;
 	else
@@ -200,6 +209,7 @@ bool Guldan::Update(float dt)
 
 			if (createNewBalls)
 			{
+				soundBalls = true;
 				anim = &generateingBalls;
 				createNewBalls = false;
 				statesBoss = BossStates::GENERATINGBALLS;
