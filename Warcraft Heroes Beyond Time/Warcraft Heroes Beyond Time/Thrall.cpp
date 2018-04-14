@@ -505,7 +505,7 @@ void Thrall::UpdateSkillCollider()
 	{
 		if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 459,933,61,67 })))
 		{
-			skillCollider->colliderRect = { (int)pos.x -35, (int)pos.y -35, 100,100 };
+			skillCollider->colliderRect = { (int)pos.x -70 - 15, (int)pos.y -70 - 15, 200,200 };
 		}
 	}
 }

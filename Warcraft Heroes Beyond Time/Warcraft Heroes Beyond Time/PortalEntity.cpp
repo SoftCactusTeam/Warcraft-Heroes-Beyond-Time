@@ -17,7 +17,7 @@ PortalEntity::PortalEntity(fPoint coor, STATIC_ENTITY_TYPE type, SDL_Texture * t
 	portal.PushBack({ 99 ,50,48,48 });
 	portal.PushBack({ 148,50,48,48 });
 	portal.PushBack({ 198,50,48,48 });
-	portal.speedFactor = 5.0f;
+	portal.speedFactor = 20.0f;
 }
 
 bool PortalEntity::Start()
@@ -44,7 +44,7 @@ bool PortalEntity::Finish()
 
 void PortalEntity::OpenPortal()
 {
-	portal.speedFactor = 1.0f;
+	portal.speedFactor = 9.0f;
 	locked = false;
 }
 
