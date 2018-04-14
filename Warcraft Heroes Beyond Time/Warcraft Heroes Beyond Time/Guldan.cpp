@@ -431,10 +431,10 @@ void Guldan::Collision(Collider* collideWith)
 			{
 				if (anim == &idle || anim == &generateingBalls || anim == &generatingBallsInverse)
 				{
-					if ((int)numStats.hp - 50 <= 0)
+					if ((int)numStats.hp - 10 <= 0)
 						numStats.hp = 0;
 					else
-						numStats.hp -= 50;
+						numStats.hp -= 10;
 				}
 			}
 			else if (collideWith->attackType == Collider::ATTACK_TYPE::SHIT)
