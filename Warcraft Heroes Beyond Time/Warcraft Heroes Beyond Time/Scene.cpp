@@ -118,7 +118,8 @@ bool Scene::Start()
 			App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
 
 			
-			lvlChest = App->entities->AddChest({ (float)player->pos.x,(float)player->pos.y }, MID_CHEST);
+			iPoint chestPos = App->map->GetRandomValidPointProxy();
+			lvlChest = App->entities->AddChest({ (float)chestPos.x * 46,(float)chestPos.y * 46 }, MID_CHEST);
 			lvlChest->UnLockChest();
 			break;
 		}
