@@ -10,6 +10,7 @@
 #include "ModuleAudio.h"
 #include "Application.h"
 #include "ModuleTextures.h"
+#include "ModuleItems.h"
 
 PlayerEntity::PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : DynamicEntity(coor, texture), type(type)
 {
@@ -33,7 +34,6 @@ bool PlayerEntity::Update(float dt)
 
 bool PlayerEntity::Finish() 
 { 
-	itemsActive.clear();
 	return true; 
 }
 
@@ -1325,14 +1325,14 @@ void PlayerEntity::CheckMapLimits()
 
 void PlayerEntity::AddItem(Item item)
 {
-	itemsActive.push_back(item);
+	App->items->itemsActive.push_back(item);
 }
 
 void PlayerEntity::IterateItems(ItemFunctions nameFunction)
 {
-	std::list<Item>::iterator it = itemsActive.begin();
+	std::list<Item>::iterator it = App->items->itemsActive.begin();
 
-	for (; it != itemsActive.end(); ++it)
+	for (; it != App->items->itemsActive.end(); ++it)
 	{
 		switch (nameFunction)
 		{

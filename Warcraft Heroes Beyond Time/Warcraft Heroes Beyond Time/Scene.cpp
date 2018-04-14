@@ -16,6 +16,7 @@
 #include "Item.h"
 #include "WCItem.h"
 #include "ModuleTextures.h"
+#include "ModuleItems.h"
 
 
 #include "Brofiler\Brofiler.h"
@@ -205,18 +206,17 @@ bool Scene::Update(float dt)
 		{
 			if (lvlChest->opened == false)
 				lvlChest->OpenChest();
-			else
+			else if (App->items->itemsActive.empty())
 			{
 				paper = &WCItem("wcpaper", ItemType::passive_item_type, 1);
 				player->AddItem(*paper);
 			}	
 		}
 	}
-	if ( lvlChest != nullptr && lvlChest->opened && player->itemsActive.empty())
+	if ( lvlChest != nullptr && lvlChest->opened && App->items->itemsActive.empty())
 	{
 		App->printer->PrintSprite({ (int)lvlChest->pos.x,(int)lvlChest->pos.y }, texture, SDL_Rect({ 34,84,27,31 }), 1);
 	}
-	
 
 	//PAUSE GAME
 	if (actual_scene == Stages::INGAME || actual_scene == Stages::BOSS_ROOM)
@@ -276,6 +276,9 @@ bool Scene::CleanUp()
 	App->console->DeActivate();
 	App->path->ClearMap();
 	App->colliders->DeActivate();
+
+	if (actual_scene == Stages::MAIN_MENU)
+		App->items->DeActivate();
 
 	App->textures->UnLoad(venom);
 	App->textures->UnLoad(texture);

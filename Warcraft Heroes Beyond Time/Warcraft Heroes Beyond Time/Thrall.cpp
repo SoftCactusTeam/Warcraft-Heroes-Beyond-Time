@@ -9,6 +9,7 @@
 #include "ModulePrinter.h"
 #include "ModuleColliders.h"
 #include "PortalEntity.h"
+#include "ModuleItems.h"
 
 Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEntity(coor, type, texture)
 {
@@ -256,7 +257,7 @@ bool Thrall::Update(float dt)
 	else if (skillOn)
 		UpdateSkillCollider();
 
-	if (App->scene->paper != nullptr && !App->scene->player->itemsActive.empty())
+	if (App->scene->paper != nullptr && !App->items->itemsActive.empty())
 	{
 		time += 1 * dt;
 		if (time >= 0.1)
