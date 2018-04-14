@@ -14,6 +14,7 @@ public:
 	FIXED_ANGLE CaculateAngle(fPoint objectiveCoor);
 	fPoint CaculateFPointAngle(fPoint objectiveCoor);
 	uint DistanceToObejective(fPoint objectiveCoor);
+	fPoint transformFixedAngleTofPoint(FIXED_ANGLE angle);
 
 public:
 	int movementSpeed = -1;
