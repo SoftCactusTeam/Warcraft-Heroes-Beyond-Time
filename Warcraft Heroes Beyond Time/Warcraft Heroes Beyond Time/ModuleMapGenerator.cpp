@@ -64,6 +64,17 @@ iPoint MapGenerator::GetRandomValidPoint()
 	return nodes[randNum]->pos;
 }
 
+iPoint MapGenerator::GetRandomValidPointProxy()
+{
+	int randNum = 0;
+
+	do
+		randNum = rand() % ((nodes.size() - 1) + 1);
+	while (nodes[randNum]->layerBelow != -2 || nodes[randNum]->pos == nodes[Get(sizeX / 2, sizeY / 2)]->pos || nodes[randNum]->pos.DistanceTo(nodes[Get(sizeX / 2, sizeY / 2)]->pos) > MINDISTANCE);
+
+	return nodes[randNum]->pos;
+}
+
 bool MapGenerator::PostUpdate()
 {
 	return DrawMap();
