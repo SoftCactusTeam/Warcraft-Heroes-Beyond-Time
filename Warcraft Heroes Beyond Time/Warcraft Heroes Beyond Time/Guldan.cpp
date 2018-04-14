@@ -4,6 +4,7 @@
 #include "ModuleInput.h"
 #include "Scene.h"
 #include "PlayerEntity.h"
+#include "ModuleAudio.h"
 
 Guldan::Guldan(fPoint coor, BOSS_TYPE type, SDL_Texture* texture) : BossEntity(coor, type, texture)
 {
@@ -130,8 +131,6 @@ bool Guldan::Start()
 
 	srand(time(NULL));
 	statesBoss = BossStates::IDLE;
-
-	
 
 	return true;
 }
@@ -341,6 +340,8 @@ bool Guldan::Update(float dt)
 		}
 		if (anim == &hello)
 		{
+			if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({208, 71, 68, 68})))
+				App->audio->PlayFx(App->audio->GuldanEncounterFX);
 			if (anim->Finished())
 			{
 				firstEncounter = true;
