@@ -93,7 +93,7 @@ private:
 	// Scape variables
 	iPoint posToScape;
 
-	int live = 0;
+	float live = 0;
 };
 
 #endif
