@@ -191,7 +191,7 @@ bool Scene::Update(float dt)
 		GeneratePortal();
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN || App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN)
 	{
 		if (lvlChest->PlayerNear(player->pos))
 		{
