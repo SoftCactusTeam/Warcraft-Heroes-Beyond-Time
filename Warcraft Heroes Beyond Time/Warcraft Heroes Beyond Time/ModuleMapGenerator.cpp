@@ -9,7 +9,10 @@
 #include "ModuleColliders.h"
 #include "FileSystem.h"
 #include "Brofiler\Brofiler.h"
+#include "Scene.h"
 #include <time.h>
+
+#define MINDISTANCE 10
 
 #define VOID { 196,0,48,48 }
 #define FLOOR { 0,49,48,48 }
@@ -56,7 +59,7 @@ iPoint MapGenerator::GetRandomValidPoint()
 
 	do
 		randNum = rand() % ((nodes.size()-1) + 1);
-	while (nodes[randNum]->layerBelow != -2 || nodes[randNum]->pos == nodes[Get(sizeX / 2, sizeY / 2)]->pos);
+	while (nodes[randNum]->layerBelow != -2 || nodes[randNum]->pos == nodes[Get(sizeX / 2, sizeY / 2)]->pos || nodes[randNum]->pos.DistanceTo( nodes[Get(sizeX / 2, sizeY / 2)]->pos ) < MINDISTANCE);
 
 	return nodes[randNum]->pos;
 }
