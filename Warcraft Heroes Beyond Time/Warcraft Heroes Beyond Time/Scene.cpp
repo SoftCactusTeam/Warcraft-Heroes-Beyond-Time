@@ -223,7 +223,7 @@ bool Scene::Update(float dt)
 			{
 				paused = true;
 				currentPercentAudio = App->audio->MusicVolumePercent;
-				uint tmpAudio = (uint)(currentPercentAudio * 0.2f);
+				uint tmpAudio = (uint)(currentPercentAudio * 0.3f);
 				if (tmpAudio == 0)
 					tmpAudio = 1;
 				App->audio->setMusicVolume(tmpAudio);
@@ -338,7 +338,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 				restart = true;
 				break;
 			case BType::GO_MMENU:
-				if (actual_scene == Stages::INGAME)
+				if (actual_scene == Stages::INGAME || actual_scene == Stages::BOSS_ROOM)
 				{
 					App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
 					App->audio->setMusicVolume(currentPercentAudio);
