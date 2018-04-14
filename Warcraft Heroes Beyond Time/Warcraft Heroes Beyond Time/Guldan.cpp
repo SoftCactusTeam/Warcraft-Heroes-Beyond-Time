@@ -188,6 +188,7 @@ bool Guldan::Update(float dt)
 
 			if (floatTimeForTp >= 2.0f)
 			{
+				App->audio->PlayFx(App->audio->GuldanTPFX);
 				bossCol->colliderRect = { 0,0,0,0 };
 				statesBoss = BossStates::TELEPORT;
 				anim = &teleport;
@@ -208,9 +209,9 @@ bool Guldan::Update(float dt)
 		}
 		case BossStates::TELEPORT:
 		{
-
 			if (anim->Finished())
 			{
+				App->audio->PlayFx(App->audio->GuldanTPFX);
 				int randomtp;
 				createNewBalls = false;
 				do

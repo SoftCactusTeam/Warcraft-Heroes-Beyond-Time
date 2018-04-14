@@ -67,6 +67,7 @@ bool Audio::Awake(pugi::xml_node& audioNode)
 	Thrall_SkillFX = LoadFx("audio/fx/thrall/T_skill_fx.ogg");
 	ArcherDeath = LoadFx("audio/fx/enemies/ArcherDeath.ogg");
 	GuldanEncounterFX = LoadFx("audio/fx/guldan/guldan_first_encounter_fx.ogg");
+	GuldanTPFX = LoadFx("audio/fx/guldan/guldan_tp_fx.ogg");
 	//---------------------------------------Load Music----------------------------
 	MainMenuBSO = "audio/BSO's/Warcraft HBT - Main Menu.ogg";
 	InGameBSO = "audio/BSO's/Warcraft HBT - Level.ogg";
