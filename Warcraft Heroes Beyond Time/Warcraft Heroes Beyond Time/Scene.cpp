@@ -333,7 +333,11 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 				break;
 			case BType::GO_MMENU:
 				if (actual_scene == Stages::INGAME)
+				{
 					App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
+					App->audio->setMusicVolume(currentPercentAudio);
+				}
+					
 				actual_scene = Stages::MAIN_MENU;
 				paused = false;
 				restart = true;
