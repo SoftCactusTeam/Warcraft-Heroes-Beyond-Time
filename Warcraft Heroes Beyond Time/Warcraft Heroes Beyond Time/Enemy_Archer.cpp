@@ -130,27 +130,29 @@ void Enemy_Archer::Collision(Collider* collideWith)
 			App->audio->PlayFx(App->audio->ArcherDeath);
 			live -= 40;
 			if (live <= 0)
-				initDie();
-			else
-				initBackJump();
+				if (state != ARCHER_STATE::ARCHER_DIE)
+					initDie();
+				else
+					initBackJump();
 			break;
 		case Collider::ATTACK_TYPE::THRALL_SKILL:
 			App->audio->PlayFx(App->audio->ArcherDeath);
-			live -= 70;
+			live -= 100;
 			if (live <= 0)
-				initDie();
-			else
-				initBackJump();
+				if (state != ARCHER_STATE::ARCHER_DIE)
+					initDie();
+				else
+					initBackJump();
 			break;
-			case Collider::ATTACK_TYPE::SHIT:
-			live -= 5;
+		case Collider::ATTACK_TYPE::SHIT:
+			live -= 5 * App->dt;
+			if (live <= 0)
+				if (state != ARCHER_STATE::ARCHER_DIE)
+					initDie();
 			break;
 		}
 
-		if (live <= 0)
-			initDie();
-		else
-			initBackJump();
+		
 	}
 }
 
