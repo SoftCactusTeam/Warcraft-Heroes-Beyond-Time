@@ -223,7 +223,10 @@ bool Scene::Update(float dt)
 			{
 				paused = true;
 				currentPercentAudio = App->audio->MusicVolumePercent;
-				App->audio->setMusicVolume((uint)(currentPercentAudio * 0.2f));
+				uint tmpAudio = (uint)(currentPercentAudio * 0.2f);
+				if (tmpAudio == 0)
+					tmpAudio = 1;
+				App->audio->setMusicVolume(tmpAudio);
 				CreatePauseMenu();
 		
 			}
