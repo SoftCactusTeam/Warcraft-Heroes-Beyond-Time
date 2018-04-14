@@ -2,7 +2,7 @@
 #include "StaticEntity.h"
 #include "Application.h"
 #include "Scene.h"
-
+#include "ModuleAudio.h"
 
 
 PortalEntity::PortalEntity(fPoint coor, STATIC_ENTITY_TYPE type, SDL_Texture * texture) : StaticEntity(coor, texture), type(type)
@@ -44,6 +44,7 @@ bool PortalEntity::Finish()
 
 void PortalEntity::OpenPortal()
 {
+	App->audio->PlayFx(App->audio->UnlockPortalFX);
 	portal.speedFactor = 9.0f;
 	locked = false;
 }

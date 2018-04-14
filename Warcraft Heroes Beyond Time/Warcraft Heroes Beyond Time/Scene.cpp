@@ -205,6 +205,7 @@ bool Scene::Update(float dt)
 			{
 				paper = &WCItem("wcpaper", ItemType::passive_item_type, 1);
 				player->AddItem(*paper);
+				App->audio->PlayFx(App->audio->PaperItemFX);
 			}	
 		}
 	}
