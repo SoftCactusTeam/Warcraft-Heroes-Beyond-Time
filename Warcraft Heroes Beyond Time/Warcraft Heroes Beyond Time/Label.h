@@ -10,6 +10,7 @@ struct LabelInfo
 	char* text = nullptr;
 	char* fontName = nullptr;
 	SDL_Color color = Black;
+	uint multilabelWidth = 500;
 };
 
 class Label : public GUIElem
@@ -28,6 +29,7 @@ private:
 	TTF_Font* font = nullptr;
 	SDL_Texture* texturetoBlit = nullptr;
 	SDL_Color color;
+	uint multilabelWidth = 0;
 };
 
 #endif

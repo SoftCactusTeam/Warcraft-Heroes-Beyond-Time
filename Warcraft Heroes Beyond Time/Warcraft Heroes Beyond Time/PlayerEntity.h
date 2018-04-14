@@ -4,6 +4,7 @@
 #include "DynamicEntity.h"
 #include "Item.h"
 #include "ModuleEntitySystem.h"
+#include "ModuleAudio.h"
 
 
 #include <list>
@@ -39,7 +40,7 @@ protected:
 	float deadinfloorcd = 0.0f;
 
 	bool win = false;
-	float afterWinConfigCounter = 5.0f;
+	float afterWinConfigCounter = 0.0f; //Wont be used for now
 	float afterWinCounter = 0.0f;
 
 	Collider* pcol = nullptr;
@@ -136,6 +137,7 @@ public:
 	//Win
 	void Win()
 	{
+		App->audio->PlayMusic(App->audio->WinBSO.data(), 0.5);
 		win = true;
 		state = states::PL_WIN;
 		anim = &idleDown;

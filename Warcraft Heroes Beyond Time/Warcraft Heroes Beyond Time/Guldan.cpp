@@ -138,7 +138,7 @@ bool Guldan::Start()
 
 bool Guldan::Update(float dt)
 {
-	if (soundBalls)
+	/*if (soundBalls)
 	{
 		timerBalls += 1.0f * dt;
 
@@ -148,7 +148,7 @@ bool Guldan::Update(float dt)
 			timerBalls = 0.0f;
 			soundBalls = false;
 		}
-	}
+	}*/
 	if (fellBallsList.size() <= 0)
 		ballsOnTheAir = false;
 	else
@@ -215,6 +215,7 @@ bool Guldan::Update(float dt)
 				anim = &generateingBalls;
 				createNewBalls = false;
 				statesBoss = BossStates::GENERATINGBALLS;
+				App->audio->PlayFx(App->audio->GuldanBalls_Ori);
 				break;
 			}
 

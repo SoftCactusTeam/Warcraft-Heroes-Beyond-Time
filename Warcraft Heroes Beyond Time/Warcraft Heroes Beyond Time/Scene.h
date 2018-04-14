@@ -34,8 +34,11 @@ public:
 	void CreateMainMenuScreen();
 	void CreateSettingsScreen();
 	void CreatePauseMenu();
+	void CreateGratitudeScreen();
+	bool gratitudeON = false;
 	void GoMainMenu();
 	void GoBossRoom();
+
 public:
 	enum class Stages
 	{
@@ -51,6 +54,8 @@ public:
 	ChestEntity* lvlChest = nullptr;
 	bool paused = false;
 
+	GUIElem* player_HP_Bar = nullptr;
+
 //item
 	WCItem* paper = nullptr;
 	WCItem* paper_fake = nullptr;
@@ -58,6 +63,9 @@ public:
 	SDL_Texture* texture = nullptr;
 
 	PortalEntity* portal = nullptr;
+
+
+
 private:
 
 	GUIWindow* PauseMenu = nullptr;

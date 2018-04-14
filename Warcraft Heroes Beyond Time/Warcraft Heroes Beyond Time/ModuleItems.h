@@ -16,6 +16,7 @@ public:
 	bool CleanUp()
 	{
 		itemsActive.clear();
+		wcpaper.clear();
 		return true;
 	}
 };

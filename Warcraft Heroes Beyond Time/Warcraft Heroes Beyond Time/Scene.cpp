@@ -58,6 +58,7 @@ bool Scene::Awake(pugi::xml_node& sceneNode)
 
 bool Scene::Start()
 {
+	gratitudeON = false;
 	App->gui->Activate();
 
 	texture = App->textures->Load("sprites/all_items.png");
@@ -81,6 +82,7 @@ bool Scene::Start()
 		}
 		case Stages::INGAME:
 		{
+			App->items->Activate();
 			App->colliders->Activate();
 			App->entities->Activate();
 			App->console->Activate();
@@ -98,7 +100,7 @@ bool Scene::Start()
 
 			App->map->GenerateMap(mapInfo);
 			player = App->entities->AddPlayer({ 25 * 46,25 * 46}, THRALL);
-			App->gui->CreateHPBar(player, { 10,5 });
+			player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
 
 			App->path->LoadPathMap();
 
@@ -128,6 +130,7 @@ bool Scene::Start()
 		}
 		case Stages::BOSS_ROOM:
 		{
+			App->items->Activate();
 			App->colliders->Activate();
 			App->entities->Activate();
 			App->console->Activate();
@@ -137,7 +140,7 @@ bool Scene::Start()
 			App->audio->PlayMusic(App->audio->GuldanBSO.data(), 1);
 			App->map->GenerateBossMap();
 			player = App->entities->AddPlayer({ 15 * 46,16 * 46, }, THRALL);
-			App->gui->CreateHPBar(player, { 10,5 });
+			player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
 			BossEntity* guldan = App->entities->AddBoss({ 14 * 48,5 * 48 }, GULDAN);
 			App->gui->CreateBossHPBar(guldan, { 640 / 2 - 312 / 2,320 });
 			break;
@@ -209,6 +212,7 @@ bool Scene::Update(float dt)
 			}	
 		}
 	}
+
 	if ( lvlChest != nullptr && lvlChest->opened && App->items->itemsActive.empty())
 	{
 		App->printer->PrintSprite({ (int)lvlChest->pos.x,(int)lvlChest->pos.y }, texture, SDL_Rect({ 34,84,27,31 }), 1);
@@ -257,6 +261,11 @@ bool Scene::PostUpdate()
 	if (App->path->printWalkables == true)
 		App->path->PrintWalkableTiles();
 
+	if (actual_scene == Stages::BOSS_ROOM && gratitudeON)
+	{
+		App->render->DrawQuad({ -App->render->camera.x,-App->render->camera.y,640,360 }, 0, 0, 0, 200 , true, true);
+	}
+
 	BROFILER_CATEGORY("SceneRestart", Profiler::Color::Chocolate);
 	if (restart)
 	{
@@ -277,7 +286,12 @@ bool Scene::CleanUp()
 	App->colliders->DeActivate();
 
 	if (actual_scene == Stages::MAIN_MENU)
+	{
 		App->items->DeActivate();
+		paper = nullptr;
+		paper_fake = nullptr;
+	}
+		
 
 	App->textures->UnLoad(venom);
 	App->textures->UnLoad(texture);
@@ -405,6 +419,15 @@ void Scene::CreateMainMenuScreen()
 	defLabel3.fontName = "LifeCraft80";
 	defLabel3.text = "Quit";
 	App->gui->CreateLabel({ 60,10 }, defLabel3, button3, this);
+
+	//VERSION LABEL
+	LabelInfo versionLabel;
+	versionLabel.color = White;
+	versionLabel.fontName = "Arial30";
+	versionLabel.text = "Warcraft-Heroes-Beyond-Time-RELEASE-v0.3";
+	App->gui->CreateLabel({ 10,340 }, versionLabel, nullptr, nullptr);
+
+
 }
 
 void Scene::CreateSettingsScreen()
@@ -505,7 +528,7 @@ void Scene::GeneratePortal()
 void Scene::GoMainMenu()
 {
 	if (actual_scene == Stages::INGAME || actual_scene == Stages::BOSS_ROOM)
-		App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
+		App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0.5);
 	actual_scene = Stages::MAIN_MENU;
 	restart = true;
 }
@@ -514,4 +537,16 @@ void Scene::GoBossRoom()
 {
 	actual_scene = Stages::BOSS_ROOM;
 	restart = true;
+}
+
+void Scene::CreateGratitudeScreen()
+{
+	App->gui->DestroyElem(player_HP_Bar);
+	gratitudeON = true;
+	LabelInfo gratitude;
+	gratitude.color = White;
+	gratitude.fontName = "LifeCraft90";
+	gratitude.multilabelWidth = 1000;
+	gratitude.text = "                    Victory! \n Thanks for playing the demo. Your support means a lot ^^ \n More at: @SoftCactus_Team";
+	App->gui->CreateLabel({ 160, 130 }, gratitude, nullptr, nullptr);
 }

@@ -731,9 +731,13 @@ void PlayerEntity::KeyboardStates(float dt)
 		case states::PL_WIN:
 		{
 			afterWinCounter += dt;
-			if (afterWinCounter > afterWinConfigCounter)
+			if (afterWinCounter > 20)
 			{
 				App->scene->GoMainMenu();
+			}
+			else if (afterWinCounter > 2)
+			{
+				App->scene->CreateGratitudeScreen();
 			}
 			break;
 		}
@@ -1063,9 +1067,13 @@ void PlayerEntity::JoyconStates(float dt)
 	case states::PL_WIN:
 	{
 		afterWinCounter += dt;
-		if (afterWinCounter > afterWinConfigCounter)
+		if (afterWinCounter > 20)
 		{
 			App->scene->GoMainMenu();
+		}
+		else if (afterWinCounter > 2 && !App->scene->gratitudeON)
+		{
+			App->scene->CreateGratitudeScreen();
 		}
 		break;
 	}
