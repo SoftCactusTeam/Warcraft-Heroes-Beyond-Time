@@ -324,9 +324,11 @@ void EntitySystem::AddEnemy(fPoint coor, ENEMY_TYPE type)
 	switch (type) {
 	case ENEMY_TYPE::FOOTMAN:
 		newEntity = new Enemy_Footman(coor, ENEMY_TYPE::FOOTMAN, spritesheetsEntities[FOOTMAN_SHEET]);
+		App->colliders->AddCollider({ 0,0,32,32 }, COLLIDER_ENEMY, (Entity*)newEntity, { 20,20 });
 		break;
 	case ENEMY_TYPE::ARCHER:
 		newEntity = new Enemy_Archer(coor, ENEMY_TYPE::ARCHER, spritesheetsEntities[ARCHER_SHEET]);
+		App->colliders->AddCollider({ -16,-16,32,32 }, COLLIDER_ENEMY, (Entity*)newEntity, { 20,20 });
 		break;
 	case ENEMY_TYPE::MAGE:
 		newEntity = new EnemyEntity(coor, ENEMY_TYPE::MAGE, nullptr);
@@ -342,7 +344,6 @@ void EntitySystem::AddEnemy(fPoint coor, ENEMY_TYPE type)
 		break;
 	}
 	toSpawn.push_back(newEntity);
-	App->colliders->AddCollider({ -16,-16,32,32 }, COLLIDER_ENEMY, (Entity*)newEntity, { 20,20 });
 
 }
 

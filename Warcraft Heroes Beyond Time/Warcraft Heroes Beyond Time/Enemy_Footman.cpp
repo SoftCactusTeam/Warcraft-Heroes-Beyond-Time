@@ -8,7 +8,7 @@
 #include "Scene.h"
 
 #define DISTANCE_TO_MOVE	300
-#define DISTANCE_TO_CHARGE	150
+#define DISTANCE_TO_CHARGE	1
 #define DISTANCE_TO_ATAC	40
 #define CHARGE_DISTANCE		50
 #define CHARGE_SPEED		5
@@ -84,7 +84,7 @@ void Enemy_Footman::initAtac()
 	accountantPrincipal = SDL_GetTicks() + ATAC_COOLDOWN;
 	anim = &animAtac[LookAtPlayer()];
 	anim->Reset();
-	App->colliders->AddTemporalCollider({ (int)pos.x, (int)pos.y, 64, 64 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATTACK, ATAC_COOLDOWN);
+	collider = App->colliders->AddCollider({ ((int)pos.x + anim->GetCurrentRect().w / 2) + (int)transformFixedAngleTofPoint(LookAtPlayer()).x * 10 - 10, ((int)pos.y + anim->GetCurrentRect().h / 2) + (int)transformFixedAngleTofPoint(LookAtPlayer()).y * 10 - 10, 24, 24 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATTACK);
 }
 
 void Enemy_Footman::initCharge()
@@ -97,6 +97,7 @@ void Enemy_Footman::initCharge()
 	chargeMovement = CaculateFPointAngle(App->scene->player->pos) * CHARGE_SPEED;
 	chargeCooldown = SDL_GetTicks() + CHARGE_COOLDOWN;
 	StopConcreteTime(CHARGE_PRETIME);
+	collider = App->colliders->AddCollider({ ((int)pos.x + anim->GetCurrentRect().w / 2) + (int)transformFixedAngleTofPoint(LookAtPlayer()).x * 10 - 10, ((int)pos.y + anim->GetCurrentRect().h / 2) + (int)transformFixedAngleTofPoint(LookAtPlayer()).y * 10 - 10, 24, 24 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATTACK);
 }
 
 void Enemy_Footman::initDefense()
@@ -140,14 +141,12 @@ void Enemy_Footman::doWalk()
 	{
 		if (pathVector.isEmpty())
 		{
-			//pathVector.CalculatePathAstar(iPoint((int)this->pos.x, (int)this->pos.y), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y));
-			//pathVector.CalculateWay(iPoint((int)this->pos.x, (int)this->pos.y), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y));
-			pathVector.CalculatePathAstar(iPoint((int)this->pos.x + (anim->GetCurrentRect().w / 2), (int)this->pos.y + (anim->GetCurrentRect().h / 2)), iPoint((int)App->scene->player->pos.x + (App->scene->player->anim->GetCurrentRect().w / 2), (int)App->scene->player->pos.y + (App->scene->player->anim->GetCurrentRect().h / 2)));
-			pathVector.CalculateWay(iPoint((int)this->pos.x + (anim->GetCurrentRect().w / 2), (int)this->pos.y + (anim->GetCurrentRect().h / 2)), iPoint((int)App->scene->player->pos.x + (App->scene->player->anim->GetCurrentRect().w / 2), (int)App->scene->player->pos.y + (App->scene->player->anim->GetCurrentRect().h / 2)));
+			if (pathVector.CalculatePathAstar(iPoint(((int)pos.x + (anim->GetCurrentRect().w / 2)), ((int)pos.y + (anim->GetCurrentRect().h / 2))), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y)))
+				pathVector.CalculateWay(iPoint(((int)pos.x + (anim->GetCurrentRect().w / 2)), ((int)pos.y + (anim->GetCurrentRect().h / 2))), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y));
 		}
 		else
 		{
-			iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x, (int)pos.y));
+			iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x + (anim->GetCurrentRect().w / 2), (int)pos.y + (anim->GetCurrentRect().h / 2)));
 			this->pos += fPoint((float)move.x * MOVEMENT_SPEED, (float)move.y * MOVEMENT_SPEED);
 		}
 	}
@@ -156,7 +155,11 @@ void Enemy_Footman::doWalk()
 void Enemy_Footman::doAtac()
 {
 	if (SDL_GetTicks() > accountantPrincipal)
+	{
 		initIdle();
+		App->colliders->deleteCollider(collider);
+		collider = nullptr;
+	}
 }
 
 void Enemy_Footman::doCharge()
@@ -178,7 +181,7 @@ void Enemy_Footman::doCharge()
 		{
 			pos += chargeMovement;
 			chargeTime -= CHARGE_SPEED;
-			App->colliders->AddTemporalCollider({ (int)pos.x, (int)pos.y, 32, 32 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATTACK, 10);
+			collider->colliderRect = { ((int)pos.x + anim->GetCurrentRect().w / 2) - 10, ((int)pos.y + anim->GetCurrentRect().h / 2) - 10, 24, 24 };
 		}
 	}
 }
