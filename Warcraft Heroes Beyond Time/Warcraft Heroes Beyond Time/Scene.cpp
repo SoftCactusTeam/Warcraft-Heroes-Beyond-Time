@@ -62,6 +62,8 @@ bool Scene::Start()
 	texture = App->textures->Load("sprites/all_items.png");
 	venom = App->textures->Load("sprites/venom.png");
 
+	currentPercentAudio = App->audio->MusicVolumePercent;
+
 	switch (actual_scene)
 	{
 		case Stages::MAIN_MENU:
@@ -220,11 +222,16 @@ bool Scene::Update(float dt)
 			if (!paused)
 			{
 				paused = true;
+				currentPercentAudio = App->audio->MusicVolumePercent;
+				App->audio->setMusicVolume((uint)(currentPercentAudio * 0.2f));
 				CreatePauseMenu();
+		
 			}
 			else
 			{
 				paused = false;
+				// Decreasing audio when pause game
+				App->audio->setMusicVolume(currentPercentAudio);
 				App->gui->DestroyElem(PauseMenu);
 			}
 		}
@@ -334,6 +341,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 			case BType::RESUME:
 				paused = false;
 				App->gui->DestroyElem(PauseMenu);
+				App->audio->setMusicVolume(currentPercentAudio);
 				break;
 			}
 			break;
@@ -432,6 +440,7 @@ void Scene::CreateSettingsScreen()
 
 void Scene::CreatePauseMenu()
 {
+
 	fPoint localPos = { 640 / 2 - 249 / 2, 360 / 2 - 286 / 2 };
 	PauseMenu = (GUIWindow*)App->gui->CreateGUIWindow(localPos, WoodWindow, this);
 

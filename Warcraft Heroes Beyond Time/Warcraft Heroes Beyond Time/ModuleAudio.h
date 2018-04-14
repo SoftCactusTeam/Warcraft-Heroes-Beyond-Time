@@ -55,13 +55,14 @@ public:
 	uint Thrall_AttackFX = 0;
 	uint Thrall_SkillFX = 0;
 	uint ArcherDeath = 0;
+	uint BossEncounterFX = 0;
 	//std::string BSO's
 	std::string MainMenuBSO;
 	std::string InGameBSO;
 	std::string GuldanBSO;
 
-	uint MusicVolumePercent = 5;
-	uint FXVolumePercent = 5;
+	uint MusicVolumePercent = 10;
+	uint FXVolumePercent = 10;
 
 private:
 	
