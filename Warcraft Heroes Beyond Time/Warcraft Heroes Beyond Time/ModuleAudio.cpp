@@ -72,7 +72,7 @@ bool Audio::Awake(pugi::xml_node& audioNode)
 	GuldanFireBallFX = LoadFx("audio/fx/guldan/guldan_balls_shooting.ogg");
 	PaperItemFX = LoadFx("audio/fx/others/item_wcpaper_fx.ogg");
 	OpeningChestFX = LoadFx("audio/fx/others/open_chest_fx.ogg");
-	UnlockPortalFX = LoadFx("audio/fx/others/portal_unlocked_fx_fx.ogg");
+	UnlockPortalFX = LoadFx("audio/fx/others/portal_unlocked_fx.ogg");
 	//---------------------------------------Load Music----------------------------
 	MainMenuBSO = "audio/BSO's/Warcraft HBT - Main Menu.ogg";
 	InGameBSO = "audio/BSO's/Warcraft HBT - Level.ogg";
