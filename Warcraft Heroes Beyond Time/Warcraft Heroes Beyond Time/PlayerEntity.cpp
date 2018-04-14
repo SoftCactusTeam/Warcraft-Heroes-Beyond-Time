@@ -31,7 +31,11 @@ bool PlayerEntity::Update(float dt)
 	return true;
 }
 
-bool PlayerEntity::Finish() { return true; }
+bool PlayerEntity::Finish() 
+{ 
+	itemsActive.clear();
+	return true; 
+}
 
 void PlayerEntity::setCol(Collider* pcol)
 {
