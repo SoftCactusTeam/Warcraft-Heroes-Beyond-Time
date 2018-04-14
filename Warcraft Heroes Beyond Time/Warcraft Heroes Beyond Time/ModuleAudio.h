@@ -59,6 +59,10 @@ public:
 	uint GuldanTPFX = 0u;
 	uint GuldanDieFX = 0u;
 	uint GuldanFireBallFX = 0u;
+	uint PaperItemFX = 0u;
+	uint OpeningChestFX = 0u;
+	uint UnlockPortalFX = 0u;
+
 	//std::string BSO's
 	std::string MainMenuBSO;
 	std::string InGameBSO;
