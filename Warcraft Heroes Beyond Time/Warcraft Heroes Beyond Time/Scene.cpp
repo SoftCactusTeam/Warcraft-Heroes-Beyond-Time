@@ -282,6 +282,12 @@ bool Scene::CleanUp()
 	App->textures->UnLoad(venom);
 	App->textures->UnLoad(texture);
 
+	player = nullptr;
+	lvlChest = nullptr;
+	texture = nullptr;
+	portal = nullptr;
+	PauseMenu = nullptr;
+
 	return true;
 }
 
