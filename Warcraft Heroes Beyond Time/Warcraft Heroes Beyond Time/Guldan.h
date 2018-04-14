@@ -65,7 +65,7 @@ public:
 	int angleInside = 0;
 	fPoint positionsToMove[360];
 	float radius = 0.0f;
-	int live = 200;
+	int live = 150;
 	SDL_Rect rect;
 	Animation felAnim;
 	bool startDying = false;
@@ -88,7 +88,7 @@ public:
 	FelBall(fPoint pos, int radius, int angle, SDL_Texture* tex, int angleInside) : pos(pos), radius(radius), startAngle(angle), tex(tex), angleInside(angleInside)
 	{
 
-		felCol = App->colliders->AddCollider({ (int)pos.x, (int)pos.y,18,23 }, COLLIDER_TYPE::COLLIDER_FELBALL);
+		felCol = App->colliders->AddCollider({ (int)pos.x - 6, (int)pos.y - 10,18,23 }, COLLIDER_TYPE::COLLIDER_FELBALL);
 
 		felAnim.PushBack({ 19,32,18,23 });
 		felAnim.PushBack({ 69,32,18,23 });
@@ -131,7 +131,7 @@ public:
 
 	void Update(float dt)
 	{
-		felCol->colliderRect = { (int)pos.x, (int)pos.y, 18,23 };
+		felCol->colliderRect = { (int)pos.x - 6, (int)pos.y - 10, 18,23 };
 
 		if (startDying)
 			live -= 1 * dt;

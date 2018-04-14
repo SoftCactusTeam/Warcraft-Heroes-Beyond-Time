@@ -347,7 +347,7 @@ void Thrall::Collision(Collider* collideWith)
 	}
 	case COLLIDER_TYPE::COLLIDER_ENEMY:
 	{
-		if (collideWith->owner->isGuldan && state != states::PL_DASH)
+		if (collideWith->owner->isGuldan && state != states::PL_DASH && collideWith->owner->ballsOnTheAir)
 			SetDamage(50, true);
 		break;
 	}

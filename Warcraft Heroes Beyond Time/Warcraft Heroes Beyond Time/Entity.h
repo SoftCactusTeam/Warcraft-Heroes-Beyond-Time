@@ -31,6 +31,7 @@ public:
 
 	//to_delete
 	bool isGuldan = false;
+	bool ballsOnTheAir = false;
 };
 
 #endif
