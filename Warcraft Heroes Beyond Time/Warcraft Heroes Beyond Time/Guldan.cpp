@@ -138,6 +138,12 @@ bool Guldan::Start()
 
 bool Guldan::Update(float dt)
 {
+
+	if (fellBallsList.size() <= 0)
+		ballsOnTheAir = false;
+	else
+		ballsOnTheAir = true;
+
 	if (firstEncounter)
 	{
 		if (startTimeForTP)

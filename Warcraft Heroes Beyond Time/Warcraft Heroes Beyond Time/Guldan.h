@@ -65,7 +65,7 @@ public:
 	int angleInside = 0;
 	fPoint positionsToMove[360];
 	float radius = 0.0f;
-	int live = 200;
+	int live = 150;
 	SDL_Rect rect;
 	Animation felAnim;
 	bool startDying = false;
