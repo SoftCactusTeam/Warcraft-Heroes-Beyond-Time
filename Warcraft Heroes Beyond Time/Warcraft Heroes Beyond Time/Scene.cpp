@@ -103,7 +103,7 @@ bool Scene::Start()
 			App->path->LoadPathMap();
 
 			iPoint enemy = App->map->GetRandomValidPoint();
-			/*App->entities->AddEnemy({ (float)enemy.x * 46, (float)enemy.y * 46 }, ARCHER);
+			App->entities->AddEnemy({ (float)enemy.x * 46, (float)enemy.y * 46 }, ARCHER);
 
 			enemy = App->map->GetRandomValidPoint();
 			App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
@@ -118,7 +118,7 @@ bool Scene::Start()
 			App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
 
 			enemy = App->map->GetRandomValidPoint();
-			App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);*/
+			App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
 
 			
 			iPoint chestPos = App->map->GetRandomValidPointProxy(30);
