@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModulePrinter.h"
 #include "ModuleEntitySystem.h"
+#include "ModuleAudio.h"
 
 #include "ModuleTextures.h"
 #include <list>
@@ -15,6 +16,8 @@ class Guldan : public BossEntity
 {
 private:
 	bool firstEncounter = false;
+	bool soundBalls = false;
+	float timerBalls = 0.0f;
 
 	Collider* bossCol = nullptr;
 	bool createNewBalls = false;
@@ -26,7 +29,7 @@ private:
 	float floatTimeForTp = 0.0f;
 	SDL_Texture* effectsTexture = nullptr;
 	Animation idle, teleport, inverseTeleport, dead, generateingBalls, generatingBallsInverse, hello;
-	iPoint tpPoints[5] = { {14,4},{ 7,6 },{ 21,6 },{ 10,11 },{ 18,11 } };
+	iPoint tpPoints[5] = { {14,5},{ 10,6 },{ 16,6 },{ 10,8 },{ 16,8 } };
 	iPoint nextTpPos = {0,0};
 	int hp = 0;
 	std::list<FelBall*> fellBallsList;
@@ -65,7 +68,7 @@ public:
 	int angleInside = 0;
 	fPoint positionsToMove[360];
 	float radius = 0.0f;
-	int live = 200;
+	int live = 150;
 	SDL_Rect rect;
 	Animation felAnim;
 	bool startDying = false;
@@ -88,7 +91,7 @@ public:
 	FelBall(fPoint pos, int radius, int angle, SDL_Texture* tex, int angleInside) : pos(pos), radius(radius), startAngle(angle), tex(tex), angleInside(angleInside)
 	{
 
-		felCol = App->colliders->AddCollider({ (int)pos.x, (int)pos.y,18,23 }, COLLIDER_TYPE::COLLIDER_FELBALL);
+		felCol = App->colliders->AddCollider({ (int)pos.x - 6, (int)pos.y - 10,18,23 }, COLLIDER_TYPE::COLLIDER_FELBALL);
 
 		felAnim.PushBack({ 19,32,18,23 });
 		felAnim.PushBack({ 69,32,18,23 });
@@ -131,7 +134,7 @@ public:
 
 	void Update(float dt)
 	{
-		felCol->colliderRect = { (int)pos.x, (int)pos.y, 18,23 };
+		felCol->colliderRect = { (int)pos.x - 6, (int)pos.y - 10, 18,23 };
 
 		if (startDying)
 			live -= 1 * dt;

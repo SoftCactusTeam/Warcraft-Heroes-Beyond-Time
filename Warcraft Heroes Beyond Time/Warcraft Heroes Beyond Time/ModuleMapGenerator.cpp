@@ -9,7 +9,10 @@
 #include "ModuleColliders.h"
 #include "FileSystem.h"
 #include "Brofiler\Brofiler.h"
+#include "Scene.h"
 #include <time.h>
+
+#define MINDISTANCE 10
 
 #define VOID { 196,0,48,48 }
 #define FLOOR { 0,49,48,48 }
@@ -55,8 +58,19 @@ iPoint MapGenerator::GetRandomValidPoint()
 	int randNum = 0;
 
 	do
-		randNum = rand() % (nodes.size() - 0 + 1);
-	while (nodes[randNum]->layerBelow != -2 || nodes[randNum]->pos == nodes[Get(sizeX / 2, sizeY / 2)]->pos);
+		randNum = rand() % ((nodes.size()-1) + 1);
+	while (nodes[randNum]->layerBelow != -2 || nodes[randNum]->pos == nodes[Get(sizeX / 2, sizeY / 2)]->pos || nodes[randNum]->pos.DistanceTo( nodes[Get(sizeX / 2, sizeY / 2)]->pos ) < MINDISTANCE);
+
+	return nodes[randNum]->pos;
+}
+
+iPoint MapGenerator::GetRandomValidPointProxy(int distance)
+{
+	int randNum = 0;
+
+	do
+		randNum = rand() % ((nodes.size() - 1) + 1);
+	while (nodes[randNum]->layerBelow != -2 || nodes[randNum]->pos == nodes[Get(sizeX / 2, sizeY / 2)]->pos || nodes[randNum]->pos.DistanceTo(nodes[Get(sizeX / 2, sizeY / 2)]->pos) > distance);
 
 	return nodes[randNum]->pos;
 }
@@ -147,7 +161,7 @@ bool MapGenerator::GenerateBossMap()
 	pugi::xml_node map_child;
 
 	char* buffer;
-	uint size = App->fs->Load("guldanMap.tmx", &buffer);
+	uint size = App->fs->Load("maps/guldanMap.tmx", &buffer);
 	doc_map.load_buffer(buffer, size);
 	RELEASE(buffer);
 

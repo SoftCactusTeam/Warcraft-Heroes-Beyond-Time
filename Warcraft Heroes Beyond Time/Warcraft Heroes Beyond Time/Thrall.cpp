@@ -8,6 +8,8 @@
 #include "WCItem.h"
 #include "ModulePrinter.h"
 #include "ModuleColliders.h"
+#include "PortalEntity.h"
+#include "ModuleItems.h"
 
 Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEntity(coor, type, texture)
 {
@@ -215,7 +217,7 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	skill.PushBack({ 548,933,61,67 }, { 15,21 });
 	skill.PushBack({ 637,933,61,67 }, { 15,21 });
 	skill.PushBack({ 13,1006,61,67 }, { 16,19 });
-	skill.speedFactor = 11.0f;
+	skill.speedFactor = 20.0f;
 
 	deadUpRight.PushBack({ 119, 1022, 29,39 });
 	deadUpRight.PushBack({ 206, 1025,37,36 });
@@ -255,7 +257,7 @@ bool Thrall::Update(float dt)
 	else if (skillOn)
 		UpdateSkillCollider();
 
-	if (App->scene->paper != nullptr && App->scene->paper->got_paper)
+	if (App->scene->paper != nullptr && !App->items->itemsActive.empty())
 	{
 		time += 1 * dt;
 		if (time >= 0.1)
@@ -274,7 +276,7 @@ bool Thrall::Update(float dt)
 				App->colliders->deleteCollider(paper_collider.back());
 				paper_collider.pop_back();
 			}
-			}
+		}
 		std::list<iPoint>::iterator it = wcpaper.begin();
 		
 		for (; it != wcpaper.end(); ++it)
@@ -327,7 +329,7 @@ void Thrall::Collision(Collider* collideWith)
 	{
 	case COLLIDER_TYPE::COLLIDER_ENEMY_ATTACK:
 	{
-		if (collideWith->attackType == Collider::ATTACK_TYPE::ENEMY_ARROW)
+		if (collideWith->attackType == Collider::ATTACK_TYPE::ENEMY_ARROW && state!=states::PL_DASH)
 			SetDamage(30, true);
 		break;
 	}
@@ -340,9 +342,22 @@ void Thrall::Collision(Collider* collideWith)
 	}
 	case COLLIDER_TYPE::COLLIDER_FELBALL:
 	{
-		SetDamage(50, true);
+		if(state!=states::PL_DASH)
+			SetDamage(50, true);
 		break;
 	}
+	case COLLIDER_TYPE::COLLIDER_ENEMY:
+	{
+		if (collideWith->owner->isGuldan && state != states::PL_DASH && collideWith->owner->ballsOnTheAir)
+			SetDamage(50, true);
+		break;
+	}
+	case COLLIDER_TYPE::COLLIDER_PORTAL:
+		if (App->scene->portal->locked == false)
+		{
+			App->scene->GoBossRoom();
+		}
+		break;
 	}
 }
 
@@ -409,6 +424,8 @@ void Thrall::UpdateCollider()
 
 void Thrall::Attack()
 {
+	if (!attacking)
+		App->audio->PlayFx(App->audio->Thrall_AttackFX);
 	attacking = true;
 	attackCollider = App->colliders->AddCollider({ -10, -10,20,20 }, COLLIDER_PLAYER_ATTACK, nullptr, { 0,0 }, Collider::ATTACK_TYPE::PLAYER_MELEE);
 }
@@ -476,6 +493,8 @@ void Thrall::UpdateAttackCollider()
 
 void Thrall::UseSkill()
 {
+	if (skillOn == false)
+		App->audio->PlayFx(App->audio->Thrall_SkillFX);
 	skillOn = true;
 	skillCollider = App->colliders->AddCollider({ -100, -100, 5, 5 }, COLLIDER_PLAYER_ATTACK, nullptr, { 0,0 }, Collider::ATTACK_TYPE::THRALL_SKILL);
 }
@@ -486,7 +505,7 @@ void Thrall::UpdateSkillCollider()
 	{
 		if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 459,933,61,67 })))
 		{
-			skillCollider->colliderRect = { (int)pos.x -35, (int)pos.y -35, 100,100 };
+			skillCollider->colliderRect = { (int)pos.x -70 - 15, (int)pos.y -70 - 15, 200,200 };
 		}
 	}
 }

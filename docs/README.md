@@ -1,6 +1,6 @@
 ﻿# Warcraft: Heroes Beyond Time
 
-_Describe main goal of the project here._.  
+Rogue-like game based on Warcraft 2.
 
 This project has been done by seven students of CITM - UPC (Terrasa, Spain).  
 
@@ -9,7 +9,7 @@ This project has been done by seven students of CITM - UPC (Terrasa, Spain).
 
 ## About the game  
 
-_Description of the gameplay here_  
+The goal of this demo is to beat the boss Guld'an. First you have to defeat all the archers in the first room. You can pick the item from the chest to leave a trace behind you that will hurt the enemies. Once you defeat all the archers a portal will appear on the map and will teleport you to the boss room to fight Gul'dan. If you beat him you win the game.
 
 ## Installation instructions  
 
@@ -19,9 +19,22 @@ _IMPORTANT: do not modify, change or add any folder or file as you might not be 
 
 ## Controls  
 
+### Gamepad
+- LEFT STICK: move
+- A BUTTON: dash
+- X BUTTON: attack
+- Y BUTTON: skill
+- B BUTTON: pick item, open chest and go through portal
+- START: pause game
 
-## Innovations  
-
+### Mouse and keyboard
+- LEFT CLICK: select in menus
+- WASD: move
+- X: attack
+- Z: skill
+- SPACE: dash
+- 9: pick item
+- ESC: pause
 
 ## Team members  
 
@@ -70,4 +83,13 @@ _Morgado Expósito, Arnau's responsability and Github account_
 * Code repository: GitHub  
 * Others: Adobe Photoshop CS6, Aseprite and MS Paint  
 
-## Credits for artwork, music/sound fx and fonts  
+## Credits for artwork, music/sound fx and fonts
+
+Sound fx:
+- https://freesound.org/people/jacobalcook/sounds/195568/
+- https://freesound.org/people/taren1965/sounds/132502/
+- https://freesound.org/people/alpharo/sounds/186696/
+- https://freesound.org/people/Robinhood76/sounds/221591/
+- https://freesound.org/people/D%20W/sounds/136696/
+- https://freesound.org/people/samararaine/sounds/186374/
+- https://freesound.org/people/spookymodem/sounds/202092/

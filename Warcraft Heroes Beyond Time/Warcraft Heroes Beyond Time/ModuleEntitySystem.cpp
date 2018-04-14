@@ -196,7 +196,7 @@ bool EntitySystem::Start()
 	spritesheetsEntities.push_back(App->textures->Load("sprites/thrall_spritesheet.png"));
 	spritesheetsEntities.push_back(App->textures->Load("sprites/Footman/Footman_sprite.png"));
 	spritesheetsEntities.push_back(App->textures->Load("sprites/all_items.png"));
-	spritesheetsEntities.push_back(App->textures->Load("sprites/Mines.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/portal.png"));
 	spritesheetsEntities.push_back(App->textures->Load("sprites/Archer/Archer_sprite.png"));
 	spritesheetsEntities.push_back(App->textures->Load("sprites/Projectiles.png"));
 	spritesheetsEntities.push_back(App->textures->Load("sprites/Archer/Archer_Smoke.png"));
@@ -208,6 +208,8 @@ bool EntitySystem::Start()
 	{
 		ret = (*it)->Start();
 	}
+
+	enemiescount = 0;
 
 	return true;
 }
@@ -319,6 +321,7 @@ bool EntitySystem::UnloadTexturesVector()
 
 void EntitySystem::AddEnemy(fPoint coor, ENEMY_TYPE type)
 {
+	enemiescount++;
 	BROFILER_CATEGORY("AddEnemy", Profiler::Color::Chocolate);
 	EnemyEntity* newEntity = nullptr;
 	switch (type) {
@@ -436,10 +439,12 @@ StaticEntity* EntitySystem::AddStaticEntity(fPoint coor, STATIC_ENTITY_TYPE type
 	switch (type)
 	{
 	case STATIC_ENTITY_TYPE::PORTAL:
-		newEntity = new PortalEntity(coor, STATIC_ENTITY_TYPE::PORTAL, spritesheetsEntities[MINES_SHEET]);
+		newEntity = new PortalEntity(coor, STATIC_ENTITY_TYPE::PORTAL, spritesheetsEntities[PORTAL_SHEET]);
+		newEntity->portalCol = App->colliders->AddCollider({ (int)newEntity->pos.x, (int)newEntity->pos.y, 50, 50 }, COLLIDER_PORTAL);
 		break;
 	}
 	toSpawn.push_back(newEntity);
+	newEntity->OpenPortal();
 
 	return newEntity;
 }

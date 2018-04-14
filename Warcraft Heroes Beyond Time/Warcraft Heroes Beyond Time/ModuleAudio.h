@@ -44,20 +44,32 @@ public:
 public:
 
 	//uint sounds here
-	uint ButtonHovered = 0;
-	uint ButtonClicked = 0;
-	uint ArrowSound = 0;
-	uint Thrall_Dash_FX = 0;
-	uint Thrall_Die_FX = 0;
-	uint Thrall_Hit_FX = 0;
-	uint Thrall_Hitted_FX = 0;
-	uint Thrall_EnergyMax_FX = 0;
+	uint ButtonHovered = 0u;
+	uint ButtonClicked = 0u;
+	uint ArrowSound = 0u;
+	uint Thrall_Dash_FX = 0u;
+	uint Thrall_Die_FX = 0u;
+	uint Thrall_Hit_FX = 0u;
+	uint Thrall_Hitted_FX = 0u;
+	uint Thrall_EnergyMax_FX = 0u;
+	uint Thrall_AttackFX = 0u;
+	uint Thrall_SkillFX = 0u;
+	uint ArcherDeath = 0u;
+	uint GuldanEncounterFX = 0u;
+	uint GuldanTPFX = 0u;
+	uint GuldanDieFX = 0u;
+	uint GuldanFireBallFX = 0u;
+	uint PaperItemFX = 0u;
+	uint OpeningChestFX = 0u;
+	uint UnlockPortalFX = 0u;
+
 	//std::string BSO's
 	std::string MainMenuBSO;
 	std::string InGameBSO;
+	std::string GuldanBSO;
 
-	uint MusicVolumePercent = 5;
-	uint FXVolumePercent = 5;
+	uint MusicVolumePercent = 10;
+	uint FXVolumePercent = 10;
 
 private:
 	

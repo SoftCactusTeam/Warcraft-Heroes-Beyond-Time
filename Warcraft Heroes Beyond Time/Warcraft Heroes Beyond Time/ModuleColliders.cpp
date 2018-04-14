@@ -182,7 +182,7 @@ bool ModuleColliders::CheckTypeCollMatrix(COLLIDER_TYPE type, COLLIDER_TYPE type
 	switch (type)
 	{
 	case COLLIDER_PLAYER:
-		if (type2 == COLLIDER_ENEMY || type2 == COLLIDER_ENEMY_ATTACK || type2 == COLLIDER_UNWALKABLE || type2 == COLLIDER_FELBALL)
+		if (type2 == COLLIDER_ENEMY || type2 == COLLIDER_ENEMY_ATTACK || type2 == COLLIDER_UNWALKABLE || type2 == COLLIDER_FELBALL || type2 == COLLIDER_PORTAL)
 			return true;
 		break;
 	case COLLIDER_ENEMY:

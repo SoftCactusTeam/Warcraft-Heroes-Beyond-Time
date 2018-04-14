@@ -26,6 +26,7 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 	void AddCommands();
+	void GeneratePortal();
 
 public:
 
@@ -34,7 +35,7 @@ public:
 	void CreateSettingsScreen();
 	void CreatePauseMenu();
 	void GoMainMenu();
-
+	void GoBossRoom();
 public:
 	enum class Stages
 	{
@@ -56,17 +57,15 @@ public:
 	SDL_Texture* venom = nullptr;
 	SDL_Texture* texture = nullptr;
 
+	PortalEntity* portal = nullptr;
 private:
 
 	GUIWindow* PauseMenu = nullptr;
-
-	PortalEntity* portal = nullptr;
+	uint currentPercentAudio = 0u;
+	
 
 	bool restart = false;
 	int lvlIndex = 0;
-
-private:
-	fPoint getPosByResolution(fPoint pos) const;
 
 };
 

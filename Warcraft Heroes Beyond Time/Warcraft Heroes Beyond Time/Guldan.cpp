@@ -4,6 +4,8 @@
 #include "ModuleInput.h"
 #include "Scene.h"
 #include "PlayerEntity.h"
+#include "ModuleAudio.h"
+#include "Application.h"
 
 Guldan::Guldan(fPoint coor, BOSS_TYPE type, SDL_Texture* texture) : BossEntity(coor, type, texture)
 {
@@ -114,6 +116,8 @@ Guldan::Guldan(fPoint coor, BOSS_TYPE type, SDL_Texture* texture) : BossEntity(c
 
 	numStats.hp = 1000;
 	numStats.maxhp = 1000;
+
+	isGuldan = true;
 }
 
 Guldan::~Guldan()
@@ -122,20 +126,34 @@ Guldan::~Guldan()
 
 bool Guldan::Start()
 {
-	bossCol = App->colliders->AddCollider({ 0, 0,60,64 }, COLLIDER_TYPE::COLLIDER_ENEMY, this);
+	bossCol = App->colliders->AddCollider({ 5, 5,55,55 }, COLLIDER_TYPE::COLLIDER_ENEMY, this);
 
 	effectsTexture = App->textures->Load("sprites/Guldan_Effects.png");
 
 	srand(time(NULL));
 	statesBoss = BossStates::IDLE;
 
-	
-
 	return true;
 }
 
 bool Guldan::Update(float dt)
 {
+	if (soundBalls)
+	{
+		timerBalls += 1.0f * dt;
+
+		if (timerBalls >= 8.0f)
+		{
+			App->audio->PlayFx(App->audio->GuldanFireBallFX);
+			timerBalls = 0.0f;
+			soundBalls = false;
+		}
+	}
+	if (fellBallsList.size() <= 0)
+		ballsOnTheAir = false;
+	else
+		ballsOnTheAir = true;
+
 	if (firstEncounter)
 	{
 		if (startTimeForTP)
@@ -171,6 +189,7 @@ bool Guldan::Update(float dt)
 				createNewBalls = false;
 				readeForTimeNewBalls = false;
 				statesBoss = BossStates::DEAD;
+				App->audio->PlayFx(App->audio->GuldanDieFX);
 				if (bossCol != nullptr)
 				{
 					App->colliders->deleteCollider(bossCol);
@@ -181,6 +200,8 @@ bool Guldan::Update(float dt)
 
 			if (floatTimeForTp >= 2.0f)
 			{
+				App->audio->PlayFx(App->audio->GuldanTPFX);
+				bossCol->colliderRect = { 0,0,0,0 };
 				statesBoss = BossStates::TELEPORT;
 				anim = &teleport;
 				floatTimeForTp = 0.0f;
@@ -190,6 +211,7 @@ bool Guldan::Update(float dt)
 
 			if (createNewBalls)
 			{
+				soundBalls = true;
 				anim = &generateingBalls;
 				createNewBalls = false;
 				statesBoss = BossStates::GENERATINGBALLS;
@@ -200,9 +222,9 @@ bool Guldan::Update(float dt)
 		}
 		case BossStates::TELEPORT:
 		{
-
 			if (anim->Finished())
 			{
+				App->audio->PlayFx(App->audio->GuldanTPFX);
 				int randomtp;
 				createNewBalls = false;
 				do
@@ -229,6 +251,7 @@ bool Guldan::Update(float dt)
 				statesBoss = BossStates::IDLE;
 				readeForTimeNewBalls = true;
 				inverseTeleport.Reset();
+				bossCol->colliderRect = { 5, 5,55,55 };
 				break;
 			}
 
@@ -252,6 +275,24 @@ bool Guldan::Update(float dt)
 		}
 
 		case BossStates::GENERATINGBALLS:
+
+			if (numStats.hp <= 0)
+			{
+				App->scene->player->Win();
+				anim = &dead;
+				floatTimeForTp = 0.0f;
+				startTimeForTP = 0.0f;
+				createNewBalls = false;
+				readeForTimeNewBalls = false;
+				statesBoss = BossStates::DEAD;
+				App->audio->PlayFx(App->audio->GuldanDieFX);
+				if (bossCol != nullptr)
+				{
+					App->colliders->deleteCollider(bossCol);
+					bossCol = nullptr;
+				}
+				break;
+			}
 
 			if (anim == &generateingBalls)
 			{
@@ -314,6 +355,8 @@ bool Guldan::Update(float dt)
 		}
 		if (anim == &hello)
 		{
+			if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({208, 71, 68, 68})))
+				App->audio->PlayFx(App->audio->GuldanEncounterFX);
 			if (anim->Finished())
 			{
 				firstEncounter = true;
@@ -377,7 +420,29 @@ void Guldan::Collision(Collider* collideWith)
 			if (collideWith->attackType == Collider::ATTACK_TYPE::PLAYER_MELEE)
 			{
 				if (anim == &idle || anim == &generateingBalls || anim == &generatingBallsInverse)
-					numStats.hp -= numStats.hp;
+				{
+					if (numStats.hp - 10 <= 0)
+						numStats.hp = 0;
+					else
+						numStats.hp -= 10;
+				}
+			}
+			else if (collideWith->attackType == Collider::ATTACK_TYPE::THRALL_SKILL)
+			{
+				if (anim == &idle || anim == &generateingBalls || anim == &generatingBallsInverse)
+				{
+					if ((int)numStats.hp - 10 <= 0)
+						numStats.hp = 0;
+					else
+						numStats.hp -= 10;
+				}
+			}
+			else if (collideWith->attackType == Collider::ATTACK_TYPE::SHIT)
+			{
+				if (numStats.hp -  (5 * App->dt) <= 0)
+					numStats.hp = 0;
+				else
+					numStats.hp -= 5 * App->dt;
 			}
 			break;
 		}

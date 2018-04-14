@@ -10,6 +10,7 @@
 #include "ModuleAudio.h"
 #include "Application.h"
 #include "ModuleTextures.h"
+#include "ModuleItems.h"
 
 PlayerEntity::PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : DynamicEntity(coor, texture), type(type)
 {
@@ -31,7 +32,10 @@ bool PlayerEntity::Update(float dt)
 	return true;
 }
 
-bool PlayerEntity::Finish() { return true; }
+bool PlayerEntity::Finish() 
+{ 
+	return true; 
+}
 
 void PlayerEntity::setCol(Collider* pcol)
 {
@@ -165,6 +169,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && t == 0.0f && DashCD == 0.0f)
 			{
 				App->audio->PlayFx(App->audio->Thrall_Dash_FX);
+				state = states::PL_DASH;
 				startPos = pos;
 				animBefore = anim;
 			}
@@ -1035,7 +1040,7 @@ void PlayerEntity::JoyconStates(float dt)
 
 	case states::PL_DEAD:
 	{
-		if (anim->Finished() && anim != &deadDownRight)
+		if (anim != &deadDownRight)
 		{
 			anim->Reset();
 			animBefore = anim;
@@ -1320,14 +1325,14 @@ void PlayerEntity::CheckMapLimits()
 
 void PlayerEntity::AddItem(Item item)
 {
-	itemsActive.push_back(item);
+	App->items->itemsActive.push_back(item);
 }
 
 void PlayerEntity::IterateItems(ItemFunctions nameFunction)
 {
-	std::list<Item>::iterator it = itemsActive.begin();
+	std::list<Item>::iterator it = App->items->itemsActive.begin();
 
-	for (; it != itemsActive.end(); ++it)
+	for (; it != App->items->itemsActive.end(); ++it)
 	{
 		switch (nameFunction)
 		{
@@ -1354,6 +1359,7 @@ void PlayerEntity::SetDamage(int damage, bool setStateDamage)
 		if ((int)numStats.hp - damage <= 0)
 		{
 			numStats.hp = 0;
+			ResetDash();
 			state = states::PL_DEAD;
 			App->audio->PauseMusic(0.5);
 			App->audio->PlayFx(App->audio->Thrall_Die_FX);

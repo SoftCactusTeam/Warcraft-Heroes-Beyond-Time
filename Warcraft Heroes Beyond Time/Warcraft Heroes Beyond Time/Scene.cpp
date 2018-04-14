@@ -16,6 +16,7 @@
 #include "Item.h"
 #include "WCItem.h"
 #include "ModuleTextures.h"
+#include "ModuleItems.h"
 
 
 #include "Brofiler\Brofiler.h"
@@ -62,6 +63,8 @@ bool Scene::Start()
 	texture = App->textures->Load("sprites/all_items.png");
 	venom = App->textures->Load("sprites/venom.png");
 
+	currentPercentAudio = App->audio->MusicVolumePercent;
+
 	switch (actual_scene)
 	{
 		case Stages::MAIN_MENU:
@@ -89,21 +92,38 @@ bool Scene::Start()
 			MapData mapInfo;
 			mapInfo.sizeX = 50;
 			mapInfo.sizeY = 50;
-			mapInfo.iterations = 600;
+			mapInfo.iterations = 300;
 			mapInfo.tilesetPath = "maps/Tiles.png";
 			lvlIndex++;
 
 			App->map->GenerateMap(mapInfo);
-
 			player = App->entities->AddPlayer({ 25 * 46,25 * 46}, THRALL);
 			App->gui->CreateHPBar(player, { 10,5 });
 
 			App->path->LoadPathMap();
 
-			iPoint chestPos = App->map->GetRandomValidPoint();
-			lvlChest = App->entities->AddChest({ (float)chestPos.x * 48,(float)chestPos.y * 48 }, MID_CHEST);
-			portal = (PortalEntity*)App->entities->AddStaticEntity({ 25 * 46,25 * 46 }, PORTAL);
+			iPoint enemy = App->map->GetRandomValidPoint();
+			App->entities->AddEnemy({ (float)enemy.x * 46, (float)enemy.y * 46 }, ARCHER);
 
+			enemy = App->map->GetRandomValidPoint();
+			App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
+
+			enemy = App->map->GetRandomValidPoint();
+			App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
+
+			enemy = App->map->GetRandomValidPoint();
+			App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
+
+			enemy = App->map->GetRandomValidPoint();
+			App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
+
+			enemy = App->map->GetRandomValidPoint();
+			App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
+
+			
+			iPoint chestPos = App->map->GetRandomValidPointProxy(30);
+			lvlChest = App->entities->AddChest({ (float)chestPos.x * 46,(float)chestPos.y * 46 }, MID_CHEST);
+			lvlChest->UnLockChest();
 			break;
 		}
 		case Stages::BOSS_ROOM:
@@ -114,10 +134,11 @@ bool Scene::Start()
 			App->map->Activate();
 			App->printer->Activate();
 
+			App->audio->PlayMusic(App->audio->GuldanBSO.data(), 1);
 			App->map->GenerateBossMap();
-			player = App->entities->AddPlayer({ 14 * 48,14 * 48, }, THRALL);
+			player = App->entities->AddPlayer({ 15 * 46,16 * 46, }, THRALL);
 			App->gui->CreateHPBar(player, { 10,5 });
-			BossEntity* guldan = App->entities->AddBoss({ 14 * 48,4 * 48 }, GULDAN);
+			BossEntity* guldan = App->entities->AddBoss({ 14 * 48,5 * 48 }, GULDAN);
 			App->gui->CreateBossHPBar(guldan, { 640 / 2 - 312 / 2,320 });
 			break;
 		}
@@ -153,8 +174,8 @@ bool Scene::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT)
 	{
-		if(player != nullptr)
-			player->numStats.energy = 100;
+		if (player != nullptr)
+			player->IncreaseEnergy(100);
 	}
 
 	//GENERATE A NEW MAP
@@ -169,42 +190,29 @@ bool Scene::Update(float dt)
 		restart = true;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN || (actual_scene == Stages::INGAME && App->entities->enemiescount <= 0))
 	{
-		if (lvlChest->PlayerNear(player->pos))
-		{
-			lvlChest->UnLockChest();
-			lvlChest->OpenChest();
-			portal->OpenPortal();
-			paper = new WCItem("wcpaper", ItemType::passive_item_type, 0);
-			player->AddItem((WCItem)*paper);
-			paper_fake = paper;
-		}
-
-		if (!player->itemsActive.empty())
-		{
-			player->AddItem((WCItem)*paper);
-		}
+		GeneratePortal();
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN || App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN)
 	{
 		if (lvlChest->PlayerNear(player->pos))
 		{
-			if (paper_fake != nullptr)
+			if (lvlChest->opened == false)
+				lvlChest->OpenChest();
+			else if (App->items->itemsActive.empty())
 			{
-				player->AddItem((WCItem)*paper);
-				paper_fake = nullptr;
-				paper->got_paper = true;
-			}
+				paper = &WCItem("wcpaper", ItemType::passive_item_type, 1);
+				player->AddItem(*paper);
+				App->audio->PlayFx(App->audio->PaperItemFX);
+			}	
 		}
 	}
-
-	if (paper_fake != nullptr)
+	if ( lvlChest != nullptr && lvlChest->opened && App->items->itemsActive.empty())
 	{
 		App->printer->PrintSprite({ (int)lvlChest->pos.x,(int)lvlChest->pos.y }, texture, SDL_Rect({ 34,84,27,31 }), 1);
 	}
-	
 
 	//PAUSE GAME
 	if (actual_scene == Stages::INGAME || actual_scene == Stages::BOSS_ROOM)
@@ -215,11 +223,19 @@ bool Scene::Update(float dt)
 			if (!paused)
 			{
 				paused = true;
+				currentPercentAudio = App->audio->MusicVolumePercent;
+				uint tmpAudio = (uint)(currentPercentAudio * 0.3f);
+				if (tmpAudio == 0)
+					tmpAudio = 1;
+				App->audio->setMusicVolume(tmpAudio);
 				CreatePauseMenu();
+		
 			}
 			else
 			{
 				paused = false;
+				// Decreasing audio when pause game
+				App->audio->setMusicVolume(currentPercentAudio);
 				App->gui->DestroyElem(PauseMenu);
 			}
 		}
@@ -234,7 +250,8 @@ bool Scene::PostUpdate()
 	if (actual_scene == Stages::MAIN_MENU || actual_scene == Stages::SETTINGS)
 	{
 		SDL_Rect back = { 0,0,640,360 };
-		App->render->DrawQuad(back, 0, 205, 193, 255, true, false);
+		//App->render->DrawQuad(back, 0, 205, 193, 255, true, false);
+		App->render->DrawQuad(back, 64, 66, 159, 255, true, false);
 	}
 
 	if (App->path->printWalkables == true)
@@ -258,6 +275,9 @@ bool Scene::CleanUp()
 	App->console->DeActivate();
 	App->path->ClearMap();
 	App->colliders->DeActivate();
+
+	if (actual_scene == Stages::MAIN_MENU)
+		App->items->DeActivate();
 
 	App->textures->UnLoad(venom);
 	App->textures->UnLoad(texture);
@@ -319,8 +339,12 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 				restart = true;
 				break;
 			case BType::GO_MMENU:
-				if (actual_scene == Stages::INGAME)
+				if (actual_scene == Stages::INGAME || actual_scene == Stages::BOSS_ROOM)
+				{
 					App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
+					App->audio->setMusicVolume(currentPercentAudio);
+				}
+					
 				actual_scene = Stages::MAIN_MENU;
 				paused = false;
 				restart = true;
@@ -328,6 +352,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 			case BType::RESUME:
 				paused = false;
 				App->gui->DestroyElem(PauseMenu);
+				App->audio->setMusicVolume(currentPercentAudio);
 				break;
 			}
 			break;
@@ -343,7 +368,7 @@ void Scene::CreateMainMenuScreen()
 {
 
 	//PLAY BUTTON
-	Button* button = (Button*)App->gui->CreateButton(getPosByResolution({ 250, 50.0f }), BType::PLAY, this);
+	Button* button = (Button*)App->gui->CreateButton({ 640 / 2 - 158 / 2, 50.0f }, BType::PLAY, this);
 
 	/*LabelInfo defLabel;
 	defLabel.color = White;
@@ -355,25 +380,25 @@ void Scene::CreateMainMenuScreen()
 	defLabel.color = White;
 	defLabel.fontName = "LifeCraft80";
 	defLabel.text = "Start Demo";
-	App->gui->CreateLabel(getPosByResolution({ 33,11 }), defLabel, button, this);
+	App->gui->CreateLabel({ 33,11 }, defLabel, button, this);
 
 	//SETTINGS BUTTON
-	Button* button2 = (Button*)App->gui->CreateButton(getPosByResolution({ 250, 150.0f }), BType::SETTINGS, this);
+	Button* button2 = (Button*)App->gui->CreateButton({ 640 / 2 - 158 / 2, 150.0f }, BType::SETTINGS, this);
 
 	LabelInfo defLabel2;
 	defLabel2.color = White;
 	defLabel2.fontName = "LifeCraft80";
 	defLabel2.text = "Settings";
-	App->gui->CreateLabel(getPosByResolution({ 42,10 }), defLabel2, button2, this);
+	App->gui->CreateLabel({ 42,10 }, defLabel2, button2, this);
 
 	//EXIT GAME BUTTON
-	Button* button3 = (Button*)App->gui->CreateButton(getPosByResolution({ 250, 250.0f }), BType::EXIT_GAME, this);
+	Button* button3 = (Button*)App->gui->CreateButton({ 640 / 2 - 158 / 2, 250.0f }, BType::EXIT_GAME, this);
 
 	LabelInfo defLabel3;
 	defLabel3.color = White;
 	defLabel3.fontName = "LifeCraft80";
 	defLabel3.text = "Quit";
-	App->gui->CreateLabel(getPosByResolution({ 60,10 }), defLabel3, button3, this);
+	App->gui->CreateLabel({ 60,10 }, defLabel3, button3, this);
 }
 
 void Scene::CreateSettingsScreen()
@@ -381,7 +406,7 @@ void Scene::CreateSettingsScreen()
 	//MUSIC VOLUME SLIDER
 	SliderInfo sinfo;
 	sinfo.type = Slider::SliderType::MUSIC_VOLUME;
-	Slider* slider = (Slider*)App->gui->CreateSlider(getPosByResolution({ 185, 95 }), sinfo, this, nullptr);
+	Slider* slider = (Slider*)App->gui->CreateSlider({ 183, 95 }, sinfo, this, nullptr);
 
 	LabelInfo defLabel3;
 	defLabel3.color = White;
@@ -399,7 +424,7 @@ void Scene::CreateSettingsScreen()
 	//FX VOLUME SLIDER
 	SliderInfo sinfo2;
 	sinfo2.type = Slider::SliderType::FX_VOLUME;
-	Slider* slider2 = (Slider*)App->gui->CreateSlider(getPosByResolution({ 185, 190 }), sinfo2, this, nullptr);
+	Slider* slider2 = (Slider*)App->gui->CreateSlider({ 183, 190 }, sinfo2, this, nullptr);
 
 	LabelInfo defLabel4;
 	defLabel4.color = White;
@@ -415,54 +440,44 @@ void Scene::CreateSettingsScreen()
 	App->gui->CreateLabel({ 0,-35 }, defLabel5, slider2, this);
 
 	//BACK BUTTON
-	Button* button3 = (Button*)App->gui->CreateButton(getPosByResolution({ 240, 250.0f }), BType::GO_MMENU, this);
+	Button* button3 = (Button*)App->gui->CreateButton({ 640 / 2 - 158 / 2, 250.0f }, BType::GO_MMENU, this);
 
 	LabelInfo defLabel2;
 	defLabel2.color = White;
 	defLabel2.fontName = "LifeCraft80";
 	defLabel2.text = "Back";
-	App->gui->CreateLabel(getPosByResolution({ 56,11 }), defLabel2, button3, this);
+	App->gui->CreateLabel({ 56,11 }, defLabel2, button3, this);
 }
 
 void Scene::CreatePauseMenu()
 {
-	fPoint localPos = getPosByResolution({ 640 / 2 - 249 / 2, 360 / 2 - 286 / 2 });
+
+	fPoint localPos = { 640 / 2 - 249 / 2, 360 / 2 - 286 / 2 };
 	PauseMenu = (GUIWindow*)App->gui->CreateGUIWindow(localPos, WoodWindow, this);
 
-	Button* Resume = (Button*)App->gui->CreateButton(getPosByResolution({ 249 / 2 - 158 / 2, 40 }), BType::RESUME, this, PauseMenu);
+	Button* Resume = (Button*)App->gui->CreateButton({ 249 / 2 - 158 / 2, 40 }, BType::RESUME, this, PauseMenu);
 
 	LabelInfo defLabel1;
 	defLabel1.color = White;
 	defLabel1.fontName = "LifeCraft80";
 	defLabel1.text = "Resume";
-	App->gui->CreateLabel(getPosByResolution({ 46,10 }), defLabel1, Resume, this);
+	App->gui->CreateLabel({ 46,10 }, defLabel1, Resume, this);
 
-	Button* MainMenu = (Button*)App->gui->CreateButton(getPosByResolution({ 249 / 2 - 158 / 2, 120 }), BType::GO_MMENU, this, PauseMenu);
+	Button* MainMenu = (Button*)App->gui->CreateButton({ 249 / 2 - 158 / 2, 120 }, BType::GO_MMENU, this, PauseMenu);
 
 	LabelInfo defLabel2;
 	defLabel2.color = White;
 	defLabel2.fontName = "LifeCraft46";
 	defLabel2.text = "Return to the Main Menu";
-	App->gui->CreateLabel(getPosByResolution({ 18,15 }), defLabel2, MainMenu, this);
+	App->gui->CreateLabel({ 18,15 }, defLabel2, MainMenu, this);
 
-	Button* SaveAndExit = (Button*)App->gui->CreateButton(getPosByResolution({ 249 / 2 - 158 / 2, 200 }), BType::EXIT_GAME, this, PauseMenu);
+	Button* SaveAndExit = (Button*)App->gui->CreateButton({ 249 / 2 - 158 / 2, 200 }, BType::EXIT_GAME, this, PauseMenu);
 
 	LabelInfo defLabel3;
 	defLabel3.color = White;
 	defLabel3.fontName = "LifeCraft80";
 	defLabel3.text = "Save and Exit";
-	App->gui->CreateLabel(getPosByResolution({ 23,10 }), defLabel3, SaveAndExit, this);
-}
-
-fPoint Scene::getPosByResolution(fPoint pos) const
-{
-	/*uint actualW = App->render->camera.w;
-	uint actualH = App->render->camera.h;
-	float percentX = (pos.x * 100) / 640;
-	float percentY = (pos.y * 100) / 360;
-	fPoint ret = { (actualW * percentX)/100, (actualH * percentY)/100};*/
-
-	return pos;
+	App->gui->CreateLabel({ 23,10 }, defLabel3, SaveAndExit, this);
 }
 
 void Scene::AddCommands()
@@ -471,10 +486,26 @@ void Scene::AddCommands()
 	App->console->AddConsoleOrderToList(order);
 }
 
+void Scene::GeneratePortal()
+{
+	if (portal == nullptr)
+	{
+		iPoint position = App->map->GetRandomValidPointProxy(20);
+
+		portal = (PortalEntity*)App->entities->AddStaticEntity({ (float)position.x * 46, (float)position.y * 46 }, PORTAL);
+	}
+}
+
 void Scene::GoMainMenu()
 {
-	if (actual_scene == Stages::INGAME)
+	if (actual_scene == Stages::INGAME || actual_scene == Stages::BOSS_ROOM)
 		App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
 	actual_scene = Stages::MAIN_MENU;
+	restart = true;
+}
+
+void Scene::GoBossRoom()
+{
+	actual_scene = Stages::BOSS_ROOM;
 	restart = true;
 }

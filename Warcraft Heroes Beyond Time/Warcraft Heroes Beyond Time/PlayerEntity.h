@@ -141,9 +141,7 @@ public:
 		anim = &idleDown;
 	}
 
-	//items
-	std::list<iPoint> wcpaper;
-	std::list<Item> itemsActive;
+	
 };
 
 #endif
