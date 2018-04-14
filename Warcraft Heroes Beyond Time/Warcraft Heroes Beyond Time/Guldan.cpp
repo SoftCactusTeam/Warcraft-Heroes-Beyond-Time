@@ -422,8 +422,15 @@ void Guldan::Collision(Collider* collideWith)
 					if ((int)numStats.hp - 50 <= 0)
 						numStats.hp = 0;
 					else
-						numStats.hp -= 5;
+						numStats.hp -= 50;
 				}
+			}
+			else if (collideWith->attackType == Collider::ATTACK_TYPE::SHIT)
+			{
+				if ((int)numStats.hp - 2 <= 0)
+					numStats.hp = 0;
+				else
+					numStats.hp -= 2;
 			}
 			break;
 		}
