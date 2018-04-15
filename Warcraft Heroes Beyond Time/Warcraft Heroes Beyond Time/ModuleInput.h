@@ -87,6 +87,7 @@ public:
 	bool IsKeyboardAvailable() { return kbAvailable; }
 	void ExternActionsAtKeyInput(int key);
 	bool PlayJoyRumble(float strength, Uint32 length);
+	bool isControllerConnected()const { return controller != nullptr; }
 
 private:
 	bool		windowEvents[WE_COUNT];
