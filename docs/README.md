@@ -1,4 +1,4 @@
-﻿# Warcraft: Heroes Beyond Time
+﻿# Warcraft: Heroes Beyond Time 1
 
 Rogue-like game based on Warcraft 2.
 
