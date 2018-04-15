@@ -164,6 +164,9 @@ bool Scene::PreUpdate()
 
 bool Scene::Update(float dt)
 {
+
+	bool ret = true;
+
 	//TESTING SAVES
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
@@ -252,8 +255,11 @@ bool Scene::Update(float dt)
 		}
 	}
 
+	if(ret)
+		ret = ControllerMenu();
 
-	return true;
+
+	return ret;
 }
 
 bool Scene::PostUpdate()
@@ -276,8 +282,6 @@ bool Scene::PostUpdate()
 		
 		App->render->DrawQuad({ -App->render->camera.x,-App->render->camera.y,640,360 }, 0, 0, 0, 200 , true, true);
 	}
-
-	ret = ControllerMenu();
 
 	BROFILER_CATEGORY("SceneRestart", Profiler::Color::Chocolate);
 	if (restart)
@@ -409,18 +413,18 @@ bool Scene::ControllerMenu()
 			actual_scene = Stages::INGAME;
 			restart = true;
 		}
-		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN)
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_X) == KEY_DOWN)
 		{
 			actual_scene = Stages::SETTINGS;
 			restart = true;
 		}
-		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_Y) == KEY_DOWN)
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN)
 			return false;
 
 	}
 	if (actual_scene == Stages::SETTINGS)
 	{
-		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_Y) == KEY_DOWN)
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN)
 		{
 			actual_scene = Stages::MAIN_MENU;
 			paused = false;
@@ -437,7 +441,7 @@ bool Scene::ControllerMenu()
 			App->gui->DestroyElem(PauseMenu);
 		}
 
-		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN)
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_X) == KEY_DOWN)
 		{
 			App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
 			App->audio->setMusicVolume(currentPercentAudio);
@@ -447,7 +451,7 @@ bool Scene::ControllerMenu()
 			restart = true;
 		}
 
-		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_Y) == KEY_DOWN)
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN)
 			return false;
 	}
 	
