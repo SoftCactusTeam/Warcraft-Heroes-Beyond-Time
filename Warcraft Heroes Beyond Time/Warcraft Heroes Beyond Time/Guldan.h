@@ -86,6 +86,7 @@ public:
 	Animation* anim = nullptr;
 
 	Collider* felCol = nullptr;
+	bool throwBalls = false;
 public:
 
 	FelBall(fPoint pos, int radius, int angle, SDL_Texture* tex, int angleInside) : pos(pos), radius(radius), startAngle(angle), tex(tex), angleInside(angleInside)
@@ -164,6 +165,11 @@ public:
 		{
 			if (timeUntilRunAway >= 1.0f)
 			{
+				if (!throwBalls)
+				{
+					App->audio->PlayFx(App->audio->Throw_BallsFX);
+					throwBalls = true;
+				}
 				if (startAngle == 0)
 				{
 					pos.x += ballSpeed * dt;

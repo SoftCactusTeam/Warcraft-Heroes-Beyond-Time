@@ -69,6 +69,7 @@ public:
 	uint PaperItemFX = 0u;
 	uint OpeningChestFX = 0u;
 	uint UnlockPortalFX = 0u;
+	uint Throw_BallsFX = 0u;
 
 	//std::string BSO's
 	std::string MainMenuBSO;
