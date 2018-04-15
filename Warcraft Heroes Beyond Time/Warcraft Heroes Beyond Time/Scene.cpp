@@ -258,6 +258,7 @@ bool Scene::Update(float dt)
 
 bool Scene::PostUpdate()
 {
+	bool ret = true;
 	if (actual_scene == Stages::MAIN_MENU || actual_scene == Stages::SETTINGS)
 	{
 		SDL_Rect back = { 0,0,640,360 };
@@ -273,6 +274,8 @@ bool Scene::PostUpdate()
 		App->render->DrawQuad({ -App->render->camera.x,-App->render->camera.y,640,360 }, 0, 0, 0, 200 , true, true);
 	}
 
+	ret = ControllerMenu();
+
 	BROFILER_CATEGORY("SceneRestart", Profiler::Color::Chocolate);
 	if (restart)
 	{
@@ -280,7 +283,7 @@ bool Scene::PostUpdate()
 		this->DeActivate();
 		this->Activate();
 	}
-	return true;
+	return ret;
 }
 
 bool Scene::CleanUp()
@@ -390,6 +393,62 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 	}
 	}
 	return ret;
+}
+
+
+bool Scene::ControllerMenu()
+{
+	if (actual_scene == Stages::MAIN_MENU)
+	{
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
+		{
+			App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
+			actual_scene = Stages::INGAME;
+			restart = true;
+		}
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN)
+		{
+			actual_scene = Stages::SETTINGS;
+			restart = true;
+		}
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_Y) == KEY_DOWN)
+			return false;
+
+	}
+	if (actual_scene == Stages::SETTINGS)
+	{
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_Y) == KEY_DOWN)
+		{
+			actual_scene = Stages::MAIN_MENU;
+			paused = false;
+			restart = true;
+		}
+	}
+	if ((actual_scene == Stages::BOSS_ROOM || actual_scene == Stages::INGAME) && paused == true)
+	{
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
+		{
+			paused = false;
+			// Decreasing audio when pause game
+			App->audio->setMusicVolume(currentPercentAudio);
+			App->gui->DestroyElem(PauseMenu);
+		}
+
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN)
+		{
+			App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
+			App->audio->setMusicVolume(currentPercentAudio);
+
+			actual_scene = Stages::MAIN_MENU;
+			paused = false;
+			restart = true;
+		}
+
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_Y) == KEY_DOWN)
+			return false;
+	}
+	
+	return true;
 }
 
 void Scene::CreateMainMenuScreen()
