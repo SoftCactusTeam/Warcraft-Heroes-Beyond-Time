@@ -4,6 +4,8 @@
 #include "Module.h"
 #include "p2Point.h"
 
+#include "Animation.h"
+
 class GUIWindow;
 class PlayerEntity;
 class ChestEntity;
@@ -75,7 +77,6 @@ private:
 
 	bool restart = false;
 	int lvlIndex = 0;
-
 };
 
 

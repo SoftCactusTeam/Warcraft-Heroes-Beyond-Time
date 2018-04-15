@@ -27,6 +27,7 @@
 #include "Button.h"
 #include "GUIWindow.h"
 #include "Slider.h"
+#include "GUIImage.h"
 
 
 
@@ -199,7 +200,7 @@ bool Scene::Update(float dt)
 		restart = true;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN || (actual_scene == Stages::INGAME && App->entities->enemiescount <= 0))
+	if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN && (actual_scene == Stages::INGAME && App->entities->enemiescount <= 0))
 	{
 		GeneratePortal();
 	}
@@ -263,6 +264,8 @@ bool Scene::PostUpdate()
 		SDL_Rect back = { 0,0,640,360 };
 		//App->render->DrawQuad(back, 0, 205, 193, 255, true, false);
 		App->render->DrawQuad(back, 64, 66, 159, 255, true, false);
+		
+
 	}
 
 	if (App->path->printWalkables == true)
@@ -270,6 +273,7 @@ bool Scene::PostUpdate()
 
 	if (actual_scene == Stages::BOSS_ROOM && gratitudeON)
 	{
+		
 		App->render->DrawQuad({ -App->render->camera.x,-App->render->camera.y,640,360 }, 0, 0, 0, 200 , true, true);
 	}
 
@@ -282,6 +286,7 @@ bool Scene::PostUpdate()
 		this->DeActivate();
 		this->Activate();
 	}
+	
 	return ret;
 }
 
@@ -451,6 +456,9 @@ bool Scene::ControllerMenu()
 
 void Scene::CreateMainMenuScreen()
 {
+	GUIImage* imageA = (GUIImage*)App->gui->CreateGUIImage({ 190, 50 }, { 573,30,42,42 }, this);
+	GUIImage* imageX = (GUIImage*)App->gui->CreateGUIImage({ 190, 150 }, { 665,30,42,42 }, this);
+	GUIImage* imageB = (GUIImage*)App->gui->CreateGUIImage({ 190, 250 }, { 619,30,42,42 }, this);
 
 	//PLAY BUTTON
 	Button* button = (Button*)App->gui->CreateButton({ 640 / 2 - 158 / 2, 50.0f }, BType::PLAY, this);
@@ -497,6 +505,8 @@ void Scene::CreateMainMenuScreen()
 
 void Scene::CreateSettingsScreen()
 {
+	GUIImage* imageB = (GUIImage*)App->gui->CreateGUIImage({ 190, 250 }, { 619,30,42,42 }, this);
+
 	//MUSIC VOLUME SLIDER
 	SliderInfo sinfo;
 	sinfo.type = Slider::SliderType::MUSIC_VOLUME;
@@ -545,11 +555,14 @@ void Scene::CreateSettingsScreen()
 
 void Scene::CreatePauseMenu()
 {
-
 	fPoint localPos = { 640 / 2 - 249 / 2, 360 / 2 - 286 / 2 };
 	PauseMenu = (GUIWindow*)App->gui->CreateGUIWindow(localPos, WoodWindow, this);
 
-	Button* Resume = (Button*)App->gui->CreateButton({ 249 / 2 - 158 / 2, 40 }, BType::RESUME, this, PauseMenu);
+	GUIImage* imageA = (GUIImage*)App->gui->CreateGUIImage({ 20, 40 },  { 573,30,42,42 }, this, PauseMenu);
+	GUIImage* imageX = (GUIImage*)App->gui->CreateGUIImage({ 20, 120 }, { 665,30,42,42 }, this, PauseMenu);
+	GUIImage* imageB = (GUIImage*)App->gui->CreateGUIImage({ 20, 200 }, { 619,30,42,42 }, this, PauseMenu);
+
+	Button* Resume = (Button*)App->gui->CreateButton({ 70, 40 }, BType::RESUME, this, PauseMenu);
 
 	LabelInfo defLabel1;
 	defLabel1.color = White;
@@ -557,7 +570,7 @@ void Scene::CreatePauseMenu()
 	defLabel1.text = "Resume";
 	App->gui->CreateLabel({ 46,10 }, defLabel1, Resume, this);
 
-	Button* MainMenu = (Button*)App->gui->CreateButton({ 249 / 2 - 158 / 2, 120 }, BType::GO_MMENU, this, PauseMenu);
+	Button* MainMenu = (Button*)App->gui->CreateButton({ 70, 120 }, BType::GO_MMENU, this, PauseMenu);
 
 	LabelInfo defLabel2;
 	defLabel2.color = White;
@@ -565,7 +578,7 @@ void Scene::CreatePauseMenu()
 	defLabel2.text = "Return to the Main Menu";
 	App->gui->CreateLabel({ 18,15 }, defLabel2, MainMenu, this);
 
-	Button* SaveAndExit = (Button*)App->gui->CreateButton({ 249 / 2 - 158 / 2, 200 }, BType::EXIT_GAME, this, PauseMenu);
+	Button* SaveAndExit = (Button*)App->gui->CreateButton({ 70, 200 }, BType::EXIT_GAME, this, PauseMenu);
 
 	LabelInfo defLabel3;
 	defLabel3.color = White;
