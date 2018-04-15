@@ -33,7 +33,7 @@ public:
 	bool PauseMusic(float fade_time = DEFAULT_MUSIC_FADE_TIME);
 
 	//Pause a channel
-	bool PauseChannel(int channel, int fadeseconds = 0);
+	bool PauseFX(int id, int fadeseconds = 0);
 
 	// Load a WAV in memory
 	unsigned int LoadFx(const char* path);
@@ -42,8 +42,10 @@ public:
 	//Return the channel used or -1 if errors happened
 	int PlayFx(unsigned int fx, int repeat = 0, int channel = -1);
 
+	//Set Volumes
 	void setMusicVolume(uint percent);
 	void setFXVolume(uint percent);
+
 
 public:
 
@@ -77,9 +79,6 @@ public:
 	//Volumes
 	uint MusicVolumePercent = 10;
 	uint FXVolumePercent = 10;
-
-	//channels
-	int DashChannel = -2;
 
 private:
 	

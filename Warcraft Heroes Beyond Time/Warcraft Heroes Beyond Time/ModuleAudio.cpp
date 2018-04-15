@@ -189,11 +189,12 @@ bool Audio::PauseMusic(float fade_time)
 	return Mix_PlayingMusic() == 0;
 }
 
-bool Audio::PauseChannel(int channel, int fadeseconds)
+bool Audio::PauseFX(int id, int fadeseconds)
 {
-	if (channel != -2)
+	for (int i = 0; i < 16; ++i)
 	{
-		Mix_HaltChannel(channel/*, fadeseconds*1000*/);
+		if (Mix_GetChunk(i) == fx[id - 1])
+			Mix_HaltChannel(i);
 	}
 	return true;
 }
@@ -225,20 +226,9 @@ unsigned int Audio::LoadFx(const char* path)
 //Return the channel used or -1 if errors happened
 int Audio::PlayFx(unsigned int id, int repeat, int channel)
 {
-	if(!active)
-		return false;
-
 	if (id > 0 && id <= fx.size())
 	{
-		int channel = 0;
-		channel = Mix_PlayChannel(channel, fx[id - 1], repeat);
-
-		if (id == Thrall_Dash_FX)
-			DashChannel = channel;
-		else if (channel == DashChannel)
-			DashChannel = -2;
-
-		return channel;
+		return Mix_PlayChannel(channel, fx[id - 1], repeat);
 	}
 
 	return -1;
