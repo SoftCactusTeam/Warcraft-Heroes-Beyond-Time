@@ -204,7 +204,7 @@ void Enemy_Archer::Collision(Collider* collideWith)
 		}
 
 		damaged = true;
-		damagedCD = 1.0f;
+		damagedCD = 0.5f;
 		
 	}
 }
