@@ -25,7 +25,7 @@ struct Collider
 	ATTACK_TYPE attackType = ATTACK_TYPE::NONE;
 
 	Entity* owner = nullptr;
-	COLLIDER_TYPE collidingWith = COLLIDER_TYPE::COLLIDER_NONE;	// when isn't property of an entity
+	Collider* collidingWith = nullptr;	// when isn't property of an entity
 };
 
 class ModuleColliders : public Module

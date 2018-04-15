@@ -491,14 +491,20 @@ void Enemy_Archer_Arrow::Update()
 		this->pos += direction;
 		arrowCollider->colliderRect.x = (int)pos.x;
 		arrowCollider->colliderRect.y = (int)pos.y;
-		if (arrowCollider->collidingWith == COLLIDER_TYPE::COLLIDER_PLAYER ||
-			arrowCollider->collidingWith == COLLIDER_TYPE::COLLIDER_PLAYER_ATTACK)
-			destroy = true;
-		else if (arrowCollider->collidingWith == COLLIDER_TYPE::COLLIDER_UNWALKABLE)
+		if (arrowCollider->collidingWith != nullptr)
 		{
-			tempoAtWall = TEMPO_ARROW_ATWALL + SDL_GetTicks();
-			Finish();
+			if ((arrowCollider->collidingWith->type == COLLIDER_TYPE::COLLIDER_PLAYER ||
+				(arrowCollider->collidingWith->type == COLLIDER_TYPE::COLLIDER_PLAYER_ATTACK && arrowCollider->collidingWith->attackType != Collider::ATTACK_TYPE::SHIT)))
+			{
+				destroy = true;
+			}
+			else if (arrowCollider->collidingWith->type == COLLIDER_TYPE::COLLIDER_UNWALKABLE)
+			{
+				tempoAtWall = TEMPO_ARROW_ATWALL + SDL_GetTicks();
+				Finish();
+			}
 		}
+			
 	}
 	else
 		destroy = true;

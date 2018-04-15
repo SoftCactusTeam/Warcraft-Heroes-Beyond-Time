@@ -292,9 +292,9 @@ bool Thrall::PostUpdate()
 {
 	if (anim == &attackUp || anim == &attackDown || anim == &attackRight || anim == &attackLeft || anim == &attackUpLeft || anim == &attackUpRight || anim == &attackDownLeft || anim == &attackDownRight)
 	{
-		if (anim->Finished() || (attackCollider != nullptr && attackCollider->collidingWith == COLLIDER_ENEMY))
+		if (anim->Finished() || (attackCollider != nullptr && attackCollider->collidingWith != nullptr && attackCollider->collidingWith->type == COLLIDER_ENEMY))
 		{
-			if ((attackCollider != nullptr && attackCollider->collidingWith == COLLIDER_ENEMY))
+			if ((attackCollider != nullptr && (attackCollider->collidingWith != nullptr && attackCollider->collidingWith->type == COLLIDER_ENEMY)))
 			{
 				IncreaseEnergy(20);
 				App->audio->PlayFx(App->audio->Thrall_Hit_FX);
