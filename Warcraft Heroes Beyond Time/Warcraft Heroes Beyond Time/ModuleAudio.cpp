@@ -58,6 +58,7 @@ bool Audio::Awake(pugi::xml_node& audioNode)
 	{
 		Mix_AllocateChannels(16);
 	}
+
 	//---------------------------------------Load fx-------------------------------
 	ButtonClicked = LoadFx("audio/fx/gui/ButtonClick.ogg");
 	ButtonHovered = LoadFx("audio/fx/gui/ButtonMouseHover.ogg");
@@ -188,6 +189,15 @@ bool Audio::PauseMusic(float fade_time)
 	return Mix_PlayingMusic() == 0;
 }
 
+bool Audio::PauseChannel(int channel, int fadeseconds)
+{
+	if (channel != -2)
+	{
+		Mix_HaltChannel(channel/*, fadeseconds*1000*/);
+	}
+	return true;
+}
+
 // Load WAV
 unsigned int Audio::LoadFx(const char* path)
 {
@@ -211,20 +221,27 @@ unsigned int Audio::LoadFx(const char* path)
 	return ret;
 }
 
-// Play WAV
-bool Audio::PlayFx(unsigned int id, int repeat)
+// Play a previously loaded WAV
+//Return the channel used or -1 if errors happened
+int Audio::PlayFx(unsigned int id, int repeat, int channel)
 {
-	bool ret = true;
-
 	if(!active)
 		return false;
 
 	if (id > 0 && id <= fx.size())
 	{
-		Mix_PlayChannel(-1, fx[id - 1], repeat);
+		int channel = 0;
+		channel = Mix_PlayChannel(channel, fx[id - 1], repeat);
+
+		if (id == Thrall_Dash_FX)
+			DashChannel = channel;
+		else if (channel == DashChannel)
+			DashChannel = -2;
+
+		return channel;
 	}
 
-	return ret;
+	return -1;
 }
 
 void Audio::setMusicVolume(uint percent)

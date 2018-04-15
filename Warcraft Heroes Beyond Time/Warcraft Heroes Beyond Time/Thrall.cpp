@@ -337,7 +337,11 @@ void Thrall::Collision(Collider* collideWith)
 	{
 		PushOut(collideWith);
 		if (state == states::PL_DASH)
+		{
 			ResetDash();
+			App->audio->PauseChannel(App->audio->DashChannel);
+		}
+			
 		break;
 	}
 	case COLLIDER_TYPE::COLLIDER_FELBALL:
