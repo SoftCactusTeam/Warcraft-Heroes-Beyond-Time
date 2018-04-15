@@ -488,7 +488,10 @@ void Enemy_Archer_Arrow::Update()
 			arrowCollider->collidingWith == COLLIDER_TYPE::COLLIDER_PLAYER_ATTACK)
 			destroy = true;
 		else if (arrowCollider->collidingWith == COLLIDER_TYPE::COLLIDER_UNWALKABLE)
+		{
 			tempoAtWall = TEMPO_ARROW_ATWALL + SDL_GetTicks();
+			Finish();
+		}
 	}
 	else
 		destroy = true;
