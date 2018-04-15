@@ -191,6 +191,8 @@ bool Guldan::Update(float dt)
 				readeForTimeNewBalls = false;
 				statesBoss = BossStates::DEAD;
 				App->audio->PlayFx(App->audio->GuldanDieFX);
+				App->audio->PauseFX(App->audio->Throw_BallsFX);
+				App->audio->PauseFX(App->audio->GuldanBalls_Ori);
 				if (bossCol != nullptr)
 				{
 					App->colliders->deleteCollider(bossCol);
@@ -293,6 +295,8 @@ bool Guldan::Update(float dt)
 					App->colliders->deleteCollider(bossCol);
 					bossCol = nullptr;
 				}
+				App->audio->PauseFX(App->audio->Throw_BallsFX);
+				App->audio->PauseFX(App->audio->GuldanBalls_Ori);
 				break;
 			}
 
