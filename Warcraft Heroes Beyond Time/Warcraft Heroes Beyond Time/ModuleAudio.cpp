@@ -54,6 +54,10 @@ bool Audio::Awake(pugi::xml_node& audioNode)
 		ret = false;
 	}
 	
+	if (ret)
+	{
+		Mix_AllocateChannels(16);
+	}
 	//---------------------------------------Load fx-------------------------------
 	ButtonClicked = LoadFx("audio/fx/gui/ButtonClick.ogg");
 	ButtonHovered = LoadFx("audio/fx/gui/ButtonMouseHover.ogg");
@@ -81,11 +85,13 @@ bool Audio::Awake(pugi::xml_node& audioNode)
 	WinBSO = "audio/BSO's/Warcraft HBT - Win.ogg";
 	//---------------------------------------SetVolumes----------------------------
 
-	Mix_Volume(-1, (MIX_MAX_VOLUME * FXVolumePercent) / 100);
-	Mix_VolumeMusic((MIX_MAX_VOLUME * MusicVolumePercent) / 100);
-
-
-	return ret;
+	if (ret)
+	{
+		Mix_Volume(-1, (MIX_MAX_VOLUME * FXVolumePercent) / 100);
+		Mix_VolumeMusic((MIX_MAX_VOLUME * MusicVolumePercent) / 100);
+	}
+	
+	return true;
 }
 
 // Called before quitting
