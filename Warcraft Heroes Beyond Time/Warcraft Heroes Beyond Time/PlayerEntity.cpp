@@ -778,7 +778,7 @@ void PlayerEntity::JoyconStates(float dt)
 		else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN && t == 0.0f && DashCD == 0.0f)
 		{
 			App->audio->PlayFx(App->audio->Thrall_Dash_FX);
-			App->input->PlayJoyRumble(0.75f, 100);
+			App->input->PlayJoyRumble(0.85f, 100);
 			startPos = pos;
 			state = states::PL_DASH;
 			animBefore = anim;

@@ -103,7 +103,7 @@ Guldan::Guldan(fPoint coor, BOSS_TYPE type, SDL_Texture* texture) : BossEntity(c
 	generatingBallsInverse.loop = false;
 	generatingBallsInverse.speedFactor = 9.0f;
 
-	hello.PushBack({ 208,71,68,68 });
+	hello.PushBack({ 208,71,69,68 });
 	hello.PushBack({ 276,71,68,68 });
 	hello.PushBack({ 346,71,68,68 });
 	hello.PushBack({ 415,71,68,68 });
@@ -357,8 +357,11 @@ bool Guldan::Update(float dt)
 		}
 		if (anim == &hello)
 		{
-			if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({208, 71, 68, 68})))
+			if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 208, 71, 69, 68 })))
+			{
 				App->audio->PlayFx(App->audio->GuldanEncounterFX);
+				App->input->PlayJoyRumble(0.95f, 500);
+			}
 			if (anim->Finished())
 			{
 				firstEncounter = true;
