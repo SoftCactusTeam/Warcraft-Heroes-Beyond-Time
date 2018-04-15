@@ -60,7 +60,6 @@ bool Scene::Awake(pugi::xml_node& sceneNode)
 bool Scene::Start()
 {
 	gratitudeON = false;
-	App->textures->Activate();
 	App->gui->Activate();
 
 	currentPercentAudio = App->audio->MusicVolumePercent;
@@ -294,7 +293,6 @@ bool Scene::CleanUp()
 	App->console->DeActivate();
 	App->path->ClearMap();
 	App->colliders->DeActivate();
-	App->textures->DeActivate();
 
 	if (actual_scene == Stages::MAIN_MENU)
 	{

@@ -512,7 +512,6 @@ void Enemy_Archer_Arrow::Draw()
 void Enemy_Archer_Arrow::Finish()
 {
 	App->colliders->deleteCollider(arrowCollider);
-	App->textures->UnLoad(texture);
 }
 
 void Enemy_Archer::ChargeAnimations()
