@@ -33,7 +33,7 @@ public:
 	SDL_Texture*	texture;
 	Collider*		arrowCollider = nullptr;
 
-	int				deadTimer;
+	float			deadTimer;
 	bool			destroy = false;
 	float			angle;
 	int				tempoAtWall = -1;

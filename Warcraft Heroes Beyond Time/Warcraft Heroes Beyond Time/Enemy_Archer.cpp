@@ -93,10 +93,9 @@ bool Enemy_Archer::PostUpdate()
 {
 	// ARROWS DRAW
 	for (int i = 0; i < arrowsVector.size(); i++)
-	{
 		if (arrowsVector[i] != nullptr)
 			arrowsVector[i]->Draw();
-	}
+
 	// AIXO ES PER COMPROBAR SI ESTA PARADA O NO
 	if (stop == true)
 		if (SDL_GetTicks() > accountantPrincipal)
@@ -105,20 +104,17 @@ bool Enemy_Archer::PostUpdate()
 		{
 			// Sumes temps a la fletxa, sino es destrueix en pausa
 			for (int i = 0; i < arrowsVector.size(); i++)
-			{
-				arrowsVector[i]->deadTimer += App->dt;
-			}
+				arrowsVector[i]->deadTimer += App->dt * 1000;
 			return true;
 		}
-
-	if (App->scene->paused == true)
+	else if (App->scene->paused == true)
 	{
+		// Sumes temps a la fletxa, sino es destrueix en pausa
 		for (int i = 0; i < arrowsVector.size(); i++)
-		{
-			arrowsVector[i]->deadTimer += App->dt;
-		}
+			arrowsVector[i]->deadTimer += App->dt * 1000;
 		return true;
 	}
+
 	// ARROWS UPDATE
 	for (int i = 0; i < arrowsVector.size(); i++)
 	{
