@@ -37,6 +37,8 @@ public:
 	bool			destroy = false;
 	float			angle;
 	int				tempoAtWall = -1;
+
+
 };
 
 class Enemy_Archer : public EnemyEntity
@@ -95,6 +97,9 @@ private:
 	iPoint posToScape;
 
 	float live = 0;
+
+	bool			damaged = false;
+	float			damagedCD = 0.0f;
 };
 
 #endif

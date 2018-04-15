@@ -88,6 +88,20 @@ bool Enemy_Archer::Update(float dt)
 		initIdle();
 		break;
 	}
+
+	if (damaged)
+	{
+		if (damagedCD - dt >= 0.0f)
+		{
+			damagedCD -= dt;
+		}
+		else
+		{
+			damagedCD = 0.0f;
+			damaged = false;
+		}	
+	}
+
 	return true;
 }
 
@@ -145,8 +159,10 @@ bool Enemy_Archer::Finish()
 bool Enemy_Archer::Draw()
 {
 	bool ret = true;
-	anim->GetCurrentFrame();
-	ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), texture, anim->GetCurrentRect(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, 0, anim->GetCurrentPivot());
+	if(damaged)
+		ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), texture, anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, 0, anim->GetCurrentPivot(), {255,100,100,255});
+	else
+		ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), texture, anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, 0, anim->GetCurrentPivot());
 	return ret;
 }
 
@@ -187,6 +203,8 @@ void Enemy_Archer::Collision(Collider* collideWith)
 			break;
 		}
 
+		damaged = true;
+		damagedCD = 1.0f;
 		
 	}
 }
@@ -514,6 +532,8 @@ void Enemy_Archer_Arrow::Draw()
 {
 	App->printer->PrintSprite(iPoint((int)pos.x, (int)pos.y), texture, rect, 2, ModulePrinter::Pivots::CENTER, angle);
 }
+
+
 
 void Enemy_Archer_Arrow::Finish()
 {

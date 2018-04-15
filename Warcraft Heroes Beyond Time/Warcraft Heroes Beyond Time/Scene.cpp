@@ -470,9 +470,13 @@ bool Scene::ControllerMenu()
 
 void Scene::CreateMainMenuScreen()
 {
-	GUIImage* imageA = (GUIImage*)App->gui->CreateGUIImage({ 190, 50 }, { 573,30,42,42 }, this);
-	GUIImage* imageX = (GUIImage*)App->gui->CreateGUIImage({ 190, 150 }, { 665,30,42,42 }, this);
-	GUIImage* imageB = (GUIImage*)App->gui->CreateGUIImage({ 190, 250 }, { 619,30,42,42 }, this);
+	if (App->input->isControllerConnected())
+	{
+		GUIImage* imageA = (GUIImage*)App->gui->CreateGUIImage({ 190, 50 }, { 573,30,42,42 }, this);
+		GUIImage* imageX = (GUIImage*)App->gui->CreateGUIImage({ 190, 150 }, { 665,30,42,42 }, this);
+		GUIImage* imageB = (GUIImage*)App->gui->CreateGUIImage({ 190, 250 }, { 619,30,42,42 }, this);
+	}
+	
 
 	//PLAY BUTTON
 	Button* button = (Button*)App->gui->CreateButton({ 640 / 2 - 158 / 2, 50.0f }, BType::PLAY, this);
@@ -519,7 +523,8 @@ void Scene::CreateMainMenuScreen()
 
 void Scene::CreateSettingsScreen()
 {
-	GUIImage* imageB = (GUIImage*)App->gui->CreateGUIImage({ 190, 250 }, { 619,30,42,42 }, this);
+	if (App->input->isControllerConnected())
+		GUIImage* imageB = (GUIImage*)App->gui->CreateGUIImage({ 190, 250 }, { 619,30,42,42 }, this);
 
 	//MUSIC VOLUME SLIDER
 	SliderInfo sinfo;
@@ -572,11 +577,19 @@ void Scene::CreatePauseMenu()
 	fPoint localPos = { 640 / 2 - 249 / 2, 360 / 2 - 286 / 2 };
 	PauseMenu = (GUIWindow*)App->gui->CreateGUIWindow(localPos, WoodWindow, this);
 
-	GUIImage* imageA = (GUIImage*)App->gui->CreateGUIImage({ 20, 40 },  { 573,30,42,42 }, this, PauseMenu);
-	GUIImage* imageX = (GUIImage*)App->gui->CreateGUIImage({ 20, 120 }, { 665,30,42,42 }, this, PauseMenu);
-	GUIImage* imageB = (GUIImage*)App->gui->CreateGUIImage({ 20, 200 }, { 619,30,42,42 }, this, PauseMenu);
+	if (App->input->isControllerConnected())
+	{
+		GUIImage* imageA = (GUIImage*)App->gui->CreateGUIImage({ 20, 40 }, { 573,30,42,42 }, this, PauseMenu);
+		GUIImage* imageX = (GUIImage*)App->gui->CreateGUIImage({ 20, 120 }, { 665,30,42,42 }, this, PauseMenu);
+		GUIImage* imageB = (GUIImage*)App->gui->CreateGUIImage({ 20, 200 }, { 619,30,42,42 }, this, PauseMenu);
+	}
 
-	Button* Resume = (Button*)App->gui->CreateButton({ 70, 40 }, BType::RESUME, this, PauseMenu);
+	Button* Resume;
+
+	if(App->input->isControllerConnected())
+		Resume = (Button*)App->gui->CreateButton({ 70, 40 }, BType::RESUME, this, PauseMenu);
+	else
+		Resume = (Button*)App->gui->CreateButton({ 249 / 2 - 158 / 2, 40 }, BType::RESUME, this, PauseMenu);
 
 	LabelInfo defLabel1;
 	defLabel1.color = White;
@@ -584,7 +597,11 @@ void Scene::CreatePauseMenu()
 	defLabel1.text = "Resume";
 	App->gui->CreateLabel({ 46,10 }, defLabel1, Resume, this);
 
-	Button* MainMenu = (Button*)App->gui->CreateButton({ 70, 120 }, BType::GO_MMENU, this, PauseMenu);
+	Button* MainMenu;
+	if(App->input->isControllerConnected())
+		MainMenu = (Button*)App->gui->CreateButton({ 70, 120 }, BType::GO_MMENU, this, PauseMenu);
+	else
+		MainMenu = (Button*)App->gui->CreateButton({ 249 / 2 - 158 / 2, 120 }, BType::GO_MMENU, this, PauseMenu);
 
 	LabelInfo defLabel2;
 	defLabel2.color = White;
@@ -592,7 +609,11 @@ void Scene::CreatePauseMenu()
 	defLabel2.text = "Return to the Main Menu";
 	App->gui->CreateLabel({ 18,15 }, defLabel2, MainMenu, this);
 
-	Button* SaveAndExit = (Button*)App->gui->CreateButton({ 70, 200 }, BType::EXIT_GAME, this, PauseMenu);
+	Button* SaveAndExit;
+	if (App->input->isControllerConnected())
+		SaveAndExit = (Button*)App->gui->CreateButton({ 70, 200 }, BType::EXIT_GAME, this, PauseMenu);
+	else
+		SaveAndExit = (Button*)App->gui->CreateButton({ 249 / 2 - 158 / 2, 200 }, BType::EXIT_GAME, this, PauseMenu);
 
 	LabelInfo defLabel3;
 	defLabel3.color = White;
