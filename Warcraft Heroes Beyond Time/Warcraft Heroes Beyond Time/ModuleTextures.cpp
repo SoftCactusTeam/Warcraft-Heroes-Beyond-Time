@@ -74,6 +74,11 @@ SDL_Texture* const Textures::Load(const char* path)
 		SDL_FreeSurface(surface);
 	}
 
+	if (texture != NULL)
+		textures.push_back(texture);
+	else
+		return NULL;
+
 	return texture;
 }
 
@@ -81,9 +86,9 @@ bool Textures::UnLoad(SDL_Texture* texture)
 {
 	std::list<SDL_Texture*>::const_iterator item;
 
-	for (item = textures.begin(); item != textures.end(); item = ++item)
+	for (item = textures.begin(); item != textures.end(); ++item)
 	{
-		if (texture == *item)
+		if (texture == (*item))
 		{
 			SDL_DestroyTexture(*item);
 			textures.remove(*item);
@@ -103,11 +108,9 @@ SDL_Texture* const Textures::LoadSurface(SDL_Surface* surface)
 		LOG("Unable to create texture from surface! SDL Error: %s\n", SDL_GetError());
 	}
 	else
-	{
-		textures.remove(texture);
-	}
+		return texture;
 
-	return texture;
+	return NULL;
 }
 
 void Textures::GetSize(const SDL_Texture* texture, uint& width, uint& height) const

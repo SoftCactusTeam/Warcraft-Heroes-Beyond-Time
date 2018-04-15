@@ -17,6 +17,7 @@
 #include "WCItem.h"
 #include "ModuleTextures.h"
 #include "ModuleItems.h"
+#include "FileSystem.h"
 
 
 #include "Brofiler\Brofiler.h"
@@ -59,10 +60,8 @@ bool Scene::Awake(pugi::xml_node& sceneNode)
 bool Scene::Start()
 {
 	gratitudeON = false;
+	App->textures->Activate();
 	App->gui->Activate();
-
-	texture = App->textures->Load("sprites/all_items.png");
-	venom = App->textures->Load("sprites/venom.png");
 
 	currentPercentAudio = App->audio->MusicVolumePercent;
 
@@ -89,6 +88,8 @@ bool Scene::Start()
 			App->map->Activate();
 			App->printer->Activate();
 
+			texture = App->textures->Load("sprites/all_items.png");
+			venom = App->textures->Load("sprites/venom.png");
 
 			BROFILER_CATEGORY("InGame Generation", Profiler::Color::Chocolate);
 			MapData mapInfo;
@@ -130,6 +131,10 @@ bool Scene::Start()
 		}
 		case Stages::BOSS_ROOM:
 		{
+
+			texture = App->textures->Load("sprites/all_items.png");
+			venom = App->textures->Load("sprites/venom.png");
+
 			App->items->Activate();
 			App->colliders->Activate();
 			App->entities->Activate();
@@ -139,6 +144,8 @@ bool Scene::Start()
 
 			App->audio->PlayMusic(App->audio->GuldanBSO.data(), 1);
 			App->map->GenerateBossMap();
+			portal = (PortalEntity*)App->entities->AddStaticEntity({ 15 * 46,17 * 46, }, PORTAL);
+			portal->locked = true;
 			player = App->entities->AddPlayer({ 15 * 46,16 * 46, }, THRALL);
 			player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
 			BossEntity* guldan = App->entities->AddBoss({ 14 * 48,5 * 48 }, GULDAN);
@@ -284,14 +291,14 @@ bool Scene::CleanUp()
 	App->console->DeActivate();
 	App->path->ClearMap();
 	App->colliders->DeActivate();
+	App->textures->DeActivate();
 
 	if (actual_scene == Stages::MAIN_MENU)
 	{
 		App->items->DeActivate();
 		paper = nullptr;
 		paper_fake = nullptr;
-	}
-		
+	}	
 
 	App->textures->UnLoad(venom);
 	App->textures->UnLoad(texture);
@@ -299,6 +306,7 @@ bool Scene::CleanUp()
 	player = nullptr;
 	lvlChest = nullptr;
 	texture = nullptr;
+	venom = nullptr;
 	portal = nullptr;
 	PauseMenu = nullptr;
 

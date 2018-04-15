@@ -9,6 +9,7 @@
 #include "ModuleInput.h"
 #include "ModulePrinter.h"
 #include "ModuleAudio.h"
+#include "ModuleTextures.h"
 
 #include "ModuleRender.h"
 
@@ -505,6 +506,7 @@ void Enemy_Archer_Arrow::Draw()
 void Enemy_Archer_Arrow::Finish()
 {
 	App->colliders->deleteCollider(arrowCollider);
+	App->textures->UnLoad(texture);
 }
 
 void Enemy_Archer::ChargeAnimations()
