@@ -23,6 +23,7 @@ public:
 	Enemy_Archer_Arrow(fPoint coor, SDL_Texture* texture, fPoint direction, int deadTimer = ARROW_DEAD_TIMER);
 
 	void Update();
+	void Draw();
 	void Finish();
 
 public:
