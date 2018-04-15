@@ -200,7 +200,7 @@ bool Scene::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN || App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN)
 	{
-		if (lvlChest->PlayerNear(player->pos))
+		if (lvlChest != nullptr && lvlChest->PlayerNear(player->pos))
 		{
 			if (lvlChest->opened == false)
 				lvlChest->OpenChest();
