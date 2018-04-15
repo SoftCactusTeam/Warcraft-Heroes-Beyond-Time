@@ -97,6 +97,8 @@ bool Scene::Start()
 			mapInfo.sizeY = 50;
 			mapInfo.iterations = 300;
 			mapInfo.tilesetPath = "maps/Tiles.png";
+			mapInfo.seed = seeeeeeeeeeeeed;
+			seeeeeeeeeeeeed = NULL;
 			lvlIndex++;
 
 			App->map->GenerateMap(mapInfo);
@@ -206,6 +208,14 @@ bool Scene::Update(float dt)
 	if (actual_scene == Stages::INGAME && App->entities->enemiescount <= 0)
 	{
 		GeneratePortal();
+	}
+
+	if (actual_scene == Stages::MAIN_MENU && App->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN) // DELETE THIS AFTER VERTICAL
+	{
+		App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
+		actual_scene = Stages::INGAME;
+		seeeeeeeeeeeeed = 1523809027;
+		restart = true;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN || App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN)

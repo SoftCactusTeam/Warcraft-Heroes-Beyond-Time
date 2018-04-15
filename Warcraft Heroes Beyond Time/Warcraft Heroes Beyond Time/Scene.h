@@ -77,6 +77,8 @@ private:
 
 	bool restart = false;
 	int lvlIndex = 0;
+
+	int seeeeeeeeeeeeed = NULL;
 };
 
 
