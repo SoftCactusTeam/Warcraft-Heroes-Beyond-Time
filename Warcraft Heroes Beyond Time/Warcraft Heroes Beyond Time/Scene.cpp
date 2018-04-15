@@ -17,6 +17,7 @@
 #include "WCItem.h"
 #include "ModuleTextures.h"
 #include "ModuleItems.h"
+#include "FileSystem.h"
 
 
 #include "Brofiler\Brofiler.h"
@@ -26,6 +27,7 @@
 #include "Button.h"
 #include "GUIWindow.h"
 #include "Slider.h"
+#include "GUIImage.h"
 
 
 
@@ -61,9 +63,6 @@ bool Scene::Start()
 	gratitudeON = false;
 	App->gui->Activate();
 
-	texture = App->textures->Load("sprites/all_items.png");
-	venom = App->textures->Load("sprites/venom.png");
-
 	currentPercentAudio = App->audio->MusicVolumePercent;
 
 	switch (actual_scene)
@@ -89,6 +88,8 @@ bool Scene::Start()
 			App->map->Activate();
 			App->printer->Activate();
 
+			texture = App->textures->Load("sprites/all_items.png");
+			venom = App->textures->Load("sprites/venom.png");
 
 			BROFILER_CATEGORY("InGame Generation", Profiler::Color::Chocolate);
 			MapData mapInfo;
@@ -96,6 +97,8 @@ bool Scene::Start()
 			mapInfo.sizeY = 50;
 			mapInfo.iterations = 300;
 			mapInfo.tilesetPath = "maps/Tiles.png";
+			mapInfo.seed = seeeeeeeeeeeeed;
+			seeeeeeeeeeeeed = NULL;
 			lvlIndex++;
 
 			App->map->GenerateMap(mapInfo);
@@ -123,13 +126,17 @@ bool Scene::Start()
 			App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
 
 			
-			iPoint chestPos = App->map->GetRandomValidPointProxy(30);
+			iPoint chestPos = App->map->GetRandomValidPointProxy(30, 5);
 			lvlChest = App->entities->AddChest({ (float)chestPos.x * 46,(float)chestPos.y * 46 }, MID_CHEST);
 			lvlChest->UnLockChest();
 			break;
 		}
 		case Stages::BOSS_ROOM:
 		{
+
+			texture = App->textures->Load("sprites/all_items.png");
+			venom = App->textures->Load("sprites/venom.png");
+
 			App->items->Activate();
 			App->colliders->Activate();
 			App->entities->Activate();
@@ -139,6 +146,8 @@ bool Scene::Start()
 
 			App->audio->PlayMusic(App->audio->GuldanBSO.data(), 1);
 			App->map->GenerateBossMap();
+			portal = (PortalEntity*)App->entities->AddStaticEntity({ 15 * 46,17 * 46, }, PORTAL);
+			portal->locked = true;
 			player = App->entities->AddPlayer({ 15 * 46,16 * 46, }, THRALL);
 			player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
 			BossEntity* guldan = App->entities->AddBoss({ 14 * 48,5 * 48 }, GULDAN);
@@ -157,6 +166,9 @@ bool Scene::PreUpdate()
 
 bool Scene::Update(float dt)
 {
+
+	bool ret = true;
+
 	//TESTING SAVES
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
@@ -193,14 +205,22 @@ bool Scene::Update(float dt)
 		restart = true;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN || (actual_scene == Stages::INGAME && App->entities->enemiescount <= 0))
+	if (actual_scene == Stages::INGAME && App->entities->enemiescount <= 0)
 	{
 		GeneratePortal();
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN || App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN)
+	if (actual_scene == Stages::MAIN_MENU && App->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN) // DELETE THIS AFTER VERTICAL
 	{
-		if (lvlChest->PlayerNear(player->pos))
+		App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
+		actual_scene = Stages::INGAME;
+		seeeeeeeeeeeeed = 1523809027;
+		restart = true;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN || App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN)
+	{
+		if (lvlChest != nullptr && lvlChest->PlayerNear(player->pos))
 		{
 			if (lvlChest->opened == false)
 				lvlChest->OpenChest();
@@ -245,17 +265,23 @@ bool Scene::Update(float dt)
 		}
 	}
 
+	if(ret)
+		ret = ControllerMenu();
 
-	return true;
+
+	return ret;
 }
 
 bool Scene::PostUpdate()
 {
+	bool ret = true;
 	if (actual_scene == Stages::MAIN_MENU || actual_scene == Stages::SETTINGS)
 	{
 		SDL_Rect back = { 0,0,640,360 };
 		//App->render->DrawQuad(back, 0, 205, 193, 255, true, false);
 		App->render->DrawQuad(back, 64, 66, 159, 255, true, false);
+		
+
 	}
 
 	if (App->path->printWalkables == true)
@@ -263,6 +289,7 @@ bool Scene::PostUpdate()
 
 	if (actual_scene == Stages::BOSS_ROOM && gratitudeON)
 	{
+		
 		App->render->DrawQuad({ -App->render->camera.x,-App->render->camera.y,640,360 }, 0, 0, 0, 200 , true, true);
 	}
 
@@ -273,7 +300,8 @@ bool Scene::PostUpdate()
 		this->DeActivate();
 		this->Activate();
 	}
-	return true;
+	
+	return ret;
 }
 
 bool Scene::CleanUp()
@@ -290,8 +318,7 @@ bool Scene::CleanUp()
 		App->items->DeActivate();
 		paper = nullptr;
 		paper_fake = nullptr;
-	}
-		
+	}	
 
 	App->textures->UnLoad(venom);
 	App->textures->UnLoad(texture);
@@ -299,6 +326,7 @@ bool Scene::CleanUp()
 	player = nullptr;
 	lvlChest = nullptr;
 	texture = nullptr;
+	venom = nullptr;
 	portal = nullptr;
 	PauseMenu = nullptr;
 
@@ -384,8 +412,67 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 	return ret;
 }
 
+
+bool Scene::ControllerMenu()
+{
+	if (actual_scene == Stages::MAIN_MENU)
+	{
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
+		{
+			App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
+			actual_scene = Stages::INGAME;
+			restart = true;
+		}
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_X) == KEY_DOWN)
+		{
+			actual_scene = Stages::SETTINGS;
+			restart = true;
+		}
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN)
+			return false;
+
+	}
+	if (actual_scene == Stages::SETTINGS)
+	{
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN)
+		{
+			actual_scene = Stages::MAIN_MENU;
+			paused = false;
+			restart = true;
+		}
+	}
+	if ((actual_scene == Stages::BOSS_ROOM || actual_scene == Stages::INGAME) && paused == true)
+	{
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
+		{
+			paused = false;
+			// Decreasing audio when pause game
+			App->audio->setMusicVolume(currentPercentAudio);
+			App->gui->DestroyElem(PauseMenu);
+		}
+
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_X) == KEY_DOWN)
+		{
+			App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
+			App->audio->setMusicVolume(currentPercentAudio);
+
+			actual_scene = Stages::MAIN_MENU;
+			paused = false;
+			restart = true;
+		}
+
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN)
+			return false;
+	}
+	
+	return true;
+}
+
 void Scene::CreateMainMenuScreen()
 {
+	GUIImage* imageA = (GUIImage*)App->gui->CreateGUIImage({ 190, 50 }, { 573,30,42,42 }, this);
+	GUIImage* imageX = (GUIImage*)App->gui->CreateGUIImage({ 190, 150 }, { 665,30,42,42 }, this);
+	GUIImage* imageB = (GUIImage*)App->gui->CreateGUIImage({ 190, 250 }, { 619,30,42,42 }, this);
 
 	//PLAY BUTTON
 	Button* button = (Button*)App->gui->CreateButton({ 640 / 2 - 158 / 2, 50.0f }, BType::PLAY, this);
@@ -432,6 +519,8 @@ void Scene::CreateMainMenuScreen()
 
 void Scene::CreateSettingsScreen()
 {
+	GUIImage* imageB = (GUIImage*)App->gui->CreateGUIImage({ 190, 250 }, { 619,30,42,42 }, this);
+
 	//MUSIC VOLUME SLIDER
 	SliderInfo sinfo;
 	sinfo.type = Slider::SliderType::MUSIC_VOLUME;
@@ -480,11 +569,14 @@ void Scene::CreateSettingsScreen()
 
 void Scene::CreatePauseMenu()
 {
-
 	fPoint localPos = { 640 / 2 - 249 / 2, 360 / 2 - 286 / 2 };
 	PauseMenu = (GUIWindow*)App->gui->CreateGUIWindow(localPos, WoodWindow, this);
 
-	Button* Resume = (Button*)App->gui->CreateButton({ 249 / 2 - 158 / 2, 40 }, BType::RESUME, this, PauseMenu);
+	GUIImage* imageA = (GUIImage*)App->gui->CreateGUIImage({ 20, 40 },  { 573,30,42,42 }, this, PauseMenu);
+	GUIImage* imageX = (GUIImage*)App->gui->CreateGUIImage({ 20, 120 }, { 665,30,42,42 }, this, PauseMenu);
+	GUIImage* imageB = (GUIImage*)App->gui->CreateGUIImage({ 20, 200 }, { 619,30,42,42 }, this, PauseMenu);
+
+	Button* Resume = (Button*)App->gui->CreateButton({ 70, 40 }, BType::RESUME, this, PauseMenu);
 
 	LabelInfo defLabel1;
 	defLabel1.color = White;
@@ -492,7 +584,7 @@ void Scene::CreatePauseMenu()
 	defLabel1.text = "Resume";
 	App->gui->CreateLabel({ 46,10 }, defLabel1, Resume, this);
 
-	Button* MainMenu = (Button*)App->gui->CreateButton({ 249 / 2 - 158 / 2, 120 }, BType::GO_MMENU, this, PauseMenu);
+	Button* MainMenu = (Button*)App->gui->CreateButton({ 70, 120 }, BType::GO_MMENU, this, PauseMenu);
 
 	LabelInfo defLabel2;
 	defLabel2.color = White;
@@ -500,7 +592,7 @@ void Scene::CreatePauseMenu()
 	defLabel2.text = "Return to the Main Menu";
 	App->gui->CreateLabel({ 18,15 }, defLabel2, MainMenu, this);
 
-	Button* SaveAndExit = (Button*)App->gui->CreateButton({ 249 / 2 - 158 / 2, 200 }, BType::EXIT_GAME, this, PauseMenu);
+	Button* SaveAndExit = (Button*)App->gui->CreateButton({ 70, 200 }, BType::EXIT_GAME, this, PauseMenu);
 
 	LabelInfo defLabel3;
 	defLabel3.color = White;
@@ -519,7 +611,7 @@ void Scene::GeneratePortal()
 {
 	if (portal == nullptr)
 	{
-		iPoint position = App->map->GetRandomValidPointProxy(20);
+		iPoint position = App->map->GetRandomValidPointProxy(20, 5);
 
 		portal = (PortalEntity*)App->entities->AddStaticEntity({ (float)position.x * 46, (float)position.y * 46 }, PORTAL);
 	}

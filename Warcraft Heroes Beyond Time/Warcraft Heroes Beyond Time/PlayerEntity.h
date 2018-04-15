@@ -45,8 +45,6 @@ protected:
 
 	Collider* pcol = nullptr;
 
-	
-
 	enum class states
 	{
 		PL_NON_STATE,
@@ -67,9 +65,6 @@ protected:
 		PL_WIN
 
 	} state;
-
-	
-
 
 public:
 

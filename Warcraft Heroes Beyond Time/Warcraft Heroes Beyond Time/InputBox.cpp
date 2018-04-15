@@ -11,7 +11,10 @@ InputBox::InputBox(fPoint localPos, InputBoxInfo& info, Module* listener, GUIEle
 	color = info.color;
 }
 
-InputBox::~InputBox(){}
+InputBox::~InputBox()
+{
+	SDL_DestroyTexture(texturetoBlit);
+}
 
 bool InputBox::Update(float dt)
 {
@@ -67,10 +70,10 @@ void InputBox::DisableInput()
 
 void InputBox::ClearBox()
 {
-	if(!text.empty())
+	if (!text.empty())
 		text.clear();
 
-	if(texturetoBlit)
+	if (texturetoBlit)
 		SDL_DestroyTexture(texturetoBlit);
 
 	texturetoBlit = App->fonts->Print(text.data(), color, font);

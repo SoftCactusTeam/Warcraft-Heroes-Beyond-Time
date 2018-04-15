@@ -23,6 +23,7 @@ public:
 	Enemy_Archer_Arrow(fPoint coor, SDL_Texture* texture, fPoint direction, int deadTimer = ARROW_DEAD_TIMER);
 
 	void Update();
+	void Draw();
 	void Finish();
 
 public:
@@ -32,7 +33,7 @@ public:
 	SDL_Texture*	texture;
 	Collider*		arrowCollider = nullptr;
 
-	int				deadTimer;
+	float			deadTimer;
 	bool			destroy = false;
 	float			angle;
 	int				tempoAtWall = -1;

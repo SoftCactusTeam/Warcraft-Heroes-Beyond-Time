@@ -32,14 +32,20 @@ public:
 	//Pause a playing music
 	bool PauseMusic(float fade_time = DEFAULT_MUSIC_FADE_TIME);
 
+	//Pause a channel
+	bool PauseFX(int id, int fadeseconds = 0);
+
 	// Load a WAV in memory
 	unsigned int LoadFx(const char* path);
 
 	// Play a previously loaded WAV
-	bool PlayFx(unsigned int fx, int repeat = 0);
+	//Return the channel used or -1 if errors happened
+	int PlayFx(unsigned int fx, int repeat = 0, int channel = -1);
 
+	//Set Volumes
 	void setMusicVolume(uint percent);
 	void setFXVolume(uint percent);
+
 
 public:
 
@@ -63,6 +69,7 @@ public:
 	uint PaperItemFX = 0u;
 	uint OpeningChestFX = 0u;
 	uint UnlockPortalFX = 0u;
+	uint Throw_BallsFX = 0u;
 
 	//std::string BSO's
 	std::string MainMenuBSO;
@@ -70,6 +77,7 @@ public:
 	std::string GuldanBSO;
 	std::string WinBSO;
 
+	//Volumes
 	uint MusicVolumePercent = 10;
 	uint FXVolumePercent = 10;
 

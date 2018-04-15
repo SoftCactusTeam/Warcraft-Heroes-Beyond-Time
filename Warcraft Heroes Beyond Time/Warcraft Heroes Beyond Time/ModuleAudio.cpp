@@ -54,6 +54,11 @@ bool Audio::Awake(pugi::xml_node& audioNode)
 		ret = false;
 	}
 	
+	if (ret)
+	{
+		Mix_AllocateChannels(16);
+	}
+
 	//---------------------------------------Load fx-------------------------------
 	ButtonClicked = LoadFx("audio/fx/gui/ButtonClick.ogg");
 	ButtonHovered = LoadFx("audio/fx/gui/ButtonMouseHover.ogg");
@@ -74,6 +79,7 @@ bool Audio::Awake(pugi::xml_node& audioNode)
 	OpeningChestFX = LoadFx("audio/fx/others/open_chest_fx.ogg");
 	UnlockPortalFX = LoadFx("audio/fx/others/portal_unlocked_fx.ogg");
 	GuldanBalls_Ori = LoadFx("audio/fx/guldan/guldan_fireball_fx.ogg");
+	Throw_BallsFX = LoadFx("audio/fx/guldan/throw_balls_fx.ogg");
 	//---------------------------------------Load Music----------------------------
 	MainMenuBSO = "audio/BSO's/Warcraft HBT - Main Menu.ogg";
 	InGameBSO = "audio/BSO's/Warcraft HBT - Level.ogg";
@@ -81,11 +87,13 @@ bool Audio::Awake(pugi::xml_node& audioNode)
 	WinBSO = "audio/BSO's/Warcraft HBT - Win.ogg";
 	//---------------------------------------SetVolumes----------------------------
 
-	Mix_Volume(-1, (MIX_MAX_VOLUME * FXVolumePercent) / 100);
-	Mix_VolumeMusic((MIX_MAX_VOLUME * MusicVolumePercent) / 100);
-
-
-	return ret;
+	if (ret)
+	{
+		Mix_Volume(-1, (MIX_MAX_VOLUME * FXVolumePercent) / 100);
+		Mix_VolumeMusic((MIX_MAX_VOLUME * MusicVolumePercent) / 100);
+	}
+	
+	return true;
 }
 
 // Called before quitting
@@ -182,6 +190,16 @@ bool Audio::PauseMusic(float fade_time)
 	return Mix_PlayingMusic() == 0;
 }
 
+bool Audio::PauseFX(int id, int fadeseconds)
+{
+	for (int i = 0; i < 16; ++i)
+	{
+		if (Mix_GetChunk(i) == fx[id - 1])
+			Mix_HaltChannel(i);
+	}
+	return true;
+}
+
 // Load WAV
 unsigned int Audio::LoadFx(const char* path)
 {
@@ -205,20 +223,16 @@ unsigned int Audio::LoadFx(const char* path)
 	return ret;
 }
 
-// Play WAV
-bool Audio::PlayFx(unsigned int id, int repeat)
+// Play a previously loaded WAV
+//Return the channel used or -1 if errors happened
+int Audio::PlayFx(unsigned int id, int repeat, int channel)
 {
-	bool ret = true;
-
-	if(!active)
-		return false;
-
 	if (id > 0 && id <= fx.size())
 	{
-		Mix_PlayChannel(-1, fx[id - 1], repeat);
+		return Mix_PlayChannel(channel, fx[id - 1], repeat);
 	}
 
-	return ret;
+	return -1;
 }
 
 void Audio::setMusicVolume(uint percent)

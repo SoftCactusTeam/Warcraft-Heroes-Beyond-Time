@@ -58,12 +58,12 @@ bool ModuleColliders::Update(float dt)
 						if ((*first) != nullptr && (*first)->owner != nullptr)
 							(*first)->owner->Collision((*second));
 						else
-							(*first)->collidingWith = (*second)->type;	// Aixo es quan el collider no te entity pero vol detectar
+							(*first)->collidingWith = (*second);	// Aixo es quan el collider no te entity pero vol detectar
 
 						if ((*second)->owner != nullptr)
 							(*second)->owner->Collision((*first));
 						else
-							(*second)->collidingWith = (*first)->type;
+							(*second)->collidingWith = (*first);
 					}
 
 	// Comprobar colliders temporals
@@ -76,7 +76,7 @@ bool ModuleColliders::Update(float dt)
 						if ((*first)->owner != nullptr)
 							(*first)->owner->Collision((*second));
 						else
-							(*first)->collidingWith = (*second)->type;
+							(*first)->collidingWith = (*second);
 					}
 
 	// Netejar colliders temporals
@@ -156,6 +156,7 @@ void ModuleColliders::deleteCollider(Collider* col)
 	{
 		if ((*it) == col)
 		{
+			delete(*it);
 			colliders.erase(it);
 			break;
 		}

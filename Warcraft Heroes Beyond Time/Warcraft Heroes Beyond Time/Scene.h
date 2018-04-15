@@ -4,6 +4,8 @@
 #include "Module.h"
 #include "p2Point.h"
 
+#include "Animation.h"
+
 class GUIWindow;
 class PlayerEntity;
 class ChestEntity;
@@ -38,6 +40,7 @@ public:
 	bool gratitudeON = false;
 	void GoMainMenu();
 	void GoBossRoom();
+	bool ControllerMenu();
 
 public:
 	enum class Stages
@@ -75,6 +78,7 @@ private:
 	bool restart = false;
 	int lvlIndex = 0;
 
+	int seeeeeeeeeeeeed = NULL;
 };
 
 

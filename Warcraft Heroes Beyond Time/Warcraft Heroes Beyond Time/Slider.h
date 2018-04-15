@@ -29,7 +29,7 @@ public:
 
 	Slider() {}
 	Slider(fPoint localPos, Module* listener, SDL_Rect atlasRect, SliderInfo sInfo, GUIElemType type, GUIElem* parent = nullptr);
-	virtual ~Slider() {}
+	virtual ~Slider();
 
 	bool Update(float dt);
 	bool Draw();
