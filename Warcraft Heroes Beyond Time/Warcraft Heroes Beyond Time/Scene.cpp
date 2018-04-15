@@ -203,7 +203,7 @@ bool Scene::Update(float dt)
 		restart = true;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN && (actual_scene == Stages::INGAME && App->entities->enemiescount <= 0))
+	if (actual_scene == Stages::INGAME && App->entities->enemiescount <= 0)
 	{
 		GeneratePortal();
 	}
