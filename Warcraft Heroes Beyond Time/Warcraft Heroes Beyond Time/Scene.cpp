@@ -218,7 +218,7 @@ bool Scene::Update(float dt)
 		restart = true;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN || App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN || App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN)
 	{
 		if (lvlChest != nullptr && lvlChest->PlayerNear(player->pos))
 		{

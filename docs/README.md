@@ -30,11 +30,13 @@ _IMPORTANT: do not modify, change or add any folder or file as you might not be 
 ### Mouse and keyboard
 - LEFT CLICK: select in menus
 - WASD: move
-- X: attack
-- Z: skill
+- J: attack
+- K: skill
 - SPACE: dash
-- 9: pick item
 - ESC: pause
+- E: open chest / pick item.
+- F1: Go to Guldan's room.
+
 
 ## Team members  
 
