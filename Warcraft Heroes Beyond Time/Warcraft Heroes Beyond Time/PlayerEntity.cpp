@@ -173,13 +173,13 @@ void PlayerEntity::KeyboardStates(float dt)
 				startPos = pos;
 				animBefore = anim;
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+			else if (App->input->GetKey(SDL_SCANCODE_J) == KEY_DOWN)
 			{
 				state = states::PL_ATTACK;
 				animBefore = anim;
 				Attack();
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN && numStats.energy == 100)
+			else if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN && numStats.energy == 100)
 			{
 				state = states::PL_SKILL;
 				animBefore = anim;
@@ -304,13 +304,13 @@ void PlayerEntity::KeyboardStates(float dt)
 				state = states::PL_DASH;
 				animBefore = anim;
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+			else if (App->input->GetKey(SDL_SCANCODE_J) == KEY_DOWN)
 			{
 				state = states::PL_ATTACK;
 				animBefore = anim;
 				Attack();
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN && numStats.energy == 100)
+			else if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN && numStats.energy == 100)
 			{
 				state = states::PL_SKILL;
 				animBefore = anim;
@@ -346,13 +346,13 @@ void PlayerEntity::KeyboardStates(float dt)
 				state = states::PL_DASH;
 				animBefore = anim;
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+			else if (App->input->GetKey(SDL_SCANCODE_J) == KEY_DOWN)
 			{
 				state = states::PL_ATTACK;
 				animBefore = anim;
 				Attack();
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN && numStats.energy == 100)
+			else if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN && numStats.energy == 100)
 			{
 				state = states::PL_SKILL;
 				animBefore = anim;
@@ -388,13 +388,13 @@ void PlayerEntity::KeyboardStates(float dt)
 				state = states::PL_DASH;
 				animBefore = anim;
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+			else if (App->input->GetKey(SDL_SCANCODE_J) == KEY_DOWN)
 			{
 				state = states::PL_ATTACK;
 				animBefore = anim;
 				Attack();
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN && numStats.energy == 100)
+			else if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN && numStats.energy == 100)
 			{
 				state = states::PL_SKILL;
 				animBefore = anim;
@@ -430,13 +430,13 @@ void PlayerEntity::KeyboardStates(float dt)
 				state = states::PL_DASH;
 				animBefore = anim;
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+			else if (App->input->GetKey(SDL_SCANCODE_J) == KEY_DOWN)
 			{
 				state = states::PL_ATTACK;
 				animBefore = anim;
 				Attack();
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN && numStats.energy == 100)
+			else if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN && numStats.energy == 100)
 			{
 				state = states::PL_SKILL;
 				animBefore = anim;
@@ -474,13 +474,13 @@ void PlayerEntity::KeyboardStates(float dt)
 				state = states::PL_DASH;
 				animBefore = anim;
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+			else if (App->input->GetKey(SDL_SCANCODE_J) == KEY_DOWN)
 			{
 				state = states::PL_ATTACK;
 				animBefore = anim;
 				Attack();
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN && numStats.energy == 100)
+			else if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN && numStats.energy == 100)
 			{
 				state = states::PL_SKILL;
 				animBefore = anim;
@@ -517,13 +517,13 @@ void PlayerEntity::KeyboardStates(float dt)
 				state = states::PL_DASH;
 				animBefore = anim;
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+			else if (App->input->GetKey(SDL_SCANCODE_J) == KEY_DOWN)
 			{
 				state = states::PL_ATTACK;
 				animBefore = anim;
 				Attack();
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN && numStats.energy == 100)
+			else if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN && numStats.energy == 100)
 			{
 				state = states::PL_SKILL;
 				animBefore = anim;
@@ -560,13 +560,13 @@ void PlayerEntity::KeyboardStates(float dt)
 				state = states::PL_DASH;
 				animBefore = anim;
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+			else if (App->input->GetKey(SDL_SCANCODE_J) == KEY_DOWN)
 			{
 				state = states::PL_ATTACK;
 				animBefore = anim;
 				Attack();
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN && numStats.energy == 100)
+			else if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN && numStats.energy == 100)
 			{
 				state = states::PL_SKILL;
 				animBefore = anim;
@@ -603,13 +603,13 @@ void PlayerEntity::KeyboardStates(float dt)
 				state = states::PL_DASH;
 				animBefore = anim;
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+			else if (App->input->GetKey(SDL_SCANCODE_J) == KEY_DOWN)
 			{
 				state = states::PL_ATTACK;
 				animBefore = anim;
 				Attack();
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN && numStats.energy == 100)
+			else if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN && numStats.energy == 100)
 			{
 				state = states::PL_SKILL;
 				animBefore = anim;
