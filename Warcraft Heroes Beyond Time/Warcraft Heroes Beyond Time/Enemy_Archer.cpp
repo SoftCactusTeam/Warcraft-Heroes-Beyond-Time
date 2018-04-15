@@ -43,13 +43,14 @@ bool Enemy_Archer::Start()
 
 bool Enemy_Archer::Update(float dt)
 {
+
+
 	// AIXO ES PER COMPROBAR SI ESTA PARADA O NO
 	if (stop == true)
 		if (SDL_GetTicks() > accountantPrincipal)
 			stop = false;
 		else
 			return true;
-	anim->speed = anim->speedFactor * dt;
 
 	if (false)
 	{
@@ -92,6 +93,11 @@ bool Enemy_Archer::Update(float dt)
 
 bool Enemy_Archer::PostUpdate()
 {
+	if (App->scene->paused == true)
+		anim->speed = 0.0f;
+	else
+		anim->speed = anim->speedFactor * App->dt;
+
 	// ARROWS DRAW
 	for (int i = 0; i < arrowsVector.size(); i++)
 		if (arrowsVector[i] != nullptr)
