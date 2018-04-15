@@ -156,6 +156,7 @@ void ModuleColliders::deleteCollider(Collider* col)
 	{
 		if ((*it) == col)
 		{
+			delete(*it);
 			colliders.erase(it);
 			break;
 		}

@@ -9,6 +9,7 @@
 #include "ModuleInput.h"
 #include "ModulePrinter.h"
 #include "ModuleAudio.h"
+#include "ModuleTextures.h"
 
 #include "ModuleRender.h"
 

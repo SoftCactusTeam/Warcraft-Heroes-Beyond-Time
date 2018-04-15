@@ -75,7 +75,9 @@ bool FileSystem::IsFileEmpty(const char* path) const
 // Called before quitting
 bool FileSystem::CleanUp()
 {
-	//LOG("Freeing File System subsystem");
+	if (PHYSFS_deinit() == 0)
+		LOG("Cleaning FileSystem Error:%s", PHYSFS_getLastError());
+
 	return true;
 }
 

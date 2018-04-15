@@ -17,6 +17,7 @@
 #include "WCItem.h"
 #include "ModuleTextures.h"
 #include "ModuleItems.h"
+#include "FileSystem.h"
 
 
 #include "Brofiler\Brofiler.h"
@@ -61,9 +62,6 @@ bool Scene::Start()
 	gratitudeON = false;
 	App->gui->Activate();
 
-	texture = App->textures->Load("sprites/all_items.png");
-	venom = App->textures->Load("sprites/venom.png");
-
 	currentPercentAudio = App->audio->MusicVolumePercent;
 
 	switch (actual_scene)
@@ -89,6 +87,8 @@ bool Scene::Start()
 			App->map->Activate();
 			App->printer->Activate();
 
+			texture = App->textures->Load("sprites/all_items.png");
+			venom = App->textures->Load("sprites/venom.png");
 
 			BROFILER_CATEGORY("InGame Generation", Profiler::Color::Chocolate);
 			MapData mapInfo;
@@ -130,6 +130,10 @@ bool Scene::Start()
 		}
 		case Stages::BOSS_ROOM:
 		{
+
+			texture = App->textures->Load("sprites/all_items.png");
+			venom = App->textures->Load("sprites/venom.png");
+
 			App->items->Activate();
 			App->colliders->Activate();
 			App->entities->Activate();
@@ -139,6 +143,8 @@ bool Scene::Start()
 
 			App->audio->PlayMusic(App->audio->GuldanBSO.data(), 1);
 			App->map->GenerateBossMap();
+			portal = (PortalEntity*)App->entities->AddStaticEntity({ 15 * 46,17 * 46, }, PORTAL);
+			portal->locked = true;
 			player = App->entities->AddPlayer({ 15 * 46,16 * 46, }, THRALL);
 			player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
 			BossEntity* guldan = App->entities->AddBoss({ 14 * 48,5 * 48 }, GULDAN);
@@ -251,6 +257,7 @@ bool Scene::Update(float dt)
 
 bool Scene::PostUpdate()
 {
+	bool ret = true;
 	if (actual_scene == Stages::MAIN_MENU || actual_scene == Stages::SETTINGS)
 	{
 		SDL_Rect back = { 0,0,640,360 };
@@ -266,6 +273,8 @@ bool Scene::PostUpdate()
 		App->render->DrawQuad({ -App->render->camera.x,-App->render->camera.y,640,360 }, 0, 0, 0, 200 , true, true);
 	}
 
+	ret = ControllerMenu();
+
 	BROFILER_CATEGORY("SceneRestart", Profiler::Color::Chocolate);
 	if (restart)
 	{
@@ -273,7 +282,7 @@ bool Scene::PostUpdate()
 		this->DeActivate();
 		this->Activate();
 	}
-	return true;
+	return ret;
 }
 
 bool Scene::CleanUp()
@@ -290,8 +299,7 @@ bool Scene::CleanUp()
 		App->items->DeActivate();
 		paper = nullptr;
 		paper_fake = nullptr;
-	}
-		
+	}	
 
 	App->textures->UnLoad(venom);
 	App->textures->UnLoad(texture);
@@ -299,6 +307,7 @@ bool Scene::CleanUp()
 	player = nullptr;
 	lvlChest = nullptr;
 	texture = nullptr;
+	venom = nullptr;
 	portal = nullptr;
 	PauseMenu = nullptr;
 
@@ -382,6 +391,62 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 	}
 	}
 	return ret;
+}
+
+
+bool Scene::ControllerMenu()
+{
+	if (actual_scene == Stages::MAIN_MENU)
+	{
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
+		{
+			App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
+			actual_scene = Stages::INGAME;
+			restart = true;
+		}
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN)
+		{
+			actual_scene = Stages::SETTINGS;
+			restart = true;
+		}
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_Y) == KEY_DOWN)
+			return false;
+
+	}
+	if (actual_scene == Stages::SETTINGS)
+	{
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_Y) == KEY_DOWN)
+		{
+			actual_scene = Stages::MAIN_MENU;
+			paused = false;
+			restart = true;
+		}
+	}
+	if ((actual_scene == Stages::BOSS_ROOM || actual_scene == Stages::INGAME) && paused == true)
+	{
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
+		{
+			paused = false;
+			// Decreasing audio when pause game
+			App->audio->setMusicVolume(currentPercentAudio);
+			App->gui->DestroyElem(PauseMenu);
+		}
+
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN)
+		{
+			App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
+			App->audio->setMusicVolume(currentPercentAudio);
+
+			actual_scene = Stages::MAIN_MENU;
+			paused = false;
+			restart = true;
+		}
+
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_Y) == KEY_DOWN)
+			return false;
+	}
+	
+	return true;
 }
 
 void Scene::CreateMainMenuScreen()

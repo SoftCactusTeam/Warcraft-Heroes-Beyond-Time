@@ -14,7 +14,10 @@ Label::Label(fPoint position, LabelInfo& info, GUIElem* parent, Module* listener
 	multilabelWidth = info.multilabelWidth;
 }
 
-Label::~Label() {}
+Label::~Label()
+{
+	SDL_DestroyTexture(texturetoBlit);
+}
 
 bool Label::Update(float dt)
 {

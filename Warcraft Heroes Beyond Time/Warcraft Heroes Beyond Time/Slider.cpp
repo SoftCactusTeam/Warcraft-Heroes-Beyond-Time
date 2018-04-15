@@ -26,6 +26,11 @@ Slider::Slider(fPoint localPos, Module* listener, SDL_Rect atlasRect, SliderInfo
 	}
 }
 
+Slider::~Slider()
+{
+	DestroyChilds();
+}
+
 bool Slider::Update(float dt)
 {
 	bool ret = true;
