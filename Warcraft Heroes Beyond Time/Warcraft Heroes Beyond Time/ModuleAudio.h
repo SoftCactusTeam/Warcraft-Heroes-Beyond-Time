@@ -91,6 +91,7 @@ public:
 private:
 	
 	bool devicesConnected = false;
+
 	_Mix_Music*			music;
 	std::vector <Mix_Chunk*> fx;
 };
