@@ -43,6 +43,7 @@ public:
 	bool CleanUp();
 
 	bool GetWindowEvent(EventWindow ev);
+	void InitController();
 
 	KeyState GetKey(int id) const
 	{
