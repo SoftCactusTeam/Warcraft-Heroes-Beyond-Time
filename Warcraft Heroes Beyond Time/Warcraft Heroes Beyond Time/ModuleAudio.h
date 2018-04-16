@@ -23,6 +23,10 @@ public:
 	// Called before render is available
 	bool Awake(pugi::xml_node&);
 
+
+	bool Update(float dt);
+
+
 	// Called before quitting
 	bool CleanUp();
 
@@ -46,6 +50,9 @@ public:
 	void setMusicVolume(uint percent);
 	void setFXVolume(uint percent);
 
+	//InitAudio
+
+	void InitAudio();
 
 public:
 
@@ -83,6 +90,7 @@ public:
 
 private:
 	
+	bool devicesConnected = false;
 	_Mix_Music*			music;
 	std::vector <Mix_Chunk*> fx;
 };

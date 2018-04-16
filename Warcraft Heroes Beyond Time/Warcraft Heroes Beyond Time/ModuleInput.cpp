@@ -52,6 +52,13 @@ bool Input::Awake(pugi::xml_node& inputNode)
 		ret = false;
 	}
 
+	InitController();
+
+	return ret;
+}
+
+void Input::InitController()
+{
 	if (SDL_NumJoysticks() < 1)
 		LOG("Warning: No joystick detected");
 	else
@@ -84,8 +91,6 @@ bool Input::Awake(pugi::xml_node& inputNode)
 
 		}
 	}
-
-	return ret;
 }
 
 bool Input::Start()
@@ -243,6 +248,10 @@ bool Input::PreUpdate()
 			break;
 		}
 	}
+
+	//Check if controller has been connected to the system
+	if (controller == nullptr && joystick == nullptr && SDL_NumJoysticks() > 0)
+		InitController();
 
 	return true;
 }

@@ -24,40 +24,37 @@ Audio::~Audio()
 bool Audio::Awake(pugi::xml_node& audioNode)
 {
 	LOG("Loading Audio Mixer");
-	bool ret = true;
 	
 	SDL_Init(0);
 
 	if(SDL_InitSubSystem(SDL_INIT_AUDIO) < 0)
 	{
 		LOG("SDL_INIT_AUDIO could not initialize! SDL_Error: %s\n", SDL_GetError());
-		active = false;
-		ret = false;
-	}
-
-	// load support for the music formats
-	/*int flags = MIX_INIT_OGG;
-	int init = Mix_Init(flags);
-
-	if((init & flags) != flags)
-	{
-		LOG("Could not initialize Mixer lib. Mix_Init: %s", Mix_GetError());
-		active = false;
-		ret = false;
-	}*/
-
-	//Initialize SDL_mixer
-	if(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 4096) < 0)
-	{
-		LOG("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
-		active = false;
-		ret = false;
+		return false;
 	}
 	
-	if (ret)
+	if (SDL_GetNumAudioDevices(0) > 0)
+		devicesConnected = true;
+
+	
+	if (devicesConnected)
 	{
-		Mix_AllocateChannels(16);
+		InitAudio();
 	}
+	
+	return true;
+}
+
+
+void Audio::InitAudio()
+{
+	//Initialize SDL_mixer
+	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 4096) < 0)
+	{
+		LOG("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+	}
+
+	Mix_AllocateChannels(16);
 
 	//---------------------------------------Load fx-------------------------------
 	ButtonClicked = LoadFx("audio/fx/gui/ButtonClick.ogg");
@@ -87,14 +84,23 @@ bool Audio::Awake(pugi::xml_node& audioNode)
 	WinBSO = "audio/BSO's/Warcraft HBT - Win.ogg";
 	//---------------------------------------SetVolumes----------------------------
 
-	if (ret)
+	Mix_Volume(-1, (MIX_MAX_VOLUME * FXVolumePercent) / 100);
+	Mix_VolumeMusic((MIX_MAX_VOLUME * MusicVolumePercent) / 100);
+}
+
+
+bool Audio::Update(float dt)
+{
+	if (devicesConnected == false && SDL_GetNumAudioDevices(0) > 0)
 	{
-		Mix_Volume(-1, (MIX_MAX_VOLUME * FXVolumePercent) / 100);
-		Mix_VolumeMusic((MIX_MAX_VOLUME * MusicVolumePercent) / 100);
+		devicesConnected = true;
+		InitAudio();
 	}
-	
+
 	return true;
 }
+
+
 
 // Called before quitting
 bool Audio::CleanUp()
