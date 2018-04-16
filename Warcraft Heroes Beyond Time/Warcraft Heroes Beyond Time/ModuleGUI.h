@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include <list>
+#include <string>
 #include <map>
 #include "p2Point.h"
 #include "SDL/include/SDL.h"
@@ -46,11 +47,14 @@ public:
 
 	bool DestroyElem(GUIElem* element);
 	SDL_Texture* getAtlas() const;
+	char* getVersion() const;
 
 public:
 	std::list<GUIElem*> GUIElemList;
 	std::list<GUIElem*> elementsToSpawn;
 	std::list<GUIElem*> elementsToKill;
+
+	std::string version = "";
 
 private:
 	SDL_Texture* atlas = nullptr;

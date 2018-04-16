@@ -26,6 +26,7 @@ ModuleGUI::~ModuleGUI() {}
 
 bool ModuleGUI::Awake(pugi::xml_node& guiNode)
 {
+	version = guiNode.child("version").attribute("string").as_string("");
 	return true;
 }
 
@@ -229,4 +230,9 @@ GUIElem* ModuleGUI::CreateBossHPBar(BossEntity* boss, fPoint localPos)
 SDL_Texture* ModuleGUI::getAtlas() const
 {
 	return atlas;
+}
+
+char* ModuleGUI::getVersion() const
+{
+	return (char*)version.data();
 }

@@ -515,7 +515,7 @@ void Scene::CreateMainMenuScreen()
 	LabelInfo versionLabel;
 	versionLabel.color = White;
 	versionLabel.fontName = "Arial30";
-	versionLabel.text = "Warcraft-Heroes-Beyond-Time-RELEASE-v0.3.1";
+	versionLabel.text = App->gui->getVersion();
 	App->gui->CreateLabel({ 10,340 }, versionLabel, nullptr, nullptr);
 
 
