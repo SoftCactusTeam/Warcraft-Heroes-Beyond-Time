@@ -166,46 +166,58 @@ bool Enemy_Archer::Draw()
 	return ret;
 }
 
-void Enemy_Archer::Collision(Collider* collideWith)
+void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 {
-	if (collideWith->type == COLLIDER_TYPE::COLLIDER_PLAYER_ATTACK)
+	if (collideWith->colType == Collider::ColliderType::PLAYER_ATTACK)
 	{
+		PlayerAttack* attack = (PlayerAttack*)collideWith;
 
-		switch (collideWith->attackType)
+		switch (attack->pattacktype)
 		{
-		case  Collider::ATTACK_TYPE::PLAYER_MELEE:
-			App->audio->PlayFx(App->audio->ArcherDeath);
-			live -= 40;
-			if (live <= 0)
+			case PlayerAttack::P_Attack_Type::NORMAL_ATTACK:
+			case PlayerAttack::P_Attack_Type::SKILL:
 			{
-				if (state != ARCHER_STATE::ARCHER_DIE)
-					initDie();
-			}	
-			else
-				initBackJump();
-			break;
-		case Collider::ATTACK_TYPE::THRALL_SKILL:
-			App->audio->PlayFx(App->audio->ArcherDeath);
-			live -= 100;
-			if (live <= 0)
-			{
-				if (state != ARCHER_STATE::ARCHER_DIE)
-					initDie();
-			}
-			else
-				initBackJump();
-			break;
-		case Collider::ATTACK_TYPE::SHIT:
-			live -= 5 * App->dt;
-			if (live <= 0)
-				if (state != ARCHER_STATE::ARCHER_DIE)
-					initDie();
-			break;
-		}
+				App->audio->PlayFx(App->audio->ArcherDeath);
+				live -= attack->damage;
+				if (live <= 0)
+				{
+					if (state != ARCHER_STATE::ARCHER_DIE)
+						initDie();
+				}
+				else
+					initBackJump();
 
+				break;
+			}
+			case PlayerAttack::P_Attack_Type::SHIT:
+			{
+				live -= attack->damage;
+				if (live <= 0)
+					if (state != ARCHER_STATE::ARCHER_DIE)
+						initDie();
+			}
+		}
+	
 		damaged = true;
 		damagedCD = 0.5f;
-		
+	}
+}
+
+void Enemy_Archer::OnCollisionContinue(Collider* yours, Collider* collideWith)
+{
+	if (collideWith->colType == Collider::ColliderType::PLAYER_ATTACK)
+	{
+		PlayerAttack* attack = (PlayerAttack*)collideWith;
+		switch (attack->pattacktype)
+		{
+			case PlayerAttack::P_Attack_Type::SHIT:
+			{
+				live -= attack->damage;
+				if (live <= 0)
+					if (state != ARCHER_STATE::ARCHER_DIE)
+						initDie();
+			}
+		}
 	}
 }
 
@@ -493,7 +505,8 @@ Enemy_Archer_Arrow::Enemy_Archer_Arrow(fPoint coor, SDL_Texture* texture, fPoint
 	angle -= 90;
 
 	tempoAtWall = -1;
-	arrowCollider = App->colliders->AddCollider({ (int)coor.x,(int)coor.y,5,5 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATTACK, nullptr, { 0,0 }, Collider::ATTACK_TYPE::ENEMY_ARROW);
+	//We need the new module for that
+	//arrowCollider = App->colliders->AddEnemyAttackCollider({ (int)coor.x,(int)coor.y,5,5 }, this, Collider::ColliderType::ENEMY_ATTACK, nullptr, { 0,0 });
 	rect = { 808,110,32,32 };
 }
 
@@ -507,7 +520,7 @@ void Enemy_Archer_Arrow::Update()
 	else if (SDL_GetTicks() < deadTimer)
 	{
 		this->pos += direction;
-		arrowCollider->colliderRect.x = (int)pos.x;
+		/*arrowCollider->colliderRect.x = (int)pos.x;
 		arrowCollider->colliderRect.y = (int)pos.y;
 		if (arrowCollider->collidingWith != nullptr)
 		{
@@ -521,7 +534,7 @@ void Enemy_Archer_Arrow::Update()
 				tempoAtWall = TEMPO_ARROW_ATWALL + SDL_GetTicks();
 				Finish();
 			}
-		}
+		}*/
 			
 	}
 	else

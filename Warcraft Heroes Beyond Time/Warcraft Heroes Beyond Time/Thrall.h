@@ -14,7 +14,8 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 	bool Finish();
-	void Collision(Collider* collideWith);
+	void OnCollision(Collider* yours, Collider* collideWith);
+	void OnCollisionContinue(Collider* yours, Collider* collideWith);
 
 private:
 	void UpdateCollider();

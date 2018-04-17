@@ -3,7 +3,7 @@
 #include "ModuleRender.h"
 #include "ModulePrinter.h"
 
-Entity::Entity(fPoint coor, SDL_Texture* texture) : pos(coor), texture(texture) {}
+Entity::Entity(fPoint coor, SDL_Texture* texture, Entity::EntityType entityType) : pos(coor), texture(texture), entityType(entityType){}
 
 bool Entity::Start() { return true; }
 

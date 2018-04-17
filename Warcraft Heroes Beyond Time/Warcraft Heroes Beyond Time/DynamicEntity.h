@@ -3,9 +3,18 @@
 
 #include "Entity.h"
 
-class DynamicEntity : public Entity {
+class DynamicEntity : public Entity 
+{
 public:
-	DynamicEntity(fPoint coor, SDL_Texture* texture);
+	enum class DynamicType
+	{
+		NO_TYPE = -1,
+		ENEMY, 
+		PLAYER
+		
+	} dynamicType = DynamicType::NO_TYPE;
+
+	DynamicEntity(fPoint coor, SDL_Texture* texture, DynamicType dyntype);
 
 	virtual bool Start();
 	virtual bool Update(float dt);

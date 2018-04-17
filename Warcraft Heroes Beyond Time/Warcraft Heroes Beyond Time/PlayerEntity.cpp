@@ -12,7 +12,7 @@
 #include "ModuleTextures.h"
 #include "ModuleItems.h"
 
-PlayerEntity::PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : DynamicEntity(coor, texture), type(type)
+PlayerEntity::PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : DynamicEntity(coor, texture, DynamicType::PLAYER), type(type)
 {
 	App->entities->LoadCDs(DashConfigCD, damagedConfigCD, deadinfloorConfigCD);
 }
@@ -1252,10 +1252,10 @@ void PlayerEntity::CheckCulling()
 		App->map->getSize(w, h);
 		tilesize = App->map->getTileSize() + 2;
 		SDL_Rect currentRect = anim->GetCurrentRect();
-		currentRect.w = pcol->colliderRect.w;
-		currentRect.h = pcol->colliderRect.h;
+		currentRect.w = pcol->rectArea.w;
+		currentRect.h = pcol->rectArea.h;
 		//iPoint pivot = anim->GetCurrentPivot();
-		iPoint pivot = { pcol->colliderRect.x, pcol->colliderRect.y };//false
+		iPoint pivot = { pcol->rectArea.x, pcol->rectArea.y };//false
 		fPoint topleft = { pos.x + pivot.x, pos.y + pivot.y };
 
 		if (freeZonex > topleft.x && -App->render->camera.x > 0)
@@ -1390,37 +1390,37 @@ void PlayerEntity::DrawFreeZone(bool boolean)
 void PlayerEntity::PushOut(Collider* wall)
 {
 	bool collideByRight = false, collideByLeft = false, collideByTop = false, collideByBottom = false;
-	SDL_Rect wall_r = wall->colliderRect;
-	SDL_Rect player_col = { pcol->colliderRect.x + (int)pos.x, pcol->colliderRect.y + (int)pos.y, pcol->colliderRect.w, pcol->colliderRect.h };
+	SDL_Rect wall_r = wall->rectArea;
+	SDL_Rect player_col = { pcol->rectArea.x + (int)pos.x, pcol->rectArea.y + (int)pos.y, pcol->rectArea.w, pcol->rectArea.h };
 
-	if (wall->colliderRect.x + wall->colliderRect.w / 2 <= pcol->colliderRect.x + (int)pos.x)
+	if (wall->rectArea.x + wall->rectArea.w / 2 <= pcol->rectArea.x + (int)pos.x)
 		collideByRight = true;
 
-	else if (wall->colliderRect.x + wall->colliderRect.w / 2 > pcol->colliderRect.x + (int)pos.x + pcol->colliderRect.w)
+	else if (wall->rectArea.x + wall->rectArea.w / 2 > pcol->rectArea.x + (int)pos.x + pcol->rectArea.w)
 		collideByLeft = true;
 
-	if (wall->colliderRect.y + wall->colliderRect.h / 2 < pcol->colliderRect.y + (int)pos.y)
+	if (wall->rectArea.y + wall->rectArea.h / 2 < pcol->rectArea.y + (int)pos.y)
 		collideByBottom = true;
 
-	else if (wall->colliderRect.y + wall->colliderRect.h / 2 >= pcol->colliderRect.y + (int)pos.y + pcol->colliderRect.h)
+	else if (wall->rectArea.y + wall->rectArea.h / 2 >= pcol->rectArea.y + (int)pos.y + pcol->rectArea.h)
 		collideByTop = true;
 
 	//4 main direction collisions
 	if (collideByRight && !collideByBottom && !collideByTop)
 	{
-		pos.x += (wall->colliderRect.x + wall->colliderRect.w - (pcol->colliderRect.x + (int)pos.x));
+		pos.x += (wall->rectArea.x + wall->rectArea.w - (pcol->rectArea.x + (int)pos.x));
 	}
 	else if (collideByLeft && !collideByTop && !collideByBottom)
 	{
-		pos.x -= (pcol->colliderRect.x + pcol->colliderRect.w + pos.x) - wall->colliderRect.x;
+		pos.x -= (pcol->rectArea.x + pcol->rectArea.w + pos.x) - wall->rectArea.x;
 	}
 	else if (collideByTop && !collideByLeft && !collideByRight)
 	{
-		pos.y -= (pcol->colliderRect.y + (int)pos.y + pcol->colliderRect.h) - wall->colliderRect.y;
+		pos.y -= (pcol->rectArea.y + (int)pos.y + pcol->rectArea.h) - wall->rectArea.y;
 	}
 	else if (collideByBottom && !collideByLeft && !collideByRight)
 	{
-		pos.y += wall->colliderRect.y + wall->colliderRect.h - (pcol->colliderRect.y + (int)pos.y);
+		pos.y += wall->rectArea.y + wall->rectArea.h - (pcol->rectArea.y + (int)pos.y);
 	}
 
 	//Combination between them (choose the closest direction)
@@ -1428,11 +1428,11 @@ void PlayerEntity::PushOut(Collider* wall)
 	{
 		if ((player_col.y + player_col.h) - wall_r.y < (wall_r.x + wall_r.w - player_col.x))
 		{
-			pos.y -= (pcol->colliderRect.y + (int)pos.y + pcol->colliderRect.h) - wall->colliderRect.y;
+			pos.y -= (pcol->rectArea.y + (int)pos.y + pcol->rectArea.h) - wall->rectArea.y;
 		}
 		else
 		{
-			pos.x += (wall->colliderRect.x + wall->colliderRect.w) - ((int)pos.x + pcol->colliderRect.x);
+			pos.x += (wall->rectArea.x + wall->rectArea.w) - ((int)pos.x + pcol->rectArea.x);
 		}
 	}
 	else if (collideByTop && collideByLeft)

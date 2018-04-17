@@ -10,8 +10,17 @@ class Collider;
 
 class Entity {
 public:
+
+	enum class EntityType
+	{
+		NO_TYPE = -1,
+		DYNAMIC_ENTITY,
+		STATIC_ENTITY
+
+	} entityType = EntityType::NO_TYPE;
+
 	Entity() {}
-	Entity(fPoint coor, SDL_Texture* texture);
+	Entity(fPoint coor, SDL_Texture* texture, EntityType entityType);
 
 	virtual bool Start();
 	virtual bool Update(float dt);
@@ -19,7 +28,10 @@ public:
 	virtual bool Finish();
 	virtual bool Draw();
 
-	virtual void Collision(Collider* collideWith) {}
+	virtual void OnCollision(Collider* yours, Collider* collideWith) {}
+	virtual void OnCollisionContinue(Collider* yours, Collider* collideWith) {}
+	virtual void OnCollisionLeave(Collider* yours, Collider* collideWith) {}
+
 	void StopConcreteTime(int time);
 public:
 	fPoint pos = { 0,0 };

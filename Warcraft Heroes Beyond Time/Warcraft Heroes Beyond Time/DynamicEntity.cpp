@@ -1,7 +1,7 @@
 #include "DynamicEntity.h"
 #include <math.h>
 
-DynamicEntity::DynamicEntity(fPoint coor, SDL_Texture* texture) : Entity(coor, texture) {}
+DynamicEntity::DynamicEntity(fPoint coor, SDL_Texture* texture, DynamicEntity::DynamicType dynamicType) : Entity(coor, texture, EntityType::DYNAMIC_ENTITY), dynamicType(dynamicType){}
 
 bool DynamicEntity::Start() { return true; }
 bool DynamicEntity::Update(float dt) { return true; }

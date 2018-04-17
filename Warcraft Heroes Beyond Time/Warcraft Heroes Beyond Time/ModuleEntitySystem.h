@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "SDL_image\include\SDL_image.h"
-
+#include "Module.h"
 #include "p2Point.h"
 #include "EntitiesEnums.h"
 
@@ -14,6 +14,7 @@ class PlayerEntity;
 class ChestEntity;
 class StaticEntity;
 class BossEntity;
+enum class BossType;
 
 class EntitySystem : public Module
 {
@@ -67,7 +68,7 @@ public:
 
 	PlayerEntity* AddPlayer(fPoint coor, PLAYER_TYPE type);
 	void AddEnemy(fPoint coor, ENEMY_TYPE type);
-	BossEntity* AddBoss(fPoint coor, BOSS_TYPE type);
+	BossEntity* AddBoss(fPoint coor, BossType type);
 	void AddConsumable(fPoint coor, CONSUMABLE_TYPE type);
 	ChestEntity* AddChest(fPoint coor, CHEST_TYPE type);
 	StaticEntity* AddStaticEntity(fPoint coor, STATIC_ENTITY_TYPE type);

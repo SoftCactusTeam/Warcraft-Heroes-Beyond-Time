@@ -7,7 +7,8 @@
 
 #define NUMBER_OF_ORIENTATIONS 8
 
-class EnemyEntity : public DynamicEntity {
+class EnemyEntity : public DynamicEntity 
+{
 public:
 	EnemyEntity(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture);
 

@@ -8,7 +8,7 @@
 #include "Application.h"
 #include "Thrall.h"
 
-Guldan::Guldan(fPoint coor, BOSS_TYPE type, SDL_Texture* texture) : BossEntity(coor, type, texture)
+Guldan::Guldan(fPoint coor, BossType type, SDL_Texture* texture) : BossEntity(coor, type, texture)
 {
 	idle.PushBack({ 1,1,68,68 });
 	idle.PushBack({ 70,1,68,68 });
@@ -127,7 +127,7 @@ Guldan::~Guldan()
 
 bool Guldan::Start()
 {
-	bossCol = App->colliders->AddCollider({ 5, 5,55,55 }, COLLIDER_TYPE::COLLIDER_ENEMY, this);
+	bossCol = App->colliders->AddCollider({ 5, 5,55,55 }, Collider::ColliderType::ENTITY, this);
 
 	effectsTexture = App->textures->Load("sprites/Guldan_Effects.png");
 
@@ -204,7 +204,7 @@ bool Guldan::Update(float dt)
 			if (floatTimeForTp >= 2.0f)
 			{
 				App->audio->PlayFx(App->audio->GuldanTPFX);
-				bossCol->colliderRect = { 0,0,0,0 };
+				//bossCol->rectArea = { 0,0,0,0 };
 				statesBoss = BossStates::TELEPORT;
 				anim = &teleport;
 				floatTimeForTp = 0.0f;
@@ -255,7 +255,7 @@ bool Guldan::Update(float dt)
 				statesBoss = BossStates::IDLE;
 				readeForTimeNewBalls = true;
 				inverseTeleport.Reset();
-				bossCol->colliderRect = { 5, 5,55,55 };
+				//bossCol->rectArea = { 5, 5,55,55 };
 				break;
 			}
 
@@ -420,13 +420,15 @@ bool Guldan::CreateFelBalls(fPoint pos)
 	return true;
 }
 
-void Guldan::Collision(Collider* collideWith)
+void Guldan::OnCollision(Collider* yours, Collider* collideWith)
 {
-	switch (collideWith->type)
+	switch (collideWith->colType)
 	{
-		case COLLIDER_TYPE::COLLIDER_PLAYER_ATTACK:
+		case Collider::ColliderType::PLAYER_ATTACK:
 		{
-			if (collideWith->attackType == Collider::ATTACK_TYPE::PLAYER_MELEE)
+			PlayerAttack* attack = (PlayerAttack*)collideWith;
+
+			if (attack->pattacktype == PlayerAttack::P_Attack_Type::NORMAL_ATTACK)
 			{
 				if (anim == &idle || anim == &generateingBalls || anim == &generatingBallsInverse)
 				{
@@ -436,7 +438,7 @@ void Guldan::Collision(Collider* collideWith)
 						numStats.hp -= 10;
 				}
 			}
-			else if (collideWith->attackType == Collider::ATTACK_TYPE::THRALL_SKILL)
+			else if (attack->pattacktype == PlayerAttack::P_Attack_Type::SKILL)
 			{
 				if (anim == &idle || anim == &generateingBalls || anim == &generatingBallsInverse)
 				{
@@ -446,7 +448,7 @@ void Guldan::Collision(Collider* collideWith)
 						numStats.hp -= 10;
 				}
 			}
-			else if (collideWith->attackType == Collider::ATTACK_TYPE::SHIT && !App->scene->player->stop)
+			else if (attack->pattacktype == PlayerAttack::P_Attack_Type::SHIT && !App->scene->player->stop)
 			{
 				if (numStats.hp -  (1 * App->dt) <= 0)
 					numStats.hp = 0;

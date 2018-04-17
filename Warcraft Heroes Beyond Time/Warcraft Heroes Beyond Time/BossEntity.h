@@ -3,18 +3,25 @@
 
 #include "EnemyEntity.h"
 
+enum class BossType
+{
+	NO_TYPE = -1,
+	GULDAN
+
+};
+
 class BossEntity : public EnemyEntity  
 {
 public:
-	BossEntity(fPoint coor, BOSS_TYPE type, SDL_Texture* texture);
+	
+
+	BossEntity(fPoint coor, BossType type, SDL_Texture* texture);
 
 	bool Start();
 	bool Update(float dt);
 	bool Finish();
-
-private:
-
-	BOSS_TYPE type = BOSS_TYPE::NON_BOSS;
+	
+	BossType bossType = BossType::NO_TYPE;
 };
 
 #endif
