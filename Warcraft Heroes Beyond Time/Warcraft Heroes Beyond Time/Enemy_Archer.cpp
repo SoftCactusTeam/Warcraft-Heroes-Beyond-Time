@@ -291,12 +291,14 @@ void Enemy_Archer::initBackJump()
 			randomY -= 3;
 			randomY *= -1;
 		}
-		if (App->path->ExistWalkableAtPos(iPoint(((int)pos.x + anim->GetCurrentRect().w / 2)/ (App->map->getTileSize() - 2) + randomX, ((int)pos.y  + anim->GetCurrentRect().h / 2) / (App->map->getTileSize() - 2) + randomY)) != -1)
+		int numPos;
+		if (App->path->ExistWalkableAtPos(iPoint(((int)pos.x)/ (App->map->getTileSize() - 2) + randomX, ((int)pos.y) / (App->map->getTileSize() - 2) + randomY)) != -1)
 		{
+			numPos = App->path->ExistWalkableAtPos(iPoint(((int)pos.x) / (App->map->getTileSize() - 2) + randomX, ((int)pos.y) / (App->map->getTileSize() - 2) + randomY));
 			posSmoke = pos;
 			tempoSmoke = 300 + SDL_GetTicks();
-			pos.x += randomX * App->map->getTileSize();
-			pos.y += randomY * App->map->getTileSize();
+			pos.x = App->path->map[numPos]->nodePos.x * (App->map->getTileSize() - 2);
+			pos.y = App->path->map[numPos]->nodePos.y * (App->map->getTileSize() - 2);
 			break;
 		}
 	}
