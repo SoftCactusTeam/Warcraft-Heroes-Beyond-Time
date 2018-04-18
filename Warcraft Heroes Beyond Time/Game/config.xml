@@ -32,7 +32,7 @@
 
     <players>
       <cds dash = "0" deadinfloor = "2" invulpostdamaged = "1"/>
-      <thrall hp = "200" speed = "40" damage = "60" energy_percent_hit = "5"/>
+      <thrall hp = "200" speed = "40" damage = "60" energy_percent_hit = "5" skill_multiplier="3"/>
     </players>
 
     <items>

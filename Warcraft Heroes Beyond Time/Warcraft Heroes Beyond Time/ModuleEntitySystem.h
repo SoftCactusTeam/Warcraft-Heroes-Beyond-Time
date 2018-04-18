@@ -22,11 +22,13 @@ public:
 
 	struct PlayerStats
 	{
+		uint skillMultiplier = 0;
+
 		uint maxhp = 0;
-		uint hp = 0;
+		float hp = 0;
 		uint armor = 0;
 		uint speed = 0;
-		uint damage = 0;
+		float damage = 0;
 		uint energy = 0;
 		uint energyPercentbyHit = 0;
 		uint critChance = 0;

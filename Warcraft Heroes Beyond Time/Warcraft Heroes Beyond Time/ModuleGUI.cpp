@@ -236,3 +236,13 @@ char* ModuleGUI::getVersion() const
 {
 	return (char*)version.data();
 }
+
+void ModuleGUI::Save(pugi::xml_node& guiNode)
+{
+	guiNode.append_attribute("saved?").set_value("YES!");
+}
+
+void ModuleGUI::Load(const pugi::xml_node& guiNode)
+{
+
+}

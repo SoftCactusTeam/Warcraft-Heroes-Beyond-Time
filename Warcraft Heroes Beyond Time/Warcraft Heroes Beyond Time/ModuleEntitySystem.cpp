@@ -143,7 +143,8 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	thrallstats.hp = thrallstats.maxhp;
 	thrallstats.speed = thrall.attribute("speed").as_uint(0);
 	thrallstats.damage = thrall.attribute("damage").as_uint(0);
-	thrallstats.energyPercentbyHit = thrall.attribute("energy_percent_hit").as_uint(0);
+	thrallstats.energyPercentbyHit = thrall.attribute("energy_percent_hit").as_uint(20);
+	thrallstats.skillMultiplier = thrall.attribute("skill_multiplier").as_uint(3);
 
 	pugi::xml_node footman = entitiesNode.child("enemies").child("footman");
 	footmanstats.maxhp = footman.attribute("hp").as_uint(0);

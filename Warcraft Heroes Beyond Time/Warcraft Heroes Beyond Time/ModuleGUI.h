@@ -34,6 +34,10 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
+	void Save(pugi::xml_node&);
+	void Load(const pugi::xml_node&);
+
+
 public:
 	GUIElem* CreateLabel(fPoint position, LabelInfo& info, GUIElem* parent = nullptr, Module* listener = nullptr);
 	GUIElem* CreateInputBox(fPoint localPos, InputBoxInfo& info, Module* listener = nullptr, GUIElem* parent = nullptr);

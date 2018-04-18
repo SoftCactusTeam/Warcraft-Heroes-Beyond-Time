@@ -350,8 +350,12 @@ void Thrall::OnCollision(Collider* yours, Collider* collideWith)
 		{
 			if (yours->colType == Collider::ColliderType::PLAYER_ATTACK)
 			{
-				IncreaseEnergy(20);
-				App->audio->PlayFx(App->audio->Thrall_Hit_FX);
+				PlayerAttack* attack = (PlayerAttack*)yours;
+				if (attack->pattacktype == PlayerAttack::P_Attack_Type::NORMAL_ATTACK)
+				{
+					IncreaseEnergy(numStats.energyPercentbyHit);
+					App->audio->PlayFx(App->audio->Thrall_Hit_FX);
+				}
 			}	
 			break;
 		}
@@ -511,7 +515,7 @@ void Thrall::UseSkill()
 	if (skillOn == false)
 		App->audio->PlayFx(App->audio->Thrall_SkillFX);
 	skillOn = true;
-	skillCollider = App->colliders->AddPlayerAttackCollider({ -100, -100, 5, 5 }, this, 50, PlayerAttack::P_Attack_Type::SKILL);
+	skillCollider = App->colliders->AddPlayerAttackCollider({ -100, -100, 5, 5 }, this, numStats.damage * numStats.skillMultiplier, PlayerAttack::P_Attack_Type::SKILL);
 }
 
 void Thrall::UpdateSkillCollider()
