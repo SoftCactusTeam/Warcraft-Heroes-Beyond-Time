@@ -44,7 +44,7 @@ bool GUIElem::MouseHover() const
 	return result;
 }
 
-bool GUIElem::HandleInput()
+bool GUIElem::HandleInput(float dt)
 {
 	bool ret = true;
 

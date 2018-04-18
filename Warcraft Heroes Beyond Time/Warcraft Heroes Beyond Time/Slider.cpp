@@ -35,7 +35,7 @@ bool Slider::Update(float dt)
 {
 	bool ret = true;
 
-	ret = HandleInput();
+	ret = HandleInput(dt);
 	
 	if(ret)
 		ret = UpdateChilds(dt);
@@ -59,7 +59,7 @@ bool Slider::Draw()
 	return ret;
 }
 
-bool Slider::HandleInput()
+bool Slider::HandleInput(float dt)
 {
 	bool ret = true;
 
@@ -96,19 +96,42 @@ bool Slider::HandleInput()
 	{
 		if (App->input->GetAxis((int)Axis::RIGHT) == KeyState::KEY_DOWN)
 		{
+			counter = 0;
 			if (valuePercent + 1 <= 100)
 				valuePercent += 1;
 			else
 				valuePercent = 100;
 
 		}
+		else if (App->input->GetAxis((int)Axis::RIGHT) == KeyState::KEY_REPEAT)
+		{
+			counter += dt;
+			if(counter >=0.5f)
+				if (valuePercent + 1 <= 100)
+					valuePercent += 1;
+				else
+					valuePercent = 100;
+
+		}
 		if (App->input->GetAxis((int)Axis::LEFT) == KeyState::KEY_DOWN)
 		{
+			counter = 0;
 			if ((int)valuePercent - 1 >= 0)
 				valuePercent -= 1;
 			else
 				valuePercent = 0;
 		}
+		else if (App->input->GetAxis((int)Axis::LEFT) == KeyState::KEY_REPEAT)
+		{
+			counter += dt;
+			if(counter >= 0.5f)
+				if ((int)valuePercent - 1 >= 0)
+					valuePercent -= 1;
+				else
+					valuePercent = 0;
+		}
+
+
 		this->smobilepos = (valuePercent * (maxValue - minValue)) / 100 + minValue - 4;
 	}
 

@@ -34,7 +34,7 @@ public:
 	bool Update(float dt);
 	bool Draw();
 
-	bool HandleInput();
+	bool HandleInput(float dt);
 	bool MouseHover() const;
 
 protected:
@@ -47,7 +47,7 @@ protected:
 	uint minValue = 0;
 	uint maxValue = 0;
 
-
+	float counter = 0;
 };
 
 struct SliderInfo

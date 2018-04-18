@@ -22,13 +22,20 @@ public:
 	bool Update(float dt);
 
 	bool Draw();
+	void UnFocusChilds();
+
+private:
+	bool AnyChildFocused();
+	void FocusNextChild();
 
 private:
 	SDL_Rect background;
+	float counter = 0.0f;
+	float minicounter = 0.0f;
 public: 
 	bool blackBackground = false;
-	void UnFocusChilds();
-	bool AnyChildFocused();
+	
+	
 };
 
 
