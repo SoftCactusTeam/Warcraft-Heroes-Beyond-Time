@@ -1,6 +1,7 @@
 #include "GUIWindow.h"
 #include "Application.h"
 #include "ModuleRender.h"
+#include "ModuleInput.h"
 
 GUIWindow::GUIWindow(fPoint localPos, SDL_Rect atlasRect, GUIElem* parent, Module* listener) : GUIElem(localPos, listener, atlasRect, GUIElemType::WINDOW, parent)
 {
@@ -19,6 +20,54 @@ bool GUIWindow::Update(float dt)
 {
 	bool result = true;
 
+
+	if (App->input->GetAxis((int)Axis::DOWN) == KeyState::KEY_DOWN )
+	{
+		if (!AnyChildFocused())
+		{
+			childs.front()->Focus();
+			childs.front()->UIevent = UIEvents::MOUSE_ENTER;
+		}
+			
+		else
+		{
+			GUIElem* focused = nullptr;
+			GUIElem* toFocus = nullptr;
+
+			std::list<GUIElem*>::iterator focusedIt;
+			for (focusedIt = childs.begin(); focusedIt != childs.end(); ++focusedIt)
+			{
+				if ((*focusedIt)->IsFocused())
+				{
+					focused = (*focusedIt);
+
+					std::list<GUIElem*>::iterator toFocusIt = focusedIt;
+					while (toFocus == nullptr)
+					{
+						if (!(*toFocusIt)->IsFocused() && ((*toFocusIt)->type == GUIElemType::BUTTON || (*toFocusIt)->type == GUIElemType::SLIDER))
+							toFocus = *toFocusIt;
+						if (std::next(toFocusIt) == childs.end())
+							toFocusIt = childs.begin();
+						else
+							std::advance(toFocusIt, 1);
+					}
+				}
+			}
+
+			if (focused != nullptr)
+			{
+				focused->UnFocus();
+				focused->UIevent = UIEvents::MOUSE_LEAVE;
+			}
+				
+			if (toFocus != nullptr)
+			{
+				toFocus->Focus();
+				toFocus->UIevent = UIEvents::MOUSE_ENTER;
+			}
+		}
+		
+	}
 	
 	if(result)
 		result = UpdateChilds(dt);
@@ -33,7 +82,8 @@ bool GUIWindow::Draw()
 	background.x = -App->render->camera.x;
 	background.y = -App->render->camera.y;
 
-	result = App->render->DrawQuad(background, 0, 0, 0, 200, true, true);
+	if(blackBackground)
+		result = App->render->DrawQuad(background, 0, 0, 0, 200, true, true);
 
 	if (result)
 		result = App->render->Blit(App->gui->getAtlas(), (int)(this->screenPos.x - App->render->camera.x), (int)(this->screenPos.y - App->render->camera.y), &atlasRect);
@@ -43,4 +93,29 @@ bool GUIWindow::Draw()
 
 	return result;
 
+}
+
+void GUIWindow::UnFocusChilds()
+{
+	std::list<GUIElem*>::iterator focusedIt;
+	for (focusedIt = childs.begin(); focusedIt != childs.end(); ++focusedIt)
+	{
+		if ((*focusedIt)->IsFocused())
+		{
+			(*focusedIt)->UnFocus();
+			(*focusedIt)->UIevent = UIEvents::MOUSE_LEAVE;
+			break;
+		}
+	}
+}
+
+bool GUIWindow::AnyChildFocused()
+{
+	std::list<GUIElem*>::iterator focusedIt;
+	for (focusedIt = childs.begin(); focusedIt != childs.end(); ++focusedIt)
+	{
+		if ((*focusedIt)->IsFocused())
+			return true;
+	}
+	return false;
 }

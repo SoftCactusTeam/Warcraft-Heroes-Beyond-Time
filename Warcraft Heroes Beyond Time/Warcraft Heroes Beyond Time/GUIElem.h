@@ -23,6 +23,7 @@ enum class UIEvents
 
 class GUIElem
 {
+	friend class ModuleGUI;
 public:
 
 	enum class GUIElemType
@@ -44,13 +45,16 @@ protected:
 	GUIElem* parent = nullptr;
 	std::list<GUIElem*> childs;
 
+	bool focused = false;
+
 	fPoint localPos = { 0.0f, 0.0f };
 	fPoint screenPos = { 0.0f, 0.0f };
 
-	UIEvents UIevent = UIEvents::NO_EVENT;
+	
 	Module* listener = nullptr;
 public:
 	GUIElemType type = GUIElemType::NO_ELEMTYPE;
+	UIEvents UIevent = UIEvents::NO_EVENT;
 	SDL_Rect atlasRect = { 0, 0, 0, 0 };
 
 public:
@@ -58,6 +62,20 @@ public:
 	GUIElem(fPoint localPos, Module* listener, SDL_Rect atlasRect, GUIElemType type, GUIElem* parent = nullptr);
 
 	virtual ~GUIElem();
+
+	virtual bool IsFocused()
+	{
+		return focused;
+	}
+	virtual void Focus()
+	{
+		focused = true;
+	}
+	virtual void UnFocus()
+	{
+		focused = false;
+	}
+	virtual void UnFocusChilds() {}
 
 	virtual bool Update(float dt);
 	virtual bool Draw();
@@ -67,14 +85,18 @@ public:
 
 	bool hasParent()const;
 	GUIElem* getParent() const;
+	
+
+	fPoint calculateScreenPos();
+
+	void Move(fPoint dist);
+
+protected:
 	void addChild(GUIElem* child);
 	bool UpdateChilds(float dt);
 	bool DrawChilds();
 	bool DestroyChilds();
 
-	fPoint calculateScreenPos();
-
-	void Move(fPoint dist);
 };
 
 #endif

@@ -11,6 +11,7 @@
 
 class GUIWindow : public GUIElem
 {
+
 public:
 
 	GUIWindow() {}
@@ -24,6 +25,10 @@ public:
 
 private:
 	SDL_Rect background;
+public: 
+	bool blackBackground = false;
+	void UnFocusChilds();
+	bool AnyChildFocused();
 };
 
 

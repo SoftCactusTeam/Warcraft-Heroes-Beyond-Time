@@ -105,17 +105,7 @@ bool ModuleGUI::CleanUp()
 		delete (*it);
 	}
 	GUIElemList.clear();
-
-	for (it = elementsToSpawn.rbegin(); it != elementsToSpawn.rend(); ++it)
-	{
-		delete (*it);
-	}
 	elementsToSpawn.clear();
-
-	for (it = elementsToKill.rbegin(); it != elementsToKill.rend(); ++it)
-	{
-		delete (*it);
-	}
 	elementsToKill.clear();
 
 	App->textures->UnLoad(atlas);

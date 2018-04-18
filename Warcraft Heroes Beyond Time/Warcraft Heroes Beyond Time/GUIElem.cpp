@@ -52,8 +52,11 @@ bool GUIElem::HandleInput()
 	{
 
 	case UIEvents::NO_EVENT:
+
 		if (MouseHover()) 
 		{
+			parent->UnFocusChilds();
+			Focus();
 			UIevent = UIEvents::MOUSE_ENTER;
 			listener->OnUIEvent((GUIElem*)this, UIevent);
 			break;
@@ -61,12 +64,8 @@ bool GUIElem::HandleInput()
 		break;
 
 	case UIEvents::MOUSE_ENTER:
-		if (!MouseHover()) {
-			LOG("Mouse Leave");
-			UIevent = UIEvents::MOUSE_LEAVE;
-			break;
-		}
-		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED)
+		
+		if (focused && (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_DOWN))
 		{
 			LOG("Mouse left cLick pressed");
 			UIevent = UIEvents::MOUSE_LEFT_CLICK;
@@ -93,13 +92,8 @@ bool GUIElem::HandleInput()
 		break;
 
 	case UIEvents::MOUSE_LEFT_CLICK:
-		if (!MouseHover())
-		{
-			LOG("Mouse Leave");
-			UIevent = UIEvents::MOUSE_LEFT_UP;
-			ret = listener->OnUIEvent((GUIElem*)this, UIevent);
-		}
-		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_RELEASED)
+
+		if (focused && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_RELEASED || App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_UP)
 		{
 			LOG("Mouse left click released");
 			UIevent = UIEvents::MOUSE_LEFT_UP;
@@ -108,7 +102,7 @@ bool GUIElem::HandleInput()
 
 		break;
 	case UIEvents::MOUSE_LEFT_UP:
-		if (!MouseHover())
+		if (focused == false)
 			UIevent = UIEvents::NO_EVENT;
 		else
 			UIevent = UIEvents::MOUSE_ENTER;

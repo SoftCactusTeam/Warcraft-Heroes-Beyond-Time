@@ -43,7 +43,6 @@ protected:
 
 	float smobilepos;
 	SDL_Rect sliderMobileRect = slidermobile;
-	bool focused = false;
 
 	uint minValue = 0;
 	uint maxValue = 0;

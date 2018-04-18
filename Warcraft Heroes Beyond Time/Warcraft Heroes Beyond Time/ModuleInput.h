@@ -79,6 +79,11 @@ public:
 		return yAxis;
 	}
 
+	KeyState GetAxis(int id) const
+	{
+		return axis[id];
+	}
+
 	bool InsideDeadZone() const
 	{
 		return xDeadZone && yDeadZone;
