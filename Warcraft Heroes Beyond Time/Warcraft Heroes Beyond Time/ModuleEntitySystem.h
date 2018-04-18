@@ -45,7 +45,7 @@ public:
 		uint dropping_chance = 0;
 		uint difficulty = 0;
 
-	} footmanstats, archerstats, wizardstats, darkknightstats;
+	} footmanstats, archerstats, wizardstats, darkknightstats, guldanstats;
 
 
 	EntitySystem();

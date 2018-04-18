@@ -182,6 +182,15 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	darkknightstats.range = darkknight.attribute("range").as_uint(0);
 	darkknightstats.difficulty = darkknight.attribute("difficulty").as_uint(0);
 
+	pugi::xml_node guldan = entitiesNode.child("enemies").child("guldan");
+	guldanstats.maxhp = guldan.attribute("hp").as_uint(0);
+	guldanstats.hp = guldanstats.maxhp;
+	guldanstats.speed = guldan.attribute("speed").as_uint(0);
+	guldanstats.damage = guldan.attribute("damage").as_uint(0);
+	guldanstats.dropping_chance = guldan.attribute("dropping_chance").as_uint(0);
+	guldanstats.range = guldan.attribute("range").as_uint(0);
+	guldanstats.difficulty = guldan.attribute("difficulty").as_uint(0);
+
 	//Loading CD'S---------------------------------------------------------------------------
 	dashCD = entitiesNode.child("players").child("cds").attribute("dash").as_float(1);
 	timepostdead = entitiesNode.child("players").child("cds").attribute("deadinfloor").as_float(2);

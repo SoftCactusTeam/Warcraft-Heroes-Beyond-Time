@@ -115,8 +115,7 @@ Guldan::Guldan(fPoint coor, BossType type, SDL_Texture* texture) : BossEntity(co
 
 	anim = &idle;
 
-	numStats.hp = 1000;
-	numStats.maxhp = 1000;
+	numStats = App->entities->guldanstats;
 
 	isGuldan = true;
 }
