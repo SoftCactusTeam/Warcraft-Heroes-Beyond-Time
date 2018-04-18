@@ -29,6 +29,15 @@ enum KeyState
 	KEY_UP
 };
 
+enum class Axis
+{
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT,
+	MAX
+};
+
 class Input : public Module
 {
 
@@ -95,6 +104,7 @@ private:
 	KeyState*	keyboard;
 	KeyState	mouse_buttons[NUM_MOUSE_BUTTONS];
 	KeyState	jButtons[NUM_J_BUTTONS];
+	KeyState    axis[(int)Axis::MAX];
 	int			mouse_motion_x;
 	int			mouse_motion_y;
 	int			mouse_x;
