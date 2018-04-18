@@ -53,7 +53,7 @@ bool GUIElem::HandleInput(float dt)
 
 	case UIEvents::NO_EVENT:
 
-		if (MouseHover()) 
+		if (MouseHover() || focused) 
 		{
 			parent->UnFocusChilds();
 			Focus();
@@ -79,6 +79,11 @@ bool GUIElem::HandleInput(float dt)
 			listener->OnUIEvent((GUIElem*)this, UIevent);
 			break;
 		}
+		else if (!focused)
+		{
+			UIevent = UIEvents::MOUSE_LEAVE;
+			listener->OnUIEvent((GUIElem*)this, UIevent);
+		}
 		break;
 
 	case UIEvents::MOUSE_RIGHT_CLICK:
@@ -103,7 +108,7 @@ bool GUIElem::HandleInput(float dt)
 		break;
 	case UIEvents::MOUSE_LEFT_UP:
 		if (focused == false)
-			UIevent = UIEvents::NO_EVENT;
+			UIevent = UIEvents::MOUSE_LEAVE;
 		else
 			UIevent = UIEvents::MOUSE_ENTER;
 		listener->OnUIEvent(this, UIevent);

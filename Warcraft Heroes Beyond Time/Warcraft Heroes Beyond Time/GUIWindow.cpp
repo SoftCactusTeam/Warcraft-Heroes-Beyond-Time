@@ -25,7 +25,6 @@ bool GUIWindow::Update(float dt)
 		if (!AnyChildFocused())
 		{
 			childs.front()->Focus();
-			childs.front()->UIevent = UIEvents::MOUSE_ENTER;
 		}
 			
 		else
@@ -133,12 +132,10 @@ void GUIWindow::FocusNextChild()
 	if (focused != nullptr)
 	{
 		focused->UnFocus();
-		focused->UIevent = UIEvents::MOUSE_LEAVE;
 	}
 
 	if (toFocus != nullptr)
 	{
 		toFocus->Focus();
-		toFocus->UIevent = UIEvents::MOUSE_ENTER;
 	}
 }
