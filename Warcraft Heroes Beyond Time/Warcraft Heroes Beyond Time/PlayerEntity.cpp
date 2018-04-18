@@ -280,7 +280,7 @@ void PlayerEntity::KeyboardStates(float dt)
 
 		case states::PL_UP:
 		{
-			pos.y -= speed * dt;
+			pos.y -= numStats.speed * dt;
 
 			if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_UP))
 			{
@@ -323,7 +323,7 @@ void PlayerEntity::KeyboardStates(float dt)
 
 		case states::PL_DOWN:
 		{
-			pos.y += speed * dt;
+			pos.y += numStats.speed * dt;
 			if (App->input->GetKey(SDL_SCANCODE_S) == KEY_UP)
 			{
 				state = states::PL_IDLE;
@@ -365,7 +365,7 @@ void PlayerEntity::KeyboardStates(float dt)
 
 		case states::PL_LEFT:
 		{
-			pos.x -= speed * dt;
+			pos.x -= numStats.speed * dt;
 			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
 			{
 				state = states::PL_IDLE;
@@ -407,7 +407,7 @@ void PlayerEntity::KeyboardStates(float dt)
 
 		case states::PL_RIGHT:
 		{
-			pos.x += speed * dt;
+			pos.x += numStats.speed * dt;
 			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
 			{
 				state = states::PL_IDLE;
@@ -449,8 +449,8 @@ void PlayerEntity::KeyboardStates(float dt)
 
 		case states::PL_UP_LEFT:
 		{
-			pos.x -= speed * 0.75f * dt;
-			pos.y -= speed * 0.75f * dt;
+			pos.x -= numStats.speed * 0.75f * dt;
+			pos.y -= numStats.speed * 0.75f * dt;
 
 			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_UP && App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
 			{
@@ -493,8 +493,8 @@ void PlayerEntity::KeyboardStates(float dt)
 
 		case states::PL_UP_RIGHT:
 		{
-			pos.x += speed * 0.75f * dt;
-			pos.y -= speed * 0.75f * dt;
+			pos.x += numStats.speed * 0.75f * dt;
+			pos.y -= numStats.speed * 0.75f * dt;
 			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_UP && App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
 			{
 				state = states::PL_IDLE;
@@ -536,8 +536,8 @@ void PlayerEntity::KeyboardStates(float dt)
 
 		case states::PL_DOWN_LEFT:
 		{
-			pos.x -= speed * 0.75f * dt;
-			pos.y += speed * 0.75f * dt;
+			pos.x -= numStats.speed * 0.75f * dt;
+			pos.y += numStats.speed * 0.75f * dt;
 			if (App->input->GetKey(SDL_SCANCODE_S) == KEY_UP && App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
 			{
 				state = states::PL_IDLE;
@@ -579,8 +579,8 @@ void PlayerEntity::KeyboardStates(float dt)
 
 		case states::PL_DOWN_RIGHT:
 		{
-			pos.x += speed * 0.75f * dt;
-			pos.y += speed * 0.75f * dt;
+			pos.x += numStats.speed * 0.75f * dt;
+			pos.y += numStats.speed * 0.75f * dt;
 			if (App->input->GetKey(SDL_SCANCODE_S) == KEY_UP && App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
 			{
 				state = states::PL_IDLE;
@@ -935,8 +935,8 @@ void PlayerEntity::JoyconStates(float dt)
 		float X = App->input->GetXAxis() / MAX_JAXIS_VALUE;
 		float Y = App->input->GetYAxis() / MAX_JAXIS_VALUE;
 
-		pos.x += X * speed * dt;
-		pos.y += Y * speed * dt;
+		pos.x += X * numStats.speed * dt;
+		pos.y += Y * numStats.speed * dt;
 
 		angle = App->input->GetAngleFromAxis();
 
