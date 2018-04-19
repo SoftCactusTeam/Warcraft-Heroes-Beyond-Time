@@ -334,7 +334,7 @@ void Thrall::OnCollision(Collider* yours, Collider* collideWith)
 			if (state == states::PL_DASH)
 			{
 				ResetDash();
-				App->audio->PauseFX(App->audio->Thrall_Dash_FX);
+				App->audio->HaltFX(App->audio->Thrall_Dash_FX);
 			}
 			break;
 		}
@@ -372,7 +372,7 @@ void Thrall::OnCollisionContinue(Collider* yours, Collider* collideWith)
 			if (state == states::PL_DASH)
 			{
 				ResetDash();
-				App->audio->PauseFX(App->audio->Thrall_Dash_FX);
+				App->audio->HaltFX(App->audio->Thrall_Dash_FX);
 			}
 			break;
 		}

@@ -196,17 +196,60 @@ bool Audio::PauseMusic(float fade_time)
 	return Mix_PlayingMusic() == 0;
 }
 
-bool Audio::PauseFX(int id, int fadeseconds)
+bool Audio::HaltFX(int id, int fadeseconds)
 {
 	if (!devicesConnected)
 		return false;
 
-	for (int i = 0; i < 16; ++i)
+	if (id == -1)
 	{
-		if (Mix_GetChunk(i) == fx[id - 1])
-			Mix_HaltChannel(i);
+		Mix_HaltChannel(-1);
 	}
+	else
+		for (int i = 0; i < 16; ++i)
+		{
+			if (Mix_GetChunk(i) == fx[id - 1])
+				Mix_HaltChannel(i);
+		}
+
 	return true;
+}
+
+bool Audio::PauseFX(int id)
+{
+	if (!devicesConnected)
+		return false;
+
+	if (id == -1)
+		Mix_Pause(-1);
+	else
+		for (int i = 0; i < 16; ++i)
+		{
+			if (Mix_GetChunk(i) == fx[id - 1])
+				Mix_Pause(i);
+			break;
+		}
+	return true;
+}
+
+bool Audio::ResumeFX(int id)
+{
+	if (!devicesConnected)
+		return false;
+	
+	if (id == -1)
+	{
+		Mix_Resume(-1);
+	}
+	else
+	{
+		for (int i = 0; i < 16; ++i)
+		{
+			if (Mix_GetChunk(i) == fx[id - 1])
+				Mix_Resume(i);
+			break;
+		}
+	}
 }
 
 // Load WAV

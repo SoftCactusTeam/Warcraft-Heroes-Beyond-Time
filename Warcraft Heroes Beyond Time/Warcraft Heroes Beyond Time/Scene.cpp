@@ -247,6 +247,7 @@ bool Scene::Update(float dt)
 		{
 			if (!paused)
 			{
+				App->audio->PauseFX();
 				paused = true;
 				currentPercentAudio = App->audio->MusicVolumePercent;
 				uint tmpAudio = (uint)(currentPercentAudio * 0.3f);
@@ -258,6 +259,7 @@ bool Scene::Update(float dt)
 			}
 			else
 			{
+				App->audio->ResumeFX();
 				paused = false;
 				// Decreasing audio when pause game
 				App->audio->setMusicVolume(currentPercentAudio);
@@ -389,13 +391,14 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 					App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
 					App->audio->setMusicVolume(currentPercentAudio);
 				}
-					
+				App->audio->HaltFX();
 				actual_scene = Stages::MAIN_MENU;
 				paused = false;
 				restart = true;
 				break;
 			case BType::RESUME:
 				paused = false;
+				App->audio->ResumeFX();
 				App->gui->DestroyElem(PauseMenu);
 				App->audio->setMusicVolume(currentPercentAudio);
 				break;

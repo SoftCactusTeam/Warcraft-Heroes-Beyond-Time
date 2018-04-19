@@ -36,8 +36,14 @@ public:
 	//Pause a playing music
 	bool PauseMusic(float fade_time = DEFAULT_MUSIC_FADE_TIME);
 
-	//Pause a channel
-	bool PauseFX(int id, int fadeseconds = 0);
+	//Stop a FX
+	bool HaltFX(int id = -1, int fadeseconds = 0);
+
+	//Pause a FX
+	bool PauseFX(int id = -1);
+
+	//Resume a previously paused FX
+	bool ResumeFX(int id = -1);
 
 	// Load a WAV in memory
 	unsigned int LoadFx(const char* path);
