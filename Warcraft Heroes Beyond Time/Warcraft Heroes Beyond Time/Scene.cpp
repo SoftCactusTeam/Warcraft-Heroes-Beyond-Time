@@ -390,8 +390,9 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 				{
 					App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
 					App->audio->setMusicVolume(currentPercentAudio);
+					App->audio->HaltFX();
 				}
-				App->audio->HaltFX();
+				
 				actual_scene = Stages::MAIN_MENU;
 				paused = false;
 				restart = true;

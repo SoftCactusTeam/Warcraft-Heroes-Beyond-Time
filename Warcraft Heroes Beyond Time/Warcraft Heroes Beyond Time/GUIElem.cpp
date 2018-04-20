@@ -4,6 +4,8 @@
 #include "GUIElem.h"
 #include "Log.h"
 #include "ModuleRender.h"
+#include "Button.h"
+#include "Scene.h"
 
 GUIElem::GUIElem(fPoint localPos, Module* listener, SDL_Rect atlasRect, GUIElemType type, GUIElem* parent) : localPos(localPos), listener(listener), atlasRect(atlasRect), type(type), parent(parent)
 {
@@ -117,6 +119,39 @@ bool GUIElem::HandleInput(float dt)
 		listener->OnUIEvent((GUIElem*)this, UIevent);
 		UIevent = UIEvents::NO_EVENT;
 		break;
+	}
+
+	if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KeyState::KEY_DOWN)
+	{
+		if (type == GUIElemType::BUTTON)
+		{
+			Button* button = (Button*)this;
+			switch (App->scene->actual_scene)
+			{
+			case Scene::Stages::SETTINGS:
+			{
+				if (button->btype == BType::GO_MMENU)
+				{
+					parent->UnFocusChilds();
+					Focus();
+					UIevent = UIEvents::MOUSE_LEFT_CLICK;
+					listener->OnUIEvent(this, UIevent);
+				}
+				break;
+			}
+			default:
+			{
+				if (button->btype == BType::EXIT_GAME)
+				{
+					parent->UnFocusChilds();
+					Focus();
+					UIevent = UIEvents::MOUSE_LEFT_CLICK;
+					listener->OnUIEvent(this, UIevent);
+				}
+				break;
+			}
+			}
+		}
 	}
 
 	return ret;

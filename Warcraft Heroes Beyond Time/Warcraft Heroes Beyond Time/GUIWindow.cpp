@@ -20,14 +20,14 @@ bool GUIWindow::Update(float dt)
 {
 	bool result = true;
 
-	if (App->input->GetAxis((int)Axis::DOWN) == KeyState::KEY_DOWN)
+	if (App->input->GetAxis((int)Axis::DOWN) == KeyState::KEY_DOWN || App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_DOWN)
 	{
 		if (!AnyChildFocused())
 		{
 			childs.front()->Focus();
 		}
 			
-		else
+		else if (App->input->GetAxis((int)Axis::DOWN) == KeyState::KEY_DOWN)
 		{
 			FocusNextChild();
 		}
