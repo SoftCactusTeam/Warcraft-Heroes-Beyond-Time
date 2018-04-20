@@ -47,11 +47,45 @@ bool GUIWindow::Update(float dt)
 		}
 	}
 
-	else if (App->input->GetAxis((int)Axis::DOWN) == KeyState::KEY_UP)
+	if (App->input->GetAxis((int)Axis::UP) == KeyState::KEY_DOWN)
+	{
+		if (!AnyChildFocused())
+		{
+			std::list<GUIElem*>::iterator it = childs.end();
+			std::advance(it, -2);
+			(*it)->Focus();
+		}
+
+		else
+		{
+			FocusPrevChild();
+		}
+	}
+
+	else if (App->input->GetAxis((int)Axis::UP) == KeyState::KEY_REPEAT)
+	{
+		counter += dt;
+		if (counter > 0.4)
+		{
+			minicounter += dt;
+			if (minicounter > 0.2)
+			{
+				FocusPrevChild();
+				minicounter = 0.0f;
+			}
+		}
+	}
+
+
+
+
+
+	if (App->input->GetAxis((int)Axis::DOWN) == KeyState::KEY_UP || App->input->GetAxis((int)Axis::UP) == KeyState::KEY_UP)
 	{
 		counter = 0;
 		minicounter = 0;
 	}
+
 	
 	if(result)
 		result = UpdateChilds(dt);
@@ -123,6 +157,42 @@ void GUIWindow::FocusNextChild()
 					toFocus = *toFocusIt;
 				if (std::next(toFocusIt) == childs.end())
 					toFocusIt = childs.begin();
+				else
+					std::advance(toFocusIt, 1);
+			}
+		}
+	}
+
+	if (focused != nullptr)
+	{
+		focused->UnFocus();
+	}
+
+	if (toFocus != nullptr)
+	{
+		toFocus->Focus();
+	}
+}
+
+void GUIWindow::FocusPrevChild()
+{
+	GUIElem* focused = nullptr;
+	GUIElem* toFocus = nullptr;
+
+	std::list<GUIElem*>::reverse_iterator focusedIt;
+	for (focusedIt = childs.rbegin(); focusedIt != childs.rend(); ++focusedIt)
+	{
+		if ((*focusedIt)->IsFocused())
+		{
+			focused = (*focusedIt);
+
+			std::list<GUIElem*>::reverse_iterator toFocusIt = focusedIt;
+			while (toFocus == nullptr)
+			{
+				if (!(*toFocusIt)->IsFocused() && ((*toFocusIt)->type == GUIElemType::BUTTON || (*toFocusIt)->type == GUIElemType::SLIDER))
+					toFocus = *toFocusIt;
+				if (std::next(toFocusIt) == childs.rend())
+					toFocusIt = childs.rbegin();
 				else
 					std::advance(toFocusIt, 1);
 			}

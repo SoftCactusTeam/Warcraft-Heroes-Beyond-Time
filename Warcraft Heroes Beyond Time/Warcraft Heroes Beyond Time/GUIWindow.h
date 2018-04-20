@@ -27,6 +27,7 @@ public:
 private:
 	bool AnyChildFocused();
 	void FocusNextChild();
+	void FocusPrevChild();
 
 private:
 	SDL_Rect background;
