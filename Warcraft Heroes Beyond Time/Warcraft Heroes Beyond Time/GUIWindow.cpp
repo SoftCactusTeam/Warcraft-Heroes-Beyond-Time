@@ -51,9 +51,7 @@ bool GUIWindow::Update(float dt)
 	{
 		if (!AnyChildFocused())
 		{
-			std::list<GUIElem*>::iterator it = childs.end();
-			std::advance(it, -2);
-			(*it)->Focus();
+			childs.back()->Focus();
 		}
 
 		else

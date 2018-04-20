@@ -454,7 +454,7 @@ void Scene::CreateMainMenuScreen()
 	versionLabel.color = White;
 	versionLabel.fontName = "Arial30";
 	versionLabel.text = App->gui->getVersion();
-	App->gui->CreateLabel({ 10,340 }, versionLabel, window, nullptr);
+	App->gui->CreateLabel({ 10,340 }, versionLabel, nullptr, nullptr);
 
 }
 
