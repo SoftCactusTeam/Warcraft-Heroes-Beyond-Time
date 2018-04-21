@@ -123,7 +123,6 @@ bool Scene::Start()
 			
 			iPoint chestPos = App->map->GetRandomValidPointProxy(30, 5);
 			lvlChest = App->entities->AddChest({ (float)chestPos.x * 46,(float)chestPos.y * 46 }, MID_CHEST);
-			lvlChest->UnLockChest();
 			break;
 		}
 		case Stages::BOSS_ROOM:

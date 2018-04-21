@@ -6,7 +6,7 @@
 #include <vector>
 
 class Item;
-class SDL_Texture;
+struct SDL_Texture;
 
 class ModuleItems : public Module
 {

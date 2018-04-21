@@ -56,10 +56,12 @@ public:
 
 	GUIElem* player_HP_Bar = nullptr;
 	PortalEntity* portal = nullptr;
+	GUIWindow* ItemSelection = nullptr;
 
 private:
 
 	GUIWindow* PauseMenu = nullptr;
+
 	uint currentPercentAudio = 0u;
 	
 

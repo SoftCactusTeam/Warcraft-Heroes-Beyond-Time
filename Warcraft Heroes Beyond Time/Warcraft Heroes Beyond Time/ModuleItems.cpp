@@ -1,6 +1,5 @@
 #include "ModuleItems.h"
 #include "WCItem.h"
-#include "Application.h"
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
 #include <time.h>

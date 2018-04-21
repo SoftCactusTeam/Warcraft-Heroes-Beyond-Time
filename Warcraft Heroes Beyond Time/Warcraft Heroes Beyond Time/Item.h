@@ -1,10 +1,9 @@
 #ifndef _ITEM_CLASS_
 #define _ITEM_CLASS_
 
-#include "p2Defs.h"
 #include "ModuleItems.h"
-#include "Application.h"
 #include "p2Point.h"
+#include "Application.h"
 
 class Item
 {
