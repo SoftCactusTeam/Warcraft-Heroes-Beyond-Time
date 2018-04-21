@@ -21,6 +21,8 @@
 #define FLOOR4 { 147,49,48,48 }
 #define FLOOR5 { 196,49,48,48 }
 #define FLOOR6 { 0,98,48,48 }
+#define FLOOR7 { 49,98,48,48 }
+#define FLOOR8 { 98,98,48,48 }
 #define WALL1 { 0,0,48,48 }
 #define WALL2 { 49,0,48,48 }
 #define WALL3 { 98,0,48,48 }
@@ -297,15 +299,20 @@ SDL_Rect MapGenerator::randomTile(bool isFloor)
 	{
 		int randNum = rand() % (100 - 1 + 1) + 1;
 
-		if (randNum <= 2)
+
+	    if (randNum <= 3)
+			toReturn = FLOOR8;
+		if (randNum <= 10)
+			toReturn = FLOOR7;
+		else if (randNum <= 20)
 			toReturn = FLOOR6;
-		else if (randNum <= 4)
+		else if (randNum <= 30)
 			toReturn = FLOOR5;		
-		else if (randNum <= 7)
+		else if (randNum <= 40)
 			toReturn = FLOOR4;
-		else if (randNum <= 10)
+		else if (randNum <= 60)
 			toReturn = FLOOR3;
-		else if (randNum <= 13)
+		else if (randNum <= 80)
 			toReturn = FLOOR2;
 		else if (randNum <= 100)
 			toReturn = FLOOR;
