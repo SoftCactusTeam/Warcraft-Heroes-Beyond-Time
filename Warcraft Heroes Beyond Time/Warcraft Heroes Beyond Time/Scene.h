@@ -10,9 +10,6 @@ class GUIWindow;
 class PlayerEntity;
 class ChestEntity;
 class PortalEntity;
-class Item;
-class WCItem;
-struct SDL_rect;
 
 class Scene : public Module
 {
@@ -57,16 +54,7 @@ public:
 	bool paused = false;
 
 	GUIElem* player_HP_Bar = nullptr;
-
-//item
-	WCItem* paper = nullptr;
-	WCItem* paper_fake = nullptr;
-	SDL_Texture* venom = nullptr;
-	SDL_Texture* texture = nullptr;
-
 	PortalEntity* portal = nullptr;
-
-
 
 private:
 
@@ -77,7 +65,7 @@ private:
 	bool restart = false;
 	int lvlIndex = 0;
 
-	int seeeeeeeeeeeeed = NULL;
+	int seed = NULL;
 };
 
 

@@ -89,17 +89,14 @@ bool Scene::Start()
 			App->map->Activate();
 			App->printer->Activate();
 
-			texture = App->textures->Load("sprites/all_items.png");
-			venom = App->textures->Load("sprites/venom.png");
-
 			BROFILER_CATEGORY("InGame Generation", Profiler::Color::Chocolate);
 			MapData mapInfo;
 			mapInfo.sizeX = 50;
 			mapInfo.sizeY = 50;
 			mapInfo.iterations = 300;
 			mapInfo.tilesetPath = "maps/Tiles.png";
-			mapInfo.seed = seeeeeeeeeeeeed;
-			seeeeeeeeeeeeed = NULL;
+			mapInfo.seed = seed;
+			seed = NULL;
 			lvlIndex++;
 
 			App->map->GenerateMap(mapInfo);
@@ -134,10 +131,6 @@ bool Scene::Start()
 		}
 		case Stages::BOSS_ROOM:
 		{
-
-			texture = App->textures->Load("sprites/all_items.png");
-			venom = App->textures->Load("sprites/venom.png");
-
 			App->items->Activate();
 			App->colliders->Activate();
 			App->entities->Activate();
@@ -215,7 +208,7 @@ bool Scene::Update(float dt)
 	{
 		App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
 		actual_scene = Stages::INGAME;
-		seeeeeeeeeeeeed = 1523809027;
+		seed = 1523809027;
 		restart = true;
 	}
 
@@ -295,17 +288,10 @@ bool Scene::CleanUp()
 	if (actual_scene == Stages::MAIN_MENU)
 	{
 		App->items->DeActivate();
-		paper = nullptr;
-		paper_fake = nullptr;
 	}	
-
-	App->textures->UnLoad(venom);
-	App->textures->UnLoad(texture);
 
 	player = nullptr;
 	lvlChest = nullptr;
-	texture = nullptr;
-	venom = nullptr;
 	portal = nullptr;
 	PauseMenu = nullptr;
 
