@@ -3,6 +3,8 @@
 
 #include "StaticEntity.h"
 
+class Collider;
+
 class ChestEntity : public StaticEntity {
 public:
 	ChestEntity(fPoint coor, CHEST_TYPE type, SDL_Texture* texture);
@@ -10,16 +12,18 @@ public:
 	bool Start();
 	bool Update(float dt);
 	bool Finish();
-	bool OpenChest(); // it must return an item
-	void UnLockChest();
-	inline bool IsLocked() const;
-	bool PlayerNear(fPoint pos);
 
-	bool opened = false;
+	void OnCollision(Collider* yours, Collider* collideWith);
+
+	bool OpenChest();
+
+
 private:
 	CHEST_TYPE type = CHEST_TYPE::NON_CHEST;
 	Animation chest;
-	bool locked = true;
+	bool opened = false;
+	Collider* col = nullptr;
+
 };
 
 #endif

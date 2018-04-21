@@ -4,6 +4,7 @@
 #include "p2Defs.h"
 #include "ModuleItems.h"
 #include "Application.h"
+#include "p2Point.h"
 
 class Item
 {
@@ -23,6 +24,11 @@ public:
 	}
 
 	virtual bool Draw()
+	{
+		return true;
+	}
+
+	virtual bool printIconOnScreen(iPoint pos) 
 	{
 		return true;
 	}

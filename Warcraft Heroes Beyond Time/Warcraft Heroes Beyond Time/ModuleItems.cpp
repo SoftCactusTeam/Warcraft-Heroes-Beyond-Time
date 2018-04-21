@@ -1,5 +1,9 @@
 #include "ModuleItems.h"
 #include "WCItem.h"
+#include "Application.h"
+#include "ModuleTextures.h"
+#include "ModuleInput.h"
+#include <time.h>
 
 bool ModuleItems::Awake(pugi::xml_node& itemsNode)
 {
@@ -13,9 +17,9 @@ bool ModuleItems::Awake(pugi::xml_node& itemsNode)
 
 bool ModuleItems::Start()
 {
+	itemsTexture = App->textures->Load("sprites/all_items.png");
 	return true;
 }
-
 
 bool ModuleItems::Update(float dt)
 {
@@ -59,6 +63,8 @@ bool ModuleItems::CleanUp()
 	}
 	equipedItems.clear();
 
+	App->textures->UnLoad(itemsTexture);
+
 	return true;
 }
 
@@ -87,6 +93,41 @@ bool ModuleItems::equipItem(Item* item)
 		}
 	}
 	return ret;
+}
+
+bool ModuleItems::getThreeRandomItems(Item** items)
+{
+	if (availableItems.size() < 1)
+		return false;
+
+	int id_1 = rand() % availableItems.size();
+	int id_2, id_3 = 0;
+
+	items[0] = availableItems[id_1];
+
+	if (availableItems.size() < 2)
+		return false;
+
+	do
+	{
+		id_2 = rand() % availableItems.size();
+
+	} while (id_2 == id_1);
+
+	items[1] = availableItems[id_2];
+
+	if (availableItems.size() < 3)
+		return false;
+
+	do
+	{
+		id_3 = rand() % availableItems.size();
+
+	} while (id_3 == id_1 || id_3 == id_2);
+
+	items[2] = availableItems[id_3];
+
+	return true;
 }
 
 

@@ -1,4 +1,5 @@
 #include "WCItem.h"
+#include "ModuleRender.h"
 
 bool WCItem::Start()
 {
@@ -15,6 +16,12 @@ bool WCItem::Draw()
 {
 	//Use the ModulePrinter to print all the stuff.
 	return true;
+}
+
+bool WCItem::printIconOnScreen(iPoint pos)
+{
+	//The GUI uses this method, fill it in all the items.
+	return App->render->Blit(App->items->getItemsTexture(), pos.x, pos.y, WC_ICON, 1, 0);
 }
 
 

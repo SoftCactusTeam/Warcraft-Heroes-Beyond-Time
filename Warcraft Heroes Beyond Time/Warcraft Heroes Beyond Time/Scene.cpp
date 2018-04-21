@@ -19,10 +19,7 @@
 #include "ModuleItems.h"
 #include "FileSystem.h"
 #include "BossEntity.h"
-
-
 #include "Brofiler\Brofiler.h"
-
 #include "Label.h"
 #include "InputBox.h"
 #include "Button.h"

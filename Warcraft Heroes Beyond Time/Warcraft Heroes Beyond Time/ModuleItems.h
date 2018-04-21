@@ -36,6 +36,8 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
+	bool getThreeRandomItems(Item** items);
+
 	//Returns false in failure or if the item was already equiped
 	bool equipItem(Item* item);
 
