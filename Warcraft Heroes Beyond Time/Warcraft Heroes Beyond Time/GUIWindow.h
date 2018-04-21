@@ -28,6 +28,8 @@ private:
 	bool AnyChildFocused();
 	void FocusNextChild();
 	void FocusPrevChild();
+	bool checkVerticalInputs(float dt);
+	bool checkHorizontalInputs(float dt);
 
 private:
 	SDL_Rect background;
@@ -35,6 +37,7 @@ private:
 	float minicounter = 0.0f;
 public: 
 	bool blackBackground = false;
+	bool vertical = true;
 	
 	
 };

@@ -20,69 +20,10 @@ bool GUIWindow::Update(float dt)
 {
 	bool result = true;
 
-	if (App->input->GetAxis((int)Axis::DOWN) == KeyState::KEY_DOWN || App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_DOWN)
-	{
-		if (!AnyChildFocused())
-		{
-			childs.front()->Focus();
-		}
-			
-		else if (App->input->GetAxis((int)Axis::DOWN) == KeyState::KEY_DOWN)
-		{
-			FocusNextChild();
-		}
-	}
-
-	else if (App->input->GetAxis((int)Axis::DOWN) == KeyState::KEY_REPEAT)
-	{
-		counter += dt;
-		if (counter > 0.4)
-		{
-			minicounter += dt;
-			if (minicounter > 0.2)
-			{
-				FocusNextChild();
-				minicounter = 0.0f;
-			}
-		}
-	}
-
-	if (App->input->GetAxis((int)Axis::UP) == KeyState::KEY_DOWN)
-	{
-		if (!AnyChildFocused())
-		{
-			childs.back()->Focus();
-		}
-
-		else
-		{
-			FocusPrevChild();
-		}
-	}
-
-	else if (App->input->GetAxis((int)Axis::UP) == KeyState::KEY_REPEAT)
-	{
-		counter += dt;
-		if (counter > 0.4)
-		{
-			minicounter += dt;
-			if (minicounter > 0.2)
-			{
-				FocusPrevChild();
-				minicounter = 0.0f;
-			}
-		}
-	}
-
-
-
-
-
-	if (App->input->GetAxis((int)Axis::DOWN) == KeyState::KEY_UP || App->input->GetAxis((int)Axis::UP) == KeyState::KEY_UP)
-	{
-		counter = 0;
-		minicounter = 0;
-	}
+	if (vertical)
+		checkVerticalInputs(dt);
+	else
+		checkHorizontalInputs(dt);
 
 	
 	if(result)
@@ -206,4 +147,75 @@ void GUIWindow::FocusPrevChild()
 	{
 		toFocus->Focus();
 	}
+}
+
+bool GUIWindow::checkVerticalInputs(float dt)
+{
+	if (App->input->GetAxis((int)Axis::DOWN) == KeyState::KEY_DOWN || App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_DOWN)
+	{
+		if (!AnyChildFocused())
+		{
+			childs.front()->Focus();
+		}
+
+		else if (App->input->GetAxis((int)Axis::DOWN) == KeyState::KEY_DOWN)
+		{
+			FocusNextChild();
+		}
+	}
+
+	else if (App->input->GetAxis((int)Axis::DOWN) == KeyState::KEY_REPEAT)
+	{
+		counter += dt;
+		if (counter > 0.4)
+		{
+			minicounter += dt;
+			if (minicounter > 0.2)
+			{
+				FocusNextChild();
+				minicounter = 0.0f;
+			}
+		}
+	}
+
+	if (App->input->GetAxis((int)Axis::UP) == KeyState::KEY_DOWN)
+	{
+		if (!AnyChildFocused())
+		{
+			childs.back()->Focus();
+		}
+
+		else
+		{
+			FocusPrevChild();
+		}
+	}
+
+	else if (App->input->GetAxis((int)Axis::UP) == KeyState::KEY_REPEAT)
+	{
+		counter += dt;
+		if (counter > 0.4)
+		{
+			minicounter += dt;
+			if (minicounter > 0.2)
+			{
+				FocusPrevChild();
+				minicounter = 0.0f;
+			}
+		}
+	}
+
+	if (App->input->GetAxis((int)Axis::DOWN) == KeyState::KEY_UP || App->input->GetAxis((int)Axis::UP) == KeyState::KEY_UP)
+	{
+		counter = 0;
+		minicounter = 0;
+	}
+
+	return true;
+}
+
+bool GUIWindow::checkHorizontalInputs(float dt)
+{
+
+	return true;
 }

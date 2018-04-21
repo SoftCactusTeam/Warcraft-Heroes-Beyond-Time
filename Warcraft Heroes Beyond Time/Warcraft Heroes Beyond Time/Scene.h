@@ -34,6 +34,7 @@ public:
 	void CreateSettingsScreen();
 	void CreatePauseMenu();
 	void CreateGratitudeScreen();
+	void CreateItemSelectionScreen();
 	bool gratitudeON = false;
 	void GoMainMenu();
 	void GoBossRoom();

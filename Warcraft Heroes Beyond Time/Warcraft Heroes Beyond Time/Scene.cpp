@@ -544,3 +544,10 @@ void Scene::CreateGratitudeScreen()
 	gratitude.text = "                    Victory! \n Thanks for playing the demo. Your support means a lot ^^ \n More at: @SoftCactus_Team";
 	App->gui->CreateLabel({ 160, 130 }, gratitude, nullptr, nullptr);
 }
+
+void Scene::CreateItemSelectionScreen()
+{
+
+
+
+}
