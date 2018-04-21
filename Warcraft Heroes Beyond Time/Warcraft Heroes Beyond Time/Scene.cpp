@@ -219,26 +219,6 @@ bool Scene::Update(float dt)
 		restart = true;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN || App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN)
-	{
-		if (lvlChest != nullptr && lvlChest->PlayerNear(player->pos))
-		{
-			if (lvlChest->opened == false)
-				lvlChest->OpenChest();
-			else if (App->items->itemsActive.empty())
-			{
-				paper = &WCItem("wcpaper", ItemType::passive_item_type, 1);
-				player->AddItem(*paper);
-				App->audio->PlayFx(App->audio->PaperItemFX);
-			}	
-		}
-	}
-
-	if ( lvlChest != nullptr && lvlChest->opened && App->items->itemsActive.empty())
-	{
-		App->printer->PrintSprite({ (int)lvlChest->pos.x,(int)lvlChest->pos.y }, texture, SDL_Rect({ 34,84,27,31 }), 1);
-	}
-
 	//PAUSE GAME
 	if (actual_scene == Stages::INGAME || actual_scene == Stages::BOSS_ROOM)
 	{

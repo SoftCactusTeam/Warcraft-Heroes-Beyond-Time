@@ -87,9 +87,6 @@ public:
 	void CheckMapLimits();
 
 	virtual bool Finish();
-
-	void AddItem(Item item);
-	void IterateItems(ItemFunctions nameFunction);
 	
 	//Stats functions
 	void SetDamage(int damage, bool setStateDamage);

@@ -1,19 +1,20 @@
 #include "WCItem.h"
 
-
-
-WCItem::WCItem()
+bool WCItem::Start()
 {
-
+	return true;
 }
 
-WCItem::WCItem(char* name, ItemType type, uint rarity) : Item(name, type, rarity)
+bool WCItem::Act(ModuleItems::ItemEvent event, float dt)
 {
+	//Here you manage your item depending of the event you receive.
+	return true;
+}
 
+bool WCItem::Draw()
+{
+	//Use the ModulePrinter to print all the stuff.
+	return true;
 }
 
 
-WCItem::~WCItem()
-{
-
-}

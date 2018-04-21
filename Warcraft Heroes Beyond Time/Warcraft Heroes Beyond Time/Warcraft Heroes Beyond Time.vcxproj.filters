@@ -121,9 +121,6 @@
     <ClCompile Include="WCItem.cpp">
       <Filter>Items</Filter>
     </ClCompile>
-    <ClCompile Include="Item.cpp">
-      <Filter>Items</Filter>
-    </ClCompile>
     <ClCompile Include="BossHPBar.cpp">
       <Filter>GUI\Warcraft specific</Filter>
     </ClCompile>

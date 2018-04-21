@@ -257,34 +257,6 @@ bool Thrall::Update(float dt)
 	else if (skillOn)
 		UpdateSkillCollider();
 
-	if (App->scene->paper != nullptr && !App->items->itemsActive.empty())
-	{
-		time += 1 * dt;
-		if (time >= 0.1)
-		{
-			time = 0;
-			if (cont < 18)
-			{
-				wcpaper.push_front({ (int)App->scene->player->pos.x,(int)App->scene->player->pos.y });
-				paper_collider.push_front(App->colliders->AddPlayerAttackCollider(SDL_Rect({ (int)App->scene->player->pos.x,(int)App->scene->player->pos.y,32,32 }), App->scene->player, 5*App->dt, PlayerAttack::P_Attack_Type::SHIT));
-				cont += 1;
-			}
-			if (cont == 18)
-			{
-				cont -= 1;
-				wcpaper.pop_back();
-				App->colliders->deleteCollider(paper_collider.back());
-				paper_collider.pop_back();
-			}
-		}
-		std::list<iPoint>::iterator it = wcpaper.begin();
-		
-		for (; it != wcpaper.end(); ++it)
-		{
-			App->printer->PrintSprite({ it->x, it->y }, App->scene->venom, SDL_Rect({ 0,0,32,32 }), -1);
-		}
-	}
-
 	return true;
 }
 

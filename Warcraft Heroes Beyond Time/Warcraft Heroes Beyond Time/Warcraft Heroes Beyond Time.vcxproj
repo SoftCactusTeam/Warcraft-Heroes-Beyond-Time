@@ -144,7 +144,6 @@
     <ClCompile Include="GUIImage.cpp" />
     <ClCompile Include="Guldan.cpp" />
     <ClCompile Include="InputBox.cpp" />
-    <ClCompile Include="Item.cpp" />
     <ClCompile Include="ModuleItems.cpp" />
     <ClCompile Include="ModulePrinter.cpp" />
     <ClCompile Include="ModuleProjectiles.cpp" />

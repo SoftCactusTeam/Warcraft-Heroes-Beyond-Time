@@ -2,15 +2,15 @@
 #define _WC_ITEM_
 #include "Item.h"
 
-class WCItem :public Item
+class WCItem : public Item
 {
 public:
-	WCItem();
-	WCItem(char* name, ItemType type, uint rarity);
-	~WCItem();
+	WCItem() {}
+	virtual ~WCItem() {}
 
-public:
-	bool got_paper = false;
+	bool Start();
+	bool Act(ModuleItems::ItemEvent event, float dt = App->dt);
+	bool Draw();
 };
 
 #endif

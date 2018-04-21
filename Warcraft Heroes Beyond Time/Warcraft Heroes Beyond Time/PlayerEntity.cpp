@@ -1331,35 +1331,6 @@ void PlayerEntity::CheckMapLimits()
 	}
 }
 
-void PlayerEntity::AddItem(Item item)
-{
-	App->items->itemsActive.push_back(item);
-}
-
-void PlayerEntity::IterateItems(ItemFunctions nameFunction)
-{
-	std::list<Item>::iterator it = App->items->itemsActive.begin();
-
-	for (; it != App->items->itemsActive.end(); ++it)
-	{
-		switch (nameFunction)
-		{
-		case ItemFunctions::GetItem:
-			it->GetItem();
-			break;
-
-		case ItemFunctions::UpdateLogic:
-			it->UpdateLogic();
-			break;
-
-		case ItemFunctions::ByeByeItem:
-			it->ByeByeItem();
-			break;
-
-		}
-	}
-}
-
 void PlayerEntity::SetDamage(int damage, bool setStateDamage)
 {
 	if (numStats.hp > 0 && damaged == false)
