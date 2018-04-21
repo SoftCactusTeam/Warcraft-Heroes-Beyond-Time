@@ -7,7 +7,7 @@ Projectile::Projectile()
 {
 }
 
-Projectile::Projectile(const ProjectileInfo& info, Projectile_type type) : data(info), type(type)
+Projectile::Projectile(const ProjectileInfo& info, Projectile_type type) : data(info), projType(type)
 {
 }
 
@@ -20,11 +20,11 @@ bool Projectile::Update(float dt)
 	return true;
 }
 
-bool Projectile::Draw()
+bool Projectile::Draw() const
 {
 	bool ret = true;
 
-	ret = App->printer->PrintSprite(data.pos, (SDL_Texture*)App->projectiles->GetProjectileAtlas(), actualAnim->GetCurrentRect(), data.layer);
+	ret = App->printer->PrintSprite({ (int)data.pos.x,(int)data.pos.y }, (SDL_Texture*)App->projectiles->GetProjectileAtlas(), actualAnim->GetCurrentFrame(), data.layer);
 
 	return ret;
 }

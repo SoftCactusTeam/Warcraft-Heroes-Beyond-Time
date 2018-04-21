@@ -6,7 +6,7 @@
 struct FelBallInfo : public ProjectileInfo
 {
 	FelBallInfo() {};
-	FelBallInfo(const FelBallInfo& info) : ProjectileInfo(info.pos, info.layer, info.speed, info.life), rotationPivot(info.rotationPivot) {};
+	FelBallInfo(const FelBallInfo& info) : ProjectileInfo((const ProjectileInfo&)info), rotationPivot(info.rotationPivot) {};
 
 	iPoint rotationPivot = { 0,0 };
 };
@@ -15,10 +15,11 @@ class FelBall : public Projectile
 {
 public:
 
-	FelBall(FelBallInfo& info);
+	FelBall(const FelBallInfo& info, Projectile_type type);
 	~FelBall();
 
 	bool Update(float dt);
+	bool Draw() const;
 
 	void OnCollision(Collider* yours, Collider* collideWith);
 	void OnCollisionContinue(Collider* yours, Collider* collideWith);
@@ -26,7 +27,8 @@ public:
 
 private:
 
-	FelBallInfo data;
+	FelBallInfo* toData = nullptr;
+	float angle = 0;
 
 	enum class FelAnimations
 	{

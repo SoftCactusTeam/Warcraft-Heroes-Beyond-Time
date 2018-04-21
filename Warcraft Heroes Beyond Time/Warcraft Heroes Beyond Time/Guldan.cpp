@@ -1,12 +1,7 @@
-#include "BossEntity.h"
 #include "Guldan.h"
-#include <time.h>
-#include "ModuleInput.h"
-#include "Scene.h"
-#include "PlayerEntity.h"
-#include "ModuleAudio.h"
 #include "Application.h"
-#include "Thrall.h"
+#include "ModuleProjectiles.h"
+#include "FelBall.h"
 
 Guldan::Guldan(fPoint coor, BossType type, SDL_Texture* texture) : BossEntity(coor, type, texture)
 {
@@ -127,6 +122,15 @@ Guldan::~Guldan()
 bool Guldan::Start()
 {
 	statesBoss = BossStates::IDLE;
+
+	FelBallInfo info;
+	info.layer = 1;
+	info.life = 1000;
+	info.pos = { pos.x - 40.0f, pos.y + 40.0f};
+	info.speed = 0.0f;
+	info.rotationPivot = { (int)pos.x,(int)pos.y };
+
+	App->projectiles->AddProjectile(info, Projectile_type::fel_ball);
 
 	return true;
 }

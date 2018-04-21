@@ -1,14 +1,4 @@
 #include "BossEntity.h"
-#include "Application.h"
-#include "ModulePrinter.h"
-#include "ModuleEntitySystem.h"
-#include "ModuleAudio.h"
-
-#include "ModuleTextures.h"
-#include <list>
-#include <algorithm>
-
-#include "ModuleColliders.h"
 
 struct FelBall;
 

@@ -2,6 +2,7 @@
 #include "ModuleTextures.h"
 #include "ModuleProjectiles.h"
 #include "Projectile.h"
+#include "FelBall.h"
 
 #include <assert.h>
 
@@ -25,7 +26,7 @@ bool ModuleProjectiles::Awake(pugi::xml_node& xml_node)
 
 bool ModuleProjectiles::Start()
 {
-	// LOAD ATLAS HERE
+	projectilesAtlas = App->textures->Load("sprites/ProjectilesAtlas.png");
 
 	return true;
 }
@@ -113,7 +114,7 @@ bool ModuleProjectiles::CleanUp()
 	return projectilesList.size() <= 0;
 }
 
-void ModuleProjectiles::AddProjectile(const ProjectileInfo& particle, Projectile_type type)
+void ModuleProjectiles::AddProjectile(const ProjectileInfo& projectile, Projectile_type type)
 {
 	assert((int)type != (int)Projectile_type::no_type);
 
@@ -121,8 +122,8 @@ void ModuleProjectiles::AddProjectile(const ProjectileInfo& particle, Projectile
 
 	switch (type)
 	{
-	case Projectile_type::projectile_type:
-		newProjectile = new Projectile(particle, type);
+	case Projectile_type::fel_ball:
+		newProjectile = new FelBall((const FelBallInfo&)projectile, type);
 		break;
 	}
 

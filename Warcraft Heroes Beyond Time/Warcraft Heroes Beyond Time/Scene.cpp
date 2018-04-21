@@ -19,6 +19,7 @@
 #include "ModuleItems.h"
 #include "FileSystem.h"
 #include "BossEntity.h"
+#include "ModuleProjectiles.h"
 
 
 #include "Brofiler\Brofiler.h"
@@ -144,6 +145,7 @@ bool Scene::Start()
 			App->console->Activate();
 			App->map->Activate();
 			App->printer->Activate();
+			App->projectiles->Activate();
 
 			App->audio->PlayMusic(App->audio->GuldanBSO.data(), 1);
 			App->map->GenerateBossMap();
@@ -311,6 +313,7 @@ bool Scene::CleanUp()
 	App->console->DeActivate();
 	App->path->ClearMap();
 	App->colliders->DeActivate();
+	App->projectiles->DeActivate();
 
 	if (actual_scene == Stages::MAIN_MENU)
 	{
