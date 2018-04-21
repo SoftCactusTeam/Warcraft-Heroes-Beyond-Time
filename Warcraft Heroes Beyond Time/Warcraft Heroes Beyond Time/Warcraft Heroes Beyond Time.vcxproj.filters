@@ -142,6 +142,9 @@
     <ClCompile Include="Projectile.cpp">
       <Filter>Projectiles</Filter>
     </ClCompile>
+    <ClCompile Include="FelBall.cpp">
+      <Filter>Projectiles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -298,6 +301,9 @@
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="Projectile.h">
+      <Filter>Projectiles</Filter>
+    </ClInclude>
+    <ClInclude Include="FelBall.h">
       <Filter>Projectiles</Filter>
     </ClInclude>
   </ItemGroup>
