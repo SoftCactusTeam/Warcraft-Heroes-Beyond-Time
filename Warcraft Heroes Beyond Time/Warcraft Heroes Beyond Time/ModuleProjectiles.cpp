@@ -72,6 +72,7 @@ bool ModuleProjectiles::PostUpdate()
 		for (it = toKillProjectilesList.begin(); it != toKillProjectilesList.end(); ++it)
 		{
 			projectilesList.remove(*it);
+			delete (*it);
 		}
 
 		toKillProjectilesList.clear();
@@ -112,7 +113,7 @@ bool ModuleProjectiles::CleanUp()
 	return projectilesList.size() <= 0;
 }
 
-void ModuleProjectiles::AddParticle(const ProjectileInfo& particle, Projectile_type type)
+void ModuleProjectiles::AddProjectile(const ProjectileInfo& particle, Projectile_type type)
 {
 	assert((int)type != (int)Projectile_type::no_type);
 
@@ -126,6 +127,11 @@ void ModuleProjectiles::AddParticle(const ProjectileInfo& particle, Projectile_t
 	}
 
 	toSpawnProjectilesList.push_back(newProjectile);
+}
+
+void ModuleProjectiles::DestroyProjectile(Projectile* toDelete)
+{
+	toKillProjectilesList.push_back(toDelete);
 }
 
 const SDL_Texture* ModuleProjectiles::GetProjectileAtlas() const

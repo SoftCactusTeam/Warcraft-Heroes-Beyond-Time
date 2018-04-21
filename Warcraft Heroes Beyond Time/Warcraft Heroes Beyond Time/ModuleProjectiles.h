@@ -30,7 +30,8 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
-	void AddParticle(const ProjectileInfo& projectile, Projectile_type type);
+	void AddProjectile(const ProjectileInfo& projectile, Projectile_type type);
+	void DestroyProjectile(Projectile* toDelete);
 	const SDL_Texture* GetProjectileAtlas() const;
 
 private:
