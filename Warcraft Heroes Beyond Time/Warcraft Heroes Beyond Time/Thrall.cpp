@@ -243,7 +243,7 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 
 bool Thrall::Update(float dt)
 {
-	dustEffect->MoveEffect({ pos.x + 5, pos.y + 35 });
+	//dustEffect->MoveEffect({ pos.x + 5, pos.y + 35 });
 
 	PlayerStates(dt);
 
