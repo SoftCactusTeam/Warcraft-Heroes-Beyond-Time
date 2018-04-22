@@ -10,6 +10,7 @@
 #include "ModuleColliders.h"
 #include "PortalEntity.h"
 #include "ModuleItems.h"
+#include "ModuleEffects.h"
 
 Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEntity(coor, type, texture)
 {
@@ -233,12 +234,16 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 
 	numStats = App->entities->thrallstats;
 
+	dustEffect = App->effects->CreateEffect(pos, 10000, App->effects->playerDustAnim);
+
 	state = states::PL_IDLE;
 	anim = &idleDown;
 }
 
 bool Thrall::Update(float dt)
 {
+	dustEffect->MoveEffect({ pos.x + 5, pos.y + 35 });
+
 	PlayerStates(dt);
 
 	float percentage = 1.0f;

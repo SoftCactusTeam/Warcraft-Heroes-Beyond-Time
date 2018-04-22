@@ -148,6 +148,7 @@
     <ClCompile Include="ModuleEffects.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="EffectsElem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -312,6 +313,7 @@
     <ClInclude Include="ModuleEffects.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="EffectsElem.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />

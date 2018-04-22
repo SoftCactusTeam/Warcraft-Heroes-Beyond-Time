@@ -2,10 +2,14 @@
 #define __MODULE_EFFECTS_H__
 
 #include "Module.h"
+#include "EffectsElem.h"
 
 #include "p2Point.h"
+#include "Animation.h"
 #include "SDL/include/SDL.h"
 #include <list>
+
+class EffectsElem;
 
 class ModuleEffects : public Module
 {
@@ -21,19 +25,18 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
-
-
 public:
+	EffectsElem * CreateEffect(fPoint pos, float life, Animation effectAnim);
+	bool DestroyEffect(EffectsElem* elem);
 	SDL_Texture* ModuleEffects::GetAtlas() const;
 
-
 public:
-
-
-
+	std::list<EffectsElem*> effectsList;
+	std::list<EffectsElem*> effectsToKill;
+	Animation playerDustAnim;
 
 private:
-	SDL_Texture* atlas = nullptr;
+	SDL_Texture * atlas = nullptr;
 };
 
-#endif
+#endif // __MODULE_EFFECTS_H__
