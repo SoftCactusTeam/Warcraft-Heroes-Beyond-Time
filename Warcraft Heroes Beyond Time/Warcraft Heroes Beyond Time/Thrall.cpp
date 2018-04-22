@@ -452,7 +452,7 @@ void Thrall::Attack()
 	if (!attacking)
 		App->audio->PlayFx(App->audio->Thrall_AttackFX);
 	attacking = true;
-	attackCollider = App->colliders->AddPlayerAttackCollider({ -10000000, -10000000,20,20 }, this, numStats.damage, PlayerAttack::P_Attack_Type::NORMAL_ATTACK);
+	attackCollider = App->colliders->AddPlayerAttackCollider({ -1000000000, -1000000000,20,20 }, this, numStats.damage, PlayerAttack::P_Attack_Type::NORMAL_ATTACK);
 }
 
 void Thrall::UpdateAttackCollider()

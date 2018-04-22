@@ -205,6 +205,8 @@ bool ModuleColliders::CheckIfCollides(Collider* col1, Collider* col2) const
 		switch (col2->colType)
 		{
 			case Collider::ColliderType::ENTITY:
+			case Collider::ColliderType::PLAYER_ATTACK:
+			case Collider::ColliderType::ENEMY_ATTACK:
 			{
 				Entity* owner = (Entity*)col2->owner;
 				rect2.x += owner->pos.x;
