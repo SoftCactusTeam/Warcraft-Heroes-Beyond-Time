@@ -2,8 +2,6 @@
 #include "Application.h"
 #include "ModulePrinter.h"
 
-#include <math.h>
-
 FelBall::FelBall(const FelBallInfo& info, Projectile_type type) : Projectile(info, type)
 {
 	felAnims[(uint)FelAnimations::moving_anim].PushBack({ 19,32,18,23 });
@@ -28,11 +26,7 @@ bool FelBall::Update(float dt)
 {
 	bool ret = true;
 
-	int toNormX = toData->rotationPivot.x - (int)toData->pos.x;
-	int toNormY = toData->rotationPivot.y - (int)toData->pos.y;
-	int norm = sqrt(pow(toNormX, 2) + pow(toNormY, 2));
-
-	angle = atan2(toNormY/norm, toNormX/norm );
+	data.pos = RotateAround(data.pos, toData->rotationPivot, 10.0f, 10.0f);
 
 	DecreaseLifePerTime(dt);
 

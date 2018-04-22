@@ -8,7 +8,7 @@ struct FelBallInfo : public ProjectileInfo
 	FelBallInfo() {};
 	FelBallInfo(const FelBallInfo& info) : ProjectileInfo((const ProjectileInfo&)info), rotationPivot(info.rotationPivot) {};
 
-	iPoint rotationPivot = { 0,0 };
+	fPoint rotationPivot = { 0.0f,0.0f };
 };
 
 class FelBall : public Projectile

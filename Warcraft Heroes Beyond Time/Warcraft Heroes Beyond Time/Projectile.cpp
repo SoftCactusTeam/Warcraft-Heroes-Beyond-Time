@@ -3,6 +3,10 @@
 #include "ModulePrinter.h"
 #include "ModuleColliders.h"
 
+#include "p2Defs.h"
+
+#include <math.h>
+
 Projectile::Projectile()
 {
 }
@@ -37,6 +41,17 @@ int Projectile::DecreaseLifePerTime(float dt)
 		App->projectiles->DestroyProjectile(this);
 
 	return data.life;
+}
+
+fPoint Projectile::RotateAround(fPoint pointToRotate, fPoint rotationPivot, double angle, float radius) const
+{
+	int norm = pointToRotate.DistanceTo(rotationPivot);
+
+	float b = sin(DEG_2_RAD(angle)) * norm;
+
+	fPoint toReturn = fPoint(rotationPivot.x + norm, rotationPivot.y + b);
+
+	return toReturn;
 }
 
 void Projectile::OnCollision(Collider* yours, Collider* collideWith)

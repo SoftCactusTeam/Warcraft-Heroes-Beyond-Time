@@ -128,7 +128,7 @@ bool Guldan::Start()
 	info.life = 1000;
 	info.pos = { pos.x - 40.0f, pos.y + 40.0f};
 	info.speed = 0.0f;
-	info.rotationPivot = { (int)pos.x,(int)pos.y };
+	info.rotationPivot = { pos.x,pos.y };
 
 	App->projectiles->AddProjectile(info, Projectile_type::fel_ball);
 

@@ -31,6 +31,7 @@ public:
 	virtual bool Draw() const;
 
 	virtual int DecreaseLifePerTime(float dt);
+	virtual fPoint RotateAround(fPoint pointToRotate, fPoint rotationPivot, double angle, float radius) const;
 
 	virtual void OnCollision(Collider* yours, Collider* collideWith);
 	virtual void OnCollisionContinue(Collider* yours, Collider* collideWith);
