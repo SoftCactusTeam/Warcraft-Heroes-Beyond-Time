@@ -9,6 +9,16 @@
 
 class SDL_Texture;
 
+enum Layers
+{
+	FLOOR = -2,
+	FLOOR_EFFECTS = -1,
+	ENTITIES = 0,
+	ROOFS = 1,
+	ARCHER_EFFECTS_ARROWS = 2
+};
+
+
 class DrawingElem
 {
 public:
