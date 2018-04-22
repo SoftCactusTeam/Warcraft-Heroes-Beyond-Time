@@ -142,6 +142,9 @@
     <ClCompile Include="ItemContainer.cpp">
       <Filter>GUI\Warcraft specific</Filter>
     </ClCompile>
+    <ClCompile Include="DmgBallItem.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -302,6 +305,9 @@
     </ClInclude>
     <ClInclude Include="ItemContainer.h">
       <Filter>GUI\Warcraft specific</Filter>
+    </ClInclude>
+    <ClInclude Include="DMGBallItem.h">
+      <Filter>Items</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -132,6 +132,7 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="ChestEntity.cpp" />
     <ClCompile Include="ConsumableEntity.cpp" />
+    <ClCompile Include="DmgBallItem.cpp" />
     <ClCompile Include="DynamicEntity.cpp" />
     <ClCompile Include="EnemyEntity.cpp" />
     <ClCompile Include="Enemy_Archer.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="ChestEntity.h" />
     <ClInclude Include="ConsumableEntity.h" />
+    <ClInclude Include="DMGBallItem.h" />
     <ClInclude Include="DynamicEntity.h" />
     <ClInclude Include="EnemyEntity.h" />
     <ClInclude Include="Enemy_Archer.h" />

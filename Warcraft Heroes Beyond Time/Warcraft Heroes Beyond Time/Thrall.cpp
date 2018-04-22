@@ -320,7 +320,7 @@ void Thrall::OnCollision(Collider* yours, Collider* collideWith)
 		}
 		case Collider::ColliderType::ENTITY:
 		{
-			if (yours->colType == Collider::ColliderType::PLAYER_ATTACK)
+			if (yours->colType == Collider::ColliderType::PLAYER_ATTACK && yours == this->attackCollider)
 			{
 				PlayerAttack* attack = (PlayerAttack*)yours;
 				if (attack->pattacktype == PlayerAttack::P_Attack_Type::NORMAL_ATTACK)

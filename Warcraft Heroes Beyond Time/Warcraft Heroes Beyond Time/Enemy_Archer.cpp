@@ -176,6 +176,7 @@ void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 		{
 			case PlayerAttack::P_Attack_Type::NORMAL_ATTACK:
 			case PlayerAttack::P_Attack_Type::SKILL:
+			case PlayerAttack::P_Attack_Type::DMGBALL_ITEM:
 			{
 				App->audio->PlayFx(App->audio->ArcherDeath);
 				live -= attack->damage;
