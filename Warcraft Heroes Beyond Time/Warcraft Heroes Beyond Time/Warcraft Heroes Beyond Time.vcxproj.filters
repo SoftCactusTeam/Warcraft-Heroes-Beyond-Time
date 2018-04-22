@@ -145,6 +145,9 @@
     <ClCompile Include="FelBall.cpp">
       <Filter>Projectiles</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleEffects.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -305,6 +308,9 @@
     </ClInclude>
     <ClInclude Include="FelBall.h">
       <Filter>Projectiles</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleEffects.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

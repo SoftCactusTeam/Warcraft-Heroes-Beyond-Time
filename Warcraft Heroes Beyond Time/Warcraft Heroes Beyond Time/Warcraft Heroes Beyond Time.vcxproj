@@ -146,6 +146,7 @@
     <ClCompile Include="Guldan.cpp" />
     <ClCompile Include="InputBox.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ModuleEffects.cpp" />
     <ClCompile Include="ModuleItems.cpp" />
     <ClCompile Include="ModulePrinter.cpp" />
     <ClCompile Include="ModuleProjectiles.cpp" />
@@ -200,6 +201,7 @@
     <ClInclude Include="Guldan.h" />
     <ClInclude Include="InputBox.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="ModuleEffects.h" />
     <ClInclude Include="ModuleItems.h" />
     <ClInclude Include="ModulePrinter.h" />
     <ClInclude Include="PlayerHPBar.h" />
