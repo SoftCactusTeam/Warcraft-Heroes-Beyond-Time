@@ -49,12 +49,15 @@ public:
 		return itemsTexture;
 	}
 
+	
+
 private:
 	
 	std::vector<Item*> availableItems;
 	std::list<Item*> equipedItems;
-
 	SDL_Texture* itemsTexture = nullptr;
+
+	
 };
 
 
