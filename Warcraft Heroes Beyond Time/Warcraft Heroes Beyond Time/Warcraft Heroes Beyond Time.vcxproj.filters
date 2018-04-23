@@ -142,6 +142,12 @@
     <ClCompile Include="ItemContainer.cpp">
       <Filter>GUI\Warcraft specific</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleEffects.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectsElem.cpp">
+      <Filter>Effects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -303,6 +309,12 @@
     <ClInclude Include="ItemContainer.h">
       <Filter>GUI\Warcraft specific</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleEffects.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectsElem.h">
+      <Filter>Effects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />
@@ -343,6 +355,9 @@
     </Filter>
     <Filter Include="Projectiles">
       <UniqueIdentifier>{201659da-66fe-4367-9bc4-ee50a8e8c250}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Effects">
+      <UniqueIdentifier>{d227cee4-83b2-4ccb-b161-8d1a87e41306}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -133,6 +133,7 @@
     <ClCompile Include="ChestEntity.cpp" />
     <ClCompile Include="ConsumableEntity.cpp" />
     <ClCompile Include="DynamicEntity.cpp" />
+    <ClCompile Include="EffectsElem.cpp" />
     <ClCompile Include="EnemyEntity.cpp" />
     <ClCompile Include="Enemy_Archer.cpp" />
     <ClCompile Include="Enemy_Footman.cpp" />
@@ -145,6 +146,7 @@
     <ClCompile Include="Guldan.cpp" />
     <ClCompile Include="InputBox.cpp" />
     <ClCompile Include="ItemContainer.cpp" />
+    <ClCompile Include="ModuleEffects.cpp" />
     <ClCompile Include="ModuleItems.cpp" />
     <ClCompile Include="ModulePrinter.cpp" />
     <ClCompile Include="ModuleProjectiles.cpp" />
@@ -184,6 +186,7 @@
     <ClInclude Include="ChestEntity.h" />
     <ClInclude Include="ConsumableEntity.h" />
     <ClInclude Include="DynamicEntity.h" />
+    <ClInclude Include="EffectsElem.h" />
     <ClInclude Include="EnemyEntity.h" />
     <ClInclude Include="Enemy_Archer.h" />
     <ClInclude Include="Enemy_Footman.h" />
@@ -199,6 +202,7 @@
     <ClInclude Include="InputBox.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemContainer.h" />
+    <ClInclude Include="ModuleEffects.h" />
     <ClInclude Include="ModuleItems.h" />
     <ClInclude Include="ModulePrinter.h" />
     <ClInclude Include="PlayerHPBar.h" />
