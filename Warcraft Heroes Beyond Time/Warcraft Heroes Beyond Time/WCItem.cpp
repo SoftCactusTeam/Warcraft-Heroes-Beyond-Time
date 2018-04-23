@@ -49,7 +49,7 @@ bool WCItem::Draw()
 
 	for (; it != shit_list.end(); ++it)
 	{
-		App->printer->PrintSprite((*it)->pos, App->items->getItemsTexture(), SDL_Rect(SHIT), -1); //hacerotrorect
+		App->printer->PrintSprite((*it)->pos, App->items->getItemsTexture(), SDL_Rect(SHIT_ITEM), -1); 
 	}
 
 	return true;

@@ -6,7 +6,7 @@
 #include "ModuleColliders.h"
 
 #define WC_ICON {34,84,27,31} //The rect from the texture of your gui icon
-#define SHIT{102,19,31,29}
+#define SHIT_ITEM {102,19,31,29}
 
 class Shit
 {
@@ -23,7 +23,7 @@ class WCItem : public Item
 {
 public:
 	WCItem() {}
-	virtual ~WCItem() {}
+	virtual ~WCItem();
 
 	bool Start();
 	bool Act(ModuleItems::ItemEvent event, float dt = App->dt);
