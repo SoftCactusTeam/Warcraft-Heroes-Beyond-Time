@@ -22,6 +22,8 @@
 #include "ModuleMapGenerator.h"
 #include "ModulePrinter.h"
 #include "ModuleItems.h"
+#include "ModuleProjectiles.h"
+#include "ModuleEffects.h"
 
 #include "Brofiler\Brofiler.h"
 
@@ -43,6 +45,8 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	path = new Pathfinding();
 	printer = new ModulePrinter();
 	items = new ModuleItems();
+	projectiles = new ModuleProjectiles();
+	effects = new ModuleEffects();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -52,6 +56,8 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(textures);
 	AddModule(map);
 	AddModule(entities);
+	AddModule(projectiles);
+	AddModule(effects);
 	AddModule(items);
 	AddModule(audio);
 	AddModule(fonts);

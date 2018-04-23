@@ -51,8 +51,8 @@ public:
 	bool PostUpdate();
 	bool Finish();
 	bool Draw();
-	void Collision(Collider* collideWith);
-
+	void OnCollision(Collider* yours, Collider* collideWith);
+	void OnCollisionContinue(Collider* yours, Collider* collideWith);
 
 	void initIdle();
 	void initWalk();

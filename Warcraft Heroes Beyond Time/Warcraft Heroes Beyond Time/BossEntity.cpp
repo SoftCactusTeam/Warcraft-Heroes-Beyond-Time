@@ -1,6 +1,6 @@
 #include "BossEntity.h"
 
-BossEntity::BossEntity(fPoint coor, BOSS_TYPE type, SDL_Texture* texture) : EnemyEntity(coor, NON_ENEMY, texture), type(type) {}
+BossEntity::BossEntity(fPoint coor, BossType bossType, SDL_Texture* texture) : EnemyEntity(coor, ENEMY_TYPE::BOSS, texture), bossType(bossType) {}
 
 bool BossEntity::Start() { return true; }
 

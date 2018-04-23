@@ -26,6 +26,7 @@ ModuleGUI::~ModuleGUI() {}
 
 bool ModuleGUI::Awake(pugi::xml_node& guiNode)
 {
+	version = guiNode.child("version").attribute("string").as_string("");
 	return true;
 }
 
@@ -104,17 +105,7 @@ bool ModuleGUI::CleanUp()
 		delete (*it);
 	}
 	GUIElemList.clear();
-
-	for (it = elementsToSpawn.rbegin(); it != elementsToSpawn.rend(); ++it)
-	{
-		delete (*it);
-	}
 	elementsToSpawn.clear();
-
-	for (it = elementsToKill.rbegin(); it != elementsToKill.rend(); ++it)
-	{
-		delete (*it);
-	}
 	elementsToKill.clear();
 
 	App->textures->UnLoad(atlas);
@@ -229,4 +220,19 @@ GUIElem* ModuleGUI::CreateBossHPBar(BossEntity* boss, fPoint localPos)
 SDL_Texture* ModuleGUI::getAtlas() const
 {
 	return atlas;
+}
+
+char* ModuleGUI::getVersion() const
+{
+	return (char*)version.data();
+}
+
+void ModuleGUI::Save(pugi::xml_node& guiNode)
+{
+	guiNode.append_attribute("saved?").set_value("YES!");
+}
+
+void ModuleGUI::Load(const pugi::xml_node& guiNode)
+{
+
 }

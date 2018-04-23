@@ -18,6 +18,7 @@
 #include "ModuleTextures.h"
 #include "ModuleItems.h"
 #include "FileSystem.h"
+#include "BossEntity.h"
 
 
 #include "Brofiler\Brofiler.h"
@@ -150,7 +151,7 @@ bool Scene::Start()
 			portal->locked = true;
 			player = App->entities->AddPlayer({ 15 * 46,16 * 46, }, THRALL);
 			player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
-			BossEntity* guldan = App->entities->AddBoss({ 14 * 48,5 * 48 }, GULDAN);
+			BossEntity* guldan = App->entities->AddBoss({ 14 * 48,5 * 48 }, BossType::GULDAN);
 			App->gui->CreateBossHPBar(guldan, { 640 / 2 - 312 / 2,320 });
 			break;
 		}
@@ -246,6 +247,7 @@ bool Scene::Update(float dt)
 		{
 			if (!paused)
 			{
+				App->audio->PauseFX();
 				paused = true;
 				currentPercentAudio = App->audio->MusicVolumePercent;
 				uint tmpAudio = (uint)(currentPercentAudio * 0.3f);
@@ -257,6 +259,7 @@ bool Scene::Update(float dt)
 			}
 			else
 			{
+				App->audio->ResumeFX();
 				paused = false;
 				// Decreasing audio when pause game
 				App->audio->setMusicVolume(currentPercentAudio);
@@ -264,10 +267,6 @@ bool Scene::Update(float dt)
 			}
 		}
 	}
-
-	if(ret)
-		ret = ControllerMenu();
-
 
 	return ret;
 }
@@ -391,14 +390,16 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 				{
 					App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
 					App->audio->setMusicVolume(currentPercentAudio);
+					App->audio->HaltFX();
 				}
-					
+				
 				actual_scene = Stages::MAIN_MENU;
 				paused = false;
 				restart = true;
 				break;
 			case BType::RESUME:
 				paused = false;
+				App->audio->ResumeFX();
 				App->gui->DestroyElem(PauseMenu);
 				App->audio->setMusicVolume(currentPercentAudio);
 				break;
@@ -412,74 +413,12 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 	return ret;
 }
 
-
-bool Scene::ControllerMenu()
-{
-	if (actual_scene == Stages::MAIN_MENU)
-	{
-		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
-		{
-			App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
-			actual_scene = Stages::INGAME;
-			restart = true;
-		}
-		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_X) == KEY_DOWN)
-		{
-			actual_scene = Stages::SETTINGS;
-			restart = true;
-		}
-		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN)
-			return false;
-
-	}
-	if (actual_scene == Stages::SETTINGS)
-	{
-		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN)
-		{
-			actual_scene = Stages::MAIN_MENU;
-			paused = false;
-			restart = true;
-		}
-	}
-	if ((actual_scene == Stages::BOSS_ROOM || actual_scene == Stages::INGAME) && paused == true)
-	{
-		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN)
-		{
-			paused = false;
-			// Decreasing audio when pause game
-			App->audio->setMusicVolume(currentPercentAudio);
-			App->gui->DestroyElem(PauseMenu);
-		}
-
-		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_X) == KEY_DOWN)
-		{
-			App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
-			App->audio->setMusicVolume(currentPercentAudio);
-
-			actual_scene = Stages::MAIN_MENU;
-			paused = false;
-			restart = true;
-		}
-
-		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN)
-			return false;
-	}
-	
-	return true;
-}
-
 void Scene::CreateMainMenuScreen()
 {
-	if (App->input->isControllerConnected())
-	{
-		GUIImage* imageA = (GUIImage*)App->gui->CreateGUIImage({ 190, 50 }, { 573,30,42,42 }, this);
-		GUIImage* imageX = (GUIImage*)App->gui->CreateGUIImage({ 190, 150 }, { 665,30,42,42 }, this);
-		GUIImage* imageB = (GUIImage*)App->gui->CreateGUIImage({ 190, 250 }, { 619,30,42,42 }, this);
-	}
-	
+	GUIWindow* window = (GUIWindow*)App->gui->CreateGUIWindow({ 0,0 }, { 0,0,0,0 }, nullptr, nullptr);
 
 	//PLAY BUTTON
-	Button* button = (Button*)App->gui->CreateButton({ 640 / 2 - 158 / 2, 50.0f }, BType::PLAY, this);
+	Button* button = (Button*)App->gui->CreateButton({ 640 / 2 - 158 / 2, 50.0f }, BType::PLAY, this, window);
 
 	/*LabelInfo defLabel;
 	defLabel.color = White;
@@ -494,7 +433,7 @@ void Scene::CreateMainMenuScreen()
 	App->gui->CreateLabel({ 33,11 }, defLabel, button, this);
 
 	//SETTINGS BUTTON
-	Button* button2 = (Button*)App->gui->CreateButton({ 640 / 2 - 158 / 2, 150.0f }, BType::SETTINGS, this);
+	Button* button2 = (Button*)App->gui->CreateButton({ 640 / 2 - 158 / 2, 150.0f }, BType::SETTINGS, this, window);
 
 	LabelInfo defLabel2;
 	defLabel2.color = White;
@@ -503,7 +442,7 @@ void Scene::CreateMainMenuScreen()
 	App->gui->CreateLabel({ 42,10 }, defLabel2, button2, this);
 
 	//EXIT GAME BUTTON
-	Button* button3 = (Button*)App->gui->CreateButton({ 640 / 2 - 158 / 2, 250.0f }, BType::EXIT_GAME, this);
+	Button* button3 = (Button*)App->gui->CreateButton({ 640 / 2 - 158 / 2, 250.0f }, BType::EXIT_GAME, this, window);
 
 	LabelInfo defLabel3;
 	defLabel3.color = White;
@@ -515,21 +454,19 @@ void Scene::CreateMainMenuScreen()
 	LabelInfo versionLabel;
 	versionLabel.color = White;
 	versionLabel.fontName = "Arial30";
-	versionLabel.text = "Warcraft-Heroes-Beyond-Time-RELEASE-v0.3.1";
+	versionLabel.text = App->gui->getVersion();
 	App->gui->CreateLabel({ 10,340 }, versionLabel, nullptr, nullptr);
-
 
 }
 
 void Scene::CreateSettingsScreen()
 {
-	if (App->input->isControllerConnected())
-		GUIImage* imageB = (GUIImage*)App->gui->CreateGUIImage({ 190, 250 }, { 619,30,42,42 }, this);
+	GUIWindow* window = (GUIWindow*)App->gui->CreateGUIWindow({ 0,0 }, { 0,0,0,0 }, nullptr, nullptr);
 
 	//MUSIC VOLUME SLIDER
 	SliderInfo sinfo;
 	sinfo.type = Slider::SliderType::MUSIC_VOLUME;
-	Slider* slider = (Slider*)App->gui->CreateSlider({ 183, 95 }, sinfo, this, nullptr);
+	Slider* slider = (Slider*)App->gui->CreateSlider({ 183, 95 }, sinfo, this, window);
 
 	LabelInfo defLabel3;
 	defLabel3.color = White;
@@ -547,7 +484,7 @@ void Scene::CreateSettingsScreen()
 	//FX VOLUME SLIDER
 	SliderInfo sinfo2;
 	sinfo2.type = Slider::SliderType::FX_VOLUME;
-	Slider* slider2 = (Slider*)App->gui->CreateSlider({ 183, 190 }, sinfo2, this, nullptr);
+	Slider* slider2 = (Slider*)App->gui->CreateSlider({ 183, 190 }, sinfo2, this, window);
 
 	LabelInfo defLabel4;
 	defLabel4.color = White;
@@ -563,7 +500,7 @@ void Scene::CreateSettingsScreen()
 	App->gui->CreateLabel({ 0,-35 }, defLabel5, slider2, this);
 
 	//BACK BUTTON
-	Button* button3 = (Button*)App->gui->CreateButton({ 640 / 2 - 158 / 2, 250.0f }, BType::GO_MMENU, this);
+	Button* button3 = (Button*)App->gui->CreateButton({ 640 / 2 - 158 / 2, 250.0f }, BType::GO_MMENU, this, window);
 
 	LabelInfo defLabel2;
 	defLabel2.color = White;
@@ -576,20 +513,9 @@ void Scene::CreatePauseMenu()
 {
 	fPoint localPos = { 640 / 2 - 249 / 2, 360 / 2 - 286 / 2 };
 	PauseMenu = (GUIWindow*)App->gui->CreateGUIWindow(localPos, WoodWindow, this);
+	PauseMenu->blackBackground = true;
 
-	if (App->input->isControllerConnected())
-	{
-		GUIImage* imageA = (GUIImage*)App->gui->CreateGUIImage({ 20, 40 }, { 573,30,42,42 }, this, PauseMenu);
-		GUIImage* imageX = (GUIImage*)App->gui->CreateGUIImage({ 20, 120 }, { 665,30,42,42 }, this, PauseMenu);
-		GUIImage* imageB = (GUIImage*)App->gui->CreateGUIImage({ 20, 200 }, { 619,30,42,42 }, this, PauseMenu);
-	}
-
-	Button* Resume;
-
-	if(App->input->isControllerConnected())
-		Resume = (Button*)App->gui->CreateButton({ 70, 40 }, BType::RESUME, this, PauseMenu);
-	else
-		Resume = (Button*)App->gui->CreateButton({ 249 / 2 - 158 / 2, 40 }, BType::RESUME, this, PauseMenu);
+	Button* Resume = (Button*)App->gui->CreateButton({ 249 / 2 - 158 / 2, 40 }, BType::RESUME, this, PauseMenu);
 
 	LabelInfo defLabel1;
 	defLabel1.color = White;
@@ -597,11 +523,7 @@ void Scene::CreatePauseMenu()
 	defLabel1.text = "Resume";
 	App->gui->CreateLabel({ 46,10 }, defLabel1, Resume, this);
 
-	Button* MainMenu;
-	if(App->input->isControllerConnected())
-		MainMenu = (Button*)App->gui->CreateButton({ 70, 120 }, BType::GO_MMENU, this, PauseMenu);
-	else
-		MainMenu = (Button*)App->gui->CreateButton({ 249 / 2 - 158 / 2, 120 }, BType::GO_MMENU, this, PauseMenu);
+	Button* MainMenu = (Button*)App->gui->CreateButton({ 249 / 2 - 158 / 2, 120 }, BType::GO_MMENU, this, PauseMenu);
 
 	LabelInfo defLabel2;
 	defLabel2.color = White;
@@ -609,11 +531,7 @@ void Scene::CreatePauseMenu()
 	defLabel2.text = "Return to the Main Menu";
 	App->gui->CreateLabel({ 18,15 }, defLabel2, MainMenu, this);
 
-	Button* SaveAndExit;
-	if (App->input->isControllerConnected())
-		SaveAndExit = (Button*)App->gui->CreateButton({ 70, 200 }, BType::EXIT_GAME, this, PauseMenu);
-	else
-		SaveAndExit = (Button*)App->gui->CreateButton({ 249 / 2 - 158 / 2, 200 }, BType::EXIT_GAME, this, PauseMenu);
+	Button* SaveAndExit = (Button*)App->gui->CreateButton({ 249 / 2 - 158 / 2, 200 }, BType::EXIT_GAME, this, PauseMenu);
 
 	LabelInfo defLabel3;
 	defLabel3.color = White;

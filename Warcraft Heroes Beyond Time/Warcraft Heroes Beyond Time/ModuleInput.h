@@ -7,7 +7,7 @@
 #include "SDL\include\SDL_scancode.h"
 
 #define NUM_MOUSE_BUTTONS 5
-#define J_DEAD_ZONE 5500
+#define J_DEAD_ZONE 8000
 #define NUM_J_BUTTONS 16
 #define MAX_JAXIS_VALUE 32767.0f
 
@@ -27,6 +27,15 @@ enum KeyState
 	KEY_DOWN,
 	KEY_REPEAT,
 	KEY_UP
+};
+
+enum class Axis
+{
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT,
+	MAX
 };
 
 class Input : public Module
@@ -70,6 +79,11 @@ public:
 		return yAxis;
 	}
 
+	KeyState GetAxis(int id) const
+	{
+		return axis[id];
+	}
+
 	bool InsideDeadZone() const
 	{
 		return xDeadZone && yDeadZone;
@@ -95,6 +109,7 @@ private:
 	KeyState*	keyboard;
 	KeyState	mouse_buttons[NUM_MOUSE_BUTTONS];
 	KeyState	jButtons[NUM_J_BUTTONS];
+	KeyState    axis[(int)Axis::MAX];
 	int			mouse_motion_x;
 	int			mouse_motion_y;
 	int			mouse_x;

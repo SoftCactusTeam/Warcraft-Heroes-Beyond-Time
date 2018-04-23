@@ -4,6 +4,8 @@
 #include "GUIElem.h"
 #include "Log.h"
 #include "ModuleRender.h"
+#include "Button.h"
+#include "Scene.h"
 
 GUIElem::GUIElem(fPoint localPos, Module* listener, SDL_Rect atlasRect, GUIElemType type, GUIElem* parent) : localPos(localPos), listener(listener), atlasRect(atlasRect), type(type), parent(parent)
 {
@@ -44,7 +46,7 @@ bool GUIElem::MouseHover() const
 	return result;
 }
 
-bool GUIElem::HandleInput()
+bool GUIElem::HandleInput(float dt)
 {
 	bool ret = true;
 
@@ -52,8 +54,11 @@ bool GUIElem::HandleInput()
 	{
 
 	case UIEvents::NO_EVENT:
-		if (MouseHover()) 
+
+		if (MouseHover() || focused) 
 		{
+			parent->UnFocusChilds();
+			Focus();
 			UIevent = UIEvents::MOUSE_ENTER;
 			listener->OnUIEvent((GUIElem*)this, UIevent);
 			break;
@@ -61,12 +66,8 @@ bool GUIElem::HandleInput()
 		break;
 
 	case UIEvents::MOUSE_ENTER:
-		if (!MouseHover()) {
-			LOG("Mouse Leave");
-			UIevent = UIEvents::MOUSE_LEAVE;
-			break;
-		}
-		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED)
+		
+		if (focused && (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_DOWN))
 		{
 			LOG("Mouse left cLick pressed");
 			UIevent = UIEvents::MOUSE_LEFT_CLICK;
@@ -79,6 +80,11 @@ bool GUIElem::HandleInput()
 			UIevent = UIEvents::MOUSE_RIGHT_CLICK;
 			listener->OnUIEvent((GUIElem*)this, UIevent);
 			break;
+		}
+		else if (!focused)
+		{
+			UIevent = UIEvents::MOUSE_LEAVE;
+			listener->OnUIEvent((GUIElem*)this, UIevent);
 		}
 		break;
 
@@ -93,13 +99,8 @@ bool GUIElem::HandleInput()
 		break;
 
 	case UIEvents::MOUSE_LEFT_CLICK:
-		if (!MouseHover())
-		{
-			LOG("Mouse Leave");
-			UIevent = UIEvents::MOUSE_LEFT_UP;
-			ret = listener->OnUIEvent((GUIElem*)this, UIevent);
-		}
-		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_RELEASED)
+
+		if (focused && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_RELEASED || App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_UP)
 		{
 			LOG("Mouse left click released");
 			UIevent = UIEvents::MOUSE_LEFT_UP;
@@ -108,8 +109,8 @@ bool GUIElem::HandleInput()
 
 		break;
 	case UIEvents::MOUSE_LEFT_UP:
-		if (!MouseHover())
-			UIevent = UIEvents::NO_EVENT;
+		if (focused == false)
+			UIevent = UIEvents::MOUSE_LEAVE;
 		else
 			UIevent = UIEvents::MOUSE_ENTER;
 		listener->OnUIEvent(this, UIevent);
@@ -118,6 +119,39 @@ bool GUIElem::HandleInput()
 		listener->OnUIEvent((GUIElem*)this, UIevent);
 		UIevent = UIEvents::NO_EVENT;
 		break;
+	}
+
+	if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KeyState::KEY_DOWN)
+	{
+		if (type == GUIElemType::BUTTON)
+		{
+			Button* button = (Button*)this;
+			switch (App->scene->actual_scene)
+			{
+			case Scene::Stages::SETTINGS:
+			{
+				if (button->btype == BType::GO_MMENU)
+				{
+					parent->UnFocusChilds();
+					Focus();
+					UIevent = UIEvents::MOUSE_LEFT_CLICK;
+					listener->OnUIEvent(this, UIevent);
+				}
+				break;
+			}
+			default:
+			{
+				if (button->btype == BType::EXIT_GAME)
+				{
+					parent->UnFocusChilds();
+					Focus();
+					UIevent = UIEvents::MOUSE_LEFT_CLICK;
+					listener->OnUIEvent(this, UIevent);
+				}
+				break;
+			}
+			}
+		}
 	}
 
 	return ret;

@@ -27,6 +27,8 @@ class ModuleColliders;
 class Pathfinding;
 class ModulePrinter;
 class ModuleItems;
+class ModuleProjectiles;
+class ModuleEffects;
 
 class Application
 {
@@ -85,6 +87,8 @@ public:
 	Pathfinding*			path = nullptr;
 	ModulePrinter*			printer = nullptr;
 	ModuleItems*			items = nullptr;
+	ModuleProjectiles*		projectiles = nullptr;
+	ModuleEffects*			effects = nullptr;
 
 public:
 

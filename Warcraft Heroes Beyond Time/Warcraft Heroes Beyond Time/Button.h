@@ -39,6 +39,22 @@ public:
 	bool Update(float dt);
 	bool Draw();
 	void MoveChilds(fPoint dist);
+	void Focus()
+	{
+		if (!focused)
+		{
+			focused = true;
+			atlasRect = Button1MouseHover;
+		}
+	}
+	void UnFocus()
+	{
+		if (focused)
+		{
+			focused = false;
+			atlasRect = Button1;
+		}
+	}
 };
 
 

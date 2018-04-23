@@ -84,7 +84,7 @@ void Enemy_Footman::initAtac()
 	accountantPrincipal = SDL_GetTicks() + ATAC_COOLDOWN;
 	anim = &animAtac[LookAtPlayer()];
 	anim->Reset();
-	collider = App->colliders->AddCollider({ ((int)pos.x + anim->GetCurrentRect().w / 2) + (int)transformFixedAngleTofPoint(LookAtPlayer()).x * 10 - 10, ((int)pos.y + anim->GetCurrentRect().h / 2) + (int)transformFixedAngleTofPoint(LookAtPlayer()).y * 10 - 10, 24, 24 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATTACK);
+	//collider = App->colliders->AddCollider({ ((int)pos.x + anim->GetCurrentRect().w / 2) + (int)transformFixedAngleTofPoint(LookAtPlayer()).x * 10 - 10, ((int)pos.y + anim->GetCurrentRect().h / 2) + (int)transformFixedAngleTofPoint(LookAtPlayer()).y * 10 - 10, 24, 24 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATTACK);
 }
 
 void Enemy_Footman::initCharge()
@@ -97,7 +97,7 @@ void Enemy_Footman::initCharge()
 	chargeCooldown = SDL_GetTicks() + CHARGE_COOLDOWN;
 	chargeTime = CHARGE_DISTANCE;
 	StopConcreteTime(CHARGE_PRETIME);
-	collider = App->colliders->AddCollider({ ((int)pos.x + anim->GetCurrentRect().w / 2) + (int)transformFixedAngleTofPoint(LookAtPlayer()).x * 10 - 10, ((int)pos.y + anim->GetCurrentRect().h / 2) + (int)transformFixedAngleTofPoint(LookAtPlayer()).y * 10 - 10, 24, 24 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATTACK);
+	//collider = App->colliders->AddCollider({ ((int)pos.x + anim->GetCurrentRect().w / 2) + (int)transformFixedAngleTofPoint(LookAtPlayer()).x * 10 - 10, ((int)pos.y + anim->GetCurrentRect().h / 2) + (int)transformFixedAngleTofPoint(LookAtPlayer()).y * 10 - 10, 24, 24 }, COLLIDER_TYPE::COLLIDER_ENEMY_ATTACK);
 }
 
 void Enemy_Footman::initDefense()
@@ -183,7 +183,7 @@ void Enemy_Footman::doCharge()
 		{
 			pos += chargeMovement;
 			chargeTime -= CHARGE_SPEED;
-			collider->colliderRect = { ((int)pos.x + anim->GetCurrentRect().w / 2) - 10, ((int)pos.y + anim->GetCurrentRect().h / 2) - 10, 24, 24 };
+			collider->rectArea = { ((int)pos.x + anim->GetCurrentRect().w / 2) - 10, ((int)pos.y + anim->GetCurrentRect().h / 2) - 10, 24, 24 };
 		}
 	}
 }

@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "SDL_image\include\SDL_image.h"
-
+#include "Module.h"
 #include "p2Point.h"
 #include "EntitiesEnums.h"
 
@@ -14,6 +14,7 @@ class PlayerEntity;
 class ChestEntity;
 class StaticEntity;
 class BossEntity;
+enum class BossType;
 
 class EntitySystem : public Module
 {
@@ -21,11 +22,13 @@ public:
 
 	struct PlayerStats
 	{
+		uint skillMultiplier = 0;
+
 		uint maxhp = 0;
-		uint hp = 0;
+		float hp = 0;
 		uint armor = 0;
 		uint speed = 0;
-		uint damage = 0;
+		float damage = 0;
 		uint energy = 0;
 		uint energyPercentbyHit = 0;
 		uint critChance = 0;
@@ -42,7 +45,7 @@ public:
 		uint dropping_chance = 0;
 		uint difficulty = 0;
 
-	} footmanstats, archerstats, wizardstats, darkknightstats;
+	} footmanstats, archerstats, wizardstats, darkknightstats, guldanstats;
 
 
 	EntitySystem();
@@ -67,7 +70,7 @@ public:
 
 	PlayerEntity* AddPlayer(fPoint coor, PLAYER_TYPE type);
 	void AddEnemy(fPoint coor, ENEMY_TYPE type);
-	BossEntity* AddBoss(fPoint coor, BOSS_TYPE type);
+	BossEntity* AddBoss(fPoint coor, BossType type);
 	void AddConsumable(fPoint coor, CONSUMABLE_TYPE type);
 	ChestEntity* AddChest(fPoint coor, CHEST_TYPE type);
 	StaticEntity* AddStaticEntity(fPoint coor, STATIC_ENTITY_TYPE type);

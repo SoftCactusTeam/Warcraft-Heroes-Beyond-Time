@@ -28,11 +28,12 @@
       <archer hp = "200" speed = "40" damage = "60" dropping_chance = "25" range = "125" difficulty = "2"/>
       <wizard hp = "200" speed = "40" damage = "60" dropping_chance = "25" range = "125" difficulty = "5"/>
       <dark_knight hp = "200" speed = "40" damage = "60" dropping_chance = "25" range = "125" difficulty = "7"/>
+      <guldan hp = "200" speed = "40" damage = "60" dropping_chance = "25" range = "125" difficulty = "7"/>
     </enemies>
 
     <players>
       <cds dash = "0" deadinfloor = "2" invulpostdamaged = "1"/>
-      <thrall hp = "200" speed = "40" damage = "60" energy_percent_hit = "5"/>
+      <thrall hp = "200" speed = "250" damage = "60" energy_percent_hit = "5" skill_multiplier="3"/>
     </players>
 
     <items>
@@ -41,9 +42,9 @@
     </items>
 
   </entitySystem>
-  
+
   <GUI>
-    
+    <version string="Warcraft-Heroes-Beyond-Time-RELEASE-v0.3.1.1"/>
   </GUI>
 
   <input>

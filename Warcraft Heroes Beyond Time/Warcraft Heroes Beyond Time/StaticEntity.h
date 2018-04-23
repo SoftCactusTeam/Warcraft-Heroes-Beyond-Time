@@ -3,6 +3,8 @@
 
 #include "Entity.h"
 
+class Collider;
+
 class StaticEntity : public Entity {
 public:
 	StaticEntity(fPoint coor, SDL_Texture* texture);
@@ -10,8 +12,6 @@ public:
 	virtual bool Start();
 	virtual bool Update(float dt);
 	virtual bool Finish();
-	virtual void Collision(COLLIDER_TYPE type);
-
 };
 
 #endif

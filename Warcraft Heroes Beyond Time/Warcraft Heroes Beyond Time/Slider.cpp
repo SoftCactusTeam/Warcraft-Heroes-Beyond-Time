@@ -35,7 +35,7 @@ bool Slider::Update(float dt)
 {
 	bool ret = true;
 
-	ret = HandleInput();
+	ret = HandleInput(dt);
 	
 	if(ret)
 		ret = UpdateChilds(dt);
@@ -59,10 +59,10 @@ bool Slider::Draw()
 	return ret;
 }
 
-bool Slider::HandleInput()
+bool Slider::HandleInput(float dt)
 {
 	bool ret = true;
-	
+
 	int x, y;
 	App->input->GetMousePosition(x, y);
 
@@ -71,7 +71,7 @@ bool Slider::HandleInput()
 	else if (focused && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
 		focused = false;
 	
-	if(focused)
+	if(focused && App->input->IsKeyboardAvailable())
 	{
 		if (x <= minValue)
 			smobilepos = minValue - 4;
@@ -90,17 +90,73 @@ bool Slider::HandleInput()
 			label->EditText(std::to_string(valuePercent), White);
 			break;
 		}
-		
-		switch(stype)
+	}
+
+	else if (focused && !App->input->IsKeyboardAvailable())
+	{
+		if (App->input->GetAxis((int)Axis::RIGHT) == KeyState::KEY_DOWN)
 		{
-			case SliderType::MUSIC_VOLUME:
-				App->audio->setMusicVolume(valuePercent);
-				break;
-			case SliderType::FX_VOLUME:
-				App->audio->setFXVolume(valuePercent);
-				break;
+			counter = 0;
+			if (valuePercent + 1 <= 100)
+				valuePercent += 1;
+			else
+				valuePercent = 100;
+
+		}
+		else if (App->input->GetAxis((int)Axis::RIGHT) == KeyState::KEY_REPEAT)
+		{
+			counter += dt;
+			if(counter >=0.5f)
+				if (valuePercent + 1 <= 100)
+					valuePercent += 1;
+				else
+					valuePercent = 100;
+
+		}
+		if (App->input->GetAxis((int)Axis::LEFT) == KeyState::KEY_DOWN)
+		{
+			counter = 0;
+			if ((int)valuePercent - 1 >= 0)
+				valuePercent -= 1;
+			else
+				valuePercent = 0;
+		}
+		else if (App->input->GetAxis((int)Axis::LEFT) == KeyState::KEY_REPEAT)
+		{
+			counter += dt;
+			if(counter >= 0.5f)
+				if ((int)valuePercent - 1 >= 0)
+					valuePercent -= 1;
+				else
+					valuePercent = 0;
+		}
+
+
+		this->smobilepos = (valuePercent * (maxValue - minValue)) / 100 + minValue - 4;
+	}
+
+	if (focused)
+	{
+		Label* label;
+		std::list<GUIElem*>::iterator it;
+		for (it = childs.begin(); it != childs.end(); ++it)
+		{
+			label = (Label*)(*it);
+			label->EditText(std::to_string(valuePercent), White);
+			break;
+		}
+
+		switch (stype)
+		{
+		case SliderType::MUSIC_VOLUME:
+			App->audio->setMusicVolume(valuePercent);
+			break;
+		case SliderType::FX_VOLUME:
+			App->audio->setFXVolume(valuePercent);
+			break;
 		}
 	}
+
 	return ret;
 }
 

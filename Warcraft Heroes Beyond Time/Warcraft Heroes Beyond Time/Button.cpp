@@ -18,7 +18,7 @@ bool Button::Update(float dt)
 		result = UpdateChilds(dt);
 
 	if (result)
-		result = HandleInput();
+		result = HandleInput(dt);
 	
 	return result;
 }

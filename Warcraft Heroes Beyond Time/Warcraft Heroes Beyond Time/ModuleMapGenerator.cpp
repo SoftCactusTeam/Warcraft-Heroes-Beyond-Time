@@ -21,7 +21,9 @@
 #define FLOOR4 { 147,49,48,48 }
 #define FLOOR5 { 196,49,48,48 }
 #define FLOOR6 { 0,98,48,48 }
-#define WALL { 0,0,48,48 }
+#define FLOOR7 { 49,98,48,48 }
+#define FLOOR8 { 98,98,48,48 }
+#define WALL1 { 0,0,48,48 }
 #define WALL2 { 49,0,48,48 }
 #define WALL3 { 98,0,48,48 }
 #define WALL4 { 147,0,48,48 }
@@ -186,7 +188,7 @@ bool MapGenerator::GenerateBossMap()
 
 		if (gid == 5)
 		{
-			App->colliders->AddCollider(SDL_Rect({ nodes[contNodes]->pos.x * (int)(tileSize - 2), (nodes[contNodes]->pos.y + 1) * (int)(tileSize - 2) - (int)(tileSize - 2), 48,48 }), COLLIDER_TYPE::COLLIDER_UNWALKABLE);
+			App->colliders->AddCollider(SDL_Rect({ nodes[contNodes]->pos.x * (int)(tileSize - 2), (nodes[contNodes]->pos.y + 1) * (int)(tileSize - 2) - (int)(tileSize - 2), 48,48 }), Collider::ColliderType::WALL);
 			nodes[contNodes]->whatToBlit = VOID;
 			nodes[contNodes]->layerBelow = 1;
 		}
@@ -197,8 +199,8 @@ bool MapGenerator::GenerateBossMap()
 		}
 		else
 		{
-			App->colliders->AddCollider(SDL_Rect({ nodes[contNodes]->pos.x * (int)(tileSize - 2), (nodes[contNodes]->pos.y + 1) * (int)(tileSize - 2) - (int)(tileSize - 2), 48,48 }), COLLIDER_TYPE::COLLIDER_UNWALKABLE);
-			nodes[contNodes]->whatToBlit = WALL;
+			App->colliders->AddCollider(SDL_Rect({ nodes[contNodes]->pos.x * (int)(tileSize - 2), (nodes[contNodes]->pos.y + 1) * (int)(tileSize - 2) - (int)(tileSize - 2), 48,48 }), Collider::ColliderType::WALL);
+			nodes[contNodes]->whatToBlit = WALL1;
 			nodes[contNodes]->layerBelow = 0;
 		}
 		contNodes++;
@@ -297,15 +299,19 @@ SDL_Rect MapGenerator::randomTile(bool isFloor)
 	{
 		int randNum = rand() % (100 - 1 + 1) + 1;
 
-		if (randNum <= 2)
-			toReturn = FLOOR6;
-		else if (randNum <= 4)
-			toReturn = FLOOR5;		
-		else if (randNum <= 7)
-			toReturn = FLOOR4;
+	    if (randNum <= 3)
+			toReturn = FLOOR8;
 		else if (randNum <= 10)
+			toReturn = FLOOR7;
+		else if (randNum <= 20)
+			toReturn = FLOOR6;
+		else if (randNum <= 30)
+			toReturn = FLOOR5;		
+		else if (randNum <= 40)
+			toReturn = FLOOR4;
+		else if (randNum <= 60)
 			toReturn = FLOOR3;
-		else if (randNum <= 13)
+		else if (randNum <= 80)
 			toReturn = FLOOR2;
 		else if (randNum <= 100)
 			toReturn = FLOOR;
@@ -316,7 +322,7 @@ SDL_Rect MapGenerator::randomTile(bool isFloor)
 		int randNum = rand() % (4 - 1 + 1) + 1;
 
 		if (randNum == 1)
-			toReturn = WALL;
+			toReturn = WALL1;
 		else if (randNum == 2)
 			toReturn = WALL2;
 		else if (randNum == 3)
@@ -344,7 +350,7 @@ bool MapGenerator::GenerateWalls()
 									
 					if (!nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)]->colliderInside)
 					{
-						App->colliders->AddCollider(SDL_Rect({ auxNode->pos.x * (int)(tileSize-2), auxNode->pos.y * (int)(tileSize - 2) - (int)(tileSize - 2), 48,48 }), COLLIDER_TYPE::COLLIDER_UNWALKABLE);
+						App->colliders->AddCollider(SDL_Rect({ auxNode->pos.x * (int)(tileSize-2), auxNode->pos.y * (int)(tileSize - 2) - (int)(tileSize - 2), 48,48 }), Collider::ColliderType::WALL);
 						nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)]->colliderInside = true;
 					}
 				}
@@ -353,7 +359,7 @@ bool MapGenerator::GenerateWalls()
 				{
 					if (!nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)]->colliderInside)
 					{
-						App->colliders->AddCollider(SDL_Rect({ auxNode->pos.x * (int)(tileSize - 2), auxNode->pos.y * (int)(tileSize - 2) + (int)(tileSize - 2), 48,48 }), COLLIDER_TYPE::COLLIDER_UNWALKABLE);
+						App->colliders->AddCollider(SDL_Rect({ auxNode->pos.x * (int)(tileSize - 2), auxNode->pos.y * (int)(tileSize - 2) + (int)(tileSize - 2), 48,48 }), Collider::ColliderType::WALL);
 						nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)]->colliderInside = true;
 					}
 				}
@@ -362,7 +368,7 @@ bool MapGenerator::GenerateWalls()
 				{
 					if (!nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)]->colliderInside)
 					{
-						App->colliders->AddCollider(SDL_Rect({ auxNode->pos.x * (int)(tileSize - 2) + (int)(tileSize - 2), auxNode->pos.y * (int)(tileSize - 2), 48,48 }), COLLIDER_TYPE::COLLIDER_UNWALKABLE);
+						App->colliders->AddCollider(SDL_Rect({ auxNode->pos.x * (int)(tileSize - 2) + (int)(tileSize - 2), auxNode->pos.y * (int)(tileSize - 2), 48,48 }), Collider::ColliderType::WALL);
 						nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)]->colliderInside = true;
 					}
 				}
@@ -371,7 +377,7 @@ bool MapGenerator::GenerateWalls()
 				{
 					if (!nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)]->colliderInside)
 					{
-						App->colliders->AddCollider(SDL_Rect({ auxNode->pos.x * (int)(tileSize - 2) - (int)(tileSize - 2), auxNode->pos.y * (int)(tileSize - 2), 48,48 }), COLLIDER_TYPE::COLLIDER_UNWALKABLE);
+						App->colliders->AddCollider(SDL_Rect({ auxNode->pos.x * (int)(tileSize - 2) - (int)(tileSize - 2), auxNode->pos.y * (int)(tileSize - 2), 48,48 }), Collider::ColliderType::WALL);
 						nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)]->colliderInside = true;
 					}
 				}

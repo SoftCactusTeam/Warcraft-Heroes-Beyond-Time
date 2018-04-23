@@ -143,7 +143,8 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	thrallstats.hp = thrallstats.maxhp;
 	thrallstats.speed = thrall.attribute("speed").as_uint(0);
 	thrallstats.damage = thrall.attribute("damage").as_uint(0);
-	thrallstats.energyPercentbyHit = thrall.attribute("energy_percent_hit").as_uint(0);
+	thrallstats.energyPercentbyHit = thrall.attribute("energy_percent_hit").as_uint(20);
+	thrallstats.skillMultiplier = thrall.attribute("skill_multiplier").as_uint(3);
 
 	pugi::xml_node footman = entitiesNode.child("enemies").child("footman");
 	footmanstats.maxhp = footman.attribute("hp").as_uint(0);
@@ -180,6 +181,15 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	darkknightstats.dropping_chance = darkknight.attribute("dropping_chance").as_uint(0);
 	darkknightstats.range = darkknight.attribute("range").as_uint(0);
 	darkknightstats.difficulty = darkknight.attribute("difficulty").as_uint(0);
+
+	pugi::xml_node guldan = entitiesNode.child("enemies").child("guldan");
+	guldanstats.maxhp = guldan.attribute("hp").as_uint(0);
+	guldanstats.hp = guldanstats.maxhp;
+	guldanstats.speed = guldan.attribute("speed").as_uint(0);
+	guldanstats.damage = guldan.attribute("damage").as_uint(0);
+	guldanstats.dropping_chance = guldan.attribute("dropping_chance").as_uint(0);
+	guldanstats.range = guldan.attribute("range").as_uint(0);
+	guldanstats.difficulty = guldan.attribute("difficulty").as_uint(0);
 
 	//Loading CD'S---------------------------------------------------------------------------
 	dashCD = entitiesNode.child("players").child("cds").attribute("dash").as_float(1);
@@ -254,7 +264,7 @@ bool EntitySystem::PostUpdate()
 
 		if ((*it)->destroy)
 		{
-			App->colliders->CleanCollidersEntity((*it));
+			App->colliders->deleteColliderbyOwner(*it);
 			it = entities.erase(it);
 		}
 		else
@@ -327,11 +337,11 @@ void EntitySystem::AddEnemy(fPoint coor, ENEMY_TYPE type)
 	switch (type) {
 	case ENEMY_TYPE::FOOTMAN:
 		newEntity = new Enemy_Footman(coor, ENEMY_TYPE::FOOTMAN, spritesheetsEntities[FOOTMAN_SHEET]);
-		App->colliders->AddCollider({ 0,0,32,32 }, COLLIDER_ENEMY, (Entity*)newEntity, { 20,20 });
+		App->colliders->AddCollider({ 20,20,32,32 }, Collider::ColliderType::ENTITY, (Entity*)newEntity);
 		break;
 	case ENEMY_TYPE::ARCHER:
 		newEntity = new Enemy_Archer(coor, ENEMY_TYPE::ARCHER, spritesheetsEntities[ARCHER_SHEET]);
-		App->colliders->AddCollider({ -16,-16,32,32 }, COLLIDER_ENEMY, (Entity*)newEntity, { 20,20 });
+		App->colliders->AddCollider({ -16+20,-16+20,32,32 }, Collider::ColliderType::ENTITY, (Entity*)newEntity);
 		break;
 	case ENEMY_TYPE::MAGE:
 		newEntity = new EnemyEntity(coor, ENEMY_TYPE::MAGE, nullptr);
@@ -350,19 +360,19 @@ void EntitySystem::AddEnemy(fPoint coor, ENEMY_TYPE type)
 
 }
 
-BossEntity* EntitySystem::AddBoss(fPoint coor, BOSS_TYPE type)
+BossEntity* EntitySystem::AddBoss(fPoint coor, BossType type)
 {
 	BossEntity* newEntity = nullptr;
 	switch (type) {
-	case BOSS_TYPE::GULDAN:
-		newEntity = new Guldan(coor, BOSS_TYPE::GULDAN, spritesheetsEntities[GULDAN_SHEET]);
+	case BossType::GULDAN:
+		newEntity = new Guldan(coor, BossType::GULDAN, spritesheetsEntities[GULDAN_SHEET]);
 		break;
-	case BOSS_TYPE::LICH_KING:
+	/*case BOSS_TYPE::LICH_KING:
 		newEntity = new BossEntity(coor, BOSS_TYPE::LICH_KING, nullptr);
 		break;
 	case BOSS_TYPE::ILLIDAN:
 		newEntity = new BossEntity(coor, BOSS_TYPE::ILLIDAN, nullptr);
-		break;
+		break;*/
 	}
 	toSpawn.push_back(newEntity);
 
@@ -391,7 +401,7 @@ PlayerEntity* EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
 	col_rect.x = 0;
 	col_rect.y = 0;
 
-	newEntity->setCol(App->colliders->AddCollider(col_rect, COLLIDER_PLAYER, newEntity, { newEntity->anim->GetCurrentPivot().x * -1,  newEntity->anim->GetCurrentPivot().y * -1 }));
+	newEntity->setCol(App->colliders->AddCollider(col_rect, Collider::ColliderType::ENTITY, newEntity));
 	return newEntity;
 }
 
@@ -441,7 +451,7 @@ StaticEntity* EntitySystem::AddStaticEntity(fPoint coor, STATIC_ENTITY_TYPE type
 	{
 	case STATIC_ENTITY_TYPE::PORTAL:
 		newEntity = new PortalEntity(coor, STATIC_ENTITY_TYPE::PORTAL, spritesheetsEntities[PORTAL_SHEET]);
-		newEntity->portalCol = App->colliders->AddCollider({ (int)newEntity->pos.x, (int)newEntity->pos.y, 50, 50 }, COLLIDER_PORTAL);
+		newEntity->portalCol = App->colliders->AddCollider({ (int)newEntity->pos.x, (int)newEntity->pos.y, 50, 50 }, Collider::ColliderType::PORTAL);
 		break;
 	}
 	toSpawn.push_back(newEntity);

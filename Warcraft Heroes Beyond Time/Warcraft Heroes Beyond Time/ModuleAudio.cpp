@@ -131,7 +131,7 @@ bool Audio::PlayMusic(const char* path, float fade_time)
 {
 	bool ret = true;
 
-	if(!active)
+	if(!devicesConnected)
 		return false;
 
 	if(music != NULL)
@@ -196,14 +196,60 @@ bool Audio::PauseMusic(float fade_time)
 	return Mix_PlayingMusic() == 0;
 }
 
-bool Audio::PauseFX(int id, int fadeseconds)
+bool Audio::HaltFX(int id, int fadeseconds)
 {
-	for (int i = 0; i < 16; ++i)
+	if (!devicesConnected)
+		return false;
+
+	if (id == -1)
 	{
-		if (Mix_GetChunk(i) == fx[id - 1])
-			Mix_HaltChannel(i);
+		Mix_HaltChannel(-1);
 	}
+	else
+		for (int i = 0; i < 16; ++i)
+		{
+			if (Mix_GetChunk(i) == fx[id - 1])
+				Mix_HaltChannel(i);
+		}
+
 	return true;
+}
+
+bool Audio::PauseFX(int id)
+{
+	if (!devicesConnected)
+		return false;
+
+	if (id == -1)
+		Mix_Pause(-1);
+	else
+		for (int i = 0; i < 16; ++i)
+		{
+			if (Mix_GetChunk(i) == fx[id - 1])
+				Mix_Pause(i);
+			break;
+		}
+	return true;
+}
+
+bool Audio::ResumeFX(int id)
+{
+	if (!devicesConnected)
+		return false;
+	
+	if (id == -1)
+	{
+		Mix_Resume(-1);
+	}
+	else
+	{
+		for (int i = 0; i < 16; ++i)
+		{
+			if (Mix_GetChunk(i) == fx[id - 1])
+				Mix_Resume(i);
+			break;
+		}
+	}
 }
 
 // Load WAV
@@ -233,6 +279,9 @@ unsigned int Audio::LoadFx(const char* path)
 //Return the channel used or -1 if errors happened
 int Audio::PlayFx(unsigned int id, int repeat, int channel)
 {
+	if (!devicesConnected)
+		return -1;
+
 	if (id > 0 && id <= fx.size())
 	{
 		return Mix_PlayChannel(channel, fx[id - 1], repeat);
@@ -243,12 +292,18 @@ int Audio::PlayFx(unsigned int id, int repeat, int channel)
 
 void Audio::setMusicVolume(uint percent)
 {
+	if (!devicesConnected)
+		return;
+
 	MusicVolumePercent = percent;
 	Mix_VolumeMusic((MIX_MAX_VOLUME * MusicVolumePercent) / 100);
 }
 
 void Audio::setFXVolume(uint percent)
 {
+	if (!devicesConnected)
+		return;
+
 	FXVolumePercent = percent;
 	Mix_Volume(-1, (MIX_MAX_VOLUME * FXVolumePercent) / 100);
 }

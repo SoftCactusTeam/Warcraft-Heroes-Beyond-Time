@@ -2,35 +2,75 @@
 #define __ModuleColliders_H__
 
 #include "Module.h"
-#include "Entity.h"
-#include "EntitiesEnums.h"
-#include <vector>
 #include <list>
+#include "SDL\include\SDL.h"
 
-struct Collider
+class Collider
 {
-	enum class ATTACK_TYPE
+public:
+	enum class ColliderType
 	{
-		NONE,
-		ENEMY_ARROW,
-		ENEMY_MELEE,
-		PLAYER_MELEE,
-		THRALL_SKILL,
+		NO_TYPE = -1,
+		WALL,
+		PORTAL,
+		ENTITY,
+		PLAYER_ATTACK,
+		ENEMY_ATTACK
+
+	} colType = ColliderType::NO_TYPE;
+
+	void* owner = nullptr;
+	SDL_Rect rectArea = { 0,0,0,0 };
+	std::list<Collider*> colliding;
+
+public:
+
+	Collider(SDL_Rect& rectArea, ColliderType colType, void* owner = nullptr) : rectArea(rectArea), colType(colType), owner(owner) {}
+	virtual ~Collider() 
+	{
+		colliding.clear();
+	}
+};
+
+class PlayerAttack : public Collider
+{
+public:
+	enum class P_Attack_Type
+	{
+		NO_TYPE = -1,
+		NORMAL_ATTACK,
+		SKILL,
 		SHIT
-	};
 
-	Collider(SDL_Rect colliderRect, COLLIDER_TYPE type, Entity* owner = nullptr, iPoint offset = iPoint(0, 0));
-	SDL_Rect colliderRect;										// El X i Y del Rect fan de offset !!!
-	COLLIDER_TYPE type;
-	ATTACK_TYPE attackType = ATTACK_TYPE::NONE;
+	} pattacktype = P_Attack_Type::NO_TYPE;
 
-	Entity* owner = nullptr;
-	Collider* collidingWith = nullptr;	// when isn't property of an entity
+	float damage = 0.0f;
+
+	PlayerAttack(SDL_Rect& rectArea, ColliderType colType, void* owner, float damage, P_Attack_Type pattacktype) : Collider(rectArea, colType, owner), damage(damage), pattacktype(pattacktype) {}
+	virtual ~PlayerAttack() {}
+};
+
+class EnemyAttack : public Collider
+{
+public:
+	enum class E_Attack_Type
+	{
+		NO_TYPE = -1,
+		ARROW,
+		GULDAN_BALL
+
+	} eattacktype = E_Attack_Type::NO_TYPE;
+
+	float damage = 0.0f;
+
+	EnemyAttack(SDL_Rect& rectArea, ColliderType colType, void* owner, float damage, E_Attack_Type eattacktype) : Collider(rectArea, colType, owner), damage(damage), eattacktype(eattacktype) {}
+	virtual ~EnemyAttack() {}
 };
 
 class ModuleColliders : public Module
 {
 public:
+
 	ModuleColliders();
 
 	void Init()
@@ -45,27 +85,28 @@ public:
 	bool CleanUp();
 	void AddCommands();
 
-	Collider* AddCollider(SDL_Rect colliderRect, COLLIDER_TYPE type, Entity* owner = nullptr, iPoint offset = iPoint(0, 0), Collider::ATTACK_TYPE attackType = Collider::ATTACK_TYPE::NONE);
-	Collider* AddTemporalCollider(SDL_Rect colliderRect, COLLIDER_TYPE type, int timer);
+	Collider* AddCollider(SDL_Rect rectArea, Collider::ColliderType colType, void* owner = nullptr);
+	Collider* AddPlayerAttackCollider(SDL_Rect rectArea, void* owner, float damage, PlayerAttack::P_Attack_Type pattacktype);
+	Collider* AddEnemyAttackCollider(SDL_Rect rectArea, void* owner, float damage, EnemyAttack::E_Attack_Type eattacktype);
+
+
 	void deleteCollider(Collider* col);
-	void CleanCollidersEntity(Entity* entity);
-	bool isWallCollider(SDL_Rect here, Collider* colWith = nullptr) const;
+	void deleteColliderbyOwner(void* owner);
+
+	bool CheckIfCollides(Collider* col1, Collider* col2) const;
+	bool CollisionEnabled(Collider* col1, Collider* col2) const;
+	bool wereColliding(Collider* col1, Collider* col2) const;
+	void PrintColliders() const;
 
 private:
-	bool CheckTypeCollMatrix(COLLIDER_TYPE type, COLLIDER_TYPE type2);
-	bool CheckCollision(Collider* col1, Collider* col2);
-	void PrintColliders();
-
+	
 private:
-	std::list<Collider*> colliders;
-	// Aquestes 2 llistes van en paralel
-	std::list<Collider*> temporalColliders;
-	std::vector<int> temporalColliderstimer;
+	std::list<Collider*> colliderList;
+	std::list<Collider*> iteratedColliders;
 
 public:
 	bool printColliders = false;
 
 };
-
 
 #endif

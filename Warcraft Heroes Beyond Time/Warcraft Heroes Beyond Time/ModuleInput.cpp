@@ -179,6 +179,7 @@ bool Input::PreUpdate()
 			break;
 
 		case SDL_MOUSEBUTTONDOWN:
+			kbAvailable = true;
 			mouse_buttons[event.button.button - 1] = KEY_DOWN;
 			break;
 
@@ -206,11 +207,30 @@ bool Input::PreUpdate()
 					{
 						xAxis = event.jaxis.value;
 						xDeadZone = false;
+						if (xAxis > 0)
+							if (axis[(int)Axis::RIGHT] == KeyState::KEY_DOWN || axis[(int)Axis::RIGHT] == KeyState::KEY_REPEAT)
+								axis[(int)Axis::RIGHT] = KeyState::KEY_REPEAT;
+							else
+								axis[(int)Axis::RIGHT] = KeyState::KEY_DOWN;
+
+						else if(xAxis < 0)
+							if (axis[(int)Axis::LEFT] == KeyState::KEY_DOWN || axis[(int)Axis::LEFT] == KeyState::KEY_REPEAT)
+								axis[(int)Axis::LEFT] = KeyState::KEY_REPEAT;
+							else
+								axis[(int)Axis::LEFT] = KeyState::KEY_DOWN;
 					}
 					else
 					{
 						xAxis = 0;
 						xDeadZone = true;
+						if (axis[(int)Axis::RIGHT] == KeyState::KEY_DOWN || axis[(int)Axis::RIGHT] == KeyState::KEY_REPEAT)
+							axis[(int)Axis::RIGHT] = KeyState::KEY_UP;
+						else axis[(int)Axis::RIGHT] = KeyState::KEY_IDLE;
+
+						if (axis[(int)Axis::LEFT] == KeyState::KEY_DOWN || axis[(int)Axis::LEFT] == KeyState::KEY_REPEAT)
+							axis[(int)Axis::LEFT] = KeyState::KEY_UP;
+						else axis[(int)Axis::LEFT] = KeyState::KEY_IDLE;
+
 					}
 				}
 				else if (event.jaxis.axis == 1)
@@ -219,11 +239,30 @@ bool Input::PreUpdate()
 					{
 						yAxis = event.jaxis.value;
 						yDeadZone = false;
+
+						if (yAxis > 0)
+							if (axis[(int)Axis::DOWN] == KeyState::KEY_DOWN || axis[(int)Axis::DOWN] == KeyState::KEY_REPEAT)
+								axis[(int)Axis::DOWN] = KeyState::KEY_REPEAT;
+							else
+								axis[(int)Axis::DOWN] = KeyState::KEY_DOWN;
+
+						else if (yAxis < 0)
+							if (axis[(int)Axis::UP] == KeyState::KEY_DOWN || axis[(int)Axis::UP] == KeyState::KEY_REPEAT)
+								axis[(int)Axis::UP] = KeyState::KEY_REPEAT;
+							else
+								axis[(int)Axis::UP] = KeyState::KEY_DOWN;
 					}
 					else
 					{
 						yAxis = 0;
 						yDeadZone = true;
+						if (axis[(int)Axis::DOWN] == KeyState::KEY_DOWN || axis[(int)Axis::DOWN] == KeyState::KEY_REPEAT)
+							axis[(int)Axis::DOWN] = KeyState::KEY_UP;
+						else axis[(int)Axis::DOWN] = KeyState::KEY_IDLE;
+
+						if (axis[(int)Axis::UP] == KeyState::KEY_DOWN || axis[(int)Axis::UP] == KeyState::KEY_REPEAT)
+							axis[(int)Axis::UP] = KeyState::KEY_UP;
+						else axis[(int)Axis::UP] = KeyState::KEY_IDLE;
 					}
 				}
 			}

@@ -34,7 +34,7 @@ public:
 	bool Update(float dt);
 	bool Draw();
 
-	bool HandleInput();
+	bool HandleInput(float dt);
 	bool MouseHover() const;
 
 protected:
@@ -43,12 +43,11 @@ protected:
 
 	float smobilepos;
 	SDL_Rect sliderMobileRect = slidermobile;
-	bool focused = false;
 
 	uint minValue = 0;
 	uint maxValue = 0;
 
-
+	float counter = 0;
 };
 
 struct SliderInfo

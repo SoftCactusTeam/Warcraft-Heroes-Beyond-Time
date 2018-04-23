@@ -123,7 +123,6 @@ public:
 
 	//Collisions
 	virtual void UpdateCollider() {}
-	virtual void Collision(Collider* collideWith) {}
 	void setCol(Collider* pcol);
 	void PushOut(Collider* wall);
 	virtual void Attack() {}

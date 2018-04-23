@@ -32,7 +32,7 @@ bool ModulePrinter::PostUpdate()
 			{
 				Sprite* sprite = (Sprite*)delem;
 				SDL_SetTextureColorMod(sprite->texture, sprite->color.r, sprite->color.g, sprite->color.b);
-				App->render->Blit(sprite->texture, sprite->pos.x - sprite->pivot.x, sprite->pos.y - sprite->pivot.y, &sprite->SquaretoBlit, 1, 1, sprite->angle, sprite->pivot.x, sprite->pivot.y);
+				App->render->Blit(sprite->texture, sprite->pos.x - sprite->offset.x, sprite->pos.y - sprite->offset.y, &sprite->SquaretoBlit, 1, 1, sprite->angle, sprite->pivot.x, sprite->pivot.y);
 				SDL_SetTextureColorMod(sprite->texture, 255, 255, 255);
 				break;
 			}
@@ -60,63 +60,120 @@ bool ModulePrinter::CleanUp()
 	return DrawingQueue.empty();
 }
 
-bool ModulePrinter::PrintSprite(iPoint pos, SDL_Texture* texture, SDL_Rect SquaretoBlit, int layer, Pivots pivot, float degangle, iPoint custompivot, SDL_Color color)
+bool ModulePrinter::PrintSprite(iPoint pos, SDL_Texture* texture, SDL_Rect SquaretoBlit, int layer, Pivots OFFSET_MODE, iPoint customOffset, Pivots PIVOT_MODE, iPoint customPivot, float degangle, SDL_Color color)
 {
-	iPoint coordpivot;
-	switch (pivot)
+	iPoint offset;
+	iPoint pivot;
+	switch (OFFSET_MODE)
 	{
 		case Pivots::UPPER_LEFT:
 		{
-			coordpivot = { 0,0 };
+			offset = { 0,0 };
 			break;
 		}
 		case Pivots::UPPER_CENTER:
 		{
-			coordpivot = { SquaretoBlit.w / 2, 0 };
+			offset = { SquaretoBlit.w / 2, 0 };
 			break;
 		}
 		case Pivots::UPPER_RIGHT:
 		{
-			coordpivot = { SquaretoBlit.w, 0 };
+			offset = { SquaretoBlit.w, 0 };
 			break;
 		}
 		case Pivots::CENTER_LEFT:
 		{
-			coordpivot = { 0, SquaretoBlit.h / 2 };
+			offset = { 0, SquaretoBlit.h / 2 };
 			break;
 		}
 		case Pivots::CENTER:
 		{
-			coordpivot = { SquaretoBlit.w / 2, SquaretoBlit.h / 2 };
+			offset = { SquaretoBlit.w / 2, SquaretoBlit.h / 2 };
 			break;
 		}
 		case Pivots::CENTER_RIGHT:
 		{
-			coordpivot = { SquaretoBlit.w, SquaretoBlit.h / 2 };
+			offset = { SquaretoBlit.w, SquaretoBlit.h / 2 };
 			break;
 		}
 		case Pivots::LOWER_LEFT:
 		{
-			coordpivot = { 0, SquaretoBlit.h };
+			offset = { 0, SquaretoBlit.h };
 			break;
 		}
 		case Pivots::LOWER_CENTER:
 		{
-			coordpivot = { SquaretoBlit.w / 2, SquaretoBlit.h };
+			offset = { SquaretoBlit.w / 2, SquaretoBlit.h };
 			break;
 		}
 		case Pivots::LOWER_RIGHT:
 		{
-			coordpivot = { SquaretoBlit.w, SquaretoBlit.h };
+			offset = { SquaretoBlit.w, SquaretoBlit.h };
 			break;
 		}
 		case Pivots::CUSTOM_PIVOT:
 		{
-			coordpivot = custompivot;
+			offset = customOffset;
 			break;
 		}
 	}
-	Sprite* sprite = new Sprite(pos, texture, SquaretoBlit, layer, coordpivot, degangle, color);
+
+	switch (PIVOT_MODE)
+	{
+		case Pivots::UPPER_LEFT:
+		{
+			pivot = { 0,0 };
+			break;
+		}
+		case Pivots::UPPER_CENTER:
+		{
+			pivot = { SquaretoBlit.w / 2, 0 };
+			break;
+		}
+		case Pivots::UPPER_RIGHT:
+		{
+			pivot = { SquaretoBlit.w, 0 };
+			break;
+		}
+		case Pivots::CENTER_LEFT:
+		{
+			pivot = { 0, SquaretoBlit.h / 2 };
+			break;
+		}
+		case Pivots::CENTER:
+		{
+			pivot = { SquaretoBlit.w / 2, SquaretoBlit.h / 2 };
+			break;
+		}
+		case Pivots::CENTER_RIGHT:
+		{
+			pivot = { SquaretoBlit.w, SquaretoBlit.h / 2 };
+			break;
+		}
+		case Pivots::LOWER_LEFT:
+		{
+			pivot = { 0, SquaretoBlit.h };
+			break;
+		}
+		case Pivots::LOWER_CENTER:
+		{
+			pivot = { SquaretoBlit.w / 2, SquaretoBlit.h };
+			break;
+		}
+		case Pivots::LOWER_RIGHT:
+		{
+			pivot = { SquaretoBlit.w, SquaretoBlit.h };
+			break;
+		}
+		case Pivots::CUSTOM_PIVOT:
+		{
+			pivot = customPivot;
+			break;
+		}
+	}
+
+
+	Sprite* sprite = new Sprite(pos, texture, SquaretoBlit, layer, offset, pivot, degangle, color);
 	DrawingQueue.push(sprite);
 
 	return true;
