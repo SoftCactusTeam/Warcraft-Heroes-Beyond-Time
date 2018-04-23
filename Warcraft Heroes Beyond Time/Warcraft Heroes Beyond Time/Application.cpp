@@ -71,7 +71,6 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(colliders);
 	AddModule(items);
 	AddModule(gui);
-	AddModule(items);
 
 	AddModule(console);
 
