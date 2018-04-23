@@ -148,6 +148,9 @@
     <ClCompile Include="EffectsElem.cpp">
       <Filter>Effects</Filter>
     </ClCompile>
+    <ClCompile Include="DmgBallItem.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -314,6 +317,9 @@
     </ClInclude>
     <ClInclude Include="EffectsElem.h">
       <Filter>Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="DMGBallItem.h">
+      <Filter>Items</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
