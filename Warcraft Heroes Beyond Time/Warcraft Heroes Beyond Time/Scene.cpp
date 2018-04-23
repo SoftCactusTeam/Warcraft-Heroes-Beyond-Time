@@ -79,7 +79,6 @@ bool Scene::Start()
 		}
 		case Stages::INGAME:
 		{
-			App->items->Activate();
 			App->colliders->Activate();
 			App->entities->Activate();
 			App->console->Activate();
@@ -123,6 +122,7 @@ bool Scene::Start()
 			
 			iPoint chestPos = App->map->GetRandomValidPointProxy(30, 5);
 			lvlChest = App->entities->AddChest({ (float)chestPos.x * 46,(float)chestPos.y * 46 }, MID_CHEST);
+			App->items->Activate();
 			break;
 		}
 		case Stages::BOSS_ROOM:

@@ -55,7 +55,6 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 	AddModule(entities);
 	AddModule(projectiles);
-	AddModule(items);
 	AddModule(audio);
 	AddModule(fonts);
 	AddModule(fs);
@@ -64,6 +63,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	
 	AddModule(scene);
 	AddModule(colliders);
+	AddModule(items);
 	AddModule(gui);
 
 	AddModule(console);

@@ -17,6 +17,9 @@ bool ModuleItems::Awake(pugi::xml_node& itemsNode)
 bool ModuleItems::Start()
 {
 	itemsTexture = App->textures->Load("sprites/all_items.png");
+	WCItem* test_item = new WCItem();
+	equipedItems.push_back(test_item);
+	test_item->Start();
 	return true;
 }
 
