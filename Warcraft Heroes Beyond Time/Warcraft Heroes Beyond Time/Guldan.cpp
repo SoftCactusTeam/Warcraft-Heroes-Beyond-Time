@@ -123,17 +123,6 @@ bool Guldan::Start()
 {
 	statesBoss = BossStates::IDLE;
 
-	FelBallInfo info;
-	info.layer = 5;
-	info.life = 1000000000;
-	info.pos = { pos.x - 40.0f, pos.y + 40.0f};
-	info.speed = 0.0f;
-	info.rotationPivot = { pos.x,pos.y };
-	info.angle = 0.0f;
-	info.radiusToIncrease = 0.2f;
-
-	App->projectiles->AddProjectile(info, Projectile_type::fel_ball);
-
 	return true;
 }
 
@@ -154,4 +143,18 @@ bool Guldan::Update(float dt)
 bool Guldan::Finish()
 {	
 	return true;
+}
+
+void Guldan::GenerateFelBalls(FellBallsTypes type) const
+{
+	FelBallInfo info;
+	info.layer = 5;
+	info.life = 1000000000;
+	info.pos = { pos.x - 40.0f, pos.y + 40.0f };
+	info.speed = 0.0f;
+	info.rotationPivot = { pos.x,pos.y };
+	info.angle = 0.0f;
+	info.radiusToIncrease = 0.2f;
+
+	App->projectiles->AddProjectile(info, Projectile_type::fel_ball);
 }

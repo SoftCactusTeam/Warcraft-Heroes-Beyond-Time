@@ -21,6 +21,13 @@ private:
 		GENERATINGBALLS,
 	} statesBoss = BossStates::NON_STATE;
 
+	enum class FellBallsTypes
+	{
+		NO_TYPE,
+		TOTAL_COS_SIN,
+		PARCIAL_COS_SIN
+	};
+
 public:
 	Guldan(fPoint coor, BossType type, SDL_Texture* texture);
 	~Guldan();
@@ -28,4 +35,6 @@ public:
 	bool Start();
 	bool Update(float dt);
 	bool Finish();
+
+	void GenerateFelBalls(FellBallsTypes type) const;
 };

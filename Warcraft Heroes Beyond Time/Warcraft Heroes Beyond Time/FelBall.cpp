@@ -6,13 +6,13 @@
 
 FelBall::FelBall(const FelBallInfo& info, Projectile_type type) : Projectile(info, type)
 {
-	felAnims[(uint)FelAnimations::moving_anim].PushBack({ 19,32,18,23 });
-	felAnims[(uint)FelAnimations::moving_anim].PushBack({ 69,32,18,23 });
-	felAnims[(uint)FelAnimations::moving_anim].PushBack({ 119,32,18,23 });
-	felAnims[(uint)FelAnimations::moving_anim].PushBack({ 168,32,18,23 });
-	felAnims[(uint)FelAnimations::moving_anim].PushBack({ 217,32,18,23 });
-	felAnims[(uint)FelAnimations::moving_anim].PushBack({ 266,32,18,23 });
-	felAnims[(uint)FelAnimations::moving_anim].speedFactor = 9.0f;
+	felAnims[(uint)FelAnimations::moving_anim].PushBack({ 21,33,14,14 });
+//	felAnims[(uint)FelAnimations::moving_anim].PushBack({ 69,32,18,23 });
+//	felAnims[(uint)FelAnimations::moving_anim].PushBack({ 119,32,18,23 });
+//	felAnims[(uint)FelAnimations::moving_anim].PushBack({ 168,32,18,23 });
+//	felAnims[(uint)FelAnimations::moving_anim].PushBack({ 217,32,18,23 });
+//	felAnims[(uint)FelAnimations::moving_anim].PushBack({ 266,32,18,23 });
+//	felAnims[(uint)FelAnimations::moving_anim].speedFactor = 9.0f;
 
 	actualAnim = &felAnims[(uint)FelAnimations::moving_anim];
 
