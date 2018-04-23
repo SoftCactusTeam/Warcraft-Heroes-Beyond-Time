@@ -2,6 +2,8 @@
 #include "Application.h"
 #include "ModulePrinter.h"
 
+#include "ModuleInput.h"
+
 FelBall::FelBall(const FelBallInfo& info, Projectile_type type) : Projectile(info, type)
 {
 	felAnims[(uint)FelAnimations::moving_anim].PushBack({ 19,32,18,23 });
@@ -25,8 +27,8 @@ FelBall::~FelBall()
 bool FelBall::Update(float dt)
 {
 	bool ret = true;
-
-	data.pos = RotateAround(data.pos, toData->rotationPivot, 10.0f, 10.0f);
+	
+	data.pos = RotateAround(data.pos, toData->rotationPivot, toData->angle, toData->radiusToIncrease);
 
 	DecreaseLifePerTime(dt);
 
@@ -39,7 +41,7 @@ bool FelBall::Draw() const
 {
 	bool ret = true;
 
-	ret = App->printer->PrintSprite({ (int)data.pos.x,(int)data.pos.y }, (SDL_Texture*)App->projectiles->GetProjectileAtlas(), actualAnim->GetCurrentFrame(), data.layer, ModulePrinter::Pivots::UPPER_LEFT, angle);
+	ret = App->printer->PrintSprite({ (int)data.pos.x,(int)data.pos.y }, (SDL_Texture*)App->projectiles->GetProjectileAtlas(), actualAnim->GetCurrentFrame(), data.layer, ModulePrinter::Pivots::UPPER_LEFT);
 
 	return ret;
 }

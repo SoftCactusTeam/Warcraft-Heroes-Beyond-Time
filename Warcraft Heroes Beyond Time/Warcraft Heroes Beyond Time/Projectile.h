@@ -11,12 +11,14 @@ struct Collider;
 struct ProjectileInfo
 {
 	ProjectileInfo() {};
-	ProjectileInfo(const ProjectileInfo& info) : pos(info.pos), layer(info.layer), speed(info.speed), life(info.life) {};
+	ProjectileInfo(const ProjectileInfo& info) : pos(info.pos), layer(info.layer), speed(info.speed), life(info.life), angle(info.angle), radiusToIncrease(info.radiusToIncrease) {};
 
 	int life = 0;
 	int layer = 0;
 	float speed = 0.0f;
 	fPoint pos = { 0.0f,0.0f };
+	double angle = 0.0f;
+	double radiusToIncrease = 0.0f;
 };
 
 class Projectile
@@ -31,7 +33,7 @@ public:
 	virtual bool Draw() const;
 
 	virtual int DecreaseLifePerTime(float dt);
-	virtual fPoint RotateAround(fPoint pointToRotate, fPoint rotationPivot, double angle, float radius) const;
+	virtual fPoint RotateAround(fPoint pointToRotate, fPoint rotationPivot, double angle, double radius) const;
 
 	virtual void OnCollision(Collider* yours, Collider* collideWith);
 	virtual void OnCollisionContinue(Collider* yours, Collider* collideWith);

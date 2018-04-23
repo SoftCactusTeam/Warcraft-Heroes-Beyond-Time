@@ -28,14 +28,12 @@ public:
 private:
 
 	FelBallInfo* toData = nullptr;
-	float angle = 0;
 
 	enum class FelAnimations
 	{
 		no_anim = -1,
 		moving_anim,
 		max_anim
-
 	};
 
 	Animation felAnims[(unsigned int)FelAnimations::max_anim];
