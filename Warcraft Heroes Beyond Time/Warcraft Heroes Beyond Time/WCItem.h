@@ -5,7 +5,19 @@
 #include "p2Point.h"
 #include "ModuleColliders.h"
 
-#define WC_ICON {102,19,31,29} //The rect from the texture of your gui icon
+#define WC_ICON {34,84,27,31} //The rect from the texture of your gui icon
+#define SHIT{102,19,31,29}
+
+class Shit
+{
+public:
+	Shit(Collider* temp, iPoint pos);
+	~Shit();
+	iPoint pos;
+private:
+	Collider* paper_collider;
+	
+};
 
 class WCItem : public Item
 {
@@ -18,11 +30,10 @@ public:
 	bool Draw();
 	bool printIconOnScreen(iPoint pos);
 
-	int time = 0;
+	float time = 0;
 	int cont = 0;
 
-	std::list<iPoint> wcpaper;
-	std::list<Collider*> paper_collider;
+	std::list<Shit*> shit_list;
 };
 
 #endif

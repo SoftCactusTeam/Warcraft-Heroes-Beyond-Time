@@ -23,16 +23,18 @@ bool WCItem::Act(ModuleItems::ItemEvent event, float dt)
 			time = 0;
 			if (cont < 18)
 			{
-				wcpaper.push_front({ (int)App->scene->player->pos.x,(int)App->scene->player->pos.y });
-				paper_collider.push_front(App->colliders->AddPlayerAttackCollider(SDL_Rect({(int)App->scene->player->pos.x, (int)App->scene->player->pos.y, 32, 32}), nullptr, 5, PlayerAttack::P_Attack_Type::SHIT));
+				Shit* shit_pointer = new Shit(App->colliders->AddPlayerAttackCollider(SDL_Rect({ (int)App->scene->player->pos.x, (int)App->scene->player->pos.y, 32, 32 }), nullptr, 1*dt, PlayerAttack::P_Attack_Type::SHIT), iPoint({ (int)App->scene->player->pos.x, (int)App->scene->player->pos.y }));
+				shit_list.push_front(shit_pointer);
 				cont += 1;
 			}
 			if (cont == 18)
 			{
 				cont -= 1;
-				wcpaper.pop_back();
-				App->colliders->deleteCollider(paper_collider.back());
-				paper_collider.pop_back();
+				std::list<Shit*>::iterator it = shit_list.end();
+				std::advance(it, -1);
+				delete *it;
+				shit_list.erase(it);
+
 			}
 		}
 		break;
@@ -43,11 +45,11 @@ bool WCItem::Act(ModuleItems::ItemEvent event, float dt)
 bool WCItem::Draw()
 {
 	//Use the ModulePrinter to print all the stuff.
-	std::list<iPoint>::iterator it = wcpaper.begin();
+	std::list<Shit*>::iterator it = shit_list.begin();
 
-	for (; it != wcpaper.end(); ++it)
+	for (; it != shit_list.end(); ++it)
 	{
-		App->printer->PrintSprite({ it->x, it->y }, App->items->getItemsTexture(), SDL_Rect(WC_ICON), -1);
+		App->printer->PrintSprite((*it)->pos, App->items->getItemsTexture(), SDL_Rect(SHIT), -1); //hacerotrorect
 	}
 
 	return true;
@@ -59,4 +61,23 @@ bool WCItem::printIconOnScreen(iPoint pos)
 	return App->render->Blit(App->items->getItemsTexture(), pos.x, pos.y, &SDL_Rect(WC_ICON), 1, 0);
 }
 
+Shit::Shit(Collider* temp, iPoint pos) : paper_collider(temp), pos(pos)
+{
 
+}
+
+Shit::~Shit()
+{
+	App->colliders->deleteCollider(paper_collider);
+}
+
+WCItem::~WCItem() 
+{
+	std::list<Shit*>::iterator it = shit_list.begin();
+	for (; it != shit_list.end(); ++it)
+	{
+		delete *it;
+	}
+
+	shit_list.clear();
+}
