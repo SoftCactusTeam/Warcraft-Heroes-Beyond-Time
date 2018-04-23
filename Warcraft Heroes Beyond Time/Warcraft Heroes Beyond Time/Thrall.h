@@ -2,7 +2,7 @@
 #define __THRALL_H__
 
 #include "PlayerEntity.h"
-
+#include "EffectsElem.h"
 
 class Collider;
 
@@ -29,6 +29,8 @@ private:
 	Collider* skillCollider = nullptr;
 	bool attacking = false;
 	bool skillOn = false;
+
+	EffectsElem* dustEffect = nullptr;
 
 public:
 

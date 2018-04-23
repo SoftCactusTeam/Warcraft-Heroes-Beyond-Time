@@ -12,7 +12,8 @@ struct ProjectileInfo;
 enum Projectile_type
 {
 	no_type = -1,
-	projectile_type
+	projectile_type,
+	fel_ball
 };
 
 class ModuleProjectiles : public Module
@@ -30,7 +31,8 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
-	void AddParticle(const ProjectileInfo& projectile, Projectile_type type);
+	void AddProjectile(const ProjectileInfo& projectile, Projectile_type type);
+	void DestroyProjectile(Projectile* toDelete);
 	const SDL_Texture* GetProjectileAtlas() const;
 
 private:

@@ -10,6 +10,7 @@
 #include "ModuleColliders.h"
 #include "PortalEntity.h"
 #include "ModuleItems.h"
+#include "ModuleEffects.h"
 
 Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEntity(coor, type, texture)
 {
@@ -233,12 +234,17 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 
 	numStats = App->entities->thrallstats;
 
+	// Destroying the effect causes a crash, don't uncomment the line below
+	//dustEffect = App->effects->CreateEffect(pos, 5, App->effects->playerDustAnim);
+
 	state = states::PL_IDLE;
 	anim = &idleDown;
 }
 
 bool Thrall::Update(float dt)
 {
+	//dustEffect->MoveEffect({ pos.x + 5, pos.y + 35 });
+
 	PlayerStates(dt);
 
 	float percentage = 1.0f;
@@ -418,7 +424,7 @@ void Thrall::Attack()
 	if (!attacking)
 		App->audio->PlayFx(App->audio->Thrall_AttackFX);
 	attacking = true;
-	attackCollider = App->colliders->AddPlayerAttackCollider({ -10, -10,20,20 }, this, numStats.damage, PlayerAttack::P_Attack_Type::NORMAL_ATTACK);
+	attackCollider = App->colliders->AddPlayerAttackCollider({ -1000000000, -1000000000,20,20 }, this, numStats.damage, PlayerAttack::P_Attack_Type::NORMAL_ATTACK);
 }
 
 void Thrall::UpdateAttackCollider()
@@ -427,56 +433,56 @@ void Thrall::UpdateAttackCollider()
 	{
 		if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 291,580,46,47 })))
 		{
-			attackCollider->rectArea = { (int)pos.x - 5, (int)pos.y - 10, 38, 30 };
+			attackCollider->rectArea = {  - 5,  - 10, 38, 30 };
 		}
 	}
 	else if (anim == &attackDown)
 	{
 		if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 641,717,52,54 })))
 		{
-			attackCollider->rectArea = { (int)pos.x - 15, (int)pos.y + 10, 40, 30 };
+			attackCollider->rectArea = {  - 15,  + 10, 40, 30 };
 		}
 	}
 	else if (anim == &attackRight)
 	{
 		if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 466,658,50,36 })))
 		{
-			attackCollider->rectArea = { (int)pos.x, (int)pos.y + 10, 40, 30 };
+			attackCollider->rectArea = { 0,  + 10, 40, 30 };
 		}
 	}
 	else if (anim == &attackLeft)
 	{
 		if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 102,868,54,39 })))
 		{
-			attackCollider->rectArea = { (int)pos.x - 18, (int)pos.y - 10, 23, 35 };
+			attackCollider->rectArea = {  - 18,  - 10, 23, 35 };
 		}
 	}
 	else if (anim == &attackUpLeft)
 	{
 		if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 551,866,51,44 })))
 		{
-			attackCollider->rectArea = { (int)pos.x - 18, (int)pos.y - 10, 50, 35 };
+			attackCollider->rectArea = {  - 18,  - 10, 50, 35 };
 		}
 	}
 	else if (anim == &attackUpRight)
 	{
 		if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 24,652,45,46 })))
 		{
-			attackCollider->rectArea = { (int)pos.x, (int)pos.y - 10, 40, 35 };
+			attackCollider->rectArea = { 0,  - 10, 40, 35 };
 		}
 	}
 	else if (anim == &attackDownLeft)
 	{
 		if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 377,790,48,50 })))
 		{
-			attackCollider->rectArea = { (int)pos.x - 15, (int)pos.y - 15, 40, 45 };
+			attackCollider->rectArea = {  - 15,  - 15, 40, 45 };
 		}
 	}
 	else if (anim == &attackDownRight)
 	{
 		if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 189,727,56,44 })))
 		{
-			attackCollider->rectArea = { (int)pos.x, (int)pos.y, 40, 45 };
+			attackCollider->rectArea = { 0, 0, 40, 45 };
 		}
 	}
 
