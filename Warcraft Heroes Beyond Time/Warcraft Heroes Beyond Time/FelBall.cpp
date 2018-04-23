@@ -41,7 +41,7 @@ bool FelBall::Draw() const
 {
 	bool ret = true;
 
-	ret = App->printer->PrintSprite({ (int)data.pos.x,(int)data.pos.y }, (SDL_Texture*)App->projectiles->GetProjectileAtlas(), actualAnim->GetCurrentFrame(), data.layer, ModulePrinter::Pivots::UPPER_LEFT);
+	ret = App->printer->PrintSprite({ (int)data.pos.x - 7,(int)data.pos.y - 7 }, (SDL_Texture*)App->projectiles->GetProjectileAtlas(), actualAnim->GetCurrentFrame(), data.layer, ModulePrinter::Pivots::UPPER_LEFT);
 
 	return ret;
 }

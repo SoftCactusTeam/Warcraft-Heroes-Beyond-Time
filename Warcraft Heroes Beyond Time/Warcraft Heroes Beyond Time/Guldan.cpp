@@ -125,6 +125,17 @@ bool Guldan::Start()
 {
 	statesBoss = BossStates::IDLE;
 
+	FelBallInfo info;
+	info.layer = 5;
+	info.life = LIFE_BALLS;
+	info.pos = BOSS_CENTER;
+	info.speed = 0.0f;
+	info.rotationPivot = { pos.x + 34,pos.y + 34 };
+	info.angle = 0.0f;
+	info.radiusToIncrease = 0.0002f;
+
+	App->projectiles->AddProjectile(info, Projectile_type::fel_ball);
+
 	return true;
 }
 
@@ -154,7 +165,15 @@ bool Guldan::Update(float dt)
 
 			if (timeBetweenBalls >= TIME_BETWEEN_BALLS)
 			{ 
-				GenerateFelBalls(FellBallsTypes::TOTAL_COS_SIN);
+				//if (contBalls == NUMBER_BALLS - 1)
+					GenerateFelBalls(FellBallsTypes::BOTH_TOTAL_PARCIAL, toAngle);
+
+					toAngle += 10.0f;
+			//	else if (contBalls % 2 == 0)
+			//		GenerateFelBalls(FellBallsTypes::TOTAL_COS_SIN);
+			//	else
+			//		GenerateFelBalls(FellBallsTypes::PARCIAL_COS_SIN);
+
 				timeBetweenBalls = 0.0f;
 				contBalls += 1;
 			}
@@ -192,63 +211,66 @@ bool Guldan::Finish()
 	return true;
 }
 
-void Guldan::GenerateFelBalls(FellBallsTypes type) const
+void Guldan::GenerateFelBalls(FellBallsTypes type, float angleToIncrease) const
 {
 	FelBallInfo info;
 	info.layer = 5;
-	info.life = LIFE_BALLS;
-	info.pos = { pos.x + 34 - 7, pos.y + 34 };
+	info.life = LIFE_BALLS + 100000;
+	info.pos = BOSS_CENTER;
+	info.pos.y -= RADIUS_BALLS;
 	info.speed = 0.0f;
-	info.rotationPivot = { pos.x + 34 - 7,pos.y + 34 };
-	info.angle = 0.0f;
-	info.radiusToIncrease = 4.0f;
+	info.rotationPivot = { pos.x + 34,pos.y + 34 };
+	info.angle = 1.5f;
+	info.radiusToIncrease = 0.15f;
+
+	App->projectiles->AddProjectile(info, Projectile_type::fel_ball);
+
+	//App->projectiles->AddProjectile(info, Projectile_type::fel_ball);
+
+	fPoint defaultPoint = { pos.x + 34, pos.y + 34 - RADIUS_BALLS };
 
 	switch (type)
 	{
 	case FellBallsTypes::TOTAL_COS_SIN:
-	{
-		int numBalls = 0;
 
-		while (numBalls != 4)
+		for (int angle = 0; angle <= 360; angle += 90)
 		{
-			if (numBalls == 0)
-				info.pos = { pos.x + 34 - 7 + RADIUS_BALLS, pos.y + 34 };
-			else if (numBalls == 1)
-				info.pos = { pos.x + 34 - 7 - RADIUS_BALLS, pos.y + 34 };
-			else if (numBalls == 2)
-				info.pos = { pos.x + 34 - 7, pos.y + 34 + RADIUS_BALLS };
-			else if (numBalls == 3)
-				info.pos = { pos.x + 34 - 7, pos.y + 34 - RADIUS_BALLS };
-
+			info.pos = SetSpawnPointByAngle(defaultPoint, BOSS_CENTER, angle, 0);
 			App->projectiles->AddProjectile(info, Projectile_type::fel_ball);
-
-			numBalls++;
 		}
 
 		break;
-	}
 
 	case FellBallsTypes::PARCIAL_COS_SIN:
 
-		int numBalls = 0;
-
-		while (numBalls != 4)
+		for (int angle = 45; angle <= 315; angle += 90)
 		{
-			if (numBalls == 0)
-				info.pos = { pos.x + 34 - 7 + RADIUS_BALLS, pos.y + 34 };
-			else if (numBalls == 1)
-				info.pos = { pos.x + 34 - 7 - RADIUS_BALLS, pos.y + 34 };
-			else if (numBalls == 2)
-				info.pos = { pos.x + 34 - 7, pos.y + 34 + RADIUS_BALLS };
-			else if (numBalls == 3)
-				info.pos = { pos.x + 34 - 7, pos.y + 34 - RADIUS_BALLS };
-
+			info.pos = SetSpawnPointByAngle(defaultPoint, BOSS_CENTER, angle, 0);
 			App->projectiles->AddProjectile(info, Projectile_type::fel_ball);
-
-			numBalls++;
 		}
 
 		break;
 
+	case FellBallsTypes::BOTH_TOTAL_PARCIAL:
+
+		//for (float angle = 0.0f; angle < 360; angle += 22.5f)
+		//{
+			//info.pos = SetSpawnPointByAngle(defaultPoint, BOSS_CENTER, 0, 0);
+			//App->projectiles->AddProjectile(info, Projectile_type::fel_ball);
+		//}
+
+		break;
 	}
+}
+
+fPoint Guldan::SetSpawnPointByAngle(fPoint pointToRotate, fPoint rotationPivot, double angle, double radius) const
+{
+	angle = DEG_2_RAD(angle);
+
+	fPoint toReturn;
+
+	toReturn.x = cos(angle) * (pointToRotate.x - rotationPivot.x) - sin(angle) * (pointToRotate.y - rotationPivot.y) + rotationPivot.x;
+	toReturn.y = sin(angle) * (pointToRotate.x - rotationPivot.x) + cos(angle) * (pointToRotate.y - rotationPivot.y) + rotationPivot.y;
+
+	return toReturn;
 }
