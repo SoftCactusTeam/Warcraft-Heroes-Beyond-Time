@@ -3,6 +3,8 @@
 #include "ModuleProjectiles.h"
 #include "FelBall.h"
 
+#include "ModuleInput.h"
+
 Guldan::Guldan(fPoint coor, BossType type, SDL_Texture* texture) : BossEntity(coor, type, texture)
 {
 	idle.PushBack({ 1,1,68,68 });
@@ -73,18 +75,18 @@ Guldan::Guldan(fPoint coor, BossType type, SDL_Texture* texture) : BossEntity(co
 	dead.loop = false;
 	dead.speedFactor = 9.0f;
 
-	generateingBalls.PushBack({ 484,1,68,68 });
-	generateingBalls.PushBack({ 553,1,68,68 });
-	generateingBalls.PushBack({ 623,1,68,68 });
-	generateingBalls.PushBack({ 692,1,68,68 });
-	generateingBalls.PushBack({ 760,1,68,68 });
-	generateingBalls.PushBack({ 830,1,68,68 });
-	generateingBalls.PushBack({ 898,1,68,68 });
-	generateingBalls.PushBack({ 830,1,68,68 });
-	generateingBalls.PushBack({ 898,1,68,68 });
-	generateingBalls.loop = false;		
-	generateingBalls.speedFactor = 9.0f;
-
+	startGeneratingBalls.PushBack({ 484,1,68,68 });
+	startGeneratingBalls.PushBack({ 553,1,68,68 });
+	startGeneratingBalls.PushBack({ 623,1,68,68 });
+	startGeneratingBalls.PushBack({ 692,1,68,68 });
+	startGeneratingBalls.PushBack({ 760,1,68,68 });
+	startGeneratingBalls.PushBack({ 830,1,68,68 });
+	startGeneratingBalls.PushBack({ 898,1,68,68 });
+	generatingBalls.PushBack({ 830,1,68,68 });
+	generatingBalls.PushBack({ 898,1,68,68 });
+	startGeneratingBalls.loop = false;
+	generatingBalls.speedFactor = 9.0f;
+	startGeneratingBalls.speedFactor = 9.0f;
 
 	generatingBallsInverse.PushBack({ 898,1,68,68 });
 	generatingBallsInverse.PushBack({ 830,1,68,68 });
@@ -131,9 +133,54 @@ bool Guldan::Update(float dt)
 	switch (statesBoss)
 	{
 	case BossStates::IDLE:
+			
+		if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+		{
+			statesBoss = BossStates::GENERATINGBALLS;
+			anim = &startGeneratingBalls;
+			break;
+		}
 
 		break;
+
+	case BossStates::GENERATINGBALLS:
+		
+		if (anim == &startGeneratingBalls && anim->Finished())
+			anim = &generatingBalls;
+
+		else if (anim == &generatingBalls)
+		{
+			timeBetweenBalls += 1.0f * dt;
+
+			if (timeBetweenBalls >= TIME_BETWEEN_BALLS)
+			{ 
+				GenerateFelBalls(FellBallsTypes::TOTAL_COS_SIN);
+				timeBetweenBalls = 0.0f;
+				contBalls += 1;
+			}
+
+			if (contBalls >= NUMBER_BALLS)
+			{
+				anim = &generatingBallsInverse;
+				contBalls = 0;
+			}
+		}
+
+		else
+		{
+			if (generatingBallsInverse.Finished())
+			{
+				startGeneratingBalls.Reset();
+				generatingBalls.Reset();
+				generatingBallsInverse.Reset();
+				anim = &idle;
+				statesBoss = BossStates::IDLE;
+			}
+		}
+		break;
 	}
+
+
 
 	anim->speed = anim->speedFactor * dt;
 
@@ -149,12 +196,59 @@ void Guldan::GenerateFelBalls(FellBallsTypes type) const
 {
 	FelBallInfo info;
 	info.layer = 5;
-	info.life = 1000000000;
-	info.pos = { pos.x - 40.0f, pos.y + 40.0f };
+	info.life = LIFE_BALLS;
+	info.pos = { pos.x + 34 - 7, pos.y + 34 };
 	info.speed = 0.0f;
-	info.rotationPivot = { pos.x,pos.y };
+	info.rotationPivot = { pos.x + 34 - 7,pos.y + 34 };
 	info.angle = 0.0f;
-	info.radiusToIncrease = 0.2f;
+	info.radiusToIncrease = 4.0f;
 
-	App->projectiles->AddProjectile(info, Projectile_type::fel_ball);
+	switch (type)
+	{
+	case FellBallsTypes::TOTAL_COS_SIN:
+	{
+		int numBalls = 0;
+
+		while (numBalls != 4)
+		{
+			if (numBalls == 0)
+				info.pos = { pos.x + 34 - 7 + RADIUS_BALLS, pos.y + 34 };
+			else if (numBalls == 1)
+				info.pos = { pos.x + 34 - 7 - RADIUS_BALLS, pos.y + 34 };
+			else if (numBalls == 2)
+				info.pos = { pos.x + 34 - 7, pos.y + 34 + RADIUS_BALLS };
+			else if (numBalls == 3)
+				info.pos = { pos.x + 34 - 7, pos.y + 34 - RADIUS_BALLS };
+
+			App->projectiles->AddProjectile(info, Projectile_type::fel_ball);
+
+			numBalls++;
+		}
+
+		break;
+	}
+
+	case FellBallsTypes::PARCIAL_COS_SIN:
+
+		int numBalls = 0;
+
+		while (numBalls != 4)
+		{
+			if (numBalls == 0)
+				info.pos = { pos.x + 34 - 7 + RADIUS_BALLS, pos.y + 34 };
+			else if (numBalls == 1)
+				info.pos = { pos.x + 34 - 7 - RADIUS_BALLS, pos.y + 34 };
+			else if (numBalls == 2)
+				info.pos = { pos.x + 34 - 7, pos.y + 34 + RADIUS_BALLS };
+			else if (numBalls == 3)
+				info.pos = { pos.x + 34 - 7, pos.y + 34 - RADIUS_BALLS };
+
+			App->projectiles->AddProjectile(info, Projectile_type::fel_ball);
+
+			numBalls++;
+		}
+
+		break;
+
+	}
 }

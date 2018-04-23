@@ -1,14 +1,24 @@
 #include "BossEntity.h"
 
+#define NUMBER_BALLS 20
+#define RADIUS_BALLS 40
+#define LIFE_BALLS 100000
+#define TIME_BETWEEN_BALLS 0.5f
 struct FelBall;
 
 class Guldan : public BossEntity
 {
 private:
 	
-	Animation idle, teleport, inverseTeleport, dead, generateingBalls, generatingBallsInverse, hello;
+	Animation idle, teleport, inverseTeleport, dead, startGeneratingBalls, generatingBalls, generatingBallsInverse, hello;
 	
 	int hp = 0;
+
+
+	// GENERATING BALLS VARIABLES
+	int contBalls = 0;
+	float timeBetweenBalls = 0.0f;
+
 	
 	enum class BossStates
 	{

@@ -151,9 +151,9 @@ bool Scene::Start()
 			App->map->GenerateBossMap();
 			portal = (PortalEntity*)App->entities->AddStaticEntity({ 15 * 46,17 * 46, }, PORTAL);
 			portal->locked = true;
-			player = App->entities->AddPlayer({ 15 * 46,16 * 46, }, THRALL);
+			player = App->entities->AddPlayer({ 15 * 46 + 10,16 * 46, }, THRALL);
 			player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
-			BossEntity* guldan = App->entities->AddBoss({ 14 * 48,5 * 48 }, BossType::GULDAN);
+			BossEntity* guldan = App->entities->AddBoss({ 14 * 48 + 10,7 * 48 }, BossType::GULDAN);
 			App->gui->CreateBossHPBar(guldan, { 640 / 2 - 312 / 2,320 });
 			break;
 		}
