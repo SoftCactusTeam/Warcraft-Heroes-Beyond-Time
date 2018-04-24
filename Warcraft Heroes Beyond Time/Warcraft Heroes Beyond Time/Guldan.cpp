@@ -125,17 +125,6 @@ bool Guldan::Start()
 {
 	statesBoss = BossStates::IDLE;
 
-	FelBallInfo info;
-	info.layer = 5;
-	info.life = LIFE_BALLS;
-	info.pos = BOSS_CENTER;
-	info.speed = 0.0f;
-	info.rotationPivot = { pos.x + 34,pos.y + 34 };
-	info.angle = 0.0f;
-	info.radiusToIncrease = 0.0002f;
-
-	App->projectiles->AddProjectile(info, Projectile_type::fel_ball);
-
 	return true;
 }
 
@@ -148,6 +137,32 @@ bool Guldan::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
 		{
 			statesBoss = BossStates::GENERATINGBALLS;
+			next_movement_type = FellBallsTypes::ODD_EVEN_TYPE;
+			anim = &startGeneratingBalls;
+			break;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+		{
+			statesBoss = BossStates::GENERATINGBALLS;
+			next_movement_type = FellBallsTypes::COMPLETE_CIRCLE;
+			anim = &startGeneratingBalls;
+			break;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_N))
+		{
+			statesBoss = BossStates::GENERATINGBALLS;
+			next_movement_type = FellBallsTypes::HEXAGON_TYPE;
+			anim = &startGeneratingBalls;
+			break;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_P))
+		{
+			statesBoss = BossStates::GENERATINGBALLS;
+			next_movement_type = FellBallsTypes::SPIRAL_TYPE;
+			timeToComeBackSpiral = 0.0f;
 			anim = &startGeneratingBalls;
 			break;
 		}
@@ -163,25 +178,81 @@ bool Guldan::Update(float dt)
 		{
 			timeBetweenBalls += 1.0f * dt;
 
-			if (timeBetweenBalls >= TIME_BETWEEN_BALLS)
-			{ 
-				//if (contBalls == NUMBER_BALLS - 1)
-					GenerateFelBalls(FellBallsTypes::BOTH_TOTAL_PARCIAL, toAngle);
-
-					toAngle += 10.0f;
-			//	else if (contBalls % 2 == 0)
-			//		GenerateFelBalls(FellBallsTypes::TOTAL_COS_SIN);
-			//	else
-			//		GenerateFelBalls(FellBallsTypes::PARCIAL_COS_SIN);
-
-				timeBetweenBalls = 0.0f;
-				contBalls += 1;
-			}
-
-			if (contBalls >= NUMBER_BALLS)
+			if (next_movement_type == FellBallsTypes::ODD_EVEN_TYPE)
 			{
-				anim = &generatingBallsInverse;
-				contBalls = 0;
+
+				// ODD_EVEN_FEL_MOVEMENT -----
+				if (timeBetweenBalls >= TIME_BETWEEN_BALLS_ODD_EVEN)
+				{
+					if (contBalls % 2 == 0)
+						GenerateFelBalls(FellBallsTypes::ODD_EVEN_TYPE, 10.0f);
+					else
+						GenerateFelBalls(FellBallsTypes::ODD_EVEN_TYPE, -10.0f);
+
+					timeBetweenBalls = 0.0f;
+					contBalls += 1;
+				}
+				// ----------------------------
+
+				if (contBalls >= NUMBER_BALLS_ODD_EVEN)
+				{
+					anim = &generatingBallsInverse;
+					contBalls = 0;
+				}
+			}
+			else if (next_movement_type == FellBallsTypes::COMPLETE_CIRCLE)
+			{
+				if (timeBetweenBalls >= TIME_BETWEEN_BALLS_COMPLETE_CIRCLE)
+				{
+					GenerateFelBalls(FellBallsTypes::COMPLETE_CIRCLE, 0.0f);
+					timeBetweenBalls = 0.0f;
+					contBalls += 1;
+				}
+				
+				if (contBalls >= NUMBER_BALLS_COMPLETE_CIRCLE)
+				{
+					anim = &generatingBallsInverse;
+					hexagonAngle = 0.0f;
+					contBalls = 0;
+				}
+			}
+			else if (next_movement_type == FellBallsTypes::HEXAGON_TYPE)
+			{
+				if (timeBetweenBalls >= TIME_BETWEEN_BALLS_HEXAGON)
+				{
+					GenerateFelBalls(FellBallsTypes::HEXAGON_TYPE, 0.0f);
+					hexagonAngle += 10.0f;
+					timeBetweenBalls = 0.0f;
+					contBalls += 1;
+				}
+				// ----------------------------
+
+				if (contBalls >= NUMBER_BALLS_HEXAGON)
+				{
+					anim = &generatingBallsInverse;
+					hexagonAngle = 0.0f;
+					contBalls = 0;
+				}
+			}
+			else if (next_movement_type == FellBallsTypes::SPIRAL_TYPE)
+			{
+				if (timeBetweenBalls >= TIME_BETWEEN_BALLS_SPIRAL)
+				{
+					GenerateFelBalls(FellBallsTypes::SPIRAL_TYPE, 0.0f);
+					spiralAngle += 10.0f;
+					spiralRadiusIncreasement += 15.0f;
+					timeBetweenBalls = 0.0f;
+					contBalls += 1;
+				}
+
+				if (contBalls >= NUMBER_BALLS_SPIRAL)
+				{
+					anim = &generatingBallsInverse;
+					spiralAngle = 0.0f;
+					spiralRadiusIncreasement = 0.0f;
+					contBalls = 0;
+				}
+				
 			}
 		}
 
@@ -199,7 +270,8 @@ bool Guldan::Update(float dt)
 		break;
 	}
 
-
+	// spiral
+	timeToComeBackSpiral += 1.0f * dt;
 
 	anim->speed = anim->speedFactor * dt;
 
@@ -215,49 +287,74 @@ void Guldan::GenerateFelBalls(FellBallsTypes type, float angleToIncrease) const
 {
 	FelBallInfo info;
 	info.layer = 5;
-	info.life = LIFE_BALLS + 100000;
+	info.life = LIFE_BALLS,
 	info.pos = BOSS_CENTER;
-	info.pos.y -= RADIUS_BALLS;
-	info.speed = 0.0f;
-	info.rotationPivot = { pos.x + 34,pos.y + 34 };
-	info.angle = 1.5f;
-	info.radiusToIncrease = 0.15f;
-
-	App->projectiles->AddProjectile(info, Projectile_type::fel_ball);
-
-	//App->projectiles->AddProjectile(info, Projectile_type::fel_ball);
+	info.rotationPivot = BOSS_CENTER;
+	info.angle = angleToIncrease;
 
 	fPoint defaultPoint = { pos.x + 34, pos.y + 34 - RADIUS_BALLS };
 
 	switch (type)
 	{
-	case FellBallsTypes::TOTAL_COS_SIN:
+	case FellBallsTypes::COMPLETE_CIRCLE:
 
-		for (int angle = 0; angle <= 360; angle += 90)
+		info.radiusToIncrease = 150.0f;
+		info.fel_movement = ProjectileInfo::fel_ball_movement::complete_circle;
+
+		for (int angle = 0; angle <= 360; angle += 12)
 		{
-			info.pos = SetSpawnPointByAngle(defaultPoint, BOSS_CENTER, angle, 0);
+			info.startRadius = RADIUS_BALLS;
+			info.pos = SetSpawnPointByAngle(defaultPoint, BOSS_CENTER, angle, 40);
 			App->projectiles->AddProjectile(info, Projectile_type::fel_ball);
 		}
 
 		break;
 
-	case FellBallsTypes::PARCIAL_COS_SIN:
+	case FellBallsTypes::ODD_EVEN_TYPE:
 
-		for (int angle = 45; angle <= 315; angle += 90)
+		info.radiusToIncrease = 150.0f;
+		info.fel_movement = ProjectileInfo::fel_ball_movement::odd_even_type;
+
+		for (int angle = 0; angle <= 360; angle += 45)
 		{
-			info.pos = SetSpawnPointByAngle(defaultPoint, BOSS_CENTER, angle, 0);
+			info.startRadius = RADIUS_BALLS;
+			info.pos = SetSpawnPointByAngle(defaultPoint, BOSS_CENTER, angle, 40);
+			App->projectiles->AddProjectile(info, Projectile_type::fel_ball);
+
+			info.pos = SetSpawnPointByAngle(defaultPoint, BOSS_CENTER, angle - 10.0f, 40);
+			App->projectiles->AddProjectile(info, Projectile_type::fel_ball);
+
+			info.pos = SetSpawnPointByAngle(defaultPoint, BOSS_CENTER, angle + 10.0f, 40);
 			App->projectiles->AddProjectile(info, Projectile_type::fel_ball);
 		}
 
 		break;
 
-	case FellBallsTypes::BOTH_TOTAL_PARCIAL:
+	case FellBallsTypes::HEXAGON_TYPE:
 
-		//for (float angle = 0.0f; angle < 360; angle += 22.5f)
-		//{
-			//info.pos = SetSpawnPointByAngle(defaultPoint, BOSS_CENTER, 0, 0);
-			//App->projectiles->AddProjectile(info, Projectile_type::fel_ball);
-		//}
+		info.radiusToIncrease = 100.0f;
+		info.fel_movement = ProjectileInfo::fel_ball_movement::hexagon;
+
+		for (int angle = 0; angle <= 360; angle += 60)
+		{
+			info.startRadius = RADIUS_BALLS;
+			info.pos = SetSpawnPointByAngle(defaultPoint, BOSS_CENTER, angle + hexagonAngle, 40);
+			App->projectiles->AddProjectile(info, Projectile_type::fel_ball);
+		}
+
+		break;
+
+	case FellBallsTypes::SPIRAL_TYPE:
+
+		info.radiusToIncrease = 0.0f;
+		info.fel_movement = ProjectileInfo::fel_ball_movement::spiral;
+
+		for (int angle = 0; angle <= 360; angle += 60)
+		{
+			info.startRadius = RADIUS_BALLS + spiralRadiusIncreasement;
+			info.pos = SetSpawnPointByAngle(defaultPoint, BOSS_CENTER, angle + spiralAngle, 40);
+			App->projectiles->AddProjectile(info, Projectile_type::fel_ball);
+		}
 
 		break;
 	}
@@ -269,8 +366,18 @@ fPoint Guldan::SetSpawnPointByAngle(fPoint pointToRotate, fPoint rotationPivot, 
 
 	fPoint toReturn;
 
-	toReturn.x = cos(angle) * (pointToRotate.x - rotationPivot.x) - sin(angle) * (pointToRotate.y - rotationPivot.y) + rotationPivot.x;
-	toReturn.y = sin(angle) * (pointToRotate.x - rotationPivot.x) + cos(angle) * (pointToRotate.y - rotationPivot.y) + rotationPivot.y;
+	fPoint difference(pointToRotate.x - rotationPivot.x, pointToRotate.y - rotationPivot.y);
 
-	return toReturn;
+	difference.x *= radius;
+	difference.y *= radius;
+
+	int norm = pointToRotate.DistanceTo(rotationPivot);
+
+	difference.x /= norm;
+	difference.y /= norm;
+
+	toReturn.x = cos(angle) * difference.x - sin(angle) * difference.y;
+	toReturn.y = sin(angle) * difference.x + cos(angle) * difference.y;
+
+	return fPoint(toReturn.x + rotationPivot.x, toReturn.y + rotationPivot.y);
 }

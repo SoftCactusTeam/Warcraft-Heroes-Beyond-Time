@@ -10,6 +10,7 @@ class GUIWindow;
 class PlayerEntity;
 class ChestEntity;
 class PortalEntity;
+class Guldan;
 class Item;
 class WCItem;
 struct SDL_rect;
@@ -54,6 +55,7 @@ public:
 
 	PlayerEntity* player = nullptr;
 	ChestEntity* lvlChest = nullptr;
+	Guldan* guldan = nullptr;
 	bool paused = false;
 
 	GUIElem* player_HP_Bar = nullptr;
@@ -66,8 +68,6 @@ public:
 
 	PortalEntity* portal = nullptr;
 
-
-
 private:
 
 	GUIWindow* PauseMenu = nullptr;
@@ -77,7 +77,7 @@ private:
 	bool restart = false;
 	int lvlIndex = 0;
 
-	int seeeeeeeeeeeeed = NULL;
+	int currentSeed = NULL;
 };
 
 

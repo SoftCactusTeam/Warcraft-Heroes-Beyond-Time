@@ -99,8 +99,8 @@ bool Scene::Start()
 			mapInfo.sizeY = 50;
 			mapInfo.iterations = 300;
 			mapInfo.tilesetPath = "maps/Tiles.png";
-			mapInfo.seed = seeeeeeeeeeeeed;
-			seeeeeeeeeeeeed = NULL;
+			mapInfo.seed = currentSeed;
+			currentSeed = NULL;
 			lvlIndex++;
 
 			App->map->GenerateMap(mapInfo);
@@ -153,8 +153,8 @@ bool Scene::Start()
 			portal->locked = true;
 			player = App->entities->AddPlayer({ 15 * 46 + 10,16 * 46, }, THRALL);
 			player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
-			BossEntity* guldan = App->entities->AddBoss({ 14 * 48 + 10,7 * 48 }, BossType::GULDAN);
-			App->gui->CreateBossHPBar(guldan, { 640 / 2 - 312 / 2,320 });
+			guldan = (Guldan*)App->entities->AddBoss({ 14 * 48 + 10,7 * 48 }, BossType::GULDAN);
+			App->gui->CreateBossHPBar((BossEntity*)guldan, { 640 / 2 - 312 / 2,320 });
 			break;
 		}
 	}
@@ -217,7 +217,7 @@ bool Scene::Update(float dt)
 	{
 		App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
 		actual_scene = Stages::INGAME;
-		seeeeeeeeeeeeed = 1523809027;
+		currentSeed = 1523809027;
 		restart = true;
 	}
 
@@ -281,8 +281,6 @@ bool Scene::PostUpdate()
 		SDL_Rect back = { 0,0,640,360 };
 		//App->render->DrawQuad(back, 0, 205, 193, 255, true, false);
 		App->render->DrawQuad(back, 64, 66, 159, 255, true, false);
-		
-
 	}
 
 	if (App->path->printWalkables == true)
@@ -290,7 +288,6 @@ bool Scene::PostUpdate()
 
 	if (actual_scene == Stages::BOSS_ROOM && gratitudeON)
 	{
-		
 		App->render->DrawQuad({ -App->render->camera.x,-App->render->camera.y,640,360 }, 0, 0, 0, 200 , true, true);
 	}
 

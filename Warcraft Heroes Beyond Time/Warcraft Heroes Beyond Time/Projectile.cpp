@@ -48,53 +48,21 @@ fPoint Projectile::RotateAround(fPoint pointToRotate, fPoint rotationPivot, doub
 	angle = DEG_2_RAD(angle);
 
 	fPoint toReturn;
-	//if (pointToRotate.x == rotationPivot.x && pointToRotate.y > rotationPivot.y)
-	{
-		toReturn.x = rotationPivot.x;
-		toReturn.y = sin(angle) * (pointToRotate.x + radius - rotationPivot.x) + cos(angle) * (pointToRotate.y + radius - rotationPivot.y) + rotationPivot.y;
-	}
-	//else if (pointToRotate.x == rotationPivot.x && pointToRotate.y < rotationPivot.y)
-	{
-		toReturn.x = rotationPivot.x;
-		toReturn.y = sin(angle) * (pointToRotate.x + radius - rotationPivot.x) + cos(angle) * (pointToRotate.y - radius - rotationPivot.y) + rotationPivot.y;
-	}
-	//else if (pointToRotate.x > rotationPivot.x && pointToRotate.y == rotationPivot.y)
-	{
-		toReturn.x = cos(angle) * (pointToRotate.x + radius - rotationPivot.x) - sin(angle) * (pointToRotate.y - radius - rotationPivot.y) + rotationPivot.x;
-		toReturn.y = rotationPivot.y;
-	}
-	//else if (pointToRotate.x < rotationPivot.x && pointToRotate.y == rotationPivot.y)
-	{
-		toReturn.x = cos(angle) * (pointToRotate.x - radius - rotationPivot.x) - sin(angle) * (pointToRotate.y - radius - rotationPivot.y) + rotationPivot.x;
-		toReturn.y = rotationPivot.y;
-	}
-	if (pointToRotate.x > rotationPivot.x && pointToRotate.y < rotationPivot.y)
-	{
-		toReturn.x = cos(angle) * (pointToRotate.x + radius - rotationPivot.x) - sin(angle) * (pointToRotate.y - radius - rotationPivot.y) + rotationPivot.x;
-		toReturn.y = sin(angle) * (pointToRotate.x + radius - rotationPivot.x) + cos(angle) * (pointToRotate.y - radius - rotationPivot.y) + rotationPivot.y;
-	}
-	else if (pointToRotate.x < rotationPivot.x && pointToRotate.y < rotationPivot.y)
-	{
-		toReturn.x = cos(angle) * (pointToRotate.x - radius - rotationPivot.x) - sin(angle) * (pointToRotate.y - radius - rotationPivot.y) + rotationPivot.x;
-		toReturn.y = sin(angle) * (pointToRotate.x - radius - rotationPivot.x) + cos(angle) * (pointToRotate.y - radius - rotationPivot.y) + rotationPivot.y;
-	}
-	else if (pointToRotate.x < rotationPivot.x && pointToRotate.y > rotationPivot.y)
-	{
-		toReturn.x = cos(angle) * (pointToRotate.x - radius - rotationPivot.x) - sin(angle) * (pointToRotate.y + radius - rotationPivot.y) + rotationPivot.x;
-		toReturn.y = sin(angle) * (pointToRotate.x - radius - rotationPivot.x) + cos(angle) * (pointToRotate.y + radius - rotationPivot.y) + rotationPivot.y;
-	}
-	else if (pointToRotate.x > rotationPivot.x && pointToRotate.y > rotationPivot.y)
-	{
-		toReturn.x = cos(angle) * (pointToRotate.x + radius - rotationPivot.x) - sin(angle) * (pointToRotate.y + radius - rotationPivot.y) + rotationPivot.x;
-		toReturn.y = sin(angle) * (pointToRotate.x + radius - rotationPivot.x) + cos(angle) * (pointToRotate.y + radius - rotationPivot.y) + rotationPivot.y;
-	}
-	else
-	{
-		toReturn.x = cos(angle) * (pointToRotate.x - rotationPivot.x) - sin(angle) * (pointToRotate.y - rotationPivot.y) + rotationPivot.x;
-		toReturn.y = sin(angle) * (pointToRotate.x - rotationPivot.x) + cos(angle) * (pointToRotate.y - rotationPivot.y) + rotationPivot.y;
-	}
+	
+	fPoint difference(pointToRotate.x - rotationPivot.x, pointToRotate.y - rotationPivot.y);
 
-	return fPoint(toReturn.x, toReturn.y);
+	difference.x *= radius;
+	difference.y *= radius;
+	
+	int norm = pointToRotate.DistanceTo(rotationPivot);
+
+	difference.x /= norm;
+	difference.y /= norm;
+
+	toReturn.x = cos(angle) * difference.x - sin(angle) * difference.y;
+	toReturn.y = sin(angle) * difference.x + cos(angle) * difference.y;
+
+	return fPoint(toReturn.x + rotationPivot.x, toReturn.y + rotationPivot.y);
 }
 
 void Projectile::OnCollision(Collider* yours, Collider* collideWith)

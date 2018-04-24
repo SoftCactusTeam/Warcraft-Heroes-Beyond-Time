@@ -3,6 +3,10 @@
 
 #include "Projectile.h"
 
+// ODD_EVEN
+#define TIME_ODD_EVEN 0.3f
+#define RADIUS_DECREASE_ODD_EVEN 50.0f
+
 struct FelBallInfo : public ProjectileInfo
 {
 	FelBallInfo() {};
@@ -28,7 +32,7 @@ public:
 private:
 
 	FelBallInfo* toData = nullptr;
-
+	float timer = 0.0f;
 	enum class FelAnimations
 	{
 		no_anim = -1,

@@ -11,7 +11,17 @@ struct Collider;
 struct ProjectileInfo
 {
 	ProjectileInfo() {};
-	ProjectileInfo(const ProjectileInfo& info) : pos(info.pos), layer(info.layer), speed(info.speed), life(info.life), angle(info.angle), radiusToIncrease(info.radiusToIncrease) {};
+	ProjectileInfo(const ProjectileInfo& info) : pos(info.pos), layer(info.layer), speed(info.speed), life(info.life), angle(info.angle), radiusToIncrease(info.radiusToIncrease), startRadius(info.startRadius), fel_movement(info.fel_movement) {};
+
+	enum fel_ball_movement
+	{
+		no_type,
+		odd_even_type,
+		complete_circle,
+		spiral,
+		hexagon,
+		incepcion
+	} fel_movement;
 
 	int life = 0;
 	int layer = 0;
@@ -19,6 +29,7 @@ struct ProjectileInfo
 	fPoint pos = { 0.0f,0.0f };
 	double angle = 0.0f;
 	double radiusToIncrease = 0.0f;
+	float startRadius = 0.0f;
 };
 
 class Projectile
