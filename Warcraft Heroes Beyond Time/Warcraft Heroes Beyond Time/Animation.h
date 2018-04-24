@@ -29,6 +29,11 @@ public:
 
 public:
 
+	uint getFrames()
+	{
+		return last_frame;
+	}
+
 	void PushBack(const SDL_Rect& rect, iPoint pivot = {0,0})
 	{
 		pivots[last_frame] = pivot;

@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "ModulePrinter.h"
 
-EffectsElem::EffectsElem(fPoint pos, float life, Animation effectAnim) : pos(pos), life(life), effectAnim(effectAnim)
+EffectsElem::EffectsElem(fPoint pos, Animation effectAnim) : pos(pos), effectAnim(effectAnim)
 {
 }
 
@@ -16,10 +16,8 @@ bool EffectsElem::DrawEffects()
 
 bool EffectsElem::UpdateEffects(float dt)
 {
-	if (timer >= life)
+	if(effectAnim.Finished())
 		App->effects->DestroyEffect(this);
-	else
-		timer += dt;
 
 	return true;
 }

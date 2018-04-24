@@ -9,25 +9,25 @@
 ModuleEffects::ModuleEffects() : Module()
 {
 	name = "Effects";
-}
 
-ModuleEffects::~ModuleEffects() {}
-
-bool ModuleEffects::Awake(pugi::xml_node& node)
-{
 	playerDustAnim.PushBack({ 0, 0, 24, 19 });
 	playerDustAnim.PushBack({ 24, 0, 24, 19 });
 	playerDustAnim.PushBack({ 0, 19, 24, 19 });
 	playerDustAnim.PushBack({ 24, 19, 24, 19 });
 	playerDustAnim.speedFactor = 5.0f;
 	playerDustAnim.loop = true;
+}
 
+ModuleEffects::~ModuleEffects() {}
+
+bool ModuleEffects::Awake(pugi::xml_node& node)
+{
 	return true;
 }
 
 bool ModuleEffects::Start()
 {
-	atlas = App->textures->Load("sprites/effects.png");
+	effects_atlas = App->textures->Load("sprites/effects.png");
 	return true;
 }
 
@@ -60,8 +60,16 @@ bool ModuleEffects::PostUpdate()
 		std::list<EffectsElem*>::iterator it;
 		for (it = effectsToKill.begin(); it != effectsToKill.end(); ++it)
 		{
-			delete *it;
-			effectsList.erase(it);
+			std::list<EffectsElem*>::iterator it2;
+			for (it2 = effectsList.begin(); it2 != effectsList.end(); ++it2)
+			{
+				if (*it2 == *it)
+				{
+					delete *it;
+					effectsList.erase(it2);
+					break;
+				}
+			}
 		}
 		effectsToKill.clear();
 	}
@@ -84,6 +92,7 @@ bool ModuleEffects::PostUpdate()
 bool ModuleEffects::CleanUp()
 {
 	BROFILER_CATEGORY("ClearEffects", Profiler::Color::BlanchedAlmond);
+
 	std::list<EffectsElem*>::reverse_iterator it;
 	for (it = effectsList.rbegin(); it != effectsList.rend(); ++it)
 	{
@@ -92,16 +101,20 @@ bool ModuleEffects::CleanUp()
 	effectsList.clear();
 	effectsToKill.clear();
 
-	App->textures->UnLoad(atlas);
+	App->textures->UnLoad(effects_atlas);
 
 	return effectsList.size() <= 0;
 }
 
 //----------------------------------------------------------------------------------------------------//
 
-EffectsElem * ModuleEffects::CreateEffect(fPoint pos, float life, Animation effectAnim)
+EffectsElem * ModuleEffects::CreateEffect(fPoint pos, float life, Animation& effectAnim)
 {
-	EffectsElem* tmpEffect = new EffectsElem(pos, life, effectAnim);
+	Animation anim = effectAnim;
+	anim.speedFactor = life / anim.getFrames();
+
+	EffectsElem* tmpEffect = new EffectsElem(pos, anim);
+	
 	effectsList.push_back(tmpEffect);
 
 	return tmpEffect;
@@ -120,5 +133,5 @@ bool ModuleEffects::DestroyEffect(EffectsElem * elem)
 
 SDL_Texture* ModuleEffects::GetAtlas() const
 {
-	return atlas;
+	return effects_atlas;
 }
