@@ -19,6 +19,7 @@
 #include "ModuleItems.h"
 #include "FileSystem.h"
 #include "BossEntity.h"
+#include "ModuleEffects.h"
 
 
 #include "Brofiler\Brofiler.h"
@@ -82,6 +83,7 @@ bool Scene::Start()
 		}
 		case Stages::INGAME:
 		{
+			App->effects->Activate();
 			App->items->Activate();
 			App->colliders->Activate();
 			App->entities->Activate();
@@ -311,6 +313,7 @@ bool Scene::CleanUp()
 	App->console->DeActivate();
 	App->path->ClearMap();
 	App->colliders->DeActivate();
+	App->effects->DeActivate();
 
 	if (actual_scene == Stages::MAIN_MENU)
 	{
