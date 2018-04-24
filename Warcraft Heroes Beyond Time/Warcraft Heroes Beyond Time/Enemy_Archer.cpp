@@ -190,6 +190,12 @@ void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 
 				break;
 			}
+			case PlayerAttack::P_Attack_Type::FREEZE_ITEM:
+			{
+				//Freeze archer state here (stop during 2 seconds and change to a blue freezed colour)
+
+				break;
+			}
 			case PlayerAttack::P_Attack_Type::SHIT:
 			{
 				live -= attack->damage;

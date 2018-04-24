@@ -151,6 +151,9 @@
     <ClCompile Include="DmgBallItem.cpp">
       <Filter>Items</Filter>
     </ClCompile>
+    <ClCompile Include="FreezeBallItem.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -319,6 +322,9 @@
       <Filter>Effects</Filter>
     </ClInclude>
     <ClInclude Include="DMGBallItem.h">
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="FreezeBallItem.h">
       <Filter>Items</Filter>
     </ClInclude>
   </ItemGroup>

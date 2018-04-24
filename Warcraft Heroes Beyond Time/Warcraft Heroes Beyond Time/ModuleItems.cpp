@@ -3,6 +3,8 @@
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
 #include "DMGBallItem.h"
+#include "FreezeBallItem.h"
+
 #include <time.h>
 
 bool ModuleItems::Awake(pugi::xml_node& itemsNode)
@@ -26,6 +28,11 @@ bool ModuleItems::Start()
 	WCItem* test_item = new WCItem();
 	equipedItems.push_back(test_item);
 	test_item->Start();
+
+	FreezeBallItem* FreezeBall_Item = new FreezeBallItem();
+	equipedItems.push_back(FreezeBall_Item);
+	FreezeBall_Item->Start();
+
 
 	return true;
 }
