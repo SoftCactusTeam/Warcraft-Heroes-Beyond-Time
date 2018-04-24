@@ -418,7 +418,6 @@ void Scene::CreateMainMenuScreen()
 	GUIWindow* window = (GUIWindow*)App->gui->CreateGUIWindow({ 0,0 }, { 0,0,0,0 }, nullptr, nullptr);
 
 	//PLAY BUTTON
-	Button* button = (Button*)App->gui->CreateButton({ 640 / 2 - 158 / 2, 50.0f }, BType::PLAY, this, window);
 
 	/*LabelInfo defLabel;
 	defLabel.color = White;
@@ -430,25 +429,23 @@ void Scene::CreateMainMenuScreen()
 	defLabel.color = White;
 	defLabel.fontName = "LifeCraft80";
 	defLabel.text = "Start Demo";
-	App->gui->CreateLabel({ 33,11 }, defLabel, button, this);
+	App->gui->CreateLabel({ 274,60 }, defLabel, nullptr, this);
 
 	//SETTINGS BUTTON
-	Button* button2 = (Button*)App->gui->CreateButton({ 640 / 2 - 158 / 2, 150.0f }, BType::SETTINGS, this, window);
 
 	LabelInfo defLabel2;
 	defLabel2.color = White;
 	defLabel2.fontName = "LifeCraft80";
 	defLabel2.text = "Settings";
-	App->gui->CreateLabel({ 42,10 }, defLabel2, button2, this);
+	App->gui->CreateLabel({ 274,160 }, defLabel2, nullptr, this);
 
 	//EXIT GAME BUTTON
-	Button* button3 = (Button*)App->gui->CreateButton({ 640 / 2 - 158 / 2, 250.0f }, BType::EXIT_GAME, this, window);
 
 	LabelInfo defLabel3;
 	defLabel3.color = White;
 	defLabel3.fontName = "LifeCraft80";
 	defLabel3.text = "Quit";
-	App->gui->CreateLabel({ 60,10 }, defLabel3, button3, this);
+	App->gui->CreateLabel({ 274,260 }, defLabel3, nullptr, this);
 
 	//VERSION LABEL
 	LabelInfo versionLabel;
