@@ -12,7 +12,7 @@ bool ItemContainer::Update(float dt)
 {
 	HandleInput(dt);
 
-	if (focused &&)
+	if (focused )
 	{
 		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_DOWN)
 		{

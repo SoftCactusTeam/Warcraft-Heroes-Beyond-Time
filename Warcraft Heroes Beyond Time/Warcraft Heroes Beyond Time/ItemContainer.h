@@ -19,7 +19,7 @@ public:
 
 private:
 
-	anima
+	
 	bool selected = false;
 	Item* item = nullptr;
 };
