@@ -24,6 +24,7 @@
 #include "Brofiler\Brofiler.h"
 
 #include "Label.h"
+#include "GUIImage.h"
 #include "InputBox.h"
 #include "Button.h"
 #include "GUIWindow.h"
@@ -419,25 +420,23 @@ void Scene::CreateMainMenuScreen()
 
 	//PLAY BUTTON
 
-	/*LabelInfo defLabel;
-	defLabel.color = White;
-	defLabel.fontName = "LifeCraft80";
-	defLabel.text = "PLAY";
-	App->gui->CreateLabel(getPosByResolution({ 55,10 }), defLabel, button, this);*/
+	GUIImage* logo = (GUIImage*)App->gui->CreateGUIImage({100,25}, {624, 21, 448, 129},this);
+
+	Button* button = (Button*)App->gui->CreateButton({ 241.0f , 200.0f }, BType::PLAY, this, window);
 
 	LabelInfo defLabel;
 	defLabel.color = White;
 	defLabel.fontName = "LifeCraft80";
 	defLabel.text = "Start Demo";
-	App->gui->CreateLabel({ 274,60 }, defLabel, nullptr, this);
+	App->gui->CreateLabel({ 33,11 }, defLabel, button, this);
 
 	//SETTINGS BUTTON
-
+	Button* button2 = (Button*)App->gui->CreateButton({241.0f , 250.0f }, BType::SETTINGS, this, window);
 	LabelInfo defLabel2;
 	defLabel2.color = White;
 	defLabel2.fontName = "LifeCraft80";
 	defLabel2.text = "Settings";
-	App->gui->CreateLabel({ 274,160 }, defLabel2, nullptr, this);
+	App->gui->CreateLabel({ 42,10 }, defLabel2, button2, this);
 
 	//EXIT GAME BUTTON
 
@@ -445,15 +444,16 @@ void Scene::CreateMainMenuScreen()
 	defLabel3.color = White;
 	defLabel3.fontName = "LifeCraft80";
 	defLabel3.text = "Quit";
-	App->gui->CreateLabel({ 274,260 }, defLabel3, nullptr, this);
+
+
+	Button* button3 = (Button*)App->gui->CreateButton({ 241.0f , 300.0f }, BType::EXIT_GAME, this, window);
 
 	//VERSION LABEL
 	LabelInfo versionLabel;
 	versionLabel.color = White;
 	versionLabel.fontName = "Arial30";
 	versionLabel.text = App->gui->getVersion();
-	App->gui->CreateLabel({ 10,340 }, versionLabel, nullptr, nullptr);
-
+	App->gui->CreateLabel({ 60,10 }, defLabel3, button3, this);
 }
 
 void Scene::CreateSettingsScreen()
