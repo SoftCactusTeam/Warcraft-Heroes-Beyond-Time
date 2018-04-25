@@ -31,7 +31,7 @@ public:
 	bool CleanUp();
 
 public:
-	EffectsElem * CreateEffect(fPoint pos, float life, Animation& effectAnim);
+	EffectsElem * CreateEffect(fPoint pos, float life, TimeBasedAnimation& effectAnim);
 	bool DestroyEffect(EffectsElem* elem);
 	SDL_Texture* ModuleEffects::GetAtlas() const;
 
@@ -41,7 +41,7 @@ public:
 	std::list<EffectsElem*> effectsToKill;
 
 	//Here we have all animations charged
-	Animation playerDustAnim;
+	TimeBasedAnimation playerDustAnim;
 
 private:
 	SDL_Texture* effects_atlas = nullptr;

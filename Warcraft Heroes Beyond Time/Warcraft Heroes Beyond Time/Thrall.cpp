@@ -234,7 +234,7 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 
 	numStats = App->entities->thrallstats;
 
-	dustEffect = App->effects->CreateEffect(pos, 100, App->effects->playerDustAnim);
+	dustEffect = App->effects->CreateEffect(pos, 5, App->effects->playerDustAnim);
 
 	state = states::PL_IDLE;
 	anim = &idleDown;

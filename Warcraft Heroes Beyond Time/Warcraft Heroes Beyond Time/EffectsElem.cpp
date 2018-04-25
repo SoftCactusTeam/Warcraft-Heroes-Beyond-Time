@@ -2,14 +2,14 @@
 #include "Application.h"
 #include "ModulePrinter.h"
 
-EffectsElem::EffectsElem(fPoint pos, Animation effectAnim) : pos(pos), effectAnim(effectAnim)
+EffectsElem::EffectsElem(fPoint pos, TimeBasedAnimation effectAnim) : pos(pos), effectAnim(effectAnim)
 {
 }
 
 bool EffectsElem::DrawEffects()
 {
 	bool ret = true;
-	ret = App->printer->PrintSprite({ (int)pos.x, (int)pos.y }, App->effects->GetAtlas(), effectAnim.GetCurrentFrame(), -1);
+	ret = App->printer->PrintSprite({ (int)pos.x, (int)pos.y }, App->effects->GetAtlas(), effectAnim.GetCurrentFrame(App->dt), -1);
 
 	return ret;
 }

@@ -8,13 +8,12 @@
 
 ModuleEffects::ModuleEffects() : Module()
 {
-	name = "Effects";
+	name = "effects";
 
 	playerDustAnim.PushBack({ 0, 0, 24, 19 });
 	playerDustAnim.PushBack({ 24, 0, 24, 19 });
 	playerDustAnim.PushBack({ 0, 19, 24, 19 });
 	playerDustAnim.PushBack({ 24, 19, 24, 19 });
-	playerDustAnim.speedFactor = 5.0f;
 	playerDustAnim.loop = false;
 }
 
@@ -45,8 +44,6 @@ bool ModuleEffects::Update(float dt)
 	{
 		res = (*it)->UpdateEffects(dt);
 	}
-
-	playerDustAnim.speed = playerDustAnim.speedFactor * dt;
 
 	return res;
 }
@@ -108,11 +105,10 @@ bool ModuleEffects::CleanUp()
 
 //----------------------------------------------------------------------------------------------------//
 
-EffectsElem * ModuleEffects::CreateEffect(fPoint pos, float life, Animation& effectAnim)
+EffectsElem * ModuleEffects::CreateEffect(fPoint pos, float life, TimeBasedAnimation& effectAnim)
 {
-	Animation anim = effectAnim;
-	anim.speedFactor = anim.getFrames() / life;
-	anim.speed = anim.getFrames() / life;
+	TimeBasedAnimation anim = effectAnim;
+	anim.life = life;
 
 	EffectsElem* tmpEffect = new EffectsElem(pos, anim);
 	

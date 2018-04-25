@@ -85,82 +85,77 @@ public:
 	}
 };
 
-// -----------------------------------------------------------------------------------------------------------------------------------------
-// -------------------------------------------------- ADVANCED ANIMATION -------------------------------------------------------------------
-// -----------------------------------------------------------------------------------------------------------------------------------------
-
-struct KeyFrame
+class TimeBasedAnimation
 {
-	SDL_Rect animationRect;
-	uint timeOfLive;
-};
+private:
+	int loops = 0;
+	float current_frame = 0.0f;
+	int last_frame = 0;
 
-class AdvancedAnimation
-{
+	SDL_Rect frames[MAX_FRAMES];
+	iPoint pivots[MAX_FRAMES];
+
 public:
-	void AddFrame(SDL_Rect rect, int timeOfLive = -1, int concretePositon = -1)
+	
+	float life = 0.0f;
+	float curr_frame_time = 0.0f;
+	bool loop = true;
+
+public:
+
+	uint getFrames()
 	{
-		KeyFrame* newFrame = new KeyFrame();
-		newFrame->animationRect = rect;
-		newFrame->timeOfLive = timeOfLive;
-		if (timeOfLive == -1)
-			newFrame->timeOfLive = generalSpeed;
-		else
-			newFrame->timeOfLive = timeOfLive;
-		if (concretePositon == -1)
-			animationFrames.push_back(newFrame);
-		else {
-			if (concretePositon < animationFrames.capacity())
-			{
-				std::vector<KeyFrame*> newVectorFrame(1, newFrame);
-				animationFrames.insert(animationFrames.begin() + concretePositon, newVectorFrame.begin(), newVectorFrame.end());
-			}
-			else
-				animationFrames.push_back(newFrame);
-		}
+		return last_frame;
 	}
 
-	SDL_Rect GetCurrentFrame()
+	void PushBack(const SDL_Rect& rect, iPoint pivot = { 0,0 })
 	{
-		if (generalSpeed == 0)
-			return animationFrames[currentFrame]->animationRect;
-		if (currentTime < SDL_GetTicks()) {
-			currentFrame++;
-			if (currentFrame >= animationFrames.size())
-				if (loop)
-					currentFrame = 0;
-			currentTime = SDL_GetTicks() + animationFrames[currentFrame]->timeOfLive;
+		pivots[last_frame] = pivot;
+		frames[last_frame++] = rect;
+	}
+
+	SDL_Rect& GetCurrentFrame(float dt)
+	{
+		curr_frame_time += dt;
+		
+		if (curr_frame_time > life / last_frame)
+		{
+			curr_frame_time = 0;
+			current_frame += 1;
+
+			if (current_frame >= last_frame)
+			{
+				loops++;
+				current_frame = (loop) ? 0.0f : last_frame - 1;
+			}
 		}
-		return animationFrames[currentFrame]->animationRect;
+
+		return frames[(int)current_frame];
+	}
+
+	iPoint GetCurrentPivot() const
+	{
+		return pivots[(int)current_frame];
+	}
+
+	SDL_Rect& GetCurrentRect()
+	{
+		return frames[(int)current_frame];
 	}
 
 	bool Finished() const
 	{
-		if (currentFrame >= animationFrames.size() - 1)
-			return true;
-		else
-			return false;
+		return loops > 0;
 	}
 
-	void CleanAnimation() {
-		for (int i = 0; i < animationFrames.size(); i++) {
-			delete animationFrames[i];
-		}
-		animationFrames.clear();
+	void Reset()
+	{
+		loops = 0;
+		current_frame = 0;
+		curr_frame_time = 0;
 	}
-
-	void Reset() { currentFrame = 0; }
-	void Start(int newGeneralSpeed) { generalSpeed = newGeneralSpeed; }
-	void Stop() { generalSpeed = 0; }
-
-private:
-	std::vector <KeyFrame*> animationFrames;
-	uint currentFrame = 0;
-	uint currentTime = 0;
-
-public:
-	uint generalSpeed = 0;
-	bool loop = true;
 };
+
+
 
 #endif
