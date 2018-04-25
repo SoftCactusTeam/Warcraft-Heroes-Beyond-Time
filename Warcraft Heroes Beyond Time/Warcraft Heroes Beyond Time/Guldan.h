@@ -1,3 +1,6 @@
+#ifndef __GULDAN_H__
+#define __GULDAN_H__
+
 #include "BossEntity.h"
 
 #define NUMBER_BALLS_ODD_EVEN 4
@@ -11,6 +14,7 @@
 #define TIME_BETWEEN_BALLS_HEXAGON 0.2f
 #define TIME_BETWEEN_BALLS_SPIRAL 0.1f
 #define BOSS_CENTER { pos.x + 34, pos.y + 34 }
+
 struct FelBall;
 
 class Guldan : public BossEntity
@@ -32,6 +36,9 @@ private:
 	float spiralAngle = 0.0f;
 	float spiralRadiusIncreasement = 0.0f;
 	float timeToComeBackSpiral = 0.0f;
+
+	// TELEPORT
+	fPoint pointToTelerpot[5] = { {0,0},{ 0,0 },{ 0,0 },{ 0,0 } };
 
 	enum class BossStates
 	{
@@ -66,3 +73,5 @@ public:
 	float GetTimeToComeBackSpiral() const { return timeToComeBackSpiral; };
 
 };
+
+#endif

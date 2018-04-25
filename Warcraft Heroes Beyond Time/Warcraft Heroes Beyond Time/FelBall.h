@@ -53,6 +53,7 @@ private:
 	{
 		no_anim = -1,
 		moving_anim,
+		back_anim,
 		max_anim
 	};
 

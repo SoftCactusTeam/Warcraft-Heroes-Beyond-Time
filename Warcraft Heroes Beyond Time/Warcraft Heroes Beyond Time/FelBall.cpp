@@ -9,6 +9,12 @@
 FelBall::FelBall(const FelBallInfo* info, Projectile_type type) : Projectile(info, type)
 {
 	felAnims[(uint)FelAnimations::moving_anim].PushBack({ 21,33,14,14 });
+	felAnims[(uint)FelAnimations::moving_anim].PushBack({ 36,33,14,14 });
+	felAnims[(uint)FelAnimations::moving_anim].speedFactor = 4.5f;
+
+	felAnims[(uint)FelAnimations::back_anim].PushBack({ 21,48,14,14 });
+	felAnims[(uint)FelAnimations::back_anim].PushBack({ 36,48,14,14 });
+	//felAnims[(uint)FelAnimations::back_anim].speedFactor = 4.5f;
 
 	actualAnim = &felAnims[(uint)FelAnimations::moving_anim];
 
@@ -17,7 +23,7 @@ FelBall::FelBall(const FelBallInfo* info, Projectile_type type) : Projectile(inf
 
 FelBall::~FelBall()
 {
-	delete data;
+	RELEASE(data);
 }
 
 bool FelBall::Update(float dt)
@@ -60,6 +66,7 @@ bool FelBall::Update(float dt)
 		}
 		else
 		{
+			actualAnim = &felAnims[(uint)FelAnimations::back_anim];
 			toData->startRadius -= 75.0f * dt;
 			data->pos = RotateAround(data->pos, toData->rotationPivot, 0.0f, toData->startRadius);
 		}
