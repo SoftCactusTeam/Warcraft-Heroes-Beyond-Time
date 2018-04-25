@@ -83,7 +83,6 @@ bool Scene::Start()
 		case Stages::INGAME:
 		{
 			App->effects->Activate();
-			App->items->Activate();
 			App->colliders->Activate();
 			App->entities->Activate();
 			App->console->Activate();
