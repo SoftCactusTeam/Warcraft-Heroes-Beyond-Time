@@ -3,6 +3,7 @@
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
 #include "DMGBallItem.h"
+#include "ShieldBallItem.h"
 #include <time.h>
 
 bool ModuleItems::Awake(pugi::xml_node& itemsNode)
@@ -26,6 +27,10 @@ bool ModuleItems::Start()
 	WCItem* test_item = new WCItem();
 	equipedItems.push_back(test_item);
 	test_item->Start();
+
+	ShieldBallItem* shield_ball = new ShieldBallItem();
+	equipedItems.push_back(shield_ball);
+	shield_ball->Start();
 
 	return true;
 }
