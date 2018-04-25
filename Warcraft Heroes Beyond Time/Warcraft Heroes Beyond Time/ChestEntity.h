@@ -22,6 +22,7 @@ private:
 	CHEST_TYPE type = CHEST_TYPE::NON_CHEST;
 	Animation chest;
 	bool opened = false;
+	bool selection_created = false;
 	Collider* col = nullptr;
 
 };

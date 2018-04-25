@@ -92,7 +92,7 @@ void GUIWindow::FocusNextChild()
 			std::list<GUIElem*>::iterator toFocusIt = focusedIt;
 			while (toFocus == nullptr)
 			{
-				if (!(*toFocusIt)->IsFocused() && ((*toFocusIt)->type == GUIElemType::BUTTON || (*toFocusIt)->type == GUIElemType::SLIDER))
+				if (!(*toFocusIt)->IsFocused() && ((*toFocusIt)->type == GUIElemType::BUTTON || (*toFocusIt)->type == GUIElemType::SLIDER || (*toFocusIt)->type == GUIElemType::ITEM_CONTAINER))
 					toFocus = *toFocusIt;
 				if (std::next(toFocusIt) == childs.end())
 					toFocusIt = childs.begin();
@@ -128,7 +128,7 @@ void GUIWindow::FocusPrevChild()
 			std::list<GUIElem*>::reverse_iterator toFocusIt = focusedIt;
 			while (toFocus == nullptr)
 			{
-				if (!(*toFocusIt)->IsFocused() && ((*toFocusIt)->type == GUIElemType::BUTTON || (*toFocusIt)->type == GUIElemType::SLIDER))
+				if (!(*toFocusIt)->IsFocused() && ((*toFocusIt)->type == GUIElemType::BUTTON || (*toFocusIt)->type == GUIElemType::SLIDER || (*toFocusIt)->type == GUIElemType::ITEM_CONTAINER))
 					toFocus = *toFocusIt;
 				if (std::next(toFocusIt) == childs.rend())
 					toFocusIt = childs.rbegin();
@@ -216,6 +216,64 @@ bool GUIWindow::checkVerticalInputs(float dt)
 
 bool GUIWindow::checkHorizontalInputs(float dt)
 {
+	if (App->input->GetAxis((int)Axis::RIGHT) == KeyState::KEY_DOWN || App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_DOWN)
+	{
+		if (!AnyChildFocused())
+		{
+			childs.front()->Focus();
+		}
 
+		else if (App->input->GetAxis((int)Axis::RIGHT) == KeyState::KEY_DOWN)
+		{
+			FocusNextChild();
+		}
+	}
+
+	else if (App->input->GetAxis((int)Axis::RIGHT) == KeyState::KEY_REPEAT)
+	{
+		counter += dt;
+		if (counter > 0.4)
+		{
+			minicounter += dt;
+			if (minicounter > 0.2)
+			{
+				FocusNextChild();
+				minicounter = 0.0f;
+			}
+		}
+	}
+
+	if (App->input->GetAxis((int)Axis::LEFT) == KeyState::KEY_DOWN)
+	{
+		if (!AnyChildFocused())
+		{
+			childs.back()->Focus();
+		}
+
+		else
+		{
+			FocusPrevChild();
+		}
+	}
+
+	else if (App->input->GetAxis((int)Axis::LEFT) == KeyState::KEY_REPEAT)
+	{
+		counter += dt;
+		if (counter > 0.4)
+		{
+			minicounter += dt;
+			if (minicounter > 0.2)
+			{
+				FocusPrevChild();
+				minicounter = 0.0f;
+			}
+		}
+	}
+
+	if (App->input->GetAxis((int)Axis::RIGHT) == KeyState::KEY_UP || App->input->GetAxis((int)Axis::LEFT) == KeyState::KEY_UP)
+	{
+		counter = 0;
+		minicounter = 0;
+	}
 	return true;
 }

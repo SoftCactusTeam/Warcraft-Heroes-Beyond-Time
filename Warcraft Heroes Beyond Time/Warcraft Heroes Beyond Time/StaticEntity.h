@@ -7,7 +7,14 @@ class Collider;
 
 class StaticEntity : public Entity {
 public:
-	StaticEntity(fPoint coor, SDL_Texture* texture);
+	enum class StaticType
+	{
+		NO_TYPE,
+		CHEST,
+		PORTAL
+	} staticType = StaticType::NO_TYPE;
+
+	StaticEntity(fPoint coor, SDL_Texture* texture, StaticType staticType = StaticType::NO_TYPE);
 
 	virtual bool Start();
 	virtual bool Update(float dt);

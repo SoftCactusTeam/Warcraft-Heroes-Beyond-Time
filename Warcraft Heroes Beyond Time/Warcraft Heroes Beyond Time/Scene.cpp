@@ -29,6 +29,7 @@
 #include "GUIWindow.h"
 #include "Slider.h"
 #include "GUIImage.h"
+#include "ItemContainer.h"
 
 
 
@@ -82,11 +83,7 @@ bool Scene::Start()
 		}
 		case Stages::INGAME:
 		{
-<<<<<<< HEAD
-=======
 			App->effects->Activate();
-			App->items->Activate();
->>>>>>> module-effects
 			App->colliders->Activate();
 			App->entities->Activate();
 			App->console->Activate();
@@ -553,9 +550,15 @@ void Scene::CreateGratitudeScreen()
 	App->gui->CreateLabel({ 160, 130 }, gratitude, nullptr, nullptr);
 }
 
-void Scene::CreateItemSelectionScreen()
+void Scene::CreateItemSelectionScreen(Item* item1, Item* item2, Item* item3)
 {
+	paused = true;
+	ItemSelection = (GUIWindow*)App->gui->CreateGUIWindow({ 0,0 }, { 0,0,0,0 }, nullptr, nullptr);
+	ItemSelection->blackBackground = true;
+	ItemSelection->vertical = false;
 
-
-
+	App->gui->CreateItemContainer({ 30,50 }, item1, ItemSelection);
+	App->gui->CreateItemContainer({ 230,50 }, item2, ItemSelection);
+	App->gui->CreateItemContainer({ 430,50 }, item3, ItemSelection);
+	//App->gui->CreateItemContainer({})
 }

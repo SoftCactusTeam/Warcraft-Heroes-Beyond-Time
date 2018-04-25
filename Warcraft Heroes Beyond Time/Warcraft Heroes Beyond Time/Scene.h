@@ -10,6 +10,7 @@ class GUIWindow;
 class PlayerEntity;
 class ChestEntity;
 class PortalEntity;
+class Item;
 
 class Scene : public Module
 {
@@ -34,7 +35,7 @@ public:
 	void CreateSettingsScreen();
 	void CreatePauseMenu();
 	void CreateGratitudeScreen();
-	void CreateItemSelectionScreen();
+	void CreateItemSelectionScreen(Item*, Item*, Item*);
 	bool gratitudeON = false;
 	void GoMainMenu();
 	void GoBossRoom();

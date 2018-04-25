@@ -18,6 +18,7 @@ enum class BType;
 
 class PlayerEntity;
 class BossEntity;
+class Item;
 
 
 class ModuleGUI : public Module
@@ -48,6 +49,7 @@ public:
 	GUIElem* CreateStatsWindow(PlayerEntity* player, fPoint localPos);
 	GUIElem* CreateHPBar(PlayerEntity* player, fPoint localPos);
 	GUIElem* CreateBossHPBar(BossEntity* boss, fPoint localPos);
+	GUIElem* CreateItemContainer(fPoint localPos, Item* item, GUIElem* parent);
 
 	bool DestroyElem(GUIElem* element);
 	SDL_Texture* getAtlas() const;

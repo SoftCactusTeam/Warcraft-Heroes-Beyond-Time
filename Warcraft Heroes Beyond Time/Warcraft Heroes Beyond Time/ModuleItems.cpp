@@ -9,23 +9,17 @@ bool ModuleItems::Awake(pugi::xml_node& itemsNode)
 {
 	//Read stats from config.xml
 
-	//Load Items' pull
-	loadItemsPull();
+	
 
 	return true;
 }
 
 bool ModuleItems::Start()
 {
+	//Load Items' pull
+	loadItemsPull();
+
 	itemsTexture = App->textures->Load("sprites/all_items.png");
-
-	DMGBallItem* DMGball_Item = new DMGBallItem();
-	equipedItems.push_back(DMGball_Item);
-	DMGball_Item->Start();
-
-	WCItem* test_item = new WCItem();
-	equipedItems.push_back(test_item);
-	test_item->Start();
 
 	return true;
 }
@@ -82,7 +76,9 @@ void ModuleItems::loadItemsPull()
 	WCItem* wc = new WCItem();
 	availableItems.push_back(wc);
 
-	//etc
+	DMGBallItem* dmgBall = new DMGBallItem();
+	availableItems.push_back(dmgBall);
+
 
 }
 

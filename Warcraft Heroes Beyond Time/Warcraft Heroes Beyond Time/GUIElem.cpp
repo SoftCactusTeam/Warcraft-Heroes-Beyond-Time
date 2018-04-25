@@ -49,7 +49,7 @@ bool GUIElem::MouseHover() const
 bool GUIElem::HandleInput(float dt)
 {
 	bool ret = true;
-
+	if(listener)
 	switch (UIevent)
 	{
 

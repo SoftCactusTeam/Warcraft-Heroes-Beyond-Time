@@ -9,10 +9,8 @@
 #include "Brofiler\Brofiler.h"
 
 
-
-
-
 #include "PlayerEntity.h"
+#include "StaticEntity.h"
 
 class ConsoleColliders : public ConsoleOrder
 {
@@ -257,6 +255,14 @@ bool ModuleColliders::CollisionEnabled(Collider* col1, Collider* col2) const
 						DynamicEntity* dynOwner = (DynamicEntity*)owner1;
 						if (dynOwner->dynamicType == DynamicEntity::DynamicType::ENEMY)
 							return true;													//Enemy vs Player Attack enabled
+						else
+							return false;
+					}
+					else if (owner1->entityType == Entity::EntityType::STATIC_ENTITY)
+					{
+						StaticEntity* statOwner = (StaticEntity*)owner1;
+						if (statOwner->staticType == StaticEntity::StaticType::CHEST)
+							return true;													//Chest vs Player Attack enabled
 						else
 							return false;
 					}
