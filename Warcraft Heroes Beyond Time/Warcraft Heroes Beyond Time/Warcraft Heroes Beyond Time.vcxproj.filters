@@ -151,6 +151,7 @@
     <ClCompile Include="DmgBallItem.cpp">
       <Filter>Items</Filter>
     </ClCompile>
+    <ClCompile Include="RingItem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -321,6 +322,7 @@
     <ClInclude Include="DMGBallItem.h">
       <Filter>Items</Filter>
     </ClInclude>
+    <ClInclude Include="RingItem.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />
