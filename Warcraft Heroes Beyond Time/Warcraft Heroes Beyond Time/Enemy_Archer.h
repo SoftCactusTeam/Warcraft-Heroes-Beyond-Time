@@ -15,6 +15,7 @@ enum ARCHER_STATE {
 	ARCHER_FASTSHOOT_ATAC,
 	ARCHER_BACKJUMP,
 	ARCHER_SCAPE,
+	ARCHER_FEAR,
 	ARCHER_DIE
 };
 
@@ -62,6 +63,7 @@ public:
 	void initBackJump();
 	void initScape();
 	void initDie();
+	void initFear();
 
 	void doIdle();
 	void doWalk();
@@ -71,6 +73,8 @@ public:
 	void doBackJump();
 	void doScape();
 	void doDie();
+	void doFear(float dt);
+
 
 	void ChargeAnimations();
 	void ShootArrow(fPoint desviation = fPoint(0, 0));
@@ -95,6 +99,8 @@ private:
 	fPoint posSmoke = { -1.f,-1.f };
 	// Scape variables
 	iPoint posToScape;
+	//Items variables
+	float fear_counter = 0.0f;
 
 	float live = 0;
 

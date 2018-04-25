@@ -40,6 +40,7 @@ public:
 		NO_TYPE = -1,
 		NORMAL_ATTACK,
 		DMGBALL_ITEM,
+		FEARBALL_ITEM,
 		SKILL,
 		SHIT
 

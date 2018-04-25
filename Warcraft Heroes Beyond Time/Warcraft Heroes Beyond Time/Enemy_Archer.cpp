@@ -84,6 +84,9 @@ bool Enemy_Archer::Update(float dt)
 	case ARCHER_STATE::ARCHER_DIE:
 		doDie();
 		break;
+	case ARCHER_STATE::ARCHER_FEAR:
+		doFear(dt);
+		break;
 	default:
 		initIdle();
 		break;
@@ -188,6 +191,12 @@ void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 				else
 					initBackJump();
 
+				break;
+			}
+			case PlayerAttack::P_Attack_Type::FEARBALL_ITEM:
+			{
+				if (state != ARCHER_STATE::ARCHER_FEAR)
+					initFear();
 				break;
 			}
 			case PlayerAttack::P_Attack_Type::SHIT:
@@ -355,6 +364,13 @@ void Enemy_Archer::initDie()
 	pathVector.Clear();
 }
 
+void Enemy_Archer::initFear()
+{
+	state = ARCHER_STATE::ARCHER_FEAR;
+	pathVector.Clear();
+
+}
+
 // ---------------------------------------------------------------------------------
 // ----------------  UPDATE(DO) STATE_MACHIN FUNCTIONS  ----------------------------
 // ---------------------------------------------------------------------------------
@@ -470,6 +486,34 @@ void Enemy_Archer::doDie()
 		App->entities->enemiescount--;
 	}
 		
+}
+
+void Enemy_Archer::doFear(float dt)
+{
+	fear_counter += dt;
+
+	if (Enemy_Archer::pos.x > App->scene->player->pos.x && Enemy_Archer::pos.y > App->scene->player->pos.y)
+	{
+		//abajoderecha
+	}
+	else if (Enemy_Archer::pos.x > App->scene->player->pos.x && Enemy_Archer::pos.y < App->scene->player->pos.y)
+	{
+		//arribaderecha
+	}
+	else if (Enemy_Archer::pos.x < App->scene->player->pos.x && Enemy_Archer::pos.y > App->scene->player->pos.y)
+	{
+		//arribaizquierda
+	}
+	else if (Enemy_Archer::pos.x < App->scene->player->pos.x && Enemy_Archer::pos.y < App->scene->player->pos.y)
+	{
+		//abajoizquierda
+	}
+
+	if (fear_counter > 10.0f)
+	{
+		state = ARCHER_STATE::ARCHER_IDLE;
+		fear_counter = 0;
+	}
 }
 
 void Enemy_Archer::ShootArrow(fPoint desviation)

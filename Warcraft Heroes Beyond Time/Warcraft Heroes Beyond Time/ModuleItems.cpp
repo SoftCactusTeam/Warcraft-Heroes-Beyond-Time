@@ -3,6 +3,7 @@
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
 #include "DMGBallItem.h"
+#include "FEARBallItem.h"
 #include <time.h>
 
 bool ModuleItems::Awake(pugi::xml_node& itemsNode)
@@ -18,6 +19,10 @@ bool ModuleItems::Awake(pugi::xml_node& itemsNode)
 bool ModuleItems::Start()
 {
 	itemsTexture = App->textures->Load("sprites/all_items.png");
+
+	FEARBallItem* Fearball_Item = new FEARBallItem();
+	equipedItems.push_back(Fearball_Item);
+	Fearball_Item->Start();
 
 	DMGBallItem* DMGball_Item = new DMGBallItem();
 	equipedItems.push_back(DMGball_Item);
