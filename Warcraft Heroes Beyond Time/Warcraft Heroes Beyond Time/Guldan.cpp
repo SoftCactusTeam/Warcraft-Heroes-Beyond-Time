@@ -299,13 +299,13 @@ void Guldan::GenerateFelBalls(FellBallsTypes type, float angleToIncrease) const
 	case FellBallsTypes::COMPLETE_CIRCLE:
 
 		info.radiusToIncrease = 150.0f;
-		info.fel_movement = ProjectileInfo::fel_ball_movement::complete_circle;
+		info.fel_movement = FelBallInfo::fel_ball_movement::complete_circle;
 
 		for (int angle = 0; angle <= 360; angle += 12)
 		{
 			info.startRadius = RADIUS_BALLS;
 			info.pos = SetSpawnPointByAngle(defaultPoint, BOSS_CENTER, angle, 40);
-			App->projectiles->AddProjectile(info, Projectile_type::fel_ball);
+			App->projectiles->AddProjectile(&info, Projectile_type::fel_ball);
 		}
 
 		break;
@@ -313,19 +313,19 @@ void Guldan::GenerateFelBalls(FellBallsTypes type, float angleToIncrease) const
 	case FellBallsTypes::ODD_EVEN_TYPE:
 
 		info.radiusToIncrease = 150.0f;
-		info.fel_movement = ProjectileInfo::fel_ball_movement::odd_even_type;
+		info.fel_movement = FelBallInfo::fel_ball_movement::odd_even_type;
 
 		for (int angle = 0; angle <= 360; angle += 45)
 		{
 			info.startRadius = RADIUS_BALLS;
 			info.pos = SetSpawnPointByAngle(defaultPoint, BOSS_CENTER, angle, 40);
-			App->projectiles->AddProjectile(info, Projectile_type::fel_ball);
+			App->projectiles->AddProjectile(&info, Projectile_type::fel_ball);
 
 			info.pos = SetSpawnPointByAngle(defaultPoint, BOSS_CENTER, angle - 10.0f, 40);
-			App->projectiles->AddProjectile(info, Projectile_type::fel_ball);
+			App->projectiles->AddProjectile(&info, Projectile_type::fel_ball);
 
 			info.pos = SetSpawnPointByAngle(defaultPoint, BOSS_CENTER, angle + 10.0f, 40);
-			App->projectiles->AddProjectile(info, Projectile_type::fel_ball);
+			App->projectiles->AddProjectile(&info, Projectile_type::fel_ball);
 		}
 
 		break;
@@ -333,13 +333,13 @@ void Guldan::GenerateFelBalls(FellBallsTypes type, float angleToIncrease) const
 	case FellBallsTypes::HEXAGON_TYPE:
 
 		info.radiusToIncrease = 100.0f;
-		info.fel_movement = ProjectileInfo::fel_ball_movement::hexagon;
+		info.fel_movement = FelBallInfo::fel_ball_movement::hexagon;
 
 		for (int angle = 0; angle <= 360; angle += 60)
 		{
 			info.startRadius = RADIUS_BALLS;
 			info.pos = SetSpawnPointByAngle(defaultPoint, BOSS_CENTER, angle + hexagonAngle, 40);
-			App->projectiles->AddProjectile(info, Projectile_type::fel_ball);
+			App->projectiles->AddProjectile(&info, Projectile_type::fel_ball);
 		}
 
 		break;
@@ -347,13 +347,13 @@ void Guldan::GenerateFelBalls(FellBallsTypes type, float angleToIncrease) const
 	case FellBallsTypes::SPIRAL_TYPE:
 
 		info.radiusToIncrease = 0.0f;
-		info.fel_movement = ProjectileInfo::fel_ball_movement::spiral;
+		info.fel_movement = FelBallInfo::fel_ball_movement::spiral;
 
 		for (int angle = 0; angle <= 360; angle += 60)
 		{
 			info.startRadius = RADIUS_BALLS + spiralRadiusIncreasement;
 			info.pos = SetSpawnPointByAngle(defaultPoint, BOSS_CENTER, angle + spiralAngle, 40);
-			App->projectiles->AddProjectile(info, Projectile_type::fel_ball);
+			App->projectiles->AddProjectile(&info, Projectile_type::fel_ball);
 		}
 
 		break;

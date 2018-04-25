@@ -11,7 +11,7 @@ Projectile::Projectile()
 {
 }
 
-Projectile::Projectile(const ProjectileInfo& info, Projectile_type type) : data(info), projType(type)
+Projectile::Projectile(const ProjectileInfo* info, Projectile_type type) : data((ProjectileInfo*)info), projType(type)
 {
 }
 
@@ -28,19 +28,19 @@ bool Projectile::Draw() const
 {
 	bool ret = true;
 
-	ret = App->printer->PrintSprite({ (int)data.pos.x,(int)data.pos.y }, (SDL_Texture*)App->projectiles->GetProjectileAtlas(), actualAnim->GetCurrentFrame(), data.layer);
+	ret = App->printer->PrintSprite({ (int)data->pos.x,(int)data->pos.y }, (SDL_Texture*)App->projectiles->GetProjectileAtlas(), actualAnim->GetCurrentFrame(), data->layer);
 
 	return ret;
 }
 
 int Projectile::DecreaseLifePerTime(float dt)
 {
-	data.life -= 1 * dt;
+	data->life -= 1 * dt;
 
-	if (data.life <= 0)
+	if (data->life <= 0)
 		App->projectiles->DestroyProjectile(this);
 
-	return data.life;
+	return data->life;
 }
 
 fPoint Projectile::RotateAround(fPoint pointToRotate, fPoint rotationPivot, double angle, double radius) const

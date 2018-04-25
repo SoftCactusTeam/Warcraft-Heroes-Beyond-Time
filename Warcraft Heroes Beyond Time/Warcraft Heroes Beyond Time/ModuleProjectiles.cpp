@@ -114,7 +114,7 @@ bool ModuleProjectiles::CleanUp()
 	return projectilesList.size() <= 0;
 }
 
-void ModuleProjectiles::AddProjectile(const ProjectileInfo& projectile, Projectile_type type)
+void ModuleProjectiles::AddProjectile(const ProjectileInfo* projectile, Projectile_type type)
 {
 	assert((int)type != (int)Projectile_type::no_type);
 
@@ -123,7 +123,7 @@ void ModuleProjectiles::AddProjectile(const ProjectileInfo& projectile, Projecti
 	switch (type)
 	{
 	case Projectile_type::fel_ball:
-		newProjectile = new FelBall((const FelBallInfo&)projectile, type);
+		newProjectile = new FelBall(new FelBallInfo(*(FelBallInfo*)projectile), type);
 		break;
 	}
 

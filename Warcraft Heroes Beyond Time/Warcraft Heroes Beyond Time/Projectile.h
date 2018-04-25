@@ -11,25 +11,11 @@ struct Collider;
 struct ProjectileInfo
 {
 	ProjectileInfo() {};
-	ProjectileInfo(const ProjectileInfo& info) : pos(info.pos), layer(info.layer), speed(info.speed), life(info.life), angle(info.angle), radiusToIncrease(info.radiusToIncrease), startRadius(info.startRadius), fel_movement(info.fel_movement) {};
-
-	enum fel_ball_movement
-	{
-		no_type,
-		odd_even_type,
-		complete_circle,
-		spiral,
-		hexagon,
-		incepcion
-	} fel_movement;
+	ProjectileInfo(const ProjectileInfo& info) : pos(info.pos), layer(info.layer), life(info.life) {};
 
 	int life = 0;
 	int layer = 0;
-	float speed = 0.0f;
 	fPoint pos = { 0.0f,0.0f };
-	double angle = 0.0f;
-	double radiusToIncrease = 0.0f;
-	float startRadius = 0.0f;
 };
 
 class Projectile
@@ -37,7 +23,7 @@ class Projectile
 public:
 
 	Projectile();
-	Projectile(const ProjectileInfo& info, Projectile_type type);
+	Projectile(const ProjectileInfo* info, Projectile_type type);
 	virtual ~Projectile();
 
 	virtual bool Update(float dt);
@@ -52,7 +38,7 @@ public:
 
 protected:
 
-	ProjectileInfo data;
+	ProjectileInfo* data;
 
 	Collider* projCollider = nullptr;
 	Projectile_type projType = Projectile_type::no_type;
