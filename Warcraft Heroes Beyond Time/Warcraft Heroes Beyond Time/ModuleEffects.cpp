@@ -57,16 +57,8 @@ bool ModuleEffects::PostUpdate()
 		std::list<EffectsElem*>::iterator it;
 		for (it = effectsToKill.begin(); it != effectsToKill.end(); ++it)
 		{
-			std::list<EffectsElem*>::iterator it2;
-			for (it2 = effectsList.begin(); it2 != effectsList.end(); ++it2)
-			{
-				if (*it2 == *it)
-				{
-					delete *it;
-					effectsList.erase(it2);
-					break;
-				}
-			}
+			effectsList.remove(*it);
+			delete *it;
 		}
 		effectsToKill.clear();
 	}
