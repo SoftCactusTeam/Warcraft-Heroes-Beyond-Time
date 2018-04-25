@@ -19,7 +19,7 @@ public:
 
 private:
 
-	
+	TimeBasedAnimation anim;
 	bool selected = false;
 	Item* item = nullptr;
 };
