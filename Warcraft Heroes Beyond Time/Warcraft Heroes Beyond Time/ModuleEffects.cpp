@@ -8,26 +8,25 @@
 
 ModuleEffects::ModuleEffects() : Module()
 {
-	name = "Effects";
+	name = "effects";
+
+	playerDustAnim.PushBack({ 0, 0, 24, 19 });
+	playerDustAnim.PushBack({ 24, 0, 24, 19 });
+	playerDustAnim.PushBack({ 0, 19, 24, 19 });
+	playerDustAnim.PushBack({ 24, 19, 24, 19 });
+	playerDustAnim.loop = false;
 }
 
 ModuleEffects::~ModuleEffects() {}
 
 bool ModuleEffects::Awake(pugi::xml_node& node)
 {
-	playerDustAnim.PushBack({ 0, 0, 24, 19 });
-	playerDustAnim.PushBack({ 24, 0, 24, 19 });
-	playerDustAnim.PushBack({ 0, 19, 24, 19 });
-	playerDustAnim.PushBack({ 24, 19, 24, 19 });
-	playerDustAnim.speedFactor = 5.0f;
-	playerDustAnim.loop = true;
-
 	return true;
 }
 
 bool ModuleEffects::Start()
 {
-	atlas = App->textures->Load("sprites/effects.png");
+	effects_atlas = App->textures->Load("sprites/effects.png");
 	return true;
 }
 
@@ -46,8 +45,6 @@ bool ModuleEffects::Update(float dt)
 		res = (*it)->UpdateEffects(dt);
 	}
 
-	playerDustAnim.speed = playerDustAnim.speedFactor * dt;
-
 	return res;
 }
 
@@ -60,8 +57,8 @@ bool ModuleEffects::PostUpdate()
 		std::list<EffectsElem*>::iterator it;
 		for (it = effectsToKill.begin(); it != effectsToKill.end(); ++it)
 		{
+			effectsList.remove(*it);
 			delete *it;
-			effectsList.erase(it);
 		}
 		effectsToKill.clear();
 	}
@@ -84,6 +81,7 @@ bool ModuleEffects::PostUpdate()
 bool ModuleEffects::CleanUp()
 {
 	BROFILER_CATEGORY("ClearEffects", Profiler::Color::BlanchedAlmond);
+
 	std::list<EffectsElem*>::reverse_iterator it;
 	for (it = effectsList.rbegin(); it != effectsList.rend(); ++it)
 	{
@@ -92,16 +90,20 @@ bool ModuleEffects::CleanUp()
 	effectsList.clear();
 	effectsToKill.clear();
 
-	App->textures->UnLoad(atlas);
+	App->textures->UnLoad(effects_atlas);
 
 	return effectsList.size() <= 0;
 }
 
 //----------------------------------------------------------------------------------------------------//
 
-EffectsElem * ModuleEffects::CreateEffect(fPoint pos, float life, Animation effectAnim)
+EffectsElem * ModuleEffects::CreateEffect(fPoint pos, float life, TimeBasedAnimation& effectAnim)
 {
-	EffectsElem* tmpEffect = new EffectsElem(pos, life, effectAnim);
+	TimeBasedAnimation anim = effectAnim;
+	anim.life = life;
+
+	EffectsElem* tmpEffect = new EffectsElem(pos, anim);
+	
 	effectsList.push_back(tmpEffect);
 
 	return tmpEffect;
@@ -120,5 +122,5 @@ bool ModuleEffects::DestroyEffect(EffectsElem * elem)
 
 SDL_Texture* ModuleEffects::GetAtlas() const
 {
-	return atlas;
+	return effects_atlas;
 }

@@ -19,6 +19,9 @@
 #include "ModuleItems.h"
 #include "FileSystem.h"
 #include "BossEntity.h"
+#include "ModuleEffects.h"
+
+
 #include "Brofiler\Brofiler.h"
 #include "Label.h"
 #include "InputBox.h"
@@ -79,6 +82,11 @@ bool Scene::Start()
 		}
 		case Stages::INGAME:
 		{
+<<<<<<< HEAD
+=======
+			App->effects->Activate();
+			App->items->Activate();
+>>>>>>> module-effects
 			App->colliders->Activate();
 			App->entities->Activate();
 			App->console->Activate();
@@ -119,7 +127,7 @@ bool Scene::Start()
 			enemy = App->map->GetRandomValidPoint();
 			App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
 
-			
+
 			iPoint chestPos = App->map->GetRandomValidPointProxy(30, 5);
 			lvlChest = App->entities->AddChest({ (float)chestPos.x * 46,(float)chestPos.y * 46 }, MID_CHEST);
 			App->items->Activate();
@@ -224,7 +232,7 @@ bool Scene::Update(float dt)
 					tmpAudio = 1;
 				App->audio->setMusicVolume(tmpAudio);
 				CreatePauseMenu();
-		
+
 			}
 			else
 			{
@@ -248,7 +256,7 @@ bool Scene::PostUpdate()
 		SDL_Rect back = { 0,0,640,360 };
 		//App->render->DrawQuad(back, 0, 205, 193, 255, true, false);
 		App->render->DrawQuad(back, 64, 66, 159, 255, true, false);
-		
+
 
 	}
 
@@ -257,7 +265,7 @@ bool Scene::PostUpdate()
 
 	if (actual_scene == Stages::BOSS_ROOM && gratitudeON)
 	{
-		
+
 		App->render->DrawQuad({ -App->render->camera.x,-App->render->camera.y,640,360 }, 0, 0, 0, 200 , true, true);
 	}
 
@@ -268,7 +276,7 @@ bool Scene::PostUpdate()
 		this->DeActivate();
 		this->Activate();
 	}
-	
+
 	return ret;
 }
 
@@ -280,11 +288,12 @@ bool Scene::CleanUp()
 	App->console->DeActivate();
 	App->path->ClearMap();
 	App->colliders->DeActivate();
+	App->effects->DeActivate();
 
 	if (actual_scene == Stages::MAIN_MENU)
 	{
 		App->items->DeActivate();
-	}	
+	}
 
 	player = nullptr;
 	lvlChest = nullptr;
@@ -354,7 +363,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 					App->audio->setMusicVolume(currentPercentAudio);
 					App->audio->HaltFX();
 				}
-				
+
 				actual_scene = Stages::MAIN_MENU;
 				paused = false;
 				restart = true;

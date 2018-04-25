@@ -18,6 +18,11 @@ public:
 	ModuleEffects();
 	virtual ~ModuleEffects();
 
+	void Init()
+	{
+		active = false;
+	}
+
 	bool Awake(pugi::xml_node&);
 	bool Start();
 	bool PreUpdate();
@@ -26,17 +31,20 @@ public:
 	bool CleanUp();
 
 public:
-	EffectsElem * CreateEffect(fPoint pos, float life, Animation effectAnim);
+	EffectsElem * CreateEffect(fPoint pos, float life, TimeBasedAnimation& effectAnim);
 	bool DestroyEffect(EffectsElem* elem);
 	SDL_Texture* ModuleEffects::GetAtlas() const;
 
 public:
+
 	std::list<EffectsElem*> effectsList;
 	std::list<EffectsElem*> effectsToKill;
-	Animation playerDustAnim;
+
+	//Here we have all animations charged
+	TimeBasedAnimation playerDustAnim;
 
 private:
-	SDL_Texture * atlas = nullptr;
+	SDL_Texture* effects_atlas = nullptr;
 };
 
 #endif // __MODULE_EFFECTS_H__

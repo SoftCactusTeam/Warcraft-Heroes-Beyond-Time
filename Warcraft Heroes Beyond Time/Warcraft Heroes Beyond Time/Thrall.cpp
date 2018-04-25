@@ -234,8 +234,7 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 
 	numStats = App->entities->thrallstats;
 
-	// Destroying the effect causes a crash, don't uncomment the line below
-	//dustEffect = App->effects->CreateEffect(pos, 5, App->effects->playerDustAnim);
+	dustEffect = App->effects->CreateEffect(pos, 5, App->effects->playerDustAnim);
 
 	state = states::PL_IDLE;
 	anim = &idleDown;
@@ -243,7 +242,6 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 
 bool Thrall::Update(float dt)
 {
-	//dustEffect->MoveEffect({ pos.x + 5, pos.y + 35 });
 
 	PlayerStates(dt);
 

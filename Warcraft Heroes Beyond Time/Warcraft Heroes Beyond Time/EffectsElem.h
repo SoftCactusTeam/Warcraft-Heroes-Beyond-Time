@@ -15,9 +15,8 @@ public:
 
 protected:
 	fPoint pos = { 0.0f, 0.0f };
-	float life = 0.0f;
 	float timer = 0.0f;
-	Animation effectAnim;
+	TimeBasedAnimation effectAnim;
 
 public:
 
@@ -25,7 +24,7 @@ public:
 	EffectsElem() {}
 	virtual ~EffectsElem() {};
 
-	EffectsElem(fPoint pos, float life, Animation effectAnim);
+	EffectsElem(fPoint pos, TimeBasedAnimation effectAnim);
 	bool DrawEffects();
 	bool UpdateEffects(float dt);
 	void MoveEffect(fPoint pos);
