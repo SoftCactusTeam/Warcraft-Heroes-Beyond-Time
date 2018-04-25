@@ -10,6 +10,8 @@
 #include "ModulePrinter.h"
 #include "ModuleAudio.h"
 #include "ModuleTextures.h"
+#include "ModuleItems.h"
+#include "FreezeBallItem.h"
 
 #include "ModuleRender.h"
 
@@ -83,6 +85,9 @@ bool Enemy_Archer::Update(float dt)
 		break;
 	case ARCHER_STATE::ARCHER_DIE:
 		doDie();
+		break;
+	case ARCHER_STATE::ARCHER_FREEZE:
+		doFreeze(dt);
 		break;
 	default:
 		initIdle();
@@ -192,8 +197,10 @@ void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 			}
 			case PlayerAttack::P_Attack_Type::FREEZE_ITEM:
 			{
-				//Freeze archer state here (stop during 2 seconds and change to a blue freezed colour)
-
+				if (state != ARCHER_STATE::ARCHER_FREEZE && App->entities->GetRandomNumber(10) < 2)
+				{
+					initFreeze();
+				}
 				break;
 			}
 			case PlayerAttack::P_Attack_Type::SHIT:
@@ -205,8 +212,11 @@ void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 			}
 		}
 	
-		damaged = true;
-		damagedCD = 0.5f;
+		if (attack->damage > 0)
+		{
+			damaged = true;
+			damagedCD = 0.5f;
+		}
 	}
 }
 
@@ -361,6 +371,12 @@ void Enemy_Archer::initDie()
 	pathVector.Clear();
 }
 
+void Enemy_Archer::initFreeze()
+{
+	state = ARCHER_STATE::ARCHER_FREEZE;
+	pathVector.Clear();
+}
+
 // ---------------------------------------------------------------------------------
 // ----------------  UPDATE(DO) STATE_MACHIN FUNCTIONS  ----------------------------
 // ---------------------------------------------------------------------------------
@@ -476,6 +492,17 @@ void Enemy_Archer::doDie()
 		App->entities->enemiescount--;
 	}
 		
+}
+
+void Enemy_Archer::doFreeze(float dt)
+{
+	//anim = &animFrozen[LookAtPlayer()];//Put animation here
+	frozen_counter += dt;
+	if (frozen_counter > 5.0f)
+	{
+		state = ARCHER_STATE::ARCHER_IDLE;
+		frozen_counter = 0.0f;
+	}
 }
 
 void Enemy_Archer::ShootArrow(fPoint desviation)
@@ -745,6 +772,17 @@ void Enemy_Archer::ChargeAnimations()
 	animDeath[FIXED_ANGLE::LEFT].PushBack({ 183,401,48,47 });
 	animDeath[FIXED_ANGLE::LEFT].speedFactor = 9.0f;
 	animDeath[FIXED_ANGLE::LEFT].loop = false;
+
+	//animFrozen
+	//All the same animation
+	/*animFrozen[FIXED_ANGLE::LEFT].PushBack({ 1,491,44,48 });
+	animFrozen[FIXED_ANGLE::RIGHT].PushBack({ 1,491,44,48 });
+	animFrozen[FIXED_ANGLE::DOWN].PushBack({ 1,491,44,48 });
+	animFrozen[FIXED_ANGLE::UP].PushBack({ 1,491,44,48 });
+	animFrozen[FIXED_ANGLE::DOWN_LEFT].PushBack({ 1,491,44,48 });
+	animFrozen[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 1,491,44,48 });
+	animFrozen[FIXED_ANGLE::UP_LEFT].PushBack({ 1,491,44,48 });
+	animFrozen[FIXED_ANGLE::UP_RIGHT].PushBack({ 1,491,44,48 });*/
 
 
 	animSmoke.PushBack({ 1,77,52,42 });

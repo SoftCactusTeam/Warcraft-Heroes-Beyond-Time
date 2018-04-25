@@ -15,6 +15,7 @@ enum ARCHER_STATE {
 	ARCHER_FASTSHOOT_ATAC,
 	ARCHER_BACKJUMP,
 	ARCHER_SCAPE,
+	ARCHER_FREEZE,
 	ARCHER_DIE
 };
 
@@ -62,6 +63,7 @@ public:
 	void initBackJump();
 	void initScape();
 	void initDie();
+	void initFreeze();
 
 	void doIdle();
 	void doWalk();
@@ -71,6 +73,7 @@ public:
 	void doBackJump();
 	void doScape();
 	void doDie();
+	void doFreeze(float dt);
 
 	void ChargeAnimations();
 	void ShootArrow(fPoint desviation = fPoint(0, 0));
@@ -81,6 +84,7 @@ public:
 	Animation animWalk[NUMBER_OF_ORIENTATIONS];
 	Animation animAtac[NUMBER_OF_ORIENTATIONS];
 	Animation animDeath[NUMBER_OF_ORIENTATIONS];
+	Animation animFrozen[NUMBER_OF_ORIENTATIONS];
 
 	Animation animSmoke;
 
@@ -95,6 +99,8 @@ private:
 	fPoint posSmoke = { -1.f,-1.f };
 	// Scape variables
 	iPoint posToScape;
+	//Items variables
+	float frozen_counter = 0.0f;
 
 	float live = 0;
 
