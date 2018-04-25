@@ -6,8 +6,8 @@
 #include "ModuleColliders.h"
 #include "Item.h"
 
-#define RINT_ICON {34,84,27,31} //The rect from the texture of your gui icon
-#define RING_ITEM {102,19,31,29}
+#define RING_ICON {34,183,19,29} //The rect from the texture of your gui icon
+#define RING_ITEM {102,52,31,29}
 
 
 class Slow_Shit
@@ -17,7 +17,7 @@ public:
 	~Slow_Shit();
 	iPoint pos;
 private:
-	Collider * paper_collider;
+	Collider* slow_shit_collider;
 
 };
 
@@ -36,7 +36,7 @@ public:
 	float time = 0;
 	int cont = 0;
 
-	std::list<Slow_Shit*> low_shit_list;
+	std::list<Slow_Shit*> slow_shit_list;
 };
 
 #endif

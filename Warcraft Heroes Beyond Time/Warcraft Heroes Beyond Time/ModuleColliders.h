@@ -41,7 +41,8 @@ public:
 		NORMAL_ATTACK,
 		DMGBALL_ITEM,
 		SKILL,
-		SHIT
+		SHIT,
+		SLOW
 
 	} pattacktype = P_Attack_Type::NO_TYPE;
 
