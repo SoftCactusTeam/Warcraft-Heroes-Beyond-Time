@@ -151,7 +151,9 @@
     <ClCompile Include="DmgBallItem.cpp">
       <Filter>Items</Filter>
     </ClCompile>
-    <ClCompile Include="RingItem.cpp" />
+    <ClCompile Include="RingItem.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -322,7 +324,9 @@
     <ClInclude Include="DMGBallItem.h">
       <Filter>Items</Filter>
     </ClInclude>
-    <ClInclude Include="RingItem.h" />
+    <ClInclude Include="RingItem.h">
+      <Filter>Items</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />

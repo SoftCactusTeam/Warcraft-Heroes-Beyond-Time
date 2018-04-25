@@ -3,6 +3,7 @@
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
 #include "DMGBallItem.h"
+#include "RingItem.h"
 #include <time.h>
 
 bool ModuleItems::Awake(pugi::xml_node& itemsNode)
@@ -23,7 +24,7 @@ bool ModuleItems::Start()
 	equipedItems.push_back(DMGball_Item);
 	DMGball_Item->Start();
 
-	WCItem* test_item = new WCItem();
+	RingItem* test_item = new RingItem();
 	equipedItems.push_back(test_item);
 	test_item->Start();
 
