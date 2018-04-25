@@ -24,26 +24,31 @@ public:
 	{
 		uint skillMultiplier = 0;
 
-		uint maxhp = 0;
-		float hp = 0;
-		uint armor = 0;
-		uint speed = 0;
-		float damage = 0;
-		uint energy = 0;
-		uint energyPercentbyHit = 0;
-		uint critChance = 0;
+		uint maxhp = 0u;
+		float hp = 0.0f;
+		uint armor = 0u;
+		uint speed = 0u;
+		float damage = 0.0f;
+		uint energy = 0u;
+		uint energyPercentbyHit = 0u;
+		uint critChance = 0u;
 
 	} thrallstats;
 
 	struct EnemyStats
 	{
-		uint maxhp = 0;
-		float hp = 0;
-		uint speed = 0;
-		uint damage = 0;
-		uint range = 0;
-		uint dropping_chance = 0;
-		uint difficulty = 0;
+		uint maxhp = 0u;
+		float hp = 0.0f;
+		uint speed = 0u;
+		uint damage = 0u;
+		uint range = 0u;
+		uint dropping_chance = 0u;
+		uint difficulty = 0u;
+
+		uint def_hability_chance = 0u;
+		uint strong_attack_chance = 0u;
+		uint vision_area = 0u;
+		float CD_between_attacks = 0.0f;
 
 	} footmanstats, archerstats, wizardstats, darkknightstats, guldanstats;
 

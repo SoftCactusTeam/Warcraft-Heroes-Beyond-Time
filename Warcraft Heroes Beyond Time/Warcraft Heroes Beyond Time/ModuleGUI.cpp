@@ -76,6 +76,7 @@ bool ModuleGUI::PostUpdate()
 		for (it = elementsToKill.begin(); it != elementsToKill.end(); ++it)
 		{
 			GUIElemList.remove(*it);
+			delete *it;
 		}
 		elementsToKill.clear();
 	}
