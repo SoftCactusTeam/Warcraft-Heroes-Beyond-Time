@@ -24,18 +24,39 @@
 #define ARROW_SPEED				10
 #define JUMP_BACK_COOLDOWN		300
 #define DISTANCE_TO_JUMPBACK	50
-#define SCAPE_TIME				5000
-#define DISTANCE_TO_GO_SCAPE	60
+#define DISTANCE_TO_LITTLEMOVE	250
+#define LITTLEMOVEMENT_TIME		100
+#define LITTLEMOVEMENT_COOLDOWN	400
+#define TILES_TO_LITTLEMOVE		10
 #define ARCHER_LIVE				100
 #define TIME_DYING				500
 #define TEMPO_ARROW_ATWALL		500
 
-Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture) : EnemyEntity(coor, character, texture) {}
+Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture, ARCHER_TIER tier) : EnemyEntity(coor, character, texture)
+{
+	this->tier = tier;
+	
+}
 
 bool Enemy_Archer::Start()
 {
+	switch (tier)	// AQUI ES CARREGUEN LES VARIABLES SEGONS EL TIER
+	{
+	case ARCHER_TIER_1:
+		live = ARCHER_LIVE;
+
+		break;
+	case ARCHER_TIER_2:
+		live = ARCHER_LIVE;
+
+		break;
+	case ARCHER_TIER_3:
+		live = ARCHER_LIVE;
+
+		break;
+	}
+
 	ChargeAnimations();
-	live = ARCHER_LIVE;
 	state = ARCHER_STATE::ARCHER_IDLE;
 	anim = &animIdle[LookAtPlayer()];
 	return true;
@@ -43,8 +64,6 @@ bool Enemy_Archer::Start()
 
 bool Enemy_Archer::Update(float dt)
 {
-
-
 	// AIXO ES PER COMPROBAR SI ESTA PARADA O NO
 	if (stop == true)
 		if (SDL_GetTicks() > accountantPrincipal)
@@ -78,8 +97,8 @@ bool Enemy_Archer::Update(float dt)
 	case ARCHER_STATE::ARCHER_BACKJUMP:
 		doBackJump();
 		break;
-	case ARCHER_STATE::ARCHER_SCAPE:
-		doScape();
+	case ARCHER_STATE::ARCHER_LITTLEMOVE:
+		doLittleMove();
 		break;
 	case ARCHER_STATE::ARCHER_DIE:
 		doDie();
@@ -244,6 +263,7 @@ void Enemy_Archer::initAtac()
 	anim->Reset();
 	pathVector.Clear();
 	ShootArrow();
+	arrowsShooted++;
 }
 
 void Enemy_Archer::initTriAtac()
@@ -256,6 +276,7 @@ void Enemy_Archer::initTriAtac()
 	ShootArrow();
 	ShootArrow({ 20,-20 });
 	ShootArrow({ -20,20 });
+	arrowsShooted++;
 }
 
 void Enemy_Archer::initFastAtac()
@@ -267,6 +288,7 @@ void Enemy_Archer::initFastAtac()
 	pathVector.Clear();
 	arrowToShoot = FAST_ATAC_ARROWS;
 	timeToShootAnother = SDL_GetTicks() + FAST_ATAC_TIME_BETWEEN;
+	arrowsShooted++;
 }
 
 void Enemy_Archer::initBackJump()
@@ -305,35 +327,39 @@ void Enemy_Archer::initBackJump()
 	animSmoke.Reset();
 }
 
-void Enemy_Archer::initScape()
+void Enemy_Archer::initLittleMove()
 {
-	int randomX = App->entities->GetRandomNumber(DISTANCE_TO_GO_SCAPE);
-	if (randomX > DISTANCE_TO_GO_SCAPE / 2)
+	int randomX = 0;
+	int randomY = 0;
+	int tileToMove = -1;
+	for (int i = 0; i < 4; i++)
 	{
-		randomX -= DISTANCE_TO_GO_SCAPE / 2;
-		randomX *= -1;
-	}
-	int randomY = App->entities->GetRandomNumber(DISTANCE_TO_GO_SCAPE);
-	if (randomY > DISTANCE_TO_GO_SCAPE / 2)
-	{
-		randomY -= DISTANCE_TO_GO_SCAPE / 2;
-		randomY *= -1;
-	}
-	bool finded = true;
-	while (App->path->ExistWalkableAtPos(iPoint((int)pos.x / App->map->getTileSize() - randomX, (int)pos.y / App->map->getTileSize() - randomY)) == false)
-	{
-		randomX--;
-		randomY--;
-		if (randomX < DISTANCE_TO_GO_SCAPE / 4 || randomY < DISTANCE_TO_GO_SCAPE / 4) {
-			finded = false;
-			break;
+		int randomX = App->entities->GetRandomNumber(TILES_TO_LITTLEMOVE);
+		if (randomX > TILES_TO_LITTLEMOVE / 2)
+		{
+			randomX -= TILES_TO_LITTLEMOVE / 2;
+			randomX *= -1;
 		}
+		int randomY = App->entities->GetRandomNumber(TILES_TO_LITTLEMOVE);
+		if (randomY > TILES_TO_LITTLEMOVE / 2)
+		{
+			randomY -= TILES_TO_LITTLEMOVE / 2;
+			randomY *= -1;
+		}
+
+		int possibleTile = App->path->ExistWalkableAtPos(iPoint((int)pos.x / App->map->getTileSize() - randomX, (int)pos.y / App->map->getTileSize() - randomY));
+		if (possibleTile != -1)
+			if (App->scene->player->DistanceToObejective(App->path->posAtConcreteTile(possibleTile)) < App->scene->player->DistanceToObejective(App->path->posAtConcreteTile(tileToMove)))
+ 				tileToMove = possibleTile;
+			else if (tileToMove == -1)
+				tileToMove = possibleTile;
 	}
-	if (finded)
+
+	if (tileToMove != -1)
 	{
 		posToScape = { iPoint((int)pos.x / App->map->getTileSize() - randomX , (int)pos.y / App->map->getTileSize() - randomY) };
-		state = ARCHER_STATE::ARCHER_SCAPE;
-		accountantPrincipal = SDL_GetTicks() + SCAPE_TIME;
+		state = ARCHER_STATE::ARCHER_LITTLEMOVE;
+		accountantPrincipal = SDL_GetTicks() + LITTLEMOVEMENT_TIME;
 		anim = &animAtac[LookAtPlayer()];
 		anim->Reset();
 		pathVector.Clear();
@@ -343,6 +369,8 @@ void Enemy_Archer::initScape()
 		state = ARCHER_STATE::ARCHER_IDLE;
 		pathVector.Clear();
 	}
+	arrowsShooted = 0;
+	cooldownToReLittleMove = LITTLEMOVEMENT_COOLDOWN + SDL_GetTicks();
 }
 
 void Enemy_Archer::initDie()
@@ -366,45 +394,67 @@ void Enemy_Archer::doIdle()
 	}
 }
 
+// FUNCIO CENTRAL DE L'ARCHER !!!
 void Enemy_Archer::doWalk()
 {
-	anim = &animWalk[LookAtPlayer()];
-	if (DistanceToPlayer() > DISTANCE_TO_MOVE)
+	switch (tier)
 	{
-		initIdle();
-	}
-	else if (DistanceToPlayer() < DISTANCE_TO_JUMPBACK && App->entities->GetRandomNumber(10) < 7)	// Superar tirada 70%
-	{
-		initBackJump();
-	}
-	else if (DistanceToPlayer() < DISTANCE_TO_ATAC && App->entities->GetRandomNumber(10) < 7)	// Superar una tirada de 70%
-	{
-		initAtac();
-	}
-	else if (DistanceToPlayer() < DISTANCE_TO_ATAC && App->entities->GetRandomNumber(10) < 5)	// Superar una tirada de 50%
-	{
-		initTriAtac();
-	}
-	else if (DistanceToPlayer() < DISTANCE_TO_ATAC && App->entities->GetRandomNumber(10) < 5)	// Superar una tirada de 50%
-	{
-		initFastAtac();
-	}
-	//else if (DistanceToPlayer() < DISTANCE_TO_JUMPBACK /*is the same to scape*/ /*&& App->entities->GetRandomNumber(10) < 7*/)	// Superar tirada 70%
-	//{
-	//initScape();
-	//}
-	else // AQUI CAMINA, PERO AQUESTA FUNCIO ES TEMPORAL
-	{
-		if (pathVector.isEmpty())
+	case ARCHER_TIER_1:	// SIMPLE ARCHER
+		anim = &animWalk[LookAtPlayer()];
+		if (DistanceToPlayer() > DISTANCE_TO_MOVE)
 		{
-			if (pathVector.CalculatePathAstar(iPoint(((int)pos.x + (anim->GetCurrentRect().w / 2)), ((int)pos.y + (anim->GetCurrentRect().h / 2))), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y)))
-				pathVector.CalculateWay(iPoint(((int)pos.x + (anim->GetCurrentRect().w / 2)), ((int)pos.y + (anim->GetCurrentRect().h / 2))), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y));
+			initIdle();
+		}
+		else if (DistanceToPlayer() < DISTANCE_TO_LITTLEMOVE && cooldownToReLittleMove < SDL_GetTicks() && (App->entities->GetRandomNumber(10) + arrowsShooted) > 7)	// Superar tirada 30% amb suma de fletxes disparades
+		{
+			initLittleMove();
+		}
+		else if (DistanceToPlayer() < DISTANCE_TO_ATAC && App->entities->GetRandomNumber(10) < 7)	// Superar una tirada de 70%
+		{
+			initAtac();
 		}
 		else
 		{
-			iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x + (anim->GetCurrentRect().w / 2), (int)pos.y + (anim->GetCurrentRect().h / 2)));
-			this->pos += fPoint((float)move.x * MOVEMENT_SPEED, (float)move.y * MOVEMENT_SPEED);
+			Walk();
 		}
+		break;
+	case ARCHER_TIER_2:	// MID ARCHER
+
+		break;
+	case ARCHER_TIER_3:	// HIGH ARCHER
+		anim = &animWalk[LookAtPlayer()];
+		if (DistanceToPlayer() > DISTANCE_TO_MOVE)
+		{
+			initIdle();
+		}
+		else if (DistanceToPlayer() < DISTANCE_TO_LITTLEMOVE && cooldownToReLittleMove < SDL_GetTicks() && (App->entities->GetRandomNumber(10) + arrowsShooted) > 7)	// Superar tirada 30% amb suma de fletxes disparades
+		{
+			initLittleMove();
+		}
+		else if (DistanceToPlayer() < DISTANCE_TO_JUMPBACK && App->entities->GetRandomNumber(10) < 7)	// Superar tirada 70%
+		{
+			initBackJump();
+		}
+		else if (DistanceToPlayer() < DISTANCE_TO_ATAC && App->entities->GetRandomNumber(10) < 7)	// Superar una tirada de 70%
+		{
+			initAtac();
+		}
+		else if (DistanceToPlayer() < DISTANCE_TO_ATAC && App->entities->GetRandomNumber(10) < 5)	// Superar una tirada de 50%
+		{
+			initTriAtac();
+		}
+		else if (DistanceToPlayer() < DISTANCE_TO_ATAC && App->entities->GetRandomNumber(10) < 5)	// Superar una tirada de 50%
+		{
+			initFastAtac();
+		}
+		else
+		{
+			Walk();
+		}
+		break;
+	default:
+		tier = ARCHER_TIER_1;
+		break;
 	}
 }
 
@@ -444,10 +494,13 @@ void Enemy_Archer::doBackJump()
 		App->printer->PrintSprite(iPoint((int)posSmoke.x, (int)posSmoke.y), App->entities->spritesheetsEntities[ARCHER_SMOKE_SHEET], animSmoke.GetCurrentFrame(), 2);
 }
 
-void Enemy_Archer::doScape()
+void Enemy_Archer::doLittleMove()
 {
-	if (SDL_GetTicks() > accountantPrincipal)
+	if (SDL_GetTicks() > accountantPrincipal && pathVector.isEmpty())
+	{
 		initIdle();
+		return;
+	}
 
 	if (pathVector.isEmpty())
 	{
@@ -469,6 +522,20 @@ void Enemy_Archer::doDie()
 		App->entities->enemiescount--;
 	}
 		
+}
+
+void Enemy_Archer::Walk()
+{
+	if (pathVector.isEmpty())
+	{
+		if (pathVector.CalculatePathAstar(iPoint(((int)pos.x + (anim->GetCurrentRect().w / 2)), ((int)pos.y + (anim->GetCurrentRect().h / 2))), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y)))
+			pathVector.CalculateWay(iPoint(((int)pos.x + (anim->GetCurrentRect().w / 2)), ((int)pos.y + (anim->GetCurrentRect().h / 2))), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y));
+	}
+	else
+	{
+		iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x + (anim->GetCurrentRect().w / 2), (int)pos.y + (anim->GetCurrentRect().h / 2)));
+		this->pos += fPoint((float)move.x * MOVEMENT_SPEED, (float)move.y * MOVEMENT_SPEED);
+	}
 }
 
 void Enemy_Archer::ShootArrow(fPoint desviation)

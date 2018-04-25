@@ -7,6 +7,13 @@
 
 #define ARROW_DEAD_TIMER 2000
 
+enum ARCHER_TIER {
+	ARCHER_TIER_1,
+	ARCHER_TIER_2,
+	ARCHER_TIER_3,
+	ARCHER_TIER_NONE
+};
+
 enum ARCHER_STATE {
 	ARCHER_IDLE,
 	ARCHER_WALK,
@@ -14,7 +21,7 @@ enum ARCHER_STATE {
 	ARCHER_TRI_ATAC,
 	ARCHER_FASTSHOOT_ATAC,
 	ARCHER_BACKJUMP,
-	ARCHER_SCAPE,
+	ARCHER_LITTLEMOVE,
 	ARCHER_DIE
 };
 
@@ -44,7 +51,7 @@ public:
 class Enemy_Archer : public EnemyEntity
 {
 public:
-	Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture);
+	Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture, ARCHER_TIER tier);
 
 	bool Start();
 	bool Update(float dt);
@@ -60,7 +67,7 @@ public:
 	void initTriAtac();
 	void initFastAtac();
 	void initBackJump();
-	void initScape();
+	void initLittleMove();
 	void initDie();
 
 	void doIdle();
@@ -69,8 +76,10 @@ public:
 	void doTriAtac();
 	void doFastAtac();
 	void doBackJump();
-	void doScape();
+	void doLittleMove();
 	void doDie();
+
+	void Walk();
 
 	void ChargeAnimations();
 	void ShootArrow(fPoint desviation = fPoint(0, 0));
@@ -93,11 +102,13 @@ private:
 	// TP variables
 	int tempoSmoke = -1;
 	fPoint posSmoke = { -1.f,-1.f };
-	// Scape variables
+	// Littlemove variables
 	iPoint posToScape;
+	int arrowsShooted = 0;
+	int cooldownToReLittleMove = 0;
 
+	ARCHER_TIER tier = ARCHER_TIER_NONE;
 	float live = 0;
-
 	bool			damaged = false;
 	float			damagedCD = 0.0f;
 };
