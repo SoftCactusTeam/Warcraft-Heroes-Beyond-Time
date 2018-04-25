@@ -3,15 +3,16 @@
 #include "ModuleInput.h"
 #include "ModuleItems.h"
 #include "Scene.h"
+#include "Item.h"
 
-ItemContainer::ItemContainer(fPoint localPos, Module* listener, SDL_Rect atlasRect, GUIElem* parent) : GUIElem(localPos, listener, atlasRect, GUIElemType::ITEM_CONTAINER, parent)
+ItemContainer::ItemContainer(fPoint localPos, Module* listener, Item* item, GUIElem* parent) : GUIElem(localPos, listener, atlasRect, GUIElemType::ITEM_CONTAINER, parent), item(item)
 {}
 
 bool ItemContainer::Update(float dt)
 {
 	HandleInput(dt);
 
-	if (focused)
+	if (focused &&)
 	{
 		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_DOWN)
 		{
@@ -21,8 +22,7 @@ bool ItemContainer::Update(float dt)
 			{
 				App->items->equipItem(item);
 				App->gui->DestroyElem((GUIElem*)App->scene->ItemSelection);
-			}
-				
+			}	
 		}
 	}
 

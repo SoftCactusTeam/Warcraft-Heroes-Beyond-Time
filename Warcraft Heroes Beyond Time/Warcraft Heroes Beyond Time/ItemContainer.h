@@ -2,6 +2,7 @@
 #define __ITEMCONTAINER_H__
 
 #include "GUIElem.h"
+#include "Animation.h"
 
 class Item;
 
@@ -10,13 +11,15 @@ class ItemContainer : public GUIElem
 public:
 
 	ItemContainer() {}
-	ItemContainer(fPoint localPos, Module* listener, SDL_Rect atlasRect, GUIElem* parent = nullptr);
+	ItemContainer(fPoint localPos, Module* listener, Item* item, GUIElem* parent = nullptr);
 	~ItemContainer() {}
 
 	bool Update(float dt);
 	bool Draw();
 
 private:
+
+	anima
 	bool selected = false;
 	Item* item = nullptr;
 };
