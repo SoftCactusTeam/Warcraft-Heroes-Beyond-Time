@@ -123,10 +123,15 @@ bool Scene::Start()
 			enemy = App->map->GetRandomValidPoint();
 			App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
 
+			App->items->Activate();
 
 			iPoint chestPos = App->map->GetRandomValidPointProxy(30, 5);
-			lvlChest = App->entities->AddChest({ (float)chestPos.x * 46,(float)chestPos.y * 46 }, MID_CHEST);
-			App->items->Activate();
+
+			if (!App->items->isPoolEmpty())
+				lvlChest = App->entities->AddChest({ (float)chestPos.x * 46,(float)chestPos.y * 46 }, MID_CHEST);
+			else
+				lvlChest = nullptr;
+
 			break;
 		}
 		case Stages::BOSS_ROOM:
@@ -567,5 +572,9 @@ void Scene::GoNextLevel()
 	lvlIndex++;
 	restart = true;
 	if (lvlIndex >= 5)
+	{
 		GoBossRoom();
+		lvlIndex = 0;
+	}
+		
 }

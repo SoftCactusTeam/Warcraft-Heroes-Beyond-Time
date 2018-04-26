@@ -41,13 +41,18 @@ public:
 	//Returns false in failure or if the item was already equiped
 	bool equipItem(Item* item);
 
-
-	void loadItemsPull();
-
 	SDL_Texture* getItemsTexture() const
 	{
 		return itemsTexture;
 	}
+
+	bool isPoolEmpty()
+	{
+		return availableItems.empty();
+	}
+
+private:
+	void loadItemsPull();
 
 public:
 
