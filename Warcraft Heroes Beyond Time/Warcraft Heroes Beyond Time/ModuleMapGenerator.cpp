@@ -28,9 +28,28 @@
 #define WALL3 { 98,0,48,48 }
 #define WALL4 { 147,0,48,48 }
 
-MapGenerator::MapGenerator() {}
+MapGenerator::MapGenerator()
+{
+	name = "map";
+}
 
 MapGenerator::~MapGenerator() {}
+
+bool MapGenerator::Awake(pugi::xml_node& mapNode)
+{
+	mapSeed = mapNode.child("seed").attribute("value").as_int();
+
+	for (register pugi::xml_node aux_node = mapNode.child("lvl"); aux_node; aux_node = aux_node.next_sibling("lvl"))
+	{
+		pugi::xml_node gridNode = aux_node.child("sizeGrid");
+		gridSizePerLevel.push_front({ gridNode.attribute("x").as_int(),gridNode.attribute("y").as_int() });
+		iterationsPerLevel.push_front(aux_node.child("sizeDungeon").attribute("iterations").as_int());
+
+		numberOfLevels++;
+	}
+
+	return true;
+}
 
 bool MapGenerator::CleanUp()
 {
@@ -404,4 +423,33 @@ std::vector<MapNode*> MapGenerator::GetMapNodesAndInfo(uint& sizeX, uint& sizeY,
 	sizeY = this->sizeY;
 	tileSize = this->tileSize;
 	return nodes;
+}
+
+bool MapGenerator::UseYourPowerToGenerateMeThisNewMap(int lvlIndex)
+{
+	if (lvlIndex >= numberOfLevels)
+	{
+		if (!App->map->GenerateBossMap())
+			return -1;
+		return 0;
+	}
+
+	MapData mapInfo;
+
+	std::list<iPoint>::iterator it = gridSizePerLevel.begin();
+	std::advance(it, lvlIndex);
+	mapInfo.sizeX = (*it).x;
+	mapInfo.sizeY = (*it).y;
+
+	std::list<int>::iterator it_2 = iterationsPerLevel.begin();
+	std::advance(it_2, lvlIndex);
+	mapInfo.iterations = (*it_2);
+
+	mapInfo.tilesetPath = "maps/Tiles.png";
+	mapInfo.seed = mapSeed;
+
+	if (!App->map->GenerateMap(mapInfo))
+		return -1;
+
+	return lvlIndex + 1;
 }

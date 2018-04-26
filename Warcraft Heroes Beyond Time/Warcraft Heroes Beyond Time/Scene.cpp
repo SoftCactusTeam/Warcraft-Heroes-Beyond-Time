@@ -19,16 +19,17 @@
 #include "ModuleItems.h"
 #include "FileSystem.h"
 #include "BossEntity.h"
-
+#include "ModuleEffects.h"
+#include "ModuleProjectiles.h"
 
 #include "Brofiler\Brofiler.h"
-
 #include "Label.h"
 #include "InputBox.h"
 #include "Button.h"
 #include "GUIWindow.h"
 #include "Slider.h"
 #include "GUIImage.h"
+#include "ItemContainer.h"
 
 
 
@@ -66,11 +67,14 @@ bool Scene::Start()
 
 	currentPercentAudio = App->audio->MusicVolumePercent;
 
+	App->map->UseYourPowerToGenerateMeThisNewMap(lvlIndex);
+
 	switch (actual_scene)
 	{
 		case Stages::MAIN_MENU:
 		{
 			CreateMainMenuScreen();
+			lvlIndex = 0;
 
 			break;
 		}
@@ -82,77 +86,73 @@ bool Scene::Start()
 		}
 		case Stages::INGAME:
 		{
-			App->items->Activate();
-			App->colliders->Activate();
-			App->entities->Activate();
-			App->console->Activate();
-			App->map->Activate();
-			App->printer->Activate();
-
-			texture = App->textures->Load("sprites/all_items.png");
-			venom = App->textures->Load("sprites/venom.png");
-
 			BROFILER_CATEGORY("InGame Generation", Profiler::Color::Chocolate);
-			MapData mapInfo;
-			mapInfo.sizeX = 50;
-			mapInfo.sizeY = 50;
-			mapInfo.iterations = 300;
-			mapInfo.tilesetPath = "maps/Tiles.png";
-			mapInfo.seed = seeeeeeeeeeeeed;
-			seeeeeeeeeeeeed = NULL;
-			lvlIndex++;
 
-			App->map->GenerateMap(mapInfo);
-			player = App->entities->AddPlayer({ 25 * 46,25 * 46}, THRALL);
-			player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
+			int result = App->map->UseYourPowerToGenerateMeThisNewMap(lvlIndex);
 
-			App->path->LoadPathMap();
+			if (result == -1)
+				return false;
+			else if (result == 0)
+			{
+				App->items->Activate();
+				App->colliders->Activate();
+				App->entities->Activate();
+				App->console->Activate();
+				App->map->Activate();
+				App->printer->Activate();
+				App->projectiles->Activate();
 
-			iPoint enemy = App->map->GetRandomValidPoint();
-			App->entities->AddEnemy({ (float)enemy.x * 46, (float)enemy.y * 46 }, ARCHER);
+				App->audio->PlayMusic(App->audio->GuldanBSO.data(), 1);
 
-			enemy = App->map->GetRandomValidPoint();
-			App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
+				portal = (PortalEntity*)App->entities->AddStaticEntity({ 15 * 46,17 * 46, }, PORTAL);
+				portal->locked = true;
+				player = App->entities->AddPlayer({ 15 * 46 + 10,16 * 46, }, THRALL);
+				player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
+				guldan = (Guldan*)App->entities->AddBoss({ 14 * 48 + 10,7 * 48 }, BossType::GULDAN);
+				App->gui->CreateBossHPBar((BossEntity*)guldan, { 640 / 2 - 312 / 2,320 });
+			}
+			else
+			{
+				App->effects->Activate();
+				App->colliders->Activate();
+				App->entities->Activate();
+				App->console->Activate();
+				App->map->Activate();
+				App->printer->Activate();
 
-			enemy = App->map->GetRandomValidPoint();
-			App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
+				player = App->entities->AddPlayer({ 25 * 46,25 * 46 }, THRALL);
+				player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
 
-			enemy = App->map->GetRandomValidPoint();
-			App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
+				App->path->LoadPathMap();
 
-			enemy = App->map->GetRandomValidPoint();
-			App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
+				iPoint enemy = App->map->GetRandomValidPoint();
+				App->entities->AddEnemy({ (float)enemy.x * 46, (float)enemy.y * 46 }, ARCHER);
 
-			enemy = App->map->GetRandomValidPoint();
-			App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
+				enemy = App->map->GetRandomValidPoint();
+				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
 
-			
-			iPoint chestPos = App->map->GetRandomValidPointProxy(30, 5);
-			lvlChest = App->entities->AddChest({ (float)chestPos.x * 46,(float)chestPos.y * 46 }, MID_CHEST);
-			lvlChest->UnLockChest();
-			break;
-		}
-		case Stages::BOSS_ROOM:
-		{
+				enemy = App->map->GetRandomValidPoint();
+				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
 
-			texture = App->textures->Load("sprites/all_items.png");
-			venom = App->textures->Load("sprites/venom.png");
+				enemy = App->map->GetRandomValidPoint();
+				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
 
-			App->items->Activate();
-			App->colliders->Activate();
-			App->entities->Activate();
-			App->console->Activate();
-			App->map->Activate();
-			App->printer->Activate();
+				enemy = App->map->GetRandomValidPoint();
+				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
 
-			App->audio->PlayMusic(App->audio->GuldanBSO.data(), 1);
-			App->map->GenerateBossMap();
-			portal = (PortalEntity*)App->entities->AddStaticEntity({ 15 * 46,17 * 46, }, PORTAL);
-			portal->locked = true;
-			player = App->entities->AddPlayer({ 15 * 46,16 * 46, }, THRALL);
-			player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
-			BossEntity* guldan = App->entities->AddBoss({ 14 * 48,5 * 48 }, BossType::GULDAN);
-			App->gui->CreateBossHPBar(guldan, { 640 / 2 - 312 / 2,320 });
+				enemy = App->map->GetRandomValidPoint();
+				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
+
+				App->items->Activate();
+
+				iPoint chestPos = App->map->GetRandomValidPointProxy(30, 5);
+
+				if (!App->items->isPoolEmpty())
+					lvlChest = App->entities->AddChest({ (float)chestPos.x * 46,(float)chestPos.y * 46 }, MID_CHEST);
+				else
+					lvlChest = nullptr;
+			}
+
 			break;
 		}
 	}
@@ -200,9 +200,14 @@ bool Scene::Update(float dt)
 		restart = true;
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && actual_scene == Stages::INGAME && !App->console->isWritting())
+	{
+		GoNextLevel();
+	}
+
 	if (App->input->GetKey(SDL_SCANCODE_F1) && actual_scene == Stages::INGAME)
 	{
-		actual_scene = Stages::BOSS_ROOM;
+		lvlIndex = 100;
 		restart = true;
 	}
 
@@ -215,32 +220,11 @@ bool Scene::Update(float dt)
 	{
 		App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
 		actual_scene = Stages::INGAME;
-		seeeeeeeeeeeeed = 1523809027;
 		restart = true;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN || App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KEY_DOWN)
-	{
-		if (lvlChest != nullptr && lvlChest->PlayerNear(player->pos))
-		{
-			if (lvlChest->opened == false)
-				lvlChest->OpenChest();
-			else if (App->items->itemsActive.empty())
-			{
-				paper = &WCItem("wcpaper", ItemType::passive_item_type, 1);
-				player->AddItem(*paper);
-				App->audio->PlayFx(App->audio->PaperItemFX);
-			}	
-		}
-	}
-
-	if ( lvlChest != nullptr && lvlChest->opened && App->items->itemsActive.empty())
-	{
-		App->printer->PrintSprite({ (int)lvlChest->pos.x,(int)lvlChest->pos.y }, texture, SDL_Rect({ 34,84,27,31 }), 1);
-	}
-
 	//PAUSE GAME
-	if (actual_scene == Stages::INGAME || actual_scene == Stages::BOSS_ROOM)
+	if (actual_scene == Stages::INGAME)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN ||
 			App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_START) == KEY_DOWN)
@@ -255,9 +239,9 @@ bool Scene::Update(float dt)
 					tmpAudio = 1;
 				App->audio->setMusicVolume(tmpAudio);
 				CreatePauseMenu();
-		
+
 			}
-			else
+			else if(!ItemSelection)
 			{
 				App->audio->ResumeFX();
 				paused = false;
@@ -279,18 +263,10 @@ bool Scene::PostUpdate()
 		SDL_Rect back = { 0,0,640,360 };
 		//App->render->DrawQuad(back, 0, 205, 193, 255, true, false);
 		App->render->DrawQuad(back, 64, 66, 159, 255, true, false);
-		
-
 	}
 
 	if (App->path->printWalkables == true)
 		App->path->PrintWalkableTiles();
-
-	if (actual_scene == Stages::BOSS_ROOM && gratitudeON)
-	{
-		
-		App->render->DrawQuad({ -App->render->camera.x,-App->render->camera.y,640,360 }, 0, 0, 0, 200 , true, true);
-	}
 
 	BROFILER_CATEGORY("SceneRestart", Profiler::Color::Chocolate);
 	if (restart)
@@ -299,7 +275,7 @@ bool Scene::PostUpdate()
 		this->DeActivate();
 		this->Activate();
 	}
-	
+
 	return ret;
 }
 
@@ -311,21 +287,16 @@ bool Scene::CleanUp()
 	App->console->DeActivate();
 	App->path->ClearMap();
 	App->colliders->DeActivate();
+	App->effects->DeActivate();
+	App->projectiles->DeActivate();
 
 	if (actual_scene == Stages::MAIN_MENU)
 	{
 		App->items->DeActivate();
-		paper = nullptr;
-		paper_fake = nullptr;
-	}	
-
-	App->textures->UnLoad(venom);
-	App->textures->UnLoad(texture);
+	}
 
 	player = nullptr;
 	lvlChest = nullptr;
-	texture = nullptr;
-	venom = nullptr;
 	portal = nullptr;
 	PauseMenu = nullptr;
 
@@ -386,13 +357,13 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 				restart = true;
 				break;
 			case BType::GO_MMENU:
-				if (actual_scene == Stages::INGAME || actual_scene == Stages::BOSS_ROOM)
+				if (actual_scene == Stages::INGAME)
 				{
 					App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
 					App->audio->setMusicVolume(currentPercentAudio);
 					App->audio->HaltFX();
 				}
-				
+
 				actual_scene = Stages::MAIN_MENU;
 				paused = false;
 				restart = true;
@@ -558,26 +529,41 @@ void Scene::GeneratePortal()
 
 void Scene::GoMainMenu()
 {
-	if (actual_scene == Stages::INGAME || actual_scene == Stages::BOSS_ROOM)
+	if (actual_scene == Stages::INGAME)
 		App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0.5);
 	actual_scene = Stages::MAIN_MENU;
 	restart = true;
-}
-
-void Scene::GoBossRoom()
-{
-	actual_scene = Stages::BOSS_ROOM;
-	restart = true;
+	lvlIndex = 0;
 }
 
 void Scene::CreateGratitudeScreen()
 {
-	App->gui->DestroyElem(player_HP_Bar);
+	GUIWindow* window = (GUIWindow*)App->gui->CreateGUIWindow({ 0,0 }, { 0,0,0,0 }, nullptr, nullptr);
+	window->blackBackground = true;
 	gratitudeON = true;
 	LabelInfo gratitude;
 	gratitude.color = White;
 	gratitude.fontName = "LifeCraft90";
 	gratitude.multilabelWidth = 1000;
 	gratitude.text = "                    Victory! \n Thanks for playing the demo. Your support means a lot ^^ \n More at: @SoftCactus_Team";
-	App->gui->CreateLabel({ 160, 130 }, gratitude, nullptr, nullptr);
+	App->gui->CreateLabel({ 160, 130 }, gratitude, window, nullptr);
+}
+
+void Scene::CreateItemSelectionScreen(Item* item1, Item* item2, Item* item3)
+{
+	paused = true;
+	ItemSelection = (GUIWindow*)App->gui->CreateGUIWindow({ 0,0 }, { 0,0,0,0 }, nullptr, nullptr);
+	ItemSelection->blackBackground = true;
+	ItemSelection->vertical = false;
+
+	App->gui->CreateItemContainer({ 30+85,50+121 }, item1, ItemSelection);
+	App->gui->CreateItemContainer({ 230+85,50+121 }, item2, ItemSelection);
+	App->gui->CreateItemContainer({ 430+85,50+121 }, item3, ItemSelection);
+	//App->gui->CreateItemContainer({})
+}
+
+void Scene::GoNextLevel()
+{
+	lvlIndex++;
+	restart = true;
 }

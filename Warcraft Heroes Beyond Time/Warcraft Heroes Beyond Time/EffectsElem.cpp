@@ -2,24 +2,22 @@
 #include "Application.h"
 #include "ModulePrinter.h"
 
-EffectsElem::EffectsElem(fPoint pos, float life, Animation effectAnim) : pos(pos), life(life), effectAnim(effectAnim)
+EffectsElem::EffectsElem(fPoint pos, TimeBasedAnimation effectAnim) : pos(pos), effectAnim(effectAnim)
 {
 }
 
 bool EffectsElem::DrawEffects()
 {
 	bool ret = true;
-	ret = App->printer->PrintSprite({ (int)pos.x, (int)pos.y }, App->effects->GetAtlas(), effectAnim.GetCurrentFrame(), -1);
+	ret = App->printer->PrintSprite({ (int)pos.x, (int)pos.y }, App->effects->GetAtlas(), effectAnim.GetCurrentFrame(App->dt), -1);
 
 	return ret;
 }
 
 bool EffectsElem::UpdateEffects(float dt)
 {
-	if (timer >= life)
+	if(effectAnim.Finished())
 		App->effects->DestroyEffect(this);
-	else
-		timer += dt;
 
 	return true;
 }

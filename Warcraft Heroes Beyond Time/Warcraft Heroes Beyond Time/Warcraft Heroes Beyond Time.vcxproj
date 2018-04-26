@@ -132,6 +132,7 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="ChestEntity.cpp" />
     <ClCompile Include="ConsumableEntity.cpp" />
+    <ClCompile Include="DmgBallItem.cpp" />
     <ClCompile Include="DynamicEntity.cpp" />
     <ClCompile Include="EffectsElem.cpp" />
     <ClCompile Include="EnemyEntity.cpp" />
@@ -143,10 +144,11 @@
     <ClCompile Include="FelBall.cpp" />
     <ClCompile Include="Fonts.cpp" />
     <ClCompile Include="FileSystem.cpp" />
+    <ClCompile Include="Geyser.cpp" />
     <ClCompile Include="GUIImage.cpp" />
     <ClCompile Include="Guldan.cpp" />
     <ClCompile Include="InputBox.cpp" />
-    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemContainer.cpp" />
     <ClCompile Include="ModuleEffects.cpp" />
     <ClCompile Include="ModuleItems.cpp" />
     <ClCompile Include="ModulePrinter.cpp" />
@@ -186,6 +188,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="ChestEntity.h" />
     <ClInclude Include="ConsumableEntity.h" />
+    <ClInclude Include="DMGBallItem.h" />
     <ClInclude Include="DynamicEntity.h" />
     <ClInclude Include="EffectsElem.h" />
     <ClInclude Include="EnemyEntity.h" />
@@ -195,6 +198,7 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="FelBall.h" />
+    <ClInclude Include="Geyser.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Fonts.h" />
     <ClInclude Include="FileSystem.h" />
@@ -203,6 +207,7 @@
     <ClInclude Include="Guldan.h" />
     <ClInclude Include="InputBox.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemContainer.h" />
     <ClInclude Include="ModuleEffects.h" />
     <ClInclude Include="ModuleItems.h" />
     <ClInclude Include="ModulePrinter.h" />

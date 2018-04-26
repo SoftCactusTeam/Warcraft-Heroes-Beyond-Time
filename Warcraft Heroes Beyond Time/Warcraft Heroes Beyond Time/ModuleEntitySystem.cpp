@@ -106,15 +106,16 @@ class Player_ConsoleOrder : public ConsoleOrder
 		{
 			//Set energy to parameterNumeric (not more than 100%).
 		}
-		else if (parameter == "godmodeon")
+		else if (parameter == "godmode" && parameterNumeric == 1)
 		{
 			//Activate Godmode
 		}
 
-		else if (parameter == "godmodeoff")
+		else if (parameter == "godmode" && parameterNumeric == 1)
 		{
 			//DeActivate Godmode
 		}
+
 		else if (parameter == "freezone")
 		{
 			App->scene->player->DrawFreeZone((bool)parameterNumeric);
@@ -154,6 +155,11 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	footmanstats.dropping_chance = footman.attribute("dropping_chance").as_uint(0);
 	footmanstats.range = footman.attribute("range").as_uint(0);
 	footmanstats.difficulty = footman.attribute("difficulty").as_uint(0);
+	footmanstats.def_hability_chance = footman.attribute("def_hability_chance").as_uint();
+	footmanstats.strong_attack_chance = footman.attribute("strong_attack_chance").as_uint();
+	footmanstats.vision_area = footman.attribute("vision_area").as_uint();
+	footmanstats.CD_between_attacks = footman.attribute("CD_between_attacks").as_float();
+
 
 	pugi::xml_node archer = entitiesNode.child("enemies").child("archer");
 	archerstats.maxhp = archer.attribute("hp").as_uint(0);
@@ -163,6 +169,11 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	archerstats.dropping_chance = archer.attribute("dropping_chance").as_uint(0);
 	archerstats.range = archer.attribute("range").as_uint(0);
 	archerstats.difficulty = archer.attribute("difficulty").as_uint(0);
+	archerstats.def_hability_chance = archer.attribute("def_hability_chance").as_uint();
+	archerstats.strong_attack_chance = archer.attribute("strong_attack_chance").as_uint();
+	archerstats.vision_area = archer.attribute("vision_area").as_uint();
+	archerstats.CD_between_attacks = archer.attribute("CD_between_attacks").as_float();
+
 
 	pugi::xml_node wizard = entitiesNode.child("enemies").child("wizard");
 	wizardstats.maxhp = wizard.attribute("hp").as_uint(0);
@@ -172,6 +183,11 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	wizardstats.dropping_chance = wizard.attribute("dropping_chance").as_uint(0);
 	wizardstats.range = wizard.attribute("range").as_uint(0);
 	wizardstats.difficulty = wizard.attribute("difficulty").as_uint(0);
+	wizardstats.def_hability_chance = wizard.attribute("def_hability_chance").as_uint();
+	wizardstats.strong_attack_chance = wizard.attribute("strong_attack_chance").as_uint();
+	wizardstats.vision_area = wizard.attribute("vision_area").as_uint();
+	wizardstats.CD_between_attacks = wizard.attribute("CD_between_attacks").as_float();
+
 
 	pugi::xml_node darkknight = entitiesNode.child("enemies").child("dark_knight");
 	darkknightstats.maxhp = darkknight.attribute("hp").as_uint(0);
@@ -181,6 +197,11 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	darkknightstats.dropping_chance = darkknight.attribute("dropping_chance").as_uint(0);
 	darkknightstats.range = darkknight.attribute("range").as_uint(0);
 	darkknightstats.difficulty = darkknight.attribute("difficulty").as_uint(0);
+	darkknightstats.def_hability_chance = darkknight.attribute("def_hability_chance").as_uint();
+	darkknightstats.strong_attack_chance = darkknight.attribute("strong_attack_chance").as_uint();
+	darkknightstats.vision_area = darkknight.attribute("vision_area").as_uint();
+	darkknightstats.CD_between_attacks = darkknight.attribute("CD_between_attacks").as_float();
+	
 
 	pugi::xml_node guldan = entitiesNode.child("enemies").child("guldan");
 	guldanstats.maxhp = guldan.attribute("hp").as_uint(0);
@@ -190,6 +211,11 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	guldanstats.dropping_chance = guldan.attribute("dropping_chance").as_uint(0);
 	guldanstats.range = guldan.attribute("range").as_uint(0);
 	guldanstats.difficulty = guldan.attribute("difficulty").as_uint(0);
+	guldanstats.def_hability_chance = guldan.attribute("def_hability_chance").as_uint();
+	guldanstats.strong_attack_chance = guldan.attribute("strong_attack_chance").as_uint();
+	guldanstats.vision_area = guldan.attribute("vision_area").as_uint();
+	guldanstats.CD_between_attacks = guldan.attribute("CD_between_attacks").as_float();
+	
 
 	//Loading CD'S---------------------------------------------------------------------------
 	dashCD = entitiesNode.child("players").child("cds").attribute("dash").as_float(1);
@@ -265,6 +291,7 @@ bool EntitySystem::PostUpdate()
 		if ((*it)->destroy)
 		{
 			App->colliders->deleteColliderbyOwner(*it);
+			delete(*it);
 			it = entities.erase(it);
 		}
 		else
@@ -397,11 +424,6 @@ PlayerEntity* EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
 	}
 
 	toSpawn.push_back(newEntity);
-	SDL_Rect col_rect = newEntity->anim->GetCurrentRect();
-	col_rect.x = 0;
-	col_rect.y = 0;
-
-	newEntity->setCol(App->colliders->AddCollider(col_rect, Collider::ColliderType::ENTITY, newEntity));
 	return newEntity;
 }
 

@@ -1,4 +1,4 @@
-#include <iostream> 
+#include <iostream>
 #include <fstream>
 #include <sstream>
 
@@ -57,20 +57,23 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 	AddModule(entities);
 	AddModule(projectiles);
+
 	AddModule(effects);
-	AddModule(items);
+
+
 	AddModule(audio);
 	AddModule(fonts);
 	AddModule(fs);
 	AddModule(path);
 	AddModule(printer);
-	
+
 	AddModule(scene);
 	AddModule(colliders);
+	AddModule(items);
 	AddModule(gui);
 
 	AddModule(console);
-	
+
 
 	// render last to swap buffer
 	AddModule(render);
@@ -160,7 +163,7 @@ bool Application::Update()
 	return ret;
 }
 
-bool Application::PrepareUpdate() 
+bool Application::PrepareUpdate()
 {
 	frame_count++;
 	last_sec_frame_count++;
@@ -171,7 +174,7 @@ bool Application::PrepareUpdate()
 	return true;
 }
 
-bool Application::FinishUpdate() 
+bool Application::FinishUpdate()
 {
 	bool ret = true;
 
@@ -199,7 +202,7 @@ bool Application::FinishUpdate()
 	sprintf_s(title, 256, "Warcraft: Heroes Beyond Time" /*Av.FPS: %.2f Last Frame Ms: %u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %lu */,
 		avg_fps, last_frame_ms, frames_on_last_update, dt, seconds_since_startup, frame_count);
 	App->window->SetTitle(title);
-	
+
 	BROFILER_CATEGORY("MS Waiting", Profiler::Color::Chocolate);
 	if (capped_ms > 0 && last_frame_ms < capped_ms)
 	{
@@ -220,7 +223,7 @@ bool Application::PreUpdate()
 	{
 		pModule = (*item);
 
-		if (pModule->isActive() == false) 
+		if (pModule->isActive() == false)
 		{
 			continue;
 		}
@@ -244,7 +247,7 @@ bool Application::DoUpdate()
 		pModule = (*item);
 
 		if (pModule->isActive() == false
-			|| (((pModule != gui && pModule != scene && pModule != console) && scene->paused))) 
+			|| (((pModule != gui && pModule != scene && pModule != console) && scene->paused)))
 		{
 			continue;
 		}
@@ -267,7 +270,7 @@ bool Application::PostUpdate()
 	{
 		pModule = (*item);
 
-		if (pModule->isActive() == false) 
+		if (pModule->isActive() == false)
 		{
 			continue;
 		}
@@ -318,7 +321,7 @@ const char* Application::GetOrganization() const
 bool Application::LoadConfig(pugi::xml_document& doc)
 {
 	bool result = false;
-	
+
 	char* buffer;
 	uint size = App->fs->Load("config.xml", &buffer);
 	result = doc.load_buffer(buffer, size);
@@ -361,7 +364,7 @@ bool Application::SaveNow() const
 
 	std::ostringstream os;
 	savedgame.save(os, "\r\n\r\n");
-	
+
 	return fs->Save("savedgame.xml", os.str().data(), os.str().size()) == 1;
 }
 
@@ -386,7 +389,7 @@ bool Application::LoadNow()
 	{
 		(*it)->Load(game.child((*it)->name.data()));
 	}
-	
+
 	RELEASE(buffer);
 
 	return true;

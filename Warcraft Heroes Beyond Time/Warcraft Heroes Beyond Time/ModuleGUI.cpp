@@ -14,6 +14,7 @@
 #include "Stat.h"
 #include "PlayerHPBar.h"
 #include "BossHPBar.h"
+#include "ItemContainer.h"
 
 #include "Brofiler\Brofiler.h"
 
@@ -76,6 +77,7 @@ bool ModuleGUI::PostUpdate()
 		for (it = elementsToKill.begin(); it != elementsToKill.end(); ++it)
 		{
 			GUIElemList.remove(*it);
+			delete *it;
 		}
 		elementsToKill.clear();
 	}
@@ -215,6 +217,13 @@ GUIElem* ModuleGUI::CreateBossHPBar(BossEntity* boss, fPoint localPos)
 	BossHPBar* bhpbar = new BossHPBar(boss, localPos, nullptr);
 	elementsToSpawn.push_back(bhpbar);
 	return bhpbar;
+}
+
+GUIElem* ModuleGUI::CreateItemContainer(fPoint localPos, Item* item, GUIElem* parent)
+{
+	ItemContainer* container = new ItemContainer(localPos, nullptr, item, parent);
+	elementsToSpawn.push_back(container);
+	return container;
 }
 
 SDL_Texture* ModuleGUI::getAtlas() const

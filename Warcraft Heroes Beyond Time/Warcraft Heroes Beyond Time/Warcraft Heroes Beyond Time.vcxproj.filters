@@ -121,9 +121,6 @@
     <ClCompile Include="WCItem.cpp">
       <Filter>Items</Filter>
     </ClCompile>
-    <ClCompile Include="Item.cpp">
-      <Filter>Items</Filter>
-    </ClCompile>
     <ClCompile Include="BossHPBar.cpp">
       <Filter>GUI\Warcraft specific</Filter>
     </ClCompile>
@@ -142,13 +139,24 @@
     <ClCompile Include="Projectile.cpp">
       <Filter>Projectiles</Filter>
     </ClCompile>
-    <ClCompile Include="FelBall.cpp">
-      <Filter>Projectiles</Filter>
+    <ClCompile Include="ItemContainer.cpp">
+      <Filter>GUI\Warcraft specific</Filter>
     </ClCompile>
     <ClCompile Include="ModuleEffects.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="EffectsElem.cpp" />
+    <ClCompile Include="EffectsElem.cpp">
+      <Filter>Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="DmgBallItem.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
+    <ClCompile Include="FelBall.cpp">
+      <Filter>Projectiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Geyser.cpp">
+      <Filter>Projectiles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -307,13 +315,24 @@
     <ClInclude Include="Projectile.h">
       <Filter>Projectiles</Filter>
     </ClInclude>
-    <ClInclude Include="FelBall.h">
-      <Filter>Projectiles</Filter>
+    <ClInclude Include="ItemContainer.h">
+      <Filter>GUI\Warcraft specific</Filter>
     </ClInclude>
     <ClInclude Include="ModuleEffects.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="EffectsElem.h" />
+    <ClInclude Include="EffectsElem.h">
+      <Filter>Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="DMGBallItem.h">
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="FelBall.h">
+      <Filter>Projectiles</Filter>
+    </ClInclude>
+    <ClInclude Include="Geyser.h">
+      <Filter>Projectiles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />
@@ -354,6 +373,9 @@
     </Filter>
     <Filter Include="Projectiles">
       <UniqueIdentifier>{201659da-66fe-4367-9bc4-ee50a8e8c250}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Effects">
+      <UniqueIdentifier>{d227cee4-83b2-4ccb-b161-8d1a87e41306}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

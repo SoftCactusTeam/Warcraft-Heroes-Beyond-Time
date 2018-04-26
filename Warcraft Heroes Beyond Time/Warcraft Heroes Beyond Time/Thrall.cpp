@@ -234,16 +234,15 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 
 	numStats = App->entities->thrallstats;
 
-	// Destroying the effect causes a crash, don't uncomment the line below
-	//dustEffect = App->effects->CreateEffect(pos, 5, App->effects->playerDustAnim);
+	wallCol = App->colliders->AddCollider({ 7, 0, 15, 23 }, Collider::ColliderType::ENTITY, this);
+	damageCol = App->colliders->AddCollider({ 7, 0, 15, 23 }, Collider::ColliderType::ENTITY, this);
 
-	state = states::PL_IDLE;
-	anim = &idleDown;
+	state = states::PL_IDLE;			   
+	anim = &idleDown;					   
 }
 
 bool Thrall::Update(float dt)
 {
-	//dustEffect->MoveEffect({ pos.x + 5, pos.y + 35 });
 
 	PlayerStates(dt);
 
@@ -262,34 +261,6 @@ bool Thrall::Update(float dt)
 
 	else if (skillOn)
 		UpdateSkillCollider();
-
-	if (App->scene->paper != nullptr && !App->items->itemsActive.empty())
-	{
-		time += 1 * dt;
-		if (time >= 0.1)
-		{
-			time = 0;
-			if (cont < 18)
-			{
-				wcpaper.push_front({ (int)App->scene->player->pos.x,(int)App->scene->player->pos.y });
-				paper_collider.push_front(App->colliders->AddPlayerAttackCollider(SDL_Rect({ (int)App->scene->player->pos.x,(int)App->scene->player->pos.y,32,32 }), App->scene->player, 5*App->dt, PlayerAttack::P_Attack_Type::SHIT));
-				cont += 1;
-			}
-			if (cont == 18)
-			{
-				cont -= 1;
-				wcpaper.pop_back();
-				App->colliders->deleteCollider(paper_collider.back());
-				paper_collider.pop_back();
-			}
-		}
-		std::list<iPoint>::iterator it = wcpaper.begin();
-		
-		for (; it != wcpaper.end(); ++it)
-		{
-			App->printer->PrintSprite({ it->x, it->y }, App->scene->venom, SDL_Rect({ 0,0,32,32 }), -1);
-		}
-	}
 
 	return true;
 }
@@ -329,18 +300,24 @@ void Thrall::OnCollision(Collider* yours, Collider* collideWith)
 	{
 		case Collider::ColliderType::ENEMY_ATTACK:
 		{
-			EnemyAttack* attack = (EnemyAttack*)collideWith;
-			if (state!=states::PL_DASH)
-				SetDamage(attack->damage, true);
+			if (yours == damageCol)
+			{
+				EnemyAttack* attack = (EnemyAttack*)collideWith;
+				if (state != states::PL_DASH)
+					SetDamage(attack->damage, true);
+			}
 			break;
 		}
 		case Collider::ColliderType::WALL:
 		{
-			PushOut(collideWith);
-			if (state == states::PL_DASH)
+			if (yours == wallCol)
 			{
-				ResetDash();
-				App->audio->HaltFX(App->audio->Thrall_Dash_FX);
+				PushOut(collideWith);
+				if (state == states::PL_DASH)
+				{
+					ResetDash();
+					App->audio->HaltFX(App->audio->Thrall_Dash_FX);
+				}
 			}
 			break;
 		}
@@ -348,21 +325,23 @@ void Thrall::OnCollision(Collider* yours, Collider* collideWith)
 		{
 			if (App->scene->portal->locked == false)
 			{
-				App->scene->GoBossRoom();
+				App->scene->GoNextLevel();
 			}
 			break;
 		}
 		case Collider::ColliderType::ENTITY:
 		{
-			if (yours->colType == Collider::ColliderType::PLAYER_ATTACK)
-			{
-				PlayerAttack* attack = (PlayerAttack*)yours;
-				if (attack->pattacktype == PlayerAttack::P_Attack_Type::NORMAL_ATTACK)
+			Entity* entityOwner = (Entity*)collideWith;
+			if(entityOwner->entityType == Entity::EntityType::DYNAMIC_ENTITY)
+				if (yours->colType == Collider::ColliderType::PLAYER_ATTACK && yours == this->attackCollider)
 				{
-					IncreaseEnergy(numStats.energyPercentbyHit);
-					App->audio->PlayFx(App->audio->Thrall_Hit_FX);
-				}
-			}	
+					PlayerAttack* attack = (PlayerAttack*)yours;
+					if (attack->pattacktype == PlayerAttack::P_Attack_Type::NORMAL_ATTACK)
+					{
+						IncreaseEnergy(numStats.energyPercentbyHit);
+						App->audio->PlayFx(App->audio->Thrall_Hit_FX);
+					}
+				}	
 			break;
 		}
 	}
@@ -374,11 +353,14 @@ void Thrall::OnCollisionContinue(Collider* yours, Collider* collideWith)
 	{
 		case Collider::ColliderType::WALL:
 		{
-			PushOut(collideWith);
-			if (state == states::PL_DASH)
+			if (yours == wallCol)
 			{
-				ResetDash();
-				App->audio->HaltFX(App->audio->Thrall_Dash_FX);
+				PushOut(collideWith);
+				if (state == states::PL_DASH)
+				{
+					ResetDash();
+					App->audio->HaltFX(App->audio->Thrall_Dash_FX);
+				}
 			}
 			break;
 		}
@@ -390,59 +372,99 @@ void Thrall::UpdateCollider()
 {
 	if (anim == &idleUp)
 	{
-		pcol->rectArea.x = 7;
-		pcol->rectArea.y = 0;
-		pcol->rectArea.w = 15;
-		pcol->rectArea.h = 23;
+		wallCol->rectArea.x = 7;
+		wallCol->rectArea.y = 0;
+		wallCol->rectArea.w = 15;
+		wallCol->rectArea.h = 23;
+
+		damageCol->rectArea.x = 7;
+		damageCol->rectArea.y = 0;
+		damageCol->rectArea.w = 15;
+		damageCol->rectArea.h = 23;
 	}
 	else if (anim == &idleDown)
 	{
-		pcol->rectArea.x = 9;
-		pcol->rectArea.y = 0;
-		pcol->rectArea.w = 15;
-		pcol->rectArea.h = 20;
+		wallCol->rectArea.x = 9;
+		wallCol->rectArea.y = 0;
+		wallCol->rectArea.w = 15;
+		wallCol->rectArea.h = 20;
+
+		damageCol->rectArea.x = 9;
+		damageCol->rectArea.y = 0;
+		damageCol->rectArea.w = 15;
+		damageCol->rectArea.h = 20;
 	}
 	else if (anim == &idleRight)
 	{
-		pcol->rectArea.x = 4;
-		pcol->rectArea.y = 2;
-		pcol->rectArea.w = 13;
-		pcol->rectArea.h = 23;
+		wallCol->rectArea.x = 4;
+		wallCol->rectArea.y = 2;
+		wallCol->rectArea.w = 13;
+		wallCol->rectArea.h = 23;
+
+		damageCol->rectArea.x = 4;
+		damageCol->rectArea.y = 2;
+		damageCol->rectArea.w = 13;
+		damageCol->rectArea.h = 23;
 	}
 	else if (anim == &idleLeft)
 	{
-		pcol->rectArea.x = 4;
-		pcol->rectArea.y = 2;
-		pcol->rectArea.w = 15;
-		pcol->rectArea.h = 23;
+		wallCol->rectArea.x = 4;
+		wallCol->rectArea.y = 2;
+		wallCol->rectArea.w = 15;
+		wallCol->rectArea.h = 23;
+
+		damageCol->rectArea.x = 4;
+		damageCol->rectArea.y = 2;
+		damageCol->rectArea.w = 15;
+		damageCol->rectArea.h = 23;
 	}
 	else if (anim == &idleUpLeft || anim == &idleUpRight || anim == &idleDownLeft || anim == &idleDownRight)
 	{
-		pcol->rectArea.x = 4;
-		pcol->rectArea.y = 2;
-		pcol->rectArea.w = 15;
-		pcol->rectArea.h = 23;
+		wallCol->rectArea.x = 4;
+		wallCol->rectArea.y = 2;
+		wallCol->rectArea.w = 15;
+		wallCol->rectArea.h = 23;
+
+		damageCol->rectArea.x = 4;
+		damageCol->rectArea.y = 2;
+		damageCol->rectArea.w = 15;
+		damageCol->rectArea.h = 23;
 	}
 	else if (anim == &upLeft)
 	{
-		pcol->rectArea.x = 2;
-		pcol->rectArea.y = 2;
-		pcol->rectArea.w = 15;
-		pcol->rectArea.h = 23;
+		wallCol->rectArea.x = 2;
+		wallCol->rectArea.y = 2;
+		wallCol->rectArea.w = 15;
+		wallCol->rectArea.h = 23;
+
+		damageCol->rectArea.x = 2;
+		damageCol->rectArea.y = 2;
+		damageCol->rectArea.w = 15;
+		damageCol->rectArea.h = 23;
 	}
 	else if (anim == &upRight)
 	{
-		pcol->rectArea.x = 5;
-		pcol->rectArea.y = 0;
-		pcol->rectArea.w = 17;
-		pcol->rectArea.h = 23;
+		wallCol->rectArea.x = 5;
+		wallCol->rectArea.y = 0;
+		wallCol->rectArea.w = 17;
+		wallCol->rectArea.h = 23;
+
+		damageCol->rectArea.x = 5;
+		damageCol->rectArea.y = 0;
+		damageCol->rectArea.w = 17;
+		damageCol->rectArea.h = 23;
 	}
 	else if (anim == &up || anim == &down)
 	{
-		pcol->rectArea.x = 5;
-		pcol->rectArea.y = 0;
-		pcol->rectArea.w = 17;
-		pcol->rectArea.h = 23;
+		wallCol->rectArea.x = 5;
+		wallCol->rectArea.y = 0;
+		wallCol->rectArea.w = 17;
+		wallCol->rectArea.h = 23;
+
+		damageCol->rectArea.x = 5;
+		damageCol->rectArea.y = 0;
+		damageCol->rectArea.w = 17;
+		damageCol->rectArea.h = 23;
 	}
 
 }

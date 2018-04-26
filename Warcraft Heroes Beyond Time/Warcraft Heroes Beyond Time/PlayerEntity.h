@@ -43,7 +43,8 @@ protected:
 	float afterWinConfigCounter = 0.0f; //Wont be used for now
 	float afterWinCounter = 0.0f;
 
-	Collider* pcol = nullptr;
+	Collider* wallCol = nullptr;
+	Collider* damageCol = nullptr;
 
 	enum class states
 	{
@@ -87,9 +88,6 @@ public:
 	void CheckMapLimits();
 
 	virtual bool Finish();
-
-	void AddItem(Item item);
-	void IterateItems(ItemFunctions nameFunction);
 	
 	//Stats functions
 	void SetDamage(int damage, bool setStateDamage);

@@ -11,13 +11,11 @@ struct Collider;
 struct ProjectileInfo
 {
 	ProjectileInfo() {};
-	ProjectileInfo(const ProjectileInfo& info) : pos(info.pos), layer(info.layer), speed(info.speed), life(info.life) {};
-	ProjectileInfo(const iPoint pos, const int layer, int speed, int life) : pos(pos), layer(layer), speed(speed), life(life) {};
+	ProjectileInfo(const ProjectileInfo& info) : pos(info.pos), layer(info.layer), life(info.life) {};
 
 	int life = 0;
 	int layer = 0;
-	int speed = 0;
-	iPoint pos = { 0,0 };
+	fPoint pos = { 0.0f,0.0f };
 };
 
 class Projectile
@@ -25,26 +23,26 @@ class Projectile
 public:
 
 	Projectile();
-	Projectile(const ProjectileInfo& info, Projectile_type type);
-	~Projectile();
+	Projectile(const ProjectileInfo* info, Projectile_type type);
+	virtual ~Projectile();
 
-	bool Update(float dt);
-	bool Draw();
+	virtual bool Update(float dt);
+	virtual bool Draw() const;
 
-	int DecreaseLifePerTime(float dt);
+	virtual int DecreaseLifePerTime(float dt);
+	virtual fPoint RotateAround(fPoint pointToRotate, fPoint rotationPivot, double angle, double radius) const;
 
-	void OnCollision(Collider* yours, Collider* collideWith);
-	void OnCollisionContinue(Collider* yours, Collider* collideWith);
-	void OnCollisionLeave(Collider* yours, Collider* collideWith);
+	virtual void OnCollision(Collider* yours, Collider* collideWith);
+	virtual void OnCollisionContinue(Collider* yours, Collider* collideWith);
+	virtual void OnCollisionLeave(Collider* yours, Collider* collideWith);
 
 protected:
 
-	Collider* projCollider = nullptr;
-	Projectile_type type = Projectile_type::no_type;
-	Animation* actualAnim = nullptr;
+	ProjectileInfo* data;
 
-private:
-	ProjectileInfo data;
+	Collider* projCollider = nullptr;
+	Projectile_type projType = Projectile_type::no_type;
+	Animation* actualAnim = nullptr;
 };
 
 #endif

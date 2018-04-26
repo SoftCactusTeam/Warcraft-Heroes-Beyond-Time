@@ -10,9 +10,8 @@ class GUIWindow;
 class PlayerEntity;
 class ChestEntity;
 class PortalEntity;
+class Guldan;
 class Item;
-class WCItem;
-struct SDL_rect;
 
 class Scene : public Module
 {
@@ -37,9 +36,16 @@ public:
 	void CreateSettingsScreen();
 	void CreatePauseMenu();
 	void CreateGratitudeScreen();
+	void CreateItemSelectionScreen(Item*, Item*, Item*);
 	bool gratitudeON = false;
 	void GoMainMenu();
 	void GoBossRoom();
+	void Restart()
+	{
+		restart = true;
+	}
+
+	void GoNextLevel();
 
 public:
 	enum class Stages
@@ -48,37 +54,29 @@ public:
 		MAIN_MENU,
 		SETTINGS,
 		INGAME,
-		BOSS_ROOM
 
 	} actual_scene = Stages::MAIN_MENU;
 
 	PlayerEntity* player = nullptr;
 	ChestEntity* lvlChest = nullptr;
+	Guldan* guldan = nullptr;
 	bool paused = false;
 
 	GUIElem* player_HP_Bar = nullptr;
-
-//item
-	WCItem* paper = nullptr;
-	WCItem* paper_fake = nullptr;
-	SDL_Texture* venom = nullptr;
-	SDL_Texture* texture = nullptr;
-
 	PortalEntity* portal = nullptr;
 
+	GUIWindow* ItemSelection = nullptr;
 
 
 private:
 
 	GUIWindow* PauseMenu = nullptr;
+
 	uint currentPercentAudio = 0u;
 	
 
 	bool restart = false;
 	int lvlIndex = 0;
-
-	int seeeeeeeeeeeeed = NULL;
 };
-
 
 #endif

@@ -3,22 +3,73 @@
 
 #include "Module.h"
 #include <list>
-#include "p2Point.h"
-#include "Item.h"
+#include <vector>
 
+class Item;
+struct SDL_Texture;
 
 class ModuleItems : public Module
 {
 public:
-	std::list<iPoint> wcpaper;
-	std::list<Item> itemsActive;
 
-	bool CleanUp()
+	enum class ItemEvent
 	{
-		itemsActive.clear();
-		wcpaper.clear();
-		return true;
+		NO_EVENT,
+		UPDATE,
+		PLAYER_DIED
+	};
+
+	ModuleItems()
+	{
+		name = "items";
 	}
+	virtual ~ModuleItems() {}
+
+	void Init()
+	{
+		active = false;
+	}
+
+	bool Awake(pugi::xml_node&);
+	bool Start();
+	bool Update(float dt);
+	bool PostUpdate();
+	bool CleanUp();
+
+	bool getThreeRandomItems(Item** items);
+
+	//Returns false in failure or if the item was already equiped
+	bool equipItem(Item* item);
+
+	SDL_Texture* getItemsTexture() const
+	{
+		return itemsTexture;
+	}
+
+	bool isPoolEmpty()
+	{
+		return availableItems.empty();
+	}
+
+private:
+	void loadItemsPull();
+
+public:
+
+	static float dmgBallDamage;
+	static float dmgShitDamage;
+	static float fearBallSeconds;
+	static float frozenBallSeconds;
+	static float slowShitSeconds;
+	static float slowShitPercent;
+
+private:
+	
+	std::vector<Item*> availableItems;
+	std::list<Item*> equipedItems;
+	SDL_Texture* itemsTexture = nullptr;
+
+	
 };
 
 

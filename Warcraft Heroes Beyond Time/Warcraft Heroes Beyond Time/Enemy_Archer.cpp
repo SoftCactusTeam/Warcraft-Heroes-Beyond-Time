@@ -10,6 +10,7 @@
 #include "ModulePrinter.h"
 #include "ModuleAudio.h"
 #include "ModuleTextures.h"
+#include "ModuleItems.h"
 
 #include "ModuleRender.h"
 
@@ -43,8 +44,6 @@ bool Enemy_Archer::Start()
 
 bool Enemy_Archer::Update(float dt)
 {
-
-
 	// AIXO ES PER COMPROBAR SI ESTA PARADA O NO
 	if (stop == true)
 		if (SDL_GetTicks() > accountantPrincipal)
@@ -176,6 +175,7 @@ void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 		{
 			case PlayerAttack::P_Attack_Type::NORMAL_ATTACK:
 			case PlayerAttack::P_Attack_Type::SKILL:
+			case PlayerAttack::P_Attack_Type::DMGBALL_ITEM:
 			{
 				App->audio->PlayFx(App->audio->ArcherDeath);
 				live -= attack->damage;
