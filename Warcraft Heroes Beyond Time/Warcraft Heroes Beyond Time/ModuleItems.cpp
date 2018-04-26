@@ -6,19 +6,21 @@
 #include <time.h>
 
 float ModuleItems::dmgBallDamage = 0.0f;
-float ModuleItems::seconds_fear_ball = 0.0f;
-float ModuleItems::seconds_frozen_ball = 0.0f;
-float ModuleItems::slow_percent_shit = 0.0f;
-float ModuleItems::time_slowed_shit = 0.0f;
+float ModuleItems::fearBallSeconds = 0.0f;
+float ModuleItems::frozenBallSeconds = 0.0f;
+float ModuleItems::slowShitPercent = 0.0f;
+float ModuleItems::slowShitSeconds = 0.0f;
+float ModuleItems::dmgShitDamage = 0.0f;
 
 bool ModuleItems::Awake(pugi::xml_node& itemsNode)
 {
 	//Read stats from config.xml
 	dmgBallDamage = itemsNode.child("dmgBall").attribute("damage").as_float();
-	seconds_fear_ball = itemsNode.child("fearBall").attribute("seconds_fear").as_float();
-	seconds_frozen_ball = itemsNode.child("frozenBall").attribute("seconds_frozen").as_float();
-	time_slowed_shit = itemsNode.child("slowShit").attribute("time_slowed").as_float();
-	slow_percent_shit = itemsNode.child("slowShit").attribute("slow_percent").as_float();
+	fearBallSeconds = itemsNode.child("fearBall").attribute("seconds_fear").as_float();
+	frozenBallSeconds = itemsNode.child("frozenBall").attribute("seconds_frozen").as_float();
+	slowShitSeconds = itemsNode.child("slowShit").attribute("time_slowed").as_float();
+	slowShitPercent = itemsNode.child("slowShit").attribute("slow_percent").as_float();
+	dmgShitDamage = itemsNode.child("dmgShit").attribute("damage_by_dt").as_float();
 
 	return true;
 }

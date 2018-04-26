@@ -52,10 +52,11 @@ public:
 public:
 
 	static float dmgBallDamage;
-	static float seconds_fear_ball;
-	static float seconds_frozen_ball;
-	static float time_slowed_shit;
-	static float slow_percent_shit;
+	static float dmgShitDamage;
+	static float fearBallSeconds;
+	static float frozenBallSeconds;
+	static float slowShitSeconds;
+	static float slowShitPercent;
 
 private:
 	
