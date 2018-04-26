@@ -19,7 +19,11 @@
 #include "ModuleItems.h"
 #include "FileSystem.h"
 #include "BossEntity.h"
+<<<<<<< HEAD
 #include "ModuleEffects.h"
+=======
+#include "ModuleProjectiles.h"
+>>>>>>> rework-guldan
 
 
 #include "Brofiler\Brofiler.h"
@@ -96,8 +100,14 @@ bool Scene::Start()
 			mapInfo.sizeY = 50;
 			mapInfo.iterations = 300;
 			mapInfo.tilesetPath = "maps/Tiles.png";
+<<<<<<< HEAD
 			mapInfo.seed = seed;
 			seed = NULL;
+=======
+			mapInfo.seed = currentSeed;
+			currentSeed = NULL;
+			lvlIndex++;
+>>>>>>> rework-guldan
 
 			App->map->GenerateMap(mapInfo);
 			player = App->entities->AddPlayer({ 25 * 46,25 * 46}, THRALL);
@@ -142,15 +152,16 @@ bool Scene::Start()
 			App->console->Activate();
 			App->map->Activate();
 			App->printer->Activate();
+			App->projectiles->Activate();
 
 			App->audio->PlayMusic(App->audio->GuldanBSO.data(), 1);
 			App->map->GenerateBossMap();
 			portal = (PortalEntity*)App->entities->AddStaticEntity({ 15 * 46,17 * 46, }, PORTAL);
 			portal->locked = true;
-			player = App->entities->AddPlayer({ 15 * 46,16 * 46, }, THRALL);
+			player = App->entities->AddPlayer({ 15 * 46 + 10,16 * 46, }, THRALL);
 			player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
-			BossEntity* guldan = App->entities->AddBoss({ 14 * 48,5 * 48 }, BossType::GULDAN);
-			App->gui->CreateBossHPBar(guldan, { 640 / 2 - 312 / 2,320 });
+			guldan = (Guldan*)App->entities->AddBoss({ 14 * 48 + 10,7 * 48 }, BossType::GULDAN);
+			App->gui->CreateBossHPBar((BossEntity*)guldan, { 640 / 2 - 312 / 2,320 });
 			break;
 		}
 	}
@@ -213,7 +224,11 @@ bool Scene::Update(float dt)
 	{
 		App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
 		actual_scene = Stages::INGAME;
+<<<<<<< HEAD
 		seed = 1523809027;
+=======
+		currentSeed = 1523809027;
+>>>>>>> rework-guldan
 		restart = true;
 	}
 
@@ -257,8 +272,11 @@ bool Scene::PostUpdate()
 		SDL_Rect back = { 0,0,640,360 };
 		//App->render->DrawQuad(back, 0, 205, 193, 255, true, false);
 		App->render->DrawQuad(back, 64, 66, 159, 255, true, false);
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> rework-guldan
 	}
 
 	if (App->path->printWalkables == true)
@@ -266,7 +284,10 @@ bool Scene::PostUpdate()
 
 	if (actual_scene == Stages::BOSS_ROOM && gratitudeON)
 	{
+<<<<<<< HEAD
 
+=======
+>>>>>>> rework-guldan
 		App->render->DrawQuad({ -App->render->camera.x,-App->render->camera.y,640,360 }, 0, 0, 0, 200 , true, true);
 	}
 
@@ -289,7 +310,11 @@ bool Scene::CleanUp()
 	App->console->DeActivate();
 	App->path->ClearMap();
 	App->colliders->DeActivate();
+<<<<<<< HEAD
 	App->effects->DeActivate();
+=======
+	App->projectiles->DeActivate();
+>>>>>>> rework-guldan
 
 	if (actual_scene == Stages::MAIN_MENU)
 	{

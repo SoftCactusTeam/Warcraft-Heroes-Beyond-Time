@@ -10,6 +10,7 @@ class GUIWindow;
 class PlayerEntity;
 class ChestEntity;
 class PortalEntity;
+class Guldan;
 class Item;
 
 class Scene : public Module
@@ -59,11 +60,15 @@ public:
 
 	PlayerEntity* player = nullptr;
 	ChestEntity* lvlChest = nullptr;
+	Guldan* guldan = nullptr;
 	bool paused = false;
 
 	GUIElem* player_HP_Bar = nullptr;
 	PortalEntity* portal = nullptr;
+<<<<<<< HEAD
 	GUIWindow* ItemSelection = nullptr;
+=======
+>>>>>>> rework-guldan
 
 private:
 
@@ -75,7 +80,11 @@ private:
 	bool restart = false;
 	int lvlIndex = 0;
 
+<<<<<<< HEAD
 	int seed = NULL;
+=======
+	int currentSeed = NULL;
+>>>>>>> rework-guldan
 };
 
 
