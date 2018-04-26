@@ -151,6 +151,9 @@
     <ClCompile Include="DmgBallItem.cpp">
       <Filter>Items</Filter>
     </ClCompile>
+    <ClCompile Include="FelBall.cpp">
+      <Filter>Projectiles</Filter>
+    </ClCompile>
     <ClCompile Include="Geyser.cpp">
       <Filter>Projectiles</Filter>
     </ClCompile>
@@ -323,6 +326,9 @@
     </ClInclude>
     <ClInclude Include="DMGBallItem.h">
       <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="FelBall.h">
+      <Filter>Projectiles</Filter>
     </ClInclude>
     <ClInclude Include="Geyser.h">
       <Filter>Projectiles</Filter>

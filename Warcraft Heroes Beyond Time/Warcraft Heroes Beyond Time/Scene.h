@@ -65,10 +65,9 @@ public:
 
 	GUIElem* player_HP_Bar = nullptr;
 	PortalEntity* portal = nullptr;
-<<<<<<< HEAD
+
 	GUIWindow* ItemSelection = nullptr;
-=======
->>>>>>> rework-guldan
+
 
 private:
 
@@ -79,12 +78,7 @@ private:
 
 	bool restart = false;
 	int lvlIndex = 0;
-
-<<<<<<< HEAD
-	int seed = NULL;
-=======
 	int currentSeed = NULL;
->>>>>>> rework-guldan
 };
 
 

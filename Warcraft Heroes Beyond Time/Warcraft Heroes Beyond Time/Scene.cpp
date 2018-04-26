@@ -19,12 +19,8 @@
 #include "ModuleItems.h"
 #include "FileSystem.h"
 #include "BossEntity.h"
-<<<<<<< HEAD
 #include "ModuleEffects.h"
-=======
 #include "ModuleProjectiles.h"
->>>>>>> rework-guldan
-
 
 #include "Brofiler\Brofiler.h"
 #include "Label.h"
@@ -100,14 +96,8 @@ bool Scene::Start()
 			mapInfo.sizeY = 50;
 			mapInfo.iterations = 300;
 			mapInfo.tilesetPath = "maps/Tiles.png";
-<<<<<<< HEAD
-			mapInfo.seed = seed;
-			seed = NULL;
-=======
 			mapInfo.seed = currentSeed;
 			currentSeed = NULL;
-			lvlIndex++;
->>>>>>> rework-guldan
 
 			App->map->GenerateMap(mapInfo);
 			player = App->entities->AddPlayer({ 25 * 46,25 * 46}, THRALL);
@@ -224,11 +214,7 @@ bool Scene::Update(float dt)
 	{
 		App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
 		actual_scene = Stages::INGAME;
-<<<<<<< HEAD
-		seed = 1523809027;
-=======
 		currentSeed = 1523809027;
->>>>>>> rework-guldan
 		restart = true;
 	}
 
@@ -272,11 +258,6 @@ bool Scene::PostUpdate()
 		SDL_Rect back = { 0,0,640,360 };
 		//App->render->DrawQuad(back, 0, 205, 193, 255, true, false);
 		App->render->DrawQuad(back, 64, 66, 159, 255, true, false);
-<<<<<<< HEAD
-
-
-=======
->>>>>>> rework-guldan
 	}
 
 	if (App->path->printWalkables == true)
@@ -284,10 +265,6 @@ bool Scene::PostUpdate()
 
 	if (actual_scene == Stages::BOSS_ROOM && gratitudeON)
 	{
-<<<<<<< HEAD
-
-=======
->>>>>>> rework-guldan
 		App->render->DrawQuad({ -App->render->camera.x,-App->render->camera.y,640,360 }, 0, 0, 0, 200 , true, true);
 	}
 
@@ -310,11 +287,8 @@ bool Scene::CleanUp()
 	App->console->DeActivate();
 	App->path->ClearMap();
 	App->colliders->DeActivate();
-<<<<<<< HEAD
 	App->effects->DeActivate();
-=======
 	App->projectiles->DeActivate();
->>>>>>> rework-guldan
 
 	if (actual_scene == Stages::MAIN_MENU)
 	{
