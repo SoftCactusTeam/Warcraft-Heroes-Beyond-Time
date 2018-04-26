@@ -291,6 +291,7 @@ bool EntitySystem::PostUpdate()
 		if ((*it)->destroy)
 		{
 			App->colliders->deleteColliderbyOwner(*it);
+			delete(*it);
 			it = entities.erase(it);
 		}
 		else
@@ -423,11 +424,6 @@ PlayerEntity* EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
 	}
 
 	toSpawn.push_back(newEntity);
-	SDL_Rect col_rect = newEntity->anim->GetCurrentRect();
-	col_rect.x = 0;
-	col_rect.y = 0;
-
-	newEntity->setCol(App->colliders->AddCollider(col_rect, Collider::ColliderType::ENTITY, newEntity));
 	return newEntity;
 }
 

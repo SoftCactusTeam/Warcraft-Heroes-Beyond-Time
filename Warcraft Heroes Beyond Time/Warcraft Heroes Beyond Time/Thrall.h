@@ -30,8 +30,6 @@ private:
 	bool attacking = false;
 	bool skillOn = false;
 
-	EffectsElem* dustEffect = nullptr;
-
 public:
 
 	//items
