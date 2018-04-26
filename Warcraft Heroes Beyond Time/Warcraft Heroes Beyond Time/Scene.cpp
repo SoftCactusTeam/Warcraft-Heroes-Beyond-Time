@@ -57,17 +57,6 @@ bool Scene::Awake(pugi::xml_node& sceneNode)
 {
 	App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
 
-	mapSeed = sceneNode.child("map").child("seed").attribute("value").as_int();
-	
-	for (register pugi::xml_node aux_node = sceneNode.child("map").child("lvl"); aux_node; aux_node = aux_node.next_sibling("lvl"))
-	{ 
-		pugi::xml_node gridNode = aux_node.child("sizeGrid");
-		gridSizePerLevel.push_front({gridNode.attribute("x").as_int(),gridNode.attribute("y").as_int() });
-		iterationsPerLevel.push_front(aux_node.child("sizeDungeon").attribute("iterations").as_int());
-
-		numberOfLevels++;
-	}
-
 	return true;
 }
 
@@ -78,11 +67,14 @@ bool Scene::Start()
 
 	currentPercentAudio = App->audio->MusicVolumePercent;
 
+	App->map->UseYourPowerToGenerateMeThisNewMap(lvlIndex);
+
 	switch (actual_scene)
 	{
 		case Stages::MAIN_MENU:
 		{
 			CreateMainMenuScreen();
+			lvlIndex = 0;
 
 			break;
 		}
@@ -94,81 +86,73 @@ bool Scene::Start()
 		}
 		case Stages::INGAME:
 		{
-			App->effects->Activate();
-			App->colliders->Activate();
-			App->entities->Activate();
-			App->console->Activate();
-			App->map->Activate();
-			App->printer->Activate();
-
 			BROFILER_CATEGORY("InGame Generation", Profiler::Color::Chocolate);
-			MapData mapInfo;
-			
-			std::list<iPoint>::iterator it = gridSizePerLevel.begin();
-			std::advance(it, lvlIndex);
-			mapInfo.sizeX = (*it).x;
-			mapInfo.sizeY = (*it).y;
 
-			std::list<int>::iterator it_2 = iterationsPerLevel.begin();
-			std::advance(it_2, lvlIndex);
-			mapInfo.iterations = (*it_2);
+			int result = App->map->UseYourPowerToGenerateMeThisNewMap(lvlIndex);
 
-			mapInfo.tilesetPath = "maps/Tiles.png";
-			mapInfo.seed = mapSeed;
+			if (result == -1)
+				return false;
+			else if (result == 0)
+			{
+				App->items->Activate();
+				App->colliders->Activate();
+				App->entities->Activate();
+				App->console->Activate();
+				App->map->Activate();
+				App->printer->Activate();
+				App->projectiles->Activate();
 
-			App->map->GenerateMap(mapInfo);
-			player = App->entities->AddPlayer({ 25 * 46,25 * 46}, THRALL);
-			player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
+				App->audio->PlayMusic(App->audio->GuldanBSO.data(), 1);
 
-			App->path->LoadPathMap();
-
-			iPoint enemy = App->map->GetRandomValidPoint();
-			App->entities->AddEnemy({ (float)enemy.x * 46, (float)enemy.y * 46 }, ARCHER);
-
-			enemy = App->map->GetRandomValidPoint();
-			App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
-
-			enemy = App->map->GetRandomValidPoint();
-			App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
-
-			enemy = App->map->GetRandomValidPoint();
-			App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
-
-			enemy = App->map->GetRandomValidPoint();
-			App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
-
-			enemy = App->map->GetRandomValidPoint();
-			App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
-
-			App->items->Activate();
-
-			iPoint chestPos = App->map->GetRandomValidPointProxy(30, 5);
-
-			if (!App->items->isPoolEmpty())
-				lvlChest = App->entities->AddChest({ (float)chestPos.x * 46,(float)chestPos.y * 46 }, MID_CHEST);
+				portal = (PortalEntity*)App->entities->AddStaticEntity({ 15 * 46,17 * 46, }, PORTAL);
+				portal->locked = true;
+				player = App->entities->AddPlayer({ 15 * 46 + 10,16 * 46, }, THRALL);
+				player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
+				guldan = (Guldan*)App->entities->AddBoss({ 14 * 48 + 10,7 * 48 }, BossType::GULDAN);
+				App->gui->CreateBossHPBar((BossEntity*)guldan, { 640 / 2 - 312 / 2,320 });
+			}
 			else
-				lvlChest = nullptr;
+			{
+				App->effects->Activate();
+				App->colliders->Activate();
+				App->entities->Activate();
+				App->console->Activate();
+				App->map->Activate();
+				App->printer->Activate();
 
-			break;
-		}
-		case Stages::BOSS_ROOM:
-		{
-			App->items->Activate();
-			App->colliders->Activate();
-			App->entities->Activate();
-			App->console->Activate();
-			App->map->Activate();
-			App->printer->Activate();
-			App->projectiles->Activate();
+				player = App->entities->AddPlayer({ 25 * 46,25 * 46 }, THRALL);
+				player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
 
-			App->audio->PlayMusic(App->audio->GuldanBSO.data(), 1);
-			App->map->GenerateBossMap();
-			portal = (PortalEntity*)App->entities->AddStaticEntity({ 15 * 46,17 * 46, }, PORTAL);
-			portal->locked = true;
-			player = App->entities->AddPlayer({ 15 * 46 + 10,16 * 46, }, THRALL);
-			player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
-			guldan = (Guldan*)App->entities->AddBoss({ 14 * 48 + 10,7 * 48 }, BossType::GULDAN);
-			App->gui->CreateBossHPBar((BossEntity*)guldan, { 640 / 2 - 312 / 2,320 });
+				App->path->LoadPathMap();
+
+				iPoint enemy = App->map->GetRandomValidPoint();
+				App->entities->AddEnemy({ (float)enemy.x * 46, (float)enemy.y * 46 }, ARCHER);
+
+				enemy = App->map->GetRandomValidPoint();
+				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
+
+				enemy = App->map->GetRandomValidPoint();
+				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
+
+				enemy = App->map->GetRandomValidPoint();
+				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
+
+				enemy = App->map->GetRandomValidPoint();
+				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
+
+				enemy = App->map->GetRandomValidPoint();
+				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
+
+				App->items->Activate();
+
+				iPoint chestPos = App->map->GetRandomValidPointProxy(30, 5);
+
+				if (!App->items->isPoolEmpty())
+					lvlChest = App->entities->AddChest({ (float)chestPos.x * 46,(float)chestPos.y * 46 }, MID_CHEST);
+				else
+					lvlChest = nullptr;
+			}
+
 			break;
 		}
 	}
@@ -223,7 +207,7 @@ bool Scene::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) && actual_scene == Stages::INGAME)
 	{
-		actual_scene = Stages::BOSS_ROOM;
+		lvlIndex = 100;
 		restart = true;
 	}
 
@@ -240,7 +224,7 @@ bool Scene::Update(float dt)
 	}
 
 	//PAUSE GAME
-	if (actual_scene == Stages::INGAME || actual_scene == Stages::BOSS_ROOM)
+	if (actual_scene == Stages::INGAME)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN ||
 			App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_START) == KEY_DOWN)
@@ -284,10 +268,12 @@ bool Scene::PostUpdate()
 	if (App->path->printWalkables == true)
 		App->path->PrintWalkableTiles();
 
-	if (actual_scene == Stages::BOSS_ROOM && gratitudeON)
+	// FIX THAT
+	/* if (actual_scene == Stages::BOSS_ROOM && gratitudeON)
 	{
 		App->render->DrawQuad({ -App->render->camera.x,-App->render->camera.y,640,360 }, 0, 0, 0, 200 , true, true);
 	}
+	*/
 
 	BROFILER_CATEGORY("SceneRestart", Profiler::Color::Chocolate);
 	if (restart)
@@ -378,7 +364,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 				restart = true;
 				break;
 			case BType::GO_MMENU:
-				if (actual_scene == Stages::INGAME || actual_scene == Stages::BOSS_ROOM)
+				if (actual_scene == Stages::INGAME)
 				{
 					App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
 					App->audio->setMusicVolume(currentPercentAudio);
@@ -550,16 +536,9 @@ void Scene::GeneratePortal()
 
 void Scene::GoMainMenu()
 {
-	if (actual_scene == Stages::INGAME || actual_scene == Stages::BOSS_ROOM)
+	if (actual_scene == Stages::INGAME)
 		App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0.5);
 	actual_scene = Stages::MAIN_MENU;
-	restart = true;
-	lvlIndex = 0;
-}
-
-void Scene::GoBossRoom()
-{
-	actual_scene = Stages::BOSS_ROOM;
 	restart = true;
 	lvlIndex = 0;
 }
@@ -593,10 +572,4 @@ void Scene::GoNextLevel()
 {
 	lvlIndex++;
 	restart = true;
-	if (lvlIndex >= numberOfLevels)
-	{
-		GoBossRoom();
-		lvlIndex = 0;
-	}
-		
 }

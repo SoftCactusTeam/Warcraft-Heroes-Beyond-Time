@@ -46,6 +46,8 @@ public:
 	MapGenerator();
 	~MapGenerator();
 
+	bool Awake(pugi::xml_node& node);
+
 	void Init()
 	{
 		active = false;
@@ -68,6 +70,8 @@ public:
 
 	std::vector<MapNode*> GetMapNodesAndInfo(uint& sizeX, uint& sizeY, uint& tileSize);
 
+	bool UseYourPowerToGenerateMeThisNewMap(int lvlIndex);
+
 private:
 
 	uint totalSize = 0u;
@@ -78,6 +82,11 @@ private:
 	std::vector<MapNode*> visited;
 	SDL_Texture* mapTexture = nullptr;
 
+
+	std::list<iPoint> gridSizePerLevel;
+	std::list<int> iterationsPerLevel;
+	int numberOfLevels = 0;
+	int mapSeed = 0;
 };
 
 #endif

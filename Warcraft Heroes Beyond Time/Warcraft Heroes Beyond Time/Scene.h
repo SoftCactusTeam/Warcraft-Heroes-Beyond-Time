@@ -54,7 +54,6 @@ public:
 		MAIN_MENU,
 		SETTINGS,
 		INGAME,
-		BOSS_ROOM
 
 	} actual_scene = Stages::MAIN_MENU;
 
@@ -77,13 +76,7 @@ private:
 	
 
 	bool restart = false;
-
-	// map
-	std::list<iPoint> gridSizePerLevel;
-	std::list<int> iterationsPerLevel;
 	int lvlIndex = 0;
-	int numberOfLevels = 0;
-	int mapSeed = 0;
 };
 
 #endif
