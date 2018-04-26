@@ -36,13 +36,16 @@
       <thrall hp = "200" speed = "250" damage = "60" energy_percent_hit = "5" skill_multiplier="3"/>
     </players>
 
-    <items>
-      <item1/>
-      <item2/>
-    </items>
-
   </entitySystem>
 
+  <items>
+    <dmgBall damage = "5f"/>
+    <fearBall seconds_fear = "2"/>
+    <frozenBall seconds_frozen = "1"/>
+    <slowShit time_slowed = "7" slow_percent = "80"/>
+  </items>
+  
+  
   <GUI>
     <version string="Warcraft-Heroes-Beyond-Time-RELEASE-v0.3.1.1"/>
   </GUI>

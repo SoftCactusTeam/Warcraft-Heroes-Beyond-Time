@@ -10,6 +10,7 @@
 #include "ModulePrinter.h"
 #include "ModuleAudio.h"
 #include "ModuleTextures.h"
+#include "ModuleItems.h"
 
 #include "ModuleRender.h"
 
@@ -43,8 +44,6 @@ bool Enemy_Archer::Start()
 
 bool Enemy_Archer::Update(float dt)
 {
-
-
 	// AIXO ES PER COMPROBAR SI ESTA PARADA O NO
 	if (stop == true)
 		if (SDL_GetTicks() > accountantPrincipal)
