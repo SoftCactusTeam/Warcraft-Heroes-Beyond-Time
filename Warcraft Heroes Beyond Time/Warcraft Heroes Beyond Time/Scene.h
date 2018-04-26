@@ -39,6 +39,12 @@ public:
 	bool gratitudeON = false;
 	void GoMainMenu();
 	void GoBossRoom();
+	void Restart()
+	{
+		restart = true;
+	}
+
+	void GoNextLevel();
 
 public:
 	enum class Stages

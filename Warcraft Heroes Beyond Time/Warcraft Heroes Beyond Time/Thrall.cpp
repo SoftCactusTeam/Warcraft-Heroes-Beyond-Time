@@ -318,7 +318,7 @@ void Thrall::OnCollision(Collider* yours, Collider* collideWith)
 		{
 			if (App->scene->portal->locked == false)
 			{
-				App->scene->GoBossRoom();
+				App->scene->GoNextLevel();
 			}
 			break;
 		}

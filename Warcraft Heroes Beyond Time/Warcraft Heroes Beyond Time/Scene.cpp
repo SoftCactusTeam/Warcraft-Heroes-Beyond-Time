@@ -98,7 +98,6 @@ bool Scene::Start()
 			mapInfo.tilesetPath = "maps/Tiles.png";
 			mapInfo.seed = seed;
 			seed = NULL;
-			lvlIndex++;
 
 			App->map->GenerateMap(mapInfo);
 			player = App->entities->AddPlayer({ 25 * 46,25 * 46}, THRALL);
@@ -561,4 +560,12 @@ void Scene::CreateItemSelectionScreen(Item* item1, Item* item2, Item* item3)
 	App->gui->CreateItemContainer({ 230+85,50+121 }, item2, ItemSelection);
 	App->gui->CreateItemContainer({ 430+85,50+121 }, item3, ItemSelection);
 	//App->gui->CreateItemContainer({})
+}
+
+void Scene::GoNextLevel()
+{
+	lvlIndex++;
+	restart = true;
+	if (lvlIndex >= 5)
+		GoBossRoom();
 }
