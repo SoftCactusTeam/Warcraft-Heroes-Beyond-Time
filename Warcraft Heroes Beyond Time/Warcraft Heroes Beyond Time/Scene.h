@@ -77,9 +77,13 @@ private:
 	
 
 	bool restart = false;
-	int lvlIndex = 0;
-	int currentSeed = NULL;
-};
 
+	// map
+	std::list<iPoint> gridSizePerLevel;
+	std::list<int> iterationsPerLevel;
+	int lvlIndex = 0;
+	int numberOfLevels = 0;
+	int mapSeed = 0;
+};
 
 #endif

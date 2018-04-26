@@ -57,6 +57,17 @@ bool Scene::Awake(pugi::xml_node& sceneNode)
 {
 	App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
 
+	mapSeed = sceneNode.child("map").child("seed").attribute("value").as_int();
+	
+	for (register pugi::xml_node aux_node = sceneNode.child("map").child("lvl"); aux_node; aux_node = aux_node.next_sibling("lvl"))
+	{ 
+		pugi::xml_node gridNode = aux_node.child("sizeGrid");
+		gridSizePerLevel.push_front({gridNode.attribute("x").as_int(),gridNode.attribute("y").as_int() });
+		iterationsPerLevel.push_front(aux_node.child("sizeDungeon").attribute("iterations").as_int());
+
+		numberOfLevels++;
+	}
+
 	return true;
 }
 
@@ -92,12 +103,18 @@ bool Scene::Start()
 
 			BROFILER_CATEGORY("InGame Generation", Profiler::Color::Chocolate);
 			MapData mapInfo;
-			mapInfo.sizeX = 50;
-			mapInfo.sizeY = 50;
-			mapInfo.iterations = 300;
+			
+			std::list<iPoint>::iterator it = gridSizePerLevel.begin();
+			std::advance(it, lvlIndex);
+			mapInfo.sizeX = (*it).x;
+			mapInfo.sizeY = (*it).y;
+
+			std::list<int>::iterator it_2 = iterationsPerLevel.begin();
+			std::advance(it_2, lvlIndex);
+			mapInfo.iterations = (*it_2);
+
 			mapInfo.tilesetPath = "maps/Tiles.png";
-			mapInfo.seed = currentSeed;
-			currentSeed = NULL;
+			mapInfo.seed = mapSeed;
 
 			App->map->GenerateMap(mapInfo);
 			player = App->entities->AddPlayer({ 25 * 46,25 * 46}, THRALL);
@@ -199,6 +216,11 @@ bool Scene::Update(float dt)
 		restart = true;
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && actual_scene == Stages::INGAME && !App->console->isWritting())
+	{
+		GoNextLevel();
+	}
+
 	if (App->input->GetKey(SDL_SCANCODE_F1) && actual_scene == Stages::INGAME)
 	{
 		actual_scene = Stages::BOSS_ROOM;
@@ -214,7 +236,6 @@ bool Scene::Update(float dt)
 	{
 		App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
 		actual_scene = Stages::INGAME;
-		currentSeed = 1523809027;
 		restart = true;
 	}
 
@@ -533,12 +554,14 @@ void Scene::GoMainMenu()
 		App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0.5);
 	actual_scene = Stages::MAIN_MENU;
 	restart = true;
+	lvlIndex = 0;
 }
 
 void Scene::GoBossRoom()
 {
 	actual_scene = Stages::BOSS_ROOM;
 	restart = true;
+	lvlIndex = 0;
 }
 
 void Scene::CreateGratitudeScreen()
@@ -570,7 +593,7 @@ void Scene::GoNextLevel()
 {
 	lvlIndex++;
 	restart = true;
-	if (lvlIndex >= 5)
+	if (lvlIndex >= numberOfLevels)
 	{
 		GoBossRoom();
 		lvlIndex = 0;

@@ -6,6 +6,32 @@
     <fps_cap value = "60"/>
   </App>
 
+  <scene>
+    <map>
+      <seed value ="0"/>
+      <lvl> <!-- First level -->
+        <sizeGrid x ="50" y ="50"/>
+        <sizeDungeon iterations ="300"/>
+      </lvl>
+      <lvl> <!-- Second level -->
+        <sizeGrid x ="50" y ="50"/>
+        <sizeDungeon iterations ="300"/>
+      </lvl>
+      <lvl> <!-- Third level -->
+        <sizeGrid x ="50" y ="50"/>
+        <sizeDungeon iterations ="300"/>
+      </lvl>
+      <lvl> <!-- Forth level -->
+        <sizeGrid x ="50" y ="50"/>
+        <sizeDungeon iterations ="300"/>
+      </lvl>
+      <lvl> <!-- Fifth level -->
+        <sizeGrid x ="50" y ="50"/>
+        <sizeDungeon iterations ="300"/>
+      </lvl> 
+    </map>
+  </scene>
+
   <console>
 
   </console>
