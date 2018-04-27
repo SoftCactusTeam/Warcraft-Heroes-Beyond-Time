@@ -16,7 +16,7 @@
 
 #define DISTANCE_TO_MOVE		400
 #define DISTANCE_TO_ATAC		150
-#define ATAC_COOLDOWN			1000
+#define ATAC_COOLDOWN			2000
 #define TRI_ATAC_COOLDOWN		2000
 #define FAST_ATAC_COOLDOWN		2000
 #define FAST_ATAC_ARROWS		3
@@ -25,18 +25,38 @@
 #define ARROW_SPEED				10
 #define JUMP_BACK_COOLDOWN		300
 #define DISTANCE_TO_JUMPBACK	50
-#define SCAPE_TIME				5000
-#define DISTANCE_TO_GO_SCAPE	60
+#define DISTANCE_TO_LITTLEMOVE	250
+#define LITTLEMOVEMENT_TIME		100
+#define LITTLEMOVEMENT_COOLDOWN	400
+#define TILES_TO_LITTLEMOVE		10
 #define ARCHER_LIVE				100
 #define TIME_DYING				500
 #define TEMPO_ARROW_ATWALL		500
 
-Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture) : EnemyEntity(coor, character, texture) {}
+Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture, ARCHER_TIER tier) : EnemyEntity(coor, character, texture)
+{
+	this->tier = tier;
+}
 
 bool Enemy_Archer::Start()
 {
+	switch (tier)	// AQUI ES CARREGUEN LES VARIABLES SEGONS EL TIER
+	{
+	case ARCHER_TIER_1:
+		live = ARCHER_LIVE;
+
+		break;
+	case ARCHER_TIER_2:
+		live = ARCHER_LIVE;
+
+		break;
+	case ARCHER_TIER_3:
+		live = ARCHER_LIVE;
+
+		break;
+	}
+
 	ChargeAnimations();
-	live = ARCHER_LIVE;
 	state = ARCHER_STATE::ARCHER_IDLE;
 	anim = &animIdle[LookAtPlayer()];
 	return true;
@@ -77,8 +97,8 @@ bool Enemy_Archer::Update(float dt)
 	case ARCHER_STATE::ARCHER_BACKJUMP:
 		doBackJump();
 		break;
-	case ARCHER_STATE::ARCHER_SCAPE:
-		doScape();
+	case ARCHER_STATE::ARCHER_LITTLEMOVE:
+		doLittleMove();
 		break;
 	case ARCHER_STATE::ARCHER_DIE:
 		doDie();
@@ -111,7 +131,6 @@ bool Enemy_Archer::PostUpdate()
 	else
 		anim->speed = anim->speedFactor * App->dt;
 
-	// ARROWS DRAW
 	for (int i = 0; i < arrowsVector.size(); i++)
 		if (arrowsVector[i] != nullptr)
 			arrowsVector[i]->Draw();
@@ -122,20 +141,17 @@ bool Enemy_Archer::PostUpdate()
 			stop = false;
 		else
 		{
-			// Sumes temps a la fletxa, sino es destrueix en pausa
 			for (int i = 0; i < arrowsVector.size(); i++)
 				arrowsVector[i]->deadTimer += App->dt * 1000;
 			return true;
 		}
 	else if (App->scene->paused == true)
 	{
-		// Sumes temps a la fletxa, sino es destrueix en pausa
 		for (int i = 0; i < arrowsVector.size(); i++)
 			arrowsVector[i]->deadTimer += App->dt * 1000;
 		return true;
 	}
 
-	// ARROWS UPDATE
 	for (int i = 0; i < arrowsVector.size(); i++)
 	{
 		if (arrowsVector[i]->destroy == false)
@@ -244,6 +260,7 @@ void Enemy_Archer::initAtac()
 	anim->Reset();
 	pathVector.Clear();
 	ShootArrow();
+	arrowsShooted++;
 }
 
 void Enemy_Archer::initTriAtac()
@@ -256,6 +273,7 @@ void Enemy_Archer::initTriAtac()
 	ShootArrow();
 	ShootArrow({ 20,-20 });
 	ShootArrow({ -20,20 });
+	arrowsShooted++;
 }
 
 void Enemy_Archer::initFastAtac()
@@ -267,6 +285,7 @@ void Enemy_Archer::initFastAtac()
 	pathVector.Clear();
 	arrowToShoot = FAST_ATAC_ARROWS;
 	timeToShootAnother = SDL_GetTicks() + FAST_ATAC_TIME_BETWEEN;
+	arrowsShooted++;
 }
 
 void Enemy_Archer::initBackJump()
@@ -305,35 +324,39 @@ void Enemy_Archer::initBackJump()
 	animSmoke.Reset();
 }
 
-void Enemy_Archer::initScape()
+void Enemy_Archer::initLittleMove()
 {
-	int randomX = App->entities->GetRandomNumber(DISTANCE_TO_GO_SCAPE);
-	if (randomX > DISTANCE_TO_GO_SCAPE / 2)
+	int randomX = 0;
+	int randomY = 0;
+	int tileToMove = -1;
+	for (int i = 0; i < 4; i++)
 	{
-		randomX -= DISTANCE_TO_GO_SCAPE / 2;
-		randomX *= -1;
-	}
-	int randomY = App->entities->GetRandomNumber(DISTANCE_TO_GO_SCAPE);
-	if (randomY > DISTANCE_TO_GO_SCAPE / 2)
-	{
-		randomY -= DISTANCE_TO_GO_SCAPE / 2;
-		randomY *= -1;
-	}
-	bool finded = true;
-	while (App->path->ExistWalkableAtPos(iPoint((int)pos.x / App->map->getTileSize() - randomX, (int)pos.y / App->map->getTileSize() - randomY)) == false)
-	{
-		randomX--;
-		randomY--;
-		if (randomX < DISTANCE_TO_GO_SCAPE / 4 || randomY < DISTANCE_TO_GO_SCAPE / 4) {
-			finded = false;
-			break;
+		int randomX = App->entities->GetRandomNumber(TILES_TO_LITTLEMOVE);
+		if (randomX > TILES_TO_LITTLEMOVE / 2)
+		{
+			randomX -= TILES_TO_LITTLEMOVE / 2;
+			randomX *= -1;
 		}
+		int randomY = App->entities->GetRandomNumber(TILES_TO_LITTLEMOVE);
+		if (randomY > TILES_TO_LITTLEMOVE / 2)
+		{
+			randomY -= TILES_TO_LITTLEMOVE / 2;
+			randomY *= -1;
+		}
+
+		int possibleTile = App->path->ExistWalkableAtPos(iPoint((int)pos.x / App->map->getTileSize() - randomX, (int)pos.y / App->map->getTileSize() - randomY));
+		if (possibleTile != -1)
+			if (App->scene->player->DistanceToObejective(App->path->posAtConcreteTile(possibleTile)) < App->scene->player->DistanceToObejective(App->path->posAtConcreteTile(tileToMove)))
+ 				tileToMove = possibleTile;
+			else if (tileToMove == -1)
+				tileToMove = possibleTile;
 	}
-	if (finded)
+
+	if (tileToMove != -1)
 	{
 		posToScape = { iPoint((int)pos.x / App->map->getTileSize() - randomX , (int)pos.y / App->map->getTileSize() - randomY) };
-		state = ARCHER_STATE::ARCHER_SCAPE;
-		accountantPrincipal = SDL_GetTicks() + SCAPE_TIME;
+		state = ARCHER_STATE::ARCHER_LITTLEMOVE;
+		accountantPrincipal = SDL_GetTicks() + LITTLEMOVEMENT_TIME;
 		anim = &animAtac[LookAtPlayer()];
 		anim->Reset();
 		pathVector.Clear();
@@ -343,6 +366,8 @@ void Enemy_Archer::initScape()
 		state = ARCHER_STATE::ARCHER_IDLE;
 		pathVector.Clear();
 	}
+	arrowsShooted = 0;
+	cooldownToReLittleMove = LITTLEMOVEMENT_COOLDOWN + SDL_GetTicks();
 }
 
 void Enemy_Archer::initDie()
@@ -366,45 +391,67 @@ void Enemy_Archer::doIdle()
 	}
 }
 
+// FUNCIO CENTRAL DE L'ARCHER !!!
 void Enemy_Archer::doWalk()
 {
-	anim = &animWalk[LookAtPlayer()];
-	if (DistanceToPlayer() > DISTANCE_TO_MOVE)
+	switch (tier)
 	{
-		initIdle();
-	}
-	else if (DistanceToPlayer() < DISTANCE_TO_JUMPBACK && App->entities->GetRandomNumber(10) < 7)	// Superar tirada 70%
-	{
-		initBackJump();
-	}
-	else if (DistanceToPlayer() < DISTANCE_TO_ATAC && App->entities->GetRandomNumber(10) < 7)	// Superar una tirada de 70%
-	{
-		initAtac();
-	}
-	else if (DistanceToPlayer() < DISTANCE_TO_ATAC && App->entities->GetRandomNumber(10) < 5)	// Superar una tirada de 50%
-	{
-		initTriAtac();
-	}
-	else if (DistanceToPlayer() < DISTANCE_TO_ATAC && App->entities->GetRandomNumber(10) < 5)	// Superar una tirada de 50%
-	{
-		initFastAtac();
-	}
-	//else if (DistanceToPlayer() < DISTANCE_TO_JUMPBACK /*is the same to scape*/ /*&& App->entities->GetRandomNumber(10) < 7*/)	// Superar tirada 70%
-	//{
-	//initScape();
-	//}
-	else // AQUI CAMINA, PERO AQUESTA FUNCIO ES TEMPORAL
-	{
-		if (pathVector.isEmpty())
+	case ARCHER_TIER_1:	// SIMPLE ARCHER
+		anim = &animWalk[LookAtPlayer()];
+		if (DistanceToPlayer() > DISTANCE_TO_MOVE)
 		{
-			if (pathVector.CalculatePathAstar(iPoint(((int)pos.x + (anim->GetCurrentRect().w / 2)), ((int)pos.y + (anim->GetCurrentRect().h / 2))), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y)))
-				pathVector.CalculateWay(iPoint(((int)pos.x + (anim->GetCurrentRect().w / 2)), ((int)pos.y + (anim->GetCurrentRect().h / 2))), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y));
+			initIdle();
+		}
+		else if (DistanceToPlayer() < DISTANCE_TO_LITTLEMOVE && cooldownToReLittleMove < SDL_GetTicks() && (App->entities->GetRandomNumber(10) + arrowsShooted) > 7)	// Superar tirada 30% amb suma de fletxes disparades
+		{
+			initLittleMove();
+		}
+		else if (DistanceToPlayer() < DISTANCE_TO_ATAC && App->entities->GetRandomNumber(10) < 7)	// Superar una tirada de 70%
+		{
+			initAtac();
 		}
 		else
 		{
-			iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x + (anim->GetCurrentRect().w / 2), (int)pos.y + (anim->GetCurrentRect().h / 2)));
-			this->pos += fPoint((float)move.x * MOVEMENT_SPEED, (float)move.y * MOVEMENT_SPEED);
+			Walk();
 		}
+		break;
+	case ARCHER_TIER_2:	// MID ARCHER
+
+		break;
+	case ARCHER_TIER_3:	// HIGH ARCHER
+		anim = &animWalk[LookAtPlayer()];
+		if (DistanceToPlayer() > DISTANCE_TO_MOVE)
+		{
+			initIdle();
+		}
+		else if (DistanceToPlayer() < DISTANCE_TO_LITTLEMOVE /*&& cooldownToReLittleMove < SDL_GetTicks()*/ && arrowsShooted > 0 )
+		{
+			initLittleMove();
+		}
+		else if (DistanceToPlayer() < DISTANCE_TO_JUMPBACK && App->entities->GetRandomNumber(10) < 7)	// Superar tirada 70%
+		{
+			initBackJump();
+		}
+		else if (DistanceToPlayer() < DISTANCE_TO_ATAC && App->entities->GetRandomNumber(10) < 7)	// Superar una tirada de 70%
+		{
+			initAtac();
+		}
+		else if (DistanceToPlayer() < DISTANCE_TO_ATAC && App->entities->GetRandomNumber(10) < 5)	// Superar una tirada de 50%
+		{
+			initTriAtac();
+		}
+		else if (DistanceToPlayer() < DISTANCE_TO_ATAC && App->entities->GetRandomNumber(10) < 5)	// Superar una tirada de 50%
+		{
+			initFastAtac();
+		}
+		else
+		{
+			Walk();
+		}
+		break;
+	default:
+		tier = ARCHER_TIER_1;
+		break;
 	}
 }
 
@@ -444,10 +491,13 @@ void Enemy_Archer::doBackJump()
 		App->printer->PrintSprite(iPoint((int)posSmoke.x, (int)posSmoke.y), App->entities->spritesheetsEntities[ARCHER_SMOKE_SHEET], animSmoke.GetCurrentFrame(), 2);
 }
 
-void Enemy_Archer::doScape()
+void Enemy_Archer::doLittleMove()
 {
-	if (SDL_GetTicks() > accountantPrincipal)
+	if (SDL_GetTicks() > accountantPrincipal && pathVector.isEmpty())
+	{
 		initIdle();
+		return;
+	}
 
 	if (pathVector.isEmpty())
 	{
@@ -469,6 +519,80 @@ void Enemy_Archer::doDie()
 		App->entities->enemiescount--;
 	}
 		
+}
+
+void Enemy_Archer::Walk()
+{
+	if (pathVector.isEmpty())
+	{
+		if (pathVector.CalculatePathAstar(iPoint(((int)pos.x + (anim->GetCurrentRect().w / 2)), ((int)pos.y + (anim->GetCurrentRect().h / 2))), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y)))
+			pathVector.CalculateWay(iPoint(((int)pos.x + (anim->GetCurrentRect().w / 2)), ((int)pos.y + (anim->GetCurrentRect().h / 2))), iPoint((int)App->scene->player->pos.x, (int)App->scene->player->pos.y));
+	}
+	else
+	{
+		iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x + (anim->GetCurrentRect().w / 2), (int)pos.y + (anim->GetCurrentRect().h / 2)));
+		this->pos += fPoint((float)move.x * MOVEMENT_SPEED, (float)move.y * MOVEMENT_SPEED);
+	}
+}
+
+
+void Enemy_Archer::AddEffect(ARCHER_EFFECTS effect, int time)
+{
+	archerEffectStruct* aux = new archerEffectStruct();
+	aux->effect = effect;
+	aux->time = time;
+	effectsList.push_back(aux);
+	switch (effect)		// INITIAL EFFECT
+	{
+	case ARCHER_EFFECT_FREEZE:
+
+		break;
+	case ARCHER_EFFECT_BURNING:
+
+		break;
+	case ARCHER_EFFECT_NONE:
+
+		break;
+	}
+}
+
+void Enemy_Archer::UpdateEffects()
+{
+	std::list<archerEffectStruct*>::iterator it = effectsList.begin();
+	for (; it != effectsList.end(); it++)
+	{
+		if ((*it)->time < SDL_GetTicks())
+		{			// UPDATE
+			switch ((*it)->effect)
+			{
+			case ARCHER_EFFECT_FREEZE:
+
+				break;
+			case ARCHER_EFFECT_BURNING:
+
+				break;
+			case ARCHER_EFFECT_NONE:
+
+				break;
+			}
+		}
+		else
+		{			// END & FINAL EFFECT
+			switch ((*it)->effect)
+			{
+			case ARCHER_EFFECT_FREEZE:
+
+				break;
+			case ARCHER_EFFECT_BURNING:
+
+				break;
+			case ARCHER_EFFECT_NONE:
+
+				break;
+			}
+			effectsList.erase(it++);	// DELETE CONCRETE EFFECT
+		}
+	}
 }
 
 void Enemy_Archer::ShootArrow(fPoint desviation)
@@ -548,8 +672,6 @@ void Enemy_Archer_Arrow::Draw()
 	App->printer->PrintSprite(iPoint((int)pos.x, (int)pos.y), texture, rect, 2, ModulePrinter::Pivots::CENTER, { 0,0 }, ModulePrinter::Pivots::UPPER_LEFT, {0,0}, angle);
 }
 
-
-
 void Enemy_Archer_Arrow::Finish()
 {
 	App->colliders->deleteCollider(arrowCollider);
@@ -557,182 +679,171 @@ void Enemy_Archer_Arrow::Finish()
 
 void Enemy_Archer::ChargeAnimations()
 {
-	//animIdle
-	//north
 	animIdle[FIXED_ANGLE::UP].PushBack({ 47,491,42,48 });
 	animIdle[FIXED_ANGLE::UP].speedFactor = 9.0f;
-	//north-east
+
 	animIdle[FIXED_ANGLE::UP_RIGHT].PushBack({ 46,393,44,47 });
 	animIdle[FIXED_ANGLE::UP_RIGHT].speedFactor = 9.0f;
-	//east
+
 	animIdle[FIXED_ANGLE::RIGHT].PushBack({ 167,123,40,41 });
 	animIdle[FIXED_ANGLE::RIGHT].speedFactor = 9.0f;
-	//south-east
+
 	animIdle[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 111,41,44,39 });
 	animIdle[FIXED_ANGLE::DOWN_RIGHT].speedFactor = 9.0f;
-	//south
+
 	animIdle[FIXED_ANGLE::DOWN].PushBack({ 50,299,46,44 });
 	animIdle[FIXED_ANGLE::DOWN].speedFactor = 9.0f;
-	//south-west
+
 	animIdle[FIXED_ANGLE::DOWN_LEFT].PushBack({ 46,82,44,39 });
 	animIdle[FIXED_ANGLE::DOWN_LEFT].speedFactor = 9.0f;
-	//west
+
 	animIdle[FIXED_ANGLE::LEFT].PushBack({ 91,165,40,42 });
 	animIdle[FIXED_ANGLE::LEFT].speedFactor = 9.0f;
-	//north-west
+
 	animIdle[FIXED_ANGLE::UP_LEFT].PushBack({ 46,442,44,47 });
 	animIdle[FIXED_ANGLE::UP_LEFT].speedFactor = 9.0f;
-	//animWalk
-	//north
+
+
 	animWalk[FIXED_ANGLE::UP].PushBack({ 47,491,42,48 });
 	animWalk[FIXED_ANGLE::UP].PushBack({ 142,551,44,51 });
 	animWalk[FIXED_ANGLE::UP].PushBack({ 136,496,43,49 });
 	animWalk[FIXED_ANGLE::UP].PushBack({ 141,445,38,49 });
 	animWalk[FIXED_ANGLE::UP].PushBack({ 91,493,43,48 });
 	animWalk[FIXED_ANGLE::UP].speedFactor = 9.0f;
-	//north-east
+
 	animWalk[FIXED_ANGLE::UP_RIGHT].PushBack({ 46,393,44,47 });
 	animWalk[FIXED_ANGLE::UP_RIGHT].PushBack({ 173,211,40,43 });
 	animWalk[FIXED_ANGLE::UP_RIGHT].PushBack({ 141,347,42,46 });
 	animWalk[FIXED_ANGLE::UP_RIGHT].PushBack({ 1,441,43,48 });
 	animWalk[FIXED_ANGLE::UP_RIGHT].PushBack({ 194,306,42,45 });
 	animWalk[FIXED_ANGLE::UP_RIGHT].speedFactor = 9.0f;
-	//east
+
 	animWalk[FIXED_ANGLE::RIGHT].PushBack({ 167,123,40,41 });
 	animWalk[FIXED_ANGLE::RIGHT].PushBack({ 47,209,42,43 });
 	animWalk[FIXED_ANGLE::RIGHT].PushBack({ 130,210,41,43 });
 	animWalk[FIXED_ANGLE::RIGHT].PushBack({ 1,123,37,40 });
 	animWalk[FIXED_ANGLE::RIGHT].PushBack({ 91,209,37,43 });
 	animWalk[FIXED_ANGLE::RIGHT].speedFactor = 9.0f;
-	//south-east
+
 	animWalk[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 111,41,44,39 });
 	animWalk[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 157,41,40,39 });
 	animWalk[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 40,123,42,40 });
 	animWalk[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 1,1,45,38 });
 	animWalk[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 199,41,44,39 });
 	animWalk[FIXED_ANGLE::DOWN_RIGHT].speedFactor = 9.0f;
-	//south
+
 	animWalk[FIXED_ANGLE::DOWN].PushBack({ 50,299,46,44 });
 	animWalk[FIXED_ANGLE::DOWN].PushBack({ 44,165,45,42 });
 	animWalk[FIXED_ANGLE::DOWN].PushBack({ 98,300,45,44 });
 	animWalk[FIXED_ANGLE::DOWN].PushBack({ 1,254,40,43 });
 	animWalk[FIXED_ANGLE::DOWN].PushBack({ 43,254,43,43 });
 	animWalk[FIXED_ANGLE::DOWN].speedFactor = 9.0f;
-	//south-west
+
 	animWalk[FIXED_ANGLE::DOWN_LEFT].PushBack({ 46,82,44,39 });
 	animWalk[FIXED_ANGLE::DOWN_LEFT].PushBack({ 92,82,40,39 });
 	animWalk[FIXED_ANGLE::DOWN_LEFT].PushBack({ 84,123,42,40 });
 	animWalk[FIXED_ANGLE::DOWN_LEFT].PushBack({ 88,1,45,38 });
 	animWalk[FIXED_ANGLE::DOWN_LEFT].PushBack({ 134,82,44,39 });
 	animWalk[FIXED_ANGLE::DOWN_LEFT].speedFactor = 9.0f;
-	//west
+
 	animWalk[FIXED_ANGLE::LEFT].PushBack({ 91,165,40,42 });
 	animWalk[FIXED_ANGLE::LEFT].PushBack({ 127,255,42,43 });
 	animWalk[FIXED_ANGLE::LEFT].PushBack({ 171,256,41,43 });
 	animWalk[FIXED_ANGLE::LEFT].PushBack({ 128,123,37,40 });
 	animWalk[FIXED_ANGLE::LEFT].PushBack({ 88,254,37,43 });
 	animWalk[FIXED_ANGLE::LEFT].speedFactor = 9.0f;
-	//north-west
+
 	animWalk[FIXED_ANGLE::UP_LEFT].PushBack({ 46,442,44,47 });
 	animWalk[FIXED_ANGLE::UP_LEFT].PushBack({ 215,211,40,43 });
 	animWalk[FIXED_ANGLE::UP_LEFT].PushBack({ 185,353,42,46 });
 	animWalk[FIXED_ANGLE::UP_LEFT].PushBack({ 1,393,43,46 });
 	animWalk[FIXED_ANGLE::UP_LEFT].PushBack({ 1,345,42,45 });
 	animWalk[FIXED_ANGLE::UP_LEFT].speedFactor = 9.0f;
-	//animAttack
-	//north
+
+
 	animAtac[FIXED_ANGLE::UP].PushBack({ 188,551,49,54 });
 	animAtac[FIXED_ANGLE::UP].PushBack({ 94,547,46,50 });
 	animAtac[FIXED_ANGLE::UP].speedFactor = 9.0f;
 	animAtac[FIXED_ANGLE::UP].loop = false;
 
-	//north-east
 	animAtac[FIXED_ANGLE::UP_RIGHT].PushBack({ 181,500,45,49 });
 	animAtac[FIXED_ANGLE::UP_RIGHT].PushBack({ 214,256,40,48 });
 	animAtac[FIXED_ANGLE::UP_RIGHT].speedFactor = 9.0f;
 	animAtac[FIXED_ANGLE::UP_RIGHT].loop = false;
 
-	//east
 	animAtac[FIXED_ANGLE::RIGHT].PushBack({ 1,299,47,44 });
 	animAtac[FIXED_ANGLE::RIGHT].PushBack({ 1,165,41,42 });
 	animAtac[FIXED_ANGLE::RIGHT].speedFactor = 9.0f;
 	animAtac[FIXED_ANGLE::RIGHT].loop = false;
 
-	//south-east
 	animAtac[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 48,1,38,38 });
 	animAtac[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 1,82,43,39 });
 	animAtac[FIXED_ANGLE::DOWN_RIGHT].speedFactor = 9.0f;
 	animAtac[FIXED_ANGLE::DOWN_RIGHT].loop = false;
 
-	//south
 	animAtac[FIXED_ANGLE::DOWN].PushBack({ 175,1,47,38 });
 	animAtac[FIXED_ANGLE::DOWN].PushBack({ 209,123,46,41 });
 	animAtac[FIXED_ANGLE::DOWN].speedFactor = 9.0f;
 	animAtac[FIXED_ANGLE::DOWN].loop = false;
 
-	//south-west
 	animAtac[FIXED_ANGLE::DOWN_LEFT].PushBack({ 135,1,38,38 });
 	animAtac[FIXED_ANGLE::DOWN_LEFT].PushBack({ 180,82,43,39 });
 	animAtac[FIXED_ANGLE::DOWN_LEFT].speedFactor = 9.0f;
 	animAtac[FIXED_ANGLE::DOWN_LEFT].loop = false;
 
-	//west
 	animAtac[FIXED_ANGLE::LEFT].PushBack({ 145,301,47,44 });
 	animAtac[FIXED_ANGLE::LEFT].PushBack({ 133,166,41,42 });
 	animAtac[FIXED_ANGLE::LEFT].speedFactor = 9.0f;
 	animAtac[FIXED_ANGLE::LEFT].loop = false;
 
-	//north-west
 	animAtac[FIXED_ANGLE::UP_LEFT].PushBack({ 1,541,45,49 });
 	animAtac[FIXED_ANGLE::UP_LEFT].PushBack({ 141,395,40,48 });
 	animAtac[FIXED_ANGLE::UP_LEFT].speedFactor = 9.0f;
 	animAtac[FIXED_ANGLE::UP_LEFT].loop = false;
 
 
-	//animDeath
-	//north-east 
 	animDeath[FIXED_ANGLE::UP_RIGHT].PushBack({ 92,443,47,48 });
 	animDeath[FIXED_ANGLE::UP_RIGHT].PushBack({ 1,41,53,39 });
 	animDeath[FIXED_ANGLE::UP_RIGHT].PushBack({ 176,166,44,43 });
 	animDeath[FIXED_ANGLE::UP_RIGHT].speedFactor = 9.0f;
 	animDeath[FIXED_ANGLE::UP_RIGHT].loop = false;
-	//south-east 
+
 	animDeath[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 48,543,44,50 });
 	animDeath[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 45,345,46,46 });
 	animDeath[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 92,394,47,47 });
 	animDeath[FIXED_ANGLE::DOWN_RIGHT].speedFactor = 9.0f;
 	animDeath[FIXED_ANGLE::DOWN_RIGHT].loop = false;
-	//south-west
+
 	animDeath[FIXED_ANGLE::DOWN_LEFT].PushBack({ 1,491,44,48 });
 	animDeath[FIXED_ANGLE::DOWN_LEFT].PushBack({ 93,346,46,46 });
 	animDeath[FIXED_ANGLE::DOWN_LEFT].PushBack({ 183,401,48,47 });
 	animDeath[FIXED_ANGLE::DOWN_LEFT].speedFactor = 9.0f;
 	animDeath[FIXED_ANGLE::DOWN_LEFT].loop = false;
-	//north-west
+
 	animDeath[FIXED_ANGLE::UP_LEFT].PushBack({ 181,450,47,48 });
 	animDeath[FIXED_ANGLE::UP_LEFT].PushBack({ 56,41,53,39 });
 	animDeath[FIXED_ANGLE::UP_LEFT].PushBack({ 1,209,44,50 });
 	animDeath[FIXED_ANGLE::UP_LEFT].speedFactor = 9.0f;
 	animDeath[FIXED_ANGLE::UP_LEFT].loop = false;
-	//north
+
 	animDeath[FIXED_ANGLE::UP].PushBack({ 92,443,47,48 });
 	animDeath[FIXED_ANGLE::UP].PushBack({ 1,41,53,39 });
 	animDeath[FIXED_ANGLE::UP].PushBack({ 176,166,44,43 });
 	animDeath[FIXED_ANGLE::UP].speedFactor = 9.0f;
 	animDeath[FIXED_ANGLE::UP].loop = false;
-	//south
+
 	animDeath[FIXED_ANGLE::DOWN].PushBack({ 1,491,44,48 });
 	animDeath[FIXED_ANGLE::DOWN].PushBack({ 93,346,46,46 });
 	animDeath[FIXED_ANGLE::DOWN].PushBack({ 183,401,48,47 });
 	animDeath[FIXED_ANGLE::DOWN].speedFactor = 9.0f;
 	animDeath[FIXED_ANGLE::DOWN].loop = false;
-	//east
+
 	animDeath[FIXED_ANGLE::RIGHT].PushBack({ 92,443,47,48 });
 	animDeath[FIXED_ANGLE::RIGHT].PushBack({ 1,41,53,39 });
 	animDeath[FIXED_ANGLE::RIGHT].PushBack({ 176,166,44,43 });
 	animDeath[FIXED_ANGLE::RIGHT].speedFactor = 9.0f;
 	animDeath[FIXED_ANGLE::RIGHT].loop = false;
-	//west
+
 	animDeath[FIXED_ANGLE::LEFT].PushBack({ 1,491,44,48 });
 	animDeath[FIXED_ANGLE::LEFT].PushBack({ 93,346,46,46 });
 	animDeath[FIXED_ANGLE::LEFT].PushBack({ 183,401,48,47 });

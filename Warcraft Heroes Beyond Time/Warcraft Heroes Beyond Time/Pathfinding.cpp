@@ -89,6 +89,14 @@ int Pathfinding::ExistWalkableAtPos(iPoint& pos)
 	return -1;
 }
 
+fPoint Pathfinding::posAtConcreteTile(int tile)
+{
+	if (tile < map.size())
+		if (ExistWalkableAtPos(map[tile]->nodePos) != -1)
+			return fPoint(map[tile]->nodePos.x, map[tile]->nodePos.y);
+	return fPoint(0, 0);
+}
+
 // ---------------------------------------------------------------------------------------------------
 // ------------------------------------------- PATH VECTOR -------------------------------------------
 // ---------------------------------------------------------------------------------------------------

@@ -33,6 +33,7 @@ public:
 
 	void LoadNeighbours(pathNode* node);
 	int ExistWalkableAtPos(iPoint& pos);
+	fPoint posAtConcreteTile(int tile);
 
 	uint tileSize = 0;
 	uint mapWidth = 0;
