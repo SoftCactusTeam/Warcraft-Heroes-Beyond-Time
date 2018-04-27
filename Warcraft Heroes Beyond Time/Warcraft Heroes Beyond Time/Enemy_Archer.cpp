@@ -27,8 +27,8 @@
 #define DISTANCE_TO_JUMPBACK	50
 #define DISTANCE_TO_LITTLEMOVE	250
 #define LITTLEMOVEMENT_TIME		100
-#define LITTLEMOVEMENT_COOLDOWN	400
-#define TILES_TO_LITTLEMOVE		10
+#define LITTLEMOVEMENT_COOLDOWN	100
+#define TILES_TO_LITTLEMOVE		14
 #define ARCHER_LIVE				100
 #define TIME_DYING				500
 #define TEMPO_ARROW_ATWALL		500
@@ -360,14 +360,14 @@ void Enemy_Archer::initLittleMove()
 		anim = &animAtac[LookAtPlayer()];
 		anim->Reset();
 		pathVector.Clear();
+		arrowsShooted = 0;
+		cooldownToReLittleMove = LITTLEMOVEMENT_COOLDOWN + SDL_GetTicks();
 	}
 	else
 	{
 		state = ARCHER_STATE::ARCHER_IDLE;
 		pathVector.Clear();
 	}
-	arrowsShooted = 0;
-	cooldownToReLittleMove = LITTLEMOVEMENT_COOLDOWN + SDL_GetTicks();
 }
 
 void Enemy_Archer::initDie()
