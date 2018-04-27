@@ -25,6 +25,19 @@ enum ARCHER_STATE {
 	ARCHER_DIE
 };
 
+enum ARCHER_EFFECTS
+{
+	ARCHER_EFFECT_FREEZE,
+	ARCHER_EFFECT_BURNING,
+	ARCHER_EFFECT_NONE
+};
+
+struct archerEffectStruct
+{
+	ARCHER_EFFECTS effect = ARCHER_EFFECT_NONE;
+	int time = 0;
+};
+
 class Enemy_Archer_Arrow {
 public:
 	Enemy_Archer_Arrow(fPoint coor, SDL_Texture* texture, fPoint direction, int deadTimer = ARROW_DEAD_TIMER);
@@ -61,6 +74,8 @@ public:
 	void OnCollision(Collider* yours, Collider* collideWith);
 	void OnCollisionContinue(Collider* yours, Collider* collideWith);
 
+	// STATE MACHINE ====================
+
 	void initIdle();
 	void initWalk();
 	void initAtac();
@@ -81,6 +96,10 @@ public:
 
 	void Walk();
 
+	void AddEffect(ARCHER_EFFECTS effect, int time);
+	void UpdateEffects();
+	// ~~~~~~~~~~~~~~~~~~ STATE MACHINE
+
 	void ChargeAnimations();
 	void ShootArrow(fPoint desviation = fPoint(0, 0));
 
@@ -94,6 +113,7 @@ public:
 	Animation animSmoke;
 
 	std::vector<Enemy_Archer_Arrow*> arrowsVector;
+	std::list<archerEffectStruct*> effectsList;
 
 private:
 	// Fast atac variables

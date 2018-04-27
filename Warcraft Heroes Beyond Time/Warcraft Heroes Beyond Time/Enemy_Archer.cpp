@@ -15,7 +15,7 @@
 
 #define DISTANCE_TO_MOVE		400
 #define DISTANCE_TO_ATAC		150
-#define ATAC_COOLDOWN			1000
+#define ATAC_COOLDOWN			2000
 #define TRI_ATAC_COOLDOWN		2000
 #define FAST_ATAC_COOLDOWN		2000
 #define FAST_ATAC_ARROWS		3
@@ -35,7 +35,6 @@
 Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture, ARCHER_TIER tier) : EnemyEntity(coor, character, texture)
 {
 	this->tier = tier;
-	
 }
 
 bool Enemy_Archer::Start()
@@ -423,7 +422,7 @@ void Enemy_Archer::doWalk()
 		{
 			initIdle();
 		}
-		else if (DistanceToPlayer() < DISTANCE_TO_LITTLEMOVE && cooldownToReLittleMove < SDL_GetTicks() && (App->entities->GetRandomNumber(10) + arrowsShooted) > 7)	// Superar tirada 30% amb suma de fletxes disparades
+		else if (DistanceToPlayer() < DISTANCE_TO_LITTLEMOVE /*&& cooldownToReLittleMove < SDL_GetTicks()*/ && arrowsShooted > 0 )
 		{
 			initLittleMove();
 		}
@@ -531,6 +530,66 @@ void Enemy_Archer::Walk()
 	{
 		iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x + (anim->GetCurrentRect().w / 2), (int)pos.y + (anim->GetCurrentRect().h / 2)));
 		this->pos += fPoint((float)move.x * MOVEMENT_SPEED, (float)move.y * MOVEMENT_SPEED);
+	}
+}
+
+
+void Enemy_Archer::AddEffect(ARCHER_EFFECTS effect, int time)
+{
+	archerEffectStruct* aux = new archerEffectStruct();
+	aux->effect = effect;
+	aux->time = time;
+	effectsList.push_back(aux);
+	switch (effect)		// INITIAL EFFECT
+	{
+	case ARCHER_EFFECT_FREEZE:
+
+		break;
+	case ARCHER_EFFECT_BURNING:
+
+		break;
+	case ARCHER_EFFECT_NONE:
+
+		break;
+	}
+}
+
+void Enemy_Archer::UpdateEffects()
+{
+	std::list<archerEffectStruct*>::iterator it = effectsList.begin();
+	for (; it != effectsList.end(); it++)
+	{
+		if ((*it)->time < SDL_GetTicks())
+		{			// UPDATE
+			switch ((*it)->effect)
+			{
+			case ARCHER_EFFECT_FREEZE:
+
+				break;
+			case ARCHER_EFFECT_BURNING:
+
+				break;
+			case ARCHER_EFFECT_NONE:
+
+				break;
+			}
+		}
+		else
+		{			// END & FINAL EFFECT
+			switch ((*it)->effect)
+			{
+			case ARCHER_EFFECT_FREEZE:
+
+				break;
+			case ARCHER_EFFECT_BURNING:
+
+				break;
+			case ARCHER_EFFECT_NONE:
+
+				break;
+			}
+			effectsList.erase(it++);	// DELETE CONCRETE EFFECT
+		}
 	}
 }
 
