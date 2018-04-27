@@ -36,6 +36,21 @@
 Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture, ARCHER_TIER tier) : EnemyEntity(coor, character, texture)
 {
 	this->tier = tier;
+
+	switch (tier)
+	{
+	case ARCHER_TIER_1:
+		numStats = App->entities->archerT1stats;
+		break;
+	case ARCHER_TIER_2:
+		numStats = App->entities->archerT2stats;
+		break;
+	case ARCHER_TIER_3:
+		numStats = App->entities->archerT3stats;
+		break;
+	}
+
+	//USAR SOLO VARIABLES EN NUMSTATS, SI SE NECESITA ALGUNA MÁS SE COMENTA CON EL EQUIPO Y SE DECIDE SI SE AÑADE. TODO CONFIGURABLE DESDE EL XML.
 }
 
 bool Enemy_Archer::Start()
