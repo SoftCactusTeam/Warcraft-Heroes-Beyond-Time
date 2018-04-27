@@ -47,13 +47,11 @@
 
   </audio>
 
-  <entitySystem difficulty = "normal">
+  <entitySystem>
     <enemies>
-      <footman      hp = "200" speed = "40" damage = "60" dropping_chance = "25" range = "125"  difficulty = "1"  def_hability_chance = ""  strong_attack_chance = ""  vision_area = ""  CD_between_attacks=""/>
-      <archer       hp = "200" speed = "40" damage = "60" dropping_chance = "25" range = "125"  difficulty = "2"  def_hability_chance = ""  strong_attack_chance = ""  vision_area = ""  CD_between_attacks=""/>
-      <wizard       hp = "200" speed = "40" damage = "60" dropping_chance = "25" range = "125"  difficulty = "5"  def_hability_chance = ""  strong_attack_chance = ""  vision_area = ""  CD_between_attacks=""/>
-      <dark_knight  hp = "200" speed = "40" damage = "60" dropping_chance = "25" range = "125"  difficulty = "7"  def_hability_chance = ""  strong_attack_chance = ""  vision_area = ""  CD_between_attacks=""/>
-      <guldan       hp = "200" speed = "40" damage = "60" dropping_chance = "25" range = "125"  difficulty = "7"  def_hability_chance = ""  strong_attack_chance = ""  vision_area = ""  CD_between_attacks=""/>
+      <archer_tier1  speed ="300" damage = "20" hp = "100" arrows_speed= "100" arrows_life = "5" time_between_attacks = "1" time_stunned_after_attack=".5" chance_powerful_attack="50"  vision_range = "100" attack_range ="90" minimal_distance_with_player="50" dropping_chance ="10"/>
+      <archer_tier2  speed ="300" damage = "20" hp = "100" arrows_speed= "100" arrows_life = "5" time_between_attacks = "1" time_stunned_after_attack=".5" chance_powerful_attack="0"   vision_range = "100" attack_range ="90" minimal_distance_with_player="50" dropping_chance ="10"/>
+      <archer_tier3  speed ="300" damage = "20" hp = "100" arrows_speed= "100" arrows_life = "5" time_between_attacks = "1" time_stunned_after_attack=".5" chance_powerful_attack="0"   vision_range = "100" attack_range ="90" minimal_distance_with_player="50" dropping_chance ="10"/>
     </enemies>
 
     <players>
