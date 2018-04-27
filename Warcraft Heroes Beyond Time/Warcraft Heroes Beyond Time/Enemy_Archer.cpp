@@ -55,22 +55,6 @@ Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* textu
 
 bool Enemy_Archer::Start()
 {
-	switch (tier)	// AQUI ES CARREGUEN LES VARIABLES SEGONS EL TIER
-	{
-	case ARCHER_TIER_1:
-		live = ARCHER_LIVE;
-
-		break;
-	case ARCHER_TIER_2:
-		live = ARCHER_LIVE;
-
-		break;
-	case ARCHER_TIER_3:
-		live = ARCHER_LIVE;
-
-		break;
-	}
-
 	ChargeAnimations();
 	state = ARCHER_STATE::ARCHER_IDLE;
 	anim = &animIdle[LookAtPlayer()];
@@ -92,22 +76,25 @@ bool Enemy_Archer::Update(float dt)
 		return true;
 	}
 
+	if (App->entities->checkEntityNearOther(this) == true && state != ARCHER_STATE::ARCHER_LITTLEMOVE)
+		initLittleMove();
+
 	switch (state)
 	{
 	case ARCHER_STATE::ARCHER_IDLE:
-		doIdle();
+			doIdle();
 		break;
 	case ARCHER_STATE::ARCHER_WALK:
-		doWalk();
+			doWalk();
 		break;
 	case ARCHER_STATE::ARCHER_BASIC_ATAC:
-		doAtac();
+			doAtac();
 		break;
 	case ARCHER_STATE::ARCHER_TRI_ATAC:
-		doTriAtac();
+			doTriAtac();
 		break;
 	case ARCHER_STATE::ARCHER_FASTSHOOT_ATAC:
-		doFastAtac();
+			doFastAtac();
 		break;
 	case ARCHER_STATE::ARCHER_BACKJUMP:
 		doBackJump();
@@ -344,7 +331,7 @@ void Enemy_Archer::initLittleMove()
 	int randomX = 0;
 	int randomY = 0;
 	int tileToMove = -1;
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		int randomX = App->entities->GetRandomNumber(TILES_TO_LITTLEMOVE);
 		if (randomX > TILES_TO_LITTLEMOVE / 2)
@@ -375,6 +362,8 @@ void Enemy_Archer::initLittleMove()
 		anim = &animAtac[LookAtPlayer()];
 		anim->Reset();
 		pathVector.Clear();
+		pathVector.CalculatePathAstar(iPoint((int)this->pos.x, (int)this->pos.y), iPoint(posToScape.x * App->map->getTileSize(), posToScape.y* App->map->getTileSize()));
+		pathVector.CalculateWay(iPoint((int)this->pos.x, (int)this->pos.y), iPoint(posToScape.x* App->map->getTileSize(), posToScape.y* App->map->getTileSize()));
 		arrowsShooted = 0;
 		cooldownToReLittleMove = LITTLEMOVEMENT_COOLDOWN + SDL_GetTicks();
 	}
@@ -508,22 +497,22 @@ void Enemy_Archer::doBackJump()
 
 void Enemy_Archer::doLittleMove()
 {
-	if (SDL_GetTicks() > accountantPrincipal && pathVector.isEmpty())
+	if (/*SDL_GetTicks() > accountantPrincipal &&*/ pathVector.isEmpty())
 	{
 		initIdle();
 		return;
 	}
 
-	if (pathVector.isEmpty())
-	{
-		pathVector.CalculatePathAstar(iPoint((int)this->pos.x, (int)this->pos.y), iPoint(posToScape.x * App->map->getTileSize(), posToScape.y* App->map->getTileSize()));
-		pathVector.CalculateWay(iPoint((int)this->pos.x, (int)this->pos.y), iPoint(posToScape.x* App->map->getTileSize(), posToScape.y* App->map->getTileSize()));
-	}
-	else
-	{
+	//if (pathVector.isEmpty())
+	//{
+	//	pathVector.CalculatePathAstar(iPoint((int)this->pos.x, (int)this->pos.y), iPoint(posToScape.x * App->map->getTileSize(), posToScape.y* App->map->getTileSize()));
+	//	pathVector.CalculateWay(iPoint((int)this->pos.x, (int)this->pos.y), iPoint(posToScape.x* App->map->getTileSize(), posToScape.y* App->map->getTileSize()));
+	//}
+	//else
+	//{
 		iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x, (int)pos.y));
 		this->pos += fPoint((float)move.x * MOVEMENT_SPEED, (float)move.y * MOVEMENT_SPEED);
-	}
+	//}
 }
 
 void Enemy_Archer::doDie()
@@ -608,20 +597,6 @@ void Enemy_Archer::UpdateEffects()
 			effectsList.erase(it++);	// DELETE CONCRETE EFFECT
 		}
 	}
-}
-
-bool Enemy_Archer::CollWithOtherArchers()
-{
-	std::list<Entity*>::iterator it = App->entities->entities.begin();
-	for (; it != App->entities->entities.end(); it++)
-	{
-		if (DistanceToObejective((*it)->pos) < anim->GetCurrentRect().w / 2)
-		{
-			initLittleMove();
-			return true;
-		}
-	}
-	return false;
 }
 
 void Enemy_Archer::ShootArrow(fPoint desviation)

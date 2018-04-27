@@ -509,3 +509,23 @@ int EntitySystem::GetRandomNumber(int rang)
 {
 	return rand() % rang;
 }
+
+bool EntitySystem::checkEntityNearOther(Entity * enity)
+{
+	std::list<Entity*>::iterator it = App->entities->entities.begin();
+	for (; it != App->entities->entities.end(); it++)
+	{
+		if (*it != enity)
+		{
+			uint totalX = (*enity).pos.x - (*it)->pos.x;
+			uint totalY = (*enity).pos.y - (*it)->pos.y;
+			uint distance =  sqrt((totalX * totalX) + (totalY * totalY));
+			if (distance < (*enity).anim->GetCurrentRect().w)
+			{
+				printf_s("colliding");
+				return true;
+			}
+		}
+	}
+	return false;
+}

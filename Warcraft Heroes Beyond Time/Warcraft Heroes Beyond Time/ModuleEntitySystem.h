@@ -105,6 +105,11 @@ private:
 	float invpostdamaged = 0.0f;
 	float timepostdead = 0.0f;
 
+	/*to check*/
+
+public:
+	bool checkEntityNearOther(Entity* entity);
+
 };
 
 #endif

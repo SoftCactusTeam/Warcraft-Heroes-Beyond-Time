@@ -98,8 +98,6 @@ public:
 
 	void AddEffect(ARCHER_EFFECTS effect, int time);
 	void UpdateEffects();
-
-	bool CollWithOtherArchers();
 	// ~~~~~~~~~~~~~~~~~~ STATE MACHINE
 
 	void ChargeAnimations();
