@@ -90,13 +90,12 @@ public:
 		timepostdead = this->timepostdead;
 	}
 
-
-
 	std::vector<SDL_Texture*> spritesheetsEntities;
 	int enemiescount = 0;
 
-private:
 	std::list<Entity*>		entities;
+private:
+	//std::list<Entity*>		entities;
 	std::list<Entity*>		toSpawn;
 
 	float dashCD = 0.0f;

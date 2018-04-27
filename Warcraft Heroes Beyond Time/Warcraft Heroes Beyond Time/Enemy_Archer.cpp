@@ -595,6 +595,20 @@ void Enemy_Archer::UpdateEffects()
 	}
 }
 
+bool Enemy_Archer::CollWithOtherArchers()
+{
+	std::list<Entity*>::iterator it = App->entities->entities.begin();
+	for (; it != App->entities->entities.end(); it++)
+	{
+		if (DistanceToObejective((*it)->pos) < anim->GetCurrentRect().w / 2)
+		{
+			initLittleMove();
+			return true;
+		}
+	}
+	return false;
+}
+
 void Enemy_Archer::ShootArrow(fPoint desviation)
 {
 	App->audio->PlayFx(App->audio->ArrowSound);
