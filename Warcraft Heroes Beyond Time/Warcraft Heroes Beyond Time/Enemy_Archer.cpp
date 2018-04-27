@@ -14,24 +14,30 @@
 
 #include "ModuleRender.h"
 
-#define DISTANCE_TO_MOVE		400
-#define DISTANCE_TO_ATAC		150
-#define ATAC_COOLDOWN			2000
-#define TRI_ATAC_COOLDOWN		2000
-#define FAST_ATAC_COOLDOWN		2000
-#define FAST_ATAC_ARROWS		3
-#define	FAST_ATAC_TIME_BETWEEN	100
-#define MOVEMENT_SPEED			3
-#define ARROW_SPEED				10
-#define JUMP_BACK_COOLDOWN		300
-#define DISTANCE_TO_JUMPBACK	50
-#define DISTANCE_TO_LITTLEMOVE	250
-#define LITTLEMOVEMENT_TIME		100
-#define LITTLEMOVEMENT_COOLDOWN	1000
-#define TILES_TO_LITTLEMOVE		14
-#define ARCHER_LIVE				100
-#define TIME_DYING				500
-#define TEMPO_ARROW_ATWALL		500
+#define DISTANCE_TO_MOVE		400		// vision range
+#define DISTANCE_TO_ATAC		150		// atac range
+#define ATAC_COOLDOWN			2000	// time_between_Atacs
+#define MOVEMENT_SPEED			3		// speed
+#define ARROW_SPEED				10		// arrows_speed
+#define ARCHER_LIVE				100		// hp
+
+
+
+#define TRI_ATAC_COOLDOWN		2000	// treure
+#define FAST_ATAC_COOLDOWN		2000	// treure fast atac
+
+
+// time_Stuned_afteratac
+#define FAST_ATAC_ARROWS		3		// treure fast atac
+#define	FAST_ATAC_TIME_BETWEEN	100		// treure fast atac
+#define JUMP_BACK_COOLDOWN		300		// no es fara
+#define DISTANCE_TO_JUMPBACK	50		// no es fara
+#define DISTANCE_TO_LITTLEMOVE	250		// minimal_distance_with_player
+#define LITTLEMOVEMENT_TIME		100		// es deixa aixi
+#define LITTLEMOVEMENT_COOLDOWN	1000	// res
+#define TILES_TO_LITTLEMOVE		14		// es mante
+#define TIME_DYING				500		// es deixa aixi
+#define TEMPO_ARROW_ATWALL		500		// es deixa aixi
 
 Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture, ARCHER_TIER tier) : EnemyEntity(coor, character, texture)
 {
@@ -49,7 +55,7 @@ Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* textu
 		numStats = App->entities->archerT3stats;
 		break;
 	}
-
+	live = numStats.hp;
 	//USAR SOLO VARIABLES EN NUMSTATS, SI SE NECESITA ALGUNA MÁS SE COMENTA CON EL EQUIPO Y SE DECIDE SI SE AÑADE. TODO CONFIGURABLE DESDE EL XML.
 }
 
@@ -257,7 +263,7 @@ void Enemy_Archer::initWalk()
 void Enemy_Archer::initAtac()
 {
 	state = ARCHER_STATE::ARCHER_BASIC_ATAC;
-	accountantPrincipal = SDL_GetTicks() + ATAC_COOLDOWN;
+	accountantPrincipal = SDL_GetTicks() + numStats.time_between_attacks;
 	anim = &animAtac[LookAtPlayer()];
 	anim->Reset();
 	pathVector.Clear();
@@ -402,7 +408,7 @@ void Enemy_Archer::initDie()
 void Enemy_Archer::doIdle()
 {
 	anim = &animIdle[LookAtPlayer()];
-	if (DistanceToPlayer() < DISTANCE_TO_MOVE) {
+	if (DistanceToPlayer() < numStats.vision_range) {
 		initWalk();
 	}
 }
@@ -410,64 +416,34 @@ void Enemy_Archer::doIdle()
 // FUNCIO CENTRAL DE L'ARCHER !!!
 void Enemy_Archer::doWalk()
 {
-	switch (tier)
+	anim = &animWalk[LookAtPlayer()];
+	if (DistanceToPlayer() > numStats.vision_range)
 	{
-	case ARCHER_TIER_1:	// SIMPLE ARCHER
-		anim = &animWalk[LookAtPlayer()];
-		if (DistanceToPlayer() > DISTANCE_TO_MOVE)
-		{
-			initIdle();
-		}
-		else if (DistanceToPlayer() < DISTANCE_TO_LITTLEMOVE && cooldownToReLittleMove < SDL_GetTicks() && (App->entities->GetRandomNumber(10) + arrowsShooted) > 7)	// Superar tirada 30% amb suma de fletxes disparades
-		{
-			initLittleMove();
-		}
-		else if (DistanceToPlayer() < DISTANCE_TO_ATAC && App->entities->GetRandomNumber(10) < 7)	// Superar una tirada de 70%
-		{
-			initAtac();
-		}
-		else
-		{
-			Walk();
-		}
-		break;
-	case ARCHER_TIER_2:	// MID ARCHER
-
-		break;
-	case ARCHER_TIER_3:	// HIGH ARCHER
-		anim = &animWalk[LookAtPlayer()];
-		if (DistanceToPlayer() > DISTANCE_TO_MOVE)
-		{
-			initIdle();
-		}
-		else if (DistanceToPlayer() < DISTANCE_TO_LITTLEMOVE /*&& cooldownToReLittleMove < SDL_GetTicks()*/ && arrowsShooted > 0 )
-		{
-			initLittleMove();
-		}
-		else if (DistanceToPlayer() < DISTANCE_TO_JUMPBACK && App->entities->GetRandomNumber(10) < 7)	// Superar tirada 70%
-		{
-			initBackJump();
-		}
-		else if (DistanceToPlayer() < DISTANCE_TO_ATAC && App->entities->GetRandomNumber(10) < 7)	// Superar una tirada de 70%
-		{
-			initAtac();
-		}
-		else if (DistanceToPlayer() < DISTANCE_TO_ATAC && App->entities->GetRandomNumber(10) < 5)	// Superar una tirada de 50%
-		{
-			initTriAtac();
-		}
-		else if (DistanceToPlayer() < DISTANCE_TO_ATAC && App->entities->GetRandomNumber(10) < 5)	// Superar una tirada de 50%
-		{
-			initFastAtac();
-		}
-		else
-		{
-			Walk();
-		}
-		break;
-	default:
-		tier = ARCHER_TIER_1;
-		break;
+		initIdle();
+	}
+	else if (DistanceToPlayer() < DISTANCE_TO_LITTLEMOVE /*&& cooldownToReLittleMove < SDL_GetTicks()*/ && arrowsShooted > 0)
+	{
+		initLittleMove();
+	}
+	else if (DistanceToPlayer() < DISTANCE_TO_JUMPBACK && App->entities->GetRandomNumber(10) < 7)	// Superar tirada 70%
+	{
+		initBackJump();
+	}
+	else if (DistanceToPlayer() < numStats.attack_range && App->entities->GetRandomNumber(10) < 7)	// Superar una tirada de 70%
+	{
+		initAtac();
+	}
+	else if (DistanceToPlayer() < numStats.attack_range && App->entities->GetRandomNumber(10) < 5)	// Superar una tirada de 50%
+	{
+		initTriAtac();
+	}
+	else if (DistanceToPlayer() < numStats.attack_range && App->entities->GetRandomNumber(10) < 5)	// Superar una tirada de 50%
+	{
+		initFastAtac();
+	}
+	else
+	{
+		Walk();
 	}
 }
 
@@ -515,7 +491,7 @@ void Enemy_Archer::doLittleMove()
 		initIdle();
 	}
 		iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x + (anim->GetCurrentRect().w / 2), (int)pos.y + (anim->GetCurrentRect().h / 2)));
-		this->pos += fPoint((float)move.x * MOVEMENT_SPEED, (float)move.y * MOVEMENT_SPEED);
+		this->pos += fPoint((float)move.x * numStats.speed, (float)move.y * numStats.speed);
 }
 
 void Enemy_Archer::doDie()
@@ -538,7 +514,7 @@ void Enemy_Archer::Walk()
 	else
 	{
 		iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x + (anim->GetCurrentRect().w / 2), (int)pos.y + (anim->GetCurrentRect().h / 2)));
-		this->pos += fPoint((float)move.x * MOVEMENT_SPEED, (float)move.y * MOVEMENT_SPEED);
+		this->pos += fPoint((float)move.x * numStats.speed, (float)move.y * numStats.speed);
 	}
 }
 
@@ -620,7 +596,7 @@ void Enemy_Archer::ShootArrow(fPoint desviation)
 	directionShoot.x /= total;
 	directionShoot.y /= total;
 	fPoint position = fPoint(pos.x + anim->GetCurrentRect().w / 2, pos.y + anim->GetCurrentRect().h / 2);
-	Enemy_Archer_Arrow* newArrow = new Enemy_Archer_Arrow(position, App->entities->spritesheetsEntities[PROJECTILE_SHEET], directionShoot * ARROW_SPEED, 1000);
+	Enemy_Archer_Arrow* newArrow = new Enemy_Archer_Arrow(position, App->entities->spritesheetsEntities[PROJECTILE_SHEET], directionShoot * numStats.arrows_speed, 1000);
 	arrowsVector.push_back(newArrow);
 }
 
