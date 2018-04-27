@@ -27,7 +27,7 @@
 #define DISTANCE_TO_JUMPBACK	50
 #define DISTANCE_TO_LITTLEMOVE	250
 #define LITTLEMOVEMENT_TIME		100
-#define LITTLEMOVEMENT_COOLDOWN	100
+#define LITTLEMOVEMENT_COOLDOWN	1000
 #define TILES_TO_LITTLEMOVE		14
 #define ARCHER_LIVE				100
 #define TIME_DYING				500
@@ -76,7 +76,7 @@ bool Enemy_Archer::Update(float dt)
 		return true;
 	}
 
-	if (App->entities->checkEntityNearOther(this) == true && state != ARCHER_STATE::ARCHER_LITTLEMOVE)
+	if (App->entities->checkEntityNearOther(this) && state != ARCHER_STATE::ARCHER_LITTLEMOVE && pathVector.isEmpty())
 		initLittleMove();
 
 	switch (state)
@@ -331,26 +331,34 @@ void Enemy_Archer::initLittleMove()
 	int randomX = 0;
 	int randomY = 0;
 	int tileToMove = -1;
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 10 && tileToMove == -1; i++)
 	{
 		int randomX = App->entities->GetRandomNumber(TILES_TO_LITTLEMOVE);
+		printf_s("\n%i", randomX);
 		if (randomX > TILES_TO_LITTLEMOVE / 2)
 		{
 			randomX -= TILES_TO_LITTLEMOVE / 2;
 			randomX *= -1;
+			randomX -= 2;
 		}
+		else
+			randomX += 2;
 		int randomY = App->entities->GetRandomNumber(TILES_TO_LITTLEMOVE);
+		printf_s("  %i\n", randomY);
 		if (randomY > TILES_TO_LITTLEMOVE / 2)
 		{
 			randomY -= TILES_TO_LITTLEMOVE / 2;
 			randomY *= -1;
+			randomY -= 2;
 		}
+		else
+			randomY += 2;
 
 		int possibleTile = App->path->ExistWalkableAtPos(iPoint((int)pos.x / App->map->getTileSize() - randomX, (int)pos.y / App->map->getTileSize() - randomY));
 		if (possibleTile != -1)
-			if (App->scene->player->DistanceToObejective(App->path->posAtConcreteTile(possibleTile)) < App->scene->player->DistanceToObejective(App->path->posAtConcreteTile(tileToMove)))
- 				tileToMove = possibleTile;
-			else if (tileToMove == -1)
+			//if (App->scene->player->DistanceToObejective(App->path->posAtConcreteTile(possibleTile)) < App->scene->player->DistanceToObejective(App->path->posAtConcreteTile(tileToMove)))
+ 			//	tileToMove = possibleTile;
+			//else if (tileToMove == -1)
 				tileToMove = possibleTile;
 	}
 
@@ -359,18 +367,22 @@ void Enemy_Archer::initLittleMove()
 		posToScape = { iPoint((int)pos.x / App->map->getTileSize() - randomX , (int)pos.y / App->map->getTileSize() - randomY) };
 		state = ARCHER_STATE::ARCHER_LITTLEMOVE;
 		accountantPrincipal = SDL_GetTicks() + LITTLEMOVEMENT_TIME;
-		anim = &animAtac[LookAtPlayer()];
+		anim = &animWalk[LookAtPlayer()];
 		anim->Reset();
-		pathVector.Clear();
-		pathVector.CalculatePathAstar(iPoint((int)this->pos.x, (int)this->pos.y), iPoint(posToScape.x * App->map->getTileSize(), posToScape.y* App->map->getTileSize()));
-		pathVector.CalculateWay(iPoint((int)this->pos.x, (int)this->pos.y), iPoint(posToScape.x* App->map->getTileSize(), posToScape.y* App->map->getTileSize()));
+		pathVector.CalculatePathAstar(iPoint(((int)pos.x + (anim->GetCurrentRect().w / 2)), ((int)pos.y + (anim->GetCurrentRect().h / 2))), iPoint(posToScape.x * App->map->getTileSize(), posToScape.y* App->map->getTileSize()));
+		pathVector.CalculateWay(iPoint(((int)pos.x + (anim->GetCurrentRect().w / 2)), ((int)pos.y + (anim->GetCurrentRect().h / 2))), iPoint(posToScape.x* App->map->getTileSize(), posToScape.y* App->map->getTileSize()));
+
+		//pathVector.CalculatePathAstar(iPoint((int)this->pos.x, (int)this->pos.y), iPoint(posToScape.x * App->map->getTileSize(), posToScape.y* App->map->getTileSize()));
+		//pathVector.CalculateWay(iPoint((int)this->pos.x, (int)this->pos.y), iPoint(posToScape.x* App->map->getTileSize(), posToScape.y* App->map->getTileSize()));
 		arrowsShooted = 0;
 		cooldownToReLittleMove = LITTLEMOVEMENT_COOLDOWN + SDL_GetTicks();
+		printf_s("\t :: TROBA NOU CAMI\n");
 	}
 	else
 	{
-		state = ARCHER_STATE::ARCHER_IDLE;
-		pathVector.Clear();
+		initBackJump();
+		/*state = ARCHER_STATE::ARCHER_IDLE;
+		pathVector.Clear();*/
 	}
 }
 
@@ -497,22 +509,13 @@ void Enemy_Archer::doBackJump()
 
 void Enemy_Archer::doLittleMove()
 {
-	if (/*SDL_GetTicks() > accountantPrincipal &&*/ pathVector.isEmpty())
+	if (pathVector.isEmpty())
 	{
+		printf_s("\tACABA LA COSA\n");
 		initIdle();
-		return;
 	}
-
-	//if (pathVector.isEmpty())
-	//{
-	//	pathVector.CalculatePathAstar(iPoint((int)this->pos.x, (int)this->pos.y), iPoint(posToScape.x * App->map->getTileSize(), posToScape.y* App->map->getTileSize()));
-	//	pathVector.CalculateWay(iPoint((int)this->pos.x, (int)this->pos.y), iPoint(posToScape.x* App->map->getTileSize(), posToScape.y* App->map->getTileSize()));
-	//}
-	//else
-	//{
-		iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x, (int)pos.y));
+		iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x + (anim->GetCurrentRect().w / 2), (int)pos.y + (anim->GetCurrentRect().h / 2)));
 		this->pos += fPoint((float)move.x * MOVEMENT_SPEED, (float)move.y * MOVEMENT_SPEED);
-	//}
 }
 
 void Enemy_Archer::doDie()
