@@ -14,6 +14,9 @@
 
 #include "ModuleRender.h"
 
+
+///// xml done
+
 #define DISTANCE_TO_MOVE		400		// vision range
 #define DISTANCE_TO_ATAC		150		// atac range
 #define ATAC_COOLDOWN			2000	// time_between_Atacs
@@ -21,7 +24,7 @@
 #define ARROW_SPEED				10		// arrows_speed
 #define ARCHER_LIVE				100		// hp
 
-
+/////////////////
 
 #define TRI_ATAC_COOLDOWN		2000	// treure
 #define FAST_ATAC_COOLDOWN		2000	// treure fast atac
@@ -61,7 +64,7 @@ Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* textu
 
 bool Enemy_Archer::Start()
 {
-	ChargeAnimations();
+	LoadAnimations();
 	state = ARCHER_STATE::ARCHER_IDLE;
 	anim = &animIdle[LookAtPlayer()];
 	return true;
@@ -337,6 +340,7 @@ void Enemy_Archer::initLittleMove()
 	int randomX = 0;
 	int randomY = 0;
 	int tileToMove = -1;
+	
 	for (int i = 0; i < 10 && tileToMove == -1; i++)
 	{
 		int randomX = App->entities->GetRandomNumber(TILES_TO_LITTLEMOVE);
@@ -421,7 +425,7 @@ void Enemy_Archer::doWalk()
 	{
 		initIdle();
 	}
-	else if (DistanceToPlayer() < DISTANCE_TO_LITTLEMOVE /*&& cooldownToReLittleMove < SDL_GetTicks()*/ && arrowsShooted > 0)
+	else if (DistanceToPlayer() < numStats.minimal_distance_player /*&& cooldownToReLittleMove < SDL_GetTicks()*/ && arrowsShooted > 0)
 	{
 		initLittleMove();
 	}
@@ -516,6 +520,7 @@ void Enemy_Archer::Walk()
 		iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x + (anim->GetCurrentRect().w / 2), (int)pos.y + (anim->GetCurrentRect().h / 2)));
 		this->pos += fPoint((float)move.x * numStats.speed, (float)move.y * numStats.speed);
 	}
+
 }
 
 
@@ -660,7 +665,7 @@ void Enemy_Archer_Arrow::Finish()
 	App->colliders->deleteCollider(arrowCollider);
 }
 
-void Enemy_Archer::ChargeAnimations()
+void Enemy_Archer::LoadAnimations()
 {
 	animIdle[FIXED_ANGLE::UP].PushBack({ 47,491,42,48 });
 	animIdle[FIXED_ANGLE::UP].speedFactor = 9.0f;

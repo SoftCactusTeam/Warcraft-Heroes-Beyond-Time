@@ -3,6 +3,7 @@
 #include "ModuleProjectiles.h"
 #include "Projectile.h"
 #include "FelBall.h"
+#include "ArcherArrow.h"
 
 #include <assert.h>
 
@@ -124,6 +125,9 @@ void ModuleProjectiles::AddProjectile(const ProjectileInfo* projectile, Projecti
 	{
 	case Projectile_type::fel_ball:
 		newProjectile = new FelBall(new FelBallInfo(*(FelBallInfo*)projectile), type);
+		break;
+	case Projectile_type::archer_arrow:
+		newProjectile = new ArcherArrow(new ArcherArrow(*(ArcherArrowInfo*)projectile), type);
 		break;
 	}
 

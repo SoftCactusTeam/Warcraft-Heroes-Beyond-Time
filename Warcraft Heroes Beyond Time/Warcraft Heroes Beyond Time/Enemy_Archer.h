@@ -100,7 +100,7 @@ public:
 	void UpdateEffects();
 	// ~~~~~~~~~~~~~~~~~~ STATE MACHINE
 
-	void ChargeAnimations();
+	void LoadAnimations();
 	void ShootArrow(fPoint desviation = fPoint(0, 0));
 
 public:

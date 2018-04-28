@@ -49,7 +49,7 @@
 
   <entitySystem>
     <enemies>
-      <archer_tier1  speed ="300" damage = "20" hp = "100" arrows_speed= "100" arrows_life = "5" time_between_attacks = "1" time_stunned_after_attack=".5" chance_powerful_attack="50"  vision_range = "100" attack_range ="90" minimal_distance_with_player="50" dropping_chance ="10"/>
+      <archer_tier1  speed ="3" damage = "20" hp = "100" arrows_speed= "10" arrows_life = "5" time_between_attacks = "20" time_stunned_after_attack=".5" chance_powerful_attack="50"  vision_range = "100" attack_range ="90" minimal_distance_with_player="250" dropping_chance ="10"/>
       <archer_tier2  speed ="300" damage = "20" hp = "100" arrows_speed= "100" arrows_life = "5" time_between_attacks = "1" time_stunned_after_attack=".5" chance_powerful_attack="0"   vision_range = "100" attack_range ="90" minimal_distance_with_player="50" dropping_chance ="10"/>
       <archer_tier3  speed ="300" damage = "20" hp = "100" arrows_speed= "100" arrows_life = "5" time_between_attacks = "1" time_stunned_after_attack=".5" chance_powerful_attack="0"   vision_range = "100" attack_range ="90" minimal_distance_with_player="50" dropping_chance ="10"/>
     </enemies>

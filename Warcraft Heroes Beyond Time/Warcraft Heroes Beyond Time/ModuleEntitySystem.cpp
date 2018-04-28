@@ -353,7 +353,7 @@ void EntitySystem::AddEnemy(fPoint coor, ENEMY_TYPE type)
 		App->colliders->AddCollider({ 20,20,32,32 }, Collider::ColliderType::ENTITY, (Entity*)newEntity);
 		break;
 	case ENEMY_TYPE::ARCHER:
-		newEntity = new Enemy_Archer(coor, ENEMY_TYPE::ARCHER, spritesheetsEntities[ARCHER_SHEET], ARCHER_TIER_3);
+		newEntity = new Enemy_Archer(coor, ENEMY_TYPE::ARCHER, spritesheetsEntities[ARCHER_SHEET], ARCHER_TIER_1);
 		App->colliders->AddCollider({ -16+20,-16+20,32,32 }, Collider::ColliderType::ENTITY, (Entity*)newEntity);
 		break;
 	case ENEMY_TYPE::MAGE:
