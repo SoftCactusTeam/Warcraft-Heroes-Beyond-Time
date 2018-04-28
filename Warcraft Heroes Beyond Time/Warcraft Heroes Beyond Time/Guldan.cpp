@@ -5,6 +5,9 @@
 #include "Geyser.h"
 
 #include "ModuleInput.h"
+#include "ModulePrinter.h"
+#include "ModuleMapGenerator.h"
+
 
 Guldan::Guldan(fPoint coor, BossType type, SDL_Texture* texture) : BossEntity(coor, type, texture)
 {
@@ -116,6 +119,8 @@ Guldan::Guldan(fPoint coor, BossType type, SDL_Texture* texture) : BossEntity(co
 	numStats = App->entities->guldanstats;
 
 	isGuldan = true;
+
+	numStats.hp = 100;
 }
 
 Guldan::~Guldan()
@@ -126,13 +131,6 @@ bool Guldan::Start()
 {
 	statesBoss = BossStates::IDLE;
 
-	GeyserInfo info;
-	info.life = 100000.0f;
-	info.pos = pos;
-	info.pos.y += 50.0f;
-	info.layer = 5;
-	App->projectiles->AddProjectile(&info, Projectile_type::geyser);
-
 	return true;
 }
 
@@ -142,9 +140,30 @@ bool Guldan::Update(float dt)
 	{
 	case BossStates::IDLE:
 			
-		if (App->input->GetKey(SDL_SCANCODE_I))
+		if (App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
+		{
+			GeneratGeyser(GeyserType::FOLLOW_PLAYER);
+			break;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+		{
+			GeneratGeyser(GeyserType::STOP_IN_POS);
+			break;
+		}
+
+
+		if (App->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
 		{
 			statesBoss = BossStates::TELEPORT;
+			anim = &teleport;
+			break;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
+		{
+			statesBoss = BossStates::TELEPORT;
+			teleportBase = true;
 			anim = &teleport;
 			break;
 		}
@@ -292,10 +311,15 @@ bool Guldan::Update(float dt)
 			{
 				anim->Reset();
 				int posToTp = 0;
-				while (pointToTelerpot[posToTp] == pos)
-					posToTp = rand() % 5;
-				pos.x = pointToTelerpot[posToTp].x;
-				pos.y = pointToTelerpot[posToTp].y;
+				if (!teleportBase)
+				{
+					while (pointToTelerpot[posToTp] == pos)
+						posToTp = rand() % 5;
+					pos.x = pointToTelerpot[posToTp].x;
+					pos.y = pointToTelerpot[posToTp].y;
+				}
+				else
+					pos = GULDAN_BASE;
 				anim = &inverseTeleport;
 			}
 		}
@@ -306,6 +330,7 @@ bool Guldan::Update(float dt)
 				anim->Reset();
 				anim = &idle;
 				statesBoss = BossStates::IDLE;
+				teleportBase = false;
 				break;
 			}
 		}
@@ -402,6 +427,28 @@ void Guldan::GenerateFelBalls(FellBallsTypes type, float angleToIncrease) const
 	}
 }
 
+void Guldan::GeneratGeyser(GeyserType type) const
+{
+	GeyserInfo info;
+	info.pos = { 0,0 };
+	info.layer = 5;
+
+	switch (type)
+	{
+	case GeyserType::FOLLOW_PLAYER:
+		info.geyser_movement = GeyserInfo::Geyser_style::follow_player;
+		break;
+
+	case GeyserType::STOP_IN_POS:
+		iPoint aux_point = App->map->GetRandomBossPoint();
+		info.pos = { (float)aux_point.x * 48, (float)aux_point.y * 48 };
+		info.geyser_movement = GeyserInfo::Geyser_style::stay_in_pos;
+		break;
+	}
+
+	App->projectiles->AddProjectile(&info, Projectile_type::geyser);
+}
+
 fPoint Guldan::SetSpawnPointByAngle(fPoint pointToRotate, fPoint rotationPivot, double angle, double radius) const
 {
 	angle = DEG_2_RAD(angle);
@@ -422,4 +469,13 @@ fPoint Guldan::SetSpawnPointByAngle(fPoint pointToRotate, fPoint rotationPivot, 
 	toReturn.y = sin(angle) * difference.x + cos(angle) * difference.y;
 
 	return fPoint(toReturn.x + rotationPivot.x, toReturn.y + rotationPivot.y);
+}
+
+bool Guldan::Draw()
+{
+	bool ret = true;
+
+	ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), texture, anim->GetCurrentFrame(), 5, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot());
+
+	return ret;
 }

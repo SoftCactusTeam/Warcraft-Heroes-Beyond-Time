@@ -64,6 +64,7 @@ public:
 	bool CleanUp();
 	iPoint GetRandomValidPoint();
 	iPoint GetRandomValidPointProxy(int distance, int proxyDistance);
+	iPoint GetRandomBossPoint();
 
 	void getSize(uint& w, uint& h);
 	int getTileSize();

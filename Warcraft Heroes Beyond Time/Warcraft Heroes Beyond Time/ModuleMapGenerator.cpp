@@ -96,6 +96,17 @@ iPoint MapGenerator::GetRandomValidPointProxy(int distance, int proxyDistance)
 	return nodes[randNum]->pos;
 }
 
+iPoint MapGenerator::GetRandomBossPoint()
+{
+	int randNum = 0;
+
+	do
+		randNum = rand() % ((nodes.size() - 1) + 1);
+	while (nodes[randNum]->layerBelow != -2);
+
+	return nodes[randNum]->pos;
+}
+
 bool MapGenerator::PostUpdate()
 {
 	return DrawMap();
