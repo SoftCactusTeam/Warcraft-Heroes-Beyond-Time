@@ -365,6 +365,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 				}
 
 				actual_scene = Stages::MAIN_MENU;
+				lvlIndex = 0;
 				paused = false;
 				restart = true;
 				break;

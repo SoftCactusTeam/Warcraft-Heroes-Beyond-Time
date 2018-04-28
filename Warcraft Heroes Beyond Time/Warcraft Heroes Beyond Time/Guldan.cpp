@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleProjectiles.h"
 #include "FelBall.h"
+#include "Geyser.h"
 
 #include "ModuleInput.h"
 
@@ -125,6 +126,13 @@ bool Guldan::Start()
 {
 	statesBoss = BossStates::IDLE;
 
+	GeyserInfo info;
+	info.life = 100000.0f;
+	info.pos = pos;
+	info.pos.y += 50.0f;
+	info.layer = 5;
+	App->projectiles->AddProjectile(&info, Projectile_type::geyser);
+
 	return true;
 }
 
@@ -134,6 +142,13 @@ bool Guldan::Update(float dt)
 	{
 	case BossStates::IDLE:
 			
+		if (App->input->GetKey(SDL_SCANCODE_I))
+		{
+			statesBoss = BossStates::TELEPORT;
+			anim = &teleport;
+			break;
+		}
+
 		if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
 		{
 			statesBoss = BossStates::GENERATINGBALLS;
@@ -268,6 +283,33 @@ bool Guldan::Update(float dt)
 			}
 		}
 		break;
+
+	case BossStates::TELEPORT:
+
+		if (anim == &teleport)
+		{
+			if (anim->Finished())
+			{
+				anim->Reset();
+				int posToTp = 0;
+				while (pointToTelerpot[posToTp] == pos)
+					posToTp = rand() % 5;
+				pos.x = pointToTelerpot[posToTp].x;
+				pos.y = pointToTelerpot[posToTp].y;
+				anim = &inverseTeleport;
+			}
+		}
+		else
+		{
+			if (anim->Finished())
+			{
+				anim->Reset();
+				anim = &idle;
+				statesBoss = BossStates::IDLE;
+				break;
+			}
+		}
+			break;
 	}
 
 	// spiral
