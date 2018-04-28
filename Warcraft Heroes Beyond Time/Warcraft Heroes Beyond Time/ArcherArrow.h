@@ -12,7 +12,7 @@
 struct ArcherArrowInfo : public ProjectileInfo
 {
 	ArcherArrowInfo() {};
-	ArcherArrowInfo(const ArcherArrowInfo& info) : ProjectileInfo((const ProjectileInfo&)info), rotationPivot(info.rotationPivot), angle(info.angle), radiusToIncrease(info.radiusToIncrease), startRadius(info.startRadius), fel_movement(info.fel_movement) {};
+	ArcherArrowInfo(const ArcherArrowInfo& info) : ProjectileInfo((const ProjectileInfo&)info), rotationPivot(info.rotationPivot), angle(info.angle), radiusToIncrease(info.radiusToIncrease), startRadius(info.startRadius) {};
 
 	fPoint rotationPivot = { 0.0f,0.0f };
 	double angle = 0.0f;
@@ -43,7 +43,6 @@ private:
 	{
 		no_anim = -1,
 		moving_anim,
-		back_anim,
 		max_anim
 	};
 

@@ -11,10 +11,6 @@ ArcherArrow::ArcherArrow(const ArcherArrowInfo* info, Projectile_type type) : Pr
 	arrowAnims[(uint)ArrowAnimations::moving_anim].PushBack({ 36,33,14,14 });
 	arrowAnims[(uint)ArrowAnimations::moving_anim].speedFactor = 4.5f;
 
-	arrowAnims[(uint)ArrowAnimations::back_anim].PushBack({ 21,48,14,14 });
-	arrowAnims[(uint)ArrowAnimations::back_anim].PushBack({ 36,48,14,14 });
-	//felAnims[(uint)FelAnimations::back_anim].speedFactor = 4.5f;
-
 	actualAnim = &arrowAnims[(uint)ArrowAnimations::moving_anim];
 
 	toData = (ArcherArrowInfo*)info;
@@ -28,55 +24,6 @@ ArcherArrow::~ArcherArrow()
 bool ArcherArrow::Update(float dt)
 {
 	bool ret = true;
-
-	switch (toData->fel_movement)
-	{
-	case ArcherArrowInfo::fel_ball_movement::odd_even_type:
-
-		timer += 1.0f * dt;
-
-		if (timer <= TIME_ODD_EVEN)
-		{
-			toData->startRadius += toData->radiusToIncrease * dt;
-			data->pos = RotateAround(data->pos, toData->rotationPivot, 0.0f, toData->startRadius);
-		}
-		else
-		{
-			toData->startRadius += (toData->radiusToIncrease - RADIUS_DECREASE_ODD_EVEN) * dt;
-			data->pos = RotateAround(data->pos, toData->rotationPivot, toData->angle * dt, toData->startRadius);
-		}
-
-		break;
-
-	case ArcherArrowInfo::fel_ball_movement::complete_circle:
-	case ArcherArrowInfo::fel_ball_movement::hexagon:
-
-		toData->startRadius += toData->radiusToIncrease * dt;
-		data->pos = RotateAround(data->pos, toData->rotationPivot, 0.0f, toData->startRadius);
-
-		break;
-
-	case ArcherArrowInfo::fel_ball_movement::spiral:
-
-		if (App->scene->guldan->GetTimeToComeBackSpiral() < TIME_UNTIL_BALLS_BACK_SPIRAL)
-		{
-			toData->startRadius += toData->radiusToIncrease * dt;
-			data->pos = RotateAround(data->pos, toData->rotationPivot, 0.0f, toData->startRadius);
-		}
-		else
-		{
-			actualAnim = &felAnims[(uint)FelAnimations::back_anim];
-			toData->startRadius -= 75.0f * dt;
-			data->pos = RotateAround(data->pos, toData->rotationPivot, 0.0f, toData->startRadius);
-		}
-
-		if (fPoint(App->scene->guldan->pos.x + 34, App->scene->guldan->pos.y + 34).DistanceTo(data->pos) < DISTANCE_TO_DELETE_FROM_GULDAN_SPIRAL)
-			App->projectiles->DestroyProjectile(this);
-
-		break;
-	}
-
-	DecreaseLifePerTime(dt);
 
 	actualAnim->speed = actualAnim->speedFactor * dt;
 
@@ -100,6 +47,6 @@ void ArcherArrow::OnCollisionContinue(Collider* yours, Collider* collideWith)
 {
 }
 
-void FelBall::OnCollisionLeave(Collider* yours, Collider* collideWith)
+void ArcherArrow::OnCollisionLeave(Collider* yours, Collider* collideWith)
 {
 }

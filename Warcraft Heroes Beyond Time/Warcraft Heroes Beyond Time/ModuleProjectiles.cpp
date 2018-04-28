@@ -127,7 +127,7 @@ void ModuleProjectiles::AddProjectile(const ProjectileInfo* projectile, Projecti
 		newProjectile = new FelBall(new FelBallInfo(*(FelBallInfo*)projectile), type);
 		break;
 	case Projectile_type::archer_arrow:
-		newProjectile = new ArcherArrow(new ArcherArrow(*(ArcherArrowInfo*)projectile), type);
+		newProjectile = new ArcherArrow(new ArcherArrowInfo(*(ArcherArrowInfo*)projectile), type);
 		break;
 	}
 
