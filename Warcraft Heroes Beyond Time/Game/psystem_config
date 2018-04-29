@@ -42,10 +42,10 @@
         <rotSpeed value ="0" randMin = "-1" randMax ="1"/>
         <startSpeed value ="200" randMin = "0" randMax ="1"/>
         <endSpeed value ="100" randMin = "0" randMax ="1"/>
-        <startSize value ="30" randMin ="0" randMax ="1"/>
-        <endSize value =" 15" randMin ="1" randMax ="1"/>
+        <startSize value ="25" randMin ="0" randMax ="1"/>
+        <endSize value =" 10" randMin ="1" randMax ="1"/>
         <emitNumber value ="1"/>
-        <emitVariance value ="2" randMin ="0" randMax ="1"/>
+        <emitVariance value ="0" randMin ="0" randMax ="1"/>
         <maxParticleLife value ="500"  randMin ="0" randMax ="1"/>
         <textureRect x="0" y="0" w="128" h="128"/>
         <startColor r ="255" g="100" b="0" a="255"/>
