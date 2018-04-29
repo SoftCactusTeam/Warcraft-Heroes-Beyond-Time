@@ -42,9 +42,11 @@ bool ChestEntity::Start()
 	anim = &chest;
 
 	col = App->colliders->AddCollider({ 9,31,20,20 }, Collider::ColliderType::ENTITY, this);
+	physicalCol = App->colliders->AddCollider({ 9 + (int)pos.x, 31 + (int)pos.y, 20, 20 }, Collider::ColliderType::WALL, nullptr);
 
 	return true;
 }
+
 
 bool ChestEntity::Update(float dt)
 {
@@ -74,6 +76,11 @@ bool ChestEntity::Update(float dt)
 bool ChestEntity::Finish() 
 { 
 	App->colliders->deleteCollider(col);
+	App->colliders->deleteCollider(physicalCol);
+
+	col = nullptr;
+	physicalCol = nullptr;
+
 	return true; 
 }
 
