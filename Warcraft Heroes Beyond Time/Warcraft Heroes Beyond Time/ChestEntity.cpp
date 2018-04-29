@@ -54,8 +54,11 @@ bool ChestEntity::Update(float dt)
 	anim->speed = chest.speedFactor * dt;
 
 	
-	if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 222, 82, 38, 65 })))
+	if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 183, 82, 38, 65 })) && !chestSoundPlayed)
+	{
 		App->audio->PlayFx(App->audio->OpeningChestFX);
+		chestSoundPlayed = true;
+	}
 
 	if (opened && anim->Finished() && !selection_created)
 	{
