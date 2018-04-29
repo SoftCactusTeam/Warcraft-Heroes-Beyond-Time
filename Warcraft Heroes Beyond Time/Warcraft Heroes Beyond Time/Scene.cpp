@@ -512,29 +512,29 @@ void Scene::CreatePauseMenu()
 	PauseMenu = (GUIWindow*)App->gui->CreateGUIWindow(localPos, WoodWindow, this);
 	PauseMenu->blackBackground = true;
 
-	Button* Resume = (Button*)App->gui->CreateButton({ 249 / 2 - 158 / 2, 40 }, BType::RESUME, this, PauseMenu);
+	Button* Resume = (Button*)App->gui->CreateButton({ 45, 70 }, BType::RESUME, this, PauseMenu);
 
 	LabelInfo defLabel1;
 	defLabel1.color = White;
 	defLabel1.fontName = "LifeCraft80";
 	defLabel1.text = "Resume";
-	App->gui->CreateLabel({ 46,10 }, defLabel1, Resume, this);
+	App->gui->CreateLabel({ 50,10 }, defLabel1, Resume, this);
 
-	Button* MainMenu = (Button*)App->gui->CreateButton({ 249 / 2 - 158 / 2, 120 }, BType::GO_MMENU, this, PauseMenu);
+	Button* MainMenu = (Button*)App->gui->CreateButton({ 45, 120 }, BType::GO_MMENU, this, PauseMenu);
 
 	LabelInfo defLabel2;
 	defLabel2.color = White;
-	defLabel2.fontName = "LifeCraft46";
-	defLabel2.text = "Return to the Main Menu";
-	App->gui->CreateLabel({ 18,15 }, defLabel2, MainMenu, this);
+	defLabel2.fontName = "LifeCraft80";
+	defLabel2.text = "Quit to Menu";
+	App->gui->CreateLabel({ 26,10 }, defLabel2, MainMenu, this);
 
-	Button* SaveAndExit = (Button*)App->gui->CreateButton({ 249 / 2 - 158 / 2, 200 }, BType::EXIT_GAME, this, PauseMenu);
+	Button* SaveAndExit = (Button*)App->gui->CreateButton({ 45, 170 }, BType::EXIT_GAME, this, PauseMenu);
 
 	LabelInfo defLabel3;
 	defLabel3.color = White;
 	defLabel3.fontName = "LifeCraft80";
 	defLabel3.text = "Save and Exit";
-	App->gui->CreateLabel({ 23,10 }, defLabel3, SaveAndExit, this);
+	App->gui->CreateLabel({ 22,10 }, defLabel3, SaveAndExit, this);
 }
 
 void Scene::AddCommands()
