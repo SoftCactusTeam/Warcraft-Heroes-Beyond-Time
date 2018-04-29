@@ -12,7 +12,8 @@ struct ProjectileInfo;
 enum Projectile_type
 {
 	no_type = -1,
-	fel_ball
+	fel_ball,
+	geyser
 };
 
 class ModuleProjectiles : public Module

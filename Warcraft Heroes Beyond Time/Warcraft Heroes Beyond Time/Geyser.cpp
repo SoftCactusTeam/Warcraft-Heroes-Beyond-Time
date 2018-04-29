@@ -5,7 +5,31 @@
 
 Geyser::Geyser(const GeyserInfo* info, Projectile_type type) : Projectile(info, type)
 {
-	geyAnims[(uint)GeyserAnimations::moving_anim].PushBack({ 21,33,14,14 });
+	geyAnims[(uint)GeyserAnimations::moving_anim].PushBack({ 297,3,49,74 });
+	geyAnims[(uint)GeyserAnimations::moving_anim].PushBack({ 346,3,49,74 });
+	geyAnims[(uint)GeyserAnimations::moving_anim].PushBack({ 395,3,49,74 });
+	geyAnims[(uint)GeyserAnimations::moving_anim].PushBack({ 444,3,49,74 });
+	geyAnims[(uint)GeyserAnimations::moving_anim].PushBack({ 3,79,49,74 });
+	geyAnims[(uint)GeyserAnimations::moving_anim].PushBack({ 52,79,49,74 });
+	geyAnims[(uint)GeyserAnimations::moving_anim].PushBack({ 101,79,49,74 });
+	geyAnims[(uint)GeyserAnimations::moving_anim].PushBack({ 150,79,49,74 });
+	geyAnims[(uint)GeyserAnimations::moving_anim].PushBack({ 199,79,49,74 });
+	geyAnims[(uint)GeyserAnimations::moving_anim].PushBack({ 248,79,49,74 });
+	geyAnims[(uint)GeyserAnimations::moving_anim].PushBack({ 297,79,49,74 });
+	geyAnims[(uint)GeyserAnimations::moving_anim].PushBack({ 346,79,49,74 });
+	geyAnims[(uint)GeyserAnimations::moving_anim].PushBack({ 395,79,49,74 });
+	geyAnims[(uint)GeyserAnimations::moving_anim].PushBack({ 444,79,49,74 });
+	geyAnims[(uint)GeyserAnimations::moving_anim].PushBack({ 3,155,49,74 });
+	geyAnims[(uint)GeyserAnimations::moving_anim].PushBack({ 52,155,49,74 });
+	geyAnims[(uint)GeyserAnimations::moving_anim].PushBack({ 101,155,49,74 });
+	geyAnims[(uint)GeyserAnimations::moving_anim].PushBack({ 150,155,49,74 });
+	geyAnims[(uint)GeyserAnimations::moving_anim].PushBack({ 199,155,49,74 });
+	geyAnims[(uint)GeyserAnimations::moving_anim].PushBack({ 248,155,49,74 });
+	geyAnims[(uint)GeyserAnimations::moving_anim].PushBack({ 297,155,49,74 });
+	geyAnims[(uint)GeyserAnimations::moving_anim].PushBack({ 346,155,49,74 });
+	geyAnims[(uint)GeyserAnimations::moving_anim].PushBack({ 395,155,49,74 });
+	geyAnims[(uint)GeyserAnimations::moving_anim].PushBack({ 444,155,49,74 });
+	geyAnims[(uint)GeyserAnimations::moving_anim].speedFactor = 9.0f;
 
 	actualAnim = &geyAnims[(uint)GeyserAnimations::moving_anim];
 
@@ -20,6 +44,8 @@ Geyser::~Geyser()
 bool Geyser::Update(float dt)
 {
 	bool ret = true;
+
+	actualAnim->speed = actualAnim->speedFactor * dt;
 
 	return ret;
 }

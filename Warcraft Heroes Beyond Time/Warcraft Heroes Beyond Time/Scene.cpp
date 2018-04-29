@@ -148,7 +148,7 @@ bool Scene::Start()
 				iPoint chestPos = App->map->GetRandomValidPointProxy(30, 5);
 
 				if (!App->items->isPoolEmpty())
-					lvlChest = App->entities->AddChest({ (float)chestPos.x * 46,(float)chestPos.y * 46 }, MID_CHEST);
+					lvlChest = App->entities->AddChest({ (float)chestPos.x * 46, (float)chestPos.y * 46 - 31 }, MID_CHEST);
 				else
 					lvlChest = nullptr;
 			}
@@ -365,6 +365,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 				}
 
 				actual_scene = Stages::MAIN_MENU;
+				lvlIndex = 0;
 				paused = false;
 				restart = true;
 				break;
