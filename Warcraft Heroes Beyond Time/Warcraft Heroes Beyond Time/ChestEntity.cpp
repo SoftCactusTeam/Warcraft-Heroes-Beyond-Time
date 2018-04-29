@@ -35,8 +35,6 @@ ChestEntity::ChestEntity(fPoint coor, CHEST_TYPE type, SDL_Texture* texture) : S
 
 	chest.speedFactor = 0.0f;
 	chest.loop = false;
-
-	
 }
 
 bool ChestEntity::Start()

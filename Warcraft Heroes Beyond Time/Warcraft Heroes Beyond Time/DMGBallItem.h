@@ -3,7 +3,7 @@
 
 #include "Item.h"
 
-#define CLOACK_ICON {1,150,28,32} //The rect from the texture of your gui icon
+#define CLOACK_ICON {158,176,16,16} //The rect from the texture of your gui icon
 
 class Collider;
 
