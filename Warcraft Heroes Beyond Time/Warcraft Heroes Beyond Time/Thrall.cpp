@@ -373,7 +373,7 @@ void Thrall::UpdateCollider()
 	if (anim == &idleUp)
 	{
 		wallCol->rectArea.x = 7;
-		wallCol->rectArea.y = 0;
+		wallCol->rectArea.y = 10;
 		wallCol->rectArea.w = 15;
 		wallCol->rectArea.h = 23;
 
@@ -445,7 +445,7 @@ void Thrall::UpdateCollider()
 	else if (anim == &upRight)
 	{
 		wallCol->rectArea.x = 5;
-		wallCol->rectArea.y = 0;
+		wallCol->rectArea.y = 10;
 		wallCol->rectArea.w = 17;
 		wallCol->rectArea.h = 23;
 
@@ -457,7 +457,12 @@ void Thrall::UpdateCollider()
 	else if (anim == &up || anim == &down)
 	{
 		wallCol->rectArea.x = 5;
-		wallCol->rectArea.y = 0;
+
+		if (anim == &up)
+			wallCol->rectArea.y = 10;
+		else
+			wallCol->rectArea.y = 0;
+	
 		wallCol->rectArea.w = 17;
 		wallCol->rectArea.h = 23;
 
