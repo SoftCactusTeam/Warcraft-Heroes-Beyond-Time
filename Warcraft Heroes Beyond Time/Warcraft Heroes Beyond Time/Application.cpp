@@ -24,6 +24,7 @@
 #include "ModuleItems.h"
 #include "ModuleProjectiles.h"
 #include "ModuleEffects.h"
+#include "ModuleParticleSystem.h"
 
 #include "Brofiler\Brofiler.h"
 
@@ -47,6 +48,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	items = new ModuleItems();
 	projectiles = new ModuleProjectiles();
 	effects = new ModuleEffects();
+	psystem = new ModuleParticleSystem();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -59,7 +61,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(projectiles);
 
 	AddModule(effects);
-
+	AddModule(psystem);
 
 	AddModule(audio);
 	AddModule(fonts);
@@ -316,6 +318,19 @@ const char* Application::GetTitle() const
 const char* Application::GetOrganization() const
 {
 	return organization.data();
+}
+
+pugi::xml_node Application::LoadEmitters(pugi::xml_document & psystem_file) const
+{
+	pugi::xml_node ret;
+
+	pugi::xml_parse_result result = psystem_file.load_file("psystem_config");
+
+	if (result == NULL)
+		LOG("Could not load xml file config.xml. pugi error: %s", result.description());
+	else
+		ret = psystem_file.child("emitters");
+	return ret;
 }
 
 bool Application::LoadConfig(pugi::xml_document& doc)

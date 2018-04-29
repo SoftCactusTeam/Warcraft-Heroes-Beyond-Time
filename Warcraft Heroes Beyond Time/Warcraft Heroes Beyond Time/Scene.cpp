@@ -21,6 +21,7 @@
 #include "BossEntity.h"
 #include "ModuleEffects.h"
 #include "ModuleProjectiles.h"
+#include "ModuleParticleSystem.h"
 
 #include "Brofiler\Brofiler.h"
 #include "Label.h"
@@ -68,7 +69,7 @@ bool Scene::Start()
 	currentPercentAudio = App->audio->MusicVolumePercent;
 
 	App->map->UseYourPowerToGenerateMeThisNewMap(lvlIndex);
-
+	App->psystem->AddEmiter({700.0f, 100.0f}, EmitterType::EMITTER_TYPE_FLAME);
 	switch (actual_scene)
 	{
 		case Stages::MAIN_MENU:
@@ -262,7 +263,7 @@ bool Scene::PostUpdate()
 	{
 		SDL_Rect back = { 0,0,640,360 };
 		//App->render->DrawQuad(back, 0, 205, 193, 255, true, false);
-		App->render->DrawQuad(back, 64, 66, 159, 255, true, false);
+		App->render->DrawQuad(back, 64, 66, 159, 0, true, false);
 	}
 
 	if (App->path->printWalkables == true)

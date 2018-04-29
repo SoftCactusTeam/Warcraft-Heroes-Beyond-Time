@@ -157,6 +157,21 @@
     <ClCompile Include="Geyser.cpp">
       <Filter>Projectiles</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleParticleSystem.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Emitter.cpp">
+      <Filter>2D Particle Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>2D Particle Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticlePool.cpp">
+      <Filter>2D Particle Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="PerfTimer.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -333,6 +348,21 @@
     <ClInclude Include="Geyser.h">
       <Filter>Projectiles</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleParticleSystem.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Emitter.h">
+      <Filter>2D Particle Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>2D Particle Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticlePool.h">
+      <Filter>2D Particle Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="PerfTimer.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />
@@ -376,6 +406,9 @@
     </Filter>
     <Filter Include="Effects">
       <UniqueIdentifier>{d227cee4-83b2-4ccb-b161-8d1a87e41306}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2D Particle Engine">
+      <UniqueIdentifier>{5c37f5f7-b0cd-416c-a6bc-aa8dd189ff75}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -39,7 +39,7 @@ bool GUIWindow::Draw()
 	background.x = -App->render->camera.x;
 	background.y = -App->render->camera.y;
 
-	if(blackBackground)
+	if (blackBackground)
 		result = App->render->DrawQuad(background, 0, 0, 0, 200, true, true);
 
 	if (result)

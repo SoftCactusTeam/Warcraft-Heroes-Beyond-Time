@@ -29,6 +29,7 @@ class ModulePrinter;
 class ModuleItems;
 class ModuleProjectiles;
 class ModuleEffects;
+class ModuleParticleSystem;
 
 class Application
 {
@@ -48,6 +49,8 @@ public:
 	const char* GetArgv(int index) const;
 	const char* GetTitle() const;
 	const char* GetOrganization() const;
+
+	pugi::xml_node Application::LoadEmitters(pugi::xml_document& psystem_file) const;
 
 	void Save();
 	void Load();
@@ -89,6 +92,7 @@ public:
 	ModuleItems*			items = nullptr;
 	ModuleProjectiles*		projectiles = nullptr;
 	ModuleEffects*			effects = nullptr;
+	ModuleParticleSystem*	psystem = nullptr;
 
 public:
 
