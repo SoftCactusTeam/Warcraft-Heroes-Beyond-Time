@@ -563,10 +563,9 @@ void Enemy_Archer::ShootArrow(fPoint desviation)
 	ArcherArrowInfo info;
 	info.pos = position;
 	info.direction = directionShoot;
-	info.deadTimer = 5000;
-	App->projectiles->AddProjectile(&info, Projectile_type::archer_arrow);
-	//Enemy_Archer_Arrow* newArrow = new Enemy_Archer_Arrow(position, App->entities->spritesheetsEntities[PROJECTILE_SHEET], directionShoot * numStats.arrows_speed, 1000);
-	
+	info.deadTimer = numStats.arrows_life;
+	info.speed = numStats.arrows_speed;
+	App->projectiles->AddProjectile(&info, Projectile_type::archer_arrow);	
 }
 
 void Enemy_Archer::LoadAnimations()

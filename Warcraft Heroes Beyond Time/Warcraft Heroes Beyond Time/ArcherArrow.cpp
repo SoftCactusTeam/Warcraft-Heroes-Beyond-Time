@@ -4,6 +4,7 @@
 #include "Scene.h"
 #include "PlayerEntity.h"
 #include "ModuleColliders.h"
+#include "ModuleEntitySystem.h"
 
 #include "Scene.h"
 #include "ModuleInput.h"
@@ -21,7 +22,9 @@ ArcherArrow::ArcherArrow(const ArcherArrowInfo* info, Projectile_type type) : Pr
 	toData->angle -= 90;
 
 	toData->tempoAtWall = -1;
-	App->colliders->AddCollider({ 0,0,32,32 }, Collider::ColliderType::ENEMY_ATTACK);
+	toData->arrowCollider = App->colliders->AddCollider({ 0,0,8,8 }, Collider::ColliderType::ENEMY_ATTACK);
+	toData->layer = 2;
+	toData->deadTimer += SDL_GetTicks();	
 }
 
 ArcherArrow::~ArcherArrow()
@@ -33,6 +36,29 @@ bool ArcherArrow::Update(float dt)
 {
 	bool ret = true;
 
+	toData->arrowCollider->rectArea.x = (int)toData->pos.x;
+	toData->arrowCollider->rectArea.y = (int)toData->pos.y;
+
+	std::list<Collider*>::iterator collidingWith = toData->arrowCollider->colliding.begin();
+	for (; collidingWith != toData->arrowCollider->colliding.end(); collidingWith++)
+	{
+		switch ((*collidingWith)->colType)
+		{
+		case Collider::ColliderType::WALL:
+			toData->tempoAtWall = 1000 + SDL_GetTicks();
+			break;
+		case Collider::ColliderType::ENTITY:
+			Entity* entOwner = (Entity*)(*collidingWith)->owner;
+			if (entOwner->entityType == Entity::EntityType::DYNAMIC_ENTITY)
+			{
+				DynamicEntity* dynOwner = (DynamicEntity*)(*collidingWith)->owner;
+				if (dynOwner->dynamicType == DynamicEntity::DynamicType::PLAYER)
+					App->projectiles->DestroyProjectile(this);
+			}
+			break;
+		}
+	}
+
 	if (toData->tempoAtWall != -1)
 	{
 		if (toData->tempoAtWall < SDL_GetTicks())
@@ -40,7 +66,8 @@ bool ArcherArrow::Update(float dt)
 	}
 	else if (SDL_GetTicks() < toData->deadTimer)
 	{
-		toData->pos += toData->direction;
+		fPoint copy = toData->direction;
+		toData->pos += copy * toData->speed;
 	}
 	else
 		App->projectiles->DestroyProjectile(this);
@@ -51,7 +78,7 @@ bool ArcherArrow::Draw() const
 {
 	bool ret = true;
 
-	ret = App->printer->PrintSprite({ (int)data->pos.x,(int)data->pos.y}, (SDL_Texture*)App->projectiles->GetProjectileClassicAtlas(), { 808, 110, 32, 32 }, data->layer, ModulePrinter::Pivots::UPPER_LEFT);
+	ret = App->printer->PrintSprite({ (int)toData->pos.x,(int)toData->pos.y }, (SDL_Texture*)App->projectiles->GetProjectileClassicAtlas(), { 808, 110, 32, 32 }, toData->layer, ModulePrinter::Pivots::CENTER, { 0,0 }, ModulePrinter::Pivots::UPPER_LEFT, {0,0}, toData->angle);
 
 	return ret;
 }

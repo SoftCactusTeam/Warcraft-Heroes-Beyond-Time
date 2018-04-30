@@ -130,7 +130,6 @@ void ModuleProjectiles::AddProjectile(const ProjectileInfo* projectile, Projecti
 		newProjectile = new ArcherArrow(new ArcherArrowInfo(*(ArcherArrowInfo*)projectile), type);
 		break;
 	}
-
 	toSpawnProjectilesList.push_back(newProjectile);
 }
 
