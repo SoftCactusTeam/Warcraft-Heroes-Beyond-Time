@@ -57,6 +57,7 @@ private:
 	enum class BossStates
 	{
 		NON_STATE = -1,
+		HELLO,
 		IDLE,
 		FEL_BALLS,
 		TELEPORT,

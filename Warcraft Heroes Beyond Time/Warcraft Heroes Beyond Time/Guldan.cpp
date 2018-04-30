@@ -4,6 +4,8 @@
 #include "FelBall.h"
 #include "Geyser.h"
 #include "Thunder.h"
+#include "Scene.h"
+#include "PlayerEntity.h"
 
 #include "ModuleInput.h"
 #include "ModulePrinter.h"
@@ -137,7 +139,7 @@ Guldan::~Guldan()
 
 bool Guldan::Start()
 {
-	statesBoss = BossStates::IDLE;
+	statesBoss = BossStates::HELLO;
 
 	guldanCollider = App->colliders->AddCollider({ 0,0,68,68 }, Collider::ColliderType::ENTITY, this);
 
@@ -148,6 +150,23 @@ bool Guldan::Update(float dt)
 {
 	switch (statesBoss)
 	{
+	case BossStates::HELLO:
+
+		if (pos.DistanceTo(App->scene->player->pos) <= 150.0f)
+		{
+			App->input->PlayJoyRumble(0.9f, 100);
+			anim = &hello;
+		}
+
+		if (anim == &hello && anim->Finished())
+		{
+			anim = &idle;
+			statesBoss = BossStates::IDLE;
+			break;
+		}
+
+		break;
+
 	case BossStates::IDLE:
 			
 		if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
@@ -286,7 +305,9 @@ bool Guldan::Update(float dt)
 
 				if (contBalls >= NUMBER_BALLS_HEXAGON)
 				{
-					anim = &generatingBallsInverse;
+
+					next_movement_type = FellBallsTypes::COMPLETE_CIRCLE;
+					//anim = &generatingBallsInverse;
 					hexagonAngle = 0.0f;
 					contBalls = 0;
 				}
