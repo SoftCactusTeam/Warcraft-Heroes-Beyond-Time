@@ -119,6 +119,7 @@ bool Scene::Start()
 				App->console->Activate();
 				App->map->Activate();
 				App->printer->Activate();
+				App->projectiles->Activate();
 
 				player = App->entities->AddPlayer({ 25 * 46,25 * 46 }, THRALL);
 				player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });

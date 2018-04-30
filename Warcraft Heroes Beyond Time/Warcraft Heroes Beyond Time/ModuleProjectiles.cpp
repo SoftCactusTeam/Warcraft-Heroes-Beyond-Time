@@ -29,7 +29,7 @@ bool ModuleProjectiles::Start()
 {
 	projectilesAtlas = App->textures->Load("sprites/ProjectilesAtlas.png");
 	projectileClassicAtlas = App->textures->Load("sprites/Projectiles.png");
-	return true;
+	return true;	
 }
 
 bool ModuleProjectiles::PreUpdate()

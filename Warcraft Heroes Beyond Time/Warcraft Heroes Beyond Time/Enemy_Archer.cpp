@@ -560,7 +560,11 @@ void Enemy_Archer::ShootArrow(fPoint desviation)
 	fPoint position = fPoint(pos.x + anim->GetCurrentRect().w / 2, pos.y + anim->GetCurrentRect().h / 2);
 	
 	// POSAR FLETXA
-	//App->projectiles->AddProjectile( ,archer_arrow);
+	ArcherArrowInfo info;
+	info.pos = position;
+	info.direction = directionShoot;
+	info.deadTimer = 5000;
+	App->projectiles->AddProjectile(&info, Projectile_type::archer_arrow);
 	//Enemy_Archer_Arrow* newArrow = new Enemy_Archer_Arrow(position, App->entities->spritesheetsEntities[PROJECTILE_SHEET], directionShoot * numStats.arrows_speed, 1000);
 	
 }

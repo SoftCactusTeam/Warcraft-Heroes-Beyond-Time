@@ -12,7 +12,7 @@
 struct ArcherArrowInfo : public ProjectileInfo
 {
 	ArcherArrowInfo() {};
-	ArcherArrowInfo(const ArcherArrowInfo& info) : ProjectileInfo((const ProjectileInfo&)info), rotationPivot(info.rotationPivot), angle(info.angle), radiusToIncrease(info.radiusToIncrease), startRadius(info.startRadius), pos(info.pos) {};
+	ArcherArrowInfo(const ArcherArrowInfo& info) : ProjectileInfo((const ProjectileInfo&)info), pos(info.pos), direction(info.direction), deadTimer(info.deadTimer) {};
 
 	fPoint rotationPivot = { 0.0f,0.0f };
 	double radiusToIncrease = 0.0f;

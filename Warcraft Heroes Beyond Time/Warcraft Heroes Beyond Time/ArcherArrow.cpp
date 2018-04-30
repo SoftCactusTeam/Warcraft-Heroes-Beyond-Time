@@ -10,11 +10,6 @@
 
 ArcherArrow::ArcherArrow(const ArcherArrowInfo* info, Projectile_type type) : Projectile(info, type)
 {
-	arrowAnims[(uint)ArrowAnimations::moving_anim].PushBack({ 21,33,14,14 });
-	arrowAnims[(uint)ArrowAnimations::moving_anim].PushBack({ 36,33,14,14 });
-	arrowAnims[(uint)ArrowAnimations::moving_anim].speedFactor = 4.5f;
-
-	actualAnim = &arrowAnims[(uint)ArrowAnimations::moving_anim];
 
 	toData = (ArcherArrowInfo*)info;
 
@@ -26,7 +21,6 @@ ArcherArrow::ArcherArrow(const ArcherArrowInfo* info, Projectile_type type) : Pr
 	toData->angle -= 90;
 
 	toData->tempoAtWall = -1;
-
 	App->colliders->AddCollider({ 0,0,32,32 }, Collider::ColliderType::ENEMY_ATTACK);
 }
 
@@ -50,45 +44,14 @@ bool ArcherArrow::Update(float dt)
 	}
 	else
 		App->projectiles->DestroyProjectile(this);
-
-	actualAnim->speed = actualAnim->speedFactor * dt;
-
 	return ret;
-
-	/*if (stop == true)
-		if (SDL_GetTicks() > accountantPrincipal)
-			stop = false;
-		else
-		{
-			for (int i = 0; i < arrowsVector.size(); i++)
-				arrowsVector[i]->deadTimer += App->dt * 1000;
-			return true;
-		}
-	else if (App->scene->paused == true)
-	{
-		for (int i = 0; i < arrowsVector.size(); i++)
-			arrowsVector[i]->deadTimer += App->dt * 1000;
-		return true;
-	}
-
-	for (int i = 0; i < arrowsVector.size(); i++)
-	{
-		if (arrowsVector[i]->destroy == false)
-			arrowsVector[i]->Update();
-		else
-		{
-			arrowsVector[i]->Finish();
-			delete arrowsVector[i];
-			arrowsVector.erase(arrowsVector.begin() + i);
-		}
-	}*/
 }
 
 bool ArcherArrow::Draw() const
 {
 	bool ret = true;
 
-	ret = App->printer->PrintSprite({ (int)data->pos.x - 7,(int)data->pos.y - 7 }, (SDL_Texture*)App->projectiles->GetProjectileClassicAtlas(), actualAnim->GetCurrentFrame(), data->layer, ModulePrinter::Pivots::UPPER_LEFT);
+	ret = App->printer->PrintSprite({ (int)data->pos.x,(int)data->pos.y}, (SDL_Texture*)App->projectiles->GetProjectileClassicAtlas(), { 808, 110, 32, 32 }, data->layer, ModulePrinter::Pivots::UPPER_LEFT);
 
 	return ret;
 }
