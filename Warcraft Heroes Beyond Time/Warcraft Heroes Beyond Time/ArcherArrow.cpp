@@ -36,8 +36,8 @@ bool ArcherArrow::Update(float dt)
 {
 	bool ret = true;
 
-	toData->arrowCollider->rectArea.x = (int)toData->pos.x;
-	toData->arrowCollider->rectArea.y = (int)toData->pos.y;
+	//toData->arrowCollider->rectArea.x = (int)toData->pos.x;
+	//toData->arrowCollider->rectArea.y = (int)toData->pos.y;
 
 	std::list<Collider*>::iterator collidingWith = toData->arrowCollider->colliding.begin();
 	for (; collidingWith != toData->arrowCollider->colliding.end(); collidingWith++)

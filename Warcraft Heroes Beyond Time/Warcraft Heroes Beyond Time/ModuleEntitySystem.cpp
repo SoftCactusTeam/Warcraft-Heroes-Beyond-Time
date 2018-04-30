@@ -136,7 +136,7 @@ void EntitySystem::Init()
 
 bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 {
-	srand(time(NULL));
+	//srand(time(NULL));
 
 	//------------- Loading Stats -------------------------------------------------------------
 	pugi::xml_node thrall = entitiesNode.child("players").child("thrall");

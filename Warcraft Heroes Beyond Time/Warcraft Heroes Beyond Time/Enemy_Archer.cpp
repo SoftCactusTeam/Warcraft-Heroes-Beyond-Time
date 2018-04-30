@@ -40,9 +40,10 @@
 #define DISTANCE_TO_LITTLEMOVE	250		// minimal_distance_with_player
 #define LITTLEMOVEMENT_TIME		100		// es deixa aixi
 #define LITTLEMOVEMENT_COOLDOWN	1000	// res
-#define TILES_TO_LITTLEMOVE		6		// es mante
+#define TILES_TO_LITTLEMOVE		4		// es mante
 #define TIME_DYING				500		// es deixa aixi
 #define TEMPO_ARROW_ATWALL		500		// es deixa aixi
+#define PRE_ATTACK				500	// abans d'atacar
 
 Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture, ARCHER_TIER tier) : EnemyEntity(coor, character, texture)
 {
@@ -180,8 +181,8 @@ void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 					if (state != ARCHER_STATE::ARCHER_DIE)
 						initDie();
 				}
-				else
-					initBackJump();
+				//else
+				//	initBackJump();
 
 				break;
 			}
@@ -235,12 +236,11 @@ void Enemy_Archer::initWalk()
 void Enemy_Archer::initAtac()
 {
 	state = ARCHER_STATE::ARCHER_BASIC_ATAC;
-	accountantPrincipal = SDL_GetTicks() + numStats.time_between_attacks;
+	accountantPrincipal = SDL_GetTicks() + PRE_ATTACK;
 	anim = &animAtac[LookAtPlayer()];
 	anim->Reset();
 	pathVector.Clear();
-	ShootArrow();
-	arrowsShooted++;
+	hasAttacked = false;
 }
 
 void Enemy_Archer::initTriAtac()
@@ -312,21 +312,19 @@ void Enemy_Archer::initLittleMove()
 	
 	for (int i = 0; i < 10 && tileToMove == -1; i++)
 	{
-		randomX = App->entities->GetRandomNumber(TILES_TO_LITTLEMOVE);
+		randomX = rand() % TILES_TO_LITTLEMOVE + 1;
 		if (randomX > TILES_TO_LITTLEMOVE / 2)
 		{
 			randomX -= TILES_TO_LITTLEMOVE / 2;
 			randomX *= -1;
 		}
 
-		randomY = App->entities->GetRandomNumber(TILES_TO_LITTLEMOVE);
+		randomY = rand() % TILES_TO_LITTLEMOVE + 1;
 		if (randomY > TILES_TO_LITTLEMOVE / 2)
 		{
 			randomY -= TILES_TO_LITTLEMOVE / 2;
 			randomY *= -1;
 		}
-
-		printf_s("%i\t%i\n", randomX, randomY);
 
 		int possibleTile = App->path->ExistWalkableAtPos(iPoint((int)pos.x / App->map->getTileSize() - randomX, (int)pos.y / App->map->getTileSize() - randomY));
 		if (possibleTile != -1)
@@ -388,19 +386,19 @@ void Enemy_Archer::doWalk()
 	{
 		initLittleMove();
 	}
-	else if (DistanceToPlayer() < DISTANCE_TO_JUMPBACK && App->entities->GetRandomNumber(10) < 7)	// Superar tirada 70%
+	else if (DistanceToPlayer() < DISTANCE_TO_JUMPBACK && App->entities->GetRandomNumber(10) < 0)	// Ara mateix no fa backJump
 	{
 		initBackJump();
 	}
-	else if (DistanceToPlayer() < numStats.attack_range && App->entities->GetRandomNumber(10) < 7)	// Superar una tirada de 70%
+	else if (DistanceToPlayer() < numStats.attack_range && App->entities->GetRandomNumber(10) < 10)	// Superar una tirada de 00%
 	{
 		initAtac();
 	}
-	else if (DistanceToPlayer() < numStats.attack_range && App->entities->GetRandomNumber(10) < 5)	// Superar una tirada de 50%
+	else if (DistanceToPlayer() < numStats.attack_range && App->entities->GetRandomNumber(10) < 0)	// Ara mateix no fa backJump
 	{
 		initTriAtac();
 	}
-	else if (DistanceToPlayer() < numStats.attack_range && App->entities->GetRandomNumber(10) < 5)	// Superar una tirada de 50%
+	else if (DistanceToPlayer() < numStats.attack_range && App->entities->GetRandomNumber(10) < 0)	// Ara mateix no fa backJump
 	{
 		initFastAtac();
 	}
@@ -412,8 +410,22 @@ void Enemy_Archer::doWalk()
 
 void Enemy_Archer::doAtac()
 {
-	if (SDL_GetTicks() > accountantPrincipal)
-		initIdle();
+	if (hasAttacked)
+	{
+		if (SDL_GetTicks() > accountantPrincipal)
+			initIdle();
+	}
+	else
+	{
+		if (SDL_GetTicks() > accountantPrincipal)
+		{
+			hasAttacked = true;
+			accountantPrincipal = SDL_GetTicks() + numStats.time_between_attacks;
+			ShootArrow();
+			arrowsShooted++;
+		}
+		anim = &animAtac[LookAtPlayer()];
+	}
 }
 
 void Enemy_Archer::doTriAtac()
@@ -543,7 +555,7 @@ void Enemy_Archer::UpdateEffects()
 void Enemy_Archer::ShootArrow(fPoint desviation)
 {
 	App->audio->PlayFx(App->audio->ArrowSound);
-	fPoint directionShoot = App->scene->player->pos;
+	fPoint directionShoot = fPoint(App->scene->player->pos.x + App->scene->player->anim->GetCurrentRect().w / 2 , App->scene->player->pos.y + App->scene->player->anim->GetCurrentRect().h / 2);
 
 	directionShoot.x -= pos.x + desviation.x;
 	directionShoot.y -= pos.y + desviation.y;
@@ -557,7 +569,36 @@ void Enemy_Archer::ShootArrow(fPoint desviation)
 		total *= -1;
 	directionShoot.x /= total;
 	directionShoot.y /= total;
-	fPoint position = fPoint(pos.x + anim->GetCurrentRect().w / 2, pos.y + anim->GetCurrentRect().h / 2);
+
+	fPoint position;
+	position = fPoint(pos.x + anim->GetCurrentRect().w / 2, pos.y + anim->GetCurrentRect().h / 2);
+	/*switch (LookAtPlayer())
+	{
+	case FIXED_ANGLE::UP:
+		position = fPoint(pos.x + anim->GetCurrentRect().w / 2 + 0, pos.y + anim->GetCurrentRect().h / 2 + 5);
+		break;
+	case FIXED_ANGLE::UP_RIGHT:
+		position = fPoint(pos.x + anim->GetCurrentRect().w / 2 + 5, pos.y + anim->GetCurrentRect().h / 2 + 5);
+		break;
+	case FIXED_ANGLE::RIGHT:
+		position = fPoint(pos.x + anim->GetCurrentRect().w / 2 + 5, pos.y + anim->GetCurrentRect().h / 2 + 5);
+		break;
+	case FIXED_ANGLE::DOWN_RIGHT:
+		position = fPoint(pos.x + anim->GetCurrentRect().w / 2 + 5, pos.y + anim->GetCurrentRect().h / 2 + 5);
+		break;
+	case FIXED_ANGLE::DOWN:
+		position = fPoint(pos.x + anim->GetCurrentRect().w / 2 + 5, pos.y + anim->GetCurrentRect().h / 2 + 5);
+		break;
+	case FIXED_ANGLE::DOWN_LEFT:
+		position = fPoint(pos.x + anim->GetCurrentRect().w / 2 + 5, pos.y + anim->GetCurrentRect().h / 2 + 5);
+		break;
+	case FIXED_ANGLE::LEFT:
+		position = fPoint(pos.x + anim->GetCurrentRect().w / 2 + 5, pos.y + anim->GetCurrentRect().h / 2 + 5);
+		break;
+	case FIXED_ANGLE::UP_LEFT:
+		position = fPoint(pos.x + anim->GetCurrentRect().w / 2 + 0, pos.y + anim->GetCurrentRect().h / 2 + 5);
+		break;
+	}*/
 	
 	// POSAR FLETXA
 	ArcherArrowInfo info;
@@ -565,6 +606,7 @@ void Enemy_Archer::ShootArrow(fPoint desviation)
 	info.direction = directionShoot;
 	info.deadTimer = numStats.arrows_life;
 	info.speed = numStats.arrows_speed;
+
 	App->projectiles->AddProjectile(&info, Projectile_type::archer_arrow);	
 }
 
@@ -640,35 +682,35 @@ void Enemy_Archer::LoadAnimations()
 
 	animAtac[FIXED_ANGLE::UP].PushBack({ 188,551,49,54 });
 	animAtac[FIXED_ANGLE::UP].PushBack({ 94,547,46,50 });
-	animAtac[FIXED_ANGLE::UP].speedFactor = 9.0f;
+	animAtac[FIXED_ANGLE::UP].speedFactor = 2.0f;
 	animAtac[FIXED_ANGLE::UP].loop = false;
 	animAtac[FIXED_ANGLE::UP_RIGHT].PushBack({ 181,500,45,49 });
 	animAtac[FIXED_ANGLE::UP_RIGHT].PushBack({ 214,256,40,48 });
-	animAtac[FIXED_ANGLE::UP_RIGHT].speedFactor = 9.0f;
+	animAtac[FIXED_ANGLE::UP_RIGHT].speedFactor = 2.0f;
 	animAtac[FIXED_ANGLE::UP_RIGHT].loop = false;
 	animAtac[FIXED_ANGLE::RIGHT].PushBack({ 1,299,47,44 });
 	animAtac[FIXED_ANGLE::RIGHT].PushBack({ 1,165,41,42 });
-	animAtac[FIXED_ANGLE::RIGHT].speedFactor = 9.0f;
+	animAtac[FIXED_ANGLE::RIGHT].speedFactor = 2.0f;
 	animAtac[FIXED_ANGLE::RIGHT].loop = false;
 	animAtac[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 48,1,38,38 });
 	animAtac[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 1,82,43,39 });
-	animAtac[FIXED_ANGLE::DOWN_RIGHT].speedFactor = 9.0f;
+	animAtac[FIXED_ANGLE::DOWN_RIGHT].speedFactor = 2.0f;
 	animAtac[FIXED_ANGLE::DOWN_RIGHT].loop = false;
 	animAtac[FIXED_ANGLE::DOWN].PushBack({ 175,1,47,38 });
 	animAtac[FIXED_ANGLE::DOWN].PushBack({ 209,123,46,41 });
-	animAtac[FIXED_ANGLE::DOWN].speedFactor = 9.0f;
+	animAtac[FIXED_ANGLE::DOWN].speedFactor = 2.0f;
 	animAtac[FIXED_ANGLE::DOWN].loop = false;
 	animAtac[FIXED_ANGLE::DOWN_LEFT].PushBack({ 135,1,38,38 });
 	animAtac[FIXED_ANGLE::DOWN_LEFT].PushBack({ 180,82,43,39 });
-	animAtac[FIXED_ANGLE::DOWN_LEFT].speedFactor = 9.0f;
+	animAtac[FIXED_ANGLE::DOWN_LEFT].speedFactor = 2.0f;
 	animAtac[FIXED_ANGLE::DOWN_LEFT].loop = false;
 	animAtac[FIXED_ANGLE::LEFT].PushBack({ 145,301,47,44 });
 	animAtac[FIXED_ANGLE::LEFT].PushBack({ 133,166,41,42 });
-	animAtac[FIXED_ANGLE::LEFT].speedFactor = 9.0f;
+	animAtac[FIXED_ANGLE::LEFT].speedFactor = 2.0f;
 	animAtac[FIXED_ANGLE::LEFT].loop = false;
 	animAtac[FIXED_ANGLE::UP_LEFT].PushBack({ 1,541,45,49 });
 	animAtac[FIXED_ANGLE::UP_LEFT].PushBack({ 141,395,40,48 });
-	animAtac[FIXED_ANGLE::UP_LEFT].speedFactor = 9.0f;
+	animAtac[FIXED_ANGLE::UP_LEFT].speedFactor = 2.0f;
 	animAtac[FIXED_ANGLE::UP_LEFT].loop = false;
 
 

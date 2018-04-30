@@ -92,6 +92,8 @@ public:
 	std::list<archerEffectStruct*> effectsList;
 
 private:
+	// Normal Atac Variables
+	bool hasAttacked = false;
 	// Fast atac variables
 	int timeToShootAnother = 0;
 	int arrowToShoot = 0;
