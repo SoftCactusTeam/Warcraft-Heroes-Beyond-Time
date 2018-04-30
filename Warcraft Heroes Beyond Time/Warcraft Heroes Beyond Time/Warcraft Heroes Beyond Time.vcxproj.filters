@@ -157,6 +157,9 @@
     <ClCompile Include="Geyser.cpp">
       <Filter>Projectiles</Filter>
     </ClCompile>
+    <ClCompile Include="Thunder.cpp">
+      <Filter>Projectiles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -331,6 +334,9 @@
       <Filter>Projectiles</Filter>
     </ClInclude>
     <ClInclude Include="Geyser.h">
+      <Filter>Projectiles</Filter>
+    </ClInclude>
+    <ClInclude Include="Thunder.h">
       <Filter>Projectiles</Filter>
     </ClInclude>
   </ItemGroup>

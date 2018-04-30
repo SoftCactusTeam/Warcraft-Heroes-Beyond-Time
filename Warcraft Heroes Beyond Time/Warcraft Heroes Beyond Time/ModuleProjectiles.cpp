@@ -4,6 +4,7 @@
 #include "Projectile.h"
 #include "FelBall.h"
 #include "Geyser.h"
+#include "Thunder.h"
 
 #include <assert.h>
 
@@ -129,6 +130,9 @@ void ModuleProjectiles::AddProjectile(const ProjectileInfo* projectile, Projecti
 
 	case Projectile_type::geyser:
 		newProjectile = new Geyser(new GeyserInfo(*(GeyserInfo*)projectile), type);
+		break;
+	case Projectile_type::thunder:
+		newProjectile = new Thunder(new ThunderInfo(*(ThunderInfo*)projectile), type);
 		break;
 	}
 

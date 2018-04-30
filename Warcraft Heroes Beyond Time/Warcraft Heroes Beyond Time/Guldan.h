@@ -4,6 +4,8 @@
 #include "BossEntity.h"
 
 #define GULDAN_BASE { 14 * 48 + 10,4 * 48 }
+#define TIME_RESTORING_ENERGY 3.0f
+#define TIME_BETWEEN_THUNDERS 0.1f
 #define NUMBER_BALLS_ODD_EVEN 4
 #define NUMBER_BALLS_COMPLETE_CIRCLE 5
 #define NUMBER_BALLS_HEXAGON 36
@@ -22,7 +24,7 @@ class Guldan : public BossEntity
 {
 private:
 	
-	Animation idle, teleport, inverseTeleport, dead, startGeneratingBalls, generatingBalls, generatingBallsInverse, hello;	
+	Animation idle, teleport, inverseTeleport, dead, startGeneratingBalls, generatingBalls, generatingBallsInverse, hello, restoreEnergy;
 	int hp = 0;
 
 	// GENERATING BALLS VARIABLES
@@ -42,6 +44,13 @@ private:
 	fPoint pointToTelerpot[5] = { { 14 * 48 + 10,7 * 48 },{ 10 * 48,6 * 48 },{ 18 * 48,6 * 48 }, {10 * 48, 10 * 48}, { 18 * 48, 10 * 48} };
 	bool teleportBase = false;
 
+	//RESTORING ENERGY
+	float timeRestoring = 0.0f;
+
+	// THUNDER
+	int step = 0;
+	float timeBetweenSteps = 0.0f;
+
 	enum class BossStates
 	{
 		NON_STATE = -1,
@@ -51,6 +60,8 @@ private:
 		INVERSETELEPORT,
 		DEAD,
 		GENERATINGBALLS,
+		RESTORING_ENERGY,
+		THUNDER_CAST
 	} statesBoss = BossStates::NON_STATE;
 
 	enum class FellBallsTypes
@@ -79,6 +90,7 @@ public:
 
 	void GenerateFelBalls(FellBallsTypes type, float angle) const;
 	void GeneratGeyser(GeyserType type) const;
+	void GenerateThunders(int numberXY);
 	fPoint SetSpawnPointByAngle(fPoint pointToRotate, fPoint rotationPivot, double angle, double radius) const;
 	float GetTimeToComeBackSpiral() const { return timeToComeBackSpiral; };
 

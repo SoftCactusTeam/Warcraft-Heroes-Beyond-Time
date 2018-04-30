@@ -161,6 +161,7 @@
     <ClCompile Include="Pathfinding.cpp" />
     <ClCompile Include="PortalEntity.cpp" />
     <ClCompile Include="Stat.cpp" />
+    <ClCompile Include="Thunder.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
@@ -220,6 +221,7 @@
     <ClInclude Include="ModuleColliders.h" />
     <ClInclude Include="Pathfinding.h" />
     <ClInclude Include="Stat.h" />
+    <ClInclude Include="Thunder.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="ModuleAudio.h" />

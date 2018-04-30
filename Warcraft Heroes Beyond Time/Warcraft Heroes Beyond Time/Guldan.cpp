@@ -3,6 +3,7 @@
 #include "ModuleProjectiles.h"
 #include "FelBall.h"
 #include "Geyser.h"
+#include "Thunder.h"
 
 #include "ModuleInput.h"
 #include "ModulePrinter.h"
@@ -114,6 +115,12 @@ Guldan::Guldan(fPoint coor, BossType type, SDL_Texture* texture) : BossEntity(co
 	hello.loop = false;
 	hello.speedFactor = 9.0f;
 
+	restoreEnergy.PushBack({ 208,352,69,68 });
+	restoreEnergy.PushBack({ 276,352,68,68 });
+	restoreEnergy.PushBack({ 346,352,68,68 });
+	restoreEnergy.PushBack({ 415,352,68,68 });
+	restoreEnergy.speedFactor = 9.0f;
+
 	anim = &idle;
 
 	numStats = App->entities->guldanstats;
@@ -140,6 +147,13 @@ bool Guldan::Update(float dt)
 	{
 	case BossStates::IDLE:
 			
+		if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
+		{
+			statesBoss = BossStates::THUNDER_CAST;
+			anim = &startGeneratingBalls;
+			break;
+		}
+
 		if (App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
 		{
 			GeneratGeyser(GeyserType::FOLLOW_PLAYER);
@@ -152,6 +166,12 @@ bool Guldan::Update(float dt)
 			break;
 		}
 
+		if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+		{
+			anim = &restoreEnergy;
+			statesBoss = BossStates::RESTORING_ENERGY;
+			break;
+		}
 
 		if (App->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
 		{
@@ -335,6 +355,41 @@ bool Guldan::Update(float dt)
 			}
 		}
 			break;
+
+	case BossStates::THUNDER_CAST:
+	{
+		timeBetweenSteps += 1.0f * dt;
+
+		if (timeBetweenSteps >= TIME_BETWEEN_THUNDERS)
+		{
+			timeBetweenSteps = 0.0f;
+			GenerateThunders(step);
+			step += 1;
+		}
+
+		if (step >= 48)
+		{
+			step = 0;
+			statesBoss = BossStates::IDLE;
+			anim = &idle;
+			break;
+		}
+
+		break;
+	}
+
+	case BossStates::RESTORING_ENERGY:
+
+		timeRestoring += 1 * dt;
+
+		if (timeRestoring >= TIME_RESTORING_ENERGY)
+		{
+			timeRestoring = 0.0f;
+			anim = &idle;
+			statesBoss = BossStates::IDLE;
+		}
+
+		break;
 	}
 
 	// spiral
@@ -447,6 +502,210 @@ void Guldan::GeneratGeyser(GeyserType type) const
 	}
 
 	App->projectiles->AddProjectile(&info, Projectile_type::geyser);
+}
+
+void Guldan::GenerateThunders(int numberXY)
+{
+	ThunderInfo info;
+	info.pos = { 10.0f,5.0f };
+
+	if (numberXY == 0)
+	{
+		info.pos = { 9.0f,6.0f };
+	}
+	else if (numberXY == 1)
+	{
+		info.pos = { 10.0f,5.0f };
+	}
+	else if (numberXY == 2)
+	{
+		info.pos = { 9.0f,8.0f };
+	}
+	else if (numberXY == 3)
+	{
+		info.pos = { 10.0f,7.0f };
+	}
+	else if (numberXY == 4)
+	{
+		info.pos = { 11.0f,6.0f };
+	}
+	else if (numberXY == 5)
+	{
+		info.pos = { 12.0f,5.0f };
+	}
+	else if (numberXY == 6)
+	{
+		info.pos = { 9.0f,10.0f };
+	}
+	else if (numberXY == 7)
+	{
+		info.pos = { 10.0f,9.0f };
+	}
+	else if (numberXY == 8)
+	{
+		info.pos = { 11.0f,8.0f };
+	}
+	else if (numberXY == 9)
+	{
+		info.pos = { 12.0f,7.0f };
+	}
+	else if (numberXY == 10)
+	{
+		info.pos = { 13.0f,6.0f };
+	}
+	else if (numberXY == 11)
+	{
+		info.pos = { 9.0f,10.0f };
+	}
+	else if (numberXY == 12)
+	{
+		info.pos = { 10.0f,11.0f };
+	}
+	else if (numberXY == 13)
+	{
+		info.pos = { 11.0f,10.0f };
+	}
+	else if (numberXY == 14)
+	{
+		info.pos = { 12.0f,9.0f };
+	}
+	else if (numberXY == 15)
+	{
+		info.pos = { 13.0f,8.0f };
+	}
+	else if (numberXY == 16)
+	{
+		info.pos = { 14.0f,7.0f };
+	}
+	else if (numberXY == 17)
+	{
+		info.pos = { 11.0f,12.0f };
+	}
+	else if (numberXY == 18)
+	{
+		info.pos = { 12.0f,11.0f };
+	}
+	else if (numberXY == 19)
+	{
+		info.pos = { 13.0f,10.0f };
+	}
+	else if (numberXY == 20)
+	{
+		info.pos = { 14.0f,9.0f };
+	}
+	else if (numberXY == 21)
+	{
+		info.pos = { 15.0f,8.0f };
+	}
+	else if (numberXY == 22)
+	{
+		info.pos = { 16.0f,7.0f };
+	}
+	else if (numberXY == 23)
+	{
+		info.pos = { 17.0f,6.0f };
+	}
+	else if (numberXY == 24)
+	{
+		info.pos = { 18.0f,5.0f };
+	}
+	else if (numberXY == 25)
+	{
+		info.pos = { 13.0f,12.0f };
+	}
+	else if (numberXY == 26)
+	{
+		info.pos = { 14.0f,11.0f };
+	}
+	else if (numberXY == 27)
+	{
+		info.pos = { 15.0f,10.0f };
+	}
+	else if (numberXY == 28)
+	{
+		info.pos = { 16.0f,9.0f };
+	}
+	else if (numberXY == 29)
+	{
+		info.pos = { 17.0f,8.0f };
+	}
+	else if (numberXY == 30)
+	{
+		info.pos = { 18.0f,7.0f };
+	}
+	else if (numberXY == 31)
+	{
+		info.pos = { 19.0f,6.0f };
+	}
+	else if (numberXY == 32)
+	{
+		info.pos = { 20.0f,5.0f };
+	}
+	else if (numberXY == 33)
+	{
+		info.pos = { 15.0f,12.0f };
+	}
+	else if (numberXY == 34)
+	{
+		info.pos = { 16.0f,11.0f };
+	}
+	else if (numberXY == 35)
+	{
+		info.pos = { 17.0f,10.0f };
+	}
+	else if (numberXY == 36)
+	{
+		info.pos = { 18.0f,9.0f };
+	}
+	else if (numberXY == 37)
+	{
+		info.pos = { 19.0f,8.0f };
+	}
+	else if (numberXY == 38)
+	{
+		info.pos = { 20.0f,7.0f };
+	}
+	else if (numberXY == 39)
+	{
+		info.pos = { 21.0f,6.0f };
+	}
+	else if (numberXY == 40)
+	{
+		info.pos = { 17.0f,12.0f };
+	}
+	else if (numberXY == 41)
+	{
+		info.pos = { 18.0f,11.0f };
+	}
+	else if (numberXY == 42)
+	{
+		info.pos = { 19.0f,10.0f };
+	}
+	else if (numberXY == 43)
+	{
+		info.pos = { 20.0f,9.0f };
+	}
+	else if (numberXY == 44)
+	{
+		info.pos = { 21.0f,8.0f };
+	}
+	else if (numberXY == 45)
+	{
+		info.pos = { 19.0f,12.0f };
+	}
+	else if (numberXY == 46)
+	{
+		info.pos = { 20.0f,11.0f };
+	}
+	else if (numberXY == 47)
+	{
+		info.pos = { 21.0f,10.0f };
+	}
+
+	info.pos.x *= 48.0f;
+	info.pos.y *= 48.0f;
+
+	App->projectiles->AddProjectile(&info, Projectile_type::thunder);
 }
 
 fPoint Guldan::SetSpawnPointByAngle(fPoint pointToRotate, fPoint rotationPivot, double angle, double radius) const
