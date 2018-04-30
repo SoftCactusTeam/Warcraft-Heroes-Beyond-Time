@@ -19,6 +19,7 @@
 #define BOSS_CENTER { pos.x + 34, pos.y + 34 }
 
 struct FelBall;
+struct Collider;
 
 class Guldan : public BossEntity
 {
@@ -26,6 +27,8 @@ private:
 	
 	Animation idle, teleport, inverseTeleport, dead, startGeneratingBalls, generatingBalls, generatingBallsInverse, hello, restoreEnergy;
 	int hp = 0;
+
+	Collider* guldanCollider = nullptr;
 
 	// GENERATING BALLS VARIABLES
 	int contBalls = 0;

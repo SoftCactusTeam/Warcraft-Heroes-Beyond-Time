@@ -1,6 +1,7 @@
 #include "FelBall.h"
 #include "Application.h"
 #include "ModulePrinter.h"
+#include "ModuleColliders.h"
 
 #include "Scene.h"
 #include "Guldan.h"
@@ -18,11 +19,14 @@ FelBall::FelBall(const FelBallInfo* info, Projectile_type type) : Projectile(inf
 
 	actualAnim = &felAnims[(uint)FelAnimations::moving_anim];
 
+	projCollider = App->colliders->AddEnemyAttackCollider({ 0, 0, 49, 74 }, toData, 50, EnemyAttack::E_Attack_Type::GULDAN_BALL);
+
 	toData = (FelBallInfo*)info;
 }
 
 FelBall::~FelBall()
 {
+	App->colliders->deleteCollider(projCollider);
 	RELEASE(data);
 }
 

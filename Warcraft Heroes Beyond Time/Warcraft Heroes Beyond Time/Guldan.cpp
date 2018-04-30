@@ -7,6 +7,7 @@
 
 #include "ModuleInput.h"
 #include "ModulePrinter.h"
+#include "ModuleColliders.h"
 #include "ModuleMapGenerator.h"
 
 
@@ -138,6 +139,8 @@ bool Guldan::Start()
 {
 	statesBoss = BossStates::IDLE;
 
+	guldanCollider = App->colliders->AddCollider({ 0,0,68,68 }, Collider::ColliderType::ENTITY, this);
+
 	return true;
 }
 
@@ -147,7 +150,7 @@ bool Guldan::Update(float dt)
 	{
 	case BossStates::IDLE:
 			
-		if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
 		{
 			statesBoss = BossStates::THUNDER_CAST;
 			anim = &startGeneratingBalls;
@@ -402,6 +405,9 @@ bool Guldan::Update(float dt)
 
 bool Guldan::Finish()
 {	
+	App->colliders->deleteCollider(guldanCollider);
+	guldanCollider = nullptr;
+
 	return true;
 }
 

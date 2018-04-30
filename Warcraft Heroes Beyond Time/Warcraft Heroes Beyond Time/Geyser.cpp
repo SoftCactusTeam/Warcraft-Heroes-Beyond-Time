@@ -2,6 +2,7 @@
 
 #include "Application.h"
 #include "ModulePrinter.h"
+#include "ModuleColliders.h"
 
 #include "Scene.h"
 #include "PlayerEntity.h"
@@ -39,6 +40,8 @@ Geyser::Geyser(const GeyserInfo* info, Projectile_type type) : Projectile(info, 
 
 	toData = (GeyserInfo*)info;
 
+	projCollider = App->colliders->AddEnemyAttackCollider({0, 0, 49, 74}, this, 50, EnemyAttack::E_Attack_Type::GULDAN_BALL);
+
 	actualAnim = &geyAnims[(uint)GeyserAnimations::selection];
 	geyser_state = state::following;
 	data->layer = 0;
@@ -46,6 +49,7 @@ Geyser::Geyser(const GeyserInfo* info, Projectile_type type) : Projectile(info, 
 
 Geyser::~Geyser()
 {
+	App->colliders->deleteCollider(projCollider);
 	RELEASE(data);
 }
 
