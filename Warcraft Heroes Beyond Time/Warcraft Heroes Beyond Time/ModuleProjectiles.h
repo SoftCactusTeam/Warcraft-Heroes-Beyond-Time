@@ -14,7 +14,8 @@ enum Projectile_type
 	no_type = -1,
 	fel_ball,
 	geyser,
-	thunder
+	thunder,
+	block
 };
 
 class ModuleProjectiles : public Module

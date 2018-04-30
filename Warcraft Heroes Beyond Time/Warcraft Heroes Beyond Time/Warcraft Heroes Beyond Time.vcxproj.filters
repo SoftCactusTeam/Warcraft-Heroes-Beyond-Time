@@ -160,6 +160,9 @@
     <ClCompile Include="Thunder.cpp">
       <Filter>Projectiles</Filter>
     </ClCompile>
+    <ClCompile Include="Block.cpp">
+      <Filter>Projectiles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -337,6 +340,9 @@
       <Filter>Projectiles</Filter>
     </ClInclude>
     <ClInclude Include="Thunder.h">
+      <Filter>Projectiles</Filter>
+    </ClInclude>
+    <ClInclude Include="Block.h">
       <Filter>Projectiles</Filter>
     </ClInclude>
   </ItemGroup>

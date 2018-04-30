@@ -4,6 +4,7 @@
 #include "FelBall.h"
 #include "Geyser.h"
 #include "Thunder.h"
+#include "Block.h"
 #include "Scene.h"
 #include "PlayerEntity.h"
 
@@ -155,6 +156,13 @@ bool Guldan::Update(float dt)
 		if (pos.DistanceTo(App->scene->player->pos) <= 150.0f)
 		{
 			App->input->PlayJoyRumble(0.9f, 100);
+			BlockInfo info;
+			info.pos = { 14 * 48 - 1, 13 * 48 };
+			App->projectiles->AddProjectile(&info, Projectile_type::block);
+			info.pos = { 15 * 48 - 2, 13 * 48 };
+			App->projectiles->AddProjectile(&info, Projectile_type::block);
+			info.pos = { 16 * 48 - 4, 13 * 48 };
+			App->projectiles->AddProjectile(&info, Projectile_type::block);
 			anim = &hello;
 		}
 
