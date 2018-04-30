@@ -12,13 +12,20 @@
 struct ArcherArrowInfo : public ProjectileInfo
 {
 	ArcherArrowInfo() {};
-	ArcherArrowInfo(const ArcherArrowInfo& info) : ProjectileInfo((const ProjectileInfo&)info), rotationPivot(info.rotationPivot), angle(info.angle), radiusToIncrease(info.radiusToIncrease), startRadius(info.startRadius) {};
+	ArcherArrowInfo(const ArcherArrowInfo& info) : ProjectileInfo((const ProjectileInfo&)info), rotationPivot(info.rotationPivot), angle(info.angle), radiusToIncrease(info.radiusToIncrease), startRadius(info.startRadius), pos(info.pos) {};
 
 	fPoint rotationPivot = { 0.0f,0.0f };
-	double angle = 0.0f;
 	double radiusToIncrease = 0.0f;
 	float startRadius = 0.0f;
 
+	fPoint			pos;
+	fPoint			direction;
+	Collider*		arrowCollider = nullptr;
+
+	float			deadTimer;
+	bool			destroy = false;
+	float			angle;
+	int				tempoAtWall = -1;
 };
 
 class ArcherArrow : public Projectile

@@ -38,29 +38,6 @@ struct archerEffectStruct
 	int time = 0;
 };
 
-class Enemy_Archer_Arrow {
-public:
-	Enemy_Archer_Arrow(fPoint coor, SDL_Texture* texture, fPoint direction, int deadTimer = ARROW_DEAD_TIMER);
-
-	void Update();
-	void Draw();
-	void Finish();
-
-public:
-	fPoint			pos;
-	fPoint			direction;
-	SDL_Rect		rect;
-	SDL_Texture*	texture;
-	Collider*		arrowCollider = nullptr;
-
-	float			deadTimer;
-	bool			destroy = false;
-	float			angle;
-	int				tempoAtWall = -1;
-
-
-};
-
 class Enemy_Archer : public EnemyEntity
 {
 public:
@@ -112,7 +89,6 @@ public:
 
 	Animation animSmoke;
 
-	std::vector<Enemy_Archer_Arrow*> arrowsVector;
 	std::list<archerEffectStruct*> effectsList;
 
 private:
