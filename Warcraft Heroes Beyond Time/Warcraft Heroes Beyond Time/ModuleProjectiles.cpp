@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "ModuleTextures.h"
 #include "ModuleProjectiles.h"
+#include "ModuleColliders.h"
 #include "Projectile.h"
 #include "FelBall.h"
 #include "Geyser.h"

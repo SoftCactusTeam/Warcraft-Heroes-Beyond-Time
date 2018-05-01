@@ -172,24 +172,24 @@ bool Scene::Update(float dt)
 	bool ret = true;
 
 	//TESTING SAVES
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && !App->console->isWritting())
 	{
 		App->Save();
 	}
 
 	//TESTING LOAD
-	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && !App->console->isWritting())
 	{
 		App->Load();
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN && !App->console->isWritting())
 	{
 		if (player != nullptr)
 			player->SetDamage(25, true);
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT && !paused)
 	{
 		if (player != nullptr)
 			player->IncreaseEnergy(100);
@@ -206,7 +206,7 @@ bool Scene::Update(float dt)
 		GoNextLevel();
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_F1) && actual_scene == Stages::INGAME)
+	if (App->input->GetKey(SDL_SCANCODE_F1) && actual_scene == Stages::INGAME && !App->console->isWritting())
 	{
 		lvlIndex = 100;
 		restart = true;
@@ -217,7 +217,7 @@ bool Scene::Update(float dt)
 		GeneratePortal();
 	}
 
-	if (actual_scene == Stages::MAIN_MENU && App->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN) // DELETE THIS AFTER VERTICAL
+	if (actual_scene == Stages::MAIN_MENU && App->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN && !App->console->isWritting()) // DELETE THIS AFTER VERTICAL
 	{
 		App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
 		actual_scene = Stages::INGAME;

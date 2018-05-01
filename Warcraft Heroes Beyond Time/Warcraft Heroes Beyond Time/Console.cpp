@@ -76,7 +76,6 @@ bool Console::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KeyState::KEY_DOWN)
 		{
 			ret = ExecConsoleOrder(box->text);
-			
 		}
 	}
 	

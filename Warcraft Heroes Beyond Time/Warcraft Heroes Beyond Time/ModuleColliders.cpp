@@ -5,6 +5,8 @@
 #include "Entity.h"
 #include "DynamicEntity.h"
 #include "ModulePrinter.h"
+#include "ModuleProjectiles.h"
+#include "Projectile.h"
 
 #include "Brofiler\Brofiler.h"
 
@@ -55,56 +57,104 @@ bool ModuleColliders::Update(float dt)
 		{
 			if ((*col1) == (*col2) || !CollisionEnabled((*col1), (*col2)))
 				continue;
-			
+
 			if (CheckIfCollides((*col1), (*col2)))			//If collides
 			{
 				if ((*col1)->owner != nullptr)
 				{
-					Entity* owner = (Entity*)(*col1)->owner; //Owners can only be entities for now
-					if (wereColliding((*col1), (*col2)))
-						owner->OnCollisionContinue((*col1),(*col2));
-					else
+					if ((*col1)->colType == Collider::ColliderType::ENTITY)
 					{
-						owner->OnCollision((*col1),(*col2));
-						(*col1)->colliding.push_back(*col2);
-					}	
+						Entity* owner = (Entity*)(*col1)->owner;
+						if (wereColliding((*col1), (*col2)))
+							owner->OnCollisionContinue((*col1), (*col2));
+						else
+						{
+							owner->OnCollision((*col1), (*col2));
+							(*col1)->colliding.push_back(*col2);
+						}
+					}
+					else if ((*col1)->colType == Collider::ColliderType::ENEMY_ATTACK)
+					{
+						Projectile* owner = (Projectile*)(*col1)->owner;
+						if (wereColliding((*col1), (*col2)))
+							owner->OnCollisionContinue((*col1), (*col2));
+						else
+						{
+							owner->OnCollision((*col1), (*col2));
+							(*col1)->colliding.push_back(*col2);
+						}
+					}
 				}
 
 				if ((*col2)->owner != nullptr)
 				{
-					Entity* owner = (Entity*)(*col2)->owner; 
-					if (wereColliding((*col2), (*col1)))
-						owner->OnCollisionContinue((*col2),(*col1));
-					else
+					if ((*col2)->colType == Collider::ColliderType::ENTITY)
 					{
-						owner->OnCollision((*col2),(*col1));
-						(*col2)->colliding.push_back(*col1);
+						Entity* owner = (Entity*)(*col2)->owner;
+						if (wereColliding((*col2), (*col1)))
+							owner->OnCollisionContinue((*col2), (*col1));
+						else
+						{
+							owner->OnCollision((*col2), (*col1));
+							(*col2)->colliding.push_back(*col1);
+						}
+					}
+					else if ((*col2)->colType == Collider::ColliderType::ENEMY_ATTACK)
+					{
+						Projectile* owner = (Projectile*)(*col2)->owner;
+						if (wereColliding((*col2), (*col1)))
+							owner->OnCollisionContinue((*col2), (*col1));
+						else
+						{
+							owner->OnCollision((*col2), (*col1));
+							(*col2)->colliding.push_back(*col1);
+						}
 					}
 				}
 			}
 			else                                                //If don't collide			
 			{
-				if(wereColliding((*col1), (*col2)))				//If were colliding
-
-					if ((*col1)->owner != nullptr) 
+				if (wereColliding((*col1), (*col2)))				//If were colliding
+				{
+					if ((*col1)->owner != nullptr)
 					{
-						Entity* owner = (Entity*)(*col1)->owner; 
-						owner->OnCollisionLeave((*col1),(*col2));
-						(*col1)->colliding.remove(*col2);		
+						if ((*col1)->colType == Collider::ColliderType::ENTITY)
+						{
+							Entity* owner = (Entity*)(*col1)->owner;
+							owner->OnCollisionLeave((*col1), (*col2));
+							(*col1)->colliding.remove(*col2);
+						}
+						else if ((*col1)->colType == Collider::ColliderType::ENEMY_ATTACK)
+						{
+							Projectile* owner = (Projectile*)(*col1)->owner;
+							owner->OnCollisionLeave((*col1), (*col2));
+							(*col1)->colliding.remove(*col2);
+						}
 					}
+				}
 
 				if (wereColliding((*col2), (*col1)))
-
+				{
 					if ((*col2)->owner != nullptr)
 					{
-						Entity* owner = (Entity*)(*col2)->owner;
-						owner->OnCollisionLeave((*col2),(*col1));
-						(*col1)->colliding.remove(*col1);
-					}			
+						if ((*col2)->colType == Collider::ColliderType::ENTITY)
+						{
+							Entity* owner = (Entity*)(*col2)->owner;
+							owner->OnCollisionLeave((*col2), (*col1));
+							(*col1)->colliding.remove(*col1);
+						}
+						else if ((*col2)->colType == Collider::ColliderType::ENEMY_ATTACK)
+						{
+							Projectile* owner = (Projectile*)(*col2)->owner;
+							owner->OnCollisionLeave((*col2), (*col1));
+							(*col1)->colliding.remove(*col1);
+						}
+					}
+
+				}
 			}
 		}
 	}
-
 	return true;
 }
 
@@ -194,6 +244,15 @@ bool ModuleColliders::CheckIfCollides(Collider* col1, Collider* col2) const
 				rect1.y += owner->pos.y;
 				break;
 			}
+			case Collider::ColliderType::ENEMY_ATTACK:
+			{
+				Projectile* owner = (Projectile*)col1->owner;
+				float x, y;
+				owner->getPos(x, y);
+				rect1.x += x;
+				rect1.y += y;
+				break;
+			}
 		}
 	}
 
@@ -204,11 +263,19 @@ bool ModuleColliders::CheckIfCollides(Collider* col1, Collider* col2) const
 		{
 			case Collider::ColliderType::ENTITY:
 			case Collider::ColliderType::PLAYER_ATTACK:
-			case Collider::ColliderType::ENEMY_ATTACK:
 			{
 				Entity* owner = (Entity*)col2->owner;
 				rect2.x += owner->pos.x;
 				rect2.y += owner->pos.y;
+				break;
+			}
+			case Collider::ColliderType::ENEMY_ATTACK:
+			{
+				Projectile* owner = (Projectile*)col2->owner;
+				float x, y;
+				owner->getPos(x, y);
+				rect1.x += x;
+				rect1.y += y;
 				break;
 			}
 		}
@@ -294,6 +361,14 @@ bool ModuleColliders::CollisionEnabled(Collider* col1, Collider* col2) const
 				}
 			}
 		}
+		case Collider::ColliderType::ENEMY_ATTACK:
+		{
+			if (col2->colType == Collider::ColliderType::WALL)
+				return true;										 //Proyectiles vs walls enabled
+			else
+				return false;
+			break;
+		}
 	}
 
 	return false;
@@ -321,21 +396,32 @@ void ModuleColliders::PrintColliders() const
 		}
 		else
 		{
-			Entity* owner = (Entity*)(*it)->owner;
-			SDL_Rect rect = { (*it)->rectArea.x + owner->pos.x, (*it)->rectArea.y + owner->pos.y, (*it)->rectArea.w, (*it)->rectArea.h };
+			if ((*it)->colType != Collider::ColliderType::ENEMY_ATTACK)
+			{
+				Entity* owner = (Entity*)(*it)->owner;
+				SDL_Rect rect = { (*it)->rectArea.x + owner->pos.x, (*it)->rectArea.y + owner->pos.y, (*it)->rectArea.w, (*it)->rectArea.h };
 
-			if ((*it)->colType == Collider::ColliderType::ENTITY)
-			{	
-				App->printer->PrintQuad(rect, { 255, 255, 255, 100 }, true, true);
+				if ((*it)->colType == Collider::ColliderType::ENTITY)
+				{
+					App->printer->PrintQuad(rect, { 255, 255, 255, 100 }, true, true);
+				}
+				else if ((*it)->colType == Collider::ColliderType::PLAYER_ATTACK)
+				{
+					App->printer->PrintQuad(rect, { 0, 255, 0, 100 }, true, true);
+				}
 			}
-			else if ((*it)->colType == Collider::ColliderType::PLAYER_ATTACK)
+			else
 			{
-				App->printer->PrintQuad(rect, { 0, 255, 0, 100 }, true, true);
+				if ((*it)->colType == Collider::ColliderType::ENEMY_ATTACK)
+				{
+					Projectile* owner = (Projectile*)(*it)->owner;
+					float x, y;
+					owner->getPos(x, y);
+					SDL_Rect rect = { (*it)->rectArea.x + x, (*it)->rectArea.y + y, (*it)->rectArea.w, (*it)->rectArea.h };
+					App->printer->PrintQuad(rect, { 255, 0, 0, 100 }, true, true);
+				}
 			}
-			else if ((*it)->colType == Collider::ColliderType::ENEMY_ATTACK)
-			{
-				App->printer->PrintQuad(rect, { 255, 0, 0, 100 }, true, true);
-			}
+			
 		}	
 	}
 }
