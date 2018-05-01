@@ -223,31 +223,38 @@ bool MapGenerator::GenerateBossMap()
 	tileSize = sub_map_node.attribute("tilewidth").as_int();
 
 	int contNodes = 0;
-	for (pugi::xml_node tile_gid = map_child.child("layer").child("data").child("tile"); tile_gid; tile_gid = tile_gid.next_sibling("tile"))
-	{
-		int gid = tile_gid.attribute("gid").as_int();
 
-		nodes[contNodes]->whatToBlit = GetTileRect(gid);
-		nodes[contNodes]->layerBelow = -2;
-		/*if (gid == 5)
+	for (pugi::xml_node layer = map_child.child("layer"); layer; layer = layer.next_sibling("layer"))
+	{
+		for (pugi::xml_node tile_gid = layer.child("data").child("tile"); tile_gid; tile_gid = tile_gid.next_sibling("tile"))
 		{
-			App->colliders->AddCollider(SDL_Rect({ nodes[contNodes]->pos.x * (int)(tileSize - 2), (nodes[contNodes]->pos.y + 1) * (int)(tileSize - 2) - (int)(tileSize - 2), 48,48 }), Collider::ColliderType::WALL);
-			nodes[contNodes]->whatToBlit = VOID;
-			nodes[contNodes]->layerBelow = 1;
+			int gid = tile_gid.attribute("gid").as_int();
+
+			std::string layerName = layer.attribute("name").as_string();
+			
+			if (layerName == "Tiles")
+			{
+				nodes[contNodes]->whatToBlit = GetTileRect(gid);
+			}
+			else if (layerName == "Colliders")
+			{
+				if (gid == 32)
+				{
+					App->colliders->AddCollider(SDL_Rect({ nodes[contNodes]->pos.x * (int)(tileSize - 2), (nodes[contNodes]->pos.y + 1) * (int)(tileSize - 2) - (int)(tileSize - 2), 48,48 }), Collider::ColliderType::WALL);
+				}
+			}
+			else if (layerName == "Layers")
+			{
+				if (gid == 32)
+					nodes[contNodes]->layerBelow = 2;
+				else if (gid == 33)
+					nodes[contNodes]->layerBelow = 0;
+				else
+					nodes[contNodes]->layerBelow = -2;
+			}
+			contNodes++;
 		}
-		else if (gid >= 6)
-		{
-			nodes[contNodes]->whatToBlit = FLOOR;
-			nodes[contNodes]->layerBelow = -2;
-		}
-		else
-		{
-			App->colliders->AddCollider(SDL_Rect({ nodes[contNodes]->pos.x * (int)(tileSize - 2), (nodes[contNodes]->pos.y + 1) * (int)(tileSize - 2) - (int)(tileSize - 2), 48,48 }), Collider::ColliderType::WALL);
-			nodes[contNodes]->whatToBlit = WALL1;
-			nodes[contNodes]->layerBelow = 0;
-		}
-		*/
-		contNodes++;
+		contNodes = 0;
 	}
 
 	mapTexture = App->textures->Load("maps/tiles_boss.png");
