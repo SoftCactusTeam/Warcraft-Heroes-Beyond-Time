@@ -157,6 +157,7 @@ bool Guldan::Update(float dt)
 		{
 			App->input->PlayJoyRumble(0.9f, 100);
 			BlockInfo info;
+			info.layer = 1;
 			info.pos = { 14 * 48 - 1, 13 * 48 };
 			App->projectiles->AddProjectile(&info, Projectile_type::block);
 			info.pos = { 15 * 48 - 2, 13 * 48 };
