@@ -16,19 +16,6 @@
 
 #include "ModuleRender.h"
 
-
-// XML DONE
-#define DISTANCE_TO_MOVE		400		// vision range
-#define DISTANCE_TO_ATAC		150		// atac range
-#define ATAC_COOLDOWN			2000	// time_between_Atacs
-#define MOVEMENT_SPEED			3		// speed
-#define ARROW_SPEED				10		// arrows_speed
-#define ARCHER_LIVE				100		// hp
-
-#define PRE_ATTACK				500		// abans d'atacar
-#define TILES_TO_LITTLEMOVE		4		// es mante
-#define DISTANCE_TO_LITTLEMOVE	250		// minimal_distance_with_player
-
 // DON'T DO
 #define TRI_ATAC_COOLDOWN		2000	// treure
 #define FAST_ATAC_COOLDOWN		2000	// treure fast atac
