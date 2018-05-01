@@ -62,7 +62,7 @@ bool ModuleColliders::Update(float dt)
 			{
 				if ((*col1)->owner != nullptr)
 				{
-					if ((*col1)->colType == Collider::ColliderType::ENTITY)
+					if ((*col1)->colType != Collider::ColliderType::ENEMY_ATTACK)
 					{
 						Entity* owner = (Entity*)(*col1)->owner;
 						if (wereColliding((*col1), (*col2)))
@@ -73,7 +73,7 @@ bool ModuleColliders::Update(float dt)
 							(*col1)->colliding.push_back(*col2);
 						}
 					}
-					else if ((*col1)->colType == Collider::ColliderType::ENEMY_ATTACK)
+					else
 					{
 						Projectile* owner = (Projectile*)(*col1)->owner;
 						if (wereColliding((*col1), (*col2)))
@@ -88,7 +88,7 @@ bool ModuleColliders::Update(float dt)
 
 				if ((*col2)->owner != nullptr)
 				{
-					if ((*col2)->colType == Collider::ColliderType::ENTITY)
+					if ((*col2)->colType != Collider::ColliderType::ENEMY_ATTACK)
 					{
 						Entity* owner = (Entity*)(*col2)->owner;
 						if (wereColliding((*col2), (*col1)))
@@ -99,7 +99,7 @@ bool ModuleColliders::Update(float dt)
 							(*col2)->colliding.push_back(*col1);
 						}
 					}
-					else if ((*col2)->colType == Collider::ColliderType::ENEMY_ATTACK)
+					else
 					{
 						Projectile* owner = (Projectile*)(*col2)->owner;
 						if (wereColliding((*col2), (*col1)))
@@ -118,13 +118,13 @@ bool ModuleColliders::Update(float dt)
 				{
 					if ((*col1)->owner != nullptr)
 					{
-						if ((*col1)->colType == Collider::ColliderType::ENTITY)
+						if ((*col1)->colType != Collider::ColliderType::ENEMY_ATTACK)
 						{
 							Entity* owner = (Entity*)(*col1)->owner;
 							owner->OnCollisionLeave((*col1), (*col2));
 							(*col1)->colliding.remove(*col2);
 						}
-						else if ((*col1)->colType == Collider::ColliderType::ENEMY_ATTACK)
+						else
 						{
 							Projectile* owner = (Projectile*)(*col1)->owner;
 							owner->OnCollisionLeave((*col1), (*col2));
@@ -137,13 +137,13 @@ bool ModuleColliders::Update(float dt)
 				{
 					if ((*col2)->owner != nullptr)
 					{
-						if ((*col2)->colType == Collider::ColliderType::ENTITY)
+						if ((*col2)->colType != Collider::ColliderType::ENEMY_ATTACK)
 						{
 							Entity* owner = (Entity*)(*col2)->owner;
 							owner->OnCollisionLeave((*col2), (*col1));
 							(*col1)->colliding.remove(*col1);
 						}
-						else if ((*col2)->colType == Collider::ColliderType::ENEMY_ATTACK)
+						else
 						{
 							Projectile* owner = (Projectile*)(*col2)->owner;
 							owner->OnCollisionLeave((*col2), (*col1));
@@ -237,13 +237,6 @@ bool ModuleColliders::CheckIfCollides(Collider* col1, Collider* col2) const
 	{
 		switch (col1->colType)
 		{
-			case Collider::ColliderType::ENTITY:
-			{
-				Entity* owner = (Entity*)col1->owner;
-				rect1.x += owner->pos.x;
-				rect1.y += owner->pos.y;
-				break;
-			}
 			case Collider::ColliderType::ENEMY_ATTACK:
 			{
 				Projectile* owner = (Projectile*)col1->owner;
@@ -251,6 +244,13 @@ bool ModuleColliders::CheckIfCollides(Collider* col1, Collider* col2) const
 				owner->getPos(x, y);
 				rect1.x += x;
 				rect1.y += y;
+				break;
+			}
+			default:
+			{
+				Entity* owner = (Entity*)col1->owner;
+				rect1.x += owner->pos.x;
+				rect1.y += owner->pos.y;
 				break;
 			}
 		}
@@ -261,21 +261,20 @@ bool ModuleColliders::CheckIfCollides(Collider* col1, Collider* col2) const
 	{
 		switch (col2->colType)
 		{
-			case Collider::ColliderType::ENTITY:
-			case Collider::ColliderType::PLAYER_ATTACK:
-			{
-				Entity* owner = (Entity*)col2->owner;
-				rect2.x += owner->pos.x;
-				rect2.y += owner->pos.y;
-				break;
-			}
 			case Collider::ColliderType::ENEMY_ATTACK:
 			{
 				Projectile* owner = (Projectile*)col2->owner;
 				float x, y;
 				owner->getPos(x, y);
-				rect1.x += x;
-				rect1.y += y;
+				rect2.x += x;
+				rect2.y += y;
+				break;
+			}
+			default:
+			{
+				Entity* owner = (Entity*)col2->owner;
+				rect2.x += owner->pos.x;
+				rect2.y += owner->pos.y;
 				break;
 			}
 		}
