@@ -169,18 +169,37 @@ bool Guldan::Update(float dt)
 		if (anim == &hello && anim->Finished())
 		{
 			anim = &idle;
-			statesBoss = BossStates::IDLE;
+			statesBoss = BossStates::TELEPORT;
+			anim = &teleport;
+			teleportCenter = true;
 			break;
 		}
 
 		break;
 
 	case BossStates::IDLE:
-			
-		if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
+	{
+		if (!letsGoThunders && pos.x == (14 * 48 + 10) && pos.y == (4 * 48))
+		{
+			statesBoss = BossStates::TELEPORT;
+			anim = &teleport;
+			break;
+		}
+
+		if (letsGoThunders)
 		{
 			statesBoss = BossStates::THUNDER_CAST;
+			randThunder = rand() % 2;
 			anim = &startGeneratingBalls;
+			letsGoThunders = false;
+			break;
+		}
+
+		if (tired >= 3)
+		{
+			anim = &restoreEnergy;
+			statesBoss = BossStates::RESTORING_ENERGY;
+			tired = 0;
 			break;
 		}
 
@@ -196,63 +215,64 @@ bool Guldan::Update(float dt)
 			break;
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
-		{
-			anim = &restoreEnergy;
-			statesBoss = BossStates::RESTORING_ENERGY;
-			break;
-		}
+		int randState = rand() % 6;
 
-		if (App->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
+		if (randState == 0)
 		{
 			statesBoss = BossStates::TELEPORT;
 			anim = &teleport;
 			break;
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
+		if (randState == 1)
 		{
 			statesBoss = BossStates::TELEPORT;
 			teleportBase = true;
+			letsGoThunders = true;
 			anim = &teleport;
+			tired += 1;
 			break;
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+		if (randState == 2)
 		{
 			statesBoss = BossStates::GENERATINGBALLS;
 			next_movement_type = FellBallsTypes::ODD_EVEN_TYPE;
 			anim = &startGeneratingBalls;
+			tired += 1;
 			break;
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+		if (randState == 3)
 		{
 			statesBoss = BossStates::GENERATINGBALLS;
 			next_movement_type = FellBallsTypes::COMPLETE_CIRCLE;
 			anim = &startGeneratingBalls;
+			tired += 1;
 			break;
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_N))
+		if (randState == 4)
 		{
 			statesBoss = BossStates::GENERATINGBALLS;
 			next_movement_type = FellBallsTypes::HEXAGON_TYPE;
 			anim = &startGeneratingBalls;
+			tired += 1;
 			break;
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_P))
+		if (randState == 5)
 		{
 			statesBoss = BossStates::GENERATINGBALLS;
 			next_movement_type = FellBallsTypes::SPIRAL_TYPE;
 			timeToComeBackSpiral = 0.0f;
 			anim = &startGeneratingBalls;
+			tired += 1;
 			break;
 		}
 
 		break;
-
+	}
 	case BossStates::GENERATINGBALLS:
 		
 		if (anim == &startGeneratingBalls && anim->Finished())
@@ -264,24 +284,47 @@ bool Guldan::Update(float dt)
 
 			if (next_movement_type == FellBallsTypes::ODD_EVEN_TYPE)
 			{
+				timeGeysersFollowingPlayerM += 1 * dt;
 
-				// ODD_EVEN_FEL_MOVEMENT -----
-				if (timeBetweenBalls >= TIME_BETWEEN_BALLS_ODD_EVEN)
+				if (timeGeysersFollowingPlayerM >= 1.0f)
 				{
-					if (contBalls % 2 == 0)
-						GenerateFelBalls(FellBallsTypes::ODD_EVEN_TYPE, 10.0f);
-					else
-						GenerateFelBalls(FellBallsTypes::ODD_EVEN_TYPE, -10.0f);
+					GeneratGeyser(GeyserType::FOLLOW_PLAYER);
+					timeGeysersFollowingPlayerM = 0.0f;
+				}
 
-					timeBetweenBalls = 0.0f;
-					contBalls += 1;
+				if (startTimeBetweenM)
+				{
+					timeBetweenM += 1.0f * dt;
+				}
+				// ODD_EVEN_FEL_MOVEMENT -----
+				if ((startTimeBetweenM && timeBetweenM >= 1.4f) || !startTimeBetweenM)
+				{
+					if (timeBetweenBalls >= TIME_BETWEEN_BALLS_ODD_EVEN)
+					{
+						if (contBalls % 2 == 0)
+							GenerateFelBalls(FellBallsTypes::ODD_EVEN_TYPE, 10.0f);
+						else
+							GenerateFelBalls(FellBallsTypes::ODD_EVEN_TYPE, -10.0f);
+
+						timeBetweenBalls = 0.0f;
+						contBalls += 1;
+					}
+					startTimeBetweenM = false;
+					timeBetweenM = 0.0f;
 				}
 				// ----------------------------
 
 				if (contBalls >= NUMBER_BALLS_ODD_EVEN)
 				{
-					anim = &generatingBallsInverse;
 					contBalls = 0;
+					repeat += 1;
+					startTimeBetweenM = true;
+				}
+
+				if (repeat >= 3)
+				{
+					anim = &generatingBallsInverse;
+					repeat = 0;
 				}
 			}
 			else if (next_movement_type == FellBallsTypes::COMPLETE_CIRCLE)
@@ -322,6 +365,7 @@ bool Guldan::Update(float dt)
 			}
 			else if (next_movement_type == FellBallsTypes::SPIRAL_TYPE)
 			{
+
 				if (timeBetweenBalls >= TIME_BETWEEN_BALLS_SPIRAL)
 				{
 					GenerateFelBalls(FellBallsTypes::SPIRAL_TYPE, 0.0f);
@@ -362,17 +406,25 @@ bool Guldan::Update(float dt)
 			if (anim->Finished())
 			{
 				anim->Reset();
-				int posToTp = 0;
-				if (!teleportBase)
+
+				if (!teleportBase && !teleportCenter)
 				{
-					while (pointToTelerpot[posToTp] == pos)
+					int posToTp = 0;
+					do
 						posToTp = rand() % 5;
+					while (pointToTelerpot[posToTp] == pos);
 					pos.x = pointToTelerpot[posToTp].x;
 					pos.y = pointToTelerpot[posToTp].y;
 				}
-				else
+				else if (teleportCenter && !teleportBase)
+				{
+					pos.x = pointToTelerpot[0].x;
+					pos.y = pointToTelerpot[0].y;
+				}
+				else if (!teleportCenter && teleportBase)
 					pos = GULDAN_BASE;
-				anim = &inverseTeleport;
+
+					anim = &inverseTeleport;
 			}
 		}
 		else
@@ -383,6 +435,7 @@ bool Guldan::Update(float dt)
 				anim = &idle;
 				statesBoss = BossStates::IDLE;
 				teleportBase = false;
+				teleportCenter = false;
 				break;
 			}
 		}
@@ -395,7 +448,10 @@ bool Guldan::Update(float dt)
 		if (timeBetweenSteps >= TIME_BETWEEN_THUNDERS)
 		{
 			timeBetweenSteps = 0.0f;
-			GenerateThunders(step);
+			if (randThunder == 0)
+				GenerateThunders(step);
+			else
+				GenerateInverseThunders(step);
 			step += 1;
 		}
 
@@ -422,6 +478,17 @@ bool Guldan::Update(float dt)
 		}
 
 		break;
+	}
+
+	if (generateGeysers)
+	{
+		timeBetweenGeyser += 1 * dt;
+
+		if (timeBetweenGeyser >= 0.2f)
+		{
+			timeBetweenGeyser = 0.0f;
+			GeneratGeyser(GeyserType::STOP_IN_POS);
+		}
 	}
 
 	// spiral
@@ -735,6 +802,214 @@ void Guldan::GenerateThunders(int numberXY)
 	else if (numberXY == 47)
 	{
 		info.pos = { 21.0f,10.0f };
+	}
+
+	info.pos.x *= 48.0f;
+	info.pos.y *= 48.0f;
+
+	App->projectiles->AddProjectile(&info, Projectile_type::thunder);
+}
+
+void Guldan::GenerateInverseThunders(int numberXY)
+{
+	ThunderInfo info;
+	info.pos = { 10.0f,5.0f };
+
+	if (numberXY == 0)
+	{
+		info.pos = { 20.0f,5.0f };
+	}
+	else if (numberXY == 1)
+	{
+		info.pos = { 21.0f,6.0f };
+	}
+	else if (numberXY == 2)
+	{
+		info.pos = { 18.0f,5.0f };
+	}
+	else if (numberXY == 3)
+	{
+		info.pos = { 19.0f,6.0f };
+	}
+	else if (numberXY == 4)
+	{
+		info.pos = { 20.0f,7.0f };
+	}
+	else if (numberXY == 5)
+	{
+		info.pos = { 21.0f,8.0f };
+	}
+	else if (numberXY == 6)
+	{
+		info.pos = { 17.0f,6.0f };
+	}
+	else if (numberXY == 7)
+	{
+		info.pos = { 18.0f,7.0f };
+	}
+	else if (numberXY == 8)
+	{
+		info.pos = { 19.0f,8.0f };
+	}
+	else if (numberXY == 9)
+	{
+		info.pos = { 20.0f,9.0f };
+	}
+	else if (numberXY == 10)
+	{
+		info.pos = { 21.0f,10.0f };
+	}
+	else if (numberXY == 11)
+	{
+		info.pos = { 16.0f,7.0f };
+	}
+	else if (numberXY == 12)
+	{
+		info.pos = { 17.0f,8.0f };
+	}
+	else if (numberXY == 13)
+	{
+		info.pos = { 18.0f,9.0f };
+	}
+	else if (numberXY == 14)
+	{
+		info.pos = { 19.0f,10.0f };
+	}
+	else if (numberXY == 15)
+	{
+		info.pos = { 20.0f,11.0f };
+	}
+	else if (numberXY == 16)
+	{
+		info.pos = { 21.0f,12.0f };
+	}
+	else if (numberXY == 17)
+	{
+		info.pos = { 12.0f,5.0f };
+	}
+	else if (numberXY == 18)
+	{
+		info.pos = { 13.0f,6.0f };
+	}
+	else if (numberXY == 19)
+	{
+		info.pos = { 14.0f,7.0f };
+	}
+	else if (numberXY == 20)
+	{
+		info.pos = { 15.0f,8.0f };
+	}
+	else if (numberXY == 21)
+	{
+		info.pos = { 16.0f,9.0f };
+	}
+	else if (numberXY == 22)
+	{
+		info.pos = { 17.0f,10.0f };
+	}
+	else if (numberXY == 23)
+	{
+		info.pos = { 18.0f,11.0f };
+	}
+	else if (numberXY == 24)
+	{
+		info.pos = { 19.0f,12.0f };
+	}
+	else if (numberXY == 25)
+	{
+		info.pos = { 10.0f,5.0f };
+	}
+	else if (numberXY == 26)
+	{
+		info.pos = { 11.0f,6.0f };
+	}
+	else if (numberXY == 27)
+	{
+		info.pos = { 12.0f,7.0f };
+	}
+	else if (numberXY == 28)
+	{
+		info.pos = { 13.0f,8.0f };
+	}
+	else if (numberXY == 29)
+	{
+		info.pos = { 14.0f,9.0f };
+	}
+	else if (numberXY == 30)
+	{
+		info.pos = { 15.0f,10.0f };
+	}
+	else if (numberXY == 31)
+	{
+		info.pos = { 16.0f,11.0f };
+	}
+	else if (numberXY == 32)
+	{
+		info.pos = { 17.0f,12.0f };
+	}
+	else if (numberXY == 33)
+	{
+		info.pos = { 9.0f,6.0f };
+	}
+	else if (numberXY == 34)
+	{
+		info.pos = { 10.0f,7.0f };
+	}
+	else if (numberXY == 35)
+	{
+		info.pos = { 11.0f,8.0f };
+	}
+	else if (numberXY == 36)
+	{
+		info.pos = { 12.0f,9.0f };
+	}
+	else if (numberXY == 37)
+	{
+		info.pos = { 13.0f,10.0f };
+	}
+	else if (numberXY == 38)
+	{
+		info.pos = { 14.0f,11.0f };
+	}
+	else if (numberXY == 39)
+	{
+		info.pos = { 15.0f,12.0f };
+	}
+	else if (numberXY == 40)
+	{
+		info.pos = { 9.0f,8.0f };
+	}
+	else if (numberXY == 41)
+	{
+		info.pos = { 10.0f,9.0f };
+	}
+	else if (numberXY == 42)
+	{
+		info.pos = { 11.0f,10.0f };
+	}
+	else if (numberXY == 43)
+	{
+		info.pos = { 12.0f,11.0f };
+	}
+	else if (numberXY == 44)
+	{
+		info.pos = { 13.0f,12.0f };
+	}
+	else if (numberXY == 45)
+	{
+		info.pos = { 9.0f,10.0f };
+	}
+	else if (numberXY == 46)
+	{
+		info.pos = { 10.0f,11.0f };
+	}
+	else if (numberXY == 47)
+	{
+		info.pos = { 11.0f,12.0f };
+	}
+	else if (numberXY == 47)
+	{
+		info.pos = { 9.0f,12.0f };
 	}
 
 	info.pos.x *= 48.0f;
