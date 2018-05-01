@@ -164,6 +164,8 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	archerT1stats.preAttac =					archerT1.attribute("pre_attac").as_uint();
 	archerT1stats.tilesToLittleMove =			archerT1.attribute("tiles_to_littlemove").as_uint();
 	archerT1stats.DistanceToScape =				archerT1.attribute("distance_to_scape").as_uint();
+	archerT1stats.attacCone_probability =		archerT1.attribute("attacCone_probability").as_uint();
+	archerT1stats.attacFast_probability =		archerT1.attribute("attacFast_probability").as_uint();
 
 	pugi::xml_node archerT2 =					entitiesNode.child("enemies").child("archer_tier2");
 	archerT2stats.maxhp =						archerT2.attribute("hp").as_uint(0);
@@ -182,6 +184,8 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	archerT2stats.preAttac =					archerT2.attribute("pre_attac").as_uint();
 	archerT2stats.tilesToLittleMove =			archerT2.attribute("tiles_to_littlemove").as_uint();
 	archerT2stats.DistanceToScape =				archerT2.attribute("distance_to_scape").as_uint();
+	archerT2stats.attacCone_probability =		archerT2.attribute("attacCone_probability").as_uint();
+	archerT2stats.attacFast_probability =		archerT2.attribute("attacFast_probability").as_uint();
 
 	pugi::xml_node archerT3 = entitiesNode.child("enemies").child("archer_tier3");
 	archerT3stats.maxhp =						archerT3.attribute("hp").as_uint(0);
@@ -200,6 +204,8 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	archerT3stats.preAttac =					archerT3.attribute("pre_attac").as_uint();
 	archerT3stats.tilesToLittleMove =			archerT3.attribute("tiles_to_littlemove").as_uint();
 	archerT3stats.DistanceToScape =				archerT3.attribute("distance_to_scape").as_uint();
+	archerT3stats.attacCone_probability =		archerT3.attribute("attacCone_probability").as_uint();
+	archerT3stats.attacFast_probability =		archerT3.attribute("attacFast_probability").as_uint();
 
 	pugi::xml_node guldan = entitiesNode.child("enemies").child("guldan");
 	guldanstats.maxhp = guldan.attribute("hp").as_uint(0);

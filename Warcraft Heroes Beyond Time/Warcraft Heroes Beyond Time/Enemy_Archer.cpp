@@ -375,17 +375,17 @@ void Enemy_Archer::doWalk()
 	{
 		initBackJump();
 	}
-	else if (DistanceToPlayer() < numStats.attack_range && App->entities->GetRandomNumber(10) < 10)	// Superar una tirada de 00%
-	{
-		initAtac();
-	}
-	else if (DistanceToPlayer() < numStats.attack_range && App->entities->GetRandomNumber(10) < 0)	// Ara mateix no fa backJump
+	else if (DistanceToPlayer() < numStats.attack_range && App->entities->GetRandomNumber(100) < numStats.attacCone_probability)
 	{
 		initTriAtac();
 	}
-	else if (DistanceToPlayer() < numStats.attack_range && App->entities->GetRandomNumber(10) < 0)	// Ara mateix no fa backJump
+	else if (DistanceToPlayer() < numStats.attack_range && App->entities->GetRandomNumber(100) < numStats.attacFast_probability)
 	{
 		initFastAtac();
+	}
+	else if (DistanceToPlayer() < numStats.attack_range/* && App->entities->GetRandomNumber(100) < 100*/)
+	{
+		initAtac();
 	}
 	else
 	{

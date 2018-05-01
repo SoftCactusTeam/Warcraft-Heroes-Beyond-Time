@@ -57,6 +57,9 @@ public:
 		uint tilesToLittleMove = 0u;
 		uint DistanceToScape = 0u;
 
+		uint attacCone_probability = 0u;
+		uint attacFast_probability = 0u;
+
 	} archerT1stats, archerT2stats, archerT3stats, guldanstats;
 
 
