@@ -53,6 +53,10 @@ public:
 		uint attack_range = 0u;
 		uint minimal_distance_player = 0u;
 
+		uint preAttac = 0u;
+		uint tilesToLittleMove = 0u;
+		uint DistanceToScape = 0u;
+
 	} archerT1stats, archerT2stats, archerT3stats, guldanstats;
 
 
@@ -108,7 +112,7 @@ private:
 	/*to check*/
 
 public:
-	bool checkEntityNearOther(Entity* entity);
+	bool checkEntityNearOther(Entity* entity, int dist);
 
 };
 

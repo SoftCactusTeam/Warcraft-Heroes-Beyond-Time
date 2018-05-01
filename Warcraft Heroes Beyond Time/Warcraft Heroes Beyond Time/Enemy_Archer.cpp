@@ -17,8 +17,7 @@
 #include "ModuleRender.h"
 
 
-///// xml done
-
+// XML DONE
 #define DISTANCE_TO_MOVE		400		// vision range
 #define DISTANCE_TO_ATAC		150		// atac range
 #define ATAC_COOLDOWN			2000	// time_between_Atacs
@@ -26,24 +25,23 @@
 #define ARROW_SPEED				10		// arrows_speed
 #define ARCHER_LIVE				100		// hp
 
-/////////////////
+#define PRE_ATTACK				500		// abans d'atacar
+#define TILES_TO_LITTLEMOVE		4		// es mante
+#define DISTANCE_TO_LITTLEMOVE	250		// minimal_distance_with_player
 
+// DON'T DO
 #define TRI_ATAC_COOLDOWN		2000	// treure
 #define FAST_ATAC_COOLDOWN		2000	// treure fast atac
-
-
-// time_Stuned_afteratac
 #define FAST_ATAC_ARROWS		3		// treure fast atac
 #define	FAST_ATAC_TIME_BETWEEN	100		// treure fast atac
 #define JUMP_BACK_COOLDOWN		300		// no es fara
 #define DISTANCE_TO_JUMPBACK	50		// no es fara
-#define DISTANCE_TO_LITTLEMOVE	250		// minimal_distance_with_player
+
+// DON'T TOUCH
+#define TEMPO_ARROW_ATWALL		500		// es deixa aixi
+#define TIME_DYING				500		// es deixa aixi
 #define LITTLEMOVEMENT_TIME		100		// es deixa aixi
 #define LITTLEMOVEMENT_COOLDOWN	1000	// res
-#define TILES_TO_LITTLEMOVE		4		// es mante
-#define TIME_DYING				500		// es deixa aixi
-#define TEMPO_ARROW_ATWALL		500		// es deixa aixi
-#define PRE_ATTACK				500	// abans d'atacar
 
 Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture, ARCHER_TIER tier) : EnemyEntity(coor, character, texture)
 {
@@ -88,7 +86,7 @@ bool Enemy_Archer::Update(float dt)
 		return true;
 	}
 
-	if (App->entities->checkEntityNearOther(this) && state != ARCHER_STATE::ARCHER_LITTLEMOVE && pathVector.isEmpty())
+	if (App->entities->checkEntityNearOther(this, numStats.DistanceToScape) && state != ARCHER_STATE::ARCHER_LITTLEMOVE && pathVector.isEmpty())
 		initLittleMove();
 
 	switch (state)
@@ -236,7 +234,7 @@ void Enemy_Archer::initWalk()
 void Enemy_Archer::initAtac()
 {
 	state = ARCHER_STATE::ARCHER_BASIC_ATAC;
-	accountantPrincipal = SDL_GetTicks() + PRE_ATTACK;
+	accountantPrincipal = SDL_GetTicks() + numStats.preAttac;
 	anim = &animAtac[LookAtPlayer()];
 	anim->Reset();
 	pathVector.Clear();
@@ -312,17 +310,17 @@ void Enemy_Archer::initLittleMove()
 	
 	for (int i = 0; i < 10 && tileToMove == -1; i++)
 	{
-		randomX = rand() % TILES_TO_LITTLEMOVE + 1;
-		if (randomX > TILES_TO_LITTLEMOVE / 2)
+		randomX = rand() % numStats.tilesToLittleMove + 1;
+		if (randomX > numStats.tilesToLittleMove / 2)
 		{
-			randomX -= TILES_TO_LITTLEMOVE / 2;
+			randomX -= numStats.tilesToLittleMove / 2;
 			randomX *= -1;
 		}
 
-		randomY = rand() % TILES_TO_LITTLEMOVE + 1;
-		if (randomY > TILES_TO_LITTLEMOVE / 2)
+		randomY = rand() % numStats.tilesToLittleMove + 1;
+		if (randomY > numStats.tilesToLittleMove / 2)
 		{
-			randomY -= TILES_TO_LITTLEMOVE / 2;
+			randomY -= numStats.tilesToLittleMove / 2;
 			randomY *= -1;
 		}
 
