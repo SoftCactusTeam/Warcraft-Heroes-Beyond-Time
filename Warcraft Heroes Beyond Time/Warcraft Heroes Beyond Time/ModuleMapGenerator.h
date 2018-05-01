@@ -55,6 +55,7 @@ public:
 	bool PostUpdate();
 	bool DrawMap() const;
 	inline int Get(int x, int y) const;
+	SDL_Rect MapGenerator::GetTileRect(int id) const;
 	bool CheckBoundaries(const iPoint& pos) const;
 	bool GenerateMap(MapData data);
 	bool GenerateBossMap(); 
@@ -64,6 +65,7 @@ public:
 	bool CleanUp();
 	iPoint GetRandomValidPoint();
 	iPoint GetRandomValidPointProxy(int distance, int proxyDistance);
+	iPoint GetRandomBossPoint();
 
 	void getSize(uint& w, uint& h);
 	int getTileSize();

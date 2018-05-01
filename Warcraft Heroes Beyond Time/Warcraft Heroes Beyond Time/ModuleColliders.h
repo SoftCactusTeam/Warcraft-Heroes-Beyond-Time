@@ -14,6 +14,7 @@ public:
 		WALL,
 		PORTAL,
 		ENTITY,
+		BOSS,
 		PLAYER_ATTACK,
 		ENEMY_ATTACK
 

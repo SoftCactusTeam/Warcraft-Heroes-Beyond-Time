@@ -6,6 +6,7 @@
 #include "p2Point.h"
 #include "ModuleAudio.h"
 #include "ModuleColliders.h"
+
 ChestEntity::ChestEntity(fPoint coor, CHEST_TYPE type, SDL_Texture* texture) : StaticEntity(coor, texture, StaticEntity::StaticType::CHEST), type(type)
 {
 	//chest.PushBack({ 1,18,32,32 });

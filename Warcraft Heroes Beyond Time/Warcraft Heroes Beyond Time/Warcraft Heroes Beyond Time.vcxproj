@@ -127,6 +127,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Block.cpp" />
     <ClCompile Include="BossEntity.cpp" />
     <ClCompile Include="BossHPBar.cpp" />
     <ClCompile Include="Button.cpp" />
@@ -161,6 +162,7 @@
     <ClCompile Include="Pathfinding.cpp" />
     <ClCompile Include="PortalEntity.cpp" />
     <ClCompile Include="Stat.cpp" />
+    <ClCompile Include="Thunder.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
@@ -183,6 +185,7 @@
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Block.h" />
     <ClInclude Include="BossEntity.h" />
     <ClInclude Include="BossHPBar.h" />
     <ClInclude Include="Button.h" />
@@ -220,6 +223,7 @@
     <ClInclude Include="ModuleColliders.h" />
     <ClInclude Include="Pathfinding.h" />
     <ClInclude Include="Stat.h" />
+    <ClInclude Include="Thunder.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="ModuleAudio.h" />
