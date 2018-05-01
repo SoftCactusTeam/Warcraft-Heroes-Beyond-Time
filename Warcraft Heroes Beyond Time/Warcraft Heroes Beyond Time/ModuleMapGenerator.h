@@ -55,6 +55,7 @@ public:
 	bool PostUpdate();
 	bool DrawMap() const;
 	inline int Get(int x, int y) const;
+	SDL_Rect MapGenerator::GetTileRect(int id) const;
 	bool CheckBoundaries(const iPoint& pos) const;
 	bool GenerateMap(MapData data);
 	bool GenerateBossMap(); 

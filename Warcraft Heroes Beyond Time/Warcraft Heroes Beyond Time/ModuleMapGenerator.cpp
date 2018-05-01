@@ -138,6 +138,17 @@ bool MapGenerator::DrawMap() const
 	return ret;
 }
 
+SDL_Rect MapGenerator::GetTileRect(int id) const
+{
+	int relative_id = id - 1;
+	SDL_Rect rect;
+	rect.w = tileSize;
+	rect.h = tileSize;
+	rect.x = ((rect.w) * (relative_id % 10));
+	rect.y = ((rect.h) * (relative_id / 10));
+	return rect;
+}
+
 inline int MapGenerator::Get(int x, int y) const
 {
 	return (sizeX * y + x);
@@ -216,7 +227,9 @@ bool MapGenerator::GenerateBossMap()
 	{
 		int gid = tile_gid.attribute("gid").as_int();
 
-		if (gid == 5)
+		nodes[contNodes]->whatToBlit = GetTileRect(gid);
+		nodes[contNodes]->layerBelow = -2;
+		/*if (gid == 5)
 		{
 			App->colliders->AddCollider(SDL_Rect({ nodes[contNodes]->pos.x * (int)(tileSize - 2), (nodes[contNodes]->pos.y + 1) * (int)(tileSize - 2) - (int)(tileSize - 2), 48,48 }), Collider::ColliderType::WALL);
 			nodes[contNodes]->whatToBlit = VOID;
@@ -233,10 +246,11 @@ bool MapGenerator::GenerateBossMap()
 			nodes[contNodes]->whatToBlit = WALL1;
 			nodes[contNodes]->layerBelow = 0;
 		}
+		*/
 		contNodes++;
 	}
 
-	mapTexture = App->textures->Load("maps/Tiles.png");
+	mapTexture = App->textures->Load("maps/tiles_boss.png");
 
 	return true;
 }
