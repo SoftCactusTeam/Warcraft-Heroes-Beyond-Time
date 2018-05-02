@@ -12,6 +12,7 @@
 #include "ModulePrinter.h"
 #include "ModuleColliders.h"
 #include "ModuleMapGenerator.h"
+#include "ModuleGUI.h"
 
 
 Guldan::Guldan(fPoint coor, BossType type, SDL_Texture* texture) : BossEntity(coor, type, texture)
@@ -129,9 +130,9 @@ Guldan::Guldan(fPoint coor, BossType type, SDL_Texture* texture) : BossEntity(co
 
 	numStats = App->entities->guldanstats;
 
-	isGuldan = true;
+	numStats.hp = numStats.maxhp = 1000.0f;
 
-	numStats.hp = 100;
+	isGuldan = true;
 }
 
 Guldan::~Guldan()
@@ -173,6 +174,7 @@ bool Guldan::Update(float dt)
 			statesBoss = BossStates::TELEPORT;
 			anim = &teleport;
 			teleportCenter = true;
+			App->gui->CreateBossHPBar((BossEntity*)this, { 640 / 2 - 312 / 2,320 });
 			break;
 		}
 
@@ -481,7 +483,7 @@ bool Guldan::Update(float dt)
 		break;
 	}
 
-	if (generateGeysers)
+	if (numStats.hp <= numStats.maxhp / 2)
 	{
 		timeBetweenGeyser += 1 * dt;
 

@@ -26,7 +26,6 @@ class Guldan : public BossEntity
 private:
 	
 	Animation idle, teleport, inverseTeleport, dead, startGeneratingBalls, generatingBalls, generatingBallsInverse, hello, restoreEnergy;
-	int hp = 0;
 
 	Collider* guldanCollider = nullptr;
 

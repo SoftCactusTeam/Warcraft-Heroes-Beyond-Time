@@ -40,8 +40,6 @@ Geyser::Geyser(const GeyserInfo* info, Projectile_type type) : Projectile(info, 
 
 	toData = (GeyserInfo*)info;
 
-	projCollider = *App->colliders->AddEnemyAttackCollider({0, 0, 49, 74}, this, 50, EnemyAttack::E_Attack_Type::GULDAN_BALL).lock();
-
 	actualAnim = &geyAnims[(uint)GeyserAnimations::selection];
 	geyser_state = state::following;
 	data->layer = 0;
@@ -85,8 +83,10 @@ bool Geyser::Update(float dt)
 			{
 				data->layer = 5;
 				actualAnim = &geyAnims[(uint)GeyserAnimations::explosion];
+				projCollider = *App->colliders->AddEnemyAttackCollider({ -49/2, -74/2, 49, 74 }, this, 50, EnemyAttack::E_Attack_Type::GULDAN_BALL).lock();
 				geyser_state = state::explosion;
 			}
+
 			break;
 
 		case state::explosion:

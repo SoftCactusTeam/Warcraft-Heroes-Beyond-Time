@@ -20,7 +20,7 @@ Thunder::Thunder(const ThunderInfo* info, Projectile_type type) : Projectile(inf
 
 	actualAnim = &thunderAnims[(uint)ThunderAnimations::cast];
 
-	projCollider = *App->colliders->AddEnemyAttackCollider({ 0, 0, 49, 74 }, this, 50, EnemyAttack::E_Attack_Type::GULDAN_BALL).lock();
+	projCollider = *App->colliders->AddEnemyAttackCollider({ 131-48, -49/2, 49, 48 }, this, 50, EnemyAttack::E_Attack_Type::GULDAN_BALL).lock();
 
 }
 Thunder::~Thunder()

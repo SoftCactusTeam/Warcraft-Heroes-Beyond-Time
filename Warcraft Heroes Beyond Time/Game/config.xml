@@ -6,7 +6,6 @@
     <fps_cap value = "60"/>
   </App>
   
-  
   <map>
     <seed value ="0"/>
     <lvl> <!-- First level -->

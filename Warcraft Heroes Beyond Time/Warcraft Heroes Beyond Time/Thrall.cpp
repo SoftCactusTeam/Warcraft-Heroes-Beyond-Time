@@ -306,6 +306,7 @@ void Thrall::OnCollision(Collider* yours, Collider* collideWith)
 				if (state != states::PL_DASH)
 					SetDamage(attack->damage, true);
 			}
+			
 			break;
 		}
 		case Collider::ColliderType::WALL:
