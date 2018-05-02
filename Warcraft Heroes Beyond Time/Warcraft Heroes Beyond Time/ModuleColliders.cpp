@@ -6,6 +6,7 @@
 #include "DynamicEntity.h"
 #include "ModulePrinter.h"
 #include "ModuleProjectiles.h"
+#include "ModuleMapGenerator.h"
 #include "Projectile.h"
 
 #include "Brofiler\Brofiler.h"
@@ -391,7 +392,14 @@ void ModuleColliders::PrintColliders() const
 	{
 		if ((*it)->owner == nullptr)
 		{
-			App->printer->PrintQuad((*it)->rectArea, { 255, 150, 255, 100 }, true, true); //We need to do this only when inside camera.
+			int tileSize = App->map->getTileSize();
+
+			if ((*it)->rectArea.x >= (-1 * App->render->camera.x) - tileSize &&
+				(*it)->rectArea.y >= (-1 * App->render->camera.y) - tileSize &&
+				(*it)->rectArea.x + (*it)->rectArea.w < -App->render->camera.x + App->render->camera.w + tileSize &&
+				(*it)->rectArea.y + (*it)->rectArea.h < -App->render->camera.y + App->render->camera.h + tileSize)
+				
+					App->printer->PrintQuad((*it)->rectArea, { 255, 150, 255, 100 }, true, true); 
 		}
 		else
 		{
