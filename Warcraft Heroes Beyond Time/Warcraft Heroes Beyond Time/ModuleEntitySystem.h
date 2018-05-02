@@ -60,6 +60,10 @@ public:
 		uint attacCone_probability = 0u;
 		uint attacFast_probability = 0u;
 
+		uint timeStunedAfterHit = 0u;
+		uint velocityDashHit = 0u;
+		uint timingDashHit = 0u;
+
 	} archerT1stats, archerT2stats, archerT3stats, guldanstats;
 
 

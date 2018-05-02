@@ -166,6 +166,9 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	archerT1stats.DistanceToScape =				archerT1.attribute("distance_to_scape").as_uint();
 	archerT1stats.attacCone_probability =		archerT1.attribute("attacCone_probability").as_uint();
 	archerT1stats.attacFast_probability =		archerT1.attribute("attacFast_probability").as_uint();
+	archerT1stats.timeStunedAfterHit =			archerT1.attribute("timeStunedAfterHit").as_uint();
+	archerT1stats.velocityDashHit =				archerT1.attribute("velocityDashHit").as_uint();
+	archerT1stats.timingDashHit =				archerT1.attribute("timingDashHit").as_uint();
 
 	pugi::xml_node archerT2 =					entitiesNode.child("enemies").child("archer_tier2");
 	archerT2stats.maxhp =						archerT2.attribute("hp").as_uint(0);
@@ -186,6 +189,9 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	archerT2stats.DistanceToScape =				archerT2.attribute("distance_to_scape").as_uint();
 	archerT2stats.attacCone_probability =		archerT2.attribute("attacCone_probability").as_uint();
 	archerT2stats.attacFast_probability =		archerT2.attribute("attacFast_probability").as_uint();
+	archerT2stats.timeStunedAfterHit =			archerT2.attribute("timeStunedAfterHit").as_uint();
+	archerT2stats.velocityDashHit =				archerT2.attribute("velocityDashHit").as_uint();
+	archerT2stats.timingDashHit =				archerT2.attribute("timingDashHit").as_uint();
 
 	pugi::xml_node archerT3 = entitiesNode.child("enemies").child("archer_tier3");
 	archerT3stats.maxhp =						archerT3.attribute("hp").as_uint(0);
@@ -206,6 +212,9 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	archerT3stats.DistanceToScape =				archerT3.attribute("distance_to_scape").as_uint();
 	archerT3stats.attacCone_probability =		archerT3.attribute("attacCone_probability").as_uint();
 	archerT3stats.attacFast_probability =		archerT3.attribute("attacFast_probability").as_uint();
+	archerT3stats.timeStunedAfterHit =			archerT3.attribute("timeStunedAfterHit").as_uint();
+	archerT3stats.velocityDashHit =				archerT3.attribute("velocityDashHit").as_uint();
+	archerT3stats.timingDashHit =				archerT3.attribute("timingDashHit").as_uint();
 
 	pugi::xml_node guldan = entitiesNode.child("enemies").child("guldan");
 	guldanstats.maxhp = guldan.attribute("hp").as_uint(0);
