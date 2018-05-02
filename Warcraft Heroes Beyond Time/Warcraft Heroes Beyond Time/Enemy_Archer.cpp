@@ -159,14 +159,13 @@ void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 
 		switch (attack->pattacktype)
 		{
-
 			case PlayerAttack::P_Attack_Type::NORMAL_ATTACK:
 			case PlayerAttack::P_Attack_Type::SKILL:
-				//initDash();
+				initDash();
 			case PlayerAttack::P_Attack_Type::DMGBALL_ITEM:
 			{
 				App->audio->PlayFx(App->audio->ArcherDeath);
-				live -= attack->damage;
+				live -= /*attack->damage;*/ 1;
 				if (live <= 0)
 				{
 					if (state != ARCHER_STATE::ARCHER_DIE)
@@ -351,10 +350,10 @@ void Enemy_Archer::initDash()
 	anim->Reset();
 	saveFirstAngle = LookAtPlayer();
 	dashTempo = 0;
-	//dashMovement = CaculateFPointAngle(App->scene->player->pos);
-	dashMovement = CaculateFPointAngle(fPoint(App->scene->player->pos.x + App->scene->player->anim->GetCurrentRect().w / 2 , App->scene->player->pos.y + App->scene->player->anim->GetCurrentRect().h / 2), anim->GetCurrentRect().w / 2, anim->GetCurrentRect().h / 2);
-	dashMovement.x *= -1 * (VELOCITY_DASH) / 3 * App->dt;
-	dashMovement.y *= -1 * (VELOCITY_DASH) / 3 * App->dt;
+	dashMovement = transformFixedAngleTofPoint(App->scene->player->returnFixedAngle());
+	//dashMovement = CaculateFPointAngle(fPoint(App->scene->player->pos.x + (App->scene->player->anim->GetCurrentRect().w / 3) , App->scene->player->pos.y + (App->scene->player->anim->GetCurrentRect().h / 3)), anim->GetCurrentRect().w / 2, anim->GetCurrentRect().h / 2);
+	dashMovement.x *= 1 * (VELOCITY_DASH) / 3 * App->dt;
+	dashMovement.y *= 1 * (VELOCITY_DASH) / 3 * App->dt;
 }
 
 void Enemy_Archer::initDie()
@@ -487,9 +486,42 @@ void Enemy_Archer::doDash()
 	else
 	{
 		// PER EVITAR QUE ES CAIGUI DEL MAPA
-		if (App->path->ExistWalkableAtPos(iPoint(((int)pos.x + (anim->GetCurrentRect().w / 2) + (int)dashMovement.x) / App->map->getTileSize(), ((int)pos.y + (anim->GetCurrentRect().h / 2) + (int)dashMovement.y) / App->map->getTileSize())) == -1)
-			dashTempo = TIMING_DASH;	// break
-		else
+		switch (saveFirstAngle)
+		{
+		case FIXED_ANGLE::UP:
+			if (App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w / 2 +  dashMovement.x) / App->map->getTileSize(), (pos.y + anim->GetCurrentRect().h + dashMovement.y) / App->map->getTileSize())) == -1)
+				dashTempo = TIMING_DASH;	// break
+			break;
+		case FIXED_ANGLE::UP_RIGHT:
+			if (App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w + dashMovement.x) / App->map->getTileSize(), (pos.y + dashMovement.y) / App->map->getTileSize())) == -1)
+				dashTempo = TIMING_DASH;	// break
+			break;
+		case FIXED_ANGLE::RIGHT:
+			if (App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w + dashMovement.x) / App->map->getTileSize(), (pos.y + anim->GetCurrentRect().h / 2 + dashMovement.y) / App->map->getTileSize())) == -1)
+				dashTempo = TIMING_DASH;	// break
+			break;
+			case FIXED_ANGLE::DOWN_RIGHT:
+			if (App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w + dashMovement.x) / App->map->getTileSize(), (pos.y + anim->GetCurrentRect().h + dashMovement.y) / App->map->getTileSize())) == -1)
+				dashTempo = TIMING_DASH;	// break
+			break;
+		case FIXED_ANGLE::DOWN:
+			if (App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w / 2 + dashMovement.x) / App->map->getTileSize(), (pos.y + anim->GetCurrentRect().h + dashMovement.y) / App->map->getTileSize())) == -1)
+				dashTempo = TIMING_DASH;	// break
+			break;
+		case FIXED_ANGLE::DOWN_LEFT:
+			if (App->path->ExistWalkableAtPos(iPoint((pos.x + dashMovement.x) / App->map->getTileSize(), (pos.y + anim->GetCurrentRect().h + dashMovement.y) / App->map->getTileSize())) == -1)
+				dashTempo = TIMING_DASH;	// break
+			break;
+		case FIXED_ANGLE::LEFT:
+			if (App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w / 2 + dashMovement.x) / App->map->getTileSize(), (pos.y + dashMovement.y) / App->map->getTileSize())) == -1)
+				dashTempo = TIMING_DASH;	// break
+			break;
+		case FIXED_ANGLE::UP_LEFT:
+				if (App->path->ExistWalkableAtPos(iPoint((pos.x + dashMovement.x) / App->map->getTileSize(), (pos.y + dashMovement.y) / App->map->getTileSize())) == -1)
+					dashTempo = TIMING_DASH;	// break
+				break;
+		}
+		if (dashTempo != TIMING_DASH)
 		{
 			pos += dashMovement;
 			dashTempo += App->dt;

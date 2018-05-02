@@ -97,6 +97,7 @@ public:
 	fPoint CalculatePosFromBezier(fPoint startPos, fPoint handleA, float t, fPoint handleB, fPoint endPos);
 
 	Animation* GetAnimFromAngle(float angle, bool dashOn = false);
+	FIXED_ANGLE returnFixedAngle();
 	bool IsPlayerMoving();
 
 	// Bezier/dash related variables

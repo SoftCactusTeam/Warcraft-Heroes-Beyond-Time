@@ -168,7 +168,6 @@ bool Scene::PreUpdate()
 bool Scene::Update(float dt)
 {
 	bool ret = true;
-
 	if (actual_scene == Stages::INGAME && lvlIndex < App->map->numberOfLevels && portal == nullptr && App->entities->enemiescount == 0)
 	{
 		GeneratePortal();
