@@ -142,7 +142,7 @@ bool Guldan::Start()
 {
 	statesBoss = BossStates::HELLO;
 
-	guldanCollider = App->colliders->AddCollider({ 0,0,68,68 }, Collider::ColliderType::ENTITY, this);
+	guldanCollider = *App->colliders->AddCollider({ 0,0,68,68 }, Collider::ColliderType::ENTITY, this).lock();
 
 	return true;
 }

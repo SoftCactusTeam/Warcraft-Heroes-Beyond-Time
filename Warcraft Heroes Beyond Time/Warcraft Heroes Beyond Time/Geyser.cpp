@@ -40,7 +40,7 @@ Geyser::Geyser(const GeyserInfo* info, Projectile_type type) : Projectile(info, 
 
 	toData = (GeyserInfo*)info;
 
-	projCollider = App->colliders->AddEnemyAttackCollider({0, 0, 49, 74}, this, 50, EnemyAttack::E_Attack_Type::GULDAN_BALL);
+	projCollider = *App->colliders->AddEnemyAttackCollider({0, 0, 49, 74}, this, 50, EnemyAttack::E_Attack_Type::GULDAN_BALL).lock();
 
 	actualAnim = &geyAnims[(uint)GeyserAnimations::selection];
 	geyser_state = state::following;

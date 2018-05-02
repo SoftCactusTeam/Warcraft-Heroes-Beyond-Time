@@ -42,8 +42,8 @@ bool ChestEntity::Start()
 {
 	anim = &chest;
 
-	col = App->colliders->AddCollider({ 9,31,20,20 }, Collider::ColliderType::ENTITY, this);
-	physicalCol = App->colliders->AddCollider({ 9 + (int)pos.x, 31 + (int)pos.y, 20, 20 }, Collider::ColliderType::WALL, nullptr);
+	col = *App->colliders->AddCollider({ 9,31,20,20 }, Collider::ColliderType::ENTITY, this).lock();
+	physicalCol = *App->colliders->AddCollider({ 9 + (int)pos.x, 31 + (int)pos.y, 20, 20 }, Collider::ColliderType::WALL, nullptr).lock();
 
 	return true;
 }

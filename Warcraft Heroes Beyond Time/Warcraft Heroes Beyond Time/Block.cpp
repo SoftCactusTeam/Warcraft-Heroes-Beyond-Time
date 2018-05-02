@@ -11,7 +11,7 @@ Block::Block(const BlockInfo* info, Projectile_type type) : Projectile(info, typ
 {
 	toData = (BlockInfo*)info;
 
-	projCollider = App->colliders->AddCollider({(int)toData->pos.x,(int)toData->pos.y,48,48},Collider::ColliderType::WALL);
+	projCollider = *App->colliders->AddCollider({(int)toData->pos.x,(int)toData->pos.y,48,48},Collider::ColliderType::WALL).lock();
 }
 
 Block::~Block()

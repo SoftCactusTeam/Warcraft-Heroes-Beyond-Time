@@ -46,109 +46,111 @@ bool ModuleColliders::Update(float dt)
 {
 	BROFILER_CATEGORY("Colliders Collision", Profiler::Color::Azure);
 
-	std::list<Collider*>::iterator col1;
-	std::list<Collider*>::iterator col2;
+	std::list<std::shared_ptr<Collider*>>::iterator col1;
+	std::list<std::shared_ptr<Collider*>>::iterator col2;
 
 	for (col1 = colliderList.begin(); col1 != colliderList.end(); ++col1)
 	{
-		if ((*col1)->colType == Collider::ColliderType::WALL)
+		Collider* collider1 = **col1;
+		if (collider1->colType == Collider::ColliderType::WALL)
 			continue;
 
 		for (col2 = colliderList.begin(); col2 != colliderList.end(); ++col2)
 		{
-			if ((*col1) == (*col2) || !CollisionEnabled((*col1), (*col2)))
+			Collider* collider2 = **col2;
+			if (collider1 == collider2 || !CollisionEnabled(collider1, collider2))
 				continue;
 
-			if (CheckIfCollides((*col1), (*col2)))			//If collides
+			if (CheckIfCollides(collider1, collider2))			//If collides
 			{
-				if ((*col1)->owner != nullptr)
+				if (collider1->owner != nullptr)
 				{
-					if ((*col1)->colType != Collider::ColliderType::ENEMY_ATTACK)
+					if (collider1->colType != Collider::ColliderType::ENEMY_ATTACK)
 					{
-						Entity* owner = (Entity*)(*col1)->owner;
-						if (wereColliding((*col1), (*col2)))
-							owner->OnCollisionContinue((*col1), (*col2));
+						Entity* owner = (Entity*)collider1->owner;
+						if (wereColliding(collider1, collider2))
+							owner->OnCollisionContinue(collider1, collider2);
 						else
 						{
-							owner->OnCollision((*col1), (*col2));
-							(*col1)->colliding.push_back(*col2);
+							owner->OnCollision(collider1, collider2);
+							collider1->colliding.push_back(collider2);
 						}
 					}
 					else
 					{
-						Projectile* owner = (Projectile*)(*col1)->owner;
-						if (wereColliding((*col1), (*col2)))
-							owner->OnCollisionContinue((*col1), (*col2));
+						Projectile* owner = (Projectile*)collider1->owner;
+						if (wereColliding(collider1, collider2))
+							owner->OnCollisionContinue(collider1, collider2);
 						else
 						{
-							owner->OnCollision((*col1), (*col2));
-							(*col1)->colliding.push_back(*col2);
+							owner->OnCollision(collider1, collider2);
+							collider1->colliding.push_back(collider2);
 						}
 					}
 				}
 
-				if ((*col2)->owner != nullptr)
+				if (collider2->owner != nullptr)
 				{
-					if ((*col2)->colType != Collider::ColliderType::ENEMY_ATTACK)
+					if (collider2->colType != Collider::ColliderType::ENEMY_ATTACK)
 					{
-						Entity* owner = (Entity*)(*col2)->owner;
-						if (wereColliding((*col2), (*col1)))
-							owner->OnCollisionContinue((*col2), (*col1));
+						Entity* owner = (Entity*)collider2->owner;
+						if (wereColliding(collider2, collider1))
+							owner->OnCollisionContinue(collider2, collider1);
 						else
 						{
-							owner->OnCollision((*col2), (*col1));
-							(*col2)->colliding.push_back(*col1);
+							owner->OnCollision(collider2, collider1);
+							collider2->colliding.push_back(collider1);
 						}
 					}
 					else
 					{
-						Projectile* owner = (Projectile*)(*col2)->owner;
-						if (wereColliding((*col2), (*col1)))
-							owner->OnCollisionContinue((*col2), (*col1));
+						Projectile* owner = (Projectile*)collider2->owner;
+						if (wereColliding(collider2, collider1))
+							owner->OnCollisionContinue(collider2, collider1);
 						else
 						{
-							owner->OnCollision((*col2), (*col1));
-							(*col2)->colliding.push_back(*col1);
+							owner->OnCollision(collider2, collider1);
+							collider2->colliding.push_back(collider1);
 						}
 					}
 				}
 			}
 			else                                                //If don't collide			
 			{
-				if (wereColliding((*col1), (*col2)))				//If were colliding
+				if (wereColliding(collider1, collider2))				//If were colliding
 				{
-					if ((*col1)->owner != nullptr)
+					if (collider1->owner != nullptr)
 					{
-						if ((*col1)->colType != Collider::ColliderType::ENEMY_ATTACK)
+						if (collider1->colType != Collider::ColliderType::ENEMY_ATTACK)
 						{
-							Entity* owner = (Entity*)(*col1)->owner;
-							owner->OnCollisionLeave((*col1), (*col2));
-							(*col1)->colliding.remove(*col2);
+							Entity* owner = (Entity*)collider1->owner;
+							owner->OnCollisionLeave(collider1, collider2);
+							collider1->colliding.remove(collider2);
 						}
 						else
 						{
-							Projectile* owner = (Projectile*)(*col1)->owner;
-							owner->OnCollisionLeave((*col1), (*col2));
-							(*col1)->colliding.remove(*col2);
+							Projectile* owner = (Projectile*)collider1->owner;
+							owner->OnCollisionLeave(collider1, collider2);
+							collider1->colliding.remove(collider2);
 						}
 					}
 				}
 
-				if (wereColliding((*col2), (*col1)))
+				if (wereColliding(collider2, collider1))
 				{
-					if ((*col2)->owner != nullptr)
+					if (collider2->owner != nullptr)
 					{
-						if ((*col2)->colType != Collider::ColliderType::ENEMY_ATTACK)
+						if (collider2->colType != Collider::ColliderType::ENEMY_ATTACK)
 						{
-							Entity* owner = (Entity*)(*col2)->owner;
-							owner->OnCollisionLeave((*col2), (*col1));
-							(*col1)->colliding.remove(*col1);
+							Entity* owner = (Entity*)collider2->owner;
+							owner->OnCollisionLeave(collider2, collider1);
+							collider2->colliding.remove(collider1);
 						}
 						else
 						{
-							Projectile* owner = (Projectile*)(*col2)->owner;
-							owner->OnCollisionLeave((*col2), (*col1));
-							(*col1)->colliding.remove(*col1);
+							Projectile* owner = (Projectile*)collider2->owner;
+							owner->OnCollisionLeave(collider2, collider1);
+							collider2->colliding.remove(collider1);
 						}
 					}
 
@@ -169,48 +171,51 @@ bool ModuleColliders::PostUpdate()
 
 bool ModuleColliders::CleanUp()
 {
-	std::list<Collider*>::iterator it;
+	std::list<std::shared_ptr<Collider*>>::iterator it;
 	for (it = colliderList.begin(); it != colliderList.end(); ++it)
 	{
-		delete (*it);
+		(*it).reset();
 	}
 	colliderList.clear();
 
 	return true;
 }
 
-Collider* ModuleColliders::AddCollider(SDL_Rect rectArea, Collider::ColliderType colType, void* owner)
+std::weak_ptr<Collider*> ModuleColliders::AddCollider(SDL_Rect rectArea, Collider::ColliderType colType, void* owner)
 {
 	Collider* collider = new Collider(rectArea, colType, owner);
-	colliderList.push_back(collider);
+	std::shared_ptr<Collider*> shared = std::make_shared<Collider*>(collider);
+	colliderList.push_back(shared);
 
-	return collider;
+	return std::weak_ptr<Collider*>(shared);
 }
 
-Collider* ModuleColliders::AddPlayerAttackCollider(SDL_Rect rectArea, void* owner, float damage, PlayerAttack::P_Attack_Type pattacktype)
+std::weak_ptr<Collider*> ModuleColliders::AddPlayerAttackCollider(SDL_Rect rectArea, void* owner, float damage, PlayerAttack::P_Attack_Type pattacktype)
 {
 	PlayerAttack* playerattack = new PlayerAttack(rectArea, Collider::ColliderType::PLAYER_ATTACK, owner, damage, pattacktype);
-	colliderList.push_back(playerattack);
+	std::shared_ptr<Collider*> shared = std::make_shared<Collider*>(playerattack);
+	colliderList.push_back(shared);
 
-	return playerattack;
+	return std::weak_ptr<Collider*>(shared);
 }
 
-Collider* ModuleColliders::AddEnemyAttackCollider(SDL_Rect rectArea, void* owner, float damage, EnemyAttack::E_Attack_Type eattacktype)
+std::weak_ptr<Collider*> ModuleColliders::AddEnemyAttackCollider(SDL_Rect rectArea, void* owner, float damage, EnemyAttack::E_Attack_Type eattacktype)
 {
 	EnemyAttack* enemyattack = new EnemyAttack(rectArea, Collider::ColliderType::ENEMY_ATTACK, owner, damage, eattacktype);
-	colliderList.push_back(enemyattack);
+	std::shared_ptr<Collider*> shared = std::make_shared<Collider*>(enemyattack);
+	colliderList.push_back(shared);
 
-	return enemyattack;
+	return std::weak_ptr<Collider*>(shared);
 }
 
 void ModuleColliders::deleteCollider(Collider* col)
 {
-	std::list<Collider*>::iterator it;
+	std::list<std::shared_ptr<Collider*>>::iterator it;
 	for (it = colliderList.begin(); it != colliderList.end(); ++it)
 	{
-		if ((*it) == col)
+		if ((*(*it)) == col)
 		{
-			delete(*it);
+			(*it).reset();
 			colliderList.erase(it);
 			break;
 		}
@@ -219,12 +224,12 @@ void ModuleColliders::deleteCollider(Collider* col)
 
 void ModuleColliders::deleteColliderbyOwner(void* owner)
 {
-	std::list<Collider*>::iterator it;
+	std::list<std::shared_ptr<Collider*>>::iterator it;
 	for (it = colliderList.begin(); it != colliderList.end(); ++it)
 	{
-		if ((*it)->owner == owner)
+		if ((*(*it))->owner == owner)
 		{
-			delete (*it);
+			(*it).reset();
 			colliderList.erase(it);
 			break;
 		}	
@@ -387,44 +392,44 @@ bool ModuleColliders::wereColliding(Collider* col1, Collider* col2) const
 
 void ModuleColliders::PrintColliders() const
 {
-	std::list<Collider*>::const_iterator it;
+	std::list<std::shared_ptr<Collider*>>::const_iterator it;
 	for (it = colliderList.begin(); it != colliderList.end(); ++it)
 	{
-		if ((*it)->owner == nullptr)
+		if ((*(*it))->owner == nullptr)
 		{
 			int tileSize = App->map->getTileSize();
 
-			if ((*it)->rectArea.x >= (-1 * App->render->camera.x) - tileSize &&
-				(*it)->rectArea.y >= (-1 * App->render->camera.y) - tileSize &&
-				(*it)->rectArea.x + (*it)->rectArea.w < -App->render->camera.x + App->render->camera.w + tileSize &&
-				(*it)->rectArea.y + (*it)->rectArea.h < -App->render->camera.y + App->render->camera.h + tileSize)
+			if ((*(*it))->rectArea.x >= (-1 * App->render->camera.x) - tileSize &&
+				(*(*it))->rectArea.y >= (-1 * App->render->camera.y) - tileSize &&
+				(*(*it))->rectArea.x + (*(*it))->rectArea.w < -App->render->camera.x + App->render->camera.w + tileSize &&
+				(*(*it))->rectArea.y + (*(*it))->rectArea.h < -App->render->camera.y + App->render->camera.h + tileSize)
 				
-					App->printer->PrintQuad((*it)->rectArea, { 255, 150, 255, 100 }, true, true); 
+					App->printer->PrintQuad((*(*it))->rectArea, { 255, 150, 255, 100 }, true, true);
 		}
 		else
 		{
-			if ((*it)->colType != Collider::ColliderType::ENEMY_ATTACK)
+			if ((*(*it))->colType != Collider::ColliderType::ENEMY_ATTACK)
 			{
-				Entity* owner = (Entity*)(*it)->owner;
-				SDL_Rect rect = { (*it)->rectArea.x + owner->pos.x, (*it)->rectArea.y + owner->pos.y, (*it)->rectArea.w, (*it)->rectArea.h };
+				Entity* owner = (Entity*)(*(*it))->owner;
+				SDL_Rect rect = { (*(*it))->rectArea.x + owner->pos.x, (*(*it))->rectArea.y + owner->pos.y, (*(*it))->rectArea.w, (*(*it))->rectArea.h };
 
-				if ((*it)->colType == Collider::ColliderType::ENTITY)
+				if ((*(*it))->colType == Collider::ColliderType::ENTITY)
 				{
 					App->printer->PrintQuad(rect, { 255, 255, 255, 100 }, true, true);
 				}
-				else if ((*it)->colType == Collider::ColliderType::PLAYER_ATTACK)
+				else if ((*(*it))->colType == Collider::ColliderType::PLAYER_ATTACK)
 				{
 					App->printer->PrintQuad(rect, { 0, 255, 0, 100 }, true, true);
 				}
 			}
 			else
 			{
-				if ((*it)->colType == Collider::ColliderType::ENEMY_ATTACK)
+				if ((*(*it))->colType == Collider::ColliderType::ENEMY_ATTACK)
 				{
-					Projectile* owner = (Projectile*)(*it)->owner;
+					Projectile* owner = (Projectile*)(*(*it))->owner;
 					float x, y;
 					owner->getPos(x, y);
-					SDL_Rect rect = { (*it)->rectArea.x + x, (*it)->rectArea.y + y, (*it)->rectArea.w, (*it)->rectArea.h };
+					SDL_Rect rect = { (*(*it))->rectArea.x + x, (*(*it))->rectArea.y + y, (*(*it))->rectArea.w, (*(*it))->rectArea.h };
 					App->printer->PrintQuad(rect, { 255, 0, 0, 100 }, true, true);
 				}
 			}

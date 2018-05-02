@@ -234,8 +234,8 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 
 	numStats = App->entities->thrallstats;
 
-	wallCol = App->colliders->AddCollider({ 7, 0, 15, 23 }, Collider::ColliderType::ENTITY, this);
-	damageCol = App->colliders->AddCollider({ 7, 0, 15, 23 }, Collider::ColliderType::ENTITY, this);
+	wallCol = *App->colliders->AddCollider({ 7, 0, 15, 23 }, Collider::ColliderType::ENTITY, this).lock();
+	damageCol = *App->colliders->AddCollider({ 7, 0, 15, 23 }, Collider::ColliderType::ENTITY, this).lock();
 
 	state = states::PL_IDLE;			   
 	anim = &idleDown;					   
@@ -479,7 +479,7 @@ void Thrall::Attack()
 	if (!attacking)
 		App->audio->PlayFx(App->audio->Thrall_AttackFX);
 	attacking = true;
-	attackCollider = App->colliders->AddPlayerAttackCollider({ -1000000000, -1000000000,20,20 }, this, numStats.damage, PlayerAttack::P_Attack_Type::NORMAL_ATTACK);
+	attackCollider = *App->colliders->AddPlayerAttackCollider({ -1000000000, -1000000000,20,20 }, this, numStats.damage, PlayerAttack::P_Attack_Type::NORMAL_ATTACK).lock();
 }
 
 void Thrall::UpdateAttackCollider()
@@ -540,7 +540,6 @@ void Thrall::UpdateAttackCollider()
 			attackCollider->rectArea = { 0, 0, 40, 45 };
 		}
 	}
-
 }
 
 void Thrall::UseSkill()
@@ -548,7 +547,7 @@ void Thrall::UseSkill()
 	if (skillOn == false)
 		App->audio->PlayFx(App->audio->Thrall_SkillFX);
 	skillOn = true;
-	skillCollider = App->colliders->AddPlayerAttackCollider({ -100, -100, 5, 5 }, this, numStats.damage * numStats.skillMultiplier, PlayerAttack::P_Attack_Type::SKILL);
+	skillCollider = *App->colliders->AddPlayerAttackCollider({ -100, -100, 5, 5 }, this, numStats.damage * numStats.skillMultiplier, PlayerAttack::P_Attack_Type::SKILL).lock();
 }
 
 void Thrall::UpdateSkillCollider()

@@ -4,6 +4,7 @@
 #include "Module.h"
 #include <list>
 #include "SDL\include\SDL.h"
+#include <memory>
 
 class Collider
 {
@@ -87,9 +88,9 @@ public:
 	bool CleanUp();
 	void AddCommands();
 
-	Collider* AddCollider(SDL_Rect rectArea, Collider::ColliderType colType, void* owner = nullptr);
-	Collider* AddPlayerAttackCollider(SDL_Rect rectArea, void* owner, float damage, PlayerAttack::P_Attack_Type pattacktype);
-	Collider* AddEnemyAttackCollider(SDL_Rect rectArea, void* owner, float damage, EnemyAttack::E_Attack_Type eattacktype);
+	std::weak_ptr<Collider*> AddCollider(SDL_Rect rectArea, Collider::ColliderType colType, void* owner = nullptr);
+	std::weak_ptr<Collider*> AddPlayerAttackCollider(SDL_Rect rectArea, void* owner, float damage, PlayerAttack::P_Attack_Type pattacktype);
+	std::weak_ptr<Collider*> AddEnemyAttackCollider(SDL_Rect rectArea, void* owner, float damage, EnemyAttack::E_Attack_Type eattacktype);
 
 
 	void deleteCollider(Collider* col);
@@ -103,8 +104,8 @@ public:
 private:
 	
 private:
-	std::list<Collider*> colliderList;
-	std::list<Collider*> iteratedColliders;
+	std::list<std::shared_ptr<Collider*>> colliderList;
+
 
 public:
 	bool printColliders = false;

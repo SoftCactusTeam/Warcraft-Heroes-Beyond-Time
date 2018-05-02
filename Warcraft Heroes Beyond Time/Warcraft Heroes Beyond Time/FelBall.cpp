@@ -19,7 +19,7 @@ FelBall::FelBall(const FelBallInfo* info, Projectile_type type) : Projectile(inf
 
 	actualAnim = &felAnims[(uint)FelAnimations::moving_anim];
 
-	projCollider = App->colliders->AddEnemyAttackCollider({ 0, 0, 49, 74 }, this, 50, EnemyAttack::E_Attack_Type::GULDAN_BALL);
+	projCollider = *App->colliders->AddEnemyAttackCollider({ 0, 0, 49, 74 }, this, 50, EnemyAttack::E_Attack_Type::GULDAN_BALL).lock();
 
 	toData = (FelBallInfo*)info;
 }
