@@ -30,6 +30,10 @@
 #define LITTLEMOVEMENT_TIME		100		// es deixa aixi
 #define LITTLEMOVEMENT_COOLDOWN	1000	// res
 
+#define TIME_STUNNED_AFTERHIT	1000
+#define DISTANCE_DASH			200
+#define TIMING_DASH				500
+
 Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture, ARCHER_TIER tier) : EnemyEntity(coor, character, texture)
 {
 	this->tier = tier;
@@ -98,6 +102,9 @@ bool Enemy_Archer::Update(float dt)
 		break;
 	case ARCHER_STATE::ARCHER_LITTLEMOVE:
 		doLittleMove();
+		break;
+	case ARCHER_STATE::ARCHER_DASH:
+		doDash();
 		break;
 	case ARCHER_STATE::ARCHER_DIE:
 		doDie();
@@ -338,6 +345,18 @@ void Enemy_Archer::initLittleMove()
 	}
 }
 
+void Enemy_Archer::initDash()
+{
+	state = ARCHER_STATE::ARCHER_DASH;
+	anim = &animIdle[LookAtPlayer()];
+	anim->Reset();
+	saveFirstAngle = LookAtPlayer();
+	dashDistanceDone = 0;
+	dashMovement = CaculateFPointAngle(App->scene->player->pos);
+	dashMovement.x *= -1;
+	dashMovement.y *= -1;
+}
+
 void Enemy_Archer::initDie()
 {
 	state = ARCHER_STATE::ARCHER_DIE;
@@ -451,6 +470,28 @@ void Enemy_Archer::doLittleMove()
 	}
 		iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x + (anim->GetCurrentRect().w / 2), (int)pos.y + (anim->GetCurrentRect().h / 2)));
 		this->pos += fPoint((float)move.x * numStats.speed, (float)move.y * numStats.speed);
+}
+
+void Enemy_Archer::doDash()
+{
+	anim = &animIdle[saveFirstAngle];
+
+	if (dashDistanceDone >= DISTANCE_DASH)
+	{
+		StopConcreteTime(TIME_STUNNED_AFTERHIT);
+		initIdle();
+	}
+	else
+	{
+		// PER EVITAR QUE ES CAIGUI DEL MAPA
+		if (App->path->ExistWalkableAtPos(iPoint(((int)pos.x + (int)dashMovement.x) / App->map->getTileSize(), ((int)pos.y + (int)dashMovement.y) / App->map->getTileSize())) == -1)
+			accountantPrincipal = 0;
+		else
+		{
+			pos += dashMovement;
+			dashDistanceDone += (DISTANCE_DASH / App->dt * TIMING_DASH);
+		}
+	}
 }
 
 void Enemy_Archer::doDie()

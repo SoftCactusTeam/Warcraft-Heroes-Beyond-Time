@@ -22,6 +22,7 @@ enum ARCHER_STATE {
 	ARCHER_FASTSHOOT_ATAC,
 	ARCHER_BACKJUMP,
 	ARCHER_LITTLEMOVE,
+	ARCHER_DASH,
 	ARCHER_DIE
 };
 
@@ -60,6 +61,7 @@ public:
 	void initFastAtac();
 	void initBackJump();
 	void initLittleMove();
+	void initDash();
 	void initDie();
 
 	void doIdle();
@@ -69,6 +71,7 @@ public:
 	void doFastAtac();
 	void doBackJump();
 	void doLittleMove();
+	void doDash();
 	void doDie();
 
 	void Walk();
@@ -104,6 +107,10 @@ private:
 	iPoint posToScape;
 	int arrowsShooted = 0;
 	int cooldownToReLittleMove = 0;
+	// Dash variables
+	FIXED_ANGLE saveFirstAngle = FIXED_ANGLE::NON_ANGLE;
+	int dashDistanceDone = 0;
+	fPoint dashMovement;
 
 	ARCHER_TIER tier = ARCHER_TIER_NONE;
 	float live = 0;
