@@ -109,8 +109,8 @@ private:
 	int cooldownToReLittleMove = 0;
 	// Dash variables
 	FIXED_ANGLE saveFirstAngle = FIXED_ANGLE::NON_ANGLE;
-	int dashDistanceDone = 0;
 	fPoint dashMovement;
+	float dashTempo = 0.0f;
 
 	ARCHER_TIER tier = ARCHER_TIER_NONE;
 	float live = 0;

@@ -30,9 +30,9 @@
 #define LITTLEMOVEMENT_TIME		100		// es deixa aixi
 #define LITTLEMOVEMENT_COOLDOWN	1000	// res
 
-#define TIME_STUNNED_AFTERHIT	1000
-#define DISTANCE_DASH			200
-#define TIMING_DASH				500
+#define TIME_STUNNED_AFTERHIT	1000	// in ms
+#define VELOCITY_DASH			500		// in pixels per sex
+#define TIMING_DASH				300		// in ms
 
 Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture, ARCHER_TIER tier) : EnemyEntity(coor, character, texture)
 {
@@ -76,9 +76,6 @@ bool Enemy_Archer::Update(float dt)
 		anim = &animIdle[DOWN];
 		return true;
 	}
-
-	if (App->entities->checkEntityNearOther(this, numStats.DistanceToScape) && state != ARCHER_STATE::ARCHER_LITTLEMOVE && pathVector.isEmpty())
-		initLittleMove();
 
 	switch (state)
 	{
@@ -162,8 +159,10 @@ void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 
 		switch (attack->pattacktype)
 		{
+
 			case PlayerAttack::P_Attack_Type::NORMAL_ATTACK:
 			case PlayerAttack::P_Attack_Type::SKILL:
+				initDash();
 			case PlayerAttack::P_Attack_Type::DMGBALL_ITEM:
 			{
 				App->audio->PlayFx(App->audio->ArcherDeath);
@@ -351,10 +350,11 @@ void Enemy_Archer::initDash()
 	anim = &animIdle[LookAtPlayer()];
 	anim->Reset();
 	saveFirstAngle = LookAtPlayer();
-	dashDistanceDone = 0;
-	dashMovement = CaculateFPointAngle(App->scene->player->pos);
-	dashMovement.x *= -1;
-	dashMovement.y *= -1;
+	dashTempo = 0;
+	//dashMovement = CaculateFPointAngle(App->scene->player->pos);
+	dashMovement = CaculateFPointAngle(fPoint(App->scene->player->pos.x + App->scene->player->anim->GetCurrentRect().w / 2 , App->scene->player->pos.y + App->scene->player->anim->GetCurrentRect().h / 2), anim->GetCurrentRect().w / 2, anim->GetCurrentRect().h / 2);
+	dashMovement.x *= -1 * (VELOCITY_DASH) / 3 * App->dt;
+	dashMovement.y *= -1 * (VELOCITY_DASH) / 3 * App->dt;
 }
 
 void Enemy_Archer::initDie()
@@ -382,7 +382,10 @@ void Enemy_Archer::doIdle()
 void Enemy_Archer::doWalk()
 {
 	anim = &animWalk[LookAtPlayer()];
-	if (DistanceToPlayer() > numStats.vision_range)
+
+	if (App->entities->checkEntityNearOther(this, numStats.DistanceToScape) && state != ARCHER_STATE::ARCHER_LITTLEMOVE && pathVector.isEmpty())
+		initLittleMove();
+	else if (DistanceToPlayer() > numStats.vision_range)
 	{
 		initIdle();
 	}
@@ -476,7 +479,7 @@ void Enemy_Archer::doDash()
 {
 	anim = &animIdle[saveFirstAngle];
 
-	if (dashDistanceDone >= DISTANCE_DASH)
+	if (dashTempo * 1000 >= TIMING_DASH)
 	{
 		StopConcreteTime(TIME_STUNNED_AFTERHIT);
 		initIdle();
@@ -484,12 +487,13 @@ void Enemy_Archer::doDash()
 	else
 	{
 		// PER EVITAR QUE ES CAIGUI DEL MAPA
-		if (App->path->ExistWalkableAtPos(iPoint(((int)pos.x + (int)dashMovement.x) / App->map->getTileSize(), ((int)pos.y + (int)dashMovement.y) / App->map->getTileSize())) == -1)
-			accountantPrincipal = 0;
+		if (App->path->ExistWalkableAtPos(iPoint(((int)pos.x + (anim->GetCurrentRect().w / 2) + (int)dashMovement.x) / App->map->getTileSize(), ((int)pos.y + (anim->GetCurrentRect().h / 2) + (int)dashMovement.y) / App->map->getTileSize())) == -1)
+			dashTempo = TIMING_DASH;	// break
 		else
 		{
 			pos += dashMovement;
-			dashDistanceDone += (DISTANCE_DASH / App->dt * TIMING_DASH);
+			dashTempo += App->dt;
+			printf_s("%i\n", accountantPrincipal);
 		}
 	}
 }
