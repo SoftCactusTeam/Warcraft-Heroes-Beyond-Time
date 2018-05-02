@@ -136,7 +136,7 @@ void EntitySystem::Init()
 
 bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 {
-	srand(time(NULL));
+	//srand(time(NULL));
 
 	//------------- Loading Stats -------------------------------------------------------------
 	pugi::xml_node thrall = entitiesNode.child("players").child("thrall");
@@ -161,6 +161,11 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	archerT1stats.vision_range =				archerT1.attribute("vision_range").as_uint();
 	archerT1stats.attack_range =				archerT1.attribute("attack_range").as_uint();
 	archerT1stats.minimal_distance_player =		archerT1.attribute("minimal_distance_with_player").as_uint();
+	archerT1stats.preAttac =					archerT1.attribute("pre_attac").as_uint();
+	archerT1stats.tilesToLittleMove =			archerT1.attribute("tiles_to_littlemove").as_uint();
+	archerT1stats.DistanceToScape =				archerT1.attribute("distance_to_scape").as_uint();
+	archerT1stats.attacCone_probability =		archerT1.attribute("attacCone_probability").as_uint();
+	archerT1stats.attacFast_probability =		archerT1.attribute("attacFast_probability").as_uint();
 
 	pugi::xml_node archerT2 =					entitiesNode.child("enemies").child("archer_tier2");
 	archerT2stats.maxhp =						archerT2.attribute("hp").as_uint(0);
@@ -176,6 +181,11 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	archerT2stats.vision_range =				archerT2.attribute("vision_range").as_uint();
 	archerT2stats.attack_range =				archerT2.attribute("attack_range").as_uint();
 	archerT2stats.minimal_distance_player =		archerT2.attribute("minimal_distance_with_player").as_uint();
+	archerT2stats.preAttac =					archerT2.attribute("pre_attac").as_uint();
+	archerT2stats.tilesToLittleMove =			archerT2.attribute("tiles_to_littlemove").as_uint();
+	archerT2stats.DistanceToScape =				archerT2.attribute("distance_to_scape").as_uint();
+	archerT2stats.attacCone_probability =		archerT2.attribute("attacCone_probability").as_uint();
+	archerT2stats.attacFast_probability =		archerT2.attribute("attacFast_probability").as_uint();
 
 	pugi::xml_node archerT3 = entitiesNode.child("enemies").child("archer_tier3");
 	archerT3stats.maxhp =						archerT3.attribute("hp").as_uint(0);
@@ -191,7 +201,11 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	archerT3stats.vision_range =				archerT3.attribute("vision_range").as_uint();
 	archerT3stats.attack_range =				archerT3.attribute("attack_range").as_uint();
 	archerT3stats.minimal_distance_player =		archerT3.attribute("minimal_distance_with_player").as_uint();
-
+	archerT3stats.preAttac =					archerT3.attribute("pre_attac").as_uint();
+	archerT3stats.tilesToLittleMove =			archerT3.attribute("tiles_to_littlemove").as_uint();
+	archerT3stats.DistanceToScape =				archerT3.attribute("distance_to_scape").as_uint();
+	archerT3stats.attacCone_probability =		archerT3.attribute("attacCone_probability").as_uint();
+	archerT3stats.attacFast_probability =		archerT3.attribute("attacFast_probability").as_uint();
 
 	pugi::xml_node guldan = entitiesNode.child("enemies").child("guldan");
 	guldanstats.maxhp = guldan.attribute("hp").as_uint(0);
@@ -353,7 +367,7 @@ void EntitySystem::AddEnemy(fPoint coor, ENEMY_TYPE type)
 		App->colliders->AddCollider({ 20,20,32,32 }, Collider::ColliderType::ENTITY, (Entity*)newEntity);
 		break;
 	case ENEMY_TYPE::ARCHER:
-		newEntity = new Enemy_Archer(coor, ENEMY_TYPE::ARCHER, spritesheetsEntities[ARCHER_SHEET], ARCHER_TIER_3);
+		newEntity = new Enemy_Archer(coor, ENEMY_TYPE::ARCHER, spritesheetsEntities[ARCHER_SHEET], ARCHER_TIER_1);
 		App->colliders->AddCollider({ -16+20,-16+20,32,32 }, Collider::ColliderType::ENTITY, (Entity*)newEntity);
 		break;
 	case ENEMY_TYPE::MAGE:
@@ -508,4 +522,23 @@ void EntitySystem::ClearEnemies()
 int EntitySystem::GetRandomNumber(int rang)
 {
 	return rand() % rang;
+}
+
+bool EntitySystem::checkEntityNearOther(Entity * enity, int dist)
+{
+	std::list<Entity*>::iterator it = App->entities->entities.begin();
+	for (; it != App->entities->entities.end(); it++)
+	{
+		if (*it != enity)
+		{
+			uint totalX = (*enity).pos.x - (*it)->pos.x;
+			uint totalY = (*enity).pos.y - (*it)->pos.y;
+			uint distance =  sqrt((totalX * totalX) + (totalY * totalY));
+			if (distance < dist)
+			{
+				return true;
+			}
+		}
+	}
+	return false;
 }
