@@ -182,6 +182,19 @@ bool Guldan::Update(float dt)
 
 	case BossStates::IDLE:
 	{
+
+		if (SpiralRecoveryOn)
+		{
+			timeOffset += 1.0f * dt;
+			if (timeOffset >= OFFSET_TIME_SPIRAL_RECOVERY)
+			{
+				timeOffset = 0.0f;
+				SpiralRecoveryOn = false;
+			}
+			break;
+		}
+
+
 		if (!letsGoThunders && pos.x == (14 * 48 + 10) && pos.y == (4 * 48))
 		{
 			statesBoss = BossStates::TELEPORT;
@@ -268,6 +281,7 @@ bool Guldan::Update(float dt)
 		{
 			statesBoss = BossStates::GENERATINGBALLS;
 			next_movement_type = FellBallsTypes::SPIRAL_TYPE;
+			SpiralRecoveryOn = true;
 			timeToComeBackSpiral = 0.0f;
 			anim = &startGeneratingBalls;
 			tired += 1;

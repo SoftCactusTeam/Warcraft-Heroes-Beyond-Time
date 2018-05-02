@@ -18,6 +18,8 @@
 #define TIME_BETWEEN_BALLS_SPIRAL 0.1f
 #define BOSS_CENTER { pos.x + 34, pos.y + 34 }
 
+#define OFFSET_TIME_SPIRAL_RECOVERY 5.0f
+
 struct FelBall;
 struct Collider;
 
@@ -41,6 +43,8 @@ private:
 	float spiralAngle = 0.0f;
 	float spiralRadiusIncreasement = 0.0f;
 	float timeToComeBackSpiral = 0.0f;
+	bool SpiralRecoveryOn = false;
+	float timeOffset = 0.0f;
 
 	// TELEPORT
 	fPoint pointToTelerpot[5] = { { 14 * 48 + 10,7 * 48 },{ 10 * 48,6 * 48 },{ 18 * 48,6 * 48 }, {10 * 48, 10 * 48}, { 18 * 48, 10 * 48} };
