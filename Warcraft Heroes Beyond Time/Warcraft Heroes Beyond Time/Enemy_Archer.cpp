@@ -34,11 +34,9 @@
 #define VELOCITY_DASH			500		// in pixels per sex
 #define TIMING_DASH				300		// in ms
 
-Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture, ARCHER_TIER tier) : EnemyEntity(coor, character, texture)
+Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture) : EnemyEntity(coor, character, texture)
 {
-	this->tier = tier;
-
-	switch (tier)
+	switch (character)
 	{
 	case ARCHER_TIER_1:
 		numStats = App->entities->archerT1stats;

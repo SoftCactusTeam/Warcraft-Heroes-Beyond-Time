@@ -7,12 +7,12 @@
 
 #define ARROW_DEAD_TIMER 2000
 
-enum ARCHER_TIER {
+/*enum ARCHER_TIER {
 	ARCHER_TIER_1,
 	ARCHER_TIER_2,
 	ARCHER_TIER_3,
 	ARCHER_TIER_NONE
-};
+};*/
 
 enum ARCHER_STATE {
 	ARCHER_IDLE,
@@ -42,7 +42,7 @@ struct archerEffectStruct
 class Enemy_Archer : public EnemyEntity
 {
 public:
-	Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture, ARCHER_TIER tier);
+	Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture);
 
 	bool Start();
 	bool Update(float dt);
@@ -112,7 +112,7 @@ private:
 	fPoint dashMovement;
 	float dashTempo = 0.0f;
 
-	ARCHER_TIER tier = ARCHER_TIER_NONE;
+	//ARCHER_TIER tier = ARCHER_TIER_NONE;
 	float live = 0;
 	bool			damaged = false;
 	float			damagedCD = 0.0f;

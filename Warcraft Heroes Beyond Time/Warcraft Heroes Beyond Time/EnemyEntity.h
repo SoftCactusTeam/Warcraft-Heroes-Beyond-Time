@@ -19,7 +19,7 @@ public:
 	FIXED_ANGLE LookAtPlayer();
 	uint DistanceToPlayer();
 public:
-	ENEMY_TYPE type = ENEMY_TYPE::NON_ENEMY;
+	ENEMY_TYPE type = ENEMY_TYPE::NO_TIER;
 	EntitySystem::EnemyStats numStats;
 
 protected:

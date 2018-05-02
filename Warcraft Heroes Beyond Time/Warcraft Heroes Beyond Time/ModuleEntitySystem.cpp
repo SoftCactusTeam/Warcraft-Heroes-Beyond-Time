@@ -45,7 +45,7 @@ class Spawn_ConsoleOrder : public ConsoleOrder
 		}
 		else if (parameter == "archer")
 		{
-			App->entities->AddEnemy({ App->scene->player->pos.x, App->scene->player->pos.y - 60 }, ARCHER);
+			App->entities->AddEnemy({ App->scene->player->pos.x, App->scene->player->pos.y - 60 }, ARCHER_TIER_1);
 		}
 
 		else if (parameter == "wizard")
@@ -361,29 +361,16 @@ void EntitySystem::AddEnemy(fPoint coor, ENEMY_TYPE type)
 	enemiescount++;
 	BROFILER_CATEGORY("AddEnemy", Profiler::Color::Chocolate);
 	EnemyEntity* newEntity = nullptr;
-	switch (type) {
-	case ENEMY_TYPE::FOOTMAN:
-		newEntity = new Enemy_Footman(coor, ENEMY_TYPE::FOOTMAN, spritesheetsEntities[FOOTMAN_SHEET]);
-		App->colliders->AddCollider({ 20,20,32,32 }, Collider::ColliderType::ENTITY, (Entity*)newEntity);
-		break;
-	case ENEMY_TYPE::ARCHER:
-		newEntity = new Enemy_Archer(coor, ENEMY_TYPE::ARCHER, spritesheetsEntities[ARCHER_SHEET], ARCHER_TIER_1);
-		App->colliders->AddCollider({ -16+20,-16+20,32,32 }, Collider::ColliderType::ENTITY, (Entity*)newEntity);
-		break;
-	case ENEMY_TYPE::MAGE:
-		newEntity = new EnemyEntity(coor, ENEMY_TYPE::MAGE, nullptr);
-		break;
-	case ENEMY_TYPE::DEATH_KNIGHT:
-		newEntity = new EnemyEntity(coor, ENEMY_TYPE::DEATH_KNIGHT, nullptr);
-		break;
-	case ENEMY_TYPE::GOBLIN:
-		newEntity = new EnemyEntity(coor, ENEMY_TYPE::GOBLIN, nullptr);
-		break;
-	case ENEMY_TYPE::SKELETON:
-		newEntity = new EnemyEntity(coor, ENEMY_TYPE::SKELETON, nullptr);
-		break;
-	}
+
+	newEntity = new Enemy_Archer(coor, type, spritesheetsEntities[ARCHER_SHEET]);
+	App->colliders->AddCollider({ -16+20,-16+20,32,32 }, Collider::ColliderType::ENTITY, (Entity*)newEntity);
+
 	toSpawn.push_back(newEntity);
+
+	/*case ENEMY_TYPE::FOOTMAN:
+	newEntity = new Enemy_Footman(coor, ENEMY_TYPE::FOOTMAN, spritesheetsEntities[FOOTMAN_SHEET]);
+	App->colliders->AddCollider({ 20,20,32,32 }, Collider::ColliderType::ENTITY, (Entity*)newEntity);
+	break;*/
 
 }
 

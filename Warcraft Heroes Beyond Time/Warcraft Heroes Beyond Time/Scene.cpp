@@ -126,22 +126,22 @@ bool Scene::Start()
 				App->path->LoadPathMap();
 
 				iPoint enemy = App->map->GetRandomValidPoint();
-				App->entities->AddEnemy({ (float)enemy.x * 46, (float)enemy.y * 46 }, ARCHER);
+				App->entities->AddEnemy({ (float)enemy.x * 46, (float)enemy.y * 46 }, ARCHER_TIER_1);
 
 				enemy = App->map->GetRandomValidPoint();
-				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
+				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER_TIER_1);
 
 				enemy = App->map->GetRandomValidPoint();
-				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
+				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER_TIER_1);
 
 				enemy = App->map->GetRandomValidPoint();
-				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
+				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER_TIER_1);
 
 				enemy = App->map->GetRandomValidPoint();
-				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
+				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER_TIER_1);
 
 				enemy = App->map->GetRandomValidPoint();
-				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
+				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER_TIER_1);
 
 				App->items->Activate();
 

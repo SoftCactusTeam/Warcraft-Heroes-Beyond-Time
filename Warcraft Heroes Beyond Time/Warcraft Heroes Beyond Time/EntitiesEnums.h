@@ -16,15 +16,12 @@ enum SPRITESHEETS
 
 enum ENEMY_TYPE
 {
-	NON_ENEMY = -1,
+	NO_TIER = -1,
+	ARCHER_TIER_1,
+	ARCHER_TIER_2,
+	ARCHER_TIER_3,
 	BOSS,
-	FOOTMAN,
-	ARCHER,
-	MAGE,
-	DEATH_KNIGHT,
-	GOBLIN,
-	SKELETON,
-	WEAPON			// Aixo es un recurs que faig servir per les fletxes
+	FOOTMAN
 };
 
 enum ENEMY_WEAPON_TYPE
