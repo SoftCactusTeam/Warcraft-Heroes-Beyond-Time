@@ -237,6 +237,9 @@ bool EntitySystem::Start()
 	spritesheetsEntities.push_back(App->textures->Load("sprites/Projectiles.png"));
 	spritesheetsEntities.push_back(App->textures->Load("sprites/Archer/Archer_Smoke.png"));
 	spritesheetsEntities.push_back(App->textures->Load("sprites/Boss_Guldan.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/Archer/white_archers_sprite.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/Archer/orange_archers_sprite.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/Archer/green_archers_sprite.png"));
 
 	bool ret = true;
 
