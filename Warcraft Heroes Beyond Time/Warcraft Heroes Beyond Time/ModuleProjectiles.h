@@ -15,7 +15,7 @@ enum Projectile_type
 	fel_ball,
 	geyser,
 	thunder,
-	block
+	block,
 	archer_arrow
 };
 

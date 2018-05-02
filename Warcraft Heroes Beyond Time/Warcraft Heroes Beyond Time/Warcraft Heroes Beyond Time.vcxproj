@@ -127,6 +127,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="ArcherArrow.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="BossEntity.cpp" />
     <ClCompile Include="BossHPBar.cpp" />
@@ -185,6 +186,7 @@
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Application.h" />
+    <ClInclude Include="ArcherArrow.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="BossEntity.h" />
     <ClInclude Include="BossHPBar.h" />
