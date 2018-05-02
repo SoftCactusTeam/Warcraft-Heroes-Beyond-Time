@@ -20,8 +20,8 @@ public:
 	virtual bool Update(float dt);
 	virtual bool Finish();
 
-	FIXED_ANGLE CaculateAngle(fPoint objectiveCoor);
-	fPoint CaculateFPointAngle(fPoint objectiveCoor);
+	FIXED_ANGLE CaculateAngle(fPoint objectiveCoor, int width = 0, int height = 0);
+	fPoint CaculateFPointAngle(fPoint objectiveCoor, int width = 0, int height = 0);
 	uint DistanceToObejective(fPoint objectiveCoor);
 	fPoint transformFixedAngleTofPoint(FIXED_ANGLE angle);
 

@@ -121,7 +121,6 @@ public:
 
 	//Collisions
 	virtual void UpdateCollider() {}
-	void setCol(Collider* pcol);
 	void PushOut(Collider* wall);
 	virtual void Attack() {}
 	virtual void UseSkill() {}

@@ -17,6 +17,7 @@ Projectile::Projectile(const ProjectileInfo* info, Projectile_type type) : data(
 
 Projectile::~Projectile()
 {
+	App->colliders->deleteColliderbyOwner(this);
 }
 
 bool Projectile::Update(float dt)

@@ -12,6 +12,7 @@
 #include "ModulePrinter.h"
 #include "ModuleColliders.h"
 #include "ModuleMapGenerator.h"
+#include "ModuleGUI.h"
 
 
 Guldan::Guldan(fPoint coor, BossType type, SDL_Texture* texture) : BossEntity(coor, type, texture)
@@ -129,9 +130,9 @@ Guldan::Guldan(fPoint coor, BossType type, SDL_Texture* texture) : BossEntity(co
 
 	numStats = App->entities->guldanstats;
 
-	isGuldan = true;
+	numStats.hp = numStats.maxhp = 1000.0f;
 
-	numStats.hp = 100;
+	isGuldan = true;
 }
 
 Guldan::~Guldan()
@@ -142,7 +143,7 @@ bool Guldan::Start()
 {
 	statesBoss = BossStates::HELLO;
 
-	guldanCollider = App->colliders->AddCollider({ 0,0,68,68 }, Collider::ColliderType::ENTITY, this);
+	guldanCollider = *App->colliders->AddCollider({ 0,0,68,68 }, Collider::ColliderType::ENTITY, this).lock();
 
 	return true;
 }
@@ -157,6 +158,7 @@ bool Guldan::Update(float dt)
 		{
 			App->input->PlayJoyRumble(0.9f, 100);
 			BlockInfo info;
+			info.layer = 1;
 			info.pos = { 14 * 48 - 1, 13 * 48 };
 			App->projectiles->AddProjectile(&info, Projectile_type::block);
 			info.pos = { 15 * 48 - 2, 13 * 48 };
@@ -172,6 +174,7 @@ bool Guldan::Update(float dt)
 			statesBoss = BossStates::TELEPORT;
 			anim = &teleport;
 			teleportCenter = true;
+			App->gui->CreateBossHPBar((BossEntity*)this, { 640 / 2 - 312 / 2,320 });
 			break;
 		}
 
@@ -480,7 +483,7 @@ bool Guldan::Update(float dt)
 		break;
 	}
 
-	if (generateGeysers)
+	if (numStats.hp <= numStats.maxhp / 2)
 	{
 		timeBetweenGeyser += 1 * dt;
 
@@ -510,7 +513,7 @@ bool Guldan::Finish()
 void Guldan::GenerateFelBalls(FellBallsTypes type, float angleToIncrease) const
 {
 	FelBallInfo info;
-	info.layer = 5;
+	info.layer = 1;
 	info.life = LIFE_BALLS,
 	info.pos = BOSS_CENTER;
 	info.rotationPivot = BOSS_CENTER;

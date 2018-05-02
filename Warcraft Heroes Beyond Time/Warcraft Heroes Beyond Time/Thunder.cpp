@@ -2,6 +2,7 @@
 
 #include "Application.h"
 #include "ModulePrinter.h"
+#include "ModuleColliders.h"
 
 Thunder::Thunder(const ThunderInfo* info, Projectile_type type) : Projectile(info, type)
 {
@@ -18,6 +19,9 @@ Thunder::Thunder(const ThunderInfo* info, Projectile_type type) : Projectile(inf
 	thunderAnims[(uint)ThunderAnimations::cast].loop = false;
 
 	actualAnim = &thunderAnims[(uint)ThunderAnimations::cast];
+
+	projCollider = *App->colliders->AddEnemyAttackCollider({ 131-48, -49/2, 49, 48 }, this, 50, EnemyAttack::E_Attack_Type::GULDAN_BALL).lock();
+
 }
 Thunder::~Thunder()
 {

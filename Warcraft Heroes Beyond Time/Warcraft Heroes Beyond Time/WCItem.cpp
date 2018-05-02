@@ -23,7 +23,8 @@ bool WCItem::Act(ModuleItems::ItemEvent event, float dt)
 			time = 0;
 			if (cont < 18)
 			{
-				Shit* shit_pointer = new Shit(App->colliders->AddPlayerAttackCollider(SDL_Rect({ (int)App->scene->player->pos.x, (int)App->scene->player->pos.y, 32, 32 }), nullptr, 1*dt, PlayerAttack::P_Attack_Type::SHIT), iPoint({ (int)App->scene->player->pos.x, (int)App->scene->player->pos.y }));
+				std::shared_ptr<Collider*> col = App->colliders->AddPlayerAttackCollider(SDL_Rect({ (int)App->scene->player->pos.x, (int)App->scene->player->pos.y, 32, 32 }), nullptr, 1 * dt, PlayerAttack::P_Attack_Type::SHIT).lock();
+				Shit* shit_pointer = new Shit(*col, iPoint({ (int)App->scene->player->pos.x, (int)App->scene->player->pos.y }));
 				shit_list.push_front(shit_pointer);
 				cont += 1;
 			}

@@ -2,392 +2,129 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Block.cpp" />
+    <ClCompile Include="BossEntity.cpp" />
+    <ClCompile Include="BossHPBar.cpp" />
+    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="ChestEntity.cpp" />
+    <ClCompile Include="ConsumableEntity.cpp" />
+    <ClCompile Include="DmgBallItem.cpp" />
+    <ClCompile Include="DynamicEntity.cpp" />
+    <ClCompile Include="EffectsElem.cpp" />
+    <ClCompile Include="EnemyEntity.cpp" />
+    <ClCompile Include="Enemy_Archer.cpp" />
+    <ClCompile Include="Enemy_Footman.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Color.cpp" />
+    <ClCompile Include="Console.cpp" />
+    <ClCompile Include="FelBall.cpp" />
+    <ClCompile Include="Fonts.cpp" />
+    <ClCompile Include="FileSystem.cpp" />
+    <ClCompile Include="Geyser.cpp" />
+    <ClCompile Include="GUIImage.cpp" />
+    <ClCompile Include="Guldan.cpp" />
+    <ClCompile Include="InputBox.cpp" />
+    <ClCompile Include="ItemContainer.cpp" />
+    <ClCompile Include="ModuleEffects.cpp" />
+    <ClCompile Include="ModuleItems.cpp" />
+    <ClCompile Include="ModulePrinter.cpp" />
+    <ClCompile Include="ModuleProjectiles.cpp" />
+    <ClCompile Include="PlayerHPBar.cpp" />
+    <ClCompile Include="Projectile.cpp" />
+    <ClCompile Include="Slider.cpp" />
+    <ClCompile Include="ModuleMapGenerator.cpp" />
+    <ClCompile Include="ModuleColliders.cpp" />
+    <ClCompile Include="Pathfinding.cpp" />
+    <ClCompile Include="PortalEntity.cpp" />
+    <ClCompile Include="Stat.cpp" />
+    <ClCompile Include="Thunder.cpp" />
+    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Label.cpp" />
+    <ClCompile Include="ModuleAudio.cpp" />
+    <ClCompile Include="ModuleEntitySystem.cpp" />
+    <ClCompile Include="ModuleGUI.cpp" />
+    <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Log.cpp" />
+    <ClCompile Include="ModuleRender.cpp" />
+    <ClCompile Include="ModuleTextures.cpp" />
+    <ClCompile Include="ModuleWindow.cpp" />
+    <ClCompile Include="PlayerEntity.cpp" />
+    <ClCompile Include="PugiXml\src\pugixml.cpp" />
     <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="Button.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Color.cpp">
-      <Filter>Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="GUIElem.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="GUIImage.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="GUIWindow.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="InputBox.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Console.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="FileSystem.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Fonts.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Label.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Log.cpp">
-      <Filter>Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleColliders.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleAudio.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleEntitySystem.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleGUI.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleInput.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleMapGenerator.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModulePrinter.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleRender.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleTextures.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleWindow.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Pathfinding.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="PugiXml\src\pugixml.cpp">
-      <Filter>Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="Slider.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="ChestEntity.cpp">
-      <Filter>Entities\Static</Filter>
-    </ClCompile>
-    <ClCompile Include="ConsumableEntity.cpp">
-      <Filter>Entities\Static</Filter>
-    </ClCompile>
-    <ClCompile Include="PortalEntity.cpp">
-      <Filter>Entities\Static</Filter>
-    </ClCompile>
-    <ClCompile Include="StaticEntity.cpp">
-      <Filter>Entities\Static</Filter>
-    </ClCompile>
-    <ClCompile Include="DynamicEntity.cpp">
-      <Filter>Entities\Dynamic</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy_Archer.cpp">
-      <Filter>Entities\Dynamic\Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy_Footman.cpp">
-      <Filter>Entities\Dynamic\Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyEntity.cpp">
-      <Filter>Entities\Dynamic\Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerEntity.cpp">
-      <Filter>Entities\Dynamic\Players</Filter>
-    </ClCompile>
-    <ClCompile Include="Thrall.cpp">
-      <Filter>Entities\Dynamic\Players</Filter>
-    </ClCompile>
-    <ClCompile Include="BossEntity.cpp">
-      <Filter>Entities\Dynamic\Enemies\Bosses</Filter>
-    </ClCompile>
-    <ClCompile Include="Guldan.cpp">
-      <Filter>Entities\Dynamic\Enemies\Bosses</Filter>
-    </ClCompile>
-    <ClCompile Include="WCItem.cpp">
-      <Filter>Items</Filter>
-    </ClCompile>
-    <ClCompile Include="BossHPBar.cpp">
-      <Filter>GUI\Warcraft specific</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerHPBar.cpp">
-      <Filter>GUI\Warcraft specific</Filter>
-    </ClCompile>
-    <ClCompile Include="Stat.cpp">
-      <Filter>GUI\Warcraft specific</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleItems.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleProjectiles.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Projectile.cpp">
-      <Filter>Projectiles</Filter>
-    </ClCompile>
-    <ClCompile Include="ItemContainer.cpp">
-      <Filter>GUI\Warcraft specific</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleEffects.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="EffectsElem.cpp">
-      <Filter>Effects</Filter>
-    </ClCompile>
-    <ClCompile Include="DmgBallItem.cpp">
-      <Filter>Items</Filter>
-    </ClCompile>
-    <ClCompile Include="FelBall.cpp">
-      <Filter>Projectiles</Filter>
-    </ClCompile>
-    <ClCompile Include="Geyser.cpp">
-      <Filter>Projectiles</Filter>
-    </ClCompile>
-    <ClCompile Include="Thunder.cpp">
-      <Filter>Projectiles</Filter>
-    </ClCompile>
-    <ClCompile Include="Block.cpp">
-      <Filter>Projectiles</Filter>
-    </ClCompile>
+    <ClCompile Include="StaticEntity.cpp" />
+    <ClCompile Include="Thrall.cpp" />
+    <ClCompile Include="GUIWindow.cpp" />
+    <ClCompile Include="WCItem.cpp" />
+    <ClCompile Include="GUIElem.cpp" />
+    <ClCompile Include="ArcherArrow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Animation.h" />
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Block.h" />
+    <ClInclude Include="BossEntity.h" />
+    <ClInclude Include="BossHPBar.h" />
+    <ClInclude Include="Button.h" />
+    <ClInclude Include="ChestEntity.h" />
+    <ClInclude Include="ConsumableEntity.h" />
+    <ClInclude Include="DMGBallItem.h" />
+    <ClInclude Include="DynamicEntity.h" />
+    <ClInclude Include="EffectsElem.h" />
+    <ClInclude Include="EnemyEntity.h" />
+    <ClInclude Include="Enemy_Archer.h" />
+    <ClInclude Include="Enemy_Footman.h" />
+    <ClInclude Include="EntitiesEnums.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="Console.h" />
+    <ClInclude Include="FelBall.h" />
+    <ClInclude Include="Geyser.h" />
+    <ClInclude Include="Globals.h" />
+    <ClInclude Include="Fonts.h" />
+    <ClInclude Include="FileSystem.h" />
+    <ClInclude Include="GUIElem.h" />
+    <ClInclude Include="GUIImage.h" />
+    <ClInclude Include="Guldan.h" />
+    <ClInclude Include="InputBox.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemContainer.h" />
+    <ClInclude Include="ModuleEffects.h" />
+    <ClInclude Include="ModuleItems.h" />
+    <ClInclude Include="ModulePrinter.h" />
+    <ClInclude Include="PlayerHPBar.h" />
+    <ClInclude Include="PortalEntity.h" />
+    <ClInclude Include="ModuleProjectiles.h" />
+    <ClInclude Include="Projectile.h" />
+    <ClInclude Include="Slider.h" />
+    <ClInclude Include="ModuleMapGenerator.h" />
+    <ClInclude Include="ModuleColliders.h" />
+    <ClInclude Include="Pathfinding.h" />
+    <ClInclude Include="Stat.h" />
+    <ClInclude Include="Thunder.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="Label.h" />
+    <ClInclude Include="ModuleAudio.h" />
+    <ClInclude Include="ModuleEntitySystem.h" />
+    <ClInclude Include="ModuleGUI.h" />
+    <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="Module.h" />
+    <ClInclude Include="p2Defs.h" />
+    <ClInclude Include="Log.h" />
+    <ClInclude Include="p2Point.h" />
+    <ClInclude Include="ModuleRender.h" />
+    <ClInclude Include="ModuleTextures.h" />
+    <ClInclude Include="ModuleWindow.h" />
+    <ClInclude Include="PlayerEntity.h" />
+    <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
+    <ClInclude Include="PugiXml\src\pugixml.hpp" />
     <ClInclude Include="Scene.h" />
-    <ClInclude Include="Animation.h">
-      <Filter>Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="Button.h">
-      <Filter>GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="EntitiesEnums.h">
-      <Filter>Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="GUIElem.h">
-      <Filter>GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="GUIImage.h">
-      <Filter>GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="GUIWindow.h">
-      <Filter>GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="InputBox.h">
-      <Filter>GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Console.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="FileSystem.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Fonts.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Label.h">
-      <Filter>GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Log.h">
-      <Filter>Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="Globals.h">
-      <Filter>Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleAudio.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleColliders.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleEntitySystem.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleGUI.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleInput.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleMapGenerator.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModulePrinter.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleRender.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleTextures.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleWindow.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Pathfinding.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="p2Defs.h">
-      <Filter>Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="p2Point.h">
-      <Filter>Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="PugiXml\src\pugiconfig.hpp">
-      <Filter>Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="PugiXml\src\pugixml.hpp">
-      <Filter>Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="Slider.h">
-      <Filter>GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="ChestEntity.h">
-      <Filter>Entities\Static</Filter>
-    </ClInclude>
-    <ClInclude Include="ConsumableEntity.h">
-      <Filter>Entities\Static</Filter>
-    </ClInclude>
-    <ClInclude Include="PortalEntity.h">
-      <Filter>Entities\Static</Filter>
-    </ClInclude>
-    <ClInclude Include="StaticEntity.h">
-      <Filter>Entities\Static</Filter>
-    </ClInclude>
-    <ClInclude Include="DynamicEntity.h">
-      <Filter>Entities\Dynamic</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy_Archer.h">
-      <Filter>Entities\Dynamic\Enemies</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy_Footman.h">
-      <Filter>Entities\Dynamic\Enemies</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyEntity.h">
-      <Filter>Entities\Dynamic\Enemies</Filter>
-    </ClInclude>
-    <ClInclude Include="Thrall.h">
-      <Filter>Entities\Dynamic\Players</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerEntity.h">
-      <Filter>Entities\Dynamic\Players</Filter>
-    </ClInclude>
-    <ClInclude Include="BossEntity.h">
-      <Filter>Entities\Dynamic\Enemies\Bosses</Filter>
-    </ClInclude>
-    <ClInclude Include="Guldan.h">
-      <Filter>Entities\Dynamic\Enemies\Bosses</Filter>
-    </ClInclude>
-    <ClInclude Include="WCItem.h">
-      <Filter>Items</Filter>
-    </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>Items</Filter>
-    </ClInclude>
-    <ClInclude Include="BossHPBar.h">
-      <Filter>GUI\Warcraft specific</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerHPBar.h">
-      <Filter>GUI\Warcraft specific</Filter>
-    </ClInclude>
-    <ClInclude Include="Stat.h">
-      <Filter>GUI\Warcraft specific</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleItems.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleProjectiles.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Projectile.h">
-      <Filter>Projectiles</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemContainer.h">
-      <Filter>GUI\Warcraft specific</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleEffects.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="EffectsElem.h">
-      <Filter>Effects</Filter>
-    </ClInclude>
-    <ClInclude Include="DMGBallItem.h">
-      <Filter>Items</Filter>
-    </ClInclude>
-    <ClInclude Include="FelBall.h">
-      <Filter>Projectiles</Filter>
-    </ClInclude>
-    <ClInclude Include="Geyser.h">
-      <Filter>Projectiles</Filter>
-    </ClInclude>
-    <ClInclude Include="Thunder.h">
-      <Filter>Projectiles</Filter>
-    </ClInclude>
-    <ClInclude Include="Block.h">
-      <Filter>Projectiles</Filter>
-    </ClInclude>
+    <ClInclude Include="StaticEntity.h" />
+    <ClInclude Include="Thrall.h" />
+    <ClInclude Include="GUIWindow.h" />
+    <ClInclude Include="WCItem.h" />
+    <ClInclude Include="ArcherArrow.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="Helpers">
-      <UniqueIdentifier>{d7452352-0d91-4e6c-adb8-9e051e07cbeb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Modules">
-      <UniqueIdentifier>{d8fd6569-0ace-4631-927d-568d6328d384}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GUI">
-      <UniqueIdentifier>{cff4cf8a-0b90-4f30-b52b-8df9b9833c95}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Entities">
-      <UniqueIdentifier>{aaae5f8b-1173-48ea-865c-ab0e7b82b523}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Entities\Static">
-      <UniqueIdentifier>{b77028ee-9307-4d98-b979-9ddddbaf50ac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Entities\Dynamic">
-      <UniqueIdentifier>{3be82bcf-87e5-4c6c-9ace-3c09c05e374b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Entities\Dynamic\Enemies">
-      <UniqueIdentifier>{48a9c521-56a5-466e-acb6-4f7f0604453d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Entities\Dynamic\Players">
-      <UniqueIdentifier>{6842e5f4-fd92-47c6-bb1b-2e36762357f6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Entities\Dynamic\Enemies\Bosses">
-      <UniqueIdentifier>{44347374-0b85-412c-a2e9-bc2a192ea994}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Items">
-      <UniqueIdentifier>{5117433a-3ce3-4063-9f79-624269922acc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GUI\Warcraft specific">
-      <UniqueIdentifier>{1f4bce41-22a8-4a52-935a-5cc805b8fc9b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Projectiles">
-      <UniqueIdentifier>{201659da-66fe-4367-9bc4-ee50a8e8c250}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Effects">
-      <UniqueIdentifier>{d227cee4-83b2-4ccb-b161-8d1a87e41306}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
 </Project>

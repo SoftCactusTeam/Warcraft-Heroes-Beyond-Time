@@ -64,11 +64,10 @@ bool Scene::Awake(pugi::xml_node& sceneNode)
 bool Scene::Start()
 {
 	gratitudeON = false;
+	restart = false;
 	App->gui->Activate();
 
 	currentPercentAudio = App->audio->MusicVolumePercent;
-
-	App->map->UseYourPowerToGenerateMeThisNewMap(lvlIndex);
 
 	switch (actual_scene)
 	{
@@ -110,7 +109,6 @@ bool Scene::Start()
 				player = App->entities->AddPlayer({ 15 * 46 + 10,16 * 46, }, THRALL);
 				player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
 				guldan = (Guldan*)App->entities->AddBoss(GULDAN_BASE, BossType::GULDAN);
-				App->gui->CreateBossHPBar((BossEntity*)guldan, { 640 / 2 - 312 / 2,320 });
 			}
 			else
 			{
@@ -120,6 +118,7 @@ bool Scene::Start()
 				App->console->Activate();
 				App->map->Activate();
 				App->printer->Activate();
+				App->projectiles->Activate();
 
 				player = App->entities->AddPlayer({ 25 * 46,25 * 46 }, THRALL);
 				player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
@@ -149,7 +148,7 @@ bool Scene::Start()
 				iPoint chestPos = App->map->GetRandomValidPointProxy(30, 5);
 
 				if (!App->items->isPoolEmpty())
-					lvlChest = App->entities->AddChest({ (float)chestPos.x * 46,(float)chestPos.y * 46 }, MID_CHEST);
+					lvlChest = App->entities->AddChest({ (float)chestPos.x * 46, (float)chestPos.y * 46 - 31 }, MID_CHEST);
 				else
 					lvlChest = nullptr;
 			}
@@ -168,28 +167,32 @@ bool Scene::PreUpdate()
 
 bool Scene::Update(float dt)
 {
-
 	bool ret = true;
 
+	if (actual_scene == Stages::INGAME && lvlIndex < App->map->numberOfLevels && portal == nullptr && App->entities->enemiescount == 0)
+	{
+		GeneratePortal();
+	}
+
 	//TESTING SAVES
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && !App->console->isWritting())
 	{
 		App->Save();
 	}
 
 	//TESTING LOAD
-	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && !App->console->isWritting())
 	{
 		App->Load();
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN && !App->console->isWritting())
 	{
 		if (player != nullptr)
 			player->SetDamage(25, true);
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT && !paused)
 	{
 		if (player != nullptr)
 			player->IncreaseEnergy(100);
@@ -206,18 +209,13 @@ bool Scene::Update(float dt)
 		GoNextLevel();
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_F1) && actual_scene == Stages::INGAME)
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KeyState::KEY_DOWN && actual_scene == Stages::INGAME && !App->console->isWritting())
 	{
 		lvlIndex = 100;
 		restart = true;
 	}
 
-	if (actual_scene == Stages::INGAME && App->entities->enemiescount <= 0)
-	{
-		GeneratePortal();
-	}
-
-	if (actual_scene == Stages::MAIN_MENU && App->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN) // DELETE THIS AFTER VERTICAL
+	if (actual_scene == Stages::MAIN_MENU && App->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN && !App->console->isWritting()) // DELETE THIS AFTER VERTICAL
 	{
 		App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
 		actual_scene = Stages::INGAME;
@@ -521,10 +519,9 @@ void Scene::AddCommands()
 
 void Scene::GeneratePortal()
 {
-	if (portal == nullptr)
+	if (portal == nullptr && App->entities->spritesheetsEntities.size() > 0)
 	{
 		iPoint position = App->map->GetRandomValidPointProxy(20, 5);
-
 		portal = (PortalEntity*)App->entities->AddStaticEntity({ (float)position.x * 46, (float)position.y * 46 }, PORTAL);
 	}
 }
