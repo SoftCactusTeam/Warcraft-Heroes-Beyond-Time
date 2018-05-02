@@ -457,7 +457,7 @@ std::vector<MapNode*> MapGenerator::GetMapNodesAndInfo(uint& sizeX, uint& sizeY,
 	return nodes;
 }
 
-bool MapGenerator::UseYourPowerToGenerateMeThisNewMap(int lvlIndex)
+int MapGenerator::UseYourPowerToGenerateMeThisNewMap(int lvlIndex)
 {
 	if (lvlIndex >= numberOfLevels)
 	{

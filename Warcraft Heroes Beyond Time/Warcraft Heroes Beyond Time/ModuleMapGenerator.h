@@ -72,8 +72,9 @@ public:
 
 	std::vector<MapNode*> GetMapNodesAndInfo(uint& sizeX, uint& sizeY, uint& tileSize);
 
-	bool UseYourPowerToGenerateMeThisNewMap(int lvlIndex);
-
+	int UseYourPowerToGenerateMeThisNewMap(int lvlIndex);
+public:
+	int numberOfLevels = 0;
 private:
 
 	uint totalSize = 0u;
@@ -87,7 +88,7 @@ private:
 
 	std::list<iPoint> gridSizePerLevel;
 	std::list<int> iterationsPerLevel;
-	int numberOfLevels = 0;
+	
 	int mapSeed = 0;
 };
 

@@ -64,11 +64,10 @@ bool Scene::Awake(pugi::xml_node& sceneNode)
 bool Scene::Start()
 {
 	gratitudeON = false;
+	restart = false;
 	App->gui->Activate();
 
 	currentPercentAudio = App->audio->MusicVolumePercent;
-
-	App->map->UseYourPowerToGenerateMeThisNewMap(lvlIndex);
 
 	switch (actual_scene)
 	{
@@ -168,8 +167,12 @@ bool Scene::PreUpdate()
 
 bool Scene::Update(float dt)
 {
-
 	bool ret = true;
+
+	if (actual_scene == Stages::INGAME && lvlIndex < App->map->numberOfLevels && portal == nullptr && App->entities->enemiescount == 0)
+	{
+		GeneratePortal();
+	}
 
 	//TESTING SAVES
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && !App->console->isWritting())
@@ -206,15 +209,10 @@ bool Scene::Update(float dt)
 		GoNextLevel();
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_F1) && actual_scene == Stages::INGAME && !App->console->isWritting())
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KeyState::KEY_DOWN && actual_scene == Stages::INGAME && !App->console->isWritting())
 	{
 		lvlIndex = 100;
 		restart = true;
-	}
-
-	if (actual_scene == Stages::INGAME && App->entities->enemiescount <= 0)
-	{
-		GeneratePortal();
 	}
 
 	if (actual_scene == Stages::MAIN_MENU && App->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN && !App->console->isWritting()) // DELETE THIS AFTER VERTICAL
@@ -521,10 +519,9 @@ void Scene::AddCommands()
 
 void Scene::GeneratePortal()
 {
-	if (portal == nullptr)
+	if (portal == nullptr && App->entities->spritesheetsEntities.size() > 0)
 	{
 		iPoint position = App->map->GetRandomValidPointProxy(20, 5);
-
 		portal = (PortalEntity*)App->entities->AddStaticEntity({ (float)position.x * 46, (float)position.y * 46 }, PORTAL);
 	}
 }

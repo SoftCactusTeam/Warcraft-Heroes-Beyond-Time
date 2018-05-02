@@ -471,7 +471,6 @@ void Thrall::UpdateCollider()
 		damageCol->rectArea.w = 17;
 		damageCol->rectArea.h = 23;
 	}
-
 }
 
 void Thrall::Attack()
