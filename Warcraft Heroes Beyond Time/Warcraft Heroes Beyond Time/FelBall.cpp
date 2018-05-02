@@ -22,7 +22,8 @@ FelBall::FelBall(const FelBallInfo* info, Projectile_type type) : Projectile(inf
 	felAnims[(uint)FelAnimations::end_anim].PushBack({ 102,407,28,28 });
 	felAnims[(uint)FelAnimations::end_anim].PushBack({ 132,407,28,28 });
 	felAnims[(uint)FelAnimations::end_anim].PushBack({ 162,407,28,28 });
-	felAnims[(uint)FelAnimations::end_anim].speedFactor = 4.5f;
+	felAnims[(uint)FelAnimations::end_anim].speedFactor = 9.0f;
+	felAnims[(uint)FelAnimations::end_anim].loop = false;
 	//felAnims[(uint)FelAnimations::back_anim].speedFactor = 4.5f;
 
 	actualAnim = &felAnims[(uint)FelAnimations::moving_anim];

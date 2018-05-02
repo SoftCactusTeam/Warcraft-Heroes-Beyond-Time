@@ -513,7 +513,7 @@ bool Guldan::Finish()
 void Guldan::GenerateFelBalls(FellBallsTypes type, float angleToIncrease) const
 {
 	FelBallInfo info;
-	info.layer = 5;
+	info.layer = 1;
 	info.life = LIFE_BALLS,
 	info.pos = BOSS_CENTER;
 	info.rotationPivot = BOSS_CENTER;
