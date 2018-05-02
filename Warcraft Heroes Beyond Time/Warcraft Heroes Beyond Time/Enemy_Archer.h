@@ -22,7 +22,6 @@ enum ARCHER_STATE {
 	ARCHER_FASTSHOOT_ATAC,
 	ARCHER_BACKJUMP,
 	ARCHER_LITTLEMOVE,
-	ARCHER_DASH,
 	ARCHER_DIE
 };
 
@@ -37,6 +36,29 @@ struct archerEffectStruct
 {
 	ARCHER_EFFECTS effect = ARCHER_EFFECT_NONE;
 	int time = 0;
+};
+
+class Enemy_Archer_Arrow {
+public:
+	Enemy_Archer_Arrow(fPoint coor, SDL_Texture* texture, fPoint direction, int deadTimer = ARROW_DEAD_TIMER);
+
+	void Update();
+	void Draw();
+	void Finish();
+
+public:
+	fPoint			pos;
+	fPoint			direction;
+	SDL_Rect		rect;
+	SDL_Texture*	texture;
+	Collider*		arrowCollider = nullptr;
+
+	float			deadTimer;
+	bool			destroy = false;
+	float			angle;
+	int				tempoAtWall = -1;
+
+
 };
 
 class Enemy_Archer : public EnemyEntity
@@ -61,7 +83,6 @@ public:
 	void initFastAtac();
 	void initBackJump();
 	void initLittleMove();
-	void initDash();
 	void initDie();
 
 	void doIdle();
@@ -71,7 +92,6 @@ public:
 	void doFastAtac();
 	void doBackJump();
 	void doLittleMove();
-	void doDash();
 	void doDie();
 
 	void Walk();
@@ -80,7 +100,7 @@ public:
 	void UpdateEffects();
 	// ~~~~~~~~~~~~~~~~~~ STATE MACHINE
 
-	void LoadAnimations();
+	void ChargeAnimations();
 	void ShootArrow(fPoint desviation = fPoint(0, 0));
 
 public:
@@ -92,11 +112,10 @@ public:
 
 	Animation animSmoke;
 
+	std::vector<Enemy_Archer_Arrow*> arrowsVector;
 	std::list<archerEffectStruct*> effectsList;
 
 private:
-	// Normal Atac Variables
-	bool hasAttacked = false;
 	// Fast atac variables
 	int timeToShootAnother = 0;
 	int arrowToShoot = 0;
@@ -107,10 +126,6 @@ private:
 	iPoint posToScape;
 	int arrowsShooted = 0;
 	int cooldownToReLittleMove = 0;
-	// Dash variables
-	FIXED_ANGLE saveFirstAngle = FIXED_ANGLE::NON_ANGLE;
-	fPoint dashMovement;
-	float dashTempo = 0.0f;
 
 	ARCHER_TIER tier = ARCHER_TIER_NONE;
 	float live = 0;

@@ -53,13 +53,6 @@ public:
 		uint attack_range = 0u;
 		uint minimal_distance_player = 0u;
 
-		uint preAttac = 0u;
-		uint tilesToLittleMove = 0u;
-		uint DistanceToScape = 0u;
-
-		uint attacCone_probability = 0u;
-		uint attacFast_probability = 0u;
-
 	} archerT1stats, archerT2stats, archerT3stats, guldanstats;
 
 
@@ -100,22 +93,18 @@ public:
 		timepostdead = this->timepostdead;
 	}
 
+
+
 	std::vector<SDL_Texture*> spritesheetsEntities;
 	int enemiescount = 0;
 
-	std::list<Entity*>		entities;
 private:
-	//std::list<Entity*>		entities;
+	std::list<Entity*>		entities;
 	std::list<Entity*>		toSpawn;
 
 	float dashCD = 0.0f;
 	float invpostdamaged = 0.0f;
 	float timepostdead = 0.0f;
-
-	/*to check*/
-
-public:
-	bool checkEntityNearOther(Entity* entity, int dist);
 
 };
 

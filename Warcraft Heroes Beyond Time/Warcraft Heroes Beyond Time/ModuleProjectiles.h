@@ -16,7 +16,6 @@ enum Projectile_type
 	geyser,
 	thunder,
 	block
-	archer_arrow
 };
 
 class ModuleProjectiles : public Module
@@ -37,7 +36,6 @@ public:
 	void AddProjectile(const ProjectileInfo* projectile, Projectile_type type);
 	void DestroyProjectile(Projectile* toDelete);
 	const SDL_Texture* GetProjectileAtlas() const;
-	const SDL_Texture* GetProjectileClassicAtlas() const;
 
 private:
 	std::list<Projectile*> projectilesList;
@@ -46,7 +44,6 @@ private:
 
 public:
 	SDL_Texture* projectilesAtlas = nullptr;
-	SDL_Texture* projectileClassicAtlas = nullptr;
 };
 
 #endif // __MODULEPROJECTILES_H__

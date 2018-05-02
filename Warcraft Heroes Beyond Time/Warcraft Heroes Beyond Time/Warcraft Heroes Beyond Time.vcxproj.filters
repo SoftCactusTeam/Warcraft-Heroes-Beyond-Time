@@ -161,7 +161,6 @@
       <Filter>Projectiles</Filter>
     </ClCompile>
     <ClCompile Include="Block.cpp">
-    <ClCompile Include="ArcherArrow.cpp">
       <Filter>Projectiles</Filter>
     </ClCompile>
   </ItemGroup>
@@ -344,7 +343,6 @@
       <Filter>Projectiles</Filter>
     </ClInclude>
     <ClInclude Include="Block.h">
-    <ClInclude Include="ArcherArrow.h">
       <Filter>Projectiles</Filter>
     </ClInclude>
   </ItemGroup>

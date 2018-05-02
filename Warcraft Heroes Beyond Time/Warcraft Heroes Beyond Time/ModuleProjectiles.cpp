@@ -7,7 +7,6 @@
 #include "Geyser.h"
 #include "Thunder.h"
 #include "Block.h"
-#include "ArcherArrow.h"
 
 #include <assert.h>
 
@@ -32,8 +31,8 @@ bool ModuleProjectiles::Awake(pugi::xml_node& xml_node)
 bool ModuleProjectiles::Start()
 {
 	projectilesAtlas = App->textures->Load("sprites/ProjectilesAtlas.png");
-	projectileClassicAtlas = App->textures->Load("sprites/Projectiles.png");
-	return true;	
+
+	return true;
 }
 
 bool ModuleProjectiles::PreUpdate()
@@ -142,10 +141,8 @@ void ModuleProjectiles::AddProjectile(const ProjectileInfo* projectile, Projecti
 	case Projectile_type::block:
 		newProjectile = new Block(new BlockInfo(*(BlockInfo*)projectile), type);
 		break;
-	case Projectile_type::archer_arrow:
-		newProjectile = new ArcherArrow(new ArcherArrowInfo(*(ArcherArrowInfo*)projectile), type);
-		break;
 	}
+
 	toSpawnProjectilesList.push_back(newProjectile);
 }
 
@@ -157,9 +154,4 @@ void ModuleProjectiles::DestroyProjectile(Projectile* toDelete)
 const SDL_Texture* ModuleProjectiles::GetProjectileAtlas() const
 {
 	return projectilesAtlas;
-}
-
-const SDL_Texture* ModuleProjectiles::GetProjectileClassicAtlas() const
-{
-	return projectileClassicAtlas;
 }
