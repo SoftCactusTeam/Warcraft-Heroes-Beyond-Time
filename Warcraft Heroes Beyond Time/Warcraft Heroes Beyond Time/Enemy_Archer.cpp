@@ -31,7 +31,7 @@
 #define LITTLEMOVEMENT_COOLDOWN	1000	// res
 
 #define TIME_STUNNED_AFTERHIT	1000	// in ms
-#define VELOCITY_DASH			500		// in pixels per sex
+#define VELOCITY_DASH			50		// in pixels per sex
 #define TIMING_DASH				300		// in ms
 
 Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture, ARCHER_TIER tier) : EnemyEntity(coor, character, texture)

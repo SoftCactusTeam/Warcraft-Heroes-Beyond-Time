@@ -1214,7 +1214,7 @@ FIXED_ANGLE PlayerEntity::returnFixedAngle()
 		return UP;
 	else if (angle >= 67.5f && angle < 112.5f)
 		return DOWN;
-	else if (((angle >= 337.5f && angle < 360.0f) || (angle >= 0 && angle < 22.5f) && !App->input->InsideDeadZone()))
+	else if ((angle >= 337.5f && angle < 360.0f) || (angle >= 0 && angle < 22.5f))
 		return RIGHT;
 	else if (angle >= 157.5f && angle < 202.5f)
 		return LEFT;
@@ -1226,6 +1226,8 @@ FIXED_ANGLE PlayerEntity::returnFixedAngle()
 		return DOWN_LEFT;
 	else if (angle >= 22.5f && angle < 67.5f)
 		return DOWN_RIGHT;
+	else
+		return UP;
 }
 
 bool PlayerEntity::IsPlayerMoving()
