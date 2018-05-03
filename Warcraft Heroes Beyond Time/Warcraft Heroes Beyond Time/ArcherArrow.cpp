@@ -85,8 +85,12 @@ void ArcherArrow::OnCollision(Collider* yours, Collider* collideWith)
 		{
 			DynamicEntity* dynOwner = (DynamicEntity*)collideWith->owner;
 			if (dynOwner->dynamicType == DynamicEntity::DynamicType::PLAYER)
-				// AIXO SI L'ALTRE ES UN PLAYER
-				deleteArrow = true;
+			{
+				PlayerEntity* plaOwner = (PlayerEntity*)collideWith->owner;
+				if (plaOwner->GetDamageCollider() == collideWith)
+					// AIXO SI L'ALTRE ES UN PLAYER
+					deleteArrow = true;
+			}
 		}
 		break;
 	}

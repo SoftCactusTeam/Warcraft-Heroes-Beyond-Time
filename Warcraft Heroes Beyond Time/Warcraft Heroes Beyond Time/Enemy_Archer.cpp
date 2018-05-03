@@ -633,7 +633,7 @@ void Enemy_Archer::ShootArrow(fPoint desviation)
 {
 	App->audio->PlayFx(App->audio->ArrowSound);
 	fPoint directionShoot = fPoint(App->scene->player->pos.x/* + App->scene->player->anim->GetCurrentRect().w / 2*/ , App->scene->player->pos.y/* + App->scene->player->anim->GetCurrentRect().h / 2*/);
-	directionShoot.x -= (pos.x + 4) + desviation.x;
+	directionShoot.x -= (pos.x + 4/*Arrow Width & Height*/) + desviation.x;
 	directionShoot.y -= (pos.y + 4) + desviation.y;
 
 	fPoint copyToDivideDirectionShoot = directionShoot;

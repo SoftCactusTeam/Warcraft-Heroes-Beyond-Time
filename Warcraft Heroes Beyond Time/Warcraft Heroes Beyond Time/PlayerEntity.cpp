@@ -37,6 +37,11 @@ bool PlayerEntity::Finish()
 	return true; 
 }
 
+Collider* PlayerEntity::GetDamageCollider() const
+{
+	return damageCol;
+}
+
 fPoint PlayerEntity::CalculatePosFromBezier(fPoint startPos, fPoint handleA, float t, fPoint handleB, fPoint endPos)
 {
 	float t2 = pow(t, 2.0f);
