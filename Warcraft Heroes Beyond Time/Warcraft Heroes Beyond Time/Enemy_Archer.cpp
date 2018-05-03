@@ -632,10 +632,10 @@ void Enemy_Archer::UpdateEffects()
 void Enemy_Archer::ShootArrow(fPoint desviation)
 {
 	App->audio->PlayFx(App->audio->ArrowSound);
-	fPoint directionShoot = fPoint(App->scene->player->pos.x + App->scene->player->anim->GetCurrentRect().w / 2 , App->scene->player->pos.y + App->scene->player->anim->GetCurrentRect().h / 2);
+	fPoint directionShoot = fPoint(App->scene->player->pos.x/* + App->scene->player->anim->GetCurrentRect().w / 2*/ , App->scene->player->pos.y/* + App->scene->player->anim->GetCurrentRect().h / 2*/);
+	directionShoot.x -= (pos.x + 4) + desviation.x;
+	directionShoot.y -= (pos.y + 4) + desviation.y;
 
-	directionShoot.x -= pos.x + desviation.x;
-	directionShoot.y -= pos.y + desviation.y;
 	fPoint copyToDivideDirectionShoot = directionShoot;
 	if (copyToDivideDirectionShoot.x < 0)
 		copyToDivideDirectionShoot.x *= -1;
@@ -647,8 +647,7 @@ void Enemy_Archer::ShootArrow(fPoint desviation)
 	directionShoot.x /= total;
 	directionShoot.y /= total;
 
-	fPoint position;
-	position = fPoint(pos.x + anim->GetCurrentRect().w / 2, pos.y + anim->GetCurrentRect().h / 2);
+	fPoint position = fPoint(pos.x + anim->GetCurrentRect().w / 2, pos.y + anim->GetCurrentRect().h / 2);
 	/*switch (LookAtPlayer())
 	{
 	case FIXED_ANGLE::UP:
