@@ -318,8 +318,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 					button->atlasRect = Button1MouseHover;
 					break;
 				}
-				case UIEvents::MOUSE_
-					_UP:
+				case UIEvents::MOUSE_RIGHT_UP:
 				{
 					button->atlasRect = Button1MouseHover;
 					break;
