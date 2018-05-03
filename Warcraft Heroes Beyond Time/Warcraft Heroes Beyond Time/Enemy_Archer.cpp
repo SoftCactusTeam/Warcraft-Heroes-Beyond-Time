@@ -34,7 +34,8 @@
 #define VELOCITY_DASH			500		// in pixels per sex
 #define TIMING_DASH				300		// in ms
 
-Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture) : EnemyEntity(coor, character, texture)
+
+Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture, ARCHER_TIER tier) : EnemyEntity(coor, character, texture)
 {
 	switch (character)
 	{
@@ -145,7 +146,20 @@ bool Enemy_Archer::Draw()
 	if(damaged)
 		ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), texture, anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot(), ModulePrinter::Pivots::UPPER_LEFT, {0,0}, 0, { 255,100,100,255 });
 	else
-		ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), texture, anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot());
+	{
+		switch (tier)
+		{
+		case ARCHER_TIER_1:
+			ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), App->entities->spritesheetsEntities[WHITE_ARCHER], anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot());
+			break;
+		case ARCHER_TIER_2:
+			ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), App->entities->spritesheetsEntities[ORANGE_ARCHER], anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot());
+			break;
+		case ARCHER_TIER_3:
+			ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), App->entities->spritesheetsEntities[GREEN_ARCHER], anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot());
+			break;
+		}
+	}
 	return ret;
 }
 
@@ -157,14 +171,13 @@ void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 
 		switch (attack->pattacktype)
 		{
-
 			case PlayerAttack::P_Attack_Type::NORMAL_ATTACK:
 			case PlayerAttack::P_Attack_Type::SKILL:
-				//initDash();
+				initDash();
 			case PlayerAttack::P_Attack_Type::DMGBALL_ITEM:
 			{
 				App->audio->PlayFx(App->audio->ArcherDeath);
-				live -= attack->damage;
+				live -= attack->damage;;
 				if (live <= 0)
 				{
 					if (state != ARCHER_STATE::ARCHER_DIE)
@@ -349,10 +362,10 @@ void Enemy_Archer::initDash()
 	anim->Reset();
 	saveFirstAngle = LookAtPlayer();
 	dashTempo = 0;
-	//dashMovement = CaculateFPointAngle(App->scene->player->pos);
-	dashMovement = CaculateFPointAngle(fPoint(App->scene->player->pos.x + App->scene->player->anim->GetCurrentRect().w / 2 , App->scene->player->pos.y + App->scene->player->anim->GetCurrentRect().h / 2), anim->GetCurrentRect().w / 2, anim->GetCurrentRect().h / 2);
-	dashMovement.x *= -1 * (VELOCITY_DASH) / 3 * App->dt;
-	dashMovement.y *= -1 * (VELOCITY_DASH) / 3 * App->dt;
+	dashMovement = transformFixedAngleTofPoint(App->scene->player->returnFixedAngle());
+	//dashMovement = CaculateFPointAngle(fPoint(App->scene->player->pos.x + (App->scene->player->anim->GetCurrentRect().w / 3) , App->scene->player->pos.y + (App->scene->player->anim->GetCurrentRect().h / 3)), anim->GetCurrentRect().w / 2, anim->GetCurrentRect().h / 2);
+	dashMovement.x *= 1 * (numStats.velocityDashHit) / 3 * App->dt;
+	dashMovement.y *= 1 * (numStats.velocityDashHit) / 3 * App->dt;
 }
 
 void Enemy_Archer::initDie()
@@ -477,17 +490,50 @@ void Enemy_Archer::doDash()
 {
 	anim = &animIdle[saveFirstAngle];
 
-	if (dashTempo * 1000 >= TIMING_DASH)
+	if (dashTempo * 1000 >= numStats.timingDashHit)
 	{
-		StopConcreteTime(TIME_STUNNED_AFTERHIT);
+		StopConcreteTime(numStats.timeStunedAfterHit);
 		initIdle();
 	}
 	else
 	{
 		// PER EVITAR QUE ES CAIGUI DEL MAPA
-		if (App->path->ExistWalkableAtPos(iPoint(((int)pos.x + (anim->GetCurrentRect().w / 2) + (int)dashMovement.x) / App->map->getTileSize(), ((int)pos.y + (anim->GetCurrentRect().h / 2) + (int)dashMovement.y) / App->map->getTileSize())) == -1)
-			dashTempo = TIMING_DASH;	// break
-		else
+		switch (saveFirstAngle)
+		{
+		case FIXED_ANGLE::UP:
+			if (App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w / 2 +  dashMovement.x) / App->map->getTileSize(), (pos.y + anim->GetCurrentRect().h + dashMovement.y) / App->map->getTileSize())) == -1)
+				dashTempo = numStats.timingDashHit;	// break
+			break;
+		case FIXED_ANGLE::UP_RIGHT:
+			if (App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w + dashMovement.x) / App->map->getTileSize(), (pos.y + dashMovement.y) / App->map->getTileSize())) == -1)
+				dashTempo = numStats.timingDashHit;	// break
+			break;
+		case FIXED_ANGLE::RIGHT:
+			if (App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w + dashMovement.x) / App->map->getTileSize(), (pos.y + anim->GetCurrentRect().h / 2 + dashMovement.y) / App->map->getTileSize())) == -1)
+				dashTempo = numStats.timingDashHit;	// break
+			break;
+			case FIXED_ANGLE::DOWN_RIGHT:
+			if (App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w + dashMovement.x) / App->map->getTileSize(), (pos.y + anim->GetCurrentRect().h + dashMovement.y) / App->map->getTileSize())) == -1)
+				dashTempo = numStats.timingDashHit;	// break
+			break;
+		case FIXED_ANGLE::DOWN:
+			if (App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w / 2 + dashMovement.x) / App->map->getTileSize(), (pos.y + anim->GetCurrentRect().h + dashMovement.y) / App->map->getTileSize())) == -1)
+				dashTempo = numStats.timingDashHit;	// break
+			break;
+		case FIXED_ANGLE::DOWN_LEFT:
+			if (App->path->ExistWalkableAtPos(iPoint((pos.x + dashMovement.x) / App->map->getTileSize(), (pos.y + anim->GetCurrentRect().h + dashMovement.y) / App->map->getTileSize())) == -1)
+				dashTempo = numStats.timingDashHit;	// break
+			break;
+		case FIXED_ANGLE::LEFT:
+			if (App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w / 2 + dashMovement.x) / App->map->getTileSize(), (pos.y + dashMovement.y) / App->map->getTileSize())) == -1)
+				dashTempo = numStats.timingDashHit;	// break
+			break;
+		case FIXED_ANGLE::UP_LEFT:
+				if (App->path->ExistWalkableAtPos(iPoint((pos.x + dashMovement.x) / App->map->getTileSize(), (pos.y + dashMovement.y) / App->map->getTileSize())) == -1)
+					dashTempo = numStats.timingDashHit;	// break
+				break;
+		}
+		if (dashTempo != numStats.timingDashHit)
 		{
 			pos += dashMovement;
 			dashTempo += App->dt;

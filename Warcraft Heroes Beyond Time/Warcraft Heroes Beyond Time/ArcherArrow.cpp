@@ -22,13 +22,14 @@ ArcherArrow::ArcherArrow(const ArcherArrowInfo* info, Projectile_type type) : Pr
 	toData->angle -= 90;
 
 	toData->tempoAtWall = -1;
-	toData->arrowCollider = *App->colliders->AddCollider({ 0,0,8,8 }, Collider::ColliderType::ENEMY_ATTACK).lock();
+	toData->arrowCollider = *App->colliders->AddCollider({ 0,0,8,8 }, Collider::ColliderType::ENEMY_ATTACK, this).lock();
 	toData->layer = 2;
-	toData->deadTimer += SDL_GetTicks();	
+	toData->deadTimer += SDL_GetTicks();
 }
 
 ArcherArrow::~ArcherArrow()
 {
+	App->colliders->deleteColliderbyOwner(this);
 	RELEASE(data);
 }
 
@@ -36,28 +37,8 @@ bool ArcherArrow::Update(float dt)
 {
 	bool ret = true;
 
-	//toData->arrowCollider->rectArea.x = (int)toData->pos.x;
-	//toData->arrowCollider->rectArea.y = (int)toData->pos.y;
-
-	std::list<Collider*>::iterator collidingWith = toData->arrowCollider->colliding.begin();
-	for (; collidingWith != toData->arrowCollider->colliding.end(); collidingWith++)
-	{
-		switch ((*collidingWith)->colType)
-		{
-		case Collider::ColliderType::WALL:
-			toData->tempoAtWall = 1000 + SDL_GetTicks();
-			break;
-		case Collider::ColliderType::ENTITY:
-			Entity* entOwner = (Entity*)(*collidingWith)->owner;
-			if (entOwner->entityType == Entity::EntityType::DYNAMIC_ENTITY)
-			{
-				DynamicEntity* dynOwner = (DynamicEntity*)(*collidingWith)->owner;
-				if (dynOwner->dynamicType == DynamicEntity::DynamicType::PLAYER)
-					App->projectiles->DestroyProjectile(this);
-			}
-			break;
-		}
-	}
+	toData->arrowCollider->rectArea.x = (int)toData->pos.x;
+	toData->arrowCollider->rectArea.y = (int)toData->pos.y;
 
 	if (toData->tempoAtWall != -1)
 	{
@@ -78,13 +59,29 @@ bool ArcherArrow::Draw() const
 {
 	bool ret = true;
 
-	ret = App->printer->PrintSprite({ (int)toData->pos.x,(int)toData->pos.y }, (SDL_Texture*)App->projectiles->GetProjectileClassicAtlas(), { 808, 110, 32, 32 }, toData->layer, ModulePrinter::Pivots::CENTER, { 0,0 }, ModulePrinter::Pivots::UPPER_LEFT, {0,0}, toData->angle);
+	ret = App->printer->PrintSprite({ (int)toData->pos.x,(int)toData->pos.y }, (SDL_Texture*)App->projectiles->GetProjectileClassicAtlas(), { 808, 110, 32, 32 }, toData->layer, ModulePrinter::Pivots::CENTER, { 0,0 }, ModulePrinter::Pivots::CENTER, {0,0}, toData->angle);
 
 	return ret;
 }
 
 void ArcherArrow::OnCollision(Collider* yours, Collider* collideWith)
 {
+	switch (collideWith->colType)
+	{
+	case Collider::ColliderType::WALL:
+		toData->tempoAtWall = 1000 + SDL_GetTicks();
+		break;
+	//case Collider::ColliderType::ENTITY:
+	//	Entity* entOwner = (Entity*)collideWith->owner;
+	//	if (entOwner->entityType == Entity::EntityType::DYNAMIC_ENTITY)
+	//	{
+	//		DynamicEntity* dynOwner = (DynamicEntity*)collideWith->owner;
+	//		if (dynOwner->dynamicType == DynamicEntity::DynamicType::PLAYER)
+	//			// AIXO SI L'ALTRE ES UN PLAYER
+	//			App->projectiles->DestroyProjectile(this);
+	//	}
+	//	break;
+	}
 }
 
 void ArcherArrow::OnCollisionContinue(Collider* yours, Collider* collideWith)
