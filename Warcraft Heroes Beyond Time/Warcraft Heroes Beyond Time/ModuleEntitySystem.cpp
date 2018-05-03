@@ -372,18 +372,11 @@ void EntitySystem::AddEnemy(fPoint coor, ENEMY_TYPE type)
 {
 	enemiescount++;
 	BROFILER_CATEGORY("AddEnemy", Profiler::Color::Chocolate);
-	EnemyEntity* newEntity = nullptr;
 
-	newEntity = new Enemy_Archer(coor, type, spritesheetsEntities[ARCHER_SHEET]);
-	App->colliders->AddCollider({ -16+20,-16+20,32,32 }, Collider::ColliderType::ENTITY, (Entity*)newEntity);
+	Enemy_Archer* newEntity = new Enemy_Archer(coor, type, spritesheetsEntities[ARCHER_SHEET]);
+	App->colliders->AddCollider({ -16+20,-16+20,32,32 }, Collider::ColliderType::ENTITY, newEntity);
 
 	toSpawn.push_back(newEntity);
-
-	/*case ENEMY_TYPE::FOOTMAN:
-	newEntity = new Enemy_Footman(coor, ENEMY_TYPE::FOOTMAN, spritesheetsEntities[FOOTMAN_SHEET]);
-	App->colliders->AddCollider({ 20,20,32,32 }, Collider::ColliderType::ENTITY, (Entity*)newEntity);
-	break;*/
-
 }
 
 BossEntity* EntitySystem::AddBoss(fPoint coor, BossType type)

@@ -5,6 +5,7 @@
 #include "Animation.h"
 
 class Item;
+class Module;
 
 class ItemContainer : public GUIElem
 {
@@ -17,9 +18,29 @@ public:
 	bool Update(float dt);
 	bool Draw();
 
-private:
+	void Focus()
+	{
+		if (!focused)
+		{
+			focused = true;
+			anim = &focused_anim;
+		}
+	}
+	void UnFocus()
+	{
+		if (focused)
+		{
+			focused = false;
+			anim = &grow_anim;
+		}
+	}
 
-	TimeBasedAnimation anim;
+public:
+	TimeBasedAnimation* anim = nullptr;
+	TimeBasedAnimation grow_anim;
+	TimeBasedAnimation select_anim;
+	TimeBasedAnimation focused_anim;
+private:
 	bool selected = false;
 	Item* item = nullptr;
 };

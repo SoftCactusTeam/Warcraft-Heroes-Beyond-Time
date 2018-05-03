@@ -9,21 +9,29 @@
 
 ItemContainer::ItemContainer(fPoint localPos, Module* listener, Item* item, GUIElem* parent) : GUIElem(localPos, listener, atlasRect, GUIElemType::ITEM_CONTAINER, parent), item(item)
 {
-	anim.PushBack({ 368,336,53,53 }, { 26,26 });
-	anim.PushBack({ 496,298,77,90 }, { 38, 45 });
-	anim.PushBack({ 496,167,101,128 }, { 50, 64 });
-	anim.PushBack({ 368,167,125,166 }, { 62, 83 });
-	anim.PushBack({ 216,167,149,204 }, { 74, 102 });
-	anim.PushBack({ 42,167,171,242 }, {85, 121});
-	anim.life = 0.3;
-	anim.loop = false;
+	grow_anim.PushBack({ 368,336,53,53 }, { 26,26 });
+	grow_anim.PushBack({ 496,298,77,90 }, { 38, 45 });
+	grow_anim.PushBack({ 496,167,101,128 }, { 50, 64 });
+	grow_anim.PushBack({ 368,167,125,166 }, { 62, 83 });
+	grow_anim.PushBack({ 216,167,149,204 }, { 74, 102 });
+	grow_anim.PushBack({ 42,167,171,242 }, {85, 121});
+	grow_anim.life = 0.3;
+	grow_anim.loop = false;
+
+	focused_anim.PushBack({ 805,153,195,270 }, {97,135});
+	focused_anim.life = 0.1;
+
+	select_anim.PushBack({ 42,167,171,242 }, { 85, 121 });	//Black Filled
+	select_anim.PushBack({ 615,167,171,242 }, { 85, 121 }); //White Filled
+
+	anim = &grow_anim;
 }
 
 bool ItemContainer::Update(float dt)
 {
 	HandleInput(dt);
 
-	if (focused && anim.Finished())
+	if (focused)
 	{
 		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_DOWN && item != nullptr)
 		{
@@ -46,9 +54,14 @@ bool ItemContainer::Update(float dt)
 
 bool ItemContainer::Draw()
 {
-	App->render->Blit(App->gui->getAtlas(), localPos.x - anim.GetCurrentPivot().x, localPos.y - anim.GetCurrentPivot().y, &anim.GetCurrentFrame(App->dt), 1, 0);
+	if(anim != &select_anim)
+		App->render->Blit(App->gui->getAtlas(), localPos.x - anim->GetCurrentPivot().x, localPos.y - anim->GetCurrentPivot().y, &anim->GetCurrentFrame(App->dt), 1, 0);
 
-	if (item != nullptr && anim.Finished())
+	if (item != nullptr && (anim == &grow_anim && anim->Finished() || anim != &grow_anim))
 		item->printIconOnScreen({ (int)localPos.x,(int)localPos.y });
+	
+	if (anim == &select_anim)
+		App->render->Blit(App->gui->getAtlas(), localPos.x - anim->GetCurrentPivot().x, localPos.y - anim->GetCurrentPivot().y, &anim->GetCurrentFrame(App->dt), 1, 0);
+	
 	return true;
 }
