@@ -219,9 +219,9 @@ GUIElem* ModuleGUI::CreateBossHPBar(BossEntity* boss, fPoint localPos)
 	return bhpbar;
 }
 
-GUIElem* ModuleGUI::CreateItemContainer(fPoint localPos, Item* item, GUIElem* parent)
+GUIElem* ModuleGUI::CreateItemContainer(fPoint localPos, Item* item, GUIElem* parent, Module* listener)
 {
-	ItemContainer* container = new ItemContainer(localPos, nullptr, item, parent);
+	ItemContainer* container = new ItemContainer(localPos, listener, item, parent);
 	elementsToSpawn.push_back(container);
 	return container;
 }

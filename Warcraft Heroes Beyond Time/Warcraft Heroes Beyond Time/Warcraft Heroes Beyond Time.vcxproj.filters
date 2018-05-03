@@ -108,9 +108,6 @@
     <ClCompile Include="DmgBallItem.cpp">
       <Filter>Items</Filter>
     </ClCompile>
-    <ClCompile Include="ItemContainer.cpp">
-      <Filter>Items</Filter>
-    </ClCompile>
     <ClCompile Include="WCItem.cpp">
       <Filter>Items</Filter>
     </ClCompile>
@@ -160,8 +157,11 @@
     <ClCompile Include="EnemyEntity.cpp">
       <Filter>Entities\Dynamic Entites\Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="ItemContainer.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
     <ClCompile Include="Stat.cpp">
-      <Filter>Entities\Dynamic Entites\Player</Filter>
+      <Filter>GUI</Filter>
     </ClCompile>
     <ClCompile Include="ArcherArrow.cpp">
       <Filter>Projectiles</Filter>
@@ -290,9 +290,6 @@
     <ClInclude Include="DMGBallItem.h">
       <Filter>Items</Filter>
     </ClInclude>
-    <ClInclude Include="ItemContainer.h">
-      <Filter>Items</Filter>
-    </ClInclude>
     <ClInclude Include="WCItem.h">
       <Filter>Items</Filter>
     </ClInclude>
@@ -347,8 +344,11 @@
     <ClInclude Include="EnemyEntity.h">
       <Filter>Entities\Dynamic Entites\Enemies</Filter>
     </ClInclude>
+    <ClInclude Include="ItemContainer.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
     <ClInclude Include="Stat.h">
-      <Filter>Entities\Dynamic Entites\Player</Filter>
+      <Filter>GUI</Filter>
     </ClInclude>
     <ClInclude Include="ArcherArrow.h">
       <Filter>Projectiles</Filter>
