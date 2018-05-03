@@ -333,7 +333,7 @@ void Thrall::OnCollision(Collider* yours, Collider* collideWith)
 		}
 		case Collider::ColliderType::ENTITY:
 		{
-			Entity* entityOwner = (Entity*)collideWith;
+			Entity* entityOwner = (Entity*)collideWith->owner;
 			if(entityOwner->entityType == Entity::EntityType::DYNAMIC_ENTITY)
 				if (yours->colType == Collider::ColliderType::PLAYER_ATTACK && yours == this->attackCollider)
 				{

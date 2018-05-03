@@ -22,7 +22,7 @@ ArcherArrow::ArcherArrow(const ArcherArrowInfo* info, Projectile_type type) : Pr
 	toData->angle -= 90;
 
 	toData->tempoAtWall = -1;
-	toData->arrowCollider = *App->colliders->AddEnemyAttackCollider({ 0,0,8,8 }, this, info->damageArrow, EnemyAttack::E_Attack_Type::ARROW).lock();
+	//toData->arrowCollider = *App->colliders->AddEnemyAttackCollider({ 0,0,8,8 }, this, info->damageArrow, EnemyAttack::E_Attack_Type::ARROW).lock();
 	toData->layer = 2;
 	toData->deadTimer += SDL_GetTicks();
 }
@@ -37,8 +37,12 @@ bool ArcherArrow::Update(float dt)
 {
 	bool ret = true;
 
-	toData->arrowCollider->rectArea.x = (int)toData->pos.x;
-	toData->arrowCollider->rectArea.y = (int)toData->pos.y;
+	if (toData->arrowCollider != nullptr)
+	{
+		toData->arrowCollider->rectArea.x = (int)toData->pos.x;
+		toData->arrowCollider->rectArea.y = (int)toData->pos.y;
+	}
+	
 
 	if (toData->tempoAtWall != -1)
 	{

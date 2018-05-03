@@ -39,21 +39,20 @@ Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* textu
 {
 	switch (character)
 	{
-	case ARCHER_TIER_1:
+	case ENEMY_TYPE::ARCHER_TIER_1:
 		numStats = App->entities->archerT1stats;
 		this->tier = 1;
 		break;
-	case ARCHER_TIER_2:
+	case ENEMY_TYPE::ARCHER_TIER_2:
 		numStats = App->entities->archerT2stats;
 		this->tier = 2;
 		break;
-	case ARCHER_TIER_3:
+	case ENEMY_TYPE::ARCHER_TIER_3:
 		numStats = App->entities->archerT3stats;
 		this->tier = 3;
 		break;
 	}
-	
-	live = numStats.hp;
+
 	//USAR SOLO VARIABLES EN NUMSTATS, SI SE NECESITA ALGUNA MÁS SE COMENTA CON EL EQUIPO Y SE DECIDE SI SE AÑADE. TODO CONFIGURABLE DESDE EL XML.
 }
 

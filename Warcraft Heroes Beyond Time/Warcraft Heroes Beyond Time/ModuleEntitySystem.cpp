@@ -37,7 +37,7 @@ class Spawn_ConsoleOrder : public ConsoleOrder
 	{
 		if (parameter == "footman")
 		{
-			App->entities->AddEnemy({ App->scene->player->pos.x, App->scene->player->pos.y - 60 }, FOOTMAN);
+			//App->entities->AddEnemy({ App->scene->player->pos.x, App->scene->player->pos.y - 60 }, FOOTMAN);
 		}
 		else if (parameter == "thrall")
 		{
@@ -45,7 +45,12 @@ class Spawn_ConsoleOrder : public ConsoleOrder
 		}
 		else if (parameter == "archer")
 		{
-			App->entities->AddEnemy({ App->scene->player->pos.x, App->scene->player->pos.y - 60 }, ARCHER_TIER_1);
+			if(parameterNumeric == 1)
+				App->entities->AddEnemy({ App->scene->player->pos.x, App->scene->player->pos.y - 60 }, ENEMY_TYPE::ARCHER_TIER_1);
+			else if (parameterNumeric == 2)
+				App->entities->AddEnemy({ App->scene->player->pos.x, App->scene->player->pos.y - 60 }, ENEMY_TYPE::ARCHER_TIER_2);
+			else if (parameterNumeric == 3)
+				App->entities->AddEnemy({ App->scene->player->pos.x, App->scene->player->pos.y - 60 }, ENEMY_TYPE::ARCHER_TIER_3);
 		}
 
 		else if (parameter == "wizard")
