@@ -145,6 +145,8 @@ bool Guldan::Start()
 
 	guldanCollider = *App->colliders->AddCollider({ 0,0,68,68 }, Collider::ColliderType::ENTITY, this).lock();
 
+	wallGuldanCollider = *App->colliders->AddCollider({ (int)pos.x, (int)pos.y, 68,68}, Collider::ColliderType::WALL, nullptr).lock();
+
 	return true;
 }
 
@@ -182,6 +184,13 @@ bool Guldan::Update(float dt)
 
 	case BossStates::IDLE:
 	{
+
+		if (numStats.hp <= 0)
+		{
+			anim = &dead;
+			statesBoss = BossStates::DEAD;
+			break;
+		}
 
 		if (SpiralRecoveryOn)
 		{
@@ -230,8 +239,12 @@ bool Guldan::Update(float dt)
 			GeneratGeyser(GeyserType::STOP_IN_POS);
 			break;
 		}
+		int randState;
 
-		int randState = rand() % 6;
+		if (numStats.hp <= numStats.maxhp / 2)
+			randState = rand() % 6;
+		else
+			randState = rand() % 5;	
 
 		if (randState == 0)
 		{
@@ -292,6 +305,13 @@ bool Guldan::Update(float dt)
 	}
 	case BossStates::GENERATINGBALLS:
 		
+		if (numStats.hp <= 0)
+		{
+			anim = &dead;
+			statesBoss = BossStates::DEAD;
+			break;
+		}
+
 		if (anim == &startGeneratingBalls && anim->Finished())
 			anim = &generatingBalls;
 
@@ -301,12 +321,15 @@ bool Guldan::Update(float dt)
 
 			if (next_movement_type == FellBallsTypes::ODD_EVEN_TYPE)
 			{
-				timeGeysersFollowingPlayerM += 1 * dt;
-
-				if (timeGeysersFollowingPlayerM >= 1.0f)
+				if (numStats.hp <= numStats.maxhp / 2)
 				{
-					GeneratGeyser(GeyserType::FOLLOW_PLAYER);
-					timeGeysersFollowingPlayerM = 0.0f;
+					timeGeysersFollowingPlayerM += 1 * dt;
+
+					if (timeGeysersFollowingPlayerM >= 1.0f)
+					{
+						GeneratGeyser(GeyserType::FOLLOW_PLAYER);
+						timeGeysersFollowingPlayerM = 0.0f;
+					}
 				}
 
 				if (startTimeBetweenM)
@@ -485,6 +508,13 @@ bool Guldan::Update(float dt)
 
 	case BossStates::RESTORING_ENERGY:
 
+		if (numStats.hp <= 0)
+		{
+			anim = &dead;
+			statesBoss = BossStates::DEAD;
+			break;
+		}
+
 		timeRestoring += 1 * dt;
 
 		if (timeRestoring >= TIME_RESTORING_ENERGY)
@@ -495,13 +525,20 @@ bool Guldan::Update(float dt)
 		}
 
 		break;
+
+	case BossStates::DEAD:
+
+		
+
+
+		break;
 	}
 
-	if (numStats.hp <= numStats.maxhp / 2)
+	if (numStats.hp <= (numStats.maxhp / 2) && statesBoss != BossStates::DEAD)
 	{
 		timeBetweenGeyser += 1 * dt;
 
-		if (timeBetweenGeyser >= 0.2f)
+		if (timeBetweenGeyser >= 0.8f)
 		{
 			timeBetweenGeyser = 0.0f;
 			GeneratGeyser(GeyserType::STOP_IN_POS);
@@ -513,13 +550,17 @@ bool Guldan::Update(float dt)
 
 	anim->speed = anim->speedFactor * dt;
 
+	wallGuldanCollider->rectArea = { (int)pos.x,(int)pos.y,68,68 };
+
 	return true;
 }
 
 bool Guldan::Finish()
 {	
 	App->colliders->deleteCollider(guldanCollider);
+	App->colliders->deleteCollider(wallGuldanCollider);
 	guldanCollider = nullptr;
+	wallGuldanCollider = nullptr;
 
 	return true;
 }
@@ -1057,11 +1098,28 @@ fPoint Guldan::SetSpawnPointByAngle(fPoint pointToRotate, fPoint rotationPivot, 
 	return fPoint(toReturn.x + rotationPivot.x, toReturn.y + rotationPivot.y);
 }
 
+void Guldan::OnCollision(Collider* yours, Collider* collideWith)
+{
+	switch (collideWith->colType)
+	{
+	case Collider::ColliderType::PLAYER_ATTACK:
+	{
+
+		if (anim != &teleport || anim != &inverseTeleport)
+			numStats.hp -= 25.0f;
+
+		break;
+	}	
+	}
+}
+
 bool Guldan::Draw()
 {
 	bool ret = true;
-
-	ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), texture, anim->GetCurrentFrame(), 5, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot());
+	if (pos.x == (14 * 48 + 10) && pos.y == (4 * 48))
+		ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), texture, anim->GetCurrentFrame(), 5, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot());
+	else
+		ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), texture, anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot());
 
 	return ret;
 }

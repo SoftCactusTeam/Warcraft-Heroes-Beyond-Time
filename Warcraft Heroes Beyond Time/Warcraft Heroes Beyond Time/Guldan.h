@@ -30,6 +30,7 @@ private:
 	Animation idle, teleport, inverseTeleport, dead, startGeneratingBalls, generatingBalls, generatingBallsInverse, hello, restoreEnergy;
 
 	Collider* guldanCollider = nullptr;
+	Collider* wallGuldanCollider = nullptr;
 
 	// GENERATING BALLS VARIABLES
 	int contBalls = 0;
@@ -119,7 +120,9 @@ public:
 	fPoint SetSpawnPointByAngle(fPoint pointToRotate, fPoint rotationPivot, double angle, double radius) const;
 	float GetTimeToComeBackSpiral() const { return timeToComeBackSpiral; };
 
-	bool Guldan::Draw();
+	void OnCollision(Collider* yours, Collider* collideWith);
+
+	bool Draw();
 
 };
 
