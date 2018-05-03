@@ -22,7 +22,7 @@ ArcherArrow::ArcherArrow(const ArcherArrowInfo* info, Projectile_type type) : Pr
 	toData->angle -= 90;
 
 	toData->tempoAtWall = -1;
-	toData->arrowCollider = *App->colliders->AddCollider({ 0,0,8,8 }, Collider::ColliderType::ENEMY_ATTACK, this).lock();
+	toData->arrowCollider = *App->colliders->AddEnemyAttackCollider({ 0,0,8,8 }, this, info->damageArrow, EnemyAttack::E_Attack_Type::ARROW).lock();
 	toData->layer = 2;
 	toData->deadTimer += SDL_GetTicks();
 }

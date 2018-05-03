@@ -684,6 +684,7 @@ void Enemy_Archer::ShootArrow(fPoint desviation)
 	info.direction = directionShoot;
 	info.deadTimer = numStats.arrows_life;
 	info.speed = numStats.arrows_speed;
+	info.damageArrow = numStats.damage;
 
 	App->projectiles->AddProjectile(&info, Projectile_type::archer_arrow);	
 }

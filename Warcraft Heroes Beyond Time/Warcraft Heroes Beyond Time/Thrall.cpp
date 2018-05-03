@@ -303,6 +303,7 @@ void Thrall::OnCollision(Collider* yours, Collider* collideWith)
 			if (yours == damageCol)
 			{
 				EnemyAttack* attack = (EnemyAttack*)collideWith;
+				int a = attack->damage;
 				if (state != states::PL_DASH)
 					SetDamage(attack->damage, true);
 			}

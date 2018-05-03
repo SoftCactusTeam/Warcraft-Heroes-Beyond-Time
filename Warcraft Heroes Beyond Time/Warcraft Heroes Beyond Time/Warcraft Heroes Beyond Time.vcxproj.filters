@@ -136,9 +136,6 @@
     <ClCompile Include="Guldan.cpp">
       <Filter>Entities\Dynamic Entites\Boss</Filter>
     </ClCompile>
-    <ClCompile Include="ArcherArrow.cpp">
-      <Filter>Entities\Dynamic Entites\Enemies</Filter>
-    </ClCompile>
     <ClCompile Include="Enemy_Archer.cpp">
       <Filter>Entities\Dynamic Entites\Enemies</Filter>
     </ClCompile>
@@ -165,6 +162,9 @@
     </ClCompile>
     <ClCompile Include="Stat.cpp">
       <Filter>Entities\Dynamic Entites\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="ArcherArrow.cpp">
+      <Filter>Projectiles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -323,9 +323,6 @@
     <ClInclude Include="Guldan.h">
       <Filter>Entities\Dynamic Entites\Boss</Filter>
     </ClInclude>
-    <ClInclude Include="ArcherArrow.h">
-      <Filter>Entities\Dynamic Entites\Enemies</Filter>
-    </ClInclude>
     <ClInclude Include="Enemy_Archer.h">
       <Filter>Entities\Dynamic Entites\Enemies</Filter>
     </ClInclude>
@@ -352,6 +349,9 @@
     </ClInclude>
     <ClInclude Include="Stat.h">
       <Filter>Entities\Dynamic Entites\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="ArcherArrow.h">
+      <Filter>Projectiles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

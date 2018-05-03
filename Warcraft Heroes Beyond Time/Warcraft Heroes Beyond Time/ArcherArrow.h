@@ -27,6 +27,7 @@ struct ArcherArrowInfo : public ProjectileInfo
 	bool			destroy = false;
 	float			angle;
 	int				tempoAtWall = -1;
+	int				damageArrow = 0;
 };
 
 class ArcherArrow : public Projectile

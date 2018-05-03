@@ -150,8 +150,8 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	pugi::xml_node archerT1 = entitiesNode.child("enemies").child("archer_tier1");
 	archerT1stats.maxhp =						archerT1.attribute("hp").as_uint(0);
 	archerT1stats.hp =							archerT1stats.maxhp;
-	archerT1stats.speed =						archerT1.attribute("speed").as_uint(0);
-	archerT1stats.damage =						archerT1.attribute("damage").as_float(0);
+	archerT1stats.speed =						archerT1.attribute("speed").as_uint();
+	archerT1stats.damage =						archerT1.attribute("damage").as_float();
 	archerT1stats.dropping_chance =				archerT1.attribute("dropping_chance").as_uint(0);
 	archerT1stats.strong_attack_chance =		archerT1.attribute("chance_powerful_attack").as_uint();
 	archerT1stats.arrows_life =					archerT1.attribute("arrows_life").as_float();
