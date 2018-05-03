@@ -35,20 +35,24 @@
 #define TIMING_DASH				300		// in ms
 
 
-Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture, ARCHER_TIER tier) : EnemyEntity(coor, character, texture)
+Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture) : EnemyEntity(coor, character, texture)
 {
 	switch (character)
 	{
 	case ARCHER_TIER_1:
 		numStats = App->entities->archerT1stats;
+		this->tier = 1;
 		break;
 	case ARCHER_TIER_2:
 		numStats = App->entities->archerT2stats;
+		this->tier = 2;
 		break;
 	case ARCHER_TIER_3:
 		numStats = App->entities->archerT3stats;
+		this->tier = 3;
 		break;
 	}
+	
 	live = numStats.hp;
 	//USAR SOLO VARIABLES EN NUMSTATS, SI SE NECESITA ALGUNA MÁS SE COMENTA CON EL EQUIPO Y SE DECIDE SI SE AÑADE. TODO CONFIGURABLE DESDE EL XML.
 }
@@ -149,13 +153,13 @@ bool Enemy_Archer::Draw()
 	{
 		switch (tier)
 		{
-		case ARCHER_TIER_1:
+		case 1:
 			ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), App->entities->spritesheetsEntities[WHITE_ARCHER], anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot());
 			break;
-		case ARCHER_TIER_2:
+		case 2:
 			ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), App->entities->spritesheetsEntities[ORANGE_ARCHER], anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot());
 			break;
-		case ARCHER_TIER_3:
+		case 3:
 			ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), App->entities->spritesheetsEntities[GREEN_ARCHER], anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot());
 			break;
 		}

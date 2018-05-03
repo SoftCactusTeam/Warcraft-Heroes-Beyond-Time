@@ -7,12 +7,6 @@
 
 #define ARROW_DEAD_TIMER 2000
 
-/*enum ARCHER_TIER {
-	ARCHER_TIER_1,
-	ARCHER_TIER_2,
-	ARCHER_TIER_3,
-	ARCHER_TIER_NONE
-};*/
 
 enum ARCHER_STATE {
 	ARCHER_IDLE,
@@ -116,6 +110,8 @@ private:
 	float live = 0;
 	bool			damaged = false;
 	float			damagedCD = 0.0f;
+
+	int tier;
 };
 
 #endif
