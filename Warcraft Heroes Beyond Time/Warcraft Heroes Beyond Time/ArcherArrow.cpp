@@ -22,9 +22,10 @@ ArcherArrow::ArcherArrow(const ArcherArrowInfo* info, Projectile_type type) : Pr
 	toData->angle -= 90;
 
 	toData->tempoAtWall = -1;
-	//toData->arrowCollider = *App->colliders->AddEnemyAttackCollider({ 0,0,8,8 }, this, info->damageArrow, EnemyAttack::E_Attack_Type::ARROW).lock();
+	toData->arrowCollider = *App->colliders->AddEnemyAttackCollider({ 0,0,8,8 }, this, info->damageArrow, EnemyAttack::E_Attack_Type::ARROW).lock();
 	toData->layer = 2;
 	toData->deadTimer += SDL_GetTicks();
+	deleteArrow = false;
 }
 
 ArcherArrow::~ArcherArrow()
@@ -36,6 +37,9 @@ ArcherArrow::~ArcherArrow()
 bool ArcherArrow::Update(float dt)
 {
 	bool ret = true;
+
+	if (deleteArrow == true)
+		App->projectiles->DestroyProjectile(this);
 
 	if (toData->arrowCollider != nullptr)
 	{
@@ -75,16 +79,16 @@ void ArcherArrow::OnCollision(Collider* yours, Collider* collideWith)
 	case Collider::ColliderType::WALL:
 		toData->tempoAtWall = 1000 + SDL_GetTicks();
 		break;
-	//case Collider::ColliderType::ENTITY:
-	//	Entity* entOwner = (Entity*)collideWith->owner;
-	//	if (entOwner->entityType == Entity::EntityType::DYNAMIC_ENTITY)
-	//	{
-	//		DynamicEntity* dynOwner = (DynamicEntity*)collideWith->owner;
-	//		if (dynOwner->dynamicType == DynamicEntity::DynamicType::PLAYER)
-	//			// AIXO SI L'ALTRE ES UN PLAYER
-	//			App->projectiles->DestroyProjectile(this);
-	//	}
-	//	break;
+	case Collider::ColliderType::ENTITY:
+		Entity* entOwner = (Entity*)collideWith->owner;
+		if (entOwner->entityType == Entity::EntityType::DYNAMIC_ENTITY)
+		{
+			DynamicEntity* dynOwner = (DynamicEntity*)collideWith->owner;
+			if (dynOwner->dynamicType == DynamicEntity::DynamicType::PLAYER)
+				// AIXO SI L'ALTRE ES UN PLAYER
+				deleteArrow = true;
+		}
+		break;
 	}
 }
 
