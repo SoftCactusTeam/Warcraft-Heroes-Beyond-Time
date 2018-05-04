@@ -42,6 +42,7 @@ public:
 		NO_TYPE = -1,
 		NORMAL_ATTACK,
 		DMGBALL_ITEM,
+		FREEZE_ITEM,
 		SKILL,
 		SHIT
 

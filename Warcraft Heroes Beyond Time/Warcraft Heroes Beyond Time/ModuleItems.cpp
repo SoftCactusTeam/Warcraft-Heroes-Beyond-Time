@@ -3,6 +3,8 @@
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
 #include "DMGBallItem.h"
+#include "FreezeBallItem.h"
+
 #include <time.h>
 
 float ModuleItems::dmgBallDamage = 0.0f;
@@ -31,6 +33,11 @@ bool ModuleItems::Start()
 	loadItemsPull();
 
 	itemsTexture = App->textures->Load("sprites/all_items.png");
+
+	FreezeBallItem* FreezeBall_Item = new FreezeBallItem();
+	equipedItems.push_back(FreezeBall_Item);
+	FreezeBall_Item->Start();
+
 
 	return true;
 }

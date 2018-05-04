@@ -11,8 +11,11 @@
 #include "ModuleAudio.h"
 #include "ModuleTextures.h"
 #include "ModuleItems.h"
+
 #include "Projectile.h"
 #include "ArcherArrow.h"
+#include "FreezeBallItem.h"
+
 
 #include "ModuleRender.h"
 
@@ -53,7 +56,7 @@ Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* textu
 		break;
 	}
 
-	//USAR SOLO VARIABLES EN NUMSTATS, SI SE NECESITA ALGUNA MÁS SE COMENTA CON EL EQUIPO Y SE DECIDE SI SE AÑADE. TODO CONFIGURABLE DESDE EL XML.
+	//USAR SOLO VARIABLES EN NUMSTATS, SI SE NECESITA ALGUNA Mï¿½S SE COMENTA CON EL EQUIPO Y SE DECIDE SI SE Aï¿½ADE. TODO CONFIGURABLE DESDE EL XML.
 }
 
 bool Enemy_Archer::Start()
@@ -108,6 +111,9 @@ bool Enemy_Archer::Update(float dt)
 	case ARCHER_STATE::ARCHER_DIE:
 		doDie();
 		break;
+	case ARCHER_STATE::ARCHER_FREEZE:
+		doFreeze(dt);
+		break;
 	default:
 		initIdle();
 		break;
@@ -123,7 +129,7 @@ bool Enemy_Archer::Update(float dt)
 		{
 			damagedCD = 0.0f;
 			damaged = false;
-		}	
+		}
 	}
 
 	return true;
@@ -187,6 +193,14 @@ void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 				}
 				break;
 			}
+			case PlayerAttack::P_Attack_Type::FREEZE_ITEM:
+			{
+				if (state != ARCHER_STATE::ARCHER_FREEZE && App->entities->GetRandomNumber(10) < 2)
+				{
+					initFreeze();
+				}
+				break;
+			}
 			case PlayerAttack::P_Attack_Type::SHIT:
 			{
 				numStats.hp -= attack->damage;
@@ -195,9 +209,12 @@ void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 						initDie();
 			}
 		}
-	
-		damaged = true;
-		damagedCD = 0.5f;
+
+		if (attack->damage > 0)
+		{
+			damaged = true;
+			damagedCD = 0.5f;
+		}
 	}
 }
 
@@ -310,7 +327,7 @@ void Enemy_Archer::initLittleMove()
 	int randomX = 0;
 	int randomY = 0;
 	int tileToMove = -1;
-	
+
 	for (int i = 0; i < 10 && tileToMove == -1; i++)
 	{
 		randomX = rand() % numStats.tilesToLittleMove + 1;
@@ -373,6 +390,12 @@ void Enemy_Archer::initDie()
 	accountantPrincipal = SDL_GetTicks() + TIME_DYING;
 	anim = &animDeath[LookAtPlayer()];
 	anim->Reset();
+	pathVector.Clear();
+}
+
+void Enemy_Archer::initFreeze()
+{
+	state = ARCHER_STATE::ARCHER_FREEZE;
 	pathVector.Clear();
 }
 
@@ -550,7 +573,22 @@ void Enemy_Archer::doDie()
 	}
 }
 
+
 void Enemy_Archer::Walk()
+
+void Enemy_Archer::doFreeze(float dt)
+{
+	//anim = &animFrozen[LookAtPlayer()];//Put animation here
+	frozen_counter += dt;
+	if (frozen_counter > 5.0f)
+	{
+		state = ARCHER_STATE::ARCHER_IDLE;
+		frozen_counter = 0.0f;
+	}
+}
+
+void Enemy_Archer::ShootArrow(fPoint desviation)
+
 {
 	if (pathVector.isEmpty())
 	{
@@ -671,7 +709,7 @@ void Enemy_Archer::ShootArrow(fPoint desviation)
 		position = fPoint(pos.x + anim->GetCurrentRect().w / 2 + 0, pos.y + anim->GetCurrentRect().h / 2 + 5);
 		break;
 	}*/
-	
+
 	// POSAR FLETXA
 	ArcherArrowInfo info;
 	info.pos = position;
@@ -680,7 +718,7 @@ void Enemy_Archer::ShootArrow(fPoint desviation)
 	info.speed = numStats.arrows_speed;
 	info.damageArrow = numStats.damage;
 
-	App->projectiles->AddProjectile(&info, Projectile_type::archer_arrow);	
+	App->projectiles->AddProjectile(&info, Projectile_type::archer_arrow);
 }
 
 void Enemy_Archer::LoadAnimations()
@@ -827,6 +865,17 @@ void Enemy_Archer::LoadAnimations()
 	animDeath[FIXED_ANGLE::LEFT].PushBack({ 183,401,48,47 });
 	animDeath[FIXED_ANGLE::LEFT].speedFactor = 9.0f;
 	animDeath[FIXED_ANGLE::LEFT].loop = false;
+
+	//animFrozen
+	//All the same animation
+	/*animFrozen[FIXED_ANGLE::LEFT].PushBack({ 1,491,44,48 });
+	animFrozen[FIXED_ANGLE::RIGHT].PushBack({ 1,491,44,48 });
+	animFrozen[FIXED_ANGLE::DOWN].PushBack({ 1,491,44,48 });
+	animFrozen[FIXED_ANGLE::UP].PushBack({ 1,491,44,48 });
+	animFrozen[FIXED_ANGLE::DOWN_LEFT].PushBack({ 1,491,44,48 });
+	animFrozen[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 1,491,44,48 });
+	animFrozen[FIXED_ANGLE::UP_LEFT].PushBack({ 1,491,44,48 });
+	animFrozen[FIXED_ANGLE::UP_RIGHT].PushBack({ 1,491,44,48 });*/
 
 
 	animSmoke.PushBack({ 1,77,52,42 });
