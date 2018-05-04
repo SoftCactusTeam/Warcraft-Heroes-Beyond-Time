@@ -389,7 +389,7 @@ void Scene::CreateMainMenuScreen()
 
 	//LOGO
 	GUIImage* logo = (GUIImage*)App->gui->CreateGUIImage({ 100,25 }, { 624, 21, 448, 129 }, nullptr);
-	
+
 	//PLAY BUTTON
 	Button* button = (Button*)App->gui->CreateButton({ 241.0f , 165}, BType::PLAY, this, window);
 

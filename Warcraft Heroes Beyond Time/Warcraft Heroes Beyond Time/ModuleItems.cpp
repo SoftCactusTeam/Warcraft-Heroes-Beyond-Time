@@ -3,7 +3,11 @@
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
 #include "DMGBallItem.h"
+
 #include "FreezeBallItem.h"
+
+
+#include "FEARBallItem.h"
 
 #include <time.h>
 
@@ -96,6 +100,9 @@ void ModuleItems::loadItemsPull()
 
 	FreezeBallItem* FreezeBall_Item = new FreezeBallItem();
 	availableItems.push_back(FreezeBall_Item);
+
+	FEARBallItem* Fearball_Item = new FEARBallItem();
+	equipedItems.push_back(Fearball_Item);
 }
 
 bool ModuleItems::equipItem(Item* item)

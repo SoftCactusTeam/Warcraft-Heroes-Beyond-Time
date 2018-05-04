@@ -18,6 +18,7 @@ enum ARCHER_STATE {
 	ARCHER_LITTLEMOVE,
 	ARCHER_DASH,
 	ARCHER_SCAPE,
+	ARCHER_FEAR,
 	ARCHER_DIE
 };
 
@@ -58,7 +59,11 @@ public:
 	void initLittleMove();
 	void initDash();
 	void initDie();
+
 	void initFreeze();
+
+	void initFear();
+
 
 	void doIdle();
 	void doWalk();
@@ -69,9 +74,14 @@ public:
 	void doLittleMove();
 	void doDash();
 	void doDie();
+
 	void doFreeze(float dt);
 
 	void Walk();
+
+	void doFear(float dt);
+
+
 
 	void AddEffect(ARCHER_EFFECTS effect, int time);
 	void UpdateEffects();
@@ -103,6 +113,8 @@ private:
 	fPoint posSmoke = { -1.f,-1.f };
 	// Littlemove variables
 	iPoint posToScape;
+	//Items variables
+	float fear_counter = 0.0f;
 
 	int arrowsShooted = 0;
 	int cooldownToReLittleMove = 0;

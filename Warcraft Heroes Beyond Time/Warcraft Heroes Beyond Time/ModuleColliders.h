@@ -28,7 +28,7 @@ public:
 public:
 
 	Collider(SDL_Rect& rectArea, ColliderType colType, void* owner = nullptr) : rectArea(rectArea), colType(colType), owner(owner) {}
-	virtual ~Collider() 
+	virtual ~Collider()
 	{
 		colliding.clear();
 	}
@@ -43,6 +43,7 @@ public:
 		NORMAL_ATTACK,
 		DMGBALL_ITEM,
 		FREEZE_ITEM,
+		FEARBALL_ITEM,
 		SKILL,
 		SHIT
 
@@ -103,7 +104,7 @@ public:
 	void PrintColliders() const;
 
 private:
-	
+
 private:
 	std::list<std::shared_ptr<Collider*>> colliderList;
 
