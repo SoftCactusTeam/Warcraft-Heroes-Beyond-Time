@@ -102,7 +102,7 @@ void ModuleItems::loadItemsPull()
 	availableItems.push_back(FreezeBall_Item);
 
 	FEARBallItem* Fearball_Item = new FEARBallItem();
-	equipedItems.push_back(Fearball_Item);
+	availableItems.push_back(Fearball_Item);
 }
 
 bool ModuleItems::equipItem(Item* item)

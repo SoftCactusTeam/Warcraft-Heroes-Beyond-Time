@@ -143,6 +143,7 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Console.cpp" />
+    <ClCompile Include="FEARBallItem.cpp" />
     <ClCompile Include="FelBall.cpp" />
     <ClCompile Include="Fonts.cpp" />
     <ClCompile Include="FileSystem.cpp" />
@@ -203,6 +204,7 @@
     <ClInclude Include="EntitiesEnums.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Console.h" />
+    <ClInclude Include="FEARBallItem.h" />
     <ClInclude Include="FelBall.h" />
     <ClInclude Include="FreezeBallItem.h" />
     <ClInclude Include="Geyser.h" />

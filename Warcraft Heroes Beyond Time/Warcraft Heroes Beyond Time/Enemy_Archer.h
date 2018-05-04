@@ -60,11 +60,6 @@ public:
 	void initDash();
 	void initDie();
 
-	void initFreeze();
-
-	void initFear();
-
-
 	void doIdle();
 	void doWalk();
 	void doAtac();
@@ -78,11 +73,6 @@ public:
 	void doFreeze(float dt);
 
 	void Walk();
-
-	void doFear(float dt);
-
-
-
 	void AddEffect(ARCHER_EFFECTS effect, int time);
 	void UpdateEffects();
 	// ~~~~~~~~~~~~~~~~~~ STATE MACHINE

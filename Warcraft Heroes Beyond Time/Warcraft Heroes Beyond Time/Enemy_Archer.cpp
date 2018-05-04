@@ -111,9 +111,6 @@ bool Enemy_Archer::Update(float dt)
 	case ARCHER_STATE::ARCHER_DIE:
 		doDie();
 		break;
-	case ARCHER_STATE::ARCHER_FEAR:
-		doFear(dt);
-		break;
 	default:
 		initIdle();
 		break;
@@ -203,8 +200,8 @@ void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 			}
 			case PlayerAttack::P_Attack_Type::FEARBALL_ITEM:
 			{
-				if (state != ARCHER_STATE::ARCHER_FEAR)
-					initFear();
+				/*if (state != ARCHER_STATE::ARCHER_FEAR)
+					initFear();*/
 				break;
 			}
 			case PlayerAttack::P_Attack_Type::SHIT:
@@ -397,19 +394,6 @@ void Enemy_Archer::initDie()
 	anim = &animDeath[LookAtPlayer()];
 	anim->Reset();
 	pathVector.Clear();
-}
-
-
-void Enemy_Archer::initFreeze()
-{
-	//state = ARCHER_STATE::ARCHER_FREEZE;
-	//pathVector.Clear();
-}
-
-void Enemy_Archer::initFear()
-{
-	//state = ARCHER_STATE::ARCHER_FEAR;
-	//pathVector.Clear();
 }
 
 // ---------------------------------------------------------------------------------
