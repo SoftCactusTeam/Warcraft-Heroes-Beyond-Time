@@ -22,6 +22,7 @@
 #include "ModuleEffects.h"
 #include "ModuleProjectiles.h"
 #include "Guldan.h"
+#include "ModuleTransitions.h"
 
 #include "Brofiler\Brofiler.h"
 #include "Label.h"
@@ -277,8 +278,7 @@ bool Scene::PostUpdate()
 	if (restart)
 	{
 		restart = false;
-		this->DeActivate();
-		this->Activate();
+		App->transitions->StartTransition(this, this, 2.0f, fades::slider_fade);
 	}
 
 	return ret;

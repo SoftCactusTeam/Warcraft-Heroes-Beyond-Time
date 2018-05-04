@@ -1,0 +1,149 @@
+#include "p2Defs.h"
+#include "Log.h"
+
+#include "Application.h"
+
+#include "ModuleRender.h"
+#include "ModuleWindow.h"
+#include "ModuleTransitions.h"
+#include "ModuleTextures.h"
+#include "ModulePrinter.h"
+#include "Scene.h"
+
+#include <math.h>
+
+#include "SDL/include/SDL_render.h"
+#include "SDL/include/SDL_timer.h"
+
+ModuleTransitions::ModuleTransitions()
+{
+	name = "fade";
+}
+
+ModuleTransitions::~ModuleTransitions()
+{}
+
+// Load assets
+bool ModuleTransitions::Start()
+{
+	LOG("Preparing Fade Screen");
+	SDL_SetRenderDrawBlendMode(App->render->renderer, SDL_BLENDMODE_BLEND);
+
+	// Get screen size
+	uint width = 0, height = 0, scale = 0;
+
+	App->window->GetWindowSize(width, height);
+	scale = App->window->GetScale();
+
+	screen = { 0, 0, static_cast<int>(width * scale), static_cast<int>(height * scale) };
+	//
+	Slider_rect = screen;
+	Slider_rect.w = 0;
+	return true;
+}
+
+// Update: draw background
+bool ModuleTransitions::PostUpdate()
+{
+	if (current_step == fade_step::none)
+		return true;
+
+	switch (thisFade)
+	{
+	case slider_fade:
+		SliderFade();
+		break;
+	}
+
+	return true;
+}
+
+// Fade to black. At mid point deactivate one module, then activate the other
+bool ModuleTransitions::StartTransition(Module* module_off, Module* module_on, float time, fades kind_of_fade, bool cleanup_off, bool start_on)
+{
+	bool ret = false;
+
+	this->cleanup_off = cleanup_off;
+	this->start_on = start_on;
+
+	if (current_step != fade_step::fade_to_black)
+	{		
+		thisFade = kind_of_fade;
+		
+		current_step = fade_step::fade_to_black;
+		start_time = SDL_GetTicks();
+		total_time = (Uint32)(time * 0.5f * 1000.0f);
+
+		off = module_off;
+		on = module_on;
+
+		App->scene->paused = true;
+
+		ret = true;
+	}
+
+	return ret;
+}
+
+bool ModuleTransitions::IsFading() const
+{
+	return current_step != fade_step::none;
+}
+
+fade_step ModuleTransitions::GetStep() const 
+{
+	return current_step;
+}
+
+Uint32 ModuleTransitions::GetNow() const 
+{
+	return now;
+}
+
+Uint32 ModuleTransitions::GetTotalTime() const 
+{
+	return total_time;
+}
+
+void ModuleTransitions::SliderFade()
+{
+	now = SDL_GetTicks() - start_time;
+	float normalized = MIN(1.0f, (float)now / (float)total_time);
+
+	switch (current_step)
+	{
+	case fade_step::fade_to_black:
+
+		if (now >= total_time) {
+
+			if (cleanup_off) {
+				off->DeActivate();
+			}
+			if (start_on) {
+				on->Activate();
+
+				App->scene->paused = false;
+			}
+
+			total_time += total_time;
+			start_time = SDL_GetTicks();
+
+			current_step = fade_from_black;
+		}
+		break;
+
+	case fade_step::fade_from_black:
+
+		normalized = 1.0f - normalized;
+
+		if (now >= total_time) {
+			current_step = fade_step::none;
+		}
+		break;
+	}
+
+	Slider_rect.w = normalized * screen.w;
+	SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, 255.0f);
+	SDL_RenderFillRect(App->render->renderer, &Slider_rect);
+
+}
