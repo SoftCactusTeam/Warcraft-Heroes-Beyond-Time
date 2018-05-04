@@ -11,22 +11,27 @@
     <lvl> <!-- First level -->
       <sizeGrid x ="50" y ="50"/>
       <sizeDungeon iterations ="300"/>
+      <archers tier1 ="3" tier2 ="3" tier3 ="3"/>
     </lvl>
     <lvl> <!-- Second level -->
       <sizeGrid x ="50" y ="50"/>
       <sizeDungeon iterations ="300"/>
+      <archers tier1 ="3" tier2 ="3" tier3 ="3"/>
     </lvl>
     <lvl> <!-- Third level -->
       <sizeGrid x ="50" y ="50"/>
       <sizeDungeon iterations ="300"/>
+      <archers tier1 ="3" tier2 ="3" tier3 ="3"/>
     </lvl>
     <lvl> <!-- Forth level -->
       <sizeGrid x ="50" y ="50"/>
       <sizeDungeon iterations ="300"/>
+      <archers tier1 ="3" tier2 ="3" tier3 ="3"/>
     </lvl>
     <lvl> <!-- Fifth level -->
       <sizeGrid x ="50" y ="50"/>
       <sizeDungeon iterations ="300"/>
+      <archers tier1 ="3" tier2 ="3" tier3 ="3"/>
     </lvl> 
   </map>
 

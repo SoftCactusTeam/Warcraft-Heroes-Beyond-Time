@@ -75,6 +75,10 @@ public:
 	int UseYourPowerToGenerateMeThisNewMap(int lvlIndex);
 public:
 	int numberOfLevels = 0;
+	std::list<int> tier1PerLevel;
+	std::list<int> tier2PerLevel;
+	std::list<int> tier3PerLevel;
+
 private:
 
 	uint totalSize = 0u;
@@ -85,10 +89,8 @@ private:
 	std::vector<MapNode*> visited;
 	SDL_Texture* mapTexture = nullptr;
 
-
 	std::list<iPoint> gridSizePerLevel;
 	std::list<int> iterationsPerLevel;
-	
 	int mapSeed = 0;
 };
 
