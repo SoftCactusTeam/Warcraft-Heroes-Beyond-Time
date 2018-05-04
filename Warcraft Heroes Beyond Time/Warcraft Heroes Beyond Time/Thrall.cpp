@@ -548,7 +548,7 @@ void Thrall::UseSkill()
 	if (skillOn == false)
 		App->audio->PlayFx(App->audio->Thrall_SkillFX);
 	skillOn = true;
-	skillCollider = *App->colliders->AddPlayerAttackCollider({ -100, -100, 5, 5 }, this, numStats.damage * numStats.skillMultiplier, PlayerAttack::P_Attack_Type::SKILL).lock();
+	skillCollider = *App->colliders->AddPlayerAttackCollider({ -1000000000, -1000000000, 20, 20 }, this, numStats.damage * numStats.skillMultiplier, PlayerAttack::P_Attack_Type::SKILL).lock();
 }
 
 void Thrall::UpdateSkillCollider()
@@ -557,7 +557,7 @@ void Thrall::UpdateSkillCollider()
 	{
 		if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 459,933,61,67 })))
 		{
-			skillCollider->rectArea = { (int)pos.x -70 - 15, (int)pos.y -70 - 15, 200,200 };
+			skillCollider->rectArea = { -70 - 15, -70 - 15, 200,200 };
 		}
 	}
 }
