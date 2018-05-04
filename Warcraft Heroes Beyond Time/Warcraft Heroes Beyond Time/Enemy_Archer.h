@@ -15,13 +15,9 @@ enum ARCHER_STATE {
 	ARCHER_TRI_ATAC,
 	ARCHER_FASTSHOOT_ATAC,
 	ARCHER_BACKJUMP,
-<<<<<<< HEAD
 	ARCHER_LITTLEMOVE,
 	ARCHER_DASH,
-=======
 	ARCHER_SCAPE,
-	ARCHER_FREEZE,
->>>>>>> origin/Ball_Freeze
 	ARCHER_DIE
 };
 
@@ -107,7 +103,7 @@ private:
 	fPoint posSmoke = { -1.f,-1.f };
 	// Littlemove variables
 	iPoint posToScape;
-<<<<<<< HEAD
+
 	int arrowsShooted = 0;
 	int cooldownToReLittleMove = 0;
 	// Dash variables
@@ -115,13 +111,9 @@ private:
 	fPoint dashMovement;
 	float dashTempo = 0.0f;
 
-	//ARCHER_TIER tier = ARCHER_TIER_NONE;
-=======
 	//Items variables
 	float frozen_counter = 0.0f;
 
->>>>>>> origin/Ball_Freeze
-	float live = 0;
 	bool			damaged = false;
 	float			damagedCD = 0.0f;
 

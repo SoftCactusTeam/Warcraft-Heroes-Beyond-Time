@@ -18,14 +18,16 @@ bool FreezeBallItem::Act(ModuleItems::ItemEvent event, float dt)
 	switch (event)
 	{
 	case ModuleItems::ItemEvent::UPDATE:
+		if(ball_col.expired())
+			ball_col = App->colliders->AddPlayerAttackCollider({ 0, 0, 20, 20 }, App->scene->player, 0, PlayerAttack::P_Attack_Type::FREEZE_ITEM);
 		ball_counter += dt;
 		angle = angular_vel * ball_counter;
 		if (angle < -360)
 		{
 			ball_counter = 0;
 		}
-		ball_col->rectArea.x = Ball_pos.x = cos(angle*PI / 180) * radius + 0;
-		ball_col->rectArea.y = Ball_pos.y = sin(angle*PI / 180) * radius + 0;
+		(*ball_col.lock())->rectArea.x = Ball_pos.x = cos(angle*PI / 180) * radius + 0;
+		(*ball_col.lock())->rectArea.y = Ball_pos.y = sin(angle*PI / 180) * radius + 0;
 		break;
 	}
 	return true;

@@ -111,9 +111,6 @@ bool Enemy_Archer::Update(float dt)
 	case ARCHER_STATE::ARCHER_DIE:
 		doDie();
 		break;
-	case ARCHER_STATE::ARCHER_FREEZE:
-		doFreeze(dt);
-		break;
 	default:
 		initIdle();
 		break;
@@ -195,10 +192,10 @@ void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 			}
 			case PlayerAttack::P_Attack_Type::FREEZE_ITEM:
 			{
-				if (state != ARCHER_STATE::ARCHER_FREEZE && App->entities->GetRandomNumber(10) < 2)
+				/*if (state != ARCHER_STATE::ARCHER_FREEZE && App->entities->GetRandomNumber(10) < 2)
 				{
 					initFreeze();
-				}
+				}*/
 				break;
 			}
 			case PlayerAttack::P_Attack_Type::SHIT:
@@ -395,8 +392,8 @@ void Enemy_Archer::initDie()
 
 void Enemy_Archer::initFreeze()
 {
-	state = ARCHER_STATE::ARCHER_FREEZE;
-	pathVector.Clear();
+	//state = ARCHER_STATE::ARCHER_FREEZE;
+	//pathVector.Clear();
 }
 
 // ---------------------------------------------------------------------------------
@@ -573,22 +570,7 @@ void Enemy_Archer::doDie()
 	}
 }
 
-
 void Enemy_Archer::Walk()
-
-void Enemy_Archer::doFreeze(float dt)
-{
-	//anim = &animFrozen[LookAtPlayer()];//Put animation here
-	frozen_counter += dt;
-	if (frozen_counter > 5.0f)
-	{
-		state = ARCHER_STATE::ARCHER_IDLE;
-		frozen_counter = 0.0f;
-	}
-}
-
-void Enemy_Archer::ShootArrow(fPoint desviation)
-
 {
 	if (pathVector.isEmpty())
 	{
@@ -603,6 +585,16 @@ void Enemy_Archer::ShootArrow(fPoint desviation)
 
 }
 
+void Enemy_Archer::doFreeze(float dt)
+{
+	//anim = &animFrozen[LookAtPlayer()];//Put animation here
+	frozen_counter += dt;
+	if (frozen_counter > 5.0f)
+	{
+		state = ARCHER_STATE::ARCHER_IDLE;
+		frozen_counter = 0.0f;
+	}
+}
 
 void Enemy_Archer::AddEffect(ARCHER_EFFECTS effect, int time)
 {
@@ -619,7 +611,6 @@ void Enemy_Archer::AddEffect(ARCHER_EFFECTS effect, int time)
 
 		break;
 	case ARCHER_EFFECT_NONE:
-
 		break;
 	}
 }

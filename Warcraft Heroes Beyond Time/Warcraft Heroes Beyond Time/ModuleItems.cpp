@@ -34,11 +34,6 @@ bool ModuleItems::Start()
 
 	itemsTexture = App->textures->Load("sprites/all_items.png");
 
-	FreezeBallItem* FreezeBall_Item = new FreezeBallItem();
-	equipedItems.push_back(FreezeBall_Item);
-	FreezeBall_Item->Start();
-
-
 	return true;
 }
 
@@ -97,7 +92,8 @@ void ModuleItems::loadItemsPull()
 	DMGBallItem* dmgBall = new DMGBallItem();
 	availableItems.push_back(dmgBall);
 
-
+	FreezeBallItem* FreezeBall_Item = new FreezeBallItem();
+	availableItems.push_back(FreezeBall_Item);
 }
 
 bool ModuleItems::equipItem(Item* item)

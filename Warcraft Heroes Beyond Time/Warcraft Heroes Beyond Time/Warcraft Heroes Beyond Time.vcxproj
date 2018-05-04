@@ -146,6 +146,7 @@
     <ClCompile Include="FelBall.cpp" />
     <ClCompile Include="Fonts.cpp" />
     <ClCompile Include="FileSystem.cpp" />
+    <ClCompile Include="FreezeBallItem.cpp" />
     <ClCompile Include="Geyser.cpp" />
     <ClCompile Include="GUIImage.cpp" />
     <ClCompile Include="Guldan.cpp" />
@@ -203,6 +204,7 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="FelBall.h" />
+    <ClInclude Include="FreezeBallItem.h" />
     <ClInclude Include="Geyser.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Fonts.h" />
