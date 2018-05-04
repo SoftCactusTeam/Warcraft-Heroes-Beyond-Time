@@ -25,7 +25,7 @@ public:
 private:
 	fPoint Ball_pos = { 0,0 };
 	fPoint Ball_final_pos = { 0,0 };
-	uint radius = 0;
+	float radius = 0;
 	std::weak_ptr<Collider*> ball_col;
 	float ball_counter = 0.0f;
 	float angle = 0.0f;
