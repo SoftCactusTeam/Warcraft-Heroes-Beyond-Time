@@ -12,10 +12,9 @@
 #include "ModuleItems.h"
 #include "ModuleEffects.h"
 
-Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEntity(coor, type, texture)
+Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture, EntitySystem::PlayerStats& numStats) : PlayerEntity(coor, type, texture)
 {
 	// Thrall idle animations
-
 	idleUp.PushBack({ 25,15,43,41 }, { 1,0 }); //Example: Introduce here the pivot.
 	idleUp.PushBack({ 114,15,43,41 }, { 1,0 });
 	idleUp.PushBack({ 203,15,43,41 }, { 1,0 });
@@ -232,7 +231,10 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	deadDownRight.speedFactor = 3.0f;
 	deadDownRight.loop = false;
 
-	numStats = App->entities->thrallstats;
+	if (numStats.isEmpty())
+		this->numStats = App->entities->thrallstats;
+	else
+		this->numStats = numStats;
 
 	wallCol = *App->colliders->AddCollider({ 7, 0, 15, 23 }, Collider::ColliderType::ENTITY, this).lock();
 	damageCol = *App->colliders->AddCollider({ 7, 0, 15, 23 }, Collider::ColliderType::ENTITY, this).lock();
@@ -325,7 +327,7 @@ void Thrall::OnCollision(Collider* yours, Collider* collideWith)
 		}
 		case Collider::ColliderType::PORTAL:
 		{
-			if (App->scene->portal->locked == false)
+			if (yours == this->wallCol && App->scene->portal->locked == false)
 			{
 				App->scene->GoNextLevel();
 			}

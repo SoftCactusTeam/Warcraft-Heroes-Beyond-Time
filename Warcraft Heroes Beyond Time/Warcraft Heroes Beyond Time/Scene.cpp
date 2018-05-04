@@ -106,7 +106,7 @@ bool Scene::Start()
 
 				portal = (PortalEntity*)App->entities->AddStaticEntity({ 15 * 46,17 * 46, }, PORTAL);
 				portal->locked = true;
-				player = App->entities->AddPlayer({ 15 * 46 + 10,16 * 46, }, THRALL);
+				player = App->entities->AddPlayer({ 15 * 46 + 10,16 * 46, }, THRALL, playerStats);
 				player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
 				guldan = (Guldan*)App->entities->AddBoss(GULDAN_BASE, BossType::GULDAN);
 			}
@@ -120,7 +120,7 @@ bool Scene::Start()
 				App->printer->Activate();
 				App->projectiles->Activate();
 
-				player = App->entities->AddPlayer({ 25 * 46,25 * 46 }, THRALL);
+				player = App->entities->AddPlayer({ 25 * 46,25 * 46 }, THRALL, playerStats);
 				player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
 
 				App->path->LoadPathMap();
@@ -279,6 +279,9 @@ bool Scene::PostUpdate()
 
 bool Scene::CleanUp()
 {
+	if(player)
+		playerStats = player->numStats;
+
 	App->gui->DeActivate();
 	App->map->DeActivate();
 	App->entities->DeActivate();
@@ -343,6 +346,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 					switch (button->btype)
 					{
 						case BType::PLAY:
+							playerStats = EntitySystem::PlayerStats();
 							App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
 							actual_scene = Stages::INGAME;
 							restart = true;
