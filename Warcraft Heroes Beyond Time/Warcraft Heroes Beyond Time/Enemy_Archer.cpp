@@ -179,6 +179,7 @@ void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 		{
 			case PlayerAttack::P_Attack_Type::NORMAL_ATTACK:
 			case PlayerAttack::P_Attack_Type::SKILL:
+				initDash();
 			case PlayerAttack::P_Attack_Type::DMGBALL_ITEM:
 			{
 				App->audio->PlayFx(App->audio->ArcherDamaged);
@@ -366,7 +367,6 @@ void Enemy_Archer::initLittleMove()
 		pathVector.CalculateWay(iPoint(((int)pos.x + (anim->GetCurrentRect().w / 2)), ((int)pos.y + (anim->GetCurrentRect().h / 2))), iPoint(posToScape.x* App->map->getTileSize(), posToScape.y* App->map->getTileSize()));
 		arrowsShooted = 0;
 		cooldownToReLittleMove = LITTLEMOVEMENT_COOLDOWN + SDL_GetTicks();
-		printf_s("%i\t%i\t :: TROBA NOU CAMI\n", randomX, randomY);
 	}
 	else
 	{
@@ -556,7 +556,6 @@ void Enemy_Archer::doDash()
 		{
 			pos += dashMovement;
 			dashTempo += App->dt;
-			printf_s("%i\n", accountantPrincipal);
 		}
 	}
 }
