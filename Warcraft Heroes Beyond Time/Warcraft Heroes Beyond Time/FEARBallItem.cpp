@@ -7,7 +7,7 @@
 
 bool FEARBallItem::Start()
 {
-	speed_growing_radius = 10.0f;
+	speed_growing_radius = 300.0f;
 	angular_vel = 100.0f;
 	radius = 50;
 	ball_col = App->colliders->AddPlayerAttackCollider({ 0, 0, 20, 20 }, App->scene->player, 0, PlayerAttack::P_Attack_Type::FEARBALL_ITEM);
@@ -81,10 +81,10 @@ bool FEARBallItem::printIconOnScreen(iPoint pos)
 
 void FEARBallItem::go_up()
 {
-	radius += speed_growing_radius;
+	radius += speed_growing_radius * App->dt;
 }
 
 void FEARBallItem::go_down()
 {
-	radius -= speed_growing_radius;
+	radius -= speed_growing_radius * App->dt;
 }
