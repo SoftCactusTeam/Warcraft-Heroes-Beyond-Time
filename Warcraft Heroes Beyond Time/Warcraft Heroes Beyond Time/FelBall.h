@@ -21,7 +21,8 @@ struct FelBallInfo : public ProjectileInfo
 		complete_circle,
 		spiral,
 		hexagon,
-		incepcion
+		incepcion,
+		explosion
 	} fel_movement;
 
 	fPoint rotationPivot = { 0.0f,0.0f };
@@ -49,11 +50,13 @@ private:
 
 	FelBallInfo* toData = nullptr;
 	float timer = 0.0f;
+	bool destroyTheBall = false;
 	enum class FelAnimations
 	{
 		no_anim = -1,
 		moving_anim,
 		back_anim,
+		end_anim,
 		max_anim
 	};
 

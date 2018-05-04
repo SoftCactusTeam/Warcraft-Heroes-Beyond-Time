@@ -89,6 +89,8 @@ public:
 
 	virtual bool Finish();
 	
+	Collider* GetDamageCollider() const;
+
 	//Stats functions
 	void SetDamage(int damage, bool setStateDamage);
 	void IncreaseEnergy(int percent);
@@ -97,6 +99,7 @@ public:
 	fPoint CalculatePosFromBezier(fPoint startPos, fPoint handleA, float t, fPoint handleB, fPoint endPos);
 
 	Animation* GetAnimFromAngle(float angle, bool dashOn = false);
+	FIXED_ANGLE returnFixedAngle();
 	bool IsPlayerMoving();
 
 	// Bezier/dash related variables
@@ -121,7 +124,6 @@ public:
 
 	//Collisions
 	virtual void UpdateCollider() {}
-	void setCol(Collider* pcol);
 	void PushOut(Collider* wall);
 	virtual void Attack() {}
 	virtual void UseSkill() {}

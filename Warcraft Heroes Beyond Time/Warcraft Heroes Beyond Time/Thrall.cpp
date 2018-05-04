@@ -234,8 +234,8 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 
 	numStats = App->entities->thrallstats;
 
-	wallCol = App->colliders->AddCollider({ 7, 0, 15, 23 }, Collider::ColliderType::ENTITY, this);
-	damageCol = App->colliders->AddCollider({ 7, 0, 15, 23 }, Collider::ColliderType::ENTITY, this);
+	wallCol = *App->colliders->AddCollider({ 7, 0, 15, 23 }, Collider::ColliderType::ENTITY, this).lock();
+	damageCol = *App->colliders->AddCollider({ 7, 0, 15, 23 }, Collider::ColliderType::ENTITY, this).lock();
 
 	state = states::PL_IDLE;			   
 	anim = &idleDown;					   
@@ -303,9 +303,11 @@ void Thrall::OnCollision(Collider* yours, Collider* collideWith)
 			if (yours == damageCol)
 			{
 				EnemyAttack* attack = (EnemyAttack*)collideWith;
+				int a = attack->damage;
 				if (state != states::PL_DASH)
 					SetDamage(attack->damage, true);
 			}
+			
 			break;
 		}
 		case Collider::ColliderType::WALL:
@@ -331,7 +333,7 @@ void Thrall::OnCollision(Collider* yours, Collider* collideWith)
 		}
 		case Collider::ColliderType::ENTITY:
 		{
-			Entity* entityOwner = (Entity*)collideWith;
+			Entity* entityOwner = (Entity*)collideWith->owner;
 			if(entityOwner->entityType == Entity::EntityType::DYNAMIC_ENTITY)
 				if (yours->colType == Collider::ColliderType::PLAYER_ATTACK && yours == this->attackCollider)
 				{
@@ -373,7 +375,7 @@ void Thrall::UpdateCollider()
 	if (anim == &idleUp)
 	{
 		wallCol->rectArea.x = 7;
-		wallCol->rectArea.y = 0;
+		wallCol->rectArea.y = 10;
 		wallCol->rectArea.w = 15;
 		wallCol->rectArea.h = 23;
 
@@ -445,7 +447,7 @@ void Thrall::UpdateCollider()
 	else if (anim == &upRight)
 	{
 		wallCol->rectArea.x = 5;
-		wallCol->rectArea.y = 0;
+		wallCol->rectArea.y = 10;
 		wallCol->rectArea.w = 17;
 		wallCol->rectArea.h = 23;
 
@@ -457,7 +459,12 @@ void Thrall::UpdateCollider()
 	else if (anim == &up || anim == &down)
 	{
 		wallCol->rectArea.x = 5;
-		wallCol->rectArea.y = 0;
+
+		if (anim == &up)
+			wallCol->rectArea.y = 10;
+		else
+			wallCol->rectArea.y = 0;
+	
 		wallCol->rectArea.w = 17;
 		wallCol->rectArea.h = 23;
 
@@ -466,7 +473,6 @@ void Thrall::UpdateCollider()
 		damageCol->rectArea.w = 17;
 		damageCol->rectArea.h = 23;
 	}
-
 }
 
 void Thrall::Attack()
@@ -474,7 +480,7 @@ void Thrall::Attack()
 	if (!attacking)
 		App->audio->PlayFx(App->audio->Thrall_AttackFX);
 	attacking = true;
-	attackCollider = App->colliders->AddPlayerAttackCollider({ -1000000000, -1000000000,20,20 }, this, numStats.damage, PlayerAttack::P_Attack_Type::NORMAL_ATTACK);
+	attackCollider = *App->colliders->AddPlayerAttackCollider({ -1000000000, -1000000000,20,20 }, this, numStats.damage, PlayerAttack::P_Attack_Type::NORMAL_ATTACK).lock();
 }
 
 void Thrall::UpdateAttackCollider()
@@ -535,7 +541,6 @@ void Thrall::UpdateAttackCollider()
 			attackCollider->rectArea = { 0, 0, 40, 45 };
 		}
 	}
-
 }
 
 void Thrall::UseSkill()
@@ -543,7 +548,7 @@ void Thrall::UseSkill()
 	if (skillOn == false)
 		App->audio->PlayFx(App->audio->Thrall_SkillFX);
 	skillOn = true;
-	skillCollider = App->colliders->AddPlayerAttackCollider({ -100, -100, 5, 5 }, this, numStats.damage * numStats.skillMultiplier, PlayerAttack::P_Attack_Type::SKILL);
+	skillCollider = *App->colliders->AddPlayerAttackCollider({ -100, -100, 5, 5 }, this, numStats.damage * numStats.skillMultiplier, PlayerAttack::P_Attack_Type::SKILL).lock();
 }
 
 void Thrall::UpdateSkillCollider()

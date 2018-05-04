@@ -23,7 +23,9 @@ private:
 	Animation chest;
 	bool opened = false;
 	bool selection_created = false;
+	bool chestSoundPlayed = false;
 	Collider* col = nullptr;
+	Collider* physicalCol = nullptr;
 
 };
 

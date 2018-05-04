@@ -36,6 +36,12 @@ public:
 	virtual void OnCollisionContinue(Collider* yours, Collider* collideWith);
 	virtual void OnCollisionLeave(Collider* yours, Collider* collideWith);
 
+	void getPos(float& x, float& y)
+	{
+		x = data->pos.x;
+		y = data->pos.y;
+	}
+
 protected:
 
 	ProjectileInfo* data;

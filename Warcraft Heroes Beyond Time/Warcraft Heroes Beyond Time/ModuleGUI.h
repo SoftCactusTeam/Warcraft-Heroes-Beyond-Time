@@ -49,7 +49,7 @@ public:
 	GUIElem* CreateStatsWindow(PlayerEntity* player, fPoint localPos);
 	GUIElem* CreateHPBar(PlayerEntity* player, fPoint localPos);
 	GUIElem* CreateBossHPBar(BossEntity* boss, fPoint localPos);
-	GUIElem* CreateItemContainer(fPoint localPos, Item* item, GUIElem* parent);
+	GUIElem* CreateItemContainer(fPoint localPos, Item* item, GUIElem* parent, Module* listener = nullptr);
 
 	bool DestroyElem(GUIElem* element);
 	SDL_Texture* getAtlas() const;

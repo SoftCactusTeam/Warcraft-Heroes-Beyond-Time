@@ -21,6 +21,7 @@
 #include "BossEntity.h"
 #include "ModuleEffects.h"
 #include "ModuleProjectiles.h"
+#include "Guldan.h"
 
 #include "Brofiler\Brofiler.h"
 #include "Label.h"
@@ -63,11 +64,10 @@ bool Scene::Awake(pugi::xml_node& sceneNode)
 bool Scene::Start()
 {
 	gratitudeON = false;
+	restart = false;
 	App->gui->Activate();
 
 	currentPercentAudio = App->audio->MusicVolumePercent;
-
-	App->map->UseYourPowerToGenerateMeThisNewMap(lvlIndex);
 
 	switch (actual_scene)
 	{
@@ -108,8 +108,7 @@ bool Scene::Start()
 				portal->locked = true;
 				player = App->entities->AddPlayer({ 15 * 46 + 10,16 * 46, }, THRALL);
 				player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
-				guldan = (Guldan*)App->entities->AddBoss({ 14 * 48 + 10,7 * 48 }, BossType::GULDAN);
-				App->gui->CreateBossHPBar((BossEntity*)guldan, { 640 / 2 - 312 / 2,320 });
+				guldan = (Guldan*)App->entities->AddBoss(GULDAN_BASE, BossType::GULDAN);
 			}
 			else
 			{
@@ -119,6 +118,7 @@ bool Scene::Start()
 				App->console->Activate();
 				App->map->Activate();
 				App->printer->Activate();
+				App->projectiles->Activate();
 
 				player = App->entities->AddPlayer({ 25 * 46,25 * 46 }, THRALL);
 				player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
@@ -126,29 +126,29 @@ bool Scene::Start()
 				App->path->LoadPathMap();
 
 				iPoint enemy = App->map->GetRandomValidPoint();
-				App->entities->AddEnemy({ (float)enemy.x * 46, (float)enemy.y * 46 }, ARCHER);
+				App->entities->AddEnemy({ (float)enemy.x * 46, (float)enemy.y * 46 }, ENEMY_TYPE::ARCHER_TIER_1);
 
 				enemy = App->map->GetRandomValidPoint();
-				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
+				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ENEMY_TYPE::ARCHER_TIER_1);
 
 				enemy = App->map->GetRandomValidPoint();
-				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
+				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ENEMY_TYPE::ARCHER_TIER_1);
 
 				enemy = App->map->GetRandomValidPoint();
-				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
+				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ENEMY_TYPE::ARCHER_TIER_1);
 
 				enemy = App->map->GetRandomValidPoint();
-				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
+				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ENEMY_TYPE::ARCHER_TIER_1);
 
 				enemy = App->map->GetRandomValidPoint();
-				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER);
+				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ENEMY_TYPE::ARCHER_TIER_1);
 
 				App->items->Activate();
 
 				iPoint chestPos = App->map->GetRandomValidPointProxy(30, 5);
 
 				if (!App->items->isPoolEmpty())
-					lvlChest = App->entities->AddChest({ (float)chestPos.x * 46,(float)chestPos.y * 46 }, MID_CHEST);
+					lvlChest = App->entities->AddChest({ (float)chestPos.x * 46, (float)chestPos.y * 46 - 31 }, MID_CHEST);
 				else
 					lvlChest = nullptr;
 			}
@@ -167,28 +167,31 @@ bool Scene::PreUpdate()
 
 bool Scene::Update(float dt)
 {
-
 	bool ret = true;
+	if (actual_scene == Stages::INGAME && lvlIndex < App->map->numberOfLevels && portal == nullptr && App->entities->enemiescount == 0)
+	{
+		GeneratePortal();
+	}
 
 	//TESTING SAVES
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && !App->console->isWritting())
 	{
 		App->Save();
 	}
 
 	//TESTING LOAD
-	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && !App->console->isWritting())
 	{
 		App->Load();
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN && !App->console->isWritting())
 	{
 		if (player != nullptr)
 			player->SetDamage(25, true);
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT && !paused)
 	{
 		if (player != nullptr)
 			player->IncreaseEnergy(100);
@@ -205,18 +208,13 @@ bool Scene::Update(float dt)
 		GoNextLevel();
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_F1) && actual_scene == Stages::INGAME)
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KeyState::KEY_DOWN && actual_scene == Stages::INGAME && !App->console->isWritting())
 	{
 		lvlIndex = 100;
 		restart = true;
 	}
 
-	if (actual_scene == Stages::INGAME && App->entities->enemiescount <= 0)
-	{
-		GeneratePortal();
-	}
-
-	if (actual_scene == Stages::MAIN_MENU && App->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN) // DELETE THIS AFTER VERTICAL
+	if (actual_scene == Stages::MAIN_MENU && App->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN && !App->console->isWritting()) // DELETE THIS AFTER VERTICAL
 	{
 		App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
 		actual_scene = Stages::INGAME;
@@ -309,77 +307,78 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 	bool ret = true;
 	switch (UIelem->type)
 	{
-	case GUIElem::GUIElemType::BUTTON:
-	{
-		Button* button = (Button*)UIelem;
-		switch (_event)
+		case GUIElem::GUIElemType::BUTTON:
 		{
-		case UIEvents::MOUSE_ENTER:
-		{
-			App->audio->PlayFx(App->audio->ButtonHovered);
-			button->atlasRect = Button1MouseHover;
-			break;
-		}
-		case UIEvents::MOUSE_RIGHT_UP:
-		{
-			button->atlasRect = Button1MouseHover;
-			break;
-		}
-		case UIEvents::MOUSE_LEFT_CLICK:
-		{
-			App->audio->PlayFx(App->audio->ButtonClicked);
-			button->atlasRect = Button1Pressed;
-			button->MoveChilds({ 0.0f, 1.0f });
-			break;
-		}
-		case UIEvents::MOUSE_LEAVE:
-		case UIEvents::NO_EVENT:
-		{
-			button->atlasRect = Button1;
-			break;
-		}
-		case UIEvents::MOUSE_LEFT_UP:
-		{
-			button->atlasRect = Button1MouseHover;
-			button->MoveChilds({ 0.0f, -1.0f });
-			switch (button->btype)
+			Button* button = (Button*)UIelem;
+			switch (_event)
 			{
-			case BType::PLAY:
-				App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
-				actual_scene = Stages::INGAME;
-				restart = true;
-				break;
-			case BType::EXIT_GAME:
-				return false;
-				break;
-			case BType::SETTINGS:
-				actual_scene = Stages::SETTINGS;
-				restart = true;
-				break;
-			case BType::GO_MMENU:
-				if (actual_scene == Stages::INGAME)
+				case UIEvents::MOUSE_ENTER:
 				{
-					App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
-					App->audio->setMusicVolume(currentPercentAudio);
-					App->audio->HaltFX();
+					App->audio->PlayFx(App->audio->ButtonHovered);
+					button->atlasRect = Button1MouseHover;
+					break;
 				}
-
-				actual_scene = Stages::MAIN_MENU;
-				paused = false;
-				restart = true;
-				break;
-			case BType::RESUME:
-				paused = false;
-				App->audio->ResumeFX();
-				App->gui->DestroyElem(PauseMenu);
-				App->audio->setMusicVolume(currentPercentAudio);
-				break;
+				case UIEvents::MOUSE_RIGHT_UP:
+				{
+					button->atlasRect = Button1MouseHover;
+					break;
+				}
+				case UIEvents::MOUSE_LEFT_CLICK:
+				{
+					App->audio->PlayFx(App->audio->ButtonClicked);
+					button->atlasRect = Button1Pressed;
+					button->MoveChilds({ 0.0f, 1.0f });
+					break;
+				}
+				case UIEvents::MOUSE_LEAVE:
+				case UIEvents::NO_EVENT:
+				{
+					button->atlasRect = Button1;
+					break;
+				}
+				case UIEvents::MOUSE_LEFT_UP:
+				{
+					button->atlasRect = Button1MouseHover;
+					button->MoveChilds({ 0.0f, -1.0f });
+					switch (button->btype)
+					{
+						case BType::PLAY:
+							App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
+							actual_scene = Stages::INGAME;
+							restart = true;
+							break;
+						case BType::EXIT_GAME:
+							return false;
+							break;
+						case BType::SETTINGS:
+							actual_scene = Stages::SETTINGS;
+							restart = true;
+							break;
+						case BType::GO_MMENU:
+							if (actual_scene == Stages::INGAME)
+							{
+								App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
+								App->audio->setMusicVolume(currentPercentAudio);
+								App->audio->HaltFX();
+							}
+							actual_scene = Stages::MAIN_MENU;
+							lvlIndex = 0;
+							paused = false;
+							restart = true;
+							break;
+						case BType::RESUME:
+							paused = false;
+							App->audio->ResumeFX();
+							App->gui->DestroyElem(PauseMenu);
+							App->audio->setMusicVolume(currentPercentAudio);
+							break;
+					}
+					break;
+				}
 			}
 			break;
 		}
-		}
-		break;
-	}
+
 	}
 	return ret;
 }
@@ -388,14 +387,11 @@ void Scene::CreateMainMenuScreen()
 {
 	GUIWindow* window = (GUIWindow*)App->gui->CreateGUIWindow({ 0,0 }, { 0,0,0,0 }, nullptr, nullptr);
 
+	//LOGO
+	GUIImage* logo = (GUIImage*)App->gui->CreateGUIImage({ 100,25 }, { 624, 21, 448, 129 }, nullptr);
+	
 	//PLAY BUTTON
-	Button* button = (Button*)App->gui->CreateButton({ 640 / 2 - 158 / 2, 50.0f }, BType::PLAY, this, window);
-
-	/*LabelInfo defLabel;
-	defLabel.color = White;
-	defLabel.fontName = "LifeCraft80";
-	defLabel.text = "PLAY";
-	App->gui->CreateLabel(getPosByResolution({ 55,10 }), defLabel, button, this);*/
+	Button* button = (Button*)App->gui->CreateButton({ 241.0f , 165}, BType::PLAY, this, window);
 
 	LabelInfo defLabel;
 	defLabel.color = White;
@@ -404,8 +400,7 @@ void Scene::CreateMainMenuScreen()
 	App->gui->CreateLabel({ 33,11 }, defLabel, button, this);
 
 	//SETTINGS BUTTON
-	Button* button2 = (Button*)App->gui->CreateButton({ 640 / 2 - 158 / 2, 150.0f }, BType::SETTINGS, this, window);
-
+	Button* button2 = (Button*)App->gui->CreateButton({ 241.0f , 215 }, BType::SETTINGS, this, window);
 	LabelInfo defLabel2;
 	defLabel2.color = White;
 	defLabel2.fontName = "LifeCraft80";
@@ -413,8 +408,7 @@ void Scene::CreateMainMenuScreen()
 	App->gui->CreateLabel({ 42,10 }, defLabel2, button2, this);
 
 	//EXIT GAME BUTTON
-	Button* button3 = (Button*)App->gui->CreateButton({ 640 / 2 - 158 / 2, 250.0f }, BType::EXIT_GAME, this, window);
-
+	Button* button3 = (Button*)App->gui->CreateButton({ 241.0f , 265 }, BType::EXIT_GAME, this, window);
 	LabelInfo defLabel3;
 	defLabel3.color = White;
 	defLabel3.fontName = "LifeCraft80";
@@ -426,7 +420,7 @@ void Scene::CreateMainMenuScreen()
 	versionLabel.color = White;
 	versionLabel.fontName = "Arial30";
 	versionLabel.text = App->gui->getVersion();
-	App->gui->CreateLabel({ 10,340 }, versionLabel, nullptr, nullptr);
+	App->gui->CreateLabel({ 10,340 }, versionLabel);
 
 }
 
@@ -519,10 +513,9 @@ void Scene::AddCommands()
 
 void Scene::GeneratePortal()
 {
-	if (portal == nullptr)
+	if (portal == nullptr && App->entities->spritesheetsEntities.size() > 0)
 	{
 		iPoint position = App->map->GetRandomValidPointProxy(20, 5);
-
 		portal = (PortalEntity*)App->entities->AddStaticEntity({ (float)position.x * 46, (float)position.y * 46 }, PORTAL);
 	}
 }

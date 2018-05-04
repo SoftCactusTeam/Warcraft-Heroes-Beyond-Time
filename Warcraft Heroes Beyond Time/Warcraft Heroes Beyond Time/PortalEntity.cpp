@@ -23,8 +23,6 @@ PortalEntity::PortalEntity(fPoint coor, STATIC_ENTITY_TYPE type, SDL_Texture * t
 bool PortalEntity::Start()
 {
 	anim = &portal;
-
-	
 	return true;
 }
 

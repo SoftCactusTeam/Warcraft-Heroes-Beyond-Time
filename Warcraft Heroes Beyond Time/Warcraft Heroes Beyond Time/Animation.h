@@ -18,6 +18,7 @@ private:
 	int loops = 0;
 	float current_frame = 0.0f;
 	int last_frame = 0;
+	bool firstTimeInFrame = true;
 
 	SDL_Rect frames[MAX_FRAMES];
 	iPoint pivots[MAX_FRAMES];
@@ -42,12 +43,22 @@ public:
 
 	SDL_Rect& GetCurrentFrame()
 	{
+		int prev_frame = (int)current_frame;
 		current_frame += speed;
+
 		if (current_frame >= last_frame)
 		{
 			loops++;
 			current_frame = (loop) ? 0.0f : last_frame - 1;
 		}
+
+		if (firstTimeInFrame)
+			firstTimeInFrame = false;
+		else if (current_frame == 0.0f)
+			firstTimeInFrame = true;
+		else if (!firstTimeInFrame && (int)current_frame > prev_frame)
+			firstTimeInFrame = true;
+
 
 		return frames[(int)current_frame];
 	}
@@ -65,6 +76,11 @@ public:
 	bool Finished() const
 	{
 		return loops > 0;
+	}
+
+	bool FirstTimeInFrame()
+	{
+		return firstTimeInFrame;
 	}
 
 	void Reset()

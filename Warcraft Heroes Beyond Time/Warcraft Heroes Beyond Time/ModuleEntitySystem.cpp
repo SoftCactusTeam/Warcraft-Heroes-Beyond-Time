@@ -37,7 +37,7 @@ class Spawn_ConsoleOrder : public ConsoleOrder
 	{
 		if (parameter == "footman")
 		{
-			App->entities->AddEnemy({ App->scene->player->pos.x, App->scene->player->pos.y - 60 }, FOOTMAN);
+			//App->entities->AddEnemy({ App->scene->player->pos.x, App->scene->player->pos.y - 60 }, FOOTMAN);
 		}
 		else if (parameter == "thrall")
 		{
@@ -45,7 +45,12 @@ class Spawn_ConsoleOrder : public ConsoleOrder
 		}
 		else if (parameter == "archer")
 		{
-			App->entities->AddEnemy({ App->scene->player->pos.x, App->scene->player->pos.y - 60 }, ARCHER);
+			if(parameterNumeric == 1)
+				App->entities->AddEnemy({ App->scene->player->pos.x, App->scene->player->pos.y - 60 }, ENEMY_TYPE::ARCHER_TIER_1);
+			else if (parameterNumeric == 2)
+				App->entities->AddEnemy({ App->scene->player->pos.x, App->scene->player->pos.y - 60 }, ENEMY_TYPE::ARCHER_TIER_2);
+			else if (parameterNumeric == 3)
+				App->entities->AddEnemy({ App->scene->player->pos.x, App->scene->player->pos.y - 60 }, ENEMY_TYPE::ARCHER_TIER_3);
 		}
 
 		else if (parameter == "wizard")
@@ -136,7 +141,7 @@ void EntitySystem::Init()
 
 bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 {
-	srand(time(NULL));
+	//srand(time(NULL));
 
 	//------------- Loading Stats -------------------------------------------------------------
 	pugi::xml_node thrall = entitiesNode.child("players").child("thrall");
@@ -147,61 +152,74 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	thrallstats.energyPercentbyHit = thrall.attribute("energy_percent_hit").as_uint(20);
 	thrallstats.skillMultiplier = thrall.attribute("skill_multiplier").as_uint(3);
 
-	pugi::xml_node footman = entitiesNode.child("enemies").child("footman");
-	footmanstats.maxhp = footman.attribute("hp").as_uint(0);
-	footmanstats.hp = footmanstats.maxhp;
-	footmanstats.speed = footman.attribute("speed").as_uint(0);
-	footmanstats.damage = footman.attribute("damage").as_uint(0);
-	footmanstats.dropping_chance = footman.attribute("dropping_chance").as_uint(0);
-	footmanstats.range = footman.attribute("range").as_uint(0);
-	footmanstats.difficulty = footman.attribute("difficulty").as_uint(0);
-	footmanstats.def_hability_chance = footman.attribute("def_hability_chance").as_uint();
-	footmanstats.strong_attack_chance = footman.attribute("strong_attack_chance").as_uint();
-	footmanstats.vision_area = footman.attribute("vision_area").as_uint();
-	footmanstats.CD_between_attacks = footman.attribute("CD_between_attacks").as_float();
+	pugi::xml_node archerT1 = entitiesNode.child("enemies").child("archer_tier1");
+	archerT1stats.maxhp =						archerT1.attribute("hp").as_uint(0);
+	archerT1stats.hp =							archerT1stats.maxhp;
+	archerT1stats.speed =						archerT1.attribute("speed").as_uint();
+	archerT1stats.damage =						archerT1.attribute("damage").as_float();
+	archerT1stats.dropping_chance =				archerT1.attribute("dropping_chance").as_uint(0);
+	archerT1stats.strong_attack_chance =		archerT1.attribute("chance_powerful_attack").as_uint();
+	archerT1stats.arrows_life =					archerT1.attribute("arrows_life").as_float();
+	archerT1stats.arrows_speed =				archerT1.attribute("arrows_speed").as_float();
+	archerT1stats.time_between_attacks =		archerT1.attribute("time_between_attacks").as_float();
+	archerT1stats.time_stunned_after_attack =	archerT1.attribute("time_stunned_after_attack").as_float();
+	archerT1stats.vision_range =				archerT1.attribute("vision_range").as_uint();
+	archerT1stats.attack_range =				archerT1.attribute("attack_range").as_uint();
+	archerT1stats.minimal_distance_player =		archerT1.attribute("minimal_distance_with_player").as_uint();
+	archerT1stats.preAttac =					archerT1.attribute("pre_attac").as_uint();
+	archerT1stats.tilesToLittleMove =			archerT1.attribute("tiles_to_littlemove").as_uint();
+	archerT1stats.DistanceToScape =				archerT1.attribute("distance_to_scape").as_uint();
+	archerT1stats.attacCone_probability =		archerT1.attribute("attacCone_probability").as_uint();
+	archerT1stats.attacFast_probability =		archerT1.attribute("attacFast_probability").as_uint();
+	archerT1stats.timeStunedAfterHit =			archerT1.attribute("timeStunedAfterHit").as_uint();
+	archerT1stats.velocityDashHit =				archerT1.attribute("velocityDashHit").as_uint();
+	archerT1stats.timingDashHit =				archerT1.attribute("timingDashHit").as_uint();
 
+	pugi::xml_node archerT2 =					entitiesNode.child("enemies").child("archer_tier2");
+	archerT2stats.maxhp =						archerT2.attribute("hp").as_uint(0);
+	archerT2stats.hp =							archerT2stats.maxhp;
+	archerT2stats.speed =						archerT2.attribute("speed").as_uint(0);
+	archerT2stats.damage =						archerT2.attribute("damage").as_float(0);
+	archerT2stats.dropping_chance =				archerT2.attribute("dropping_chance").as_uint(0);
+	archerT2stats.strong_attack_chance =		archerT2.attribute("chance_powerful_attack").as_uint();
+	archerT2stats.arrows_life =					archerT2.attribute("arrows_life").as_float();
+	archerT2stats.arrows_speed =				archerT2.attribute("arrows_speed").as_float();
+	archerT2stats.time_between_attacks =		archerT2.attribute("time_between_attacks").as_float();
+	archerT2stats.time_stunned_after_attack =	archerT2.attribute("time_stunned_after_attack").as_float();
+	archerT2stats.vision_range =				archerT2.attribute("vision_range").as_uint();
+	archerT2stats.attack_range =				archerT2.attribute("attack_range").as_uint();
+	archerT2stats.minimal_distance_player =		archerT2.attribute("minimal_distance_with_player").as_uint();
+	archerT2stats.preAttac =					archerT2.attribute("pre_attac").as_uint();
+	archerT2stats.tilesToLittleMove =			archerT2.attribute("tiles_to_littlemove").as_uint();
+	archerT2stats.DistanceToScape =				archerT2.attribute("distance_to_scape").as_uint();
+	archerT2stats.attacCone_probability =		archerT2.attribute("attacCone_probability").as_uint();
+	archerT2stats.attacFast_probability =		archerT2.attribute("attacFast_probability").as_uint();
+	archerT2stats.timeStunedAfterHit =			archerT2.attribute("timeStunedAfterHit").as_uint();
+	archerT2stats.velocityDashHit =				archerT2.attribute("velocityDashHit").as_uint();
+	archerT2stats.timingDashHit =				archerT2.attribute("timingDashHit").as_uint();
 
-	pugi::xml_node archer = entitiesNode.child("enemies").child("archer");
-	archerstats.maxhp = archer.attribute("hp").as_uint(0);
-	archerstats.hp = archerstats.maxhp;
-	archerstats.speed = archer.attribute("speed").as_uint(0);
-	archerstats.damage = archer.attribute("damage").as_uint(0);
-	archerstats.dropping_chance = archer.attribute("dropping_chance").as_uint(0);
-	archerstats.range = archer.attribute("range").as_uint(0);
-	archerstats.difficulty = archer.attribute("difficulty").as_uint(0);
-	archerstats.def_hability_chance = archer.attribute("def_hability_chance").as_uint();
-	archerstats.strong_attack_chance = archer.attribute("strong_attack_chance").as_uint();
-	archerstats.vision_area = archer.attribute("vision_area").as_uint();
-	archerstats.CD_between_attacks = archer.attribute("CD_between_attacks").as_float();
-
-
-	pugi::xml_node wizard = entitiesNode.child("enemies").child("wizard");
-	wizardstats.maxhp = wizard.attribute("hp").as_uint(0);
-	wizardstats.hp = wizardstats.maxhp;
-	wizardstats.speed = wizard.attribute("speed").as_uint(0);
-	wizardstats.damage = wizard.attribute("damage").as_uint(0);
-	wizardstats.dropping_chance = wizard.attribute("dropping_chance").as_uint(0);
-	wizardstats.range = wizard.attribute("range").as_uint(0);
-	wizardstats.difficulty = wizard.attribute("difficulty").as_uint(0);
-	wizardstats.def_hability_chance = wizard.attribute("def_hability_chance").as_uint();
-	wizardstats.strong_attack_chance = wizard.attribute("strong_attack_chance").as_uint();
-	wizardstats.vision_area = wizard.attribute("vision_area").as_uint();
-	wizardstats.CD_between_attacks = wizard.attribute("CD_between_attacks").as_float();
-
-
-	pugi::xml_node darkknight = entitiesNode.child("enemies").child("dark_knight");
-	darkknightstats.maxhp = darkknight.attribute("hp").as_uint(0);
-	darkknightstats.hp = darkknightstats.maxhp;
-	darkknightstats.speed = darkknight.attribute("speed").as_uint(0);
-	darkknightstats.damage = darkknight.attribute("damage").as_uint(0);
-	darkknightstats.dropping_chance = darkknight.attribute("dropping_chance").as_uint(0);
-	darkknightstats.range = darkknight.attribute("range").as_uint(0);
-	darkknightstats.difficulty = darkknight.attribute("difficulty").as_uint(0);
-	darkknightstats.def_hability_chance = darkknight.attribute("def_hability_chance").as_uint();
-	darkknightstats.strong_attack_chance = darkknight.attribute("strong_attack_chance").as_uint();
-	darkknightstats.vision_area = darkknight.attribute("vision_area").as_uint();
-	darkknightstats.CD_between_attacks = darkknight.attribute("CD_between_attacks").as_float();
-	
+	pugi::xml_node archerT3 = entitiesNode.child("enemies").child("archer_tier3");
+	archerT3stats.maxhp =						archerT3.attribute("hp").as_uint(0);
+	archerT3stats.hp =							archerT3stats.maxhp;
+	archerT3stats.speed =						archerT3.attribute("speed").as_uint(0);
+	archerT3stats.damage =						archerT3.attribute("damage").as_float(0);
+	archerT3stats.dropping_chance =				archerT3.attribute("dropping_chance").as_uint(0);
+	archerT3stats.strong_attack_chance =		archerT3.attribute("chance_powerful_attack").as_uint();
+	archerT3stats.arrows_life =					archerT3.attribute("arrows_life").as_float();
+	archerT3stats.arrows_speed =				archerT3.attribute("arrows_speed").as_float();
+	archerT3stats.time_between_attacks =		archerT3.attribute("time_between_attacks").as_float();
+	archerT3stats.time_stunned_after_attack =	archerT3.attribute("time_stunned_after_attack").as_float();
+	archerT3stats.vision_range =				archerT3.attribute("vision_range").as_uint();
+	archerT3stats.attack_range =				archerT3.attribute("attack_range").as_uint();
+	archerT3stats.minimal_distance_player =		archerT3.attribute("minimal_distance_with_player").as_uint();
+	archerT3stats.preAttac =					archerT3.attribute("pre_attac").as_uint();
+	archerT3stats.tilesToLittleMove =			archerT3.attribute("tiles_to_littlemove").as_uint();
+	archerT3stats.DistanceToScape =				archerT3.attribute("distance_to_scape").as_uint();
+	archerT3stats.attacCone_probability =		archerT3.attribute("attacCone_probability").as_uint();
+	archerT3stats.attacFast_probability =		archerT3.attribute("attacFast_probability").as_uint();
+	archerT3stats.timeStunedAfterHit =			archerT3.attribute("timeStunedAfterHit").as_uint();
+	archerT3stats.velocityDashHit =				archerT3.attribute("velocityDashHit").as_uint();
+	archerT3stats.timingDashHit =				archerT3.attribute("timingDashHit").as_uint();
 
 	pugi::xml_node guldan = entitiesNode.child("enemies").child("guldan");
 	guldanstats.maxhp = guldan.attribute("hp").as_uint(0);
@@ -209,12 +227,8 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	guldanstats.speed = guldan.attribute("speed").as_uint(0);
 	guldanstats.damage = guldan.attribute("damage").as_uint(0);
 	guldanstats.dropping_chance = guldan.attribute("dropping_chance").as_uint(0);
-	guldanstats.range = guldan.attribute("range").as_uint(0);
-	guldanstats.difficulty = guldan.attribute("difficulty").as_uint(0);
-	guldanstats.def_hability_chance = guldan.attribute("def_hability_chance").as_uint();
 	guldanstats.strong_attack_chance = guldan.attribute("strong_attack_chance").as_uint();
-	guldanstats.vision_area = guldan.attribute("vision_area").as_uint();
-	guldanstats.CD_between_attacks = guldan.attribute("CD_between_attacks").as_float();
+
 	
 
 	//Loading CD'S---------------------------------------------------------------------------
@@ -237,6 +251,9 @@ bool EntitySystem::Start()
 	spritesheetsEntities.push_back(App->textures->Load("sprites/Projectiles.png"));
 	spritesheetsEntities.push_back(App->textures->Load("sprites/Archer/Archer_Smoke.png"));
 	spritesheetsEntities.push_back(App->textures->Load("sprites/Boss_Guldan.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/Archer/white_archers_sprite.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/Archer/orange_archers_sprite.png"));
+	spritesheetsEntities.push_back(App->textures->Load("sprites/Archer/green_archers_sprite.png"));
 
 	bool ret = true;
 
@@ -360,31 +377,11 @@ void EntitySystem::AddEnemy(fPoint coor, ENEMY_TYPE type)
 {
 	enemiescount++;
 	BROFILER_CATEGORY("AddEnemy", Profiler::Color::Chocolate);
-	EnemyEntity* newEntity = nullptr;
-	switch (type) {
-	case ENEMY_TYPE::FOOTMAN:
-		newEntity = new Enemy_Footman(coor, ENEMY_TYPE::FOOTMAN, spritesheetsEntities[FOOTMAN_SHEET]);
-		App->colliders->AddCollider({ 20,20,32,32 }, Collider::ColliderType::ENTITY, (Entity*)newEntity);
-		break;
-	case ENEMY_TYPE::ARCHER:
-		newEntity = new Enemy_Archer(coor, ENEMY_TYPE::ARCHER, spritesheetsEntities[ARCHER_SHEET]);
-		App->colliders->AddCollider({ -16+20,-16+20,32,32 }, Collider::ColliderType::ENTITY, (Entity*)newEntity);
-		break;
-	case ENEMY_TYPE::MAGE:
-		newEntity = new EnemyEntity(coor, ENEMY_TYPE::MAGE, nullptr);
-		break;
-	case ENEMY_TYPE::DEATH_KNIGHT:
-		newEntity = new EnemyEntity(coor, ENEMY_TYPE::DEATH_KNIGHT, nullptr);
-		break;
-	case ENEMY_TYPE::GOBLIN:
-		newEntity = new EnemyEntity(coor, ENEMY_TYPE::GOBLIN, nullptr);
-		break;
-	case ENEMY_TYPE::SKELETON:
-		newEntity = new EnemyEntity(coor, ENEMY_TYPE::SKELETON, nullptr);
-		break;
-	}
-	toSpawn.push_back(newEntity);
 
+	Enemy_Archer* newEntity = new Enemy_Archer(coor, type, spritesheetsEntities[ARCHER_SHEET]);
+	App->colliders->AddCollider({ -16+20,-16+20,32,32 }, Collider::ColliderType::ENTITY, newEntity);
+
+	toSpawn.push_back(newEntity);
 }
 
 BossEntity* EntitySystem::AddBoss(fPoint coor, BossType type)
@@ -473,7 +470,7 @@ StaticEntity* EntitySystem::AddStaticEntity(fPoint coor, STATIC_ENTITY_TYPE type
 	{
 	case STATIC_ENTITY_TYPE::PORTAL:
 		newEntity = new PortalEntity(coor, STATIC_ENTITY_TYPE::PORTAL, spritesheetsEntities[PORTAL_SHEET]);
-		newEntity->portalCol = App->colliders->AddCollider({ (int)newEntity->pos.x, (int)newEntity->pos.y, 50, 50 }, Collider::ColliderType::PORTAL);
+		newEntity->portalCol = *App->colliders->AddCollider({ (int)newEntity->pos.x, (int)newEntity->pos.y, 50, 50 }, Collider::ColliderType::PORTAL).lock();
 		break;
 	}
 	toSpawn.push_back(newEntity);
@@ -522,4 +519,23 @@ void EntitySystem::ClearEnemies()
 int EntitySystem::GetRandomNumber(int rang)
 {
 	return rand() % rang;
+}
+
+bool EntitySystem::checkEntityNearOther(Entity * enity, int dist)
+{
+	std::list<Entity*>::iterator it = App->entities->entities.begin();
+	for (; it != App->entities->entities.end(); it++)
+	{
+		if (*it != enity)
+		{
+			uint totalX = (*enity).pos.x - (*it)->pos.x;
+			uint totalY = (*enity).pos.y - (*it)->pos.y;
+			uint distance =  sqrt((totalX * totalX) + (totalY * totalY));
+			if (distance < dist)
+			{
+				return true;
+			}
+		}
+	}
+	return false;
 }

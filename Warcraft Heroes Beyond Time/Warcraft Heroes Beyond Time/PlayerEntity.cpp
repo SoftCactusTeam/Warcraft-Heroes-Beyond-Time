@@ -37,6 +37,11 @@ bool PlayerEntity::Finish()
 	return true; 
 }
 
+Collider* PlayerEntity::GetDamageCollider() const
+{
+	return damageCol;
+}
+
 fPoint PlayerEntity::CalculatePosFromBezier(fPoint startPos, fPoint handleA, float t, fPoint handleB, fPoint endPos)
 {
 	float t2 = pow(t, 2.0f);
@@ -1206,6 +1211,28 @@ Animation* PlayerEntity::GetAnimFromAngle(float angle, bool dashOn)
 	}
 
 	return animToReturn;
+}
+
+FIXED_ANGLE PlayerEntity::returnFixedAngle()
+{
+	if (angle >= 247.5f && angle < 292.5f)
+		return UP;
+	else if (angle >= 67.5f && angle < 112.5f)
+		return DOWN;
+	else if ((angle >= 337.5f && angle < 360.0f) || (angle >= 0 && angle < 22.5f))
+		return RIGHT;
+	else if (angle >= 157.5f && angle < 202.5f)
+		return LEFT;
+	else if (angle >= 292.5f && angle < 337.5f)
+		return UP_RIGHT;
+	else if (angle >= 202.5f && angle < 247.5f)
+		return UP_LEFT;
+	else if (angle >= 112.5f && angle < 157.5f)
+		return DOWN_LEFT;
+	else if (angle >= 22.5f && angle < 67.5f)
+		return DOWN_RIGHT;
+	else
+		return UP;
 }
 
 bool PlayerEntity::IsPlayerMoving()

@@ -121,6 +121,7 @@ bool GUIElem::HandleInput(float dt)
 		break;
 	}
 
+	//B button depending of the screen active
 	if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KeyState::KEY_DOWN)
 	{
 		if (type == GUIElemType::BUTTON)

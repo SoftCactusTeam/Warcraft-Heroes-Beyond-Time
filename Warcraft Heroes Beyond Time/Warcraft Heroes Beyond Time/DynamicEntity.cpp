@@ -1,25 +1,28 @@
 #include "DynamicEntity.h"
 #include <math.h>
 
-DynamicEntity::DynamicEntity(fPoint coor, SDL_Texture* texture, DynamicEntity::DynamicType dynamicType) : Entity(coor, texture, EntityType::DYNAMIC_ENTITY), dynamicType(dynamicType){}
+DynamicEntity::DynamicEntity(fPoint coor, SDL_Texture* texture, DynamicEntity::DynamicType dynamicType) : Entity(coor, texture, Entity::EntityType::DYNAMIC_ENTITY), dynamicType(dynamicType){}
 
 bool DynamicEntity::Start() { return true; }
 bool DynamicEntity::Update(float dt) { return true; }
 bool DynamicEntity::Finish() { return true; }
 
-FIXED_ANGLE DynamicEntity::CaculateAngle(fPoint objectiveCoor)
+FIXED_ANGLE DynamicEntity::CaculateAngle(fPoint objectiveCoor, int width, int height)
 {
+	float pX = pos.x + width;
+	float pY = pos.y + height;
+
 	FIXED_ANGLE angleToReturn = FIXED_ANGLE::NON_ANGLE;
-	if (this->pos.x - objectiveCoor.x >= 0)
+	if (pX - objectiveCoor.x >= 0)
 	{
-		if (this->pos.y - objectiveCoor.y >= 0)
+		if (pY - objectiveCoor.y >= 0)
 			angleToReturn = FIXED_ANGLE::UP_LEFT;
 		else
 			angleToReturn = FIXED_ANGLE::DOWN_LEFT;
 	}
 	else
 	{
-		if (this->pos.y - objectiveCoor.y >= 0)
+		if (pY - objectiveCoor.y >= 0)
 			angleToReturn = FIXED_ANGLE::UP_RIGHT;
 		else
 			angleToReturn = FIXED_ANGLE::DOWN_RIGHT;
@@ -30,32 +33,32 @@ FIXED_ANGLE DynamicEntity::CaculateAngle(fPoint objectiveCoor)
 	switch (angleToReturn)
 	{
 	case FIXED_ANGLE::UP_RIGHT:
-		dX = (float)objectiveCoor.x - (float)pos.x;
-		dY = (float)pos.y - (float)objectiveCoor.y;
+		dX = (float)objectiveCoor.x - pX;
+		dY = pY - (float)objectiveCoor.y;
 		if (dX / 2.5f > dY)
 			angleToReturn = FIXED_ANGLE::RIGHT;
 		else if (dY / 2.5f > dX)
 			angleToReturn = FIXED_ANGLE::UP;
 		break;
 	case FIXED_ANGLE::UP_LEFT:
-		dX = (float)pos.x - (float)objectiveCoor.x;
-		dY = (float)pos.y - (float)objectiveCoor.y;
+		dX = pX - (float)objectiveCoor.x;
+		dY = pY - (float)objectiveCoor.y;
 		if (dX / 2.5f > dY)
 			angleToReturn = FIXED_ANGLE::LEFT;
 		else if (dY / 2.5f > dX)
 			angleToReturn = FIXED_ANGLE::UP;
 		break;
 	case FIXED_ANGLE::DOWN_RIGHT:
-		dX = (float)objectiveCoor.x - (float)pos.x;
-		dY = (float)objectiveCoor.y - (float)pos.y;
+		dX = (float)objectiveCoor.x - pX;
+		dY = (float)objectiveCoor.y - pY;
 		if (dX / 2.5f > dY)
 			angleToReturn = FIXED_ANGLE::RIGHT;
 		else if (dY / 2.5f > dX)
 			angleToReturn = FIXED_ANGLE::DOWN;
 		break;
 	case FIXED_ANGLE::DOWN_LEFT:
-		dX = (float)pos.x - (float)objectiveCoor.x;
-		dY = (float)objectiveCoor.y - (float)pos.y;
+		dX = pX - (float)objectiveCoor.x;
+		dY = (float)objectiveCoor.y - pY;
 		if (dX / 2.5f > dY)
 			angleToReturn = FIXED_ANGLE::LEFT;
 		else if (dY / 2.5f > dX)
@@ -66,9 +69,9 @@ FIXED_ANGLE DynamicEntity::CaculateAngle(fPoint objectiveCoor)
 	return angleToReturn;
 }
 
-fPoint DynamicEntity::CaculateFPointAngle(fPoint objectiveCoor)
+fPoint DynamicEntity::CaculateFPointAngle(fPoint objectiveCoor, int width, int height)
 {
-	switch (CaculateAngle(objectiveCoor))
+	switch (CaculateAngle(objectiveCoor, width, height))
 	{
 	case UP: return fPoint(0, -3); break;
 	case UP_RIGHT: return fPoint(2, -2); break;

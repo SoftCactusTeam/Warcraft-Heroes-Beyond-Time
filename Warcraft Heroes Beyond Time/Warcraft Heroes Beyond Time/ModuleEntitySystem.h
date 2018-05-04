@@ -40,17 +40,31 @@ public:
 		uint maxhp = 0u;
 		float hp = 0.0f;
 		uint speed = 0u;
-		uint damage = 0u;
-		uint range = 0u;
+		float damage = 0.0f;
 		uint dropping_chance = 0u;
-		uint difficulty = 0u;
+		uint arrows_speed = 0u;
+		float arrows_life = 0.0f; //In seconds
 
-		uint def_hability_chance = 0u;
 		uint strong_attack_chance = 0u;
-		uint vision_area = 0u;
-		float CD_between_attacks = 0.0f;
+		float time_between_attacks = 0.0f;
+		float time_stunned_after_attack = 0.0f;
 
-	} footmanstats, archerstats, wizardstats, darkknightstats, guldanstats;
+		uint vision_range = 0u;
+		uint attack_range = 0u;
+		uint minimal_distance_player = 0u;
+
+		uint preAttac = 0u;
+		uint tilesToLittleMove = 0u;
+		uint DistanceToScape = 0u;
+
+		uint attacCone_probability = 0u;
+		uint attacFast_probability = 0u;
+
+		uint timeStunedAfterHit = 0u;
+		uint velocityDashHit = 0u;
+		uint timingDashHit = 0u;
+
+	} archerT1stats, archerT2stats, archerT3stats, guldanstats;
 
 
 	EntitySystem();
@@ -90,18 +104,22 @@ public:
 		timepostdead = this->timepostdead;
 	}
 
-
-
 	std::vector<SDL_Texture*> spritesheetsEntities;
 	int enemiescount = 0;
 
-private:
 	std::list<Entity*>		entities;
+private:
+	//std::list<Entity*>		entities;
 	std::list<Entity*>		toSpawn;
 
 	float dashCD = 0.0f;
 	float invpostdamaged = 0.0f;
 	float timepostdead = 0.0f;
+
+	/*to check*/
+
+public:
+	bool checkEntityNearOther(Entity* entity, int dist);
 
 };
 

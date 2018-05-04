@@ -55,6 +55,7 @@ public:
 	bool PostUpdate();
 	bool DrawMap() const;
 	inline int Get(int x, int y) const;
+	SDL_Rect MapGenerator::GetTileRect(int id) const;
 	bool CheckBoundaries(const iPoint& pos) const;
 	bool GenerateMap(MapData data);
 	bool GenerateBossMap(); 
@@ -64,14 +65,16 @@ public:
 	bool CleanUp();
 	iPoint GetRandomValidPoint();
 	iPoint GetRandomValidPointProxy(int distance, int proxyDistance);
+	iPoint GetRandomBossPoint();
 
 	void getSize(uint& w, uint& h);
 	int getTileSize();
 
 	std::vector<MapNode*> GetMapNodesAndInfo(uint& sizeX, uint& sizeY, uint& tileSize);
 
-	bool UseYourPowerToGenerateMeThisNewMap(int lvlIndex);
-
+	int UseYourPowerToGenerateMeThisNewMap(int lvlIndex);
+public:
+	int numberOfLevels = 0;
 private:
 
 	uint totalSize = 0u;
@@ -85,7 +88,7 @@ private:
 
 	std::list<iPoint> gridSizePerLevel;
 	std::list<int> iterationsPerLevel;
-	int numberOfLevels = 0;
+	
 	int mapSeed = 0;
 };
 

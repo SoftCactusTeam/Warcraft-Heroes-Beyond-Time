@@ -10,7 +10,7 @@
 class EnemyEntity : public DynamicEntity 
 {
 public:
-	EnemyEntity(fPoint coor, ENEMY_TYPE character, SDL_Texture* texture);
+	EnemyEntity(fPoint coor, ENEMY_TYPE tier, SDL_Texture* texture);
 
 	virtual bool Start();
 	virtual bool Update(float dt);
@@ -19,7 +19,7 @@ public:
 	FIXED_ANGLE LookAtPlayer();
 	uint DistanceToPlayer();
 public:
-	ENEMY_TYPE type = ENEMY_TYPE::NON_ENEMY;
+	ENEMY_TYPE enemytype = ENEMY_TYPE::NO_TIER;
 	EntitySystem::EnemyStats numStats;
 
 protected:

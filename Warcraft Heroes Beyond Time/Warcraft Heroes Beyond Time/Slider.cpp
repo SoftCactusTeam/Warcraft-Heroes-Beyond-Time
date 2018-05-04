@@ -66,10 +66,13 @@ bool Slider::HandleInput(float dt)
 	int x, y;
 	App->input->GetMousePosition(x, y);
 
-	if (MouseHover() && (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN))
-		focused = true;
+	if (MouseHover() && ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) || App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT))
+	{
+		parent->UnFocusChilds();
+		Focus();
+	}
 	else if (focused && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
-		focused = false;
+		UnFocus();
 	
 	if(focused && App->input->IsKeyboardAvailable())
 	{
