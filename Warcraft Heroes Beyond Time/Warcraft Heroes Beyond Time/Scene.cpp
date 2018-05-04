@@ -125,23 +125,30 @@ bool Scene::Start()
 
 				App->path->LoadPathMap();
 
-				iPoint enemy = App->map->GetRandomValidPoint();
-				App->entities->AddEnemy({ (float)enemy.x * 46, (float)enemy.y * 46 }, ENEMY_TYPE::ARCHER_TIER_1);
+				std::list<int>::iterator it = App->map->tier1PerLevel.begin();
+				std::advance(it, lvlIndex);
+				for (int i = 0; i < (*it); i++)
+				{
+					iPoint enemy = App->map->GetRandomValidPoint();
+					App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ENEMY_TYPE::ARCHER_TIER_1);
+				}
 
-				enemy = App->map->GetRandomValidPoint();
-				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ENEMY_TYPE::ARCHER_TIER_1);
+				it = App->map->tier2PerLevel.begin();
+				std::advance(it, lvlIndex);
+				for (int i = 0; i < (*it); i++)
+				{
+					iPoint enemy = App->map->GetRandomValidPoint();
+					App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ENEMY_TYPE::ARCHER_TIER_2);
+				}
 
-				enemy = App->map->GetRandomValidPoint();
-				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ENEMY_TYPE::ARCHER_TIER_1);
-
-				enemy = App->map->GetRandomValidPoint();
-				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ENEMY_TYPE::ARCHER_TIER_1);
-
-				enemy = App->map->GetRandomValidPoint();
-				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ENEMY_TYPE::ARCHER_TIER_1);
-
-				enemy = App->map->GetRandomValidPoint();
-				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ENEMY_TYPE::ARCHER_TIER_1);
+				it = App->map->tier3PerLevel.begin();
+				std::advance(it, lvlIndex);
+				for (int i = 0; i < (*it); i++)
+				{
+					iPoint enemy = App->map->GetRandomValidPoint();
+					App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ENEMY_TYPE::ARCHER_TIER_3);
+				}
+				
 
 				App->items->Activate();
 

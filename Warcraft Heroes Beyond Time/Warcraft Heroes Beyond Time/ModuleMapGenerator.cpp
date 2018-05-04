@@ -41,9 +41,14 @@ bool MapGenerator::Awake(pugi::xml_node& mapNode)
 
 	for (register pugi::xml_node aux_node = mapNode.child("lvl"); aux_node; aux_node = aux_node.next_sibling("lvl"))
 	{
-		pugi::xml_node gridNode = aux_node.child("sizeGrid");
-		gridSizePerLevel.push_front({ gridNode.attribute("x").as_int(),gridNode.attribute("y").as_int() });
-		iterationsPerLevel.push_front(aux_node.child("sizeDungeon").attribute("iterations").as_int());
+		pugi::xml_node actualNode = aux_node.child("sizeGrid");
+		gridSizePerLevel.push_back({ actualNode.attribute("x").as_int(),actualNode.attribute("y").as_int() });
+		iterationsPerLevel.push_back(aux_node.child("sizeDungeon").attribute("iterations").as_int());
+
+		actualNode = aux_node.child("archers");
+		tier1PerLevel.push_back(actualNode.attribute("tier1").as_int());
+		tier2PerLevel.push_back(actualNode.attribute("tier2").as_int());
+		tier3PerLevel.push_back(actualNode.attribute("tier3").as_int());
 
 		numberOfLevels++;
 	}
