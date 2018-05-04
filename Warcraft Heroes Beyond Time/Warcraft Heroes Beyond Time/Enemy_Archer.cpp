@@ -179,8 +179,8 @@ void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 			case PlayerAttack::P_Attack_Type::DMGBALL_ITEM:
 			{
 				App->audio->PlayFx(App->audio->ArcherDamaged);
-				live -= attack->damage;;
-				if (live <= 0)
+				numStats.hp -= attack->damage;;
+				if (numStats.hp <= 0)
 				{
 					if (state != ARCHER_STATE::ARCHER_DIE)
 						initDie();
@@ -189,8 +189,8 @@ void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 			}
 			case PlayerAttack::P_Attack_Type::SHIT:
 			{
-				live -= attack->damage;
-				if (live <= 0)
+				numStats.hp -= attack->damage;
+				if (numStats.hp <= 0)
 					if (state != ARCHER_STATE::ARCHER_DIE)
 						initDie();
 			}
@@ -210,8 +210,8 @@ void Enemy_Archer::OnCollisionContinue(Collider* yours, Collider* collideWith)
 		{
 			case PlayerAttack::P_Attack_Type::SHIT:
 			{
-				live -= attack->damage;
-				if (live <= 0)
+				numStats.hp -= attack->damage;
+				if (numStats.hp <= 0)
 					if (state != ARCHER_STATE::ARCHER_DIE)
 						initDie();
 			}
