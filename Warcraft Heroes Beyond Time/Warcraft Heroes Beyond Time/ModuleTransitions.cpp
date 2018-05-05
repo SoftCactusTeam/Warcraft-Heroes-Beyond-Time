@@ -121,8 +121,8 @@ void ModuleTransitions::SliderFade()
 			}
 			if (start_on) {
 				on->Activate();
-
 				App->scene->paused = false;
+				
 			}
 
 			total_time += total_time;
@@ -145,5 +145,4 @@ void ModuleTransitions::SliderFade()
 	Slider_rect.w = normalized * screen.w;
 	SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, 255.0f);
 	SDL_RenderFillRect(App->render->renderer, &Slider_rect);
-
 }
