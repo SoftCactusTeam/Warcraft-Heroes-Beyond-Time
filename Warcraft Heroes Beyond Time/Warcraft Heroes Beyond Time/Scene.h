@@ -69,11 +69,11 @@ public:
 	PortalEntity* portal = nullptr;
 
 	GUIWindow* ItemSelection = nullptr;
+	GUIWindow* PauseMenu = nullptr;
 
 
 private:
 
-	GUIWindow* PauseMenu = nullptr;
 
 	uint currentPercentAudio = 0u;
 	

@@ -182,7 +182,8 @@ void Console::SwitchWrittingState()
 		
 	else
 	{
-		App->scene->paused = false;
+		if(App->scene->PauseMenu == nullptr)
+			App->scene->paused = false;
 		box->DisableInput();
 		box->ClearBox();
 		App->scene->player->Walk(true);
