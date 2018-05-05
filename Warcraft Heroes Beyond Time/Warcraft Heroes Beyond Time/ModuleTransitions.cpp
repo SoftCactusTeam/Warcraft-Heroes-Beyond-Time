@@ -145,5 +145,54 @@ void ModuleTransitions::SliderFade()
 	Slider_rect.w = normalized * screen.w;
 	SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, 255.0f);
 	SDL_RenderFillRect(App->render->renderer, &Slider_rect);
+}
 
+SDL_Texture* ModuleTransitions::getTexturebyRadius(iPoint pos, uint radius, uint w, uint h)
+{
+	SDL_Surface* surface = SDL_CreateRGBSurface(0, w, h, 32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
+
+	for (int y = 0; y < h; ++y)
+	{
+		for (int x = 0; x < w; ++x)
+		{
+			float distance = sqrt(pow(x - pos.x, 2) + pow(y - pos.y, 2));
+
+			uint32 pixel_color = distance > radius ? 0x000000FF : 0x00000000; //RRGGBBAA, in hexadecimal
+			int bpp = surface->format->BytesPerPixel;
+
+			/* Here p is the address to the pixel we want to set */
+			Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
+
+			switch (bpp) {
+			case 1:
+				*p = pixel_color;
+				break;
+
+			case 2:
+				*(Uint16 *)p = pixel_color;
+				break;
+
+			case 3:
+				if (SDL_BYTEORDER == SDL_BIG_ENDIAN) {
+					p[0] = (pixel_color >> 16) & 0xff;
+					p[1] = (pixel_color >> 8) & 0xff;
+					p[2] = pixel_color & 0xff;
+				}
+				else {
+					p[0] = pixel_color & 0xff;
+					p[1] = (pixel_color >> 8) & 0xff;
+					p[2] = (pixel_color >> 16) & 0xff;
+				}
+				break;
+
+			case 4:
+				*(Uint32 *)p = pixel_color;
+				break;
+			}
+		}
+	}
+
+	SDL_Texture* tex = SDL_CreateTextureFromSurface(App->render->renderer, surface);
+	SDL_FreeSurface(surface);
+	return tex;
 }
