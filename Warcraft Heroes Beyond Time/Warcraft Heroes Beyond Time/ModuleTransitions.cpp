@@ -185,8 +185,8 @@ void ModuleTransitions::CircleFade()
 	}
 
 	// TEST THIS
-	SDL_Texture* toBlit = GetTexturebyRadius({ screen.w / 2, screen.h / 2 }, 30, screen.w * 4, screen.h * 4);
-	App->render->Blit(toBlit,0,0);
+	SDL_Texture* toBlit = GetTexturebyRadius({ screen.w / 2, screen.h / 2}, 100, screen.w, screen.h);
+	App->render->Blit(toBlit,0,0, nullptr, 1, 0);
 	SDL_DestroyTexture(toBlit);
 }
 
