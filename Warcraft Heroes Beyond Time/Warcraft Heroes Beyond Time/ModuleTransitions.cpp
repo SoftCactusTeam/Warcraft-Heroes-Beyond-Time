@@ -121,8 +121,8 @@ void ModuleTransitions::SliderFade()
 			}
 			if (start_on) {
 				on->Activate();
-
 				App->scene->paused = false;
+				
 			}
 
 			total_time += total_time;
