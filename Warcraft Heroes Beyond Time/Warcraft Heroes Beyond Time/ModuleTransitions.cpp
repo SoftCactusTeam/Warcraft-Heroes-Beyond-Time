@@ -51,7 +51,7 @@ bool ModuleTransitions::PostUpdate()
 	switch (thisFade)
 	{
 	case slider_fade:
-		SliderFade();
+		CircleFade();
 		break;
 	}
 
@@ -147,7 +147,50 @@ void ModuleTransitions::SliderFade()
 	SDL_RenderFillRect(App->render->renderer, &Slider_rect);
 }
 
-SDL_Texture* ModuleTransitions::getTexturebyRadius(iPoint pos, uint radius, uint w, uint h)
+void ModuleTransitions::CircleFade()
+{
+	now = SDL_GetTicks() - start_time;
+	float normalized = MIN(1.0f, (float)now / (float)total_time);
+
+	switch (current_step)
+	{
+	case fade_step::fade_to_black:
+
+		if (now >= total_time) {
+
+			if (cleanup_off) {
+				off->DeActivate();
+			}
+			if (start_on) {
+				on->Activate();
+				App->scene->paused = false;
+				
+			}
+
+			total_time += total_time;
+			start_time = SDL_GetTicks();
+
+			current_step = fade_from_black;
+		}
+		break;
+
+	case fade_step::fade_from_black:
+
+		normalized = 1.0f - normalized;
+
+		if (now >= total_time) {
+			current_step = fade_step::none;
+		}
+		break;
+	}
+
+	// TEST THIS
+	SDL_Texture* toBlit = GetTexturebyRadius({ screen.w / 2, screen.h / 2 }, 30, screen.w * 4, screen.h * 4);
+	App->render->Blit(toBlit,0,0);
+	SDL_DestroyTexture(toBlit);
+}
+
+SDL_Texture* ModuleTransitions::GetTexturebyRadius(iPoint pos, uint radius, uint w, uint h)
 {
 	SDL_Surface* surface = SDL_CreateRGBSurface(0, w, h, 32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
 

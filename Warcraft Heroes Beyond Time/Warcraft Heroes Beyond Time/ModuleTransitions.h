@@ -38,11 +38,11 @@ public:
 	fade_step GetStep() const;
 	Uint32 GetNow() const;
 	Uint32 GetTotalTime() const;
-	SDL_Texture* getTexturebyRadius(iPoint pos, uint radius, uint w, uint h);
+	SDL_Texture* GetTexturebyRadius(iPoint pos, uint radius, uint w, uint h);
 
 private:
 	void SliderFade();
-
+	void CircleFade();
 private:
 	Module* off;
 	Module* on;
