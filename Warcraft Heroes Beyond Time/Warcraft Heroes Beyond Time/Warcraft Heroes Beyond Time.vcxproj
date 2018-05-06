@@ -126,6 +126,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AngelsGuardItem.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="ArcherArrow.cpp" />
     <ClCompile Include="Block.cpp" />
@@ -186,6 +187,7 @@
     <ClCompile Include="WCItem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AngelsGuardItem.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="ArcherArrow.h" />

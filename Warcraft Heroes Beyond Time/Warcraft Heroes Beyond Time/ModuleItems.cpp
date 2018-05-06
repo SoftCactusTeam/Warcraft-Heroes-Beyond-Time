@@ -3,7 +3,7 @@
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
 #include "DMGBallItem.h"
-
+#include "AngelsGuardItem.h"
 #include "FreezeBallItem.h"
 
 
@@ -18,6 +18,8 @@ float ModuleItems::frozenBallChance = 0.0f;
 float ModuleItems::slowShitPercent = 0.0f;
 float ModuleItems::slowShitSeconds = 0.0f;
 float ModuleItems::dmgShitDamage = 0.0f;
+
+bool ModuleItems::revived = false;
 
 bool ModuleItems::Awake(pugi::xml_node& itemsNode)
 {
@@ -103,6 +105,10 @@ void ModuleItems::loadItemsPull()
 
 	FEARBallItem* Fearball_Item = new FEARBallItem();
 	availableItems.push_back(Fearball_Item);
+
+	AngelsGuardItem* Angels_Guard_Item = new AngelsGuardItem();
+	availableItems.push_back(Angels_Guard_Item);
+
 }
 
 bool ModuleItems::equipItem(Item* item)

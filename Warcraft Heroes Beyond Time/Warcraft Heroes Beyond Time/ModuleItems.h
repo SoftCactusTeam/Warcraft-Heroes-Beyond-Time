@@ -64,6 +64,8 @@ public:
 	static float slowShitSeconds;
 	static float slowShitPercent;
 
+	static bool revived;
+
 private:
 	
 	std::vector<Item*> availableItems;

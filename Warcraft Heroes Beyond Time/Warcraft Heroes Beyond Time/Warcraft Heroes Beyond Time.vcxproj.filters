@@ -172,6 +172,9 @@
     <ClCompile Include="FEARBallItem.cpp">
       <Filter>Items</Filter>
     </ClCompile>
+    <ClCompile Include="AngelsGuardItem.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -363,6 +366,9 @@
       <Filter>Items</Filter>
     </ClInclude>
     <ClInclude Include="FEARBallItem.h">
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="AngelsGuardItem.h">
       <Filter>Items</Filter>
     </ClInclude>
   </ItemGroup>
