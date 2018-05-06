@@ -11,6 +11,7 @@
 
 class Collider;
 struct SDL_Texture;
+struct GUIImage;
 
 class PlayerEntity : public DynamicEntity
 {
@@ -29,6 +30,8 @@ protected:
 	float speed = 250.0f;
 	bool move = true;
 	bool damaged = false;
+
+	GUIImage* bloodImage = nullptr;
 
 	float damagedConfigCD = 0.0f; //This will be the one loaded from config.xml
 	float damagedCD = 0.0f;
@@ -111,8 +114,6 @@ public:
 	float t = 0.0f;
 	fPoint startPos = { 0.0f, 0.0f };
 	void ResetDash();
-	
-
 
 	//Camera culling
 	SDL_Rect freeZone;

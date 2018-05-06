@@ -52,7 +52,8 @@ public:
 	GUIElem* CreateItemContainer(fPoint localPos, Item* item, GUIElem* parent, Module* listener = nullptr);
 
 	bool DestroyElem(GUIElem* element);
-	SDL_Texture* getAtlas() const;
+	SDL_Texture* GetAtlas() const;
+	SDL_Texture* GetBloodAtlas() const { return bloodAtlas; }
 	char* getVersion() const;
 
 public:
@@ -64,6 +65,7 @@ public:
 
 private:
 	SDL_Texture* atlas = nullptr;
+	SDL_Texture* bloodAtlas = nullptr;
 };
 
 
