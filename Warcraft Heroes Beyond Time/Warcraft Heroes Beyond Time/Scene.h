@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "p2Point.h"
+#include "ModuleEntitySystem.h"
 
 #include "Animation.h"
 
@@ -58,6 +59,8 @@ public:
 	} actual_scene = Stages::MAIN_MENU;
 
 	PlayerEntity* player = nullptr;
+	EntitySystem::PlayerStats playerStats;
+
 	ChestEntity* lvlChest = nullptr;
 	Guldan* guldan = nullptr;
 	bool paused = false;

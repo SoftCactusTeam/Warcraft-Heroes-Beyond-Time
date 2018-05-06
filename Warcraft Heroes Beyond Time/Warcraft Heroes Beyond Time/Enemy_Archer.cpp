@@ -149,23 +149,29 @@ bool Enemy_Archer::Finish()
 bool Enemy_Archer::Draw()
 {
 	bool ret = true;
-	if(damaged)
-		ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), texture, anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot(), ModulePrinter::Pivots::UPPER_LEFT, {0,0}, 0, { 255,100,100,255 });
-	else
+	
+	switch (tier)
 	{
-		switch (tier)
-		{
-		case 1:
+	case 1:
+		if(damaged)
+			ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), App->entities->spritesheetsEntities[WHITE_ARCHER], anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot(), ModulePrinter::Pivots::UPPER_LEFT, { 0,0 }, 0, { 255,100,100,255 });
+		else
 			ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), App->entities->spritesheetsEntities[WHITE_ARCHER], anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot());
-			break;
-		case 2:
+		break;
+	case 2:
+		if (damaged)
+			ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), App->entities->spritesheetsEntities[ORANGE_ARCHER], anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot(), ModulePrinter::Pivots::UPPER_LEFT, { 0,0 }, 0, { 255,100,100,255 });
+		else
 			ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), App->entities->spritesheetsEntities[ORANGE_ARCHER], anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot());
-			break;
-		case 3:
+		break;
+	case 3:
+		if (damaged)
+			ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), App->entities->spritesheetsEntities[GREEN_ARCHER], anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot(), ModulePrinter::Pivots::UPPER_LEFT, { 0,0 }, 0, { 255,100,100,255 });
+		else
 			ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), App->entities->spritesheetsEntities[GREEN_ARCHER], anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot());
-			break;
-		}
+		break;
 	}
+	
 	return ret;
 }
 

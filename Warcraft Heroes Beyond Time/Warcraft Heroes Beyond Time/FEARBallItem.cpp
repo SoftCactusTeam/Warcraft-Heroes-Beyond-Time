@@ -69,7 +69,7 @@ bool FEARBallItem::Draw()
 {
 	//Use the ModulePrinter to print all the stuff.
 	iPoint Draw_pos = { (int)(App->scene->player->pos.x + Ball_pos.x), (int)(App->scene->player->pos.y + Ball_pos.y) };
-	App->printer->PrintSprite(Draw_pos, App->items->getItemsTexture(), STICK_ITEM, 0, ModulePrinter::Pivots::UPPER_LEFT, { 0,0 }, ModulePrinter::Pivots::CENTER, { 0,0 });
+	App->printer->PrintSprite(Draw_pos, App->items->getItemsTexture(), STICK_ITEM, 5, ModulePrinter::Pivots::UPPER_LEFT, { 0,0 }, ModulePrinter::Pivots::CENTER, { 0,0 });
 	return true;
 }
 
