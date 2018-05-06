@@ -190,18 +190,25 @@ void ModuleTransitions::CircularFade()
 
 		if (now >= total_time) {
 			current_step = fade_step::none;
+			App->scene->player->anim = &App->scene->player->idleUp;
 		}
 		break;
 	}
 
-	if (App->scene->player->anim == &App->scene->player->idleUp)
-		App->scene->player->anim = &App->scene->player->idleLeft;
-	else if (App->scene->player->anim == &App->scene->player->idleLeft)
-		App->scene->player->anim = &App->scene->player->idleDown;
-	else if (App->scene->player->anim == &App->scene->player->idleDown)
-		App->scene->player->anim = &App->scene->player->idleRight;
-	else if (App->scene->player->anim == &App->scene->player->idleRight)
-		App->scene->player->anim = &App->scene->player->idleUp;
+	rotationCont += 1.0f * App->dt;
+
+	if (rotationCont >= 0.05f)
+	{
+		rotationCont = 0.0f;
+		if (App->scene->player->anim == &App->scene->player->idleUp)
+			App->scene->player->anim = &App->scene->player->idleLeft;
+		else if (App->scene->player->anim == &App->scene->player->idleLeft)
+			App->scene->player->anim = &App->scene->player->idleDown;
+		else if (App->scene->player->anim == &App->scene->player->idleDown)
+			App->scene->player->anim = &App->scene->player->idleRight;
+		else if (App->scene->player->anim == &App->scene->player->idleRight)
+			App->scene->player->anim = &App->scene->player->idleUp;
+	}
 
 	SDL_Texture* toBlit = GetTexturebyRadius({ (int)App->scene->player->pos.x + 10 + App->render->camera.x,(int)App->scene->player->pos.y + 10 + App->render->camera.y}, normalized * 360, screen.w, screen.h);
 	App->render->Blit(toBlit, 0, 0, nullptr, 1, 0);

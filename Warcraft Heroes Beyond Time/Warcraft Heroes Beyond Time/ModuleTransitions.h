@@ -54,9 +54,8 @@ private:
 
 	SDL_Rect screen;
 	SDL_Rect Slider_rect;
-	float dt = 0.0f;
 	fades thisFade;
-
+	float rotationCont = 0.0f;
 	bool cleanup_off = true;
 	bool start_on = true;
 };
