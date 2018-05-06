@@ -78,7 +78,7 @@ public:
 	// ~~~~~~~~~~~~~~~~~~ STATE MACHINE
 
 	void LoadAnimations();
-	void ShootArrow(fPoint desviation = fPoint(0, 0));
+	void ShootArrow(fPoint objective = fPoint(-1, -1), fPoint desviation = fPoint(0, 0));
 
 public:
 	ARCHER_STATE state;
@@ -95,6 +95,8 @@ public:
 private:
 	// Normal Atac Variables
 	bool hasAttacked = false;
+	FIXED_ANGLE initialAngle = FIXED_ANGLE::NON_ANGLE;
+	fPoint initialPlayerPos;
 	// Fast atac variables
 	int timeToShootAnother = 0;
 	int arrowToShoot = 0;

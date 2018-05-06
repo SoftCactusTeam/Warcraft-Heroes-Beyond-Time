@@ -12,7 +12,7 @@
 struct ArcherArrowInfo : public ProjectileInfo
 {
 	ArcherArrowInfo() {};
-	ArcherArrowInfo(const ArcherArrowInfo& info) : ProjectileInfo((const ProjectileInfo&)info), pos(info.pos), direction(info.direction), deadTimer(info.deadTimer), speed(info.speed), damageArrow(info.damageArrow) {};
+	ArcherArrowInfo(const ArcherArrowInfo& info) : ProjectileInfo((const ProjectileInfo&)info), pos(info.pos), direction(info.direction), deadTimer(info.deadTimer), speed(info.speed), damageArrow(info.damageArrow), initialPlayerPos(info.initialPlayerPos) {};
 
 	fPoint rotationPivot = { 0.0f,0.0f };
 	double radiusToIncrease = 0.0f;
@@ -20,6 +20,7 @@ struct ArcherArrowInfo : public ProjectileInfo
 
 	fPoint			pos;
 	fPoint			direction;
+	fPoint			initialPlayerPos;
 	float			speed = 0.0f;
 	Collider*		arrowCollider = nullptr;
 

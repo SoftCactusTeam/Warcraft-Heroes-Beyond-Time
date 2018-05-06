@@ -14,7 +14,7 @@ ArcherArrow::ArcherArrow(const ArcherArrowInfo* info, Projectile_type type) : Pr
 
 	toData = (ArcherArrowInfo*)info;
 
-	toData->angle = atan2(toData->pos.y - App->scene->player->pos.y, toData->pos.x - App->scene->player->pos.x);
+	toData->angle = atan2(toData->pos.y - info->initialPlayerPos.y, toData->pos.x - info->initialPlayerPos.x);
 	if (toData->angle > 0)
 		toData->angle = toData->angle * 360 / (2 * PI);
 	else

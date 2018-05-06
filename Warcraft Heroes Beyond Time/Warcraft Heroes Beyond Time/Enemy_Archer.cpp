@@ -259,7 +259,9 @@ void Enemy_Archer::initAtac()
 {
 	state = ARCHER_STATE::ARCHER_BASIC_ATAC;
 	accountantPrincipal = SDL_GetTicks() + numStats.preAttac;
-	anim = &animAtac[LookAtPlayer()];
+	initialAngle = LookAtPlayer();
+	initialPlayerPos = App->scene->player->pos;
+	anim = &animAtac[initialAngle];
 	anim->Reset();
 	pathVector.Clear();
 	hasAttacked = false;
@@ -458,10 +460,11 @@ void Enemy_Archer::doAtac()
 		{
 			hasAttacked = true;
 			accountantPrincipal = SDL_GetTicks() + numStats.time_between_attacks;
-			ShootArrow();
+			ShootArrow(initialPlayerPos);
 			arrowsShooted++;
 		}
-		anim = &animAtac[LookAtPlayer()];
+		//anim = &animAtac[LookAtPlayer()];
+		anim = &animAtac[initialAngle];
 	}
 }
 
@@ -653,10 +656,15 @@ void Enemy_Archer::UpdateEffects()
 	}
 }
 
-void Enemy_Archer::ShootArrow(fPoint desviation)
+void Enemy_Archer::ShootArrow(fPoint objective, fPoint desviation)
 {
 	App->audio->PlayFx(App->audio->ArrowSound);
-	fPoint directionShoot = fPoint(App->scene->player->pos.x/* + App->scene->player->anim->GetCurrentRect().w / 2*/ , App->scene->player->pos.y/* + App->scene->player->anim->GetCurrentRect().h / 2*/);
+	fPoint directionShoot;
+	if (objective.x == -1)
+		directionShoot = fPoint(App->scene->player->pos.x/* + App->scene->player->anim->GetCurrentRect().w / 2*/ , App->scene->player->pos.y/* + App->scene->player->anim->GetCurrentRect().h / 2*/);
+	else
+		directionShoot = fPoint(objective.x/* + App->scene->player->anim->GetCurrentRect().w / 2*/, objective.y/* + App->scene->player->anim->GetCurrentRect().h / 2*/);
+
 	directionShoot.x -= (pos.x + 16/*Arrow Width & Height*/) + desviation.x;
 	directionShoot.y -= (pos.y + 16) + desviation.y;
 
@@ -704,6 +712,11 @@ void Enemy_Archer::ShootArrow(fPoint desviation)
 	ArcherArrowInfo info;
 	info.pos = position;
 	info.direction = directionShoot;
+	if (objective.x == -1)
+		info.initialPlayerPos = App->scene->player->pos;
+	else
+		info.initialPlayerPos = objective;
+
 	info.deadTimer = numStats.arrows_life;
 	info.speed = numStats.arrows_speed;
 	info.damageArrow = numStats.damage;
