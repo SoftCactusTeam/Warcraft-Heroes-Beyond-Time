@@ -280,7 +280,11 @@ bool Scene::PostUpdate()
 	if (restart)
 	{
 		restart = false;
-		App->transitions->StartTransition(this, this, 2.0f, fades::slider_fade);
+
+		if (next_scene == Stages::INGAME && actual_scene != Stages::MAIN_MENU)
+			App->transitions->StartTransition(this, this, 2.0f, fades::circular_fade);
+		else
+			App->transitions->StartTransition(this, this, 2.0f, fades::slider_fade);
 	}
 
 	return ret;

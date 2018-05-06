@@ -15,6 +15,8 @@
 #include "SDL/include/SDL_render.h"
 #include "SDL/include/SDL_timer.h"
 
+#include "PlayerEntity.h"
+
 ModuleTransitions::ModuleTransitions()
 {
 	name = "fade";
@@ -51,7 +53,11 @@ bool ModuleTransitions::PostUpdate()
 	switch (thisFade)
 	{
 	case slider_fade:
-		CircleFade();
+		SliderFade();
+		break;
+
+	case circular_fade:
+		CircularFade();
 		break;
 	}
 
@@ -147,14 +153,17 @@ void ModuleTransitions::SliderFade()
 	SDL_RenderFillRect(App->render->renderer, &Slider_rect);
 }
 
-void ModuleTransitions::CircleFade()
+void ModuleTransitions::CircularFade()
 {
 	now = SDL_GetTicks() - start_time;
 	float normalized = MIN(1.0f, (float)now / (float)total_time);
+	normalized = 1.0f - normalized;
 
 	switch (current_step)
 	{
 	case fade_step::fade_to_black:
+		normalized = MIN(1.0f, (float)now / (float)total_time);
+		normalized = 1.0f - normalized;
 
 		if (now >= total_time) {
 
@@ -176,7 +185,7 @@ void ModuleTransitions::CircleFade()
 
 	case fade_step::fade_from_black:
 
-		normalized = 1.0f - normalized;
+		normalized = MIN(1.0f, (float)now / (float)total_time);
 
 		if (now >= total_time) {
 			current_step = fade_step::none;
@@ -184,8 +193,7 @@ void ModuleTransitions::CircleFade()
 		break;
 	}
 
-	// TEST THIS
-	SDL_Texture* toBlit = GetTexturebyRadius({ screen.w / 2, screen.h / 2}, 100, screen.w, screen.h);
+	SDL_Texture* toBlit = GetTexturebyRadius({ (int)App->scene->player->pos.x + App->render->camera.x,(int)App->scene->player->pos.y + App->render->camera.y}, normalized * 360, screen.w, screen.h);
 	App->render->Blit(toBlit,0,0, nullptr, 1, 0);
 	SDL_DestroyTexture(toBlit);
 }

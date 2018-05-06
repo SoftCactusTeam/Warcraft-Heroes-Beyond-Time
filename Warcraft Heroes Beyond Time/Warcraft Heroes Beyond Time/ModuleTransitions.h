@@ -12,9 +12,8 @@ struct UILabel;
 enum fades
 {
 	no_fade,
-	normal_fade,
 	slider_fade,
-	total_black_fade
+	circular_fade,
 };
 
 enum fade_step
@@ -32,7 +31,7 @@ public:
 
 	bool Start();
 	bool PostUpdate();
-	bool StartTransition(Module* module_off, Module* module_on, float time = 1.0f, fades kind_of_fade = normal_fade, bool cleanup_off = true, bool start_on = true);
+	bool StartTransition(Module* module_off, Module* module_on, float time = 1.0f, fades kind_of_fade = slider_fade, bool cleanup_off = true, bool start_on = true);
 
 	bool IsFading() const;
 	fade_step GetStep() const;
@@ -42,7 +41,7 @@ public:
 
 private:
 	void SliderFade();
-	void CircleFade();
+	void CircularFade();
 private:
 	Module* off;
 	Module* on;
