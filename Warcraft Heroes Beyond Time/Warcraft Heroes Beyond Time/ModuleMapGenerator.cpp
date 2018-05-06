@@ -46,9 +46,9 @@ bool MapGenerator::Awake(pugi::xml_node& mapNode)
 		iterationsPerLevel.push_back(aux_node.child("sizeDungeon").attribute("iterations").as_int());
 
 		actualNode = aux_node.child("archers");
-		tier1PerLevel.push_back(actualNode.attribute("tier1").as_int());
-		tier2PerLevel.push_back(actualNode.attribute("tier2").as_int());
-		tier3PerLevel.push_back(actualNode.attribute("tier3").as_int());
+		SDL_Rect archerPerLevel = { actualNode.attribute("quantity").as_int(), actualNode.child("tier1").attribute("percentage").as_int(), actualNode.child("tier2").attribute("percentage").as_int(), actualNode.child("tier3").attribute("percentage").as_int() };
+
+		archers.push_back(archerPerLevel);
 
 		numberOfLevels++;
 	}
