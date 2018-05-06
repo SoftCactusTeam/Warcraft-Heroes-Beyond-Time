@@ -22,9 +22,11 @@ ArcherArrow::ArcherArrow(const ArcherArrowInfo* info, Projectile_type type) : Pr
 	toData->angle -= 90;
 
 	toData->tempoAtWall = -1;
-	toData->arrowCollider = *App->colliders->AddCollider({ 0,0,8,8 }, Collider::ColliderType::ENEMY_ATTACK, this).lock();
+
+	toData->arrowCollider = *App->colliders->AddEnemyAttackCollider({ 0,0,8,8 }, this, info->damageArrow, EnemyAttack::E_Attack_Type::ARROW).lock();
 	toData->layer = 2;
 	toData->deadTimer += SDL_GetTicks();
+	deleteArrow = false;
 }
 
 ArcherArrow::~ArcherArrow()
@@ -37,8 +39,15 @@ bool ArcherArrow::Update(float dt)
 {
 	bool ret = true;
 
-	toData->arrowCollider->rectArea.x = (int)toData->pos.x;
-	toData->arrowCollider->rectArea.y = (int)toData->pos.y;
+	if (deleteArrow == true)
+		App->projectiles->DestroyProjectile(this);
+
+	if (toData->arrowCollider != nullptr)
+	{
+		toData->arrowCollider->rectArea.x = (int)toData->pos.x  + toData->direction.x * 12 /*16 - 4*/;
+		toData->arrowCollider->rectArea.y = (int)toData->pos.y  + toData->direction.y * 12;
+	}
+	
 
 	if (toData->tempoAtWall != -1)
 	{
@@ -71,16 +80,20 @@ void ArcherArrow::OnCollision(Collider* yours, Collider* collideWith)
 	case Collider::ColliderType::WALL:
 		toData->tempoAtWall = 1000 + SDL_GetTicks();
 		break;
-	//case Collider::ColliderType::ENTITY:
-	//	Entity* entOwner = (Entity*)collideWith->owner;
-	//	if (entOwner->entityType == Entity::EntityType::DYNAMIC_ENTITY)
-	//	{
-	//		DynamicEntity* dynOwner = (DynamicEntity*)collideWith->owner;
-	//		if (dynOwner->dynamicType == DynamicEntity::DynamicType::PLAYER)
-	//			// AIXO SI L'ALTRE ES UN PLAYER
-	//			App->projectiles->DestroyProjectile(this);
-	//	}
-	//	break;
+	case Collider::ColliderType::ENTITY:
+		Entity* entOwner = (Entity*)collideWith->owner;
+		if (entOwner->entityType == Entity::EntityType::DYNAMIC_ENTITY)
+		{
+			DynamicEntity* dynOwner = (DynamicEntity*)collideWith->owner;
+			if (dynOwner->dynamicType == DynamicEntity::DynamicType::PLAYER)
+			{
+				PlayerEntity* plaOwner = (PlayerEntity*)collideWith->owner;
+				if (plaOwner->GetDamageCollider() == collideWith)
+					// AIXO SI L'ALTRE ES UN PLAYER
+					deleteArrow = true;
+			}
+		}
+		break;
 	}
 }
 

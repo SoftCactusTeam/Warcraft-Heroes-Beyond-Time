@@ -113,6 +113,7 @@ bool Geyser::Update(float dt)
 				actualAnim = &geyAnims[(uint)GeyserAnimations::explosion];
 				timeUntilExplode = 0.0f;
 				data->layer = 5;
+				projCollider = *App->colliders->AddEnemyAttackCollider({ -3, 0, 25, 74/2 }, this, 50, EnemyAttack::E_Attack_Type::GULDAN_BALL).lock();
 			}
 
 			break;

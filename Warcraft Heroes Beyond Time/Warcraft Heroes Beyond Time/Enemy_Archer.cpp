@@ -39,21 +39,20 @@ Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* textu
 {
 	switch (character)
 	{
-	case ARCHER_TIER_1:
+	case ENEMY_TYPE::ARCHER_TIER_1:
 		numStats = App->entities->archerT1stats;
 		this->tier = 1;
 		break;
-	case ARCHER_TIER_2:
+	case ENEMY_TYPE::ARCHER_TIER_2:
 		numStats = App->entities->archerT2stats;
 		this->tier = 2;
 		break;
-	case ARCHER_TIER_3:
+	case ENEMY_TYPE::ARCHER_TIER_3:
 		numStats = App->entities->archerT3stats;
 		this->tier = 3;
 		break;
 	}
-	
-	live = numStats.hp;
+
 	//USAR SOLO VARIABLES EN NUMSTATS, SI SE NECESITA ALGUNA MÁS SE COMENTA CON EL EQUIPO Y SE DECIDE SI SE AÑADE. TODO CONFIGURABLE DESDE EL XML.
 }
 
@@ -633,10 +632,10 @@ void Enemy_Archer::UpdateEffects()
 void Enemy_Archer::ShootArrow(fPoint desviation)
 {
 	App->audio->PlayFx(App->audio->ArrowSound);
-	fPoint directionShoot = fPoint(App->scene->player->pos.x + App->scene->player->anim->GetCurrentRect().w / 2 , App->scene->player->pos.y + App->scene->player->anim->GetCurrentRect().h / 2);
+	fPoint directionShoot = fPoint(App->scene->player->pos.x/* + App->scene->player->anim->GetCurrentRect().w / 2*/ , App->scene->player->pos.y/* + App->scene->player->anim->GetCurrentRect().h / 2*/);
+	directionShoot.x -= (pos.x + 16/*Arrow Width & Height*/) + desviation.x;
+	directionShoot.y -= (pos.y + 16) + desviation.y;
 
-	directionShoot.x -= pos.x + desviation.x;
-	directionShoot.y -= pos.y + desviation.y;
 	fPoint copyToDivideDirectionShoot = directionShoot;
 	if (copyToDivideDirectionShoot.x < 0)
 		copyToDivideDirectionShoot.x *= -1;
@@ -648,8 +647,7 @@ void Enemy_Archer::ShootArrow(fPoint desviation)
 	directionShoot.x /= total;
 	directionShoot.y /= total;
 
-	fPoint position;
-	position = fPoint(pos.x + anim->GetCurrentRect().w / 2, pos.y + anim->GetCurrentRect().h / 2);
+	fPoint position = fPoint(pos.x + anim->GetCurrentRect().w / 2, pos.y + anim->GetCurrentRect().h / 2);
 	/*switch (LookAtPlayer())
 	{
 	case FIXED_ANGLE::UP:
@@ -684,6 +682,7 @@ void Enemy_Archer::ShootArrow(fPoint desviation)
 	info.direction = directionShoot;
 	info.deadTimer = numStats.arrows_life;
 	info.speed = numStats.arrows_speed;
+	info.damageArrow = numStats.damage;
 
 	App->projectiles->AddProjectile(&info, Projectile_type::archer_arrow);	
 }

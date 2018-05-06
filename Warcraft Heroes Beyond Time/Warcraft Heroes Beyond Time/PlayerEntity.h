@@ -89,6 +89,8 @@ public:
 
 	virtual bool Finish();
 	
+	Collider* GetDamageCollider() const;
+
 	//Stats functions
 	void SetDamage(int damage, bool setStateDamage);
 	void IncreaseEnergy(int percent);

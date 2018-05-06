@@ -18,6 +18,8 @@
 #define TIME_BETWEEN_BALLS_SPIRAL 0.1f
 #define BOSS_CENTER { pos.x + 34, pos.y + 34 }
 
+#define OFFSET_TIME_SPIRAL_RECOVERY 5.0f
+
 struct FelBall;
 struct Collider;
 
@@ -28,6 +30,7 @@ private:
 	Animation idle, teleport, inverseTeleport, dead, startGeneratingBalls, generatingBalls, generatingBallsInverse, hello, restoreEnergy;
 
 	Collider* guldanCollider = nullptr;
+	Collider* wallGuldanCollider = nullptr;
 
 	// GENERATING BALLS VARIABLES
 	int contBalls = 0;
@@ -41,6 +44,8 @@ private:
 	float spiralAngle = 0.0f;
 	float spiralRadiusIncreasement = 0.0f;
 	float timeToComeBackSpiral = 0.0f;
+	bool SpiralRecoveryOn = false;
+	float timeOffset = 0.0f;
 
 	// TELEPORT
 	fPoint pointToTelerpot[5] = { { 14 * 48 + 10,7 * 48 },{ 10 * 48,6 * 48 },{ 18 * 48,6 * 48 }, {10 * 48, 10 * 48}, { 18 * 48, 10 * 48} };
@@ -115,7 +120,9 @@ public:
 	fPoint SetSpawnPointByAngle(fPoint pointToRotate, fPoint rotationPivot, double angle, double radius) const;
 	float GetTimeToComeBackSpiral() const { return timeToComeBackSpiral; };
 
-	bool Guldan::Draw();
+	void OnCollision(Collider* yours, Collider* collideWith);
+
+	bool Draw();
 
 };
 

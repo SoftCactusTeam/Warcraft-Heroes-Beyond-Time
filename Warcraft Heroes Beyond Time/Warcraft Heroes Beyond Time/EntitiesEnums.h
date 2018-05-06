@@ -17,7 +17,7 @@ enum SPRITESHEETS
 	GREEN_ARCHER
 };
 
-enum ENEMY_TYPE
+enum class ENEMY_TYPE
 {
 	NO_TIER = -1,
 	ARCHER_TIER_1,

@@ -37,7 +37,7 @@ class Spawn_ConsoleOrder : public ConsoleOrder
 	{
 		if (parameter == "footman")
 		{
-			App->entities->AddEnemy({ App->scene->player->pos.x, App->scene->player->pos.y - 60 }, FOOTMAN);
+			//App->entities->AddEnemy({ App->scene->player->pos.x, App->scene->player->pos.y - 60 }, FOOTMAN);
 		}
 		else if (parameter == "thrall")
 		{
@@ -45,7 +45,12 @@ class Spawn_ConsoleOrder : public ConsoleOrder
 		}
 		else if (parameter == "archer")
 		{
-			App->entities->AddEnemy({ App->scene->player->pos.x, App->scene->player->pos.y - 60 }, ARCHER_TIER_1);
+			if(parameterNumeric == 1)
+				App->entities->AddEnemy({ App->scene->player->pos.x, App->scene->player->pos.y - 60 }, ENEMY_TYPE::ARCHER_TIER_1);
+			else if (parameterNumeric == 2)
+				App->entities->AddEnemy({ App->scene->player->pos.x, App->scene->player->pos.y - 60 }, ENEMY_TYPE::ARCHER_TIER_2);
+			else if (parameterNumeric == 3)
+				App->entities->AddEnemy({ App->scene->player->pos.x, App->scene->player->pos.y - 60 }, ENEMY_TYPE::ARCHER_TIER_3);
 		}
 
 		else if (parameter == "wizard")
@@ -150,8 +155,8 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	pugi::xml_node archerT1 = entitiesNode.child("enemies").child("archer_tier1");
 	archerT1stats.maxhp =						archerT1.attribute("hp").as_uint(0);
 	archerT1stats.hp =							archerT1stats.maxhp;
-	archerT1stats.speed =						archerT1.attribute("speed").as_uint(0);
-	archerT1stats.damage =						archerT1.attribute("damage").as_float(0);
+	archerT1stats.speed =						archerT1.attribute("speed").as_uint();
+	archerT1stats.damage =						archerT1.attribute("damage").as_float();
 	archerT1stats.dropping_chance =				archerT1.attribute("dropping_chance").as_uint(0);
 	archerT1stats.strong_attack_chance =		archerT1.attribute("chance_powerful_attack").as_uint();
 	archerT1stats.arrows_life =					archerT1.attribute("arrows_life").as_float();
@@ -372,18 +377,11 @@ void EntitySystem::AddEnemy(fPoint coor, ENEMY_TYPE type)
 {
 	enemiescount++;
 	BROFILER_CATEGORY("AddEnemy", Profiler::Color::Chocolate);
-	EnemyEntity* newEntity = nullptr;
 
-	newEntity = new Enemy_Archer(coor, type, spritesheetsEntities[ARCHER_SHEET]);
-	App->colliders->AddCollider({ -16+20,-16+20,32,32 }, Collider::ColliderType::ENTITY, (Entity*)newEntity);
+	Enemy_Archer* newEntity = new Enemy_Archer(coor, type, spritesheetsEntities[ARCHER_SHEET]);
+	App->colliders->AddCollider({ -16+20,-16+20,32,32 }, Collider::ColliderType::ENTITY, newEntity);
 
 	toSpawn.push_back(newEntity);
-
-	/*case ENEMY_TYPE::FOOTMAN:
-	newEntity = new Enemy_Footman(coor, ENEMY_TYPE::FOOTMAN, spritesheetsEntities[FOOTMAN_SHEET]);
-	App->colliders->AddCollider({ 20,20,32,32 }, Collider::ColliderType::ENTITY, (Entity*)newEntity);
-	break;*/
-
 }
 
 BossEntity* EntitySystem::AddBoss(fPoint coor, BossType type)

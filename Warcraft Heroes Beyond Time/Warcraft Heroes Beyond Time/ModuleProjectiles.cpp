@@ -84,8 +84,6 @@ bool ModuleProjectiles::PostUpdate()
 		toKillProjectilesList.clear();
 	}
 
-	ret = toKillProjectilesList.size() <= 0;
-
 	if (ret)
 	{
 		std::list<Projectile*>::const_iterator it;

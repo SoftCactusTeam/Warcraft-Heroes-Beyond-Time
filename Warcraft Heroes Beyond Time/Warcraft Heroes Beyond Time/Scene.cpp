@@ -126,22 +126,22 @@ bool Scene::Start()
 				App->path->LoadPathMap();
 
 				iPoint enemy = App->map->GetRandomValidPoint();
-				App->entities->AddEnemy({ (float)enemy.x * 46, (float)enemy.y * 46 }, ARCHER_TIER_1);
+				App->entities->AddEnemy({ (float)enemy.x * 46, (float)enemy.y * 46 }, ENEMY_TYPE::ARCHER_TIER_1);
 
 				enemy = App->map->GetRandomValidPoint();
-				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER_TIER_1);
+				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ENEMY_TYPE::ARCHER_TIER_1);
 
 				enemy = App->map->GetRandomValidPoint();
-				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER_TIER_1);
+				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ENEMY_TYPE::ARCHER_TIER_1);
 
 				enemy = App->map->GetRandomValidPoint();
-				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER_TIER_1);
+				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ENEMY_TYPE::ARCHER_TIER_1);
 
 				enemy = App->map->GetRandomValidPoint();
-				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER_TIER_1);
+				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ENEMY_TYPE::ARCHER_TIER_1);
 
 				enemy = App->map->GetRandomValidPoint();
-				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ARCHER_TIER_1);
+				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ENEMY_TYPE::ARCHER_TIER_1);
 
 				App->items->Activate();
 
@@ -307,78 +307,78 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 	bool ret = true;
 	switch (UIelem->type)
 	{
-	case GUIElem::GUIElemType::BUTTON:
-	{
-		Button* button = (Button*)UIelem;
-		switch (_event)
+		case GUIElem::GUIElemType::BUTTON:
 		{
-		case UIEvents::MOUSE_ENTER:
-		{
-			App->audio->PlayFx(App->audio->ButtonHovered);
-			button->atlasRect = Button1MouseHover;
-			break;
-		}
-		case UIEvents::MOUSE_RIGHT_UP:
-		{
-			button->atlasRect = Button1MouseHover;
-			break;
-		}
-		case UIEvents::MOUSE_LEFT_CLICK:
-		{
-			App->audio->PlayFx(App->audio->ButtonClicked);
-			button->atlasRect = Button1Pressed;
-			button->MoveChilds({ 0.0f, 1.0f });
-			break;
-		}
-		case UIEvents::MOUSE_LEAVE:
-		case UIEvents::NO_EVENT:
-		{
-			button->atlasRect = Button1;
-			break;
-		}
-		case UIEvents::MOUSE_LEFT_UP:
-		{
-			button->atlasRect = Button1MouseHover;
-			button->MoveChilds({ 0.0f, -1.0f });
-			switch (button->btype)
+			Button* button = (Button*)UIelem;
+			switch (_event)
 			{
-			case BType::PLAY:
-				App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
-				actual_scene = Stages::INGAME;
-				restart = true;
-				break;
-			case BType::EXIT_GAME:
-				return false;
-				break;
-			case BType::SETTINGS:
-				actual_scene = Stages::SETTINGS;
-				restart = true;
-				break;
-			case BType::GO_MMENU:
-				if (actual_scene == Stages::INGAME)
+				case UIEvents::MOUSE_ENTER:
 				{
-					App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
-					App->audio->setMusicVolume(currentPercentAudio);
-					App->audio->HaltFX();
+					App->audio->PlayFx(App->audio->ButtonHovered);
+					button->atlasRect = Button1MouseHover;
+					break;
 				}
-
-				actual_scene = Stages::MAIN_MENU;
-				lvlIndex = 0;
-				paused = false;
-				restart = true;
-				break;
-			case BType::RESUME:
-				paused = false;
-				App->audio->ResumeFX();
-				App->gui->DestroyElem(PauseMenu);
-				App->audio->setMusicVolume(currentPercentAudio);
-				break;
+				case UIEvents::MOUSE_RIGHT_UP:
+				{
+					button->atlasRect = Button1MouseHover;
+					break;
+				}
+				case UIEvents::MOUSE_LEFT_CLICK:
+				{
+					App->audio->PlayFx(App->audio->ButtonClicked);
+					button->atlasRect = Button1Pressed;
+					button->MoveChilds({ 0.0f, 1.0f });
+					break;
+				}
+				case UIEvents::MOUSE_LEAVE:
+				case UIEvents::NO_EVENT:
+				{
+					button->atlasRect = Button1;
+					break;
+				}
+				case UIEvents::MOUSE_LEFT_UP:
+				{
+					button->atlasRect = Button1MouseHover;
+					button->MoveChilds({ 0.0f, -1.0f });
+					switch (button->btype)
+					{
+						case BType::PLAY:
+							App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
+							actual_scene = Stages::INGAME;
+							restart = true;
+							break;
+						case BType::EXIT_GAME:
+							return false;
+							break;
+						case BType::SETTINGS:
+							actual_scene = Stages::SETTINGS;
+							restart = true;
+							break;
+						case BType::GO_MMENU:
+							if (actual_scene == Stages::INGAME)
+							{
+								App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
+								App->audio->setMusicVolume(currentPercentAudio);
+								App->audio->HaltFX();
+							}
+							actual_scene = Stages::MAIN_MENU;
+							lvlIndex = 0;
+							paused = false;
+							restart = true;
+							break;
+						case BType::RESUME:
+							paused = false;
+							App->audio->ResumeFX();
+							App->gui->DestroyElem(PauseMenu);
+							App->audio->setMusicVolume(currentPercentAudio);
+							break;
+					}
+					break;
+				}
 			}
 			break;
 		}
-		}
-		break;
-	}
+
 	}
 	return ret;
 }
@@ -387,14 +387,11 @@ void Scene::CreateMainMenuScreen()
 {
 	GUIWindow* window = (GUIWindow*)App->gui->CreateGUIWindow({ 0,0 }, { 0,0,0,0 }, nullptr, nullptr);
 
+	//LOGO
+	GUIImage* logo = (GUIImage*)App->gui->CreateGUIImage({ 100,25 }, { 624, 21, 448, 129 }, nullptr);
+	
 	//PLAY BUTTON
-	Button* button = (Button*)App->gui->CreateButton({ 640 / 2 - 158 / 2, 50.0f }, BType::PLAY, this, window);
-
-	/*LabelInfo defLabel;
-	defLabel.color = White;
-	defLabel.fontName = "LifeCraft80";
-	defLabel.text = "PLAY";
-	App->gui->CreateLabel(getPosByResolution({ 55,10 }), defLabel, button, this);*/
+	Button* button = (Button*)App->gui->CreateButton({ 241.0f , 165}, BType::PLAY, this, window);
 
 	LabelInfo defLabel;
 	defLabel.color = White;
@@ -403,8 +400,7 @@ void Scene::CreateMainMenuScreen()
 	App->gui->CreateLabel({ 33,11 }, defLabel, button, this);
 
 	//SETTINGS BUTTON
-	Button* button2 = (Button*)App->gui->CreateButton({ 640 / 2 - 158 / 2, 150.0f }, BType::SETTINGS, this, window);
-
+	Button* button2 = (Button*)App->gui->CreateButton({ 241.0f , 215 }, BType::SETTINGS, this, window);
 	LabelInfo defLabel2;
 	defLabel2.color = White;
 	defLabel2.fontName = "LifeCraft80";
@@ -412,8 +408,7 @@ void Scene::CreateMainMenuScreen()
 	App->gui->CreateLabel({ 42,10 }, defLabel2, button2, this);
 
 	//EXIT GAME BUTTON
-	Button* button3 = (Button*)App->gui->CreateButton({ 640 / 2 - 158 / 2, 250.0f }, BType::EXIT_GAME, this, window);
-
+	Button* button3 = (Button*)App->gui->CreateButton({ 241.0f , 265 }, BType::EXIT_GAME, this, window);
 	LabelInfo defLabel3;
 	defLabel3.color = White;
 	defLabel3.fontName = "LifeCraft80";
@@ -425,7 +420,7 @@ void Scene::CreateMainMenuScreen()
 	versionLabel.color = White;
 	versionLabel.fontName = "Arial30";
 	versionLabel.text = App->gui->getVersion();
-	App->gui->CreateLabel({ 10,340 }, versionLabel, nullptr, nullptr);
+	App->gui->CreateLabel({ 10,340 }, versionLabel);
 
 }
 

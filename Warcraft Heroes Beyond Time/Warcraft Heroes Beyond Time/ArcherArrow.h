@@ -12,7 +12,7 @@
 struct ArcherArrowInfo : public ProjectileInfo
 {
 	ArcherArrowInfo() {};
-	ArcherArrowInfo(const ArcherArrowInfo& info) : ProjectileInfo((const ProjectileInfo&)info), pos(info.pos), direction(info.direction), deadTimer(info.deadTimer), speed(info.speed) {};
+	ArcherArrowInfo(const ArcherArrowInfo& info) : ProjectileInfo((const ProjectileInfo&)info), pos(info.pos), direction(info.direction), deadTimer(info.deadTimer), speed(info.speed), damageArrow(info.damageArrow) {};
 
 	fPoint rotationPivot = { 0.0f,0.0f };
 	double radiusToIncrease = 0.0f;
@@ -27,6 +27,7 @@ struct ArcherArrowInfo : public ProjectileInfo
 	bool			destroy = false;
 	float			angle;
 	int				tempoAtWall = -1;
+	float			damageArrow = 0.0f;
 };
 
 class ArcherArrow : public Projectile
@@ -55,6 +56,7 @@ private:
 	};
 
 	Animation arrowAnims[(unsigned int)ArrowAnimations::max_anim];
+	bool deleteArrow = false;
 };
 
 #endif // __ARCHERARROW_H__

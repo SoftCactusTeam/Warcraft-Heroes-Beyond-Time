@@ -136,9 +136,12 @@ void FelBall::OnCollision(Collider* yours, Collider* collideWith)
 {
 	switch (collideWith->colType)
 	{
+	case Collider::ColliderType::ENTITY:
 	case Collider::ColliderType::WALL:
-		destroyTheBall = true;
+		if (data->life <= 995)
+			destroyTheBall = true;
 		break;
+	
 	}
 }
 
