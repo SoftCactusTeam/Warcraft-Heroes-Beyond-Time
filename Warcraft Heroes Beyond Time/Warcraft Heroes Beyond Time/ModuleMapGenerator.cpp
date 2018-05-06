@@ -146,11 +146,13 @@ bool MapGenerator::DrawMap() const
 SDL_Rect MapGenerator::GetTileRect(int id) const
 {
 	int relative_id = id - 1;
+
 	SDL_Rect rect;
 	rect.w = tileSize;
 	rect.h = tileSize;
 	rect.x = ((rect.w) * (relative_id % 10));
 	rect.y = ((rect.h) * (relative_id / 10));
+
 	return rect;
 }
 
