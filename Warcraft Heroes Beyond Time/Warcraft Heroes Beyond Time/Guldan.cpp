@@ -1104,7 +1104,6 @@ void Guldan::OnCollision(Collider* yours, Collider* collideWith)
 	{
 	case Collider::ColliderType::PLAYER_ATTACK:
 	{
-
 		if (anim != &teleport || anim != &inverseTeleport)
 			numStats.hp -= 25.0f;
 
