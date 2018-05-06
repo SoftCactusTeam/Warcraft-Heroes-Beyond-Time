@@ -223,7 +223,7 @@ bool MapGenerator::GenerateBossMap()
 	for (int y = 0; y < sizeY; ++y)
 	{
 		for (int x = 0; x < sizeX; ++x)
-			nodes.push_back(new MapNode({ x,y }, VOID));
+			nodes.push_back(new MapNode({ x,y }, { 0,0,0,0 }));
 	}
 
 	pugi::xml_node sub_map_node = map_child.child("tileset");
