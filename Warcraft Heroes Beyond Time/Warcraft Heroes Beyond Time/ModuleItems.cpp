@@ -3,7 +3,7 @@
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
 #include "DMGBallItem.h"
-
+#include "OneShotItem.h"
 #include "FreezeBallItem.h"
 
 
@@ -103,6 +103,9 @@ void ModuleItems::loadItemsPull()
 
 	FEARBallItem* Fearball_Item = new FEARBallItem();
 	availableItems.push_back(Fearball_Item);
+
+	OneShotItem* One_Shot_Item = new OneShotItem();
+	availableItems.push_back(One_Shot_Item);
 }
 
 bool ModuleItems::equipItem(Item* item)
