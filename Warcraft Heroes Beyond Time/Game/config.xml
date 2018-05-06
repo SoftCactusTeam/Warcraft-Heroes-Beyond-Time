@@ -53,9 +53,9 @@
 
   <entitySystem>
     <enemies>
-      <archer_tier1  speed ="5" damage = "1" hp = "100" arrows_speed= "7" arrows_life = "2500" time_between_attacks = "1000" time_stunned_after_attack=".5" chance_powerful_attack="50"  vision_range = "250" attack_range ="90" minimal_distance_with_player="250" dropping_chance ="10" pre_attac ="500" tiles_to_littlemove ="4" distance_to_scape ="50" attacCone_probability="0" attacFast_probability="0" timeStunedAfterHit="300" velocityDashHit="500" timingDashHit="50"/>
-      <archer_tier2  speed ="20" damage = "5" hp = "100" arrows_speed= "6" arrows_life = "2500" time_between_attacks = "1000" time_stunned_after_attack=".5" chance_powerful_attack="0"   vision_range = "250" attack_range ="90" minimal_distance_with_player="50" dropping_chance ="10"  pre_attac ="500" tiles_to_littlemove ="4" distance_to_scape ="50" attacCone_probability="0" attacFast_probability="0" timeStunedAfterHit="300" velocityDashHit="500" timingDashHit="50"/>
-      <archer_tier3  speed ="50" damage = "20" hp = "100" arrows_speed= "5" arrows_life = "2500" time_between_attacks = "1000" time_stunned_after_attack=".5" chance_powerful_attack="0"   vision_range = "250" attack_range ="90" minimal_distance_with_player="50" dropping_chance ="10"  pre_attac ="500" tiles_to_littlemove ="4" distance_to_scape ="50" attacCone_probability="0" attacFast_probability="0" timeStunedAfterHit="300" velocityDashHit="500" timingDashHit="50"/>
+      <archer_tier1  speed ="5" damage = "10" hp = "100" arrows_speed= "10" arrows_life = "2500" time_between_attacks = "100" time_stunned_after_attack=".5" chance_powerful_attack="50"  vision_range = "250" attack_range ="90" minimal_distance_with_player="250" dropping_chance ="10" pre_attac ="500" tiles_to_littlemove ="4" distance_to_scape ="50" attacCone_probability="0" attacFast_probability="0" timeStunedAfterHit="300" velocityDashHit="500" timingDashHit="50"/>
+      <archer_tier2  speed ="2" damage = "30" hp = "200" arrows_speed= "7" arrows_life = "2500" time_between_attacks = "100" time_stunned_after_attack=".5" chance_powerful_attack="0"   vision_range = "250" attack_range ="90" minimal_distance_with_player="50" dropping_chance ="10"  pre_attac ="500" tiles_to_littlemove ="4" distance_to_scape ="50" attacCone_probability="0" attacFast_probability="0" timeStunedAfterHit="300" velocityDashHit="500" timingDashHit="50"/>
+      <archer_tier3  speed ="1" damage = "20" hp = "100" arrows_speed= "10" arrows_life = "2500" time_between_attacks = "10" time_stunned_after_attack=".5" chance_powerful_attack="0"   vision_range = "250" attack_range ="90" minimal_distance_with_player="50" dropping_chance ="10"  pre_attac ="500" tiles_to_littlemove ="4" distance_to_scape ="50" attacCone_probability="0" attacFast_probability="0" timeStunedAfterHit="300" velocityDashHit="500" timingDashHit="50"/>
     </enemies>
 
     <players>
@@ -68,7 +68,7 @@
   <items>
     <dmgBall damage = "5f"/>
     <fearBall seconds_fear = "2"/>
-    <frozenBall seconds_frozen = "1" percent_chance="60"/>
+    <frozenBall seconds_frozen = "1"/>
     <slowShit time_slowed = "7" slow_percent = "80"/>
     <dmgShit damage_by_dt = "1"/>
   </items>
