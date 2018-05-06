@@ -398,6 +398,7 @@ void Enemy_Archer::initDie()
 	state = ARCHER_STATE::ARCHER_DIE;
 	accountantPrincipal = SDL_GetTicks() + TIME_DYING;
 	anim = &animDeath[LookAtPlayer()];
+	App->colliders->deleteColliderbyOwner(this);
 	anim->Reset();
 	pathVector.Clear();
 }
