@@ -3,6 +3,7 @@
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
 #include "DMGBallItem.h"
+#include "ArrowSlowItem.h"
 #include <time.h>
 
 bool ModuleItems::Awake(pugi::xml_node& itemsNode)

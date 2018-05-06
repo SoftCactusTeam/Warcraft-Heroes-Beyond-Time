@@ -39,6 +39,7 @@ bool WCItem::Act(ModuleItems::ItemEvent event, float dt)
 		}
 		break;
 	}
+
 	return true;
 }
 
