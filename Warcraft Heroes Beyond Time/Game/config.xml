@@ -21,8 +21,8 @@
       <sizeGrid x ="100" y ="100"/>
       <sizeDungeon iterations ="200"/>
       <archers quantity ="10">
-        <tier3 percentage="70"/>
-        <tier2 percentage="30"/>
+        <tier3 percentage="90"/>
+        <tier2 percentage="10"/>
         <tier1 percentage="0"/>
       </archers>
     </lvl>
@@ -30,8 +30,8 @@
       <sizeGrid x ="150" y ="150"/>
       <sizeDungeon iterations ="300"/>
       <archers quantity ="15">
-        <tier3 percentage="50"/>
-        <tier2 percentage="40"/>
+        <tier3 percentage="70"/>
+        <tier2 percentage="20"/>
         <tier1 percentage="10"/>
       </archers>
     </lvl>
@@ -39,8 +39,8 @@
       <sizeGrid x ="200" y ="200"/>
       <sizeDungeon iterations ="400"/>
       <archers quantity ="20">
-        <tier3 percentage="40"/>
-        <tier2 percentage="40"/>
+        <tier3 percentage="60"/>
+        <tier2 percentage="20"/>
         <tier1 percentage="20"/>
       </archers>
     </lvl>
