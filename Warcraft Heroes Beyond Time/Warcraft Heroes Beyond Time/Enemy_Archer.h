@@ -26,6 +26,7 @@ enum ARCHER_EFFECTS
 {
 	ARCHER_EFFECT_FREEZE,
 	ARCHER_EFFECT_BURNING,
+	ARCHER_EFFECT_FEAR,
 	ARCHER_EFFECT_NONE
 };
 
@@ -73,8 +74,11 @@ public:
 	void doFreeze(float dt);
 
 	void Walk();
+
 	void AddEffect(ARCHER_EFFECTS effect, int time);
 	void UpdateEffects();
+	bool GetConcreteEffect(ARCHER_EFFECTS effect);
+
 	// ~~~~~~~~~~~~~~~~~~ STATE MACHINE
 
 	void LoadAnimations();

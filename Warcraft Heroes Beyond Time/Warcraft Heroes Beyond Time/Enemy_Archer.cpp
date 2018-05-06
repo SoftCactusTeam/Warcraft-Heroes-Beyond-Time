@@ -82,6 +82,15 @@ bool Enemy_Archer::Update(float dt)
 		return true;
 	}
 
+	UpdateEffects();
+
+	if (App->input->GetKey(SDL_SCANCODE_C) == KeyState::KEY_DOWN)
+		AddEffect(ARCHER_EFFECTS::ARCHER_EFFECT_FREEZE, 1000);
+
+	if (App->input->GetKey(SDL_SCANCODE_V) == KeyState::KEY_DOWN)
+		AddEffect(ARCHER_EFFECTS::ARCHER_EFFECT_FEAR, 1000);
+
+	if (!GetConcreteEffect(ARCHER_EFFECT_FREEZE) && !GetConcreteEffect(ARCHER_EFFECT_FEAR))
 	switch (state)
 	{
 	case ARCHER_STATE::ARCHER_IDLE:
@@ -608,15 +617,63 @@ void Enemy_Archer::AddEffect(ARCHER_EFFECTS effect, int time)
 {
 	archerEffectStruct* aux = new archerEffectStruct();
 	aux->effect = effect;
-	aux->time = time;
+	aux->time = time + SDL_GetTicks();
 	effectsList.push_back(aux);
 	switch (effect)		// INITIAL EFFECT
 	{
 	case ARCHER_EFFECT_FREEZE:
-
+		anim->Stop();
 		break;
 	case ARCHER_EFFECT_BURNING:
 
+		break;
+	case ARCHER_EFFECT_FEAR:
+	{
+		int randomX = 0;
+		int randomY = 0;
+		int tileToMove = -1;
+
+		for (int i = 0; i < 20 && tileToMove == -1; i++)
+		{
+			randomX = rand() % numStats.tilesToLittleMove + 1;
+			if (randomX > numStats.tilesToLittleMove / 2)
+			{
+				randomX -= numStats.tilesToLittleMove / 2;
+				randomX *= -1;
+			}
+
+			randomY = rand() % numStats.tilesToLittleMove + 1;
+			if (randomY > numStats.tilesToLittleMove / 2)
+			{
+				randomY -= numStats.tilesToLittleMove / 2;
+				randomY *= -1;
+			}
+
+			int possibleTile = App->path->ExistWalkableAtPos(iPoint((int)pos.x / App->map->getTileSize() - randomX, (int)pos.y / App->map->getTileSize() - randomY));
+			if (possibleTile != -1)
+				if (App->scene->player->DistanceToObejective(App->path->posAtConcreteTile(possibleTile)) > App->scene->player->DistanceToObejective(App->path->posAtConcreteTile(tileToMove)))
+					tileToMove = possibleTile;
+				else if (tileToMove == -1)
+				tileToMove = possibleTile;
+		}
+
+		if (tileToMove != -1)
+		{
+			posToScape = { iPoint((int)pos.x / App->map->getTileSize() - randomX , (int)pos.y / App->map->getTileSize() - randomY) };
+			state = ARCHER_STATE::ARCHER_LITTLEMOVE;
+			accountantPrincipal = SDL_GetTicks() + LITTLEMOVEMENT_TIME;
+			anim = &animWalk[LookAtPlayer()];
+			anim->Reset();
+			pathVector.CalculatePathAstar(iPoint(((int)pos.x + (anim->GetCurrentRect().w / 2)), ((int)pos.y + (anim->GetCurrentRect().h / 2))), iPoint(posToScape.x * App->map->getTileSize(), posToScape.y* App->map->getTileSize()));
+			pathVector.CalculateWay(iPoint(((int)pos.x + (anim->GetCurrentRect().w / 2)), ((int)pos.y + (anim->GetCurrentRect().h / 2))), iPoint(posToScape.x* App->map->getTileSize(), posToScape.y* App->map->getTileSize()));
+			arrowsShooted = 0;
+			cooldownToReLittleMove = LITTLEMOVEMENT_COOLDOWN + SDL_GetTicks();
+		}
+		else
+		{
+			initBackJump();
+		}
+	}
 		break;
 	case ARCHER_EFFECT_NONE:
 		break;
@@ -625,10 +682,12 @@ void Enemy_Archer::AddEffect(ARCHER_EFFECTS effect, int time)
 
 void Enemy_Archer::UpdateEffects()
 {
+	std::list<archerEffectStruct*> toDelete;
+
 	std::list<archerEffectStruct*>::iterator it = effectsList.begin();
 	for (; it != effectsList.end(); it++)
 	{
-		if ((*it)->time < SDL_GetTicks())
+		if ((*it)->time > SDL_GetTicks())
 		{			// UPDATE
 			switch ((*it)->effect)
 			{
@@ -638,6 +697,59 @@ void Enemy_Archer::UpdateEffects()
 			case ARCHER_EFFECT_BURNING:
 
 				break;
+			case ARCHER_EFFECT_FEAR:
+			{
+				if (pathVector.isEmpty())
+				{
+					int randomX = 0;
+					int randomY = 0;
+					int tileToMove = -1;
+
+					for (int i = 0; i < 20 && tileToMove == -1; i++)
+					{
+						randomX = rand() % numStats.tilesToLittleMove + 1;
+						if (randomX > numStats.tilesToLittleMove / 2)
+						{
+							randomX -= numStats.tilesToLittleMove / 2;
+							randomX *= -1;
+						}
+
+						randomY = rand() % numStats.tilesToLittleMove + 1;
+						if (randomY > numStats.tilesToLittleMove / 2)
+						{
+							randomY -= numStats.tilesToLittleMove / 2;
+							randomY *= -1;
+						}
+
+						int possibleTile = App->path->ExistWalkableAtPos(iPoint((int)pos.x / App->map->getTileSize() - randomX, (int)pos.y / App->map->getTileSize() - randomY));
+						if (possibleTile != -1)
+							if (App->scene->player->DistanceToObejective(App->path->posAtConcreteTile(possibleTile)) > App->scene->player->DistanceToObejective(App->path->posAtConcreteTile(tileToMove)))
+								tileToMove = possibleTile;
+							else if (tileToMove == -1)
+								tileToMove = possibleTile;
+					}
+
+					if (tileToMove != -1)
+					{
+						posToScape = { iPoint((int)pos.x / App->map->getTileSize() - randomX , (int)pos.y / App->map->getTileSize() - randomY) };
+						state = ARCHER_STATE::ARCHER_LITTLEMOVE;
+						accountantPrincipal = SDL_GetTicks() + LITTLEMOVEMENT_TIME;
+						anim = &animWalk[LookAtPlayer()];
+						anim->Reset();
+						pathVector.CalculatePathAstar(iPoint(((int)pos.x + (anim->GetCurrentRect().w / 2)), ((int)pos.y + (anim->GetCurrentRect().h / 2))), iPoint(posToScape.x * App->map->getTileSize(), posToScape.y* App->map->getTileSize()));
+						pathVector.CalculateWay(iPoint(((int)pos.x + (anim->GetCurrentRect().w / 2)), ((int)pos.y + (anim->GetCurrentRect().h / 2))), iPoint(posToScape.x* App->map->getTileSize(), posToScape.y* App->map->getTileSize()));
+						arrowsShooted = 0;
+						cooldownToReLittleMove = LITTLEMOVEMENT_COOLDOWN + SDL_GetTicks();
+					}
+					else
+					{
+						initBackJump();
+					}
+				}
+				iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x + (anim->GetCurrentRect().w / 2), (int)pos.y + (anim->GetCurrentRect().h / 2)));
+				this->pos += fPoint((float)move.x * numStats.speed, (float)move.y * numStats.speed);
+				break;
+			}
 			case ARCHER_EFFECT_NONE:
 
 				break;
@@ -648,18 +760,38 @@ void Enemy_Archer::UpdateEffects()
 			switch ((*it)->effect)
 			{
 			case ARCHER_EFFECT_FREEZE:
-
+				anim->Start(9.0f);
 				break;
 			case ARCHER_EFFECT_BURNING:
+
+				break;
+			case ARCHER_EFFECT_FEAR:
 
 				break;
 			case ARCHER_EFFECT_NONE:
 
 				break;
 			}
-			effectsList.erase(it++);	// DELETE CONCRETE EFFECT
+			toDelete.push_back(*it);
 		}
 	}
+
+	std::list<archerEffectStruct*>::iterator itDEL = toDelete.begin();
+	for (; itDEL != toDelete.end(); itDEL++)
+	{
+		effectsList.remove(*itDEL);
+		delete (*itDEL);
+	}
+
+}
+
+bool Enemy_Archer::GetConcreteEffect(ARCHER_EFFECTS effect)
+{
+	std::list<archerEffectStruct*>::iterator it = effectsList.begin();
+	for (; it != effectsList.end(); it++)
+		if ((*it)->effect == effect)
+			return true;
+	return false;
 }
 
 void Enemy_Archer::ShootArrow(fPoint objective, fPoint desviation)
