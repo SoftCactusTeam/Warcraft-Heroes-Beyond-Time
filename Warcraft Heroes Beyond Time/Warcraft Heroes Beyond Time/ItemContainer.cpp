@@ -20,11 +20,11 @@ ItemContainer::ItemContainer(fPoint localPos, Module* listener, Item* item, GUIE
 	grow_anim.loop = false;
 
 	focused_anim.PushBack({ 805,153,195,270 }, {97,135});
-	focused_anim.life = 0.1;
+	focused_anim.life = 0.1f;
 
-	select_anim.PushBack({ 615,167,171,242 }, { 85, 121 }); //White Filled
-	select_anim.PushBack({ 42,167,171,242 }, { 85, 121 });	//Black Filled
-	select_anim.life = 0.5f;
+	select_anim.PushBack({ 615,167,171,242 }, { 85, 121 }); // White Filled
+	select_anim.PushBack({ 42,167,171,242 }, { 85, 121 });	// Black Filled
+	select_anim.life = 0.3f;
 	select_anim.loop = false;
 
 	anim = &grow_anim;
