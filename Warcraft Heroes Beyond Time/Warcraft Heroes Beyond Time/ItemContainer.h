@@ -17,13 +17,14 @@ public:
 
 	bool Update(float dt);
 	bool Draw();
+	bool HandleInput(float dt);
 
 	void Focus()
 	{
 		if (!focused)
 		{
 			focused = true;
-			anim = &focused_anim;
+			//anim = &focused_anim;
 		}
 	}
 	void UnFocus()

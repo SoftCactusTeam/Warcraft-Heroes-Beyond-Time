@@ -403,14 +403,14 @@ BossEntity* EntitySystem::AddBoss(fPoint coor, BossType type)
 	return newEntity;
 }
 
-PlayerEntity* EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type)
+PlayerEntity* EntitySystem::AddPlayer(fPoint coor, PLAYER_TYPE type, PlayerStats& stats)
 {
 	BROFILER_CATEGORY("AddPlayer", Profiler::Color::Chocolate);
 	PlayerEntity* newEntity = nullptr;
 	switch (type)
 	{
 	case PLAYER_TYPE::THRALL:
-		newEntity = new Thrall(coor, PLAYER_TYPE::THRALL, spritesheetsEntities[THRALL_SHEET]);
+		newEntity = new Thrall(coor, PLAYER_TYPE::THRALL, spritesheetsEntities[THRALL_SHEET], stats);
 		break;
 	case PLAYER_TYPE::VALEERA:
 		newEntity = new PlayerEntity(coor, PLAYER_TYPE::VALEERA, nullptr);

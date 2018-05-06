@@ -3,13 +3,14 @@
 
 #include "PlayerEntity.h"
 #include "EffectsElem.h"
+#include "ModuleEntitySystem.h"
 
 class Collider;
 
 class Thrall : public PlayerEntity {
 private:
 public:
-	Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture);
+	Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture, EntitySystem::PlayerStats& numStats = EntitySystem::PlayerStats());
 
 	bool Update(float dt);
 	bool PostUpdate();

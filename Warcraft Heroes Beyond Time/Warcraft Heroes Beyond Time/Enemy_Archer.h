@@ -17,6 +17,8 @@ enum ARCHER_STATE {
 	ARCHER_BACKJUMP,
 	ARCHER_LITTLEMOVE,
 	ARCHER_DASH,
+	ARCHER_SCAPE,
+	ARCHER_FEAR,
 	ARCHER_DIE
 };
 
@@ -68,8 +70,9 @@ public:
 	void doDash();
 	void doDie();
 
-	void Walk();
+	void doFreeze(float dt);
 
+	void Walk();
 	void AddEffect(ARCHER_EFFECTS effect, int time);
 	void UpdateEffects();
 	// ~~~~~~~~~~~~~~~~~~ STATE MACHINE
@@ -83,6 +86,7 @@ public:
 	Animation animWalk[NUMBER_OF_ORIENTATIONS];
 	Animation animAtac[NUMBER_OF_ORIENTATIONS];
 	Animation animDeath[NUMBER_OF_ORIENTATIONS];
+	Animation animFrozen[NUMBER_OF_ORIENTATIONS];
 
 	Animation animSmoke;
 
@@ -99,6 +103,9 @@ private:
 	fPoint posSmoke = { -1.f,-1.f };
 	// Littlemove variables
 	iPoint posToScape;
+	//Items variables
+	float fear_counter = 0.0f;
+
 	int arrowsShooted = 0;
 	int cooldownToReLittleMove = 0;
 	// Dash variables
@@ -106,8 +113,9 @@ private:
 	fPoint dashMovement;
 	float dashTempo = 0.0f;
 
-	//ARCHER_TIER tier = ARCHER_TIER_NONE;
-	float live = 0;
+	//Items variables
+	float frozen_counter = 0.0f;
+
 	bool			damaged = false;
 	float			damagedCD = 0.0f;
 
