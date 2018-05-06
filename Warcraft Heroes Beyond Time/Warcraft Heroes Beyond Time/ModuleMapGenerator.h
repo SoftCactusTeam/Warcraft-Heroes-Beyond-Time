@@ -75,9 +75,7 @@ public:
 	int UseYourPowerToGenerateMeThisNewMap(int lvlIndex);
 public:
 	int numberOfLevels = 0;
-	std::list<int> tier1PerLevel;
-	std::list<int> tier2PerLevel;
-	std::list<int> tier3PerLevel;
+	std::list<SDL_Rect> archers;
 
 private:
 

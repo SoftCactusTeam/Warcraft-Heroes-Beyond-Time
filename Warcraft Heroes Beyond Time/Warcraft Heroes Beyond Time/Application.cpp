@@ -145,7 +145,7 @@ bool Application::Update()
 	if (input->GetWindowEvent(WE_QUIT))
 		ret = false;
 
-	if(ret == true)
+	if (ret == true)
 		ret = PrepareUpdate();
 
 	if (ret == true)
@@ -157,7 +157,7 @@ bool Application::Update()
 	if (ret == true)
 		ret = PostUpdate();
 
-	if(ret == true)
+	if (ret == true)
 		ret = FinishUpdate();
 
 	return ret;

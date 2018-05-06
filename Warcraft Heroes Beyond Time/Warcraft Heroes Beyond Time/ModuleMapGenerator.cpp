@@ -46,9 +46,9 @@ bool MapGenerator::Awake(pugi::xml_node& mapNode)
 		iterationsPerLevel.push_back(aux_node.child("sizeDungeon").attribute("iterations").as_int());
 
 		actualNode = aux_node.child("archers");
-		tier1PerLevel.push_back(actualNode.attribute("tier1").as_int());
-		tier2PerLevel.push_back(actualNode.attribute("tier2").as_int());
-		tier3PerLevel.push_back(actualNode.attribute("tier3").as_int());
+		SDL_Rect archerPerLevel = { actualNode.attribute("quantity").as_int(), actualNode.child("tier1").attribute("percentage").as_int(), actualNode.child("tier2").attribute("percentage").as_int(), actualNode.child("tier3").attribute("percentage").as_int() };
+
+		archers.push_back(archerPerLevel);
 
 		numberOfLevels++;
 	}
@@ -146,11 +146,13 @@ bool MapGenerator::DrawMap() const
 SDL_Rect MapGenerator::GetTileRect(int id) const
 {
 	int relative_id = id - 1;
+
 	SDL_Rect rect;
 	rect.w = tileSize;
 	rect.h = tileSize;
 	rect.x = ((rect.w) * (relative_id % 10));
 	rect.y = ((rect.h) * (relative_id / 10));
+
 	return rect;
 }
 
@@ -221,7 +223,7 @@ bool MapGenerator::GenerateBossMap()
 	for (int y = 0; y < sizeY; ++y)
 	{
 		for (int x = 0; x < sizeX; ++x)
-			nodes.push_back(new MapNode({ x,y }, VOID));
+			nodes.push_back(new MapNode({ x,y }, { 0,0,0,0 }));
 	}
 
 	pugi::xml_node sub_map_node = map_child.child("tileset");
