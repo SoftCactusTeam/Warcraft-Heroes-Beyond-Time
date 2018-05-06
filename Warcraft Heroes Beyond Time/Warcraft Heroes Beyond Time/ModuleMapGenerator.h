@@ -77,11 +77,12 @@ public:
 	int numberOfLevels = 0;
 	std::list<SDL_Rect> archers;
 
+
+	uint sizeX = 0u;
+	uint sizeY = 0u;
 private:
 
 	uint totalSize = 0u;
-	uint sizeX = 0u;
-	uint sizeY = 0u;
 	int tileSize = 48;
 	std::vector<MapNode*> nodes;
 	std::vector<MapNode*> visited;
