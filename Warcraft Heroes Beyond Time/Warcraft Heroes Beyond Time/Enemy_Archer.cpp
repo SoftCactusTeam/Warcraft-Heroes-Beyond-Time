@@ -11,8 +11,12 @@
 #include "ModuleAudio.h"
 #include "ModuleTextures.h"
 #include "ModuleItems.h"
+#include "ModuleColliders.h"
+
 #include "Projectile.h"
 #include "ArcherArrow.h"
+#include "FreezeBallItem.h"
+
 
 #include "ModuleRender.h"
 
@@ -53,7 +57,9 @@ Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* textu
 		break;
 	}
 
-	//USAR SOLO VARIABLES EN NUMSTATS, SI SE NECESITA ALGUNA MÁS SE COMENTA CON EL EQUIPO Y SE DECIDE SI SE AÑADE. TODO CONFIGURABLE DESDE EL XML.
+	col = *App->colliders->AddCollider({ -16 + 20,-16 + 20,32,32 }, Collider::ColliderType::ENTITY, this).lock();
+
+	//USAR SOLO VARIABLES EN NUMSTATS, SI SE NECESITA ALGUNA Mï¿½S SE COMENTA CON EL EQUIPO Y SE DECIDE SI SE Aï¿½ADE. TODO CONFIGURABLE DESDE EL XML.
 }
 
 bool Enemy_Archer::Start()
@@ -123,7 +129,7 @@ bool Enemy_Archer::Update(float dt)
 		{
 			damagedCD = 0.0f;
 			damaged = false;
-		}	
+		}
 	}
 
 	return true;
@@ -135,6 +141,13 @@ bool Enemy_Archer::PostUpdate()
 		anim->speed = 0.0f;
 	else
 		anim->speed = anim->speedFactor * App->dt;
+
+	if (state == ARCHER_DIE && col)
+	{
+		App->colliders->deleteColliderbyOwner(this);
+		col = nullptr;
+	}
+
 	return true;
 }
 
@@ -146,23 +159,29 @@ bool Enemy_Archer::Finish()
 bool Enemy_Archer::Draw()
 {
 	bool ret = true;
-	if(damaged)
-		ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), texture, anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot(), ModulePrinter::Pivots::UPPER_LEFT, {0,0}, 0, { 255,100,100,255 });
-	else
+	
+	switch (tier)
 	{
-		switch (tier)
-		{
-		case 1:
+	case 3:
+		if(damaged)
+			ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), App->entities->spritesheetsEntities[WHITE_ARCHER], anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot(), ModulePrinter::Pivots::UPPER_LEFT, { 0,0 }, 0, { 255,100,100,255 });
+		else
 			ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), App->entities->spritesheetsEntities[WHITE_ARCHER], anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot());
-			break;
-		case 2:
+		break;
+	case 1:
+		if (damaged)
+			ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), App->entities->spritesheetsEntities[ORANGE_ARCHER], anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot(), ModulePrinter::Pivots::UPPER_LEFT, { 0,0 }, 0, { 255,100,100,255 });
+		else
 			ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), App->entities->spritesheetsEntities[ORANGE_ARCHER], anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot());
-			break;
-		case 3:
+		break;
+	case 2:
+		if (damaged)
+			ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), App->entities->spritesheetsEntities[GREEN_ARCHER], anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot(), ModulePrinter::Pivots::UPPER_LEFT, { 0,0 }, 0, { 255,100,100,255 });
+		else
 			ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), App->entities->spritesheetsEntities[GREEN_ARCHER], anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot());
-			break;
-		}
+		break;
 	}
+	
 	return ret;
 }
 
@@ -179,29 +198,43 @@ void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 				initDash();
 			case PlayerAttack::P_Attack_Type::DMGBALL_ITEM:
 			{
-				App->audio->PlayFx(App->audio->ArcherDeath);
-				live -= attack->damage;;
-				if (live <= 0)
+				App->audio->PlayFx(App->audio->ArcherDamaged);
+				numStats.hp -= attack->damage;;
+				if (numStats.hp <= 0)
 				{
 					if (state != ARCHER_STATE::ARCHER_DIE)
 						initDie();
 				}
-				//else
-				//	initBackJump();
-
+				break;
+			}
+			case PlayerAttack::P_Attack_Type::FREEZE_ITEM:
+			{
+				/*if (state != ARCHER_STATE::ARCHER_FREEZE && App->entities->GetRandomNumber(10) < 2)
+				{
+					initFreeze();
+				}*/
+				break;
+			}
+			case PlayerAttack::P_Attack_Type::FEARBALL_ITEM:
+			{
+				/*if (state != ARCHER_STATE::ARCHER_FEAR)
+					initFear();*/
 				break;
 			}
 			case PlayerAttack::P_Attack_Type::SHIT:
 			{
-				live -= attack->damage;
-				if (live <= 0)
+				numStats.hp -= attack->damage;
+				if (numStats.hp <= 0)
 					if (state != ARCHER_STATE::ARCHER_DIE)
 						initDie();
 			}
 		}
-	
-		damaged = true;
-		damagedCD = 0.5f;
+
+		if (attack->damage > 0)
+		{
+			damaged = true;
+			damagedCD = 0.5f;
+		}
 	}
 }
 
@@ -214,8 +247,8 @@ void Enemy_Archer::OnCollisionContinue(Collider* yours, Collider* collideWith)
 		{
 			case PlayerAttack::P_Attack_Type::SHIT:
 			{
-				live -= attack->damage;
-				if (live <= 0)
+				numStats.hp -= attack->damage;
+				if (numStats.hp <= 0)
 					if (state != ARCHER_STATE::ARCHER_DIE)
 						initDie();
 			}
@@ -314,7 +347,7 @@ void Enemy_Archer::initLittleMove()
 	int randomX = 0;
 	int randomY = 0;
 	int tileToMove = -1;
-	
+
 	for (int i = 0; i < 10 && tileToMove == -1; i++)
 	{
 		randomX = rand() % numStats.tilesToLittleMove + 1;
@@ -350,7 +383,6 @@ void Enemy_Archer::initLittleMove()
 		pathVector.CalculateWay(iPoint(((int)pos.x + (anim->GetCurrentRect().w / 2)), ((int)pos.y + (anim->GetCurrentRect().h / 2))), iPoint(posToScape.x* App->map->getTileSize(), posToScape.y* App->map->getTileSize()));
 		arrowsShooted = 0;
 		cooldownToReLittleMove = LITTLEMOVEMENT_COOLDOWN + SDL_GetTicks();
-		printf_s("%i\t%i\t :: TROBA NOU CAMI\n", randomX, randomY);
 	}
 	else
 	{
@@ -540,7 +572,6 @@ void Enemy_Archer::doDash()
 		{
 			pos += dashMovement;
 			dashTempo += App->dt;
-			printf_s("%i\n", accountantPrincipal);
 		}
 	}
 }
@@ -569,6 +600,16 @@ void Enemy_Archer::Walk()
 
 }
 
+void Enemy_Archer::doFreeze(float dt)
+{
+	//anim = &animFrozen[LookAtPlayer()];//Put animation here
+	frozen_counter += dt;
+	if (frozen_counter > 5.0f)
+	{
+		state = ARCHER_STATE::ARCHER_IDLE;
+		frozen_counter = 0.0f;
+	}
+}
 
 void Enemy_Archer::AddEffect(ARCHER_EFFECTS effect, int time)
 {
@@ -585,7 +626,6 @@ void Enemy_Archer::AddEffect(ARCHER_EFFECTS effect, int time)
 
 		break;
 	case ARCHER_EFFECT_NONE:
-
 		break;
 	}
 }
@@ -675,7 +715,7 @@ void Enemy_Archer::ShootArrow(fPoint desviation)
 		position = fPoint(pos.x + anim->GetCurrentRect().w / 2 + 0, pos.y + anim->GetCurrentRect().h / 2 + 5);
 		break;
 	}*/
-	
+
 	// POSAR FLETXA
 	ArcherArrowInfo info;
 	info.pos = position;
@@ -684,7 +724,7 @@ void Enemy_Archer::ShootArrow(fPoint desviation)
 	info.speed = numStats.arrows_speed;
 	info.damageArrow = numStats.damage;
 
-	App->projectiles->AddProjectile(&info, Projectile_type::archer_arrow);	
+	App->projectiles->AddProjectile(&info, Projectile_type::archer_arrow);
 }
 
 void Enemy_Archer::LoadAnimations()
@@ -831,6 +871,17 @@ void Enemy_Archer::LoadAnimations()
 	animDeath[FIXED_ANGLE::LEFT].PushBack({ 183,401,48,47 });
 	animDeath[FIXED_ANGLE::LEFT].speedFactor = 9.0f;
 	animDeath[FIXED_ANGLE::LEFT].loop = false;
+
+	//animFrozen
+	//All the same animation
+	/*animFrozen[FIXED_ANGLE::LEFT].PushBack({ 1,491,44,48 });
+	animFrozen[FIXED_ANGLE::RIGHT].PushBack({ 1,491,44,48 });
+	animFrozen[FIXED_ANGLE::DOWN].PushBack({ 1,491,44,48 });
+	animFrozen[FIXED_ANGLE::UP].PushBack({ 1,491,44,48 });
+	animFrozen[FIXED_ANGLE::DOWN_LEFT].PushBack({ 1,491,44,48 });
+	animFrozen[FIXED_ANGLE::DOWN_RIGHT].PushBack({ 1,491,44,48 });
+	animFrozen[FIXED_ANGLE::UP_LEFT].PushBack({ 1,491,44,48 });
+	animFrozen[FIXED_ANGLE::UP_RIGHT].PushBack({ 1,491,44,48 });*/
 
 
 	animSmoke.PushBack({ 1,77,52,42 });

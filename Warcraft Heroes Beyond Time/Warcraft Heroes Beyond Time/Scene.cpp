@@ -106,7 +106,7 @@ bool Scene::Start()
 
 				portal = (PortalEntity*)App->entities->AddStaticEntity({ 15 * 46,17 * 46, }, PORTAL);
 				portal->locked = true;
-				player = App->entities->AddPlayer({ 15 * 46 + 10,16 * 46, }, THRALL);
+				player = App->entities->AddPlayer({ 15 * 46 + 10,16 * 46, }, THRALL, playerStats);
 				player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
 				guldan = (Guldan*)App->entities->AddBoss(GULDAN_BASE, BossType::GULDAN);
 			}
@@ -120,28 +120,48 @@ bool Scene::Start()
 				App->printer->Activate();
 				App->projectiles->Activate();
 
-				player = App->entities->AddPlayer({ 25 * 46,25 * 46 }, THRALL);
+				player = App->entities->AddPlayer({ ((float)App->map->sizeX / 2) * 46,((float)App->map->sizeY / 2) * 46 }, THRALL, playerStats);
 				player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
 
 				App->path->LoadPathMap();
 
-				iPoint enemy = App->map->GetRandomValidPoint();
-				App->entities->AddEnemy({ (float)enemy.x * 46, (float)enemy.y * 46 }, ENEMY_TYPE::ARCHER_TIER_1);
+				std::list<SDL_Rect>::iterator it = App->map->archers.begin();
+				std::advance(it, lvlIndex);
+				
+				int numberArchers = 0;
+				do
+				{
+					int randomNumber = rand() % 100;
+					if (randomNumber <= (*it).y)
+					{
+						iPoint enemyPos = App->map->GetRandomValidPoint();
+						App->entities->AddEnemy({ (float)enemyPos.x * 46 ,(float)enemyPos.y * 46 }, ENEMY_TYPE::ARCHER_TIER_1);
+						numberArchers++;
+						if (numberArchers >= (*it).x)
+							continue;
+					}
 
-				enemy = App->map->GetRandomValidPoint();
-				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ENEMY_TYPE::ARCHER_TIER_1);
+					randomNumber = rand() % 100;
+					if (randomNumber <= (*it).w)
+					{
+						iPoint enemyPos = App->map->GetRandomValidPoint();
+						App->entities->AddEnemy({ (float)enemyPos.x * 46 ,(float)enemyPos.y * 46 }, ENEMY_TYPE::ARCHER_TIER_2);
+						numberArchers++;
+						if (numberArchers >= (*it).x)
+							continue;
+					}
 
-				enemy = App->map->GetRandomValidPoint();
-				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ENEMY_TYPE::ARCHER_TIER_1);
-
-				enemy = App->map->GetRandomValidPoint();
-				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ENEMY_TYPE::ARCHER_TIER_1);
-
-				enemy = App->map->GetRandomValidPoint();
-				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ENEMY_TYPE::ARCHER_TIER_1);
-
-				enemy = App->map->GetRandomValidPoint();
-				App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ENEMY_TYPE::ARCHER_TIER_1);
+					randomNumber = rand() % 100;
+					if (randomNumber <= (*it).h)
+					{
+						iPoint enemyPos = App->map->GetRandomValidPoint();
+						App->entities->AddEnemy({ (float)enemyPos.x * 46 ,(float)enemyPos.y * 46 }, ENEMY_TYPE::ARCHER_TIER_3);
+						numberArchers++;
+						if (numberArchers >= (*it).x)
+							continue;
+					}
+				}
+				while (numberArchers < (*it).x);
 
 				App->items->Activate();
 
@@ -279,6 +299,9 @@ bool Scene::PostUpdate()
 
 bool Scene::CleanUp()
 {
+	if(player)
+		playerStats = player->numStats;
+
 	App->gui->DeActivate();
 	App->map->DeActivate();
 	App->entities->DeActivate();
@@ -343,6 +366,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 					switch (button->btype)
 					{
 						case BType::PLAY:
+							playerStats = EntitySystem::PlayerStats();
 							App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
 							actual_scene = Stages::INGAME;
 							restart = true;
@@ -389,7 +413,7 @@ void Scene::CreateMainMenuScreen()
 
 	//LOGO
 	GUIImage* logo = (GUIImage*)App->gui->CreateGUIImage({ 100,25 }, { 624, 21, 448, 129 }, nullptr);
-	
+
 	//PLAY BUTTON
 	Button* button = (Button*)App->gui->CreateButton({ 241.0f , 165}, BType::PLAY, this, window);
 

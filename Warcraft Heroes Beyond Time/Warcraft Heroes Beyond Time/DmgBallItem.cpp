@@ -8,7 +8,7 @@
 bool DMGBallItem::Start()
 {
 	angular_vel = 250.0f;
-	ball_col = App->colliders->AddPlayerAttackCollider({ 0, 0, 20, 20 }, App->scene->player, 20, PlayerAttack::P_Attack_Type::DMGBALL_ITEM);
+	ball_col = App->colliders->AddPlayerAttackCollider({ 0, 0, 20, 20 }, App->scene->player, ModuleItems::dmgBallDamage, PlayerAttack::P_Attack_Type::DMGBALL_ITEM);
 	return true;
 }
 
@@ -19,7 +19,7 @@ bool DMGBallItem::Act(ModuleItems::ItemEvent event, float dt)
 	{
 	case ModuleItems::ItemEvent::UPDATE:
 		if (ball_col.expired())
-			ball_col = App->colliders->AddPlayerAttackCollider({ 0, 0, 20, 20 }, App->scene->player, 20, PlayerAttack::P_Attack_Type::DMGBALL_ITEM);
+			ball_col = App->colliders->AddPlayerAttackCollider({ 0, 0, 20, 20 }, App->scene->player, ModuleItems::dmgBallDamage, PlayerAttack::P_Attack_Type::DMGBALL_ITEM);
 		
 		ball_counter += dt;
 		angle = angular_vel * ball_counter;
@@ -39,7 +39,7 @@ bool DMGBallItem::Draw()
 {
 	//Use the ModulePrinter to print all the stuff.
 	iPoint Draw_pos = { (int)(App->scene->player->pos.x + Ball_pos.x), (int)(App->scene->player->pos.y + Ball_pos.y) };
-	App->printer->PrintSprite(Draw_pos, App->items->getItemsTexture(), RED_BALL_ICON, 0, ModulePrinter::Pivots::UPPER_LEFT, { 0,0 }, ModulePrinter::Pivots::CENTER, {0,0}, angle * 2);
+	App->printer->PrintSprite(Draw_pos, App->items->getItemsTexture(), RED_BALL_ICON, 5, ModulePrinter::Pivots::UPPER_LEFT, { 0,0 }, ModulePrinter::Pivots::CENTER, {0,0}, angle * 2);
 	return true;
 }
 

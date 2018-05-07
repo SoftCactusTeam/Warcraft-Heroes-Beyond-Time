@@ -3,11 +3,18 @@
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
 #include "DMGBallItem.h"
+
+#include "FreezeBallItem.h"
+
+
+#include "FEARBallItem.h"
+
 #include <time.h>
 
 float ModuleItems::dmgBallDamage = 0.0f;
 float ModuleItems::fearBallSeconds = 0.0f;
 float ModuleItems::frozenBallSeconds = 0.0f;
+float ModuleItems::frozenBallChance = 0.0f;
 float ModuleItems::slowShitPercent = 0.0f;
 float ModuleItems::slowShitSeconds = 0.0f;
 float ModuleItems::dmgShitDamage = 0.0f;
@@ -18,6 +25,7 @@ bool ModuleItems::Awake(pugi::xml_node& itemsNode)
 	dmgBallDamage = itemsNode.child("dmgBall").attribute("damage").as_float();
 	fearBallSeconds = itemsNode.child("fearBall").attribute("seconds_fear").as_float();
 	frozenBallSeconds = itemsNode.child("frozenBall").attribute("seconds_frozen").as_float();
+	frozenBallChance = itemsNode.child("frozenBall").attribute("percent_chance").as_float();
 	slowShitSeconds = itemsNode.child("slowShit").attribute("time_slowed").as_float();
 	slowShitPercent = itemsNode.child("slowShit").attribute("slow_percent").as_float();
 	dmgShitDamage = itemsNode.child("dmgShit").attribute("damage_by_dt").as_float();
@@ -90,7 +98,11 @@ void ModuleItems::loadItemsPull()
 	DMGBallItem* dmgBall = new DMGBallItem();
 	availableItems.push_back(dmgBall);
 
+	FreezeBallItem* FreezeBall_Item = new FreezeBallItem();
+	availableItems.push_back(FreezeBall_Item);
 
+	FEARBallItem* Fearball_Item = new FEARBallItem();
+	availableItems.push_back(Fearball_Item);
 }
 
 bool ModuleItems::equipItem(Item* item)

@@ -12,10 +12,9 @@
 #include "ModuleItems.h"
 #include "ModuleEffects.h"
 
-Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEntity(coor, type, texture)
+Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture, EntitySystem::PlayerStats& numStats) : PlayerEntity(coor, type, texture)
 {
 	// Thrall idle animations
-
 	idleUp.PushBack({ 25,15,43,41 }, { 1,0 }); //Example: Introduce here the pivot.
 	idleUp.PushBack({ 114,15,43,41 }, { 1,0 });
 	idleUp.PushBack({ 203,15,43,41 }, { 1,0 });
@@ -232,7 +231,10 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : PlayerEnti
 	deadDownRight.speedFactor = 3.0f;
 	deadDownRight.loop = false;
 
-	numStats = App->entities->thrallstats;
+	if (numStats.isEmpty())
+		this->numStats = App->entities->thrallstats;
+	else
+		this->numStats = numStats;
 
 	wallCol = *App->colliders->AddCollider({ 7, 0, 15, 23 }, Collider::ColliderType::ENTITY, this).lock();
 	damageCol = *App->colliders->AddCollider({ 7, 0, 15, 23 }, Collider::ColliderType::ENTITY, this).lock();
@@ -304,7 +306,7 @@ void Thrall::OnCollision(Collider* yours, Collider* collideWith)
 			{
 				EnemyAttack* attack = (EnemyAttack*)collideWith;
 				int a = attack->damage;
-				if (state != states::PL_DASH)
+				if (state != states::PL_DASH && state != states::PL_SKILL)
 					SetDamage(attack->damage, true);
 			}
 			
@@ -325,7 +327,7 @@ void Thrall::OnCollision(Collider* yours, Collider* collideWith)
 		}
 		case Collider::ColliderType::PORTAL:
 		{
-			if (App->scene->portal->locked == false)
+			if (yours == this->wallCol && App->scene->portal->locked == false)
 			{
 				App->scene->GoNextLevel();
 			}
@@ -548,7 +550,7 @@ void Thrall::UseSkill()
 	if (skillOn == false)
 		App->audio->PlayFx(App->audio->Thrall_SkillFX);
 	skillOn = true;
-	skillCollider = *App->colliders->AddPlayerAttackCollider({ -100, -100, 5, 5 }, this, numStats.damage * numStats.skillMultiplier, PlayerAttack::P_Attack_Type::SKILL).lock();
+	skillCollider = *App->colliders->AddPlayerAttackCollider({ -1000000000, -1000000000, 20, 20 }, this, numStats.damage * numStats.skillMultiplier, PlayerAttack::P_Attack_Type::SKILL).lock();
 }
 
 void Thrall::UpdateSkillCollider()
@@ -557,7 +559,7 @@ void Thrall::UpdateSkillCollider()
 	{
 		if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 459,933,61,67 })))
 		{
-			skillCollider->rectArea = { (int)pos.x -70 - 15, (int)pos.y -70 - 15, 200,200 };
+			skillCollider->rectArea = { -70 - 15, -70 - 15, 200,200 };
 		}
 	}
 }

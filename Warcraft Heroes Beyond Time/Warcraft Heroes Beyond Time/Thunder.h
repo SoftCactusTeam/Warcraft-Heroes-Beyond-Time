@@ -7,7 +7,6 @@ struct ThunderInfo : public ProjectileInfo
 {
 	ThunderInfo() {};
 	ThunderInfo(const ThunderInfo& info) : ProjectileInfo((const ProjectileInfo&)info) {};
-
 };
 
 class Thunder : public Projectile

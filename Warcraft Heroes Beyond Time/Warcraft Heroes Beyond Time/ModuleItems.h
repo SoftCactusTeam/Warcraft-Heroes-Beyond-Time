@@ -60,6 +60,7 @@ public:
 	static float dmgShitDamage;
 	static float fearBallSeconds;
 	static float frozenBallSeconds;
+	static float frozenBallChance;
 	static float slowShitSeconds;
 	static float slowShitPercent;
 

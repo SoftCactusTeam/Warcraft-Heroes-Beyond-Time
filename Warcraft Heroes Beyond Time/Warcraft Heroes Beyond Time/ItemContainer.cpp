@@ -6,6 +6,7 @@
 #include "Item.h"
 #include "ModuleRender.h"
 #include "Item.h"
+#include "Log.h"
 
 ItemContainer::ItemContainer(fPoint localPos, Module* listener, Item* item, GUIElem* parent) : GUIElem(localPos, listener, atlasRect, GUIElemType::ITEM_CONTAINER, parent), item(item)
 {
@@ -33,6 +34,8 @@ bool ItemContainer::Update(float dt)
 
 	if (focused)
 	{
+		if (anim == &grow_anim && anim->Finished())
+			anim = &focused_anim;
 		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_DOWN && item != nullptr)
 		{
 			if (!selected)
@@ -50,6 +53,83 @@ bool ItemContainer::Update(float dt)
 		selected = false;
 
 	return true;
+}
+
+bool ItemContainer::HandleInput(float dt)
+{
+	bool ret = true;
+	if (listener)
+		switch (UIevent)
+		{
+
+		case UIEvents::NO_EVENT:
+
+			if ((MouseHover() || focused))
+			{
+				parent->UnFocusChilds();
+				Focus();
+				UIevent = UIEvents::MOUSE_ENTER;
+				listener->OnUIEvent((GUIElem*)this, UIevent);
+				break;
+			}
+			break;
+
+		case UIEvents::MOUSE_ENTER:
+
+			if (focused && (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_PRESSED || App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_DOWN))
+			{
+				LOG("Mouse left cLick pressed");
+				UIevent = UIEvents::MOUSE_LEFT_CLICK;
+				listener->OnUIEvent((GUIElem*)this, UIevent);
+				break;
+			}
+			else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_PRESSED)
+			{
+				LOG("Mouse right click pressed");
+				UIevent = UIEvents::MOUSE_RIGHT_CLICK;
+				listener->OnUIEvent((GUIElem*)this, UIevent);
+				break;
+			}
+			else if (!focused)
+			{
+				UIevent = UIEvents::MOUSE_LEAVE;
+				listener->OnUIEvent((GUIElem*)this, UIevent);
+			}
+			break;
+
+		case UIEvents::MOUSE_RIGHT_CLICK:
+			if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == SDL_RELEASED)
+			{
+				LOG("Mourse right click released");
+				listener->OnUIEvent((GUIElem*)this, UIevent);
+				UIevent = UIEvents::MOUSE_ENTER;
+				break;
+			}
+			break;
+
+		case UIEvents::MOUSE_LEFT_CLICK:
+
+			if (focused && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == SDL_RELEASED || App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_UP)
+			{
+				LOG("Mouse left click released");
+				UIevent = UIEvents::MOUSE_LEFT_UP;
+				ret = listener->OnUIEvent((GUIElem*)this, UIevent);
+			}
+
+			break;
+		case UIEvents::MOUSE_LEFT_UP:
+			if (focused == false)
+				UIevent = UIEvents::MOUSE_LEAVE;
+			else
+				UIevent = UIEvents::MOUSE_ENTER;
+			listener->OnUIEvent(this, UIevent);
+			break;
+		case UIEvents::MOUSE_LEAVE:
+			listener->OnUIEvent((GUIElem*)this, UIevent);
+			UIevent = UIEvents::NO_EVENT;
+			break;
+		}
+	return ret;
 }
 
 bool ItemContainer::Draw()

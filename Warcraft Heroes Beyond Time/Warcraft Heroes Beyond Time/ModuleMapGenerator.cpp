@@ -41,9 +41,14 @@ bool MapGenerator::Awake(pugi::xml_node& mapNode)
 
 	for (register pugi::xml_node aux_node = mapNode.child("lvl"); aux_node; aux_node = aux_node.next_sibling("lvl"))
 	{
-		pugi::xml_node gridNode = aux_node.child("sizeGrid");
-		gridSizePerLevel.push_front({ gridNode.attribute("x").as_int(),gridNode.attribute("y").as_int() });
-		iterationsPerLevel.push_front(aux_node.child("sizeDungeon").attribute("iterations").as_int());
+		pugi::xml_node actualNode = aux_node.child("sizeGrid");
+		gridSizePerLevel.push_back({ actualNode.attribute("x").as_int(),actualNode.attribute("y").as_int() });
+		iterationsPerLevel.push_back(aux_node.child("sizeDungeon").attribute("iterations").as_int());
+
+		actualNode = aux_node.child("archers");
+		SDL_Rect archerPerLevel = { actualNode.attribute("quantity").as_int(), actualNode.child("tier1").attribute("percentage").as_int(), actualNode.child("tier2").attribute("percentage").as_int(), actualNode.child("tier3").attribute("percentage").as_int() };
+
+		archers.push_back(archerPerLevel);
 
 		numberOfLevels++;
 	}
@@ -141,11 +146,13 @@ bool MapGenerator::DrawMap() const
 SDL_Rect MapGenerator::GetTileRect(int id) const
 {
 	int relative_id = id - 1;
+
 	SDL_Rect rect;
 	rect.w = tileSize;
 	rect.h = tileSize;
 	rect.x = ((rect.w) * (relative_id % 10));
 	rect.y = ((rect.h) * (relative_id / 10));
+
 	return rect;
 }
 
@@ -216,7 +223,7 @@ bool MapGenerator::GenerateBossMap()
 	for (int y = 0; y < sizeY; ++y)
 	{
 		for (int x = 0; x < sizeX; ++x)
-			nodes.push_back(new MapNode({ x,y }, VOID));
+			nodes.push_back(new MapNode({ x,y }, { 0,0,0,0 }));
 	}
 
 	pugi::xml_node sub_map_node = map_child.child("tileset");
