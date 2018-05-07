@@ -11,7 +11,6 @@
 #include "Application.h"
 #include "ModuleTextures.h"
 #include "ModuleItems.h"
-#include "GUIImage.h"
 
 PlayerEntity::PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : DynamicEntity(coor, texture, DynamicType::PLAYER), type(type)
 {
@@ -1372,7 +1371,6 @@ void PlayerEntity::SetDamage(int damage, bool setStateDamage)
 			damaged = true;
 			SDL_SetTextureColorMod(App->entities->spritesheetsEntities[THRALL_SHEET], 255, 100, 100);
 			numStats.hp -= damage;
-			bloodImage = (GUIImage*)App->gui->CreateGUIImage({ 0,0 }, { 0, 912, 640, 360 }, nullptr, nullptr);
 		}
 	}
 }

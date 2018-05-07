@@ -5,16 +5,12 @@
 
 class GUIImage : public GUIElem
 {
-private:
-
 public:
 	GUIImage() {}
 	GUIImage(fPoint localPos, SDL_Rect atlasRect, Module* listener, GUIElem* parent = nullptr);
 	virtual ~GUIImage();
 
 	bool Draw();
-
-	void SetColor(SDL_Color color);
 };
 
 #endif

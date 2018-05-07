@@ -50,9 +50,9 @@ protected:
 
 	fPoint localPos = { 0.0f, 0.0f };
 	fPoint screenPos = { 0.0f, 0.0f };
+
 	
 	Module* listener = nullptr;
-
 public:
 	GUIElemType type = GUIElemType::NO_ELEMTYPE;
 	UIEvents UIevent = UIEvents::NO_EVENT;

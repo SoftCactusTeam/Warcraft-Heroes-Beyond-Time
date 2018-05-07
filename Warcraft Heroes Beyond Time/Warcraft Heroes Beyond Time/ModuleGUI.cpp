@@ -34,8 +34,6 @@ bool ModuleGUI::Awake(pugi::xml_node& guiNode)
 bool ModuleGUI::Start()
 {
 	atlas = App->textures->Load("GUI/atlas.png");
-	bloodAtlas = App->textures->Load("GUI/atlas.png");
-
 	return true;
 }
 
@@ -113,7 +111,6 @@ bool ModuleGUI::CleanUp()
 	elementsToKill.clear();
 
 	App->textures->UnLoad(atlas);
-	App->textures->UnLoad(bloodAtlas);
 
 	return GUIElemList.size() <= 0;
 }
@@ -229,7 +226,7 @@ GUIElem* ModuleGUI::CreateItemContainer(fPoint localPos, Item* item, GUIElem* pa
 	return container;
 }
 
-SDL_Texture* ModuleGUI::GetAtlas() const
+SDL_Texture* ModuleGUI::getAtlas() const
 {
 	return atlas;
 }

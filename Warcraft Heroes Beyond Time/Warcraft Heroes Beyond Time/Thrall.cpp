@@ -11,7 +11,6 @@
 #include "PortalEntity.h"
 #include "ModuleItems.h"
 #include "ModuleEffects.h"
-#include "GUIImage.h"
 
 Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture, EntitySystem::PlayerStats& numStats) : PlayerEntity(coor, type, texture)
 {
@@ -246,16 +245,6 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture, EntitySystem
 
 bool Thrall::Update(float dt)
 {
-
-	if (bloodImage != nullptr)
-	{
-		bloodImage->SetColor({ 229, 19, 19, (Uint8)(255 * (1.0f - damagedCD)) });
-		if (!damaged)
-		{
-			App->gui->DestroyElem((GUIElem*)bloodImage);
-			bloodImage = nullptr;
-		}
-	}
 
 	PlayerStates(dt);
 

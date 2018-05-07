@@ -48,10 +48,10 @@ bool Slider::Draw()
 	bool ret = true;
 
 	if (ret)
-		ret = App->render->Blit(App->gui->GetAtlas(), (int)(screenPos.x - App->render->camera.x), (int)(screenPos.y - App->render->camera.y), &atlasRect);
+		ret = App->render->Blit(App->gui->getAtlas(), (int)(screenPos.x - App->render->camera.x), (int)(screenPos.y - App->render->camera.y), &atlasRect);
 
 	if (ret)
-		ret = App->render->Blit(App->gui->GetAtlas(), (int)(smobilepos - App->render->camera.x), (int)(screenPos.y - 5 - App->render->camera.y), &sliderMobileRect);
+		ret = App->render->Blit(App->gui->getAtlas(), (int)(smobilepos - App->render->camera.x), (int)(screenPos.y - 5 - App->render->camera.y), &sliderMobileRect);
 
 	if (ret)
 		ret = DrawChilds();

@@ -27,7 +27,7 @@ bool Button::Draw()
 {
 	bool result = true;
 
-	result = App->render->Blit(App->gui->GetAtlas(), (int)(this->screenPos.x - App->render->camera.x), (int)(this->screenPos.y - App->render->camera.y), &atlasRect);
+	result = App->render->Blit(App->gui->getAtlas(), (int)(this->screenPos.x - App->render->camera.x), (int)(this->screenPos.y - App->render->camera.y), &atlasRect);
 
 	if (result)
 		result = DrawChilds();

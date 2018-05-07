@@ -135,13 +135,13 @@ bool ItemContainer::HandleInput(float dt)
 bool ItemContainer::Draw()
 {
 	if(anim != &select_anim)
-		App->render->Blit(App->gui->GetAtlas(), localPos.x - anim->GetCurrentPivot().x, localPos.y - anim->GetCurrentPivot().y, &anim->GetCurrentFrame(App->dt), 1, 0);
+		App->render->Blit(App->gui->getAtlas(), localPos.x - anim->GetCurrentPivot().x, localPos.y - anim->GetCurrentPivot().y, &anim->GetCurrentFrame(App->dt), 1, 0);
 
 	if (item != nullptr && (anim == &grow_anim && anim->Finished() || anim != &grow_anim))
 		item->printIconOnScreen({ (int)localPos.x,(int)localPos.y });
 	
 	if (anim == &select_anim)
-		App->render->Blit(App->gui->GetAtlas(), localPos.x - anim->GetCurrentPivot().x, localPos.y - anim->GetCurrentPivot().y, &anim->GetCurrentFrame(App->dt), 1, 0);
+		App->render->Blit(App->gui->getAtlas(), localPos.x - anim->GetCurrentPivot().x, localPos.y - anim->GetCurrentPivot().y, &anim->GetCurrentFrame(App->dt), 1, 0);
 	
 	return true;
 }
