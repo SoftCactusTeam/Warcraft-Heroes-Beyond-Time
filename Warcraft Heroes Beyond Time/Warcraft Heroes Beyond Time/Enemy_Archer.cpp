@@ -84,12 +84,6 @@ bool Enemy_Archer::Update(float dt)
 
 	UpdateEffects();
 
-	if (App->input->GetKey(SDL_SCANCODE_C) == KeyState::KEY_DOWN)
-		AddEffect(ARCHER_EFFECTS::ARCHER_EFFECT_FREEZE, 1000);
-
-	if (App->input->GetKey(SDL_SCANCODE_V) == KeyState::KEY_DOWN)
-		AddEffect(ARCHER_EFFECTS::ARCHER_EFFECT_FEAR, 1000);
-
 	if (!GetConcreteEffect(ARCHER_EFFECT_FREEZE) && !GetConcreteEffect(ARCHER_EFFECT_FEAR))
 	switch (state)
 	{
@@ -208,16 +202,14 @@ void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 			}
 			case PlayerAttack::P_Attack_Type::FREEZE_ITEM:
 			{
-				/*if (state != ARCHER_STATE::ARCHER_FREEZE && App->entities->GetRandomNumber(10) < 2)
-				{
-					initFreeze();
-				}*/
+				if (App->entities->GetRandomNumber(10) < 5 && !GetConcreteEffect(ARCHER_EFFECT_FREEZE))	// superar tirada 50%
+					AddEffect(ARCHER_EFFECTS::ARCHER_EFFECT_FREEZE, 2000);
 				break;
 			}
 			case PlayerAttack::P_Attack_Type::FEARBALL_ITEM:
 			{
-				/*if (state != ARCHER_STATE::ARCHER_FEAR)
-					initFear();*/
+				if (!GetConcreteEffect(ARCHER_EFFECT_FEAR))
+					AddEffect(ARCHER_EFFECTS::ARCHER_EFFECT_FEAR, 2000);
 				break;
 			}
 			case PlayerAttack::P_Attack_Type::SHIT:
