@@ -48,7 +48,7 @@ private:
 	float timeOffset = 0.0f;
 
 	// TELEPORT
-	fPoint pointToTelerpot[5] = { { 14 * 48 + 10,7 * 48 },{ 10 * 48,6 * 48 },{ 18 * 48,6 * 48 }, {10 * 48, 10 * 48}, { 18 * 48, 10 * 48} };
+	fPoint pointToTelerpot[3] = { { 14 * 48 + 10,7 * 48 },{ 12 * 48,10 * 48 },{ 17 * 48,10 * 48 } };
 	bool teleportBase = false;
 	bool teleportCenter = false;
 
