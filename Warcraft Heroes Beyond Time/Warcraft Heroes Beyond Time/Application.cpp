@@ -24,6 +24,7 @@
 #include "ModuleItems.h"
 #include "ModuleProjectiles.h"
 #include "ModuleEffects.h"
+#include "ModuleTransitions.h"
 
 #include "Brofiler\Brofiler.h"
 
@@ -47,7 +48,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	items = new ModuleItems();
 	projectiles = new ModuleProjectiles();
 	effects = new ModuleEffects();
-
+	transitions = new ModuleTransitions();
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
 
@@ -71,6 +72,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(colliders);
 	AddModule(items);
 	AddModule(gui);
+	AddModule(transitions);
 
 	AddModule(console);
 

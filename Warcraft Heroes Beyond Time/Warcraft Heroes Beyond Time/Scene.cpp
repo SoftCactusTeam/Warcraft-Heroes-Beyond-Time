@@ -22,6 +22,7 @@
 #include "ModuleEffects.h"
 #include "ModuleProjectiles.h"
 #include "Guldan.h"
+#include "ModuleTransitions.h"
 
 #include "Brofiler\Brofiler.h"
 #include "Label.h"
@@ -68,6 +69,8 @@ bool Scene::Start()
 	App->gui->Activate();
 
 	currentPercentAudio = App->audio->MusicVolumePercent;
+
+	SetScene(next_scene);
 
 	switch (actual_scene)
 	{
@@ -237,7 +240,7 @@ bool Scene::Update(float dt)
 	if (actual_scene == Stages::MAIN_MENU && App->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN && !App->console->isWritting()) // DELETE THIS AFTER VERTICAL
 	{
 		App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
-		actual_scene = Stages::INGAME;
+		next_scene = Stages::INGAME;
 		restart = true;
 	}
 
@@ -290,8 +293,11 @@ bool Scene::PostUpdate()
 	if (restart)
 	{
 		restart = false;
-		this->DeActivate();
-		this->Activate();
+
+		if (next_scene == Stages::INGAME && actual_scene != Stages::MAIN_MENU)
+			App->transitions->StartTransition(this, this, 2.0f, fades::circular_fade);
+		else
+			App->transitions->StartTransition(this, this, 2.0f, fades::slider_fade);
 	}
 
 	return ret;
@@ -299,7 +305,7 @@ bool Scene::PostUpdate()
 
 bool Scene::CleanUp()
 {
-	if(player)
+	if (player)
 		playerStats = player->numStats;
 
 	App->gui->DeActivate();
@@ -311,7 +317,7 @@ bool Scene::CleanUp()
 	App->effects->DeActivate();
 	App->projectiles->DeActivate();
 
-	if (actual_scene == Stages::MAIN_MENU)
+	if (next_scene == Stages::MAIN_MENU)
 	{
 		App->items->DeActivate();
 	}
@@ -366,35 +372,50 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 					switch (button->btype)
 					{
 						case BType::PLAY:
-							playerStats = EntitySystem::PlayerStats();
-							App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
-							actual_scene = Stages::INGAME;
-							restart = true;
+							if (!App->transitions->IsFading())
+							{
+								playerStats = EntitySystem::PlayerStats();
+								App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
+								next_scene = Stages::INGAME;
+								restart = true;
+							}
 							break;
 						case BType::EXIT_GAME:
-							return false;
+							if (!App->transitions->IsFading())
+							{
+								return false;
+							}
 							break;
 						case BType::SETTINGS:
-							actual_scene = Stages::SETTINGS;
-							restart = true;
+							if (!App->transitions->IsFading())
+							{
+								next_scene = Stages::SETTINGS;
+								restart = true;
+							}
 							break;
 						case BType::GO_MMENU:
-							if (actual_scene == Stages::INGAME)
+							if (!App->transitions->IsFading())
 							{
-								App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
-								App->audio->setMusicVolume(currentPercentAudio);
-								App->audio->HaltFX();
+								if (actual_scene == Stages::INGAME)
+								{
+									App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
+									App->audio->setMusicVolume(currentPercentAudio);
+									App->audio->HaltFX();
+								}
+								next_scene = Stages::MAIN_MENU;
+								lvlIndex = 0;
+								paused = false;
+								restart = true;
 							}
-							actual_scene = Stages::MAIN_MENU;
-							lvlIndex = 0;
-							paused = false;
-							restart = true;
 							break;
 						case BType::RESUME:
-							paused = false;
-							App->audio->ResumeFX();
-							App->gui->DestroyElem(PauseMenu);
-							App->audio->setMusicVolume(currentPercentAudio);
+							if (!App->transitions->IsFading())
+							{
+								paused = false;
+								App->audio->ResumeFX();
+								App->gui->DestroyElem(PauseMenu);
+								App->audio->setMusicVolume(currentPercentAudio);
+							}
 							break;
 					}
 					break;
@@ -547,8 +568,8 @@ void Scene::GeneratePortal()
 void Scene::GoMainMenu()
 {
 	if (actual_scene == Stages::INGAME)
-		App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0.5);
-	actual_scene = Stages::MAIN_MENU;
+		App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0.5f);
+	next_scene = Stages::MAIN_MENU;
 	restart = true;
 	lvlIndex = 0;
 }

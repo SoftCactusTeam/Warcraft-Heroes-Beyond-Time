@@ -56,7 +56,12 @@ public:
 		SETTINGS,
 		INGAME,
 
-	} actual_scene = Stages::MAIN_MENU;
+	} actual_scene = Stages::MAIN_MENU, next_scene = Stages::MAIN_MENU;
+
+	void SetScene(const Stages sceneTOSet)
+	{
+		actual_scene = sceneTOSet;
+	}
 
 	PlayerEntity* player = nullptr;
 	EntitySystem::PlayerStats playerStats;
