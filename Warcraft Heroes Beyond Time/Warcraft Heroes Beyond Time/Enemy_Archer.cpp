@@ -11,6 +11,7 @@
 #include "ModuleAudio.h"
 #include "ModuleTextures.h"
 #include "ModuleItems.h"
+#include "ModuleColliders.h"
 
 #include "Projectile.h"
 #include "ArcherArrow.h"
@@ -55,6 +56,8 @@ Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* textu
 		this->tier = 3;
 		break;
 	}
+
+	col = *App->colliders->AddCollider({ -16 + 20,-16 + 20,32,32 }, Collider::ColliderType::ENTITY, this).lock();
 
 	//USAR SOLO VARIABLES EN NUMSTATS, SI SE NECESITA ALGUNA M�S SE COMENTA CON EL EQUIPO Y SE DECIDE SI SE A�ADE. TODO CONFIGURABLE DESDE EL XML.
 }
@@ -138,6 +141,13 @@ bool Enemy_Archer::PostUpdate()
 		anim->speed = 0.0f;
 	else
 		anim->speed = anim->speedFactor * App->dt;
+
+	if (state == ARCHER_DIE && col)
+	{
+		App->colliders->deleteColliderbyOwner(this);
+		col = nullptr;
+	}
+
 	return true;
 }
 
@@ -398,7 +408,6 @@ void Enemy_Archer::initDie()
 	state = ARCHER_STATE::ARCHER_DIE;
 	accountantPrincipal = SDL_GetTicks() + TIME_DYING;
 	anim = &animDeath[LookAtPlayer()];
-	App->colliders->deleteColliderbyOwner(this);
 	anim->Reset();
 	pathVector.Clear();
 }

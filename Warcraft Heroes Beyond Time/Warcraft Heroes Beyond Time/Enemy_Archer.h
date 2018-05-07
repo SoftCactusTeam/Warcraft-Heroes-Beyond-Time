@@ -7,6 +7,7 @@
 
 #define ARROW_DEAD_TIMER 2000
 
+class Collider;
 
 enum ARCHER_STATE {
 	ARCHER_IDLE,
@@ -72,6 +73,7 @@ public:
 
 	void doFreeze(float dt);
 
+
 	void Walk();
 	void AddEffect(ARCHER_EFFECTS effect, int time);
 	void UpdateEffects();
@@ -89,6 +91,9 @@ public:
 	Animation animFrozen[NUMBER_OF_ORIENTATIONS];
 
 	Animation animSmoke;
+
+	Collider* col = nullptr;
+
 
 	std::list<archerEffectStruct*> effectsList;
 

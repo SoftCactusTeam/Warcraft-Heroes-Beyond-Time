@@ -379,7 +379,6 @@ void EntitySystem::AddEnemy(fPoint coor, ENEMY_TYPE type)
 	BROFILER_CATEGORY("AddEnemy", Profiler::Color::Chocolate);
 
 	Enemy_Archer* newEntity = new Enemy_Archer(coor, type, spritesheetsEntities[ARCHER_SHEET]);
-	App->colliders->AddCollider({ -16+20,-16+20,32,32 }, Collider::ColliderType::ENTITY, newEntity);
 
 	toSpawn.push_back(newEntity);
 }
