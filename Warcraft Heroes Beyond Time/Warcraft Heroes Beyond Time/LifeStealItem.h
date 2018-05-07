@@ -17,6 +17,7 @@ public:
 	bool Act(ModuleItems::ItemEvent event, float dt = App->dt);
 	bool Draw();
 	bool printIconOnScreen(iPoint pos);
+
 };
 
 #endif

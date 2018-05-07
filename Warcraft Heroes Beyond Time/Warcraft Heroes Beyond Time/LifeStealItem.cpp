@@ -1,6 +1,8 @@
 #include "LifeStealItem.h"
-
-
+#include "Application.h"
+#include "ModuleRender.h"
+#include "Scene.h"
+#include "Thrall.h"
 
 LifeStealItem::LifeStealItem()
 {
@@ -13,20 +15,30 @@ LifeStealItem::~LifeStealItem()
 
 bool LifeStealItem::Start()
 {
-	return false;
+	return true;
 }
 
 bool LifeStealItem::Act(ModuleItems::ItemEvent event, float dt)
 {
-	return false;
+	switch (event)
+	{
+	case ModuleItems::ItemEvent::PLAYER_HIT:
+		if (App->scene->playerStats.hp < 191)
+		{
+			App->scene->player->numStats.hp += 10;
+		}
+	}
+	return true;
 }
 
 bool LifeStealItem::Draw()
 {
-	return false;
+	return true;
 }
 
 bool LifeStealItem::printIconOnScreen(iPoint pos)
 {
-	return false;
+	//The GUI uses this method, fill it in all the items.
+	return App->render->Blit(App->items->getItemsTexture(), pos.x, pos.y, &SDL_Rect(LIFE_STEAL_ICON), 1, 0);
 }
+
