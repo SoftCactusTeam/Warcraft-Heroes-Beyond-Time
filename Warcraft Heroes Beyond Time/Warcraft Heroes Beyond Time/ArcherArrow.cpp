@@ -51,6 +51,7 @@ bool ArcherArrow::Update(float dt)
 
 	if (toData->tempoAtWall != -1)
 	{
+		App->colliders->deleteCollider(toData->arrowCollider);
 		if (toData->tempoAtWall < SDL_GetTicks())
 			App->projectiles->DestroyProjectile(this);
 	}

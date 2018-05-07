@@ -11,6 +11,7 @@
 #include "ModuleAudio.h"
 #include "ModuleTextures.h"
 #include "ModuleItems.h"
+#include "ModuleColliders.h"
 
 #include "Projectile.h"
 #include "ArcherArrow.h"
@@ -55,6 +56,8 @@ Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* textu
 		this->tier = 3;
 		break;
 	}
+
+	col = *App->colliders->AddCollider({ -16 + 20,-16 + 20,32,32 }, Collider::ColliderType::ENTITY, this).lock();
 
 	//USAR SOLO VARIABLES EN NUMSTATS, SI SE NECESITA ALGUNA M�S SE COMENTA CON EL EQUIPO Y SE DECIDE SI SE A�ADE. TODO CONFIGURABLE DESDE EL XML.
 }
@@ -141,6 +144,13 @@ bool Enemy_Archer::PostUpdate()
 		anim->speed = 0.0f;
 	else
 		anim->speed = anim->speedFactor * App->dt;
+
+	if (state == ARCHER_DIE && col)
+	{
+		App->colliders->deleteColliderbyOwner(this);
+		col = nullptr;
+	}
+
 	return true;
 }
 
@@ -155,19 +165,19 @@ bool Enemy_Archer::Draw()
 	
 	switch (tier)
 	{
-	case 1:
+	case 3:
 		if(damaged)
 			ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), App->entities->spritesheetsEntities[WHITE_ARCHER], anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot(), ModulePrinter::Pivots::UPPER_LEFT, { 0,0 }, 0, { 255,100,100,255 });
 		else
 			ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), App->entities->spritesheetsEntities[WHITE_ARCHER], anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot());
 		break;
-	case 2:
+	case 1:
 		if (damaged)
 			ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), App->entities->spritesheetsEntities[ORANGE_ARCHER], anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot(), ModulePrinter::Pivots::UPPER_LEFT, { 0,0 }, 0, { 255,100,100,255 });
 		else
 			ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), App->entities->spritesheetsEntities[ORANGE_ARCHER], anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot());
 		break;
-	case 3:
+	case 2:
 		if (damaged)
 			ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), App->entities->spritesheetsEntities[GREEN_ARCHER], anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot(), ModulePrinter::Pivots::UPPER_LEFT, { 0,0 }, 0, { 255,100,100,255 });
 		else

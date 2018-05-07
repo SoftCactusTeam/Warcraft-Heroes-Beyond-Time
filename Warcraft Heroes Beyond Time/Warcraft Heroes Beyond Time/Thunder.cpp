@@ -20,9 +20,13 @@ Thunder::Thunder(const ThunderInfo* info, Projectile_type type) : Projectile(inf
 
 	actualAnim = &thunderAnims[(uint)ThunderAnimations::cast];
 
-	//projCollider = *App->colliders->AddEnemyAttackCollider({ 131-48, -49/2, 49, 48 }, this, 50, EnemyAttack::E_Attack_Type::GULDAN_BALL).lock();
+	int minusX = info->pos.x / 48.0f;
+	int minusY = info->pos.y / 48.0f;
+	
+	projCollider = *App->colliders->AddEnemyAttackCollider({ (int)info->pos.x - (minusX * 2), (int)info->pos.y - (minusY * 2), 48, 48 }, nullptr, 50, EnemyAttack::E_Attack_Type::GULDAN_BALL).lock();
 
 }
+
 Thunder::~Thunder()
 {
 	App->colliders->deleteCollider(projCollider);

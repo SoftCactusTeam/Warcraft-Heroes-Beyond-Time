@@ -120,35 +120,48 @@ bool Scene::Start()
 				App->printer->Activate();
 				App->projectiles->Activate();
 
-				player = App->entities->AddPlayer({ 25 * 46,25 * 46 }, THRALL, playerStats);
+				player = App->entities->AddPlayer({ ((float)App->map->sizeX / 2) * 46,((float)App->map->sizeY / 2) * 46 }, THRALL, playerStats);
 				player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
 
 				App->path->LoadPathMap();
 
-				std::list<int>::iterator it = App->map->tier1PerLevel.begin();
+				std::list<SDL_Rect>::iterator it = App->map->archers.begin();
 				std::advance(it, lvlIndex);
-				for (int i = 0; i < (*it); i++)
-				{
-					iPoint enemy = App->map->GetRandomValidPoint();
-					App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ENEMY_TYPE::ARCHER_TIER_1);
-				}
-
-				it = App->map->tier2PerLevel.begin();
-				std::advance(it, lvlIndex);
-				for (int i = 0; i < (*it); i++)
-				{
-					iPoint enemy = App->map->GetRandomValidPoint();
-					App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ENEMY_TYPE::ARCHER_TIER_2);
-				}
-
-				it = App->map->tier3PerLevel.begin();
-				std::advance(it, lvlIndex);
-				for (int i = 0; i < (*it); i++)
-				{
-					iPoint enemy = App->map->GetRandomValidPoint();
-					App->entities->AddEnemy({ (float)enemy.x * 46 , (float)enemy.y * 46 }, ENEMY_TYPE::ARCHER_TIER_3);
-				}
 				
+				int numberArchers = 0;
+				do
+				{
+					int randomNumber = rand() % 100;
+					if (randomNumber <= (*it).y)
+					{
+						iPoint enemyPos = App->map->GetRandomValidPoint();
+						App->entities->AddEnemy({ (float)enemyPos.x * 46 ,(float)enemyPos.y * 46 }, ENEMY_TYPE::ARCHER_TIER_1);
+						numberArchers++;
+						if (numberArchers >= (*it).x)
+							continue;
+					}
+
+					randomNumber = rand() % 100;
+					if (randomNumber <= (*it).w)
+					{
+						iPoint enemyPos = App->map->GetRandomValidPoint();
+						App->entities->AddEnemy({ (float)enemyPos.x * 46 ,(float)enemyPos.y * 46 }, ENEMY_TYPE::ARCHER_TIER_2);
+						numberArchers++;
+						if (numberArchers >= (*it).x)
+							continue;
+					}
+
+					randomNumber = rand() % 100;
+					if (randomNumber <= (*it).h)
+					{
+						iPoint enemyPos = App->map->GetRandomValidPoint();
+						App->entities->AddEnemy({ (float)enemyPos.x * 46 ,(float)enemyPos.y * 46 }, ENEMY_TYPE::ARCHER_TIER_3);
+						numberArchers++;
+						if (numberArchers >= (*it).x)
+							continue;
+					}
+				}
+				while (numberArchers < (*it).x);
 
 				App->items->Activate();
 
