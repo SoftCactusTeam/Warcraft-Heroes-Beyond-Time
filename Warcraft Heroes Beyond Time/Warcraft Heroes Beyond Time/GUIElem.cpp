@@ -219,7 +219,6 @@ bool GUIElem::DestroyChilds()
 		std::list<GUIElem*>::iterator it;
 		for (it = childs.begin(); it != childs.end(); ++it)
 		{
-			(*it)->DestroyChilds();
 			delete *it;
 		}
 		childs.clear();

@@ -39,6 +39,7 @@ private:
 public: 
 	bool blackBackground = false;
 	bool vertical = true;
+	bool menu = true;
 	
 };
 

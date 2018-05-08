@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "p2Point.h"
 #include "ModuleEntitySystem.h"
+#include <memory>
 
 #include "Animation.h"
 

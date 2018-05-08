@@ -21,11 +21,13 @@ bool GUIWindow::Update(float dt)
 {
 	bool result = true;
 
-	if (vertical)
-		checkVerticalInputs(dt);
-	else
-		checkHorizontalInputs(dt);
-
+	if (menu)
+	{
+		if (vertical)
+			checkVerticalInputs(dt);
+		else
+			checkHorizontalInputs(dt);
+	}
 	
 	if(result)
 		result = UpdateChilds(dt);
