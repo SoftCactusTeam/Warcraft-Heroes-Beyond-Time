@@ -368,8 +368,8 @@ bool ModuleColliders::CollisionEnabled(Collider* col1, Collider* col2) const
 		}
 		case Collider::ColliderType::ENEMY_ATTACK:
 		{
-			if (col2->colType == Collider::ColliderType::WALL)
-				return true;										 //Proyectiles vs walls enabled
+			if (col2->colType == Collider::ColliderType::WALL || col2->colType == Collider::ColliderType::PLAYER_ATTACK)  //Proyectiles vs walls and player attacks enabled
+				return true;										
 			else
 				return false;
 			break;
