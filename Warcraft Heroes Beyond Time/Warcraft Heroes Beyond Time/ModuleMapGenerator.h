@@ -60,12 +60,14 @@ public:
 	bool GenerateMap(MapData data);
 	bool GenerateBossMap(); 
 	bool ExecuteAlgorithm(MapNode* startNode, uint iterations, int seed);
+	bool GenerateChestMap();
 	SDL_Rect randomTile(bool isFloor);
 	bool GenerateWalls();
 	bool CleanUp();
 	iPoint GetRandomValidPoint();
 	iPoint GetRandomValidPointProxy(int distance, int proxyDistance);
 	iPoint GetRandomBossPoint();
+
 
 	void getSize(uint& w, uint& h);
 	int getTileSize();

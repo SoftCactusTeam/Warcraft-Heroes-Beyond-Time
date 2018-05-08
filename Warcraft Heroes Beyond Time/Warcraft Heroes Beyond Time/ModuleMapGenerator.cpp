@@ -14,19 +14,19 @@
 
 #define MINDISTANCE 10
 
-#define VOID { 196,0,48,48 }
-#define FLOOR { 0,49,48,48 }
-#define FLOOR2 { 49,49,48,48 }
-#define FLOOR3 { 98,49,48,48 }
-#define FLOOR4 { 147,49,48,48 }
-#define FLOOR5 { 196,49,48,48 }
-#define FLOOR6 { 0,98,48,48 }
-#define FLOOR7 { 49,98,48,48 }
-#define FLOOR8 { 98,98,48,48 }
-#define WALL1 { 0,0,48,48 }
-#define WALL2 { 49,0,48,48 }
-#define WALL3 { 98,0,48,48 }
-#define WALL4 { 147,0,48,48 }
+#define VOID { 192,1056,48,48 }
+#define FLOOR { 0,1104,48,48 }
+#define FLOOR2 { 48,1104,48,48 }
+#define FLOOR3 { 98,1104,48,48 }
+#define FLOOR4 { 144,1104,48,48 }
+#define FLOOR5 { 192,1104,48,48 }
+#define FLOOR6 { 0,1152,48,48 }
+#define FLOOR7 { 48,1152,48,48 }
+#define FLOOR8 { 96,1152,48,48 }
+#define WALL1 { 0,1056,48,48 }
+#define WALL2 { 48,1056,48,48 }
+#define WALL3 { 96,1056,48,48 }
+#define WALL4 { 144,1056,48,48 }
 
 MapGenerator::MapGenerator()
 {
@@ -162,9 +162,10 @@ inline int MapGenerator::Get(int x, int y) const
 }
 
 bool MapGenerator::CheckBoundaries(const iPoint& pos) const
-{
+{	
 	return (pos.x > 1 && pos.x < (int)sizeX - 2 &&
 		pos.y > 1 && pos.y < (int)sizeY - 2);
+	
 }
 
 bool MapGenerator::GenerateMap(MapData data)
@@ -177,9 +178,10 @@ bool MapGenerator::GenerateMap(MapData data)
 
 	this->sizeX = data.sizeX;
 	this->sizeY = data.sizeY;
-	totalSize = sizeX * sizeY;
 
 	LOG("Generating map Grid...");
+
+	totalSize = sizeX * sizeY;
 
 	for (uint i = 0u; i < sizeY; ++i)
 	{
@@ -192,6 +194,9 @@ bool MapGenerator::GenerateMap(MapData data)
 
 	if (ret)
 		ret = ExecuteAlgorithm( nodes[Get(sizeX/2,sizeY/2)], data.iterations, data.seed);
+
+	if (ret)
+		ret = GenerateChestMap();
 
 	if (ret)
 		ret = GenerateWalls();
@@ -348,6 +353,49 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 	return visited.size() == iterations + 1;
 }
 
+bool MapGenerator::GenerateChestMap()
+{
+	pugi::xml_document doc_map;
+	pugi::xml_node map_child;
+
+	char* buffer;
+	uint size = App->fs->Load("maps/ChestRoom.tmx", &buffer);
+	doc_map.load_buffer(buffer, size);
+	RELEASE(buffer);
+
+	map_child = doc_map.child("map");
+
+	int chestSizeX = map_child.attribute("width").as_uint();
+	int chestSizeY = map_child.attribute("height").as_uint();
+
+	MapNode* startNode = nullptr;
+	for (register int i = 0; i < nodes.size(); ++i)
+	{
+		if (!SDL_RectEquals(&nodes[i]->whatToBlit, &SDL_Rect(VOID)))
+			startNode = nodes[i];
+	}
+
+	pugi::xml_node tile_gid = map_child.child("layer").child("data").child("tile");
+	for (register int i = 0; i < chestSizeY; ++i)
+	{
+		for (register int j = 0 - chestSizeX/2 - 1; j < chestSizeX/2; ++j)
+		{
+			int gid = tile_gid.attribute("gid").as_int();
+			if (CheckBoundaries({ startNode->pos.x + j, startNode->pos.y + i }))
+			{
+				nodes[Get(startNode->pos.x + j, startNode->pos.y + i)]->whatToBlit = GetTileRect(gid);
+				nodes[Get(startNode->pos.x + j, startNode->pos.y + i)]->layerBelow = -2;
+				if (!SDL_RectEquals(&nodes[Get(startNode->pos.x + j, startNode->pos.y + i)]->whatToBlit, &SDL_Rect(VOID)))
+					visited.push_back(nodes[Get(startNode->pos.x + j, startNode->pos.y + i)]);
+			}
+			tile_gid = tile_gid.next_sibling("tile");
+		}
+	}
+
+	return true;
+}
+
+
 
 SDL_Rect MapGenerator::randomTile(bool isFloor)
 {
@@ -484,7 +532,7 @@ int MapGenerator::UseYourPowerToGenerateMeThisNewMap(int lvlIndex)
 	std::advance(it_2, lvlIndex);
 	mapInfo.iterations = (*it_2);
 
-	mapInfo.tilesetPath = "maps/Tiles.png";
+	mapInfo.tilesetPath = "maps/tiles_boss.png";
 	mapInfo.seed = mapSeed;
 
 	if (!App->map->GenerateMap(mapInfo))
