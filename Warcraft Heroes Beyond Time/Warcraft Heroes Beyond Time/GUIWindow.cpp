@@ -279,7 +279,7 @@ bool GUIWindow::checkHorizontalInputs(float dt)
 	return true;
 }
 
-void GUIWindow::setOpacity(uint amount)
+void GUIWindow::setOpacity(Uint8 amount)
 {
 	std::list<GUIElem*>::iterator it;
 	for (it = childs.begin(); it != childs.end(); ++it)

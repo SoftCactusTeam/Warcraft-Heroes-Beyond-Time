@@ -11,6 +11,8 @@
 #include "Application.h"
 #include "ModuleTextures.h"
 #include "ModuleItems.h"
+#include "GUIWindow.h"
+#include "GUIImage.h"
 
 PlayerEntity::PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : DynamicEntity(coor, texture, DynamicType::PLAYER), type(type)
 {
@@ -743,9 +745,6 @@ void PlayerEntity::KeyboardStates(float dt)
 		}
 	}
 
-
-
-
 	if (DashCD > 0.0f)
 	{
 		DashCD -= dt;
@@ -760,7 +759,11 @@ void PlayerEntity::KeyboardStates(float dt)
 		{
 			damaged = false;
 			damagedCD = 0.0f;
+			App->gui->DestroyElem((GUIElem*)App->scene->blood);
 		}
+		uint percent = damagedCD * 100 / damagedConfigCD;
+		Uint8 alpha = 255 - (percent * 255 / 100);
+		App->scene->blood->setOpacity(alpha);
 	}
 }
 
@@ -1094,7 +1097,11 @@ void PlayerEntity::JoyconStates(float dt)
 			SDL_SetTextureColorMod(App->entities->spritesheetsEntities[THRALL_SHEET], 255, 255, 255);
 			damaged = false;
 			damagedCD = 0.0f;
+			App->gui->DestroyElem((GUIElem*)App->scene->blood);
 		}
+		uint percent = damagedCD * 100 / damagedConfigCD;
+		Uint8 alpha = 255 - (percent * 255 / 100);
+		App->scene->blood->setOpacity(alpha);
 	}
 }
 
@@ -1374,6 +1381,11 @@ void PlayerEntity::SetDamage(int damage, bool setStateDamage)
 		}
 		else
 		{
+			GUIWindow* blood = (GUIWindow*)App->gui->CreateGUIWindow({ 0,0 }, { 0,0,0,0 }, nullptr, nullptr);
+			GUIImage* image = (GUIImage*)App->gui->CreateGUIImage({ 0,0 }, { 0, 912, 640, 360 }, nullptr, (GUIElem*)blood);
+			App->scene->blood = blood;
+
+			App->scene->blood = blood;
 			App->audio->PlayFx(App->audio->Thrall_Hitted_FX);
 			damaged = true;
 			SDL_SetTextureColorMod(App->entities->spritesheetsEntities[THRALL_SHEET], 255, 100, 100);

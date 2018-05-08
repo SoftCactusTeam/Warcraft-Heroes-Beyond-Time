@@ -18,7 +18,7 @@ public:
 	}
 
 private:
-	uint opacity = 255;
+	Uint8 opacity = 255;
 };
 
 #endif

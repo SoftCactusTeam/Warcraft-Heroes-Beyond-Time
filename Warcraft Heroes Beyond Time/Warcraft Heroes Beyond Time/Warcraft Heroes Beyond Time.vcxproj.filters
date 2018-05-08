@@ -410,4 +410,7 @@
       <UniqueIdentifier>{9580dc2a-cfc5-4c2d-a9f0-d70f90e119e4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resource.rc" />
+  </ItemGroup>
 </Project>

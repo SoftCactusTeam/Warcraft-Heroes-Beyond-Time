@@ -23,7 +23,7 @@ public:
 	void UnFocusChilds();
 
 	//0 for transparent, 255 for full opaque
-	void setOpacity(uint amount);
+	void setOpacity(Uint8 amount);
 
 private:
 	bool AnyChildFocused();
