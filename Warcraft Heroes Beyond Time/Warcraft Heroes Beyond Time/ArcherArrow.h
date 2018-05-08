@@ -22,6 +22,7 @@ struct ArcherArrowInfo : public ProjectileInfo
 	fPoint			direction;
 	fPoint			initialPlayerPos;
 	float			speed = 0.0f;
+	float			copySpeed = 0.0f;
 	Collider*		arrowCollider = nullptr;
 
 	float			deadTimer;

@@ -27,6 +27,8 @@ ArcherArrow::ArcherArrow(const ArcherArrowInfo* info, Projectile_type type) : Pr
 	toData->layer = 2;
 	toData->deadTimer += SDL_GetTicks();
 	deleteArrow = false;
+	toData->copySpeed = toData->speed;
+
 }
 
 ArcherArrow::~ArcherArrow()
@@ -90,11 +92,26 @@ void ArcherArrow::OnCollision(Collider* yours, Collider* collideWith)
 			{
 				PlayerEntity* plaOwner = (PlayerEntity*)collideWith->owner;
 				if (plaOwner->GetDamageCollider() == collideWith)
+					if (!plaOwner->getConcretePlayerStates(11))	// el num 11 es el dash, es una guarrada per mira ... no tinc temps ...
 					// AIXO SI L'ALTRE ES UN PLAYER
 					deleteArrow = true;
 			}
 		}
 		break;
+
+		if (collideWith->colType == Collider::ColliderType::PLAYER_ATTACK)
+		{
+			PlayerAttack* attack = (PlayerAttack*)collideWith;
+			switch (attack->pattacktype)
+			{
+			case PlayerAttack::P_Attack_Type::SHIT:
+				toData->speed = 2;
+				break;
+			case PlayerAttack::P_Attack_Type::FREEZE_ITEM:
+				deleteArrow = true;
+				break;
+			}
+		}
 	}
 }
 
@@ -104,4 +121,14 @@ void ArcherArrow::OnCollisionContinue(Collider* yours, Collider* collideWith)
 
 void ArcherArrow::OnCollisionLeave(Collider* yours, Collider* collideWith)
 {
+	if (collideWith->colType == Collider::ColliderType::PLAYER_ATTACK)
+	{
+		PlayerAttack* attack = (PlayerAttack*)collideWith;
+		switch (attack->pattacktype)
+		{
+		case PlayerAttack::P_Attack_Type::SHIT:
+			toData->speed = toData->copySpeed;
+			break;
+		}
+	}
 }

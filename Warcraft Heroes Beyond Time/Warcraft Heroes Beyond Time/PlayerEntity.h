@@ -84,7 +84,7 @@ public:
 	void PlayerStates(float dt);
 	void KeyboardStates(float dt);
 	void JoyconStates(float dt);
-
+	bool getConcretePlayerStates(int stat);
 	void CheckIddleStates();
 
 	void CheckMapLimits();

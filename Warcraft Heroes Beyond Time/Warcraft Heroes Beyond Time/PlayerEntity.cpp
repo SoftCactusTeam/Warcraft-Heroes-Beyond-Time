@@ -1098,6 +1098,13 @@ void PlayerEntity::JoyconStates(float dt)
 	}
 }
 
+bool PlayerEntity::getConcretePlayerStates(int stat)
+{
+	if (stat == (int)state)
+		return true;
+	return false;
+}
+
 void PlayerEntity::CheckIddleStates()
 {
 	switch (state)
