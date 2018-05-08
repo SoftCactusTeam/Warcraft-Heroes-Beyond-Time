@@ -48,10 +48,16 @@ bool Slider::Draw()
 	bool ret = true;
 
 	if (ret)
-		ret = App->render->Blit(App->gui->getAtlas(), (int)(screenPos.x - App->render->camera.x), (int)(screenPos.y - App->render->camera.y), &atlasRect);
+		if(!focused)
+			ret = App->render->Blit(App->gui->getAtlas(), (int)(screenPos.x - App->render->camera.x), (int)(screenPos.y - App->render->camera.y), &atlasRect);
+		else
+			ret = App->render->Blit(App->gui->getAtlas(), (int)(screenPos.x - App->render->camera.x), (int)(screenPos.y - App->render->camera.y), &SDL_Rect(sliderbar_focused));
 
 	if (ret)
-		ret = App->render->Blit(App->gui->getAtlas(), (int)(smobilepos - App->render->camera.x), (int)(screenPos.y - 5 - App->render->camera.y), &sliderMobileRect);
+		if(!focused)
+			ret = App->render->Blit(App->gui->getAtlas(), (int)(smobilepos - App->render->camera.x), (int)(screenPos.y - 5 - App->render->camera.y), &sliderMobileRect);
+		else
+			ret = App->render->Blit(App->gui->getAtlas(), (int)(smobilepos - App->render->camera.x), (int)(screenPos.y - 5 - App->render->camera.y), &SDL_Rect(slidermobile_focused));
 
 	if (ret)
 		ret = DrawChilds();

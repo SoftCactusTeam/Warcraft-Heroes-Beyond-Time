@@ -127,6 +127,7 @@ void ModuleTransitions::SliderFade()
 				off->DeActivate();
 			}
 			if (start_on) {
+				App->scene->actual_scene = App->scene->next_scene;
 				on->Activate();
 				App->scene->paused = false;
 				
@@ -172,6 +173,7 @@ void ModuleTransitions::CircularFade()
 				off->DeActivate();
 			}
 			if (start_on) {
+				App->scene->actual_scene = App->scene->next_scene;
 				on->Activate();
 				App->scene->paused = false;
 				

@@ -295,9 +295,22 @@ bool Scene::PostUpdate()
 		restart = false;
 
 		if (next_scene == Stages::INGAME && actual_scene != Stages::MAIN_MENU)
+		{
 			App->transitions->StartTransition(this, this, 2.0f, fades::circular_fade);
-		else
+		}
+		else if ((actual_scene == Stages::MAIN_MENU && next_scene == Stages::INGAME) ||
+				(actual_scene == Stages::INGAME && next_scene == Stages::MAIN_MENU))
+		{
 			App->transitions->StartTransition(this, this, 2.0f, fades::slider_fade);
+		}
+		
+		if ((actual_scene == Stages::MAIN_MENU && next_scene == Stages::SETTINGS) ||
+			(actual_scene == Stages::SETTINGS && next_scene == Stages::MAIN_MENU))
+		{
+			actual_scene = next_scene;
+			this->DeActivate();
+			this->Activate();
+		}
 	}
 
 	return ret;

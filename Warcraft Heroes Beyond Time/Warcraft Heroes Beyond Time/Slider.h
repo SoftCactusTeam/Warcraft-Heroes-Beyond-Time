@@ -5,8 +5,11 @@
 
 //atlasRect defines---------------------------
 
-#define sliderbar {145,104,258,21}
-#define slidermobile {407,100,11,28}
+#define sliderbar {145, 76, 258, 18}
+#define sliderbar_focused {145,105,258,21}
+
+#define slidermobile {407, 71,11,28}
+#define slidermobile_focused {407,101,11,28}
 
 #define sliderdeadzone 10
 
