@@ -5,6 +5,9 @@
 #include "ModuleWindow.h"
 
 #include "SDL/include/SDL.h"
+#include "SDL_image/include/SDL_image.h"
+#pragma comment( lib, "SDL_image/libx86/SDL2_image.lib" )
+#include "FileSystem.h"
 
 
 Window::Window() : Module()
@@ -20,8 +23,6 @@ bool Window::Awake(pugi::xml_node& windowNode)
 {
 	LOG("Init SDL window & surface");
 	bool ret = true;
-
-	icon_surface = SDL_LoadBMP(icon.data());
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -62,7 +63,9 @@ bool Window::Awake(pugi::xml_node& windowNode)
 		}
 
 		window = SDL_CreateWindow(App->GetTitle(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
-		SDL_SetWindowIcon(window, icon_surface);
+		SDL_Surface* icon = IMG_LoadPNG_RW(App->fs->Load("sprites/iconExe_png.png"));
+		SDL_SetWindowIcon(window, icon);
+		SDL_FreeSurface(icon);
 		if(window == NULL)
 		{
 			LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());

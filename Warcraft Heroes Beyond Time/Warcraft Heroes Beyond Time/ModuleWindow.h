@@ -26,8 +26,6 @@ public:
 	SDL_Window* window;
 
 	SDL_Surface* screen_surface;
-	SDL_Surface* icon_surface;
-
 private:
 	std::string	title;
 	std::string	icon;

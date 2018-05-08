@@ -52,6 +52,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
 
+	AddModule(fs);
 	AddModule(window);
 	AddModule(input);
 	AddModule(textures);
@@ -64,7 +65,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 
 	AddModule(audio);
 	AddModule(fonts);
-	AddModule(fs);
+	
 	AddModule(path);
 	AddModule(printer);
 
