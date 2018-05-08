@@ -451,7 +451,7 @@ bool Guldan::Update(float dt)
 				{
 					int posToTp = 0;
 					do
-						posToTp = rand() % 5;
+						posToTp = rand() % 3;
 					while (pointToTelerpot[posToTp] == pos);
 					pos.x = pointToTelerpot[posToTp].x;
 					pos.y = pointToTelerpot[posToTp].y;
@@ -1104,9 +1104,12 @@ void Guldan::OnCollision(Collider* yours, Collider* collideWith)
 	{
 	case Collider::ColliderType::PLAYER_ATTACK:
 	{
-
-		if (anim != &teleport || anim != &inverseTeleport)
-			numStats.hp -= 25.0f;
+		PlayerAttack* attack = (PlayerAttack*)collideWith;
+		if (attack->pattacktype == PlayerAttack::P_Attack_Type::NORMAL_ATTACK)
+		{
+			if (anim != &teleport || anim != &inverseTeleport)
+				numStats.hp -= 25.0f;
+		}
 
 		break;
 	}	

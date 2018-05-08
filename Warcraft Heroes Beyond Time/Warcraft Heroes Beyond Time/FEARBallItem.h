@@ -4,7 +4,7 @@
 #include "Item.h"
 #include <memory>
 
-#define STICK_ITEM {55,179,32,32} //The rect from the texture of your gui icon
+#define STICK_ITEM {217,176,16,16} //The rect from the texture of your gui icon
 
 class Collider;
 

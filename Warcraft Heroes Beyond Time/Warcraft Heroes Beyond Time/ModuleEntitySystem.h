@@ -33,6 +33,11 @@ public:
 		uint energyPercentbyHit = 0u;
 		uint critChance = 0u;
 
+		bool isEmpty()
+		{
+			return maxhp == 0;
+		}
+
 	} thrallstats;
 
 	struct EnemyStats
@@ -64,7 +69,7 @@ public:
 		uint velocityDashHit = 0u;
 		uint timingDashHit = 0u;
 
-	} archerT1stats, archerT2stats, archerT3stats, guldanstats;
+	} archerT1stats, archerT2stats, archerT3stats, archerT4stats, guldanstats;
 
 
 	EntitySystem();
@@ -87,7 +92,7 @@ public:
 	bool ClearEntitiesList();
 	bool UnloadTexturesVector();
 
-	PlayerEntity* AddPlayer(fPoint coor, PLAYER_TYPE type);
+	PlayerEntity* AddPlayer(fPoint coor, PLAYER_TYPE type, PlayerStats& stats = PlayerStats());
 	void AddEnemy(fPoint coor, ENEMY_TYPE type);
 	BossEntity* AddBoss(fPoint coor, BossType type);
 	void AddConsumable(fPoint coor, CONSUMABLE_TYPE type);

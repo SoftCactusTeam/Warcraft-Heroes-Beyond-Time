@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "p2Point.h"
+#include "ModuleEntitySystem.h"
 
 #include "Animation.h"
 
@@ -55,9 +56,16 @@ public:
 		SETTINGS,
 		INGAME,
 
-	} actual_scene = Stages::MAIN_MENU;
+	} actual_scene = Stages::MAIN_MENU, next_scene = Stages::MAIN_MENU;
+
+	void SetScene(const Stages sceneTOSet)
+	{
+		actual_scene = sceneTOSet;
+	}
 
 	PlayerEntity* player = nullptr;
+	EntitySystem::PlayerStats playerStats;
+
 	ChestEntity* lvlChest = nullptr;
 	Guldan* guldan = nullptr;
 	bool paused = false;
@@ -66,11 +74,11 @@ public:
 	PortalEntity* portal = nullptr;
 
 	GUIWindow* ItemSelection = nullptr;
+	GUIWindow* PauseMenu = nullptr;
 
 
 private:
 
-	GUIWindow* PauseMenu = nullptr;
 
 	uint currentPercentAudio = 0u;
 	

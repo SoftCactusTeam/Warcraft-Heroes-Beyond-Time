@@ -7,6 +7,7 @@
 
 #define ARROW_DEAD_TIMER 2000
 
+class Collider;
 
 enum ARCHER_STATE {
 	ARCHER_IDLE,
@@ -26,6 +27,7 @@ enum ARCHER_EFFECTS
 {
 	ARCHER_EFFECT_FREEZE,
 	ARCHER_EFFECT_BURNING,
+	ARCHER_EFFECT_FEAR,
 	ARCHER_EFFECT_NONE
 };
 
@@ -47,6 +49,7 @@ public:
 	bool Draw();
 	void OnCollision(Collider* yours, Collider* collideWith);
 	void OnCollisionContinue(Collider* yours, Collider* collideWith);
+	void OnCollisionLeave(Collider* yours, Collider* collideWith);
 
 	// STATE MACHINE ====================
 
@@ -72,13 +75,17 @@ public:
 
 	void doFreeze(float dt);
 
+
 	void Walk();
+
 	void AddEffect(ARCHER_EFFECTS effect, int time);
 	void UpdateEffects();
+	bool GetConcreteEffect(ARCHER_EFFECTS effect);
+
 	// ~~~~~~~~~~~~~~~~~~ STATE MACHINE
 
 	void LoadAnimations();
-	void ShootArrow(fPoint desviation = fPoint(0, 0));
+	void ShootArrow(fPoint objective = fPoint(-1, -1), fPoint desviation = fPoint(0, 0));
 
 public:
 	ARCHER_STATE state;
@@ -90,11 +97,16 @@ public:
 
 	Animation animSmoke;
 
+	Collider* col = nullptr;
+
+
 	std::list<archerEffectStruct*> effectsList;
 
 private:
 	// Normal Atac Variables
 	bool hasAttacked = false;
+	FIXED_ANGLE initialAngle = FIXED_ANGLE::NON_ANGLE;
+	fPoint initialPlayerPos;
 	// Fast atac variables
 	int timeToShootAnother = 0;
 	int arrowToShoot = 0;
@@ -103,18 +115,19 @@ private:
 	fPoint posSmoke = { -1.f,-1.f };
 	// Littlemove variables
 	iPoint posToScape;
-	//Items variables
-	float fear_counter = 0.0f;
-
 	int arrowsShooted = 0;
 	int cooldownToReLittleMove = 0;
 	// Dash variables
 	FIXED_ANGLE saveFirstAngle = FIXED_ANGLE::NON_ANGLE;
 	fPoint dashMovement;
 	float dashTempo = 0.0f;
-
 	//Items variables
 	float frozen_counter = 0.0f;
+	//Items variables
+	float fear_counter = 0.0f;
+	//Items variables
+	int originalSpeed = 0;
+
 
 	bool			damaged = false;
 	float			damagedCD = 0.0f;

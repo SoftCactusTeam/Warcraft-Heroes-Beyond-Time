@@ -64,6 +64,7 @@ bool FelBall::Update(float dt)
 		{
 			actualAnim = &felAnims[(uint)FelAnimations::end_anim];
 			toData->fel_movement = FelBallInfo::fel_ball_movement::explosion;
+			App->colliders->deleteCollider(projCollider);
 			break;
 		}
 
@@ -79,6 +80,7 @@ bool FelBall::Update(float dt)
 		{
 			actualAnim = &felAnims[(uint)FelAnimations::end_anim];
 			toData->fel_movement = FelBallInfo::fel_ball_movement::explosion;
+			App->colliders->deleteCollider(projCollider);
 			break;
 		}
 
@@ -105,6 +107,7 @@ bool FelBall::Update(float dt)
 		{
 			actualAnim = &felAnims[(uint)FelAnimations::end_anim];
 			toData->fel_movement = FelBallInfo::fel_ball_movement::explosion;
+			App->colliders->deleteCollider(projCollider);
 			break;
 		}
 
@@ -138,8 +141,10 @@ void FelBall::OnCollision(Collider* yours, Collider* collideWith)
 	{
 	case Collider::ColliderType::ENTITY:
 	case Collider::ColliderType::WALL:
-		if (data->life <= 995)
+		if (data->life <= 999)
+		{
 			destroyTheBall = true;
+		}
 		break;
 	
 	}
@@ -147,6 +152,17 @@ void FelBall::OnCollision(Collider* yours, Collider* collideWith)
 
 void FelBall::OnCollisionContinue(Collider* yours, Collider* collideWith)
 {
+	switch (collideWith->colType)
+	{
+	case Collider::ColliderType::ENTITY:
+	case Collider::ColliderType::WALL:
+		if (data->life <= 990)
+		{
+			destroyTheBall = true;
+		}
+		break;
+
+	}
 }
 
 void FelBall::OnCollisionLeave(Collider* yours, Collider* collideWith)

@@ -11,6 +11,7 @@
 #include "ModuleAudio.h"
 #include "ModuleTextures.h"
 #include "ModuleItems.h"
+#include "ModuleColliders.h"
 
 #include "Projectile.h"
 #include "ArcherArrow.h"
@@ -54,8 +55,14 @@ Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* textu
 		numStats = App->entities->archerT3stats;
 		this->tier = 3;
 		break;
+	case ENEMY_TYPE::ARCHER_TIER_4:
+		numStats = App->entities->archerT4stats;
+		this->tier = 4;
+		break;
 	}
 
+	col = *App->colliders->AddCollider({ -16 + 20,-16 + 20,32,32 }, Collider::ColliderType::ENTITY, this).lock();
+	originalSpeed = numStats.speed;
 	//USAR SOLO VARIABLES EN NUMSTATS, SI SE NECESITA ALGUNA M�S SE COMENTA CON EL EQUIPO Y SE DECIDE SI SE A�ADE. TODO CONFIGURABLE DESDE EL XML.
 }
 
@@ -82,6 +89,9 @@ bool Enemy_Archer::Update(float dt)
 		return true;
 	}
 
+	UpdateEffects();
+
+	if (!GetConcreteEffect(ARCHER_EFFECT_FREEZE) && !GetConcreteEffect(ARCHER_EFFECT_FEAR))
 	switch (state)
 	{
 	case ARCHER_STATE::ARCHER_IDLE:
@@ -138,6 +148,13 @@ bool Enemy_Archer::PostUpdate()
 		anim->speed = 0.0f;
 	else
 		anim->speed = anim->speedFactor * App->dt;
+
+	if (state == ARCHER_DIE && col)
+	{
+		App->colliders->deleteColliderbyOwner(this);
+		col = nullptr;
+	}
+
 	return true;
 }
 
@@ -149,23 +166,36 @@ bool Enemy_Archer::Finish()
 bool Enemy_Archer::Draw()
 {
 	bool ret = true;
-	if(damaged)
-		ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), texture, anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot(), ModulePrinter::Pivots::UPPER_LEFT, {0,0}, 0, { 255,100,100,255 });
-	else
+	
+	switch (tier)
 	{
-		switch (tier)
-		{
-		case 1:
+	case 3:
+		if(damaged)
+			ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), App->entities->spritesheetsEntities[WHITE_ARCHER], anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot(), ModulePrinter::Pivots::UPPER_LEFT, { 0,0 }, 0, { 255,100,100,255 });
+		else
 			ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), App->entities->spritesheetsEntities[WHITE_ARCHER], anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot());
-			break;
-		case 2:
+		break;
+	case 1:
+		if (damaged)
+			ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), App->entities->spritesheetsEntities[ORANGE_ARCHER], anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot(), ModulePrinter::Pivots::UPPER_LEFT, { 0,0 }, 0, { 255,100,100,255 });
+		else
 			ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), App->entities->spritesheetsEntities[ORANGE_ARCHER], anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot());
-			break;
-		case 3:
+		break;
+	case 2:
+		if (damaged)
+			ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), App->entities->spritesheetsEntities[GREEN_ARCHER], anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot(), ModulePrinter::Pivots::UPPER_LEFT, { 0,0 }, 0, { 255,100,100,255 });
+		else
 			ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), App->entities->spritesheetsEntities[GREEN_ARCHER], anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot());
-			break;
-		}
+		break;
+	case 4:
+		if (damaged)
+			ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), App->entities->spritesheetsEntities[GREEN_ARCHER], anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot(), ModulePrinter::Pivots::UPPER_LEFT, { 0,0 }, 0, { 255,100,100,255 });
+		else
+			ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), App->entities->spritesheetsEntities[GREEN_ARCHER], anim->GetCurrentFrame(), 0, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot());
+
+		break;
 	}
+	
 	return ret;
 }
 
@@ -179,6 +209,7 @@ void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 		{
 			case PlayerAttack::P_Attack_Type::NORMAL_ATTACK:
 			case PlayerAttack::P_Attack_Type::SKILL:
+				initDash();
 			case PlayerAttack::P_Attack_Type::DMGBALL_ITEM:
 			{
 				App->audio->PlayFx(App->audio->ArcherDamaged);
@@ -192,16 +223,14 @@ void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 			}
 			case PlayerAttack::P_Attack_Type::FREEZE_ITEM:
 			{
-				/*if (state != ARCHER_STATE::ARCHER_FREEZE && App->entities->GetRandomNumber(10) < 2)
-				{
-					initFreeze();
-				}*/
+				if (App->entities->GetRandomNumber(10) < 5 && !GetConcreteEffect(ARCHER_EFFECT_FREEZE))	// superar tirada 50%
+					AddEffect(ARCHER_EFFECTS::ARCHER_EFFECT_FREEZE, 2000);
 				break;
 			}
 			case PlayerAttack::P_Attack_Type::FEARBALL_ITEM:
 			{
-				/*if (state != ARCHER_STATE::ARCHER_FEAR)
-					initFear();*/
+				if (!GetConcreteEffect(ARCHER_EFFECT_FEAR))
+					AddEffect(ARCHER_EFFECTS::ARCHER_EFFECT_FEAR, 2000);
 				break;
 			}
 			case PlayerAttack::P_Attack_Type::SHIT:
@@ -210,6 +239,9 @@ void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 				if (numStats.hp <= 0)
 					if (state != ARCHER_STATE::ARCHER_DIE)
 						initDie();
+
+				// aixo sera la caca ralentitzadora
+				numStats.speed = 1;
 			}
 		}
 
@@ -239,6 +271,22 @@ void Enemy_Archer::OnCollisionContinue(Collider* yours, Collider* collideWith)
 	}
 }
 
+void Enemy_Archer::OnCollisionLeave(Collider* yours, Collider* collideWith)
+{
+	if (collideWith->colType == Collider::ColliderType::PLAYER_ATTACK)
+	{
+		PlayerAttack* attack = (PlayerAttack*)collideWith;
+
+		switch (attack->pattacktype)
+		{
+		case PlayerAttack::P_Attack_Type::SHIT:
+		{
+			numStats.speed = originalSpeed;
+		}
+		}
+	}
+}
+
 // ---------------------------------------------------------------------------------
 // ----------------  INIT STATE_MACHIN FUNCTIONS  ----------------------------------
 // ---------------------------------------------------------------------------------
@@ -258,7 +306,9 @@ void Enemy_Archer::initAtac()
 {
 	state = ARCHER_STATE::ARCHER_BASIC_ATAC;
 	accountantPrincipal = SDL_GetTicks() + numStats.preAttac;
-	anim = &animAtac[LookAtPlayer()];
+	initialAngle = LookAtPlayer();
+	initialPlayerPos = App->scene->player->pos;
+	anim = &animAtac[initialAngle];
 	anim->Reset();
 	pathVector.Clear();
 	hasAttacked = false;
@@ -366,7 +416,6 @@ void Enemy_Archer::initLittleMove()
 		pathVector.CalculateWay(iPoint(((int)pos.x + (anim->GetCurrentRect().w / 2)), ((int)pos.y + (anim->GetCurrentRect().h / 2))), iPoint(posToScape.x* App->map->getTileSize(), posToScape.y* App->map->getTileSize()));
 		arrowsShooted = 0;
 		cooldownToReLittleMove = LITTLEMOVEMENT_COOLDOWN + SDL_GetTicks();
-		printf_s("%i\t%i\t :: TROBA NOU CAMI\n", randomX, randomY);
 	}
 	else
 	{
@@ -458,10 +507,11 @@ void Enemy_Archer::doAtac()
 		{
 			hasAttacked = true;
 			accountantPrincipal = SDL_GetTicks() + numStats.time_between_attacks;
-			ShootArrow();
+			ShootArrow(initialPlayerPos);
 			arrowsShooted++;
 		}
-		anim = &animAtac[LookAtPlayer()];
+		//anim = &animAtac[LookAtPlayer()];
+		anim = &animAtac[initialAngle];
 	}
 }
 
@@ -556,7 +606,6 @@ void Enemy_Archer::doDash()
 		{
 			pos += dashMovement;
 			dashTempo += App->dt;
-			printf_s("%i\n", accountantPrincipal);
 		}
 	}
 }
@@ -600,15 +649,63 @@ void Enemy_Archer::AddEffect(ARCHER_EFFECTS effect, int time)
 {
 	archerEffectStruct* aux = new archerEffectStruct();
 	aux->effect = effect;
-	aux->time = time;
+	aux->time = time + SDL_GetTicks();
 	effectsList.push_back(aux);
 	switch (effect)		// INITIAL EFFECT
 	{
 	case ARCHER_EFFECT_FREEZE:
-
+		anim->Stop();
 		break;
 	case ARCHER_EFFECT_BURNING:
 
+		break;
+	case ARCHER_EFFECT_FEAR:
+	{
+		int randomX = 0;
+		int randomY = 0;
+		int tileToMove = -1;
+
+		for (int i = 0; i < 20 && tileToMove == -1; i++)
+		{
+			randomX = rand() % numStats.tilesToLittleMove + 1;
+			if (randomX > numStats.tilesToLittleMove / 2)
+			{
+				randomX -= numStats.tilesToLittleMove / 2;
+				randomX *= -1;
+			}
+
+			randomY = rand() % numStats.tilesToLittleMove + 1;
+			if (randomY > numStats.tilesToLittleMove / 2)
+			{
+				randomY -= numStats.tilesToLittleMove / 2;
+				randomY *= -1;
+			}
+
+			int possibleTile = App->path->ExistWalkableAtPos(iPoint((int)pos.x / App->map->getTileSize() - randomX, (int)pos.y / App->map->getTileSize() - randomY));
+			if (possibleTile != -1)
+				if (App->scene->player->DistanceToObejective(App->path->posAtConcreteTile(possibleTile)) > App->scene->player->DistanceToObejective(App->path->posAtConcreteTile(tileToMove)))
+					tileToMove = possibleTile;
+				else if (tileToMove == -1)
+				tileToMove = possibleTile;
+		}
+
+		if (tileToMove != -1)
+		{
+			posToScape = { iPoint((int)pos.x / App->map->getTileSize() - randomX , (int)pos.y / App->map->getTileSize() - randomY) };
+			state = ARCHER_STATE::ARCHER_LITTLEMOVE;
+			accountantPrincipal = SDL_GetTicks() + LITTLEMOVEMENT_TIME;
+			anim = &animWalk[LookAtPlayer()];
+			anim->Reset();
+			pathVector.CalculatePathAstar(iPoint(((int)pos.x + (anim->GetCurrentRect().w / 2)), ((int)pos.y + (anim->GetCurrentRect().h / 2))), iPoint(posToScape.x * App->map->getTileSize(), posToScape.y* App->map->getTileSize()));
+			pathVector.CalculateWay(iPoint(((int)pos.x + (anim->GetCurrentRect().w / 2)), ((int)pos.y + (anim->GetCurrentRect().h / 2))), iPoint(posToScape.x* App->map->getTileSize(), posToScape.y* App->map->getTileSize()));
+			arrowsShooted = 0;
+			cooldownToReLittleMove = LITTLEMOVEMENT_COOLDOWN + SDL_GetTicks();
+		}
+		else
+		{
+			initBackJump();
+		}
+	}
 		break;
 	case ARCHER_EFFECT_NONE:
 		break;
@@ -617,10 +714,12 @@ void Enemy_Archer::AddEffect(ARCHER_EFFECTS effect, int time)
 
 void Enemy_Archer::UpdateEffects()
 {
+	std::list<archerEffectStruct*> toDelete;
+
 	std::list<archerEffectStruct*>::iterator it = effectsList.begin();
 	for (; it != effectsList.end(); it++)
 	{
-		if ((*it)->time < SDL_GetTicks())
+		if ((*it)->time > SDL_GetTicks())
 		{			// UPDATE
 			switch ((*it)->effect)
 			{
@@ -630,6 +729,59 @@ void Enemy_Archer::UpdateEffects()
 			case ARCHER_EFFECT_BURNING:
 
 				break;
+			case ARCHER_EFFECT_FEAR:
+			{
+				if (pathVector.isEmpty())
+				{
+					int randomX = 0;
+					int randomY = 0;
+					int tileToMove = -1;
+
+					for (int i = 0; i < 20 && tileToMove == -1; i++)
+					{
+						randomX = rand() % numStats.tilesToLittleMove + 1;
+						if (randomX > numStats.tilesToLittleMove / 2)
+						{
+							randomX -= numStats.tilesToLittleMove / 2;
+							randomX *= -1;
+						}
+
+						randomY = rand() % numStats.tilesToLittleMove + 1;
+						if (randomY > numStats.tilesToLittleMove / 2)
+						{
+							randomY -= numStats.tilesToLittleMove / 2;
+							randomY *= -1;
+						}
+
+						int possibleTile = App->path->ExistWalkableAtPos(iPoint((int)pos.x / App->map->getTileSize() - randomX, (int)pos.y / App->map->getTileSize() - randomY));
+						if (possibleTile != -1)
+							if (App->scene->player->DistanceToObejective(App->path->posAtConcreteTile(possibleTile)) > App->scene->player->DistanceToObejective(App->path->posAtConcreteTile(tileToMove)))
+								tileToMove = possibleTile;
+							else if (tileToMove == -1)
+								tileToMove = possibleTile;
+					}
+
+					if (tileToMove != -1)
+					{
+						posToScape = { iPoint((int)pos.x / App->map->getTileSize() - randomX , (int)pos.y / App->map->getTileSize() - randomY) };
+						state = ARCHER_STATE::ARCHER_LITTLEMOVE;
+						accountantPrincipal = SDL_GetTicks() + LITTLEMOVEMENT_TIME;
+						anim = &animWalk[LookAtPlayer()];
+						anim->Reset();
+						pathVector.CalculatePathAstar(iPoint(((int)pos.x + (anim->GetCurrentRect().w / 2)), ((int)pos.y + (anim->GetCurrentRect().h / 2))), iPoint(posToScape.x * App->map->getTileSize(), posToScape.y* App->map->getTileSize()));
+						pathVector.CalculateWay(iPoint(((int)pos.x + (anim->GetCurrentRect().w / 2)), ((int)pos.y + (anim->GetCurrentRect().h / 2))), iPoint(posToScape.x* App->map->getTileSize(), posToScape.y* App->map->getTileSize()));
+						arrowsShooted = 0;
+						cooldownToReLittleMove = LITTLEMOVEMENT_COOLDOWN + SDL_GetTicks();
+					}
+					else
+					{
+						initBackJump();
+					}
+				}
+				iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x + (anim->GetCurrentRect().w / 2), (int)pos.y + (anim->GetCurrentRect().h / 2)));
+				this->pos += fPoint((float)move.x * numStats.speed, (float)move.y * numStats.speed);
+				break;
+			}
 			case ARCHER_EFFECT_NONE:
 
 				break;
@@ -640,24 +792,49 @@ void Enemy_Archer::UpdateEffects()
 			switch ((*it)->effect)
 			{
 			case ARCHER_EFFECT_FREEZE:
-
+				anim->Start(9.0f);
 				break;
 			case ARCHER_EFFECT_BURNING:
+
+				break;
+			case ARCHER_EFFECT_FEAR:
 
 				break;
 			case ARCHER_EFFECT_NONE:
 
 				break;
 			}
-			effectsList.erase(it++);	// DELETE CONCRETE EFFECT
+			toDelete.push_back(*it);
 		}
 	}
+
+	std::list<archerEffectStruct*>::iterator itDEL = toDelete.begin();
+	for (; itDEL != toDelete.end(); itDEL++)
+	{
+		effectsList.remove(*itDEL);
+		delete (*itDEL);
+	}
+
 }
 
-void Enemy_Archer::ShootArrow(fPoint desviation)
+bool Enemy_Archer::GetConcreteEffect(ARCHER_EFFECTS effect)
+{
+	std::list<archerEffectStruct*>::iterator it = effectsList.begin();
+	for (; it != effectsList.end(); it++)
+		if ((*it)->effect == effect)
+			return true;
+	return false;
+}
+
+void Enemy_Archer::ShootArrow(fPoint objective, fPoint desviation)
 {
 	App->audio->PlayFx(App->audio->ArrowSound);
-	fPoint directionShoot = fPoint(App->scene->player->pos.x/* + App->scene->player->anim->GetCurrentRect().w / 2*/ , App->scene->player->pos.y/* + App->scene->player->anim->GetCurrentRect().h / 2*/);
+	fPoint directionShoot;
+	if (objective.x == -1)
+		directionShoot = fPoint(App->scene->player->pos.x/* + App->scene->player->anim->GetCurrentRect().w / 2*/ , App->scene->player->pos.y/* + App->scene->player->anim->GetCurrentRect().h / 2*/);
+	else
+		directionShoot = fPoint(objective.x/* + App->scene->player->anim->GetCurrentRect().w / 2*/, objective.y/* + App->scene->player->anim->GetCurrentRect().h / 2*/);
+
 	directionShoot.x -= (pos.x + 16/*Arrow Width & Height*/) + desviation.x;
 	directionShoot.y -= (pos.y + 16) + desviation.y;
 
@@ -705,6 +882,11 @@ void Enemy_Archer::ShootArrow(fPoint desviation)
 	ArcherArrowInfo info;
 	info.pos = position;
 	info.direction = directionShoot;
+	if (objective.x == -1)
+		info.initialPlayerPos = App->scene->player->pos;
+	else
+		info.initialPlayerPos = objective;
+
 	info.deadTimer = numStats.arrows_life;
 	info.speed = numStats.arrows_speed;
 	info.damageArrow = numStats.damage;
