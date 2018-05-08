@@ -49,6 +49,7 @@ public:
 	bool Draw();
 	void OnCollision(Collider* yours, Collider* collideWith);
 	void OnCollisionContinue(Collider* yours, Collider* collideWith);
+	void OnCollisionLeave(Collider* yours, Collider* collideWith);
 
 	// STATE MACHINE ====================
 
@@ -114,18 +115,19 @@ private:
 	fPoint posSmoke = { -1.f,-1.f };
 	// Littlemove variables
 	iPoint posToScape;
-	//Items variables
-	float fear_counter = 0.0f;
-
 	int arrowsShooted = 0;
 	int cooldownToReLittleMove = 0;
 	// Dash variables
 	FIXED_ANGLE saveFirstAngle = FIXED_ANGLE::NON_ANGLE;
 	fPoint dashMovement;
 	float dashTempo = 0.0f;
-
 	//Items variables
 	float frozen_counter = 0.0f;
+	//Items variables
+	float fear_counter = 0.0f;
+	//Items variables
+	int originalSpeed = 0;
+
 
 	bool			damaged = false;
 	float			damagedCD = 0.0f;

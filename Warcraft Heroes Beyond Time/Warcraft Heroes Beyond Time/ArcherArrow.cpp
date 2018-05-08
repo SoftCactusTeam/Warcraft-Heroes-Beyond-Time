@@ -78,12 +78,16 @@ bool ArcherArrow::Draw() const
 
 void ArcherArrow::OnCollision(Collider* yours, Collider* collideWith)
 {
+	printf_s("%i\n", (int)collideWith->colType);
 	switch (collideWith->colType)
 	{
+
 	case Collider::ColliderType::WALL:
 		toData->tempoAtWall = 1000 + SDL_GetTicks();
 		break;
+
 	case Collider::ColliderType::ENTITY:
+	{
 		Entity* entOwner = (Entity*)collideWith->owner;
 		if (entOwner->entityType == Entity::EntityType::DYNAMIC_ENTITY)
 		{
@@ -94,24 +98,28 @@ void ArcherArrow::OnCollision(Collider* yours, Collider* collideWith)
 				if (plaOwner->GetDamageCollider() == collideWith)
 					if (!plaOwner->getConcretePlayerStates(11))	// el num 11 es el dash, es una guarrada per mira ... no tinc temps ...
 					// AIXO SI L'ALTRE ES UN PLAYER
-					deleteArrow = true;
+						deleteArrow = true;
 			}
 		}
-		break;
+	}
+	break;
 
-		if (collideWith->colType == Collider::ColliderType::PLAYER_ATTACK)
+	case Collider::ColliderType::PLAYER_ATTACK:
+	{
+		PlayerAttack* attack = (PlayerAttack*)collideWith;
+		switch (attack->pattacktype)
 		{
-			PlayerAttack* attack = (PlayerAttack*)collideWith;
-			switch (attack->pattacktype)
-			{
-			case PlayerAttack::P_Attack_Type::SHIT:
-				toData->speed = 2;
-				break;
-			case PlayerAttack::P_Attack_Type::FREEZE_ITEM:
-				deleteArrow = true;
-				break;
-			}
+		case PlayerAttack::P_Attack_Type::NORMAL_ATTACK:
+			deleteArrow = true;
+			break;
+		case PlayerAttack::P_Attack_Type::SHIT:
+			toData->speed = 2;
+			break;
+		case PlayerAttack::P_Attack_Type::FREEZE_ITEM:
+			deleteArrow = true;
+			break;
 		}
+	}
 	}
 }
 

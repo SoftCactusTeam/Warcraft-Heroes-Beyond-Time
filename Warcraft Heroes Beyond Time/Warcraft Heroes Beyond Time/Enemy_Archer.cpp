@@ -58,7 +58,7 @@ Enemy_Archer::Enemy_Archer(fPoint coor, ENEMY_TYPE character, SDL_Texture* textu
 	}
 
 	col = *App->colliders->AddCollider({ -16 + 20,-16 + 20,32,32 }, Collider::ColliderType::ENTITY, this).lock();
-
+	originalSpeed = numStats.speed;
 	//USAR SOLO VARIABLES EN NUMSTATS, SI SE NECESITA ALGUNA M�S SE COMENTA CON EL EQUIPO Y SE DECIDE SI SE A�ADE. TODO CONFIGURABLE DESDE EL XML.
 }
 
@@ -228,6 +228,9 @@ void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 				if (numStats.hp <= 0)
 					if (state != ARCHER_STATE::ARCHER_DIE)
 						initDie();
+
+				// aixo sera la caca ralentitzadora
+				numStats.speed = 1;
 			}
 		}
 
@@ -253,6 +256,22 @@ void Enemy_Archer::OnCollisionContinue(Collider* yours, Collider* collideWith)
 					if (state != ARCHER_STATE::ARCHER_DIE)
 						initDie();
 			}
+		}
+	}
+}
+
+void Enemy_Archer::OnCollisionLeave(Collider* yours, Collider* collideWith)
+{
+	if (collideWith->colType == Collider::ColliderType::PLAYER_ATTACK)
+	{
+		PlayerAttack* attack = (PlayerAttack*)collideWith;
+
+		switch (attack->pattacktype)
+		{
+		case PlayerAttack::P_Attack_Type::SHIT:
+		{
+			numStats.speed = originalSpeed;
+		}
 		}
 	}
 }
