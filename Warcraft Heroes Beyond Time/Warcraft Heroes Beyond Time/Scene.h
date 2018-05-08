@@ -76,6 +76,7 @@ public:
 	GUIWindow* ItemSelection = nullptr;
 	GUIWindow* PauseMenu = nullptr;
 
+	GUIWindow* blood = nullptr;
 
 private:
 

@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleInput.h"
+#include "GUIImage.h"
 
 GUIWindow::GUIWindow(fPoint localPos, SDL_Rect atlasRect, GUIElem* parent, Module* listener) : GUIElem(localPos, listener, atlasRect, GUIElemType::WINDOW, parent)
 {
@@ -276,4 +277,18 @@ bool GUIWindow::checkHorizontalInputs(float dt)
 		minicounter = 0;
 	}
 	return true;
+}
+
+void GUIWindow::setOpacity(uint amount)
+{
+	std::list<GUIElem*>::iterator it;
+	for (it = childs.begin(); it != childs.end(); ++it)
+	{
+		GUIElem* elem = *it;
+		if (elem->type == GUIElemType::IMAGE)
+		{
+			GUIImage* image = (GUIImage*)elem;
+			image->setOpacity(amount);
+		}
+	}
 }

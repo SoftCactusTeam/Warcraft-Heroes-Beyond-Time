@@ -381,7 +381,7 @@ bool Application::LoadNow()
 	if (!doc.load_buffer(buffer, size))
 	{
 		LOG("Error loading xmldocument from buffer\n");
-		return false;
+		return true;
 	}
 
 	pugi::xml_node game = doc.first_child();
