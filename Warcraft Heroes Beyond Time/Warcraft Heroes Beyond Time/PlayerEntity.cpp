@@ -755,24 +755,19 @@ void PlayerEntity::KeyboardStates(float dt)
 	if (damaged)
 	{
 		damagedCD += dt;
-
-		if (App->scene->blood)
-		{
-			uint percent = damagedCD * 100 / damagedConfigCD;
-			float alpha = 255 - (percent * 255 / 100);
-			App->scene->blood->setOpacity(alpha);
-		}
+		
+		uint percent = damagedCD * 100 / damagedConfigCD;
+		float alpha = 255 - (percent * 255 / 100);
+		App->scene->blood->setOpacity(alpha);
 
 		if (damagedCD > damagedConfigCD)
 		{
 			SDL_SetTextureColorMod(App->entities->spritesheetsEntities[THRALL_SHEET], 255, 255, 255);
 			damaged = false;
 			damagedCD = 0.0f;
-			if (App->scene->blood)
-			{
-				App->gui->DestroyElem(App->scene->blood);
-				App->scene->blood = nullptr;
-			}
+			
+			App->gui->DestroyElem(App->scene->blood);
+			App->scene->blood = nullptr;
 		}
 	}
 }
@@ -1103,25 +1098,21 @@ void PlayerEntity::JoyconStates(float dt)
 	{
 		damagedCD += dt;
 
-		if (App->scene->blood)
-		{
-			uint percent = damagedCD * 100 / damagedConfigCD;
-			Uint8 alpha = 255 - (percent * 255 / 100);
-			App->scene->blood->setOpacity(alpha);
-		}
+		uint percent = damagedCD * 100 / damagedConfigCD;
+		Uint8 alpha = 255 - (percent * 255 / 100);
+		App->scene->blood->setOpacity(alpha);
 
 		if (damagedCD > damagedConfigCD)
 		{
 			SDL_SetTextureColorMod(App->entities->spritesheetsEntities[THRALL_SHEET], 255, 255, 255);
 			damaged = false;
 			damagedCD = 0.0f;
-			
-			if (App->scene->blood)
-			{
-				App->gui->DestroyElem(App->scene->blood);
-				App->scene->blood = nullptr;
-			}
+		
+			App->gui->DestroyElem(App->scene->blood);
+			App->scene->blood = nullptr;
 		}
+
+		
 	}
 }
 
@@ -1401,13 +1392,10 @@ void PlayerEntity::SetDamage(int damage, bool setStateDamage)
 		}
 		else
 		{
-			if (!App->scene->blood)
-			{
-				GUIWindow* blood = (GUIWindow*)App->gui->CreateGUIWindow({ 0,0 }, { 0,0,0,0 }, nullptr, nullptr);
-				blood->menu = false;
-				GUIImage* image = (GUIImage*)App->gui->CreateGUIImage({ 0,0 }, { 0, 912, 640, 360 }, nullptr, blood);
-				App->scene->blood = blood;
-			}
+			GUIWindow* blood = (GUIWindow*)App->gui->CreateGUIWindow({ 0,0 }, { 0,0,0,0 }, nullptr, nullptr);
+			blood->menu = false;
+			GUIImage* image = (GUIImage*)App->gui->CreateGUIImage({ 0,0 }, { 0, 912, 640, 360 }, nullptr, blood);
+			App->scene->blood = blood;
 			
 			App->audio->PlayFx(App->audio->Thrall_Hitted_FX);
 			damaged = true;
