@@ -110,6 +110,9 @@ private:
 	KeyState	mouse_buttons[NUM_MOUSE_BUTTONS];
 	KeyState	jButtons[NUM_J_BUTTONS];
 	KeyState    axis[(int)Axis::MAX];
+
+	float		axis_counters[(int)Axis::MAX] = {0.0f, 0.0f, 0.0f, 0.0f};
+
 	int			mouse_motion_x;
 	int			mouse_motion_y;
 	int			mouse_x;

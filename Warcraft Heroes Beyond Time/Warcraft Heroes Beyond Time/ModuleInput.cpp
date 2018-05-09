@@ -198,6 +198,7 @@ bool Input::PreUpdate()
 			break;
 
 		case SDL_JOYAXISMOTION:
+		{
 			if (event.jaxis.which == 0)
 				kbAvailable = false;
 			{
@@ -211,13 +212,15 @@ bool Input::PreUpdate()
 							if (axis[(int)Axis::RIGHT] == KeyState::KEY_DOWN || axis[(int)Axis::RIGHT] == KeyState::KEY_REPEAT)
 								axis[(int)Axis::RIGHT] = KeyState::KEY_REPEAT;
 							else
-								axis[(int)Axis::RIGHT] = KeyState::KEY_DOWN;
+								if (axis_counters[(int)Axis::RIGHT] == 0.0f)
+									axis[(int)Axis::RIGHT] = KeyState::KEY_DOWN;
 
-						else if(xAxis < 0)
-							if (axis[(int)Axis::LEFT] == KeyState::KEY_DOWN || axis[(int)Axis::LEFT] == KeyState::KEY_REPEAT)
-								axis[(int)Axis::LEFT] = KeyState::KEY_REPEAT;
-							else
-								axis[(int)Axis::LEFT] = KeyState::KEY_DOWN;
+								else if (xAxis < 0)
+									if (axis[(int)Axis::LEFT] == KeyState::KEY_DOWN || axis[(int)Axis::LEFT] == KeyState::KEY_REPEAT)
+										axis[(int)Axis::LEFT] = KeyState::KEY_REPEAT;
+									else
+										if (axis_counters[(int)Axis::LEFT] == 0.0f)
+											axis[(int)Axis::LEFT] = KeyState::KEY_DOWN;
 					}
 					else
 					{
@@ -244,13 +247,15 @@ bool Input::PreUpdate()
 							if (axis[(int)Axis::DOWN] == KeyState::KEY_DOWN || axis[(int)Axis::DOWN] == KeyState::KEY_REPEAT)
 								axis[(int)Axis::DOWN] = KeyState::KEY_REPEAT;
 							else
-								axis[(int)Axis::DOWN] = KeyState::KEY_DOWN;
+								if (axis_counters[(int)Axis::DOWN] == 0.0f)
+									axis[(int)Axis::DOWN] = KeyState::KEY_DOWN;
 
-						else if (yAxis < 0)
-							if (axis[(int)Axis::UP] == KeyState::KEY_DOWN || axis[(int)Axis::UP] == KeyState::KEY_REPEAT)
-								axis[(int)Axis::UP] = KeyState::KEY_REPEAT;
-							else
-								axis[(int)Axis::UP] = KeyState::KEY_DOWN;
+								else if (yAxis < 0)
+									if (axis[(int)Axis::UP] == KeyState::KEY_DOWN || axis[(int)Axis::UP] == KeyState::KEY_REPEAT)
+										axis[(int)Axis::UP] = KeyState::KEY_REPEAT;
+									else
+										if (axis_counters[(int)Axis::UP] == 0.0f)
+											axis[(int)Axis::UP] = KeyState::KEY_DOWN;
 					}
 					else
 					{
@@ -267,6 +272,8 @@ bool Input::PreUpdate()
 				}
 			}
 			break;
+		}
+			
 
 		case SDL_CONTROLLERBUTTONDOWN:
 			if (event.cbutton.which == 0)
@@ -291,6 +298,14 @@ bool Input::PreUpdate()
 	//Check if controller has been connected to the system
 	if (controller == nullptr && joystick == nullptr && SDL_NumJoysticks() > 0)
 		InitController();
+
+	//Manage axis counters
+	for (int i = 0; i < (int)Axis::MAX; ++i)
+	{
+		axis_counters[i] -= App->dt;
+		if (axis_counters[i] < 0.0f)
+			axis_counters[i] = 0.0f;
+	}
 
 	return true;
 }
