@@ -8,7 +8,7 @@
 bool FreezeBallItem::Start()
 {
 	angular_vel = -200.0f;
-	ball_col = App->colliders->AddPlayerAttackCollider({ 0, 0, 20, 20 }, App->scene->player, 0, PlayerAttack::P_Attack_Type::FREEZE_ITEM);
+	ball_col = App->colliders->AddPlayerAttackCollider({ 0, 0, 20, 20 }, App->scene->player, 0, PlayerAttack::P_Attack_Type::FREEZEBALL_ITEM);
 	return true;
 }
 
@@ -19,7 +19,7 @@ bool FreezeBallItem::Act(ModuleItems::ItemEvent event, float dt)
 	{
 	case ModuleItems::ItemEvent::UPDATE:
 		if(ball_col.expired())
-			ball_col = App->colliders->AddPlayerAttackCollider({ 0, 0, 20, 20 }, App->scene->player, 0, PlayerAttack::P_Attack_Type::FREEZE_ITEM);
+			ball_col = App->colliders->AddPlayerAttackCollider({ 0, 0, 20, 20 }, App->scene->player, 0, PlayerAttack::P_Attack_Type::FREEZEBALL_ITEM);
 		ball_counter += dt;
 		angle = angular_vel * ball_counter;
 		if (angle < -360)

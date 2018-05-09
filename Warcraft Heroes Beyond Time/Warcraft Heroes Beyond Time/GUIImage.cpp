@@ -14,7 +14,10 @@ bool GUIImage::Draw()
 {
 	bool ret = true;
 
-	ret = App->render->Blit(App->gui->getAtlas(), (int)(this->screenPos.x - App->render->camera.x), (int)(this->screenPos.y - App->render->camera.y), &atlasRect);
+	SDL_Texture* atlas = App->gui->getAtlas();
+	SDL_SetTextureAlphaMod(atlas, opacity);
+	ret = App->render->Blit(atlas, (int)(this->screenPos.x - App->render->camera.x), (int)(this->screenPos.y - App->render->camera.y), &atlasRect);
+	SDL_SetTextureAlphaMod(atlas, 255);
 
 	if (ret)
 		ret = DrawChilds();

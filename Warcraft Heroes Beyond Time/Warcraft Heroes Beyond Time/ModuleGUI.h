@@ -52,6 +52,7 @@ public:
 	GUIElem* CreateItemContainer(fPoint localPos, Item* item, GUIElem* parent, Module* listener = nullptr);
 
 	bool DestroyElem(GUIElem* element);
+
 	SDL_Texture* getAtlas() const;
 	char* getVersion() const;
 

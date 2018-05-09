@@ -14,16 +14,18 @@ struct SDL_Texture;
 
 class PlayerEntity : public DynamicEntity
 {
+public:
 
-protected:
-
-	PLAYER_TYPE type = PLAYER_TYPE::NON_PLAYER;
 	Animation idleDown, idleUp, idleLeft, idleRight, idleUpRight, idleUpLeft, idleDownRight, idleDownLeft;
 	Animation up, down, left, right, upLeft, upRight, downLeft, downRight;
 	Animation dashRight, dashDown, dashUpRight, dashDownRight, dashDownLeft, dashUp, dashLeft, dashUpLeft;
 	Animation attackDown, attackDownLeft, attackDownRight, attackUp, attackUpRight, attackUpLeft, attackLeft, attackRight;
 	Animation skill;
 	Animation deadUpRight, deadDownRight;
+
+protected:
+
+	PLAYER_TYPE type = PLAYER_TYPE::NON_PLAYER;
 	Animation* animBefore = nullptr;
 
 	float speed = 250.0f;
@@ -82,7 +84,7 @@ public:
 	void PlayerStates(float dt);
 	void KeyboardStates(float dt);
 	void JoyconStates(float dt);
-
+	bool getConcretePlayerStates(int stat);
 	void CheckIddleStates();
 
 	void CheckMapLimits();

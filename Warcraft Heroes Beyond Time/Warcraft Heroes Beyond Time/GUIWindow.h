@@ -18,11 +18,12 @@ public:
 	GUIWindow(fPoint localPos, SDL_Rect atlasRect, GUIElem* parent = nullptr, Module* listener = nullptr);
 
 	virtual ~GUIWindow();
-
 	bool Update(float dt);
-
 	bool Draw();
 	void UnFocusChilds();
+
+	//0 for transparent, 255 for full opaque
+	void setOpacity(Uint8 amount);
 
 private:
 	bool AnyChildFocused();
@@ -38,7 +39,7 @@ private:
 public: 
 	bool blackBackground = false;
 	bool vertical = true;
-	
+	bool menu = true;
 	
 };
 

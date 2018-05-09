@@ -29,6 +29,7 @@ class ModulePrinter;
 class ModuleItems;
 class ModuleProjectiles;
 class ModuleEffects;
+class ModuleTransitions;
 
 class Application
 {
@@ -89,6 +90,7 @@ public:
 	ModuleItems*			items = nullptr;
 	ModuleProjectiles*		projectiles = nullptr;
 	ModuleEffects*			effects = nullptr;
+	ModuleTransitions*		transitions = nullptr;
 
 public:
 

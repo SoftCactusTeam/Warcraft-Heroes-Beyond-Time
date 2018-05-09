@@ -69,7 +69,7 @@ public:
 		uint velocityDashHit = 0u;
 		uint timingDashHit = 0u;
 
-	} archerT1stats, archerT2stats, archerT3stats, guldanstats;
+	} archerT1stats, archerT2stats, archerT3stats, archerT4stats, guldanstats;
 
 
 	EntitySystem();

@@ -24,6 +24,7 @@
 #include "ModuleItems.h"
 #include "ModuleProjectiles.h"
 #include "ModuleEffects.h"
+#include "ModuleTransitions.h"
 
 #include "Brofiler\Brofiler.h"
 
@@ -47,10 +48,11 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	items = new ModuleItems();
 	projectiles = new ModuleProjectiles();
 	effects = new ModuleEffects();
-
+	transitions = new ModuleTransitions();
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
 
+	AddModule(fs);
 	AddModule(window);
 	AddModule(input);
 	AddModule(textures);
@@ -63,7 +65,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 
 	AddModule(audio);
 	AddModule(fonts);
-	AddModule(fs);
+	
 	AddModule(path);
 	AddModule(printer);
 
@@ -71,6 +73,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(colliders);
 	AddModule(items);
 	AddModule(gui);
+	AddModule(transitions);
 
 	AddModule(console);
 
@@ -379,7 +382,7 @@ bool Application::LoadNow()
 	if (!doc.load_buffer(buffer, size))
 	{
 		LOG("Error loading xmldocument from buffer\n");
-		return false;
+		return true;
 	}
 
 	pugi::xml_node game = doc.first_child();

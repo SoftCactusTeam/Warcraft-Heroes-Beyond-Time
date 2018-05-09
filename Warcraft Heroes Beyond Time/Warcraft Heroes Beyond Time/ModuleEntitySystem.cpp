@@ -51,6 +51,9 @@ class Spawn_ConsoleOrder : public ConsoleOrder
 				App->entities->AddEnemy({ App->scene->player->pos.x, App->scene->player->pos.y - 60 }, ENEMY_TYPE::ARCHER_TIER_2);
 			else if (parameterNumeric == 3)
 				App->entities->AddEnemy({ App->scene->player->pos.x, App->scene->player->pos.y - 60 }, ENEMY_TYPE::ARCHER_TIER_3);
+			else if (parameterNumeric == 4)
+				App->entities->AddEnemy({ App->scene->player->pos.x, App->scene->player->pos.y - 60 }, ENEMY_TYPE::ARCHER_TIER_4);
+
 		}
 
 		else if (parameter == "wizard")
@@ -220,6 +223,29 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	archerT3stats.timeStunedAfterHit =			archerT3.attribute("timeStunedAfterHit").as_uint();
 	archerT3stats.velocityDashHit =				archerT3.attribute("velocityDashHit").as_uint();
 	archerT3stats.timingDashHit =				archerT3.attribute("timingDashHit").as_uint();
+
+	pugi::xml_node archerT4 =					entitiesNode.child("enemies").child("archer_tier4");
+	archerT4stats.maxhp =						archerT4.attribute("hp").as_uint(0);
+	archerT4stats.hp =							archerT4stats.maxhp;
+	archerT4stats.speed =						archerT4.attribute("speed").as_uint(0);
+	archerT4stats.damage =						archerT4.attribute("damage").as_float(0);
+	archerT4stats.dropping_chance =				archerT4.attribute("dropping_chance").as_uint(0);
+	archerT4stats.strong_attack_chance =		archerT4.attribute("chance_powerful_attack").as_uint();
+	archerT4stats.arrows_life =					archerT4.attribute("arrows_life").as_float();
+	archerT4stats.arrows_speed =				archerT4.attribute("arrows_speed").as_float();
+	archerT4stats.time_between_attacks =		archerT4.attribute("time_between_attacks").as_float();
+	archerT4stats.time_stunned_after_attack =	archerT4.attribute("time_stunned_after_attack").as_float();
+	archerT4stats.vision_range =				archerT4.attribute("vision_range").as_uint();
+	archerT4stats.attack_range =				archerT4.attribute("attack_range").as_uint();
+	archerT4stats.minimal_distance_player =		archerT4.attribute("minimal_distance_with_player").as_uint();
+	archerT4stats.preAttac =					archerT4.attribute("pre_attac").as_uint();
+	archerT4stats.tilesToLittleMove =			archerT4.attribute("tiles_to_littlemove").as_uint();
+	archerT4stats.DistanceToScape =				archerT4.attribute("distance_to_scape").as_uint();
+	archerT4stats.attacCone_probability =		archerT4.attribute("attacCone_probability").as_uint();
+	archerT4stats.attacFast_probability =		archerT4.attribute("attacFast_probability").as_uint();
+	archerT4stats.timeStunedAfterHit =			archerT4.attribute("timeStunedAfterHit").as_uint();
+	archerT4stats.velocityDashHit =				archerT4.attribute("velocityDashHit").as_uint();
+	archerT4stats.timingDashHit =				archerT4.attribute("timingDashHit").as_uint();
 
 	pugi::xml_node guldan = entitiesNode.child("enemies").child("guldan");
 	guldanstats.maxhp = guldan.attribute("hp").as_uint(0);

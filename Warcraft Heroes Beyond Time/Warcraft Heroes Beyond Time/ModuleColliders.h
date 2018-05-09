@@ -42,10 +42,10 @@ public:
 		NO_TYPE = -1,
 		NORMAL_ATTACK,
 		DMGBALL_ITEM,
-		FREEZE_ITEM,
+		FREEZEBALL_ITEM,
 		FEARBALL_ITEM,
 		SKILL,
-		SHIT
+		DAMAGESHIT_ITEM
 
 	} pattacktype = P_Attack_Type::NO_TYPE;
 

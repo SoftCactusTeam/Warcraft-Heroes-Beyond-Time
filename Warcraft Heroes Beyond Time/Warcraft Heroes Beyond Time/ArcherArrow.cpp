@@ -14,7 +14,7 @@ ArcherArrow::ArcherArrow(const ArcherArrowInfo* info, Projectile_type type) : Pr
 
 	toData = (ArcherArrowInfo*)info;
 
-	toData->angle = atan2(toData->pos.y - App->scene->player->pos.y, toData->pos.x - App->scene->player->pos.x);
+	toData->angle = atan2(toData->pos.y - info->initialPlayerPos.y, toData->pos.x - info->initialPlayerPos.x);
 	if (toData->angle > 0)
 		toData->angle = toData->angle * 360 / (2 * PI);
 	else
@@ -27,6 +27,8 @@ ArcherArrow::ArcherArrow(const ArcherArrowInfo* info, Projectile_type type) : Pr
 	toData->layer = 2;
 	toData->deadTimer += SDL_GetTicks();
 	deleteArrow = false;
+	toData->copySpeed = toData->speed;
+
 }
 
 ArcherArrow::~ArcherArrow()
@@ -76,12 +78,16 @@ bool ArcherArrow::Draw() const
 
 void ArcherArrow::OnCollision(Collider* yours, Collider* collideWith)
 {
+	printf_s("%i\n", (int)collideWith->colType);
 	switch (collideWith->colType)
 	{
+
 	case Collider::ColliderType::WALL:
 		toData->tempoAtWall = 1000 + SDL_GetTicks();
 		break;
+
 	case Collider::ColliderType::ENTITY:
+	{
 		Entity* entOwner = (Entity*)collideWith->owner;
 		if (entOwner->entityType == Entity::EntityType::DYNAMIC_ENTITY)
 		{
@@ -90,11 +96,30 @@ void ArcherArrow::OnCollision(Collider* yours, Collider* collideWith)
 			{
 				PlayerEntity* plaOwner = (PlayerEntity*)collideWith->owner;
 				if (plaOwner->GetDamageCollider() == collideWith)
+					if (!plaOwner->getConcretePlayerStates(11))	// el num 11 es el dash, es una guarrada per mira ... no tinc temps ...
 					// AIXO SI L'ALTRE ES UN PLAYER
-					deleteArrow = true;
+						deleteArrow = true;
 			}
 		}
-		break;
+	}
+	break;
+
+	case Collider::ColliderType::PLAYER_ATTACK:
+	{
+		PlayerAttack* attack = (PlayerAttack*)collideWith;
+		switch (attack->pattacktype)
+		{
+		case PlayerAttack::P_Attack_Type::NORMAL_ATTACK:
+			deleteArrow = true;
+			break;
+		case PlayerAttack::P_Attack_Type::DAMAGESHIT_ITEM:
+			toData->speed = 2;
+			break;
+		case PlayerAttack::P_Attack_Type::FREEZEBALL_ITEM:
+			deleteArrow = true;
+			break;
+		}
+	}
 	}
 }
 
@@ -104,4 +129,14 @@ void ArcherArrow::OnCollisionContinue(Collider* yours, Collider* collideWith)
 
 void ArcherArrow::OnCollisionLeave(Collider* yours, Collider* collideWith)
 {
+	if (collideWith->colType == Collider::ColliderType::PLAYER_ATTACK)
+	{
+		PlayerAttack* attack = (PlayerAttack*)collideWith;
+		switch (attack->pattacktype)
+		{
+		case PlayerAttack::P_Attack_Type::DAMAGESHIT_ITEM:
+			toData->speed = toData->copySpeed;
+			break;
+		}
+	}
 }

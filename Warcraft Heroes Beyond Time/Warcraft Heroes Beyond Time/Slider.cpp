@@ -10,8 +10,8 @@ Slider::Slider(fPoint localPos, Module* listener, SDL_Rect atlasRect, SliderInfo
 {
 	stype = sInfo.type;
 
-	minValue = screenPos.x + 8;
-	maxValue = screenPos.x + atlasRect.w - 10;
+	minValue = screenPos.x + 2;
+	maxValue = screenPos.x + atlasRect.w - 5;
 
 	switch (stype)
 	{
@@ -48,10 +48,16 @@ bool Slider::Draw()
 	bool ret = true;
 
 	if (ret)
-		ret = App->render->Blit(App->gui->getAtlas(), (int)(screenPos.x - App->render->camera.x), (int)(screenPos.y - App->render->camera.y), &atlasRect);
+		if(!focused)
+			ret = App->render->Blit(App->gui->getAtlas(), (int)(screenPos.x - App->render->camera.x), (int)(screenPos.y - App->render->camera.y), &atlasRect);
+		else
+			ret = App->render->Blit(App->gui->getAtlas(), (int)(screenPos.x - App->render->camera.x), (int)(screenPos.y - App->render->camera.y), &SDL_Rect(sliderbar_focused));
 
 	if (ret)
-		ret = App->render->Blit(App->gui->getAtlas(), (int)(smobilepos - App->render->camera.x), (int)(screenPos.y - 5 - App->render->camera.y), &sliderMobileRect);
+		if(!focused)
+			ret = App->render->Blit(App->gui->getAtlas(), (int)(smobilepos - App->render->camera.x), (int)(screenPos.y - 5 - App->render->camera.y), &sliderMobileRect);
+		else
+			ret = App->render->Blit(App->gui->getAtlas(), (int)(smobilepos - App->render->camera.x), (int)(screenPos.y - 5 - App->render->camera.y), &SDL_Rect(slidermobile_focused));
 
 	if (ret)
 		ret = DrawChilds();
@@ -66,7 +72,7 @@ bool Slider::HandleInput(float dt)
 	int x, y;
 	App->input->GetMousePosition(x, y);
 
-	if (MouseHover() && ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) || App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT))
+	if (MouseHover() && ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)))
 	{
 		parent->UnFocusChilds();
 		Focus();

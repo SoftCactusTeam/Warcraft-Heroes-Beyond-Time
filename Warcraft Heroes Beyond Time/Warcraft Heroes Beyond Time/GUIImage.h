@@ -11,6 +11,14 @@ public:
 	virtual ~GUIImage();
 
 	bool Draw();
+
+	inline void setOpacity(uint amount)
+	{
+		opacity = amount;
+	}
+
+private:
+	Uint8 opacity = 255;
 };
 
 #endif

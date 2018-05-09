@@ -451,7 +451,7 @@ bool Guldan::Update(float dt)
 				{
 					int posToTp = 0;
 					do
-						posToTp = rand() % 5;
+						posToTp = rand() % 3;
 					while (pointToTelerpot[posToTp] == pos);
 					pos.x = pointToTelerpot[posToTp].x;
 					pos.y = pointToTelerpot[posToTp].y;

@@ -172,6 +172,9 @@
     <ClCompile Include="FEARBallItem.cpp">
       <Filter>Items</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleTransitions.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -365,6 +368,9 @@
     <ClInclude Include="FEARBallItem.h">
       <Filter>Items</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleTransitions.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />
@@ -403,5 +409,8 @@
     <Filter Include="Entities\Dynamic Entites\Player">
       <UniqueIdentifier>{9580dc2a-cfc5-4c2d-a9f0-d70f90e119e4}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resource.rc" />
   </ItemGroup>
 </Project>
