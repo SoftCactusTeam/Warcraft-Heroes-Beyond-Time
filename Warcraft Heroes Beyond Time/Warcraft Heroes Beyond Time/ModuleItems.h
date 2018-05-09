@@ -16,7 +16,8 @@ public:
 	{
 		NO_EVENT,
 		UPDATE,
-		PLAYER_DIED
+		PLAYER_DIED,
+		PLAYER_HITTED
 	};
 
 	ModuleItems()

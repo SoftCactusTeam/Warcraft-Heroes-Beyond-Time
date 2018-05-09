@@ -140,6 +140,7 @@
     <ClCompile Include="EnemyEntity.cpp" />
     <ClCompile Include="Enemy_Archer.cpp" />
     <ClCompile Include="Enemy_Footman.cpp" />
+    <ClCompile Include="EnergyItem.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Console.cpp" />
@@ -202,6 +203,7 @@
     <ClInclude Include="EnemyEntity.h" />
     <ClInclude Include="Enemy_Archer.h" />
     <ClInclude Include="Enemy_Footman.h" />
+    <ClInclude Include="EnergyItem.h" />
     <ClInclude Include="EntitiesEnums.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Console.h" />

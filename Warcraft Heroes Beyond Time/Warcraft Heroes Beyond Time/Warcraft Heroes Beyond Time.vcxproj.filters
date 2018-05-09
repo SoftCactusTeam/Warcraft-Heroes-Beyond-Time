@@ -175,6 +175,9 @@
     <ClCompile Include="ModuleTransitions.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="EnergyItem.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -370,6 +373,9 @@
     </ClInclude>
     <ClInclude Include="ModuleTransitions.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="EnergyItem.h">
+      <Filter>Items</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
