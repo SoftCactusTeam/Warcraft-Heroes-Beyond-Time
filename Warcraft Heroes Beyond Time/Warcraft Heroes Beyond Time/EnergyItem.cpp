@@ -1,4 +1,8 @@
 #include "EnergyItem.h"
+#include "Scene.h"
+#include "Thrall.h"
+#include "Application.h"
+#include "ModuleRender.h"
 
 
 
@@ -21,8 +25,7 @@ bool EnergyItem::Act(ModuleItems::ItemEvent event, float dt)
 	switch (event)
 	{
 	case ModuleItems::ItemEvent::PLAYER_HITTED:
-
-
+		App->scene->player->numStats.energy += 5;
 	}
 	return true;
 }
@@ -34,5 +37,6 @@ bool EnergyItem::Draw()
 
 bool EnergyItem::printIconOnScreen(iPoint pos)
 {
-	return true;
+	//The GUI uses this method, fill it in all the items.
+	return App->render->Blit(App->items->getItemsTexture(), pos.x, pos.y, &SDL_Rect(ENERGY_ITEM), 1, 0);
 }
