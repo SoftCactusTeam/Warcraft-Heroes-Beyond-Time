@@ -137,8 +137,8 @@ bool Scene::Start()
 					int randomNumber = rand() % 100;
 					if (randomNumber <= (*it).y)
 					{
-						//iPoint enemyPos = App->map->GetRandomValidPoint();
-					//	App->entities->AddEnemy({ (float)enemyPos.x * 46 ,(float)enemyPos.y * 46 }, ENEMY_TYPE::ARCHER_TIER_1);
+						iPoint enemyPos = App->map->GetRandomValidPoint();
+						App->entities->AddEnemy({ (float)enemyPos.x * 46 ,(float)enemyPos.y * 46 }, ENEMY_TYPE::ARCHER_TIER_1);
 						numberArchers++;
 						if (numberArchers >= (*it).x)
 							continue;
@@ -147,8 +147,8 @@ bool Scene::Start()
 					randomNumber = rand() % 100;
 					if (randomNumber <= (*it).w)
 					{
-						//iPoint enemyPos = App->map->GetRandomValidPoint();
-					//	App->entities->AddEnemy({ (float)enemyPos.x * 46 ,(float)enemyPos.y * 46 }, ENEMY_TYPE::ARCHER_TIER_2);
+						iPoint enemyPos = App->map->GetRandomValidPoint();
+						App->entities->AddEnemy({ (float)enemyPos.x * 46 ,(float)enemyPos.y * 46 }, ENEMY_TYPE::ARCHER_TIER_2);
 						numberArchers++;
 						if (numberArchers >= (*it).x)
 							continue;
@@ -157,8 +157,8 @@ bool Scene::Start()
 					randomNumber = rand() % 100;
 					if (randomNumber <= (*it).h)
 					{
-						//iPoint enemyPos = App->map->GetRandomValidPoint();
-					//	App->entities->AddEnemy({ (float)enemyPos.x * 46 ,(float)enemyPos.y * 46 }, ENEMY_TYPE::ARCHER_TIER_3);
+						iPoint enemyPos = App->map->GetRandomValidPoint();
+						App->entities->AddEnemy({ (float)enemyPos.x * 46 ,(float)enemyPos.y * 46 }, ENEMY_TYPE::ARCHER_TIER_3);
 						numberArchers++;
 						if (numberArchers >= (*it).x)
 							continue;
@@ -168,7 +168,7 @@ bool Scene::Start()
 
 				App->items->Activate();
 				if (!App->items->isPoolEmpty())
-					lvlChest = App->entities->AddChest({ (float)App->map->chestNode->pos.x * 46 + 10, (float)App->map->chestNode->pos.y * 46 }, MID_CHEST);
+					lvlChest = App->entities->AddChest({ (float)App->map->chestNode->pos.x * 46 + 5, (float)App->map->chestNode->pos.y * 46 }, MID_CHEST);
 				else
 					lvlChest = nullptr;
 			}

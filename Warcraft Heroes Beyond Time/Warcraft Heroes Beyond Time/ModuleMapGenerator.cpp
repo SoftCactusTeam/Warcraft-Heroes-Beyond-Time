@@ -85,7 +85,9 @@ iPoint MapGenerator::GetRandomValidPoint()
 
 	do
 		randNum = rand() % ((nodes.size()-1) + 1);
-	while (nodes[randNum]->layerBelow != -2 || nodes[randNum]->pos == nodes[Get(sizeX / 2, sizeY / 2)]->pos || nodes[randNum]->pos.DistanceTo( nodes[Get(sizeX / 2, sizeY / 2)]->pos ) < MINDISTANCE);
+	while (nodes[randNum]->layerBelow != -2 && !nodes[randNum]->InvalidForMap);
+
+	nodes[randNum]->InvalidForMap = true;
 
 	return nodes[randNum]->pos;
 }
@@ -380,7 +382,6 @@ bool MapGenerator::GenerateChestMap()
 		{
 			for (int j = 0; j < chestSizeX; ++j)
 			{
-				//tile_gid = tile_gid.next_sibling("tile");
 
 				int gid = tile_gid.attribute("gid").as_int();
 				std::string layerName = layer.attribute("name").as_string();
