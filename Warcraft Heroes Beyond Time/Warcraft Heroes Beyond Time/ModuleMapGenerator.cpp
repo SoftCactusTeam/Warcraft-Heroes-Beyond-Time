@@ -109,7 +109,7 @@ iPoint MapGenerator::GetRandomBossPoint()
 
 	do
 		randNum = rand() % ((nodes.size() - 1) + 1);
-	while (nodes[randNum]->layerBelow != -2);
+	while (nodes[randNum]->layerBelow != -2 || nodes[randNum]->InvalidForMap);
 
 	return nodes[randNum]->pos;
 }
@@ -262,6 +262,11 @@ bool MapGenerator::GenerateBossMap()
 					nodes[contNodes]->layerBelow = 0;
 				else
 					nodes[contNodes]->layerBelow = -2;
+			}
+			else if (layerName == "GeysersLimits")
+			{
+				if (gid == 32)
+					nodes[contNodes]->InvalidForMap = true;
 			}
 			contNodes++;
 		}
