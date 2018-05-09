@@ -85,7 +85,7 @@ iPoint MapGenerator::GetRandomValidPoint()
 
 	do
 		randNum = rand() % ((nodes.size()-1) + 1);
-	while (nodes[randNum]->layerBelow != -2 && !nodes[randNum]->InvalidForMap);
+	while (nodes[randNum]->layerBelow != -2 || nodes[randNum]->InvalidForMap);
 
 	nodes[randNum]->InvalidForMap = true;
 
@@ -98,7 +98,7 @@ iPoint MapGenerator::GetRandomValidPointProxy(int distance, int proxyDistance)
 
 	do
 		randNum = rand() % ((nodes.size() - 1) + 1);
-	while (nodes[randNum]->layerBelow != -2 || nodes[randNum]->pos == nodes[Get(sizeX / 2, sizeY / 2)]->pos || nodes[randNum]->pos.DistanceTo(nodes[Get(sizeX / 2, sizeY / 2)]->pos) > distance || nodes[randNum]->pos.DistanceTo(nodes[Get(sizeX / 2, sizeY / 2)]->pos) < proxyDistance);
+	while (nodes[randNum]->layerBelow != -2 || nodes[randNum]->InvalidForMap || nodes[randNum]->pos.DistanceTo(nodes[Get(sizeX / 2, sizeY / 2)]->pos) > distance || nodes[randNum]->pos.DistanceTo(nodes[Get(sizeX / 2, sizeY / 2)]->pos) < proxyDistance);
 
 	return nodes[randNum]->pos;
 }
@@ -194,14 +194,11 @@ bool MapGenerator::GenerateMap(MapData data)
 	}
 	ret = nodes.size() == totalSize;
 
-	//if (ret)
-		ret = GenerateChestMap();
+	ret = GenerateChestMap();
 
-//	if (ret)
-		ret = ExecuteAlgorithm(AlgorithmStart, data.iterations, data.seed);
+	ret = ExecuteAlgorithm(AlgorithmStart, data.iterations, data.seed);
 
-	//if (ret)
-		ret = GenerateWalls();
+	ret = GenerateWalls();
 
 	for (uint i = 0u; i < totalSize; ++i)
 	{
@@ -285,21 +282,16 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 	else
 		srand(time(NULL));
 
-	startNode->whatToBlit = randomTile(true);
-	startNode->layerBelow = -2;
-	startNode->cost = -1;
-	//visited.push_back(startNode);
-
 	MapNode* auxNode = startNode;
 
 	for (uint i = 0u; i < iterations;)
 	{
- 		uint randNum = rand() % (10 + 1);
+ 		uint randNum = rand() % (10);
 
-		if ((randNum == 0 || randNum == 1 || randNum == 3) && CheckBoundaries({ auxNode->pos.x + 1, auxNode->pos.y }) && !nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)]->InvalidForMap)
+		if ((randNum == 0 || randNum == 1 || randNum == 2) && CheckBoundaries({ auxNode->pos.x + 1, auxNode->pos.y }) && !nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)]->InvalidForMap)
 		{
 			auxNode = nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)];
-			if (!auxNode->layerBelow != -2)
+			if (auxNode->layerBelow != -2)
 			{
 				auxNode->whatToBlit = randomTile(true);
 				auxNode->cost = -1;
@@ -309,10 +301,10 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 			}
 		}
 
-		else if ((randNum == 4 || randNum == 5 || randNum == 6) && CheckBoundaries({ auxNode->pos.x - 1, auxNode->pos.y }) && !nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)]->InvalidForMap)
+		else if ((randNum == 3 || randNum == 4 || randNum == 5) && CheckBoundaries({ auxNode->pos.x - 1, auxNode->pos.y }) && !nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)]->InvalidForMap)
 		{
 			auxNode = nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)];
-			if (!auxNode->layerBelow != -2)
+			if (auxNode->layerBelow != -2)
 			{
 				auxNode->whatToBlit = randomTile(true);
 				auxNode->cost = -1;
@@ -322,10 +314,10 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 			}
 		}
 
-		else if ((randNum == 7 || randNum == 8) && CheckBoundaries({ auxNode->pos.x, auxNode->pos.y + 1 }) && !nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)]->InvalidForMap)
+		else if ((randNum == 6 || randNum == 7) && CheckBoundaries({ auxNode->pos.x, auxNode->pos.y + 1 }) && !nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)]->InvalidForMap)
 		{
 			auxNode = nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)];
-			if (!auxNode->layerBelow != -2)
+			if (auxNode->layerBelow != -2)
 			{
 				auxNode->whatToBlit = randomTile(true);
 				auxNode->cost = -1;
@@ -335,7 +327,7 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 			}
 		}
 
-		else if ((randNum == 9 || randNum == 10) && CheckBoundaries({ auxNode->pos.x, auxNode->pos.y - 1 }) && !nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)]->InvalidForMap)
+		else if ((randNum == 8 || randNum == 9) && CheckBoundaries({ auxNode->pos.x, auxNode->pos.y - 1 }) && !nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)]->InvalidForMap)
 		{
 			auxNode = nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)];
 			if (auxNode->layerBelow != -2)
@@ -412,7 +404,7 @@ bool MapGenerator::GenerateChestMap()
 						nodes[Get(firstTile->pos.x + j, firstTile->pos.y + i)]->layerBelow = 2;
 					else if (gid == 33)
 						nodes[Get(firstTile->pos.x + j, firstTile->pos.y + i)]->layerBelow = 0;
-					else
+					else if (gid == 34)
 						nodes[Get(firstTile->pos.x + j, firstTile->pos.y + i)]->layerBelow = -2;
 				}
 				else if (layerName == "Algorithm")
