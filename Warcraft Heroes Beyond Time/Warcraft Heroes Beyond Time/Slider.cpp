@@ -72,7 +72,7 @@ bool Slider::HandleInput(float dt)
 	int x, y;
 	App->input->GetMousePosition(x, y);
 
-	if (MouseHover() && ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) || App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT))
+	if (MouseHover() && ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)))
 	{
 		parent->UnFocusChilds();
 		Focus();
