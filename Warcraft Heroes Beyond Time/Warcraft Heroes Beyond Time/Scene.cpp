@@ -356,6 +356,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 			{
 				case UIEvents::MOUSE_ENTER:
 				{
+					App->audio->HaltFX(App->audio->ButtonHovered);
 					App->audio->PlayFx(App->audio->ButtonHovered);
 					button->atlasRect = Button1MouseHover;
 					break;
@@ -444,7 +445,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 void Scene::CreateMainMenuScreen()
 {
 	GUIWindow* window = (GUIWindow*)App->gui->CreateGUIWindow({ 0,0 }, { 0,0,0,0 }, nullptr, nullptr);
-
+	
 	//LOGO
 	GUIImage* logo = (GUIImage*)App->gui->CreateGUIImage({ 100,25 }, { 624, 21, 448, 129 }, nullptr);
 
