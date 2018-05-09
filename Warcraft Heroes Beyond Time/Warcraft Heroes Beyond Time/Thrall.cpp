@@ -278,13 +278,23 @@ bool Thrall::PostUpdate()
 			attackCollider = nullptr;
 		}
 	}
-
-	if (anim == &skill)
+	
+	else if (anim == &skill)
 	{
 		if (anim->Finished())
 		{
 			skillOn = false;
 			App->colliders->deleteCollider(skillCollider);
+		}
+	}
+
+	else
+	{
+		if (state != states::PL_ATTACK && (attacking || attackCollider))
+		{
+			attacking = false;
+			App->colliders->deleteCollider(attackCollider);
+			attackCollider = nullptr;
 		}
 	}
 
