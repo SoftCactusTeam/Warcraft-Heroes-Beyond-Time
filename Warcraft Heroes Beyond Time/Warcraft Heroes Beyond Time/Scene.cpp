@@ -168,7 +168,7 @@ bool Scene::Start()
 
 				App->items->Activate();
 				if (!App->items->isPoolEmpty())
-					lvlChest = App->entities->AddChest({ (float)App->map->chestNode->pos.x * 46, (float)App->map->chestNode->pos.y * 46 }, MID_CHEST);
+					lvlChest = App->entities->AddChest({ (float)App->map->chestNode->pos.x * 46 + 10, (float)App->map->chestNode->pos.y * 46 }, MID_CHEST);
 				else
 					lvlChest = nullptr;
 			}

@@ -380,7 +380,7 @@ bool MapGenerator::GenerateChestMap()
 		{
 			for (int j = 0; j < chestSizeX; ++j)
 			{
-				tile_gid = tile_gid.next_sibling("tile");
+				//tile_gid = tile_gid.next_sibling("tile");
 
 				int gid = tile_gid.attribute("gid").as_int();
 				std::string layerName = layer.attribute("name").as_string();
@@ -424,6 +424,7 @@ bool MapGenerator::GenerateChestMap()
 					if (gid == 32)
 						chestNode = nodes[Get(firstTile->pos.x + j, firstTile->pos.y + i)];
 				}
+				tile_gid = tile_gid.next_sibling("tile");
 			}
 		}			
 	}
