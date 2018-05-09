@@ -10,8 +10,8 @@ Slider::Slider(fPoint localPos, Module* listener, SDL_Rect atlasRect, SliderInfo
 {
 	stype = sInfo.type;
 
-	minValue = screenPos.x + 8;
-	maxValue = screenPos.x + atlasRect.w - 10;
+	minValue = screenPos.x + 2;
+	maxValue = screenPos.x + atlasRect.w - 5;
 
 	switch (stype)
 	{
