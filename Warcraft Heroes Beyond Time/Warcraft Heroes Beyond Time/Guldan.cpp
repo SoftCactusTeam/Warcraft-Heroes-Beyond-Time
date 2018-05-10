@@ -1105,7 +1105,7 @@ void Guldan::OnCollision(Collider* yours, Collider* collideWith)
 	case Collider::ColliderType::PLAYER_ATTACK:
 	{
 		PlayerAttack* attack = (PlayerAttack*)collideWith;
-		if (attack->pattacktype == PlayerAttack::P_Attack_Type::NORMAL_ATTACK)
+		if (attack->pattacktype == PlayerAttack::P_Attack_Type::NORMAL_ATTACK || attack->pattacktype == PlayerAttack::P_Attack_Type::SKILL)
 		{
 			if (anim != &teleport || anim != &inverseTeleport)
 			{
