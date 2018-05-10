@@ -31,6 +31,7 @@ protected:
 	float speed = 250.0f;
 	bool move = true;
 	bool damaged = false;
+	bool attackWhileDash = false;
 
 	float damagedConfigCD = 0.0f; //This will be the one loaded from config.xml
 	float damagedCD = 0.0f;

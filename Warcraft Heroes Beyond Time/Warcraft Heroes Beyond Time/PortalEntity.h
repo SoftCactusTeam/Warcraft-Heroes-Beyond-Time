@@ -15,6 +15,8 @@ public:
 	void OpenPortal();
 	bool PlayerNear(fPoint pos);
 
+	bool Draw();
+
 	Collider* portalCol=nullptr;
 	bool locked = true;
 private:
