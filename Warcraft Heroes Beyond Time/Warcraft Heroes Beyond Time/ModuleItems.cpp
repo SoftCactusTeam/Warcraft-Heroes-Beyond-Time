@@ -10,6 +10,7 @@
 #include "RingItem.h"
 #include "LifeStealItem.h"
 #include "EnergyItem.h"
+#include "HolyShitItem.h"
 
 #include <time.h>
 
@@ -132,6 +133,9 @@ void ModuleItems::loadItemsPull()
 
 	EnergyItem* energyitem = new EnergyItem();
 	availableItems.push_back(energyitem);
+
+	HolyShitItem* holyshit = new HolyShitItem();
+	availableItems.push_back(holyshit);
 }
 
 bool ModuleItems::equipItem(Item* item)
