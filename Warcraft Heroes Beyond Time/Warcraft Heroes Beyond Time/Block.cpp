@@ -31,7 +31,7 @@ bool Block::Draw() const
 {
 	bool ret = true;
 
-	ret = App->printer->PrintSprite({ (int)data->pos.x - 26,(int)data->pos.y - 24 }, (SDL_Texture*)App->projectiles->GetProjectileAtlas(), { 445,235,48,48 }, data->layer, ModulePrinter::Pivots::UPPER_LEFT);
+	ret = App->printer->PrintSprite({ (int)data->pos.x - 26,(int)data->pos.y - 24 }, (SDL_Texture*)App->projectiles->GetProjectileAtlas(), { 464,235,48,48 }, data->layer, ModulePrinter::Pivots::UPPER_LEFT);
 
 	return ret;
 }
