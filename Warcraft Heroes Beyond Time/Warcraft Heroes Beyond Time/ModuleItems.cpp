@@ -3,12 +3,9 @@
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
 #include "DMGBallItem.h"
-
 #include "FreezeBallItem.h"
-
-
 #include "FEARBallItem.h"
-
+#include "ArrowSlowItem.h"
 #include <time.h>
 
 float ModuleItems::dmgBallDamage = 0.0f;
@@ -103,6 +100,9 @@ void ModuleItems::loadItemsPull()
 
 	FEARBallItem* Fearball_Item = new FEARBallItem();
 	availableItems.push_back(Fearball_Item);
+
+	ArrowSlowItem* projectileslowitem = new ArrowSlowItem();
+	availableItems.push_back(projectileslowitem);
 }
 
 bool ModuleItems::equipItem(Item* item)
