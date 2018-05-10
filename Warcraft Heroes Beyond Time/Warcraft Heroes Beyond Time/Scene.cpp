@@ -134,7 +134,7 @@ bool Scene::Start()
 				int numberArchers = 0;
 				do
 				{
-					int randomNumber = rand() % 100;
+					int randomNumber = rand() % (100 - 1 + 1) + 1;
 					if (randomNumber <= (*it).y)
 					{
 						iPoint enemyPos = App->map->GetRandomValidPoint();
@@ -144,7 +144,7 @@ bool Scene::Start()
 							continue;
 					}
 
-					randomNumber = rand() % 100;
+					randomNumber = rand() % (100 - 1 + 1) + 1;
 					if (randomNumber <= (*it).w)
 					{
 						iPoint enemyPos = App->map->GetRandomValidPoint();
@@ -154,7 +154,7 @@ bool Scene::Start()
 							continue;
 					}
 
-					randomNumber = rand() % 100;
+					randomNumber = rand() % (100 - 1 + 1) + 1;
 					if (randomNumber <= (*it).h)
 					{
 						iPoint enemyPos = App->map->GetRandomValidPoint();
