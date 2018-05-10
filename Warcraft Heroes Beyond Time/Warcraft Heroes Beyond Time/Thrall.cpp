@@ -317,7 +317,10 @@ void Thrall::OnCollision(Collider* yours, Collider* collideWith)
 				EnemyAttack* attack = (EnemyAttack*)collideWith;
 				int a = attack->damage;
 				if (state != states::PL_DASH && state != states::PL_SKILL)
+				{
 					SetDamage(attack->damage, true);
+					App->items->newEvent(ModuleItems::ItemEvent::PLAYER_HITTED);
+				}
 			}
 			
 			break;

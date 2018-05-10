@@ -93,6 +93,7 @@
     <slowShit time_slowed = "7" slow_percent = "80"/>
     <dmgShit damage_by_dt = "1"/>
     <StealLife amount="10"/>
+    <Lexro EnergyWhenHitted="1"/>
   </items>
   
   

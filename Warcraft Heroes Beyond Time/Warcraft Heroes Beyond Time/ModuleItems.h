@@ -17,7 +17,9 @@ public:
 		NO_EVENT,
 		UPDATE,
 		PLAYER_DIED,
+
 		PLAYER_HIT,
+
 		PLAYER_HITTED
 	};
 
@@ -68,14 +70,15 @@ public:
 	static float slowShitSeconds;
 	static float slowShitPercent;
 	static float stealhp;
+	static float energywhenHitted;
 
 private:
-	
+
 	std::vector<Item*> availableItems;
 	std::list<Item*> equipedItems;
 	SDL_Texture* itemsTexture = nullptr;
 
-	
+
 };
 
 
