@@ -123,7 +123,7 @@ bool Scene::Start()
 				App->printer->Activate();
 				App->projectiles->Activate();
 
-				player = App->entities->AddPlayer({ ((float)App->map->sizeX / 2) * 46,((float)App->map->sizeY / 2) * 46 }, THRALL, playerStats);
+				player = App->entities->AddPlayer({ (float)App->map->begginingNode->pos.x * 46, (float)App->map->begginingNode->pos.y * 46 }, THRALL, playerStats);
 				player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
 
 				App->path->LoadPathMap();
@@ -167,11 +167,8 @@ bool Scene::Start()
 				while (numberArchers < (*it).x);
 
 				App->items->Activate();
-
-				iPoint chestPos = App->map->GetRandomValidPointProxy(30, 5);
-
 				if (!App->items->isPoolEmpty())
-					lvlChest = App->entities->AddChest({ (float)chestPos.x * 46, (float)chestPos.y * 46 - 31 }, MID_CHEST);
+					lvlChest = App->entities->AddChest({ (float)App->map->chestNode->pos.x * 46 + 5, (float)App->map->chestNode->pos.y * 46 }, MID_CHEST);
 				else
 					lvlChest = nullptr;
 			}
