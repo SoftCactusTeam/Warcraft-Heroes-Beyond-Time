@@ -1159,6 +1159,14 @@ void PlayerEntity::CheckIddleStates()
 		anim = &idleDownRight;
 		state = states::PL_IDLE;
 		break;
+	case states::PL_DASH:
+		anim = &idleDown;
+		state = states::PL_IDLE;
+		break;
+	case states::PL_ATTACK:
+		anim = &idleDown;
+		state = states::PL_IDLE;
+		break;
 	}
 }
 

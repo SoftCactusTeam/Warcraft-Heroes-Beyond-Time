@@ -227,7 +227,6 @@ bool Audio::PauseFX(int id)
 		{
 			if (Mix_GetChunk(i) == fx[id - 1])
 				Mix_Pause(i);
-			break;
 		}
 	return true;
 }

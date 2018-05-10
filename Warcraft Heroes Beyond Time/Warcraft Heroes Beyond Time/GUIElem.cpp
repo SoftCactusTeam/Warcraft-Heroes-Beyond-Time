@@ -109,15 +109,24 @@ bool GUIElem::HandleInput(float dt)
 
 		break;
 	case UIEvents::MOUSE_LEFT_UP:
-		if (focused == false)
+		if (focused == false && !MouseHover())
 			UIevent = UIEvents::MOUSE_LEAVE;
 		else
 			UIevent = UIEvents::MOUSE_ENTER;
 		listener->OnUIEvent(this, UIevent);
 		break;
 	case UIEvents::MOUSE_LEAVE:
-		listener->OnUIEvent((GUIElem*)this, UIevent);
-		UIevent = UIEvents::NO_EVENT;
+		if (!focused && !MouseHover())
+		{
+			UIevent = UIEvents::NO_EVENT;
+			listener->OnUIEvent((GUIElem*)this, UIevent);
+		}
+		else
+		{
+			UIevent = UIEvents::MOUSE_ENTER;
+			listener->OnUIEvent((GUIElem*)this, UIevent);
+		}
+		
 		break;
 	}
 

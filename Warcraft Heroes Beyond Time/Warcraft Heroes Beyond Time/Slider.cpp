@@ -10,8 +10,8 @@ Slider::Slider(fPoint localPos, Module* listener, SDL_Rect atlasRect, SliderInfo
 {
 	stype = sInfo.type;
 
-	minValue = screenPos.x + 8;
-	maxValue = screenPos.x + atlasRect.w - 10;
+	minValue = screenPos.x + 2;
+	maxValue = screenPos.x + atlasRect.w - 5;
 
 	switch (stype)
 	{
@@ -72,7 +72,7 @@ bool Slider::HandleInput(float dt)
 	int x, y;
 	App->input->GetMousePosition(x, y);
 
-	if (MouseHover() && ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) || App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT))
+	if (MouseHover() && ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)))
 	{
 		parent->UnFocusChilds();
 		Focus();

@@ -17,7 +17,9 @@ public:
 		NO_EVENT,
 		UPDATE,
 		PLAYER_DIED,
+
 		PLAYER_HIT,
+
 		PLAYER_HITTED
 	};
 
@@ -70,12 +72,12 @@ public:
 	static float stealhp;
 
 private:
-	
+
 	std::vector<Item*> availableItems;
 	std::list<Item*> equipedItems;
 	SDL_Texture* itemsTexture = nullptr;
 
-	
+
 };
 
 
