@@ -3,9 +3,12 @@
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
 #include "DMGBallItem.h"
+
 #include "FreezeBallItem.h"
 #include "FEARBallItem.h"
 #include "ArrowSlowItem.h"
+#include "RingItem.h"
+
 #include <time.h>
 
 float ModuleItems::dmgBallDamage = 0.0f;
@@ -34,8 +37,10 @@ bool ModuleItems::Start()
 {
 	//Load Items' pull
 	loadItemsPull();
-
+	
 	itemsTexture = App->textures->Load("sprites/all_items.png");
+
+
 
 	return true;
 }
@@ -103,6 +108,9 @@ void ModuleItems::loadItemsPull()
 
 	ArrowSlowItem* projectileslowitem = new ArrowSlowItem();
 	availableItems.push_back(projectileslowitem);
+
+	RingItem* enemiesSlowItem = new RingItem();
+	availableItems.push_back(enemiesSlowItem);
 }
 
 bool ModuleItems::equipItem(Item* item)
