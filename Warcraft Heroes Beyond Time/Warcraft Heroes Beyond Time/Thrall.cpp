@@ -344,6 +344,7 @@ void Thrall::OnCollision(Collider* yours, Collider* collideWith)
 					{
 						IncreaseEnergy(numStats.energyPercentbyHit);
 						App->audio->PlayFx(App->audio->Thrall_Hit_FX);
+						App->items->newEvent(ModuleItems::ItemEvent::PLAYER_HIT);
 					}
 				}	
 			break;

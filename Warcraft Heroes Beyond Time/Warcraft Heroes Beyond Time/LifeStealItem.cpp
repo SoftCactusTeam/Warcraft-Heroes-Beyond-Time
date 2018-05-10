@@ -23,10 +23,8 @@ bool LifeStealItem::Act(ModuleItems::ItemEvent event, float dt)
 	switch (event)
 	{
 	case ModuleItems::ItemEvent::PLAYER_HIT:
-		if (App->scene->playerStats.hp < 191)
-		{
-			App->scene->player->numStats.hp += 10;
-		}
+		App->scene->player->Heal(ModuleItems::stealhp);
+		break;
 	}
 	return true;
 }

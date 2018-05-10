@@ -1378,7 +1378,7 @@ void PlayerEntity::CheckMapLimits()
 	}
 }
 
-void PlayerEntity::SetDamage(int damage, bool setStateDamage)
+void PlayerEntity::SetDamage(float damage, bool setStateDamage)
 {
 	if (numStats.hp > 0 && damaged == false)
 	{
@@ -1403,6 +1403,14 @@ void PlayerEntity::SetDamage(int damage, bool setStateDamage)
 			numStats.hp -= damage;
 		}
 	}
+}
+
+void PlayerEntity::Heal(float amount)
+{
+	if (numStats.hp + amount > numStats.maxhp)
+		numStats.hp = numStats.maxhp;
+	else
+		numStats.hp += amount;
 }
 
 void PlayerEntity::DrawFreeZone(bool boolean)

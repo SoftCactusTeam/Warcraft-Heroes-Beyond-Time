@@ -53,6 +53,8 @@ public:
 		return availableItems.empty();
 	}
 
+	void newEvent(ItemEvent event);
+
 private:
 	void loadItemsPull();
 
@@ -65,6 +67,7 @@ public:
 	static float frozenBallChance;
 	static float slowShitSeconds;
 	static float slowShitPercent;
+	static float stealhp;
 
 private:
 	

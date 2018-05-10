@@ -94,8 +94,9 @@ public:
 	Collider* GetDamageCollider() const;
 
 	//Stats functions
-	void SetDamage(int damage, bool setStateDamage);
+	void SetDamage(float damage, bool setStateDamage);
 	void IncreaseEnergy(int percent);
+	void Heal(float amount);
 
 	//This function calculates player position given a Bezier Curve
 	fPoint CalculatePosFromBezier(fPoint startPos, fPoint handleA, float t, fPoint handleB, fPoint endPos);
