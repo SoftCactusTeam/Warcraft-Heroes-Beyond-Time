@@ -32,7 +32,7 @@ bool RingItem::Act(ModuleItems::ItemEvent event, float dt)
 				time = 0;
 				if (cont < 18)
 				{
-					Slow_Shit* slow_shit_pointer = new Slow_Shit(App->colliders->AddPlayerAttackCollider(SDL_Rect({ (int)App->scene->player->pos.x, (int)App->scene->player->pos.y, 32, 32 }), nullptr, 0, PlayerAttack::P_Attack_Type::SLOW), iPoint({ (int)App->scene->player->pos.x, (int)App->scene->player->pos.y }));
+					Slow_Shit* slow_shit_pointer = new Slow_Shit(*App->colliders->AddPlayerAttackCollider(SDL_Rect({ (int)App->scene->player->pos.x, (int)App->scene->player->pos.y, 32, 32 }), nullptr, 0, PlayerAttack::P_Attack_Type::ENEMYSLOWSHIT_ITEM).lock(), iPoint({ (int)App->scene->player->pos.x, (int)App->scene->player->pos.y }));
 					slow_shit_list.push_front(slow_shit_pointer);
 					cont += 1;
 				}

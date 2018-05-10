@@ -161,6 +161,7 @@
     <ClCompile Include="ModuleTransitions.cpp" />
     <ClCompile Include="PlayerHPBar.cpp" />
     <ClCompile Include="Projectile.cpp" />
+    <ClCompile Include="RingItem.cpp" />
     <ClCompile Include="Slider.cpp" />
     <ClCompile Include="ModuleMapGenerator.cpp" />
     <ClCompile Include="ModuleColliders.cpp" />
@@ -228,6 +229,7 @@
     <ClInclude Include="PortalEntity.h" />
     <ClInclude Include="ModuleProjectiles.h" />
     <ClInclude Include="Projectile.h" />
+    <ClInclude Include="RingItem.h" />
     <ClInclude Include="Slider.h" />
     <ClInclude Include="ModuleMapGenerator.h" />
     <ClInclude Include="ModuleColliders.h" />

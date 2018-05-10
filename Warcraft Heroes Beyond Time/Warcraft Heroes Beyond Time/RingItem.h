@@ -18,7 +18,6 @@ public:
 	iPoint pos;
 private:
 	Collider* slow_shit_collider;
-
 };
 
 class RingItem :

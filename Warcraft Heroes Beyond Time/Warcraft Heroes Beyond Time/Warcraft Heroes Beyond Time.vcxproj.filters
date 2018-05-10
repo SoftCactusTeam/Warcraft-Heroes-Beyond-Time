@@ -178,6 +178,9 @@
     <ClCompile Include="ArrowSlowItem.cpp">
       <Filter>Items</Filter>
     </ClCompile>
+    <ClCompile Include="RingItem.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -375,6 +378,9 @@
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="ArrowSlowItem.h">
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="RingItem.h">
       <Filter>Items</Filter>
     </ClInclude>
   </ItemGroup>

@@ -108,6 +108,9 @@ void ModuleItems::loadItemsPull()
 
 	ArrowSlowItem* projectileslowitem = new ArrowSlowItem();
 	availableItems.push_back(projectileslowitem);
+
+	RingItem* enemiesSlowItem = new RingItem();
+	availableItems.push_back(enemiesSlowItem);
 }
 
 bool ModuleItems::equipItem(Item* item)
