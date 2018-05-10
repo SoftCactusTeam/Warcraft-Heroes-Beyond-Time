@@ -46,6 +46,9 @@ public:
 		FEARBALL_ITEM,
 		SKILL,
 		DAMAGESHIT_ITEM
+		ARROWSLOWSHIT_ITEM
+
+
 
 	} pattacktype = P_Attack_Type::NO_TYPE;
 

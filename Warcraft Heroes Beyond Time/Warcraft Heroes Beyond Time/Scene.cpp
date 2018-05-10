@@ -130,7 +130,7 @@ bool Scene::Start()
 
 				std::list<SDL_Rect>::iterator it = App->map->archers.begin();
 				std::advance(it, lvlIndex);
-				
+
 				int numberArchers = 0;
 				do
 				{
@@ -303,7 +303,7 @@ bool Scene::PostUpdate()
 		{
 			App->transitions->StartTransition(this, this, 2.0f, fades::slider_fade);
 		}
-		
+
 		if ((actual_scene == Stages::MAIN_MENU && next_scene == Stages::SETTINGS) ||
 			(actual_scene == Stages::SETTINGS && next_scene == Stages::MAIN_MENU))
 		{
