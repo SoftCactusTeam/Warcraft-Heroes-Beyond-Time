@@ -25,7 +25,8 @@ bool EnergyItem::Act(ModuleItems::ItemEvent event, float dt)
 	switch (event)
 	{
 	case ModuleItems::ItemEvent::PLAYER_HITTED:
-		App->scene->player->numStats.energy += 5;
+		App->scene->player->IncreaseEnergy(ModuleItems::energywhenHitted);
+		break;
 	}
 	return true;
 }

@@ -6,8 +6,7 @@
 
 #define ENERGY_ITEM {1,183,31,25}
 
-class EnergyItem :
-	public Item
+class EnergyItem :	public Item
 {
 public:
 	EnergyItem();

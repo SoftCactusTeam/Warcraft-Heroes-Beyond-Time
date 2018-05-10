@@ -70,6 +70,7 @@ public:
 	static float slowShitSeconds;
 	static float slowShitPercent;
 	static float stealhp;
+	static float energywhenHitted;
 
 private:
 
