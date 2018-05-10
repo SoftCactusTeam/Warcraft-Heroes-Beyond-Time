@@ -419,10 +419,10 @@ void Enemy_Archer::initLittleMove()
 		arrowsShooted = 0;
 		cooldownToReLittleMove = LITTLEMOVEMENT_COOLDOWN + SDL_GetTicks();
 	}
-	else
-	{
-		initBackJump();
-	}
+	//else
+	//{
+	//	initBackJump();
+	//}
 }
 
 void Enemy_Archer::initDash()
