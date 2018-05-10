@@ -11,7 +11,9 @@
 
 
 #include "SDL/include/SDL.h"
+
 #define MAX_KEYS 300
+static const float axisCD = 0.3f;
 
 Input::Input() : Module()
 {
@@ -195,78 +197,7 @@ bool Input::PreUpdate()
 			mouse_x = event.motion.x / scale;
 			mouse_y = event.motion.y / scale;
 		}
-			break;
-
-		case SDL_JOYAXISMOTION:
-			if (event.jaxis.which == 0)
-				kbAvailable = false;
-			{
-				if (event.jaxis.axis == 0)
-				{
-					if (event.jaxis.value < -J_DEAD_ZONE || event.jaxis.value > J_DEAD_ZONE)
-					{
-						xAxis = event.jaxis.value;
-						xDeadZone = false;
-						if (xAxis > 0)
-							if (axis[(int)Axis::RIGHT] == KeyState::KEY_DOWN || axis[(int)Axis::RIGHT] == KeyState::KEY_REPEAT)
-								axis[(int)Axis::RIGHT] = KeyState::KEY_REPEAT;
-							else
-								axis[(int)Axis::RIGHT] = KeyState::KEY_DOWN;
-
-						else if(xAxis < 0)
-							if (axis[(int)Axis::LEFT] == KeyState::KEY_DOWN || axis[(int)Axis::LEFT] == KeyState::KEY_REPEAT)
-								axis[(int)Axis::LEFT] = KeyState::KEY_REPEAT;
-							else
-								axis[(int)Axis::LEFT] = KeyState::KEY_DOWN;
-					}
-					else
-					{
-						xAxis = 0;
-						xDeadZone = true;
-						if (axis[(int)Axis::RIGHT] == KeyState::KEY_DOWN || axis[(int)Axis::RIGHT] == KeyState::KEY_REPEAT)
-							axis[(int)Axis::RIGHT] = KeyState::KEY_UP;
-						else axis[(int)Axis::RIGHT] = KeyState::KEY_IDLE;
-
-						if (axis[(int)Axis::LEFT] == KeyState::KEY_DOWN || axis[(int)Axis::LEFT] == KeyState::KEY_REPEAT)
-							axis[(int)Axis::LEFT] = KeyState::KEY_UP;
-						else axis[(int)Axis::LEFT] = KeyState::KEY_IDLE;
-
-					}
-				}
-				else if (event.jaxis.axis == 1)
-				{
-					if (event.jaxis.value < -J_DEAD_ZONE || event.jaxis.value > J_DEAD_ZONE)
-					{
-						yAxis = event.jaxis.value;
-						yDeadZone = false;
-
-						if (yAxis > 0)
-							if (axis[(int)Axis::DOWN] == KeyState::KEY_DOWN || axis[(int)Axis::DOWN] == KeyState::KEY_REPEAT)
-								axis[(int)Axis::DOWN] = KeyState::KEY_REPEAT;
-							else
-								axis[(int)Axis::DOWN] = KeyState::KEY_DOWN;
-
-						else if (yAxis < 0)
-							if (axis[(int)Axis::UP] == KeyState::KEY_DOWN || axis[(int)Axis::UP] == KeyState::KEY_REPEAT)
-								axis[(int)Axis::UP] = KeyState::KEY_REPEAT;
-							else
-								axis[(int)Axis::UP] = KeyState::KEY_DOWN;
-					}
-					else
-					{
-						yAxis = 0;
-						yDeadZone = true;
-						if (axis[(int)Axis::DOWN] == KeyState::KEY_DOWN || axis[(int)Axis::DOWN] == KeyState::KEY_REPEAT)
-							axis[(int)Axis::DOWN] = KeyState::KEY_UP;
-						else axis[(int)Axis::DOWN] = KeyState::KEY_IDLE;
-
-						if (axis[(int)Axis::UP] == KeyState::KEY_DOWN || axis[(int)Axis::UP] == KeyState::KEY_REPEAT)
-							axis[(int)Axis::UP] = KeyState::KEY_UP;
-						else axis[(int)Axis::UP] = KeyState::KEY_IDLE;
-					}
-				}
-			}
-			break;
+		break;
 
 		case SDL_CONTROLLERBUTTONDOWN:
 			if (event.cbutton.which == 0)
@@ -283,14 +214,159 @@ bool Input::PreUpdate()
 		case SDL_TEXTINPUT:
 			inputText = event.text.text;
 			textReady = true;
-
+			break;
+		case SDL_JOYAXISMOTION:
+			if (event.jaxis.which == 0)
+				kbAvailable = false;
 			break;
 		}
 	}
 
+	//Check Axis States
+
+	if (joystick != nullptr)
+	{
+		//xAxis
+		Sint16 Joy_xAxis = SDL_JoystickGetAxis(joystick, 0);
+		{
+			if (Joy_xAxis < -J_DEAD_ZONE || Joy_xAxis > J_DEAD_ZONE)
+			{
+				xAxis = Joy_xAxis;
+				xDeadZone = false;
+				if (xAxis > 0)
+				{
+					if (axis[(int)Axis::RIGHT] == KeyState::KEY_DOWN || axis[(int)Axis::RIGHT] == KeyState::KEY_REPEAT)
+						axis[(int)Axis::RIGHT] = KeyState::KEY_REPEAT;
+					else
+					{
+						if (axis_counters[(int)Axis::RIGHT] == 0.0f)
+						{
+							axis[(int)Axis::RIGHT] = KeyState::KEY_DOWN;
+							axis_counters[(int)Axis::LEFT] = axisCD;
+							axis_counters[(int)Axis::RIGHT] = axisCD;
+						}
+						else
+						{
+							if (axis[(int)Axis::RIGHT] == KeyState::KEY_DOWN || axis[(int)Axis::RIGHT] == KeyState::KEY_REPEAT)
+								axis[(int)Axis::RIGHT] = KeyState::KEY_UP;
+							else axis[(int)Axis::RIGHT] = KeyState::KEY_IDLE;
+						}
+					}
+				}
+				else if (xAxis < 0)
+				{
+					if (axis[(int)Axis::LEFT] == KeyState::KEY_DOWN || axis[(int)Axis::LEFT] == KeyState::KEY_REPEAT)
+						axis[(int)Axis::LEFT] = KeyState::KEY_REPEAT;
+					else
+					{
+						if (axis_counters[(int)Axis::LEFT] == 0.0f)
+						{
+							axis[(int)Axis::LEFT] = KeyState::KEY_DOWN;
+							axis_counters[(int)Axis::RIGHT] = axisCD;
+							axis_counters[(int)Axis::LEFT] = axisCD;
+						}
+						else
+						{
+							if (axis[(int)Axis::LEFT] == KeyState::KEY_DOWN || axis[(int)Axis::LEFT] == KeyState::KEY_REPEAT)
+								axis[(int)Axis::LEFT] = KeyState::KEY_UP;
+							else axis[(int)Axis::LEFT] = KeyState::KEY_IDLE;
+						}
+					}
+
+				}
+			}
+			else
+			{
+				xAxis = 0;
+				xDeadZone = true;
+				if (axis[(int)Axis::RIGHT] == KeyState::KEY_DOWN || axis[(int)Axis::RIGHT] == KeyState::KEY_REPEAT)
+					axis[(int)Axis::RIGHT] = KeyState::KEY_UP;
+				else axis[(int)Axis::RIGHT] = KeyState::KEY_IDLE;
+
+				if (axis[(int)Axis::LEFT] == KeyState::KEY_DOWN || axis[(int)Axis::LEFT] == KeyState::KEY_REPEAT)
+					axis[(int)Axis::LEFT] = KeyState::KEY_UP;
+				else axis[(int)Axis::LEFT] = KeyState::KEY_IDLE;
+
+			}
+		}
+
+		//yAxis
+		Sint16 Joy_yAxis = SDL_JoystickGetAxis(joystick, 1);
+		{
+			if (Joy_yAxis < -J_DEAD_ZONE || Joy_yAxis > J_DEAD_ZONE)
+			{
+				yAxis = Joy_yAxis;
+				yDeadZone = false;
+
+				if (yAxis > 0)
+				{
+					if (axis[(int)Axis::DOWN] == KeyState::KEY_DOWN || axis[(int)Axis::DOWN] == KeyState::KEY_REPEAT)
+						axis[(int)Axis::DOWN] = KeyState::KEY_REPEAT;
+					else
+					{
+						if (axis_counters[(int)Axis::DOWN] == 0.0f)
+						{
+							axis[(int)Axis::DOWN] = KeyState::KEY_DOWN;
+							axis_counters[(int)Axis::UP] = axisCD;
+							axis_counters[(int)Axis::DOWN] = axisCD;
+						}
+						else
+						{
+							if (axis[(int)Axis::DOWN] == KeyState::KEY_DOWN || axis[(int)Axis::DOWN] == KeyState::KEY_REPEAT)
+								axis[(int)Axis::DOWN] = KeyState::KEY_UP;
+							else axis[(int)Axis::DOWN] = KeyState::KEY_IDLE;
+						}
+					}
+
+				}
+				else if (yAxis < 0)
+				{
+					if (axis[(int)Axis::UP] == KeyState::KEY_DOWN || axis[(int)Axis::UP] == KeyState::KEY_REPEAT)
+						axis[(int)Axis::UP] = KeyState::KEY_REPEAT;
+					else
+					{
+						if (axis_counters[(int)Axis::UP] == 0.0f)
+						{
+							axis[(int)Axis::UP] = KeyState::KEY_DOWN;
+							axis_counters[(int)Axis::DOWN] = axisCD;
+							axis_counters[(int)Axis::UP] = axisCD;
+						}
+						else
+						{
+							if (axis[(int)Axis::UP] == KeyState::KEY_DOWN || axis[(int)Axis::UP] == KeyState::KEY_REPEAT)
+								axis[(int)Axis::UP] = KeyState::KEY_UP;
+							else axis[(int)Axis::UP] = KeyState::KEY_IDLE;
+						}
+					}
+				}
+			}
+			else
+			{
+				yAxis = 0;
+				yDeadZone = true;
+				if (axis[(int)Axis::DOWN] == KeyState::KEY_DOWN || axis[(int)Axis::DOWN] == KeyState::KEY_REPEAT)
+					axis[(int)Axis::DOWN] = KeyState::KEY_UP;
+				else axis[(int)Axis::DOWN] = KeyState::KEY_IDLE;
+
+				if (axis[(int)Axis::UP] == KeyState::KEY_DOWN || axis[(int)Axis::UP] == KeyState::KEY_REPEAT)
+					axis[(int)Axis::UP] = KeyState::KEY_UP;
+				else axis[(int)Axis::UP] = KeyState::KEY_IDLE;
+			}
+		}
+	}
+	
+
 	//Check if controller has been connected to the system
 	if (controller == nullptr && joystick == nullptr && SDL_NumJoysticks() > 0)
 		InitController();
+
+	//Manage axis counters
+	for (int i = 0; i < (int)Axis::MAX; ++i)
+	{
+		axis_counters[i] -= App->dt;
+		if (axis_counters[i] < 0.0f)
+			axis_counters[i] = 0.0f;
+	}
 
 	return true;
 }

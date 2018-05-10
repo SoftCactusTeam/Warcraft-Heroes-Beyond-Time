@@ -175,6 +175,18 @@
     <ClCompile Include="ModuleTransitions.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="ArrowSlowItem.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
+    <ClCompile Include="RingItem.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
+    <ClCompile Include="LifeStealItem.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
+    <ClCompile Include="EnergyItem.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -371,6 +383,18 @@
     <ClInclude Include="ModuleTransitions.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="ArrowSlowItem.h">
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="RingItem.h">
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="LifeStealItem.h">
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="EnergyItem.h">
+      <Filter>Items</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />
@@ -409,8 +433,5 @@
     <Filter Include="Entities\Dynamic Entites\Player">
       <UniqueIdentifier>{9580dc2a-cfc5-4c2d-a9f0-d70f90e119e4}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="resource.rc" />
   </ItemGroup>
 </Project>

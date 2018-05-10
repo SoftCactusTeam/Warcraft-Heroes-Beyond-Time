@@ -221,7 +221,7 @@ void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 				}
 				break;
 			}
-			case PlayerAttack::P_Attack_Type::FREEZE_ITEM:
+			case PlayerAttack::P_Attack_Type::FREEZEBALL_ITEM:
 			{
 				if (App->entities->GetRandomNumber(10) < 5 && !GetConcreteEffect(ARCHER_EFFECT_FREEZE))	// superar tirada 50%
 					AddEffect(ARCHER_EFFECTS::ARCHER_EFFECT_FREEZE, 2000);
@@ -233,7 +233,7 @@ void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 					AddEffect(ARCHER_EFFECTS::ARCHER_EFFECT_FEAR, 2000);
 				break;
 			}
-			case PlayerAttack::P_Attack_Type::SHIT:
+			case PlayerAttack::P_Attack_Type::DAMAGESHIT_ITEM:
 			{
 				numStats.hp -= attack->damage;
 				if (numStats.hp <= 0)
@@ -260,7 +260,7 @@ void Enemy_Archer::OnCollisionContinue(Collider* yours, Collider* collideWith)
 		PlayerAttack* attack = (PlayerAttack*)collideWith;
 		switch (attack->pattacktype)
 		{
-			case PlayerAttack::P_Attack_Type::SHIT:
+			case PlayerAttack::P_Attack_Type::DAMAGESHIT_ITEM:
 			{
 				numStats.hp -= attack->damage;
 				if (numStats.hp <= 0)
@@ -279,7 +279,7 @@ void Enemy_Archer::OnCollisionLeave(Collider* yours, Collider* collideWith)
 
 		switch (attack->pattacktype)
 		{
-		case PlayerAttack::P_Attack_Type::SHIT:
+		case PlayerAttack::P_Attack_Type::DAMAGESHIT_ITEM:
 		{
 			numStats.speed = originalSpeed;
 		}

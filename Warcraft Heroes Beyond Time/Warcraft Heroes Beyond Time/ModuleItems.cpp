@@ -2,12 +2,14 @@
 #include "WCItem.h"
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
+
 #include "DMGBallItem.h"
-
 #include "FreezeBallItem.h"
-
-
 #include "FEARBallItem.h"
+#include "ArrowSlowItem.h"
+#include "RingItem.h"
+#include "LifeStealItem.h"
+#include "EnergyItem.h"
 
 #include <time.h>
 
@@ -18,6 +20,8 @@ float ModuleItems::frozenBallChance = 0.0f;
 float ModuleItems::slowShitPercent = 0.0f;
 float ModuleItems::slowShitSeconds = 0.0f;
 float ModuleItems::dmgShitDamage = 0.0f;
+float ModuleItems::stealhp = 0.0f;
+float ModuleItems::energywhenHitted = 0.0f;
 
 bool ModuleItems::Awake(pugi::xml_node& itemsNode)
 {
@@ -29,6 +33,8 @@ bool ModuleItems::Awake(pugi::xml_node& itemsNode)
 	slowShitSeconds = itemsNode.child("slowShit").attribute("time_slowed").as_float();
 	slowShitPercent = itemsNode.child("slowShit").attribute("slow_percent").as_float();
 	dmgShitDamage = itemsNode.child("dmgShit").attribute("damage_by_dt").as_float();
+	stealhp = itemsNode.child("StealLife").attribute("amount").as_float();
+	energywhenHitted = itemsNode.child("Lexro").attribute("EnergyWhenHitted").as_uint();
 
 	return true;
 }
@@ -37,8 +43,10 @@ bool ModuleItems::Start()
 {
 	//Load Items' pull
 	loadItemsPull();
-
+	
 	itemsTexture = App->textures->Load("sprites/all_items.png");
+
+
 
 	return true;
 }
@@ -54,6 +62,15 @@ bool ModuleItems::Update(float dt)
 	}
 
 	return ret;
+}
+
+void ModuleItems::newEvent(ModuleItems::ItemEvent event)
+{
+	std::list<Item*>::iterator it;
+	for (it = equipedItems.begin(); it != equipedItems.end(); ++it)
+	{
+		(*it)->Act(event);
+	}
 }
 
 bool ModuleItems::PostUpdate()
@@ -103,6 +120,18 @@ void ModuleItems::loadItemsPull()
 
 	FEARBallItem* Fearball_Item = new FEARBallItem();
 	availableItems.push_back(Fearball_Item);
+
+	ArrowSlowItem* projectileslowitem = new ArrowSlowItem();
+	availableItems.push_back(projectileslowitem);
+
+	RingItem* enemiesSlowItem = new RingItem();
+	availableItems.push_back(enemiesSlowItem);
+
+	LifeStealItem* lifeStealItem = new LifeStealItem();
+	availableItems.push_back(lifeStealItem);
+
+	EnergyItem* energyitem = new EnergyItem();
+	availableItems.push_back(energyitem);
 }
 
 bool ModuleItems::equipItem(Item* item)

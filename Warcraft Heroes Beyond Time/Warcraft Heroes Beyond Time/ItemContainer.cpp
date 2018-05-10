@@ -7,6 +7,7 @@
 #include "ModuleRender.h"
 #include "Item.h"
 #include "Log.h"
+#include "PlayerEntity.h"
 
 ItemContainer::ItemContainer(fPoint localPos, Module* listener, Item* item, GUIElem* parent) : GUIElem(localPos, listener, atlasRect, GUIElemType::ITEM_CONTAINER, parent), item(item)
 {
@@ -22,6 +23,8 @@ ItemContainer::ItemContainer(fPoint localPos, Module* listener, Item* item, GUIE
 	focused_anim.PushBack({ 805,153,195,270 }, {97,135});
 	focused_anim.life = 0.1f;
 
+	select_anim.PushBack({ 615,167,171,242 }, { 85, 121 }); // White Filled
+	select_anim.PushBack({ 42,167,171,242 }, { 85, 121 });	// Black Filled
 	select_anim.PushBack({ 615,167,171,242 }, { 85, 121 }); // White Filled
 	select_anim.PushBack({ 42,167,171,242 }, { 85, 121 });	// Black Filled
 	select_anim.life = 0.3f;
@@ -41,13 +44,13 @@ bool ItemContainer::Update(float dt)
 		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_DOWN && item != nullptr)
 		{
 			if (!selected)
-			{
 				selected = true;
+			else
 				anim = &select_anim;
-			}
 		}
 		else if (anim == &select_anim && select_anim.Finished())
 		{
+			App->scene->player->Walk(true);
 			App->items->equipItem(item);
 			App->gui->DestroyElem((GUIElem*)App->scene->ItemSelection);
 			App->scene->ItemSelection = nullptr;

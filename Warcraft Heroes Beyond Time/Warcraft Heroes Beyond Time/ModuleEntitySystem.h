@@ -24,7 +24,7 @@ public:
 	{
 		uint skillMultiplier = 0;
 
-		uint maxhp = 0u;
+		float maxhp = 0.0f;
 		float hp = 0.0f;
 		uint armor = 0u;
 		uint speed = 0u;

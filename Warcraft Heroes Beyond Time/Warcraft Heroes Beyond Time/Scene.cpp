@@ -130,7 +130,7 @@ bool Scene::Start()
 
 				std::list<SDL_Rect>::iterator it = App->map->archers.begin();
 				std::advance(it, lvlIndex);
-				
+
 				int numberArchers = 0;
 				do
 				{
@@ -303,7 +303,7 @@ bool Scene::PostUpdate()
 		{
 			App->transitions->StartTransition(this, this, 2.0f, fades::slider_fade);
 		}
-		
+
 		if ((actual_scene == Stages::MAIN_MENU && next_scene == Stages::SETTINGS) ||
 			(actual_scene == Stages::SETTINGS && next_scene == Stages::MAIN_MENU))
 		{
@@ -356,6 +356,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 			{
 				case UIEvents::MOUSE_ENTER:
 				{
+					App->audio->HaltFX(App->audio->ButtonHovered);
 					App->audio->PlayFx(App->audio->ButtonHovered);
 					button->atlasRect = Button1MouseHover;
 					break;
@@ -444,7 +445,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 void Scene::CreateMainMenuScreen()
 {
 	GUIWindow* window = (GUIWindow*)App->gui->CreateGUIWindow({ 0,0 }, { 0,0,0,0 }, nullptr, nullptr);
-
+	
 	//LOGO
 	GUIImage* logo = (GUIImage*)App->gui->CreateGUIImage({ 100,25 }, { 624, 21, 448, 129 }, nullptr);
 
