@@ -112,7 +112,7 @@ void ArcherArrow::OnCollision(Collider* yours, Collider* collideWith)
 		case PlayerAttack::P_Attack_Type::NORMAL_ATTACK:
 			deleteArrow = true;
 			break;
-		case PlayerAttack::P_Attack_Type::DAMAGESHIT_ITEM:
+		case PlayerAttack::P_Attack_Type::PROJECTILESLOWSHIT_ITEM:
 			toData->speed = 2;
 			break;
 		case PlayerAttack::P_Attack_Type::FREEZEBALL_ITEM:
