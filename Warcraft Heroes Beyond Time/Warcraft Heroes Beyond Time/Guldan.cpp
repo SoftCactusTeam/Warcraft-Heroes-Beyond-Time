@@ -130,7 +130,7 @@ Guldan::Guldan(fPoint coor, BossType type, SDL_Texture* texture) : BossEntity(co
 
 	numStats = App->entities->guldanstats;
 
-	numStats.hp = numStats.maxhp = 1000.0f;
+	numStats.hp = numStats.maxhp = 2000.0f;
 
 	isGuldan = true;
 }
@@ -1108,11 +1108,33 @@ void Guldan::OnCollision(Collider* yours, Collider* collideWith)
 		if (attack->pattacktype == PlayerAttack::P_Attack_Type::NORMAL_ATTACK)
 		{
 			if (anim != &teleport || anim != &inverseTeleport)
-				numStats.hp -= 25.0f;
+				numStats.hp -= attack->damage;
+		}
+		else if (attack->pattacktype == PlayerAttack::P_Attack_Type::DMGBALL_ITEM)
+		{
+			if (anim != &teleport || anim != &inverseTeleport)
+				numStats.hp -= attack->damage;
+		}
+		break;
+	}	
+	}
+}
+
+void Guldan::OnCollisionContinue(Collider* yours, Collider* collideWith)
+{
+	switch (collideWith->colType)
+	{
+	case Collider::ColliderType::PLAYER_ATTACK:
+	{
+		PlayerAttack* attack = (PlayerAttack*)collideWith;
+		if (attack->pattacktype == PlayerAttack::P_Attack_Type::DAMAGESHIT_ITEM)
+		{
+			if (anim != &teleport || anim != &inverseTeleport)
+				numStats.hp -= attack->damage;
 		}
 
 		break;
-	}	
+	}
 	}
 }
 

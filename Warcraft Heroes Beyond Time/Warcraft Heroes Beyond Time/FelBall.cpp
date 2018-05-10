@@ -119,6 +119,21 @@ bool FelBall::Update(float dt)
 		break;
 	}
 
+	if (slowSpeed)
+	{
+		if (toData->radiusToIncrease >= 10.0f && timeSlowed == 0.0f)
+			toData->radiusToIncrease -= 10.0f;
+
+		timeSlowed += 1.0f * dt;
+
+		if (timeSlowed >= 2.0f)
+		{
+			slowSpeed = 0.0f;
+			toData->radiusToIncrease += 10.0f;
+			timeSlowed = 0.0f;
+		}
+	}
+
 	DecreaseLifePerTime(dt);
 
 	actualAnim->speed = actualAnim->speedFactor * dt;
@@ -146,6 +161,15 @@ void FelBall::OnCollision(Collider* yours, Collider* collideWith)
 			destroyTheBall = true;
 		}
 		break;
+
+	case Collider::ColliderType::PLAYER_ATTACK:
+		PlayerAttack* attack = (PlayerAttack*)collideWith;
+		if (attack->pattacktype == PlayerAttack::P_Attack_Type::PROJECTILESLOWSHIT_ITEM)
+		{
+			int random =  rand() % 100;
+			if (random <= 10.0f)
+				slowSpeed = true;
+		}
 	
 	}
 }

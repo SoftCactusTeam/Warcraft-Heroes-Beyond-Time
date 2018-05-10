@@ -121,6 +121,7 @@ public:
 	float GetTimeToComeBackSpiral() const { return timeToComeBackSpiral; };
 
 	void OnCollision(Collider* yours, Collider* collideWith);
+	void OnCollisionContinue(Collider* yours, Collider* collideWith);
 
 	bool Draw();
 
