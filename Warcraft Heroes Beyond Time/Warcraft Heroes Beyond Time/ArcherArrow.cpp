@@ -96,7 +96,7 @@ void ArcherArrow::OnCollision(Collider* yours, Collider* collideWith)
 			{
 				PlayerEntity* plaOwner = (PlayerEntity*)collideWith->owner;
 				if (plaOwner->GetDamageCollider() == collideWith)
-					if (!plaOwner->getConcretePlayerStates(11))	// el num 11 es el dash, es una guarrada per mira ... no tinc temps ...
+					if (!plaOwner->GetConcretePlayerStates(11))	// el num 11 es el dash, es una guarrada per mira ... no tinc temps ...
 					// AIXO SI L'ALTRE ES UN PLAYER
 						deleteArrow = true;
 			}
@@ -112,7 +112,7 @@ void ArcherArrow::OnCollision(Collider* yours, Collider* collideWith)
 		case PlayerAttack::P_Attack_Type::NORMAL_ATTACK:
 			deleteArrow = true;
 			break;
-		case PlayerAttack::P_Attack_Type::DAMAGESHIT_ITEM:
+		case PlayerAttack::P_Attack_Type::PROJECTILESLOWSHIT_ITEM:
 			toData->speed = 2;
 			break;
 		case PlayerAttack::P_Attack_Type::FREEZEBALL_ITEM:
@@ -134,7 +134,7 @@ void ArcherArrow::OnCollisionLeave(Collider* yours, Collider* collideWith)
 		PlayerAttack* attack = (PlayerAttack*)collideWith;
 		switch (attack->pattacktype)
 		{
-		case PlayerAttack::P_Attack_Type::DAMAGESHIT_ITEM:
+		case PlayerAttack::P_Attack_Type::PROJECTILESLOWSHIT_ITEM:
 			toData->speed = toData->copySpeed;
 			break;
 		}

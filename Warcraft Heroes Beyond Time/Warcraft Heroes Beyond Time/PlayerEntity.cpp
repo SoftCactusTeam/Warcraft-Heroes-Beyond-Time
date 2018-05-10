@@ -13,6 +13,7 @@
 #include "ModuleItems.h"
 #include "GUIWindow.h"
 #include "GUIImage.h"
+#include "ModuleTransitions.h"
 
 PlayerEntity::PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : DynamicEntity(coor, texture, DynamicType::PLAYER), type(type)
 {
@@ -101,19 +102,20 @@ void PlayerEntity::ResetDash()
 
 void PlayerEntity::PlayerStates(float dt)
 {
-	if (move)
+	if (move && !App->transitions->IsFading())
 	{
 		if (App->input->IsKeyboardAvailable())
 			KeyboardStates(dt);
 		else
 			JoyconStates(dt);
 
-		CheckMapLimits();
+		//CheckMapLimits();
 		CheckCulling();
+
 		if (drawFZ)
 			App->printer->PrintQuad(freeZone, { 255, 0, 0, 50 }, true, true);
 	}
-	else
+	else if(!App->transitions->IsFading())
 	{
 		CheckIddleStates();
 		if (drawFZ)
@@ -201,7 +203,7 @@ void PlayerEntity::KeyboardStates(float dt)
 					pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
 
 					anim = &dashRight;
-					float x = 0.05f / dt;
+					float x = 0.1f / dt;
 					t += (x * dt);
 				}
 				else if (animBefore == &idleLeft || animBefore == &left)
@@ -209,7 +211,7 @@ void PlayerEntity::KeyboardStates(float dt)
 					pos.x = startPos.x - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
 
 					anim = &dashLeft;
-					float x = 0.05f / dt;
+					float x = 0.1f / dt;
 					t += (x * dt);
 				}
 				else if (animBefore == &idleUp || animBefore == &up)
@@ -217,7 +219,7 @@ void PlayerEntity::KeyboardStates(float dt)
 					pos.y = startPos.y - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
 
 					anim = &dashUp;
-					float x = 0.05f / dt;
+					float x = 0.1f / dt;
 					t += (x * dt);
 				}
 				else if (animBefore == &idleDown || animBefore == &down)
@@ -225,7 +227,7 @@ void PlayerEntity::KeyboardStates(float dt)
 					pos.y = startPos.y + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
 
 					anim = &dashDown;
-					float x = 0.05f / dt;
+					float x = 0.1f / dt;
 					t += (x * dt);
 				}
 				else if (animBefore == &idleUpRight || animBefore == &upRight)
@@ -236,7 +238,7 @@ void PlayerEntity::KeyboardStates(float dt)
 					pos.y = startPos.y - dashDistance * 0.75f * bezierPoint.y;
 
 					anim = &dashUpRight;
-					float x = 0.05f / dt;
+					float x = 0.1f / dt;
 					t += (x * dt);
 				}
 				else if (animBefore == &idleDownRight || animBefore == &downRight)
@@ -247,7 +249,7 @@ void PlayerEntity::KeyboardStates(float dt)
 					pos.y = startPos.y + dashDistance * 0.75f * bezierPoint.y;
 
 					anim = &dashDownRight;
-					float x = 0.05f / dt;
+					float x = 0.1f / dt;
 					t += (x * dt);
 				}
 				else if (animBefore == &idleDownLeft || animBefore == &downLeft)
@@ -258,7 +260,7 @@ void PlayerEntity::KeyboardStates(float dt)
 					pos.y = startPos.y + dashDistance * 0.75f * bezierPoint.y;
 
 					anim = &dashDownLeft;
-					float x = 0.05f / dt;
+					float x = 0.1f / dt;
 					t += (x * dt);
 				}
 				else if (animBefore == &idleUpLeft || animBefore == &upLeft)
@@ -269,7 +271,7 @@ void PlayerEntity::KeyboardStates(float dt)
 					pos.y = startPos.y - dashDistance * 0.75f * bezierPoint.y;
 
 					anim = &dashUpLeft;
-					float x = 0.05f / dt;
+					float x = 0.1f / dt;
 					t += (x * dt);
 				}
 			}
@@ -813,6 +815,10 @@ void PlayerEntity::JoyconStates(float dt)
 
 	case states::PL_DASH:
 	{
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_X) == KEY_DOWN)
+		{
+			attackWhileDash = true;
+		}
 		if (t <= 1.0f && t >= 0.0f)
 		{
 			if (animBefore == &idleRight)
@@ -880,13 +886,44 @@ void PlayerEntity::JoyconStates(float dt)
 				anim = GetAnimFromAngle(angle, true);
 			}
 
-			float x = 0.05f / dt;
+			float x = 0.1f / dt;
 			t += (x * dt);
 
 		}
 		else
 		{
-			if (App->input->InsideDeadZone())
+			if (attackWhileDash)
+			{
+				state = states::PL_ATTACK;
+				attackWhileDash = false;
+
+				if (anim == &dashRight)
+					animBefore = &idleRight;
+				else if (anim == &dashDown)
+					animBefore = &idleDown;
+				else if (anim == &dashUpRight)
+					animBefore = &idleUpRight;
+				else if (anim == &dashDownLeft)
+					animBefore = &idleDownLeft;
+				else if (anim == &dashDownRight)
+					animBefore = &idleDownRight;
+				else if (anim == &dashUpRight)
+					animBefore = &idleUpRight;
+				else if (anim == &dashLeft)
+					animBefore = &idleLeft;
+				else if (anim == &dashUpLeft)
+					animBefore = &idleUpLeft;
+				else if (anim == &dashUp)
+					animBefore = &idleUp;
+				
+				
+				Attack();
+				DashCD = DashConfigCD;
+				t = 0.0f;
+				break;
+
+			}
+			else if (App->input->InsideDeadZone())
 			{
 				state = states::PL_IDLE;
 
@@ -1116,7 +1153,7 @@ void PlayerEntity::JoyconStates(float dt)
 	}
 }
 
-bool PlayerEntity::getConcretePlayerStates(int stat)
+bool PlayerEntity::GetConcretePlayerStates(int stat)
 {
 	if (stat == (int)state)
 		return true;
@@ -1157,6 +1194,14 @@ void PlayerEntity::CheckIddleStates()
 		break;
 	case states::PL_DOWN_RIGHT:
 		anim = &idleDownRight;
+		state = states::PL_IDLE;
+		break;
+	case states::PL_DASH:
+		anim = &idleDown;
+		state = states::PL_IDLE;
+		break;
+	case states::PL_ATTACK:
+		anim = &idleDown;
 		state = states::PL_IDLE;
 		break;
 	}
@@ -1378,7 +1423,7 @@ void PlayerEntity::CheckMapLimits()
 	}
 }
 
-void PlayerEntity::SetDamage(int damage, bool setStateDamage)
+void PlayerEntity::SetDamage(float damage, bool setStateDamage)
 {
 	if (numStats.hp > 0 && damaged == false)
 	{
@@ -1403,6 +1448,14 @@ void PlayerEntity::SetDamage(int damage, bool setStateDamage)
 			numStats.hp -= damage;
 		}
 	}
+}
+
+void PlayerEntity::Heal(float amount)
+{
+	if (numStats.hp + amount > numStats.maxhp)
+		numStats.hp = numStats.maxhp;
+	else
+		numStats.hp += amount;
 }
 
 void PlayerEntity::DrawFreeZone(bool boolean)

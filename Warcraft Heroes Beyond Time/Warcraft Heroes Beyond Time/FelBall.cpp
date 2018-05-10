@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModulePrinter.h"
 #include "ModuleColliders.h"
+#include "PlayerEntity.h"
 
 #include "Scene.h"
 #include "Guldan.h"
@@ -119,6 +120,21 @@ bool FelBall::Update(float dt)
 		break;
 	}
 
+	if (slowSpeed)
+	{
+		if (toData->radiusToIncrease >= 10.0f && timeSlowed == 0.0f)
+			toData->radiusToIncrease -= 10.0f;
+
+		timeSlowed += 1.0f * dt;
+
+		if (timeSlowed >= 2.0f)
+		{
+			slowSpeed = 0.0f;
+			toData->radiusToIncrease += 10.0f;
+			timeSlowed = 0.0f;
+		}
+	}
+
 	DecreaseLifePerTime(dt);
 
 	actualAnim->speed = actualAnim->speedFactor * dt;
@@ -140,29 +156,41 @@ void FelBall::OnCollision(Collider* yours, Collider* collideWith)
 	switch (collideWith->colType)
 	{
 	case Collider::ColliderType::ENTITY:
+	{
+		Entity* entity = (Entity*)collideWith->owner;
+		if (entity->entityType == Entity::EntityType::DYNAMIC_ENTITY)
+		{
+			DynamicEntity* dentity = (DynamicEntity*)entity;
+			if (dentity->dynamicType == DynamicEntity::DynamicType::PLAYER)
+			{
+				PlayerEntity* pentity = (PlayerEntity*)dentity;
+				if (pentity->state != PlayerEntity::states::PL_DASH)
+					destroyTheBall = true;
+			}
+		}
+		break;
+	}		
 	case Collider::ColliderType::WALL:
 		if (data->life <= 999)
 		{
 			destroyTheBall = true;
 		}
 		break;
-	
+
+	case Collider::ColliderType::PLAYER_ATTACK:
+		PlayerAttack* attack = (PlayerAttack*)collideWith;
+		if (attack->pattacktype == PlayerAttack::P_Attack_Type::PROJECTILESLOWSHIT_ITEM)
+		{
+			int random = rand() % 100;
+			if (random <= 10.0f)
+				slowSpeed = true;
+		}
 	}
 }
 
 void FelBall::OnCollisionContinue(Collider* yours, Collider* collideWith)
 {
-	switch (collideWith->colType)
-	{
-	case Collider::ColliderType::ENTITY:
-	case Collider::ColliderType::WALL:
-		if (data->life <= 990)
-		{
-			destroyTheBall = true;
-		}
-		break;
-
-	}
+	
 }
 
 void FelBall::OnCollisionLeave(Collider* yours, Collider* collideWith)

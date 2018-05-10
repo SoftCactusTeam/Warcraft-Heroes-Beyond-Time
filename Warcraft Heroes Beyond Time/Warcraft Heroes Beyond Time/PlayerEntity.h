@@ -31,6 +31,7 @@ protected:
 	float speed = 250.0f;
 	bool move = true;
 	bool damaged = false;
+	bool attackWhileDash = false;
 
 	float damagedConfigCD = 0.0f; //This will be the one loaded from config.xml
 	float damagedCD = 0.0f;
@@ -47,6 +48,8 @@ protected:
 
 	Collider* wallCol = nullptr;
 	Collider* damageCol = nullptr;
+
+public:
 
 	enum class states
 	{
@@ -84,7 +87,7 @@ public:
 	void PlayerStates(float dt);
 	void KeyboardStates(float dt);
 	void JoyconStates(float dt);
-	bool getConcretePlayerStates(int stat);
+	bool GetConcretePlayerStates(int stat);
 	void CheckIddleStates();
 
 	void CheckMapLimits();
@@ -94,8 +97,9 @@ public:
 	Collider* GetDamageCollider() const;
 
 	//Stats functions
-	void SetDamage(int damage, bool setStateDamage);
+	void SetDamage(float damage, bool setStateDamage);
 	void IncreaseEnergy(int percent);
+	void Heal(float amount);
 
 	//This function calculates player position given a Bezier Curve
 	fPoint CalculatePosFromBezier(fPoint startPos, fPoint handleA, float t, fPoint handleB, fPoint endPos);

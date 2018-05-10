@@ -128,6 +128,7 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="ArcherArrow.cpp" />
+    <ClCompile Include="ArrowSlowItem.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="BossEntity.cpp" />
     <ClCompile Include="BossHPBar.cpp" />
@@ -140,6 +141,7 @@
     <ClCompile Include="EnemyEntity.cpp" />
     <ClCompile Include="Enemy_Archer.cpp" />
     <ClCompile Include="Enemy_Footman.cpp" />
+    <ClCompile Include="EnergyItem.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Console.cpp" />
@@ -153,6 +155,7 @@
     <ClCompile Include="Guldan.cpp" />
     <ClCompile Include="InputBox.cpp" />
     <ClCompile Include="ItemContainer.cpp" />
+    <ClCompile Include="LifeStealItem.cpp" />
     <ClCompile Include="ModuleEffects.cpp" />
     <ClCompile Include="ModuleItems.cpp" />
     <ClCompile Include="ModulePrinter.cpp" />
@@ -160,6 +163,7 @@
     <ClCompile Include="ModuleTransitions.cpp" />
     <ClCompile Include="PlayerHPBar.cpp" />
     <ClCompile Include="Projectile.cpp" />
+    <ClCompile Include="RingItem.cpp" />
     <ClCompile Include="Slider.cpp" />
     <ClCompile Include="ModuleMapGenerator.cpp" />
     <ClCompile Include="ModuleColliders.cpp" />
@@ -190,6 +194,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="ArcherArrow.h" />
+    <ClInclude Include="ArrowSlowItem.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="BossEntity.h" />
     <ClInclude Include="BossHPBar.h" />
@@ -202,6 +207,7 @@
     <ClInclude Include="EnemyEntity.h" />
     <ClInclude Include="Enemy_Archer.h" />
     <ClInclude Include="Enemy_Footman.h" />
+    <ClInclude Include="EnergyItem.h" />
     <ClInclude Include="EntitiesEnums.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Console.h" />
@@ -218,6 +224,7 @@
     <ClInclude Include="InputBox.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemContainer.h" />
+    <ClInclude Include="LifeStealItem.h" />
     <ClInclude Include="ModuleEffects.h" />
     <ClInclude Include="ModuleItems.h" />
     <ClInclude Include="ModulePrinter.h" />
@@ -226,6 +233,7 @@
     <ClInclude Include="PortalEntity.h" />
     <ClInclude Include="ModuleProjectiles.h" />
     <ClInclude Include="Projectile.h" />
+    <ClInclude Include="RingItem.h" />
     <ClInclude Include="Slider.h" />
     <ClInclude Include="ModuleMapGenerator.h" />
     <ClInclude Include="ModuleColliders.h" />
@@ -259,9 +267,6 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

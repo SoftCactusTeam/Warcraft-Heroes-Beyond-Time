@@ -29,6 +29,7 @@ struct MapNode
 	SDL_Rect whatToBlit = { 0,0,0,0 };
 	int layerBelow = 0;
 	bool colliderInside = false;
+	bool InvalidForMap = false;
 };
 
 class MapGenerator : public Module
@@ -60,12 +61,14 @@ public:
 	bool GenerateMap(MapData data);
 	bool GenerateBossMap(); 
 	bool ExecuteAlgorithm(MapNode* startNode, uint iterations, int seed);
+	bool GenerateChestMap();
 	SDL_Rect randomTile(bool isFloor);
 	bool GenerateWalls();
 	bool CleanUp();
 	iPoint GetRandomValidPoint();
 	iPoint GetRandomValidPointProxy(int distance, int proxyDistance);
 	iPoint GetRandomBossPoint();
+
 
 	void getSize(uint& w, uint& h);
 	int getTileSize();
@@ -77,7 +80,8 @@ public:
 	int numberOfLevels = 0;
 	std::list<SDL_Rect> archers;
 
-
+	MapNode* begginingNode = nullptr;
+	MapNode* chestNode = nullptr;
 	uint sizeX = 0u;
 	uint sizeY = 0u;
 private:
@@ -86,8 +90,8 @@ private:
 	int tileSize = 48;
 	std::vector<MapNode*> nodes;
 	std::vector<MapNode*> visited;
-	SDL_Texture* mapTexture = nullptr;
-
+	SDL_Texture* mapTexture = nullptr;	
+	MapNode* AlgorithmStart = nullptr;
 	std::list<iPoint> gridSizePerLevel;
 	std::list<int> iterationsPerLevel;
 	int mapSeed = 0;

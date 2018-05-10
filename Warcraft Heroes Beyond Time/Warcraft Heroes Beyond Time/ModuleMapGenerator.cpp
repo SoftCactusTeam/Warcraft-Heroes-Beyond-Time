@@ -14,19 +14,19 @@
 
 #define MINDISTANCE 10
 
-#define VOID { 196,0,48,48 }
-#define FLOOR { 0,49,48,48 }
-#define FLOOR2 { 49,49,48,48 }
-#define FLOOR3 { 98,49,48,48 }
-#define FLOOR4 { 147,49,48,48 }
-#define FLOOR5 { 196,49,48,48 }
-#define FLOOR6 { 0,98,48,48 }
-#define FLOOR7 { 49,98,48,48 }
-#define FLOOR8 { 98,98,48,48 }
-#define WALL1 { 0,0,48,48 }
-#define WALL2 { 49,0,48,48 }
-#define WALL3 { 98,0,48,48 }
-#define WALL4 { 147,0,48,48 }
+#define VOID { 192,1056,48,48 }
+#define FLOOR { 0,1104,48,48 }
+#define FLOOR2 { 48,1104,48,48 }
+#define FLOOR3 { 98,1104,48,48 }
+#define FLOOR4 { 144,1104,48,48 }
+#define FLOOR5 { 192,1104,48,48 }
+#define FLOOR6 { 0,1152,48,48 }
+#define FLOOR7 { 48,1152,48,48 }
+#define FLOOR8 { 96,1152,48,48 }
+#define WALL1 { 0,1056,48,48 }
+#define WALL2 { 48,1056,48,48 }
+#define WALL3 { 96,1056,48,48 }
+#define WALL4 { 144,1056,48,48 }
 
 MapGenerator::MapGenerator()
 {
@@ -85,7 +85,9 @@ iPoint MapGenerator::GetRandomValidPoint()
 
 	do
 		randNum = rand() % ((nodes.size()-1) + 1);
-	while (nodes[randNum]->layerBelow != -2 || nodes[randNum]->pos == nodes[Get(sizeX / 2, sizeY / 2)]->pos || nodes[randNum]->pos.DistanceTo( nodes[Get(sizeX / 2, sizeY / 2)]->pos ) < MINDISTANCE);
+	while (nodes[randNum]->layerBelow != -2 || nodes[randNum]->InvalidForMap);
+
+	nodes[randNum]->InvalidForMap = true;
 
 	return nodes[randNum]->pos;
 }
@@ -96,7 +98,7 @@ iPoint MapGenerator::GetRandomValidPointProxy(int distance, int proxyDistance)
 
 	do
 		randNum = rand() % ((nodes.size() - 1) + 1);
-	while (nodes[randNum]->layerBelow != -2 || nodes[randNum]->pos == nodes[Get(sizeX / 2, sizeY / 2)]->pos || nodes[randNum]->pos.DistanceTo(nodes[Get(sizeX / 2, sizeY / 2)]->pos) > distance || nodes[randNum]->pos.DistanceTo(nodes[Get(sizeX / 2, sizeY / 2)]->pos) < proxyDistance);
+	while (nodes[randNum]->layerBelow != -2 || nodes[randNum]->InvalidForMap || nodes[randNum]->pos.DistanceTo(nodes[Get(sizeX / 2, sizeY / 2)]->pos) > distance || nodes[randNum]->pos.DistanceTo(nodes[Get(sizeX / 2, sizeY / 2)]->pos) < proxyDistance);
 
 	return nodes[randNum]->pos;
 }
@@ -107,7 +109,7 @@ iPoint MapGenerator::GetRandomBossPoint()
 
 	do
 		randNum = rand() % ((nodes.size() - 1) + 1);
-	while (nodes[randNum]->layerBelow != -2);
+	while (nodes[randNum]->layerBelow != -2 || nodes[randNum]->InvalidForMap);
 
 	return nodes[randNum]->pos;
 }
@@ -162,9 +164,10 @@ inline int MapGenerator::Get(int x, int y) const
 }
 
 bool MapGenerator::CheckBoundaries(const iPoint& pos) const
-{
+{	
 	return (pos.x > 1 && pos.x < (int)sizeX - 2 &&
 		pos.y > 1 && pos.y < (int)sizeY - 2);
+	
 }
 
 bool MapGenerator::GenerateMap(MapData data)
@@ -177,9 +180,10 @@ bool MapGenerator::GenerateMap(MapData data)
 
 	this->sizeX = data.sizeX;
 	this->sizeY = data.sizeY;
-	totalSize = sizeX * sizeY;
 
 	LOG("Generating map Grid...");
+
+	totalSize = sizeX * sizeY;
 
 	for (uint i = 0u; i < sizeY; ++i)
 	{
@@ -190,11 +194,11 @@ bool MapGenerator::GenerateMap(MapData data)
 	}
 	ret = nodes.size() == totalSize;
 
-	if (ret)
-		ret = ExecuteAlgorithm( nodes[Get(sizeX/2,sizeY/2)], data.iterations, data.seed);
+	ret = GenerateChestMap();
 
-	if (ret)
-		ret = GenerateWalls();
+	ret = ExecuteAlgorithm(AlgorithmStart, data.iterations, data.seed);
+
+	ret = GenerateWalls();
 
 	for (uint i = 0u; i < totalSize; ++i)
 	{
@@ -202,7 +206,7 @@ bool MapGenerator::GenerateMap(MapData data)
 			nodes[i]->layerBelow = 1;
 	}
 
-	return ret;
+	return true;
 }
 
 bool MapGenerator::GenerateBossMap()
@@ -259,6 +263,11 @@ bool MapGenerator::GenerateBossMap()
 				else
 					nodes[contNodes]->layerBelow = -2;
 			}
+			else if (layerName == "GeysersLimits")
+			{
+				if (gid == 32)
+					nodes[contNodes]->InvalidForMap = true;
+			}
 			contNodes++;
 		}
 		contNodes = 0;
@@ -278,19 +287,13 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 	else
 		srand(time(NULL));
 
-	startNode->whatToBlit = randomTile(true);
-	startNode->layerBelow = -2;
-	startNode->cost = -1;
-	visited.push_back(startNode);
-
 	MapNode* auxNode = startNode;
 
 	for (uint i = 0u; i < iterations;)
 	{
+ 		uint randNum = rand() % (10);
 
-		uint randNum = rand() % (10 + 1);
-
-		if ((randNum == 0 || randNum == 1 || randNum == 3) && CheckBoundaries({ auxNode->pos.x + 1, auxNode->pos.y }))
+		if ((randNum == 0 || randNum == 1 || randNum == 2) && CheckBoundaries({ auxNode->pos.x + 1, auxNode->pos.y }) && !nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)]->InvalidForMap)
 		{
 			auxNode = nodes[Get(auxNode->pos.x + 1, auxNode->pos.y)];
 			if (auxNode->layerBelow != -2)
@@ -303,7 +306,7 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 			}
 		}
 
-		else if ((randNum == 4 || randNum == 5 || randNum == 6) && CheckBoundaries({ auxNode->pos.x - 1, auxNode->pos.y }))
+		else if ((randNum == 3 || randNum == 4 || randNum == 5) && CheckBoundaries({ auxNode->pos.x - 1, auxNode->pos.y }) && !nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)]->InvalidForMap)
 		{
 			auxNode = nodes[Get(auxNode->pos.x - 1, auxNode->pos.y)];
 			if (auxNode->layerBelow != -2)
@@ -316,7 +319,7 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 			}
 		}
 
-		else if ((randNum == 7 || randNum == 8) && CheckBoundaries({ auxNode->pos.x, auxNode->pos.y + 1 }))
+		else if ((randNum == 6 || randNum == 7) && CheckBoundaries({ auxNode->pos.x, auxNode->pos.y + 1 }) && !nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)]->InvalidForMap)
 		{
 			auxNode = nodes[Get(auxNode->pos.x, auxNode->pos.y + 1)];
 			if (auxNode->layerBelow != -2)
@@ -329,7 +332,7 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 			}
 		}
 
-		else if ((randNum == 9 || randNum == 10) && CheckBoundaries({ auxNode->pos.x, auxNode->pos.y - 1 }))
+		else if ((randNum == 8 || randNum == 9) && CheckBoundaries({ auxNode->pos.x, auxNode->pos.y - 1 }) && !nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)]->InvalidForMap)
 		{
 			auxNode = nodes[Get(auxNode->pos.x, auxNode->pos.y - 1)];
 			if (auxNode->layerBelow != -2)
@@ -347,6 +350,86 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 
 	return visited.size() == iterations + 1;
 }
+
+bool MapGenerator::GenerateChestMap()
+{
+	pugi::xml_document doc_map;
+	pugi::xml_node map_child;
+
+	char* buffer;
+	uint size = App->fs->Load("maps/ChestRoom.tmx", &buffer);
+	doc_map.load_buffer(buffer, size);
+	RELEASE(buffer);
+
+	map_child = doc_map.child("map");
+
+	int chestSizeX = map_child.attribute("width").as_uint();
+	int chestSizeY = map_child.attribute("height").as_uint();
+
+	MapNode* firstTile = nodes[Get(sizeX / 2 - chestSizeX/2, sizeY / 2)];
+
+	pugi::xml_node sub_map_node = map_child.child("tileset");
+	tileSize = sub_map_node.attribute("tilewidth").as_int();
+
+	for (pugi::xml_node layer = map_child.child("layer"); layer; layer = layer.next_sibling("layer"))
+	{
+		pugi::xml_node tile_gid = layer.child("data").child("tile");
+
+		for (int i = 0; i < chestSizeY; ++i)
+		{
+			for (int j = 0; j < chestSizeX; ++j)
+			{
+
+				int gid = tile_gid.attribute("gid").as_int();
+				std::string layerName = layer.attribute("name").as_string();
+
+				if (layerName == "Tiles")
+				{
+					nodes[Get(firstTile->pos.x + j, firstTile->pos.y + i)]->whatToBlit = GetTileRect(gid);
+
+					if (gid != 225)
+					{
+						visited.push_back(nodes[Get(firstTile->pos.x + j, firstTile->pos.y + i)]);
+					}
+				}
+				else if (layerName == "NoRandom")
+				{
+					if (gid == 34)
+						nodes[Get(firstTile->pos.x + j, firstTile->pos.y + i)]->InvalidForMap = true;
+				}
+				else if (layerName == "StartNode")
+				{
+					if (gid == 32)
+						begginingNode = nodes[Get(firstTile->pos.x + j, firstTile->pos.y + i)];
+				
+				}
+				else if (layerName == "Layers")
+				{
+					if (gid == 32)
+						nodes[Get(firstTile->pos.x + j, firstTile->pos.y + i)]->layerBelow = 2;
+					else if (gid == 33)
+						nodes[Get(firstTile->pos.x + j, firstTile->pos.y + i)]->layerBelow = 0;
+					else if (gid == 34)
+						nodes[Get(firstTile->pos.x + j, firstTile->pos.y + i)]->layerBelow = -2;
+				}
+				else if (layerName == "Algorithm")
+				{
+					if (gid == 32)
+						AlgorithmStart = nodes[Get(firstTile->pos.x + j, firstTile->pos.y + i)];
+				}
+				else if (layerName == "Chest")
+				{
+					if (gid == 32)
+						chestNode = nodes[Get(firstTile->pos.x + j, firstTile->pos.y + i)];
+				}
+				tile_gid = tile_gid.next_sibling("tile");
+			}
+		}			
+	}
+
+	return true;
+}
+
 
 
 SDL_Rect MapGenerator::randomTile(bool isFloor)
@@ -398,7 +481,7 @@ bool MapGenerator::GenerateWalls()
 
 	for (uint i = 0u; i < visited.size(); ++i)
 	{
-		if (visited[i]->layerBelow)
+		if (visited[i]->layerBelow == -2)
 		{
 			MapNode* auxNode = visited[i];
 
@@ -484,7 +567,7 @@ int MapGenerator::UseYourPowerToGenerateMeThisNewMap(int lvlIndex)
 	std::advance(it_2, lvlIndex);
 	mapInfo.iterations = (*it_2);
 
-	mapInfo.tilesetPath = "maps/Tiles.png";
+	mapInfo.tilesetPath = "maps/tiles_boss.png";
 	mapInfo.seed = mapSeed;
 
 	if (!App->map->GenerateMap(mapInfo))

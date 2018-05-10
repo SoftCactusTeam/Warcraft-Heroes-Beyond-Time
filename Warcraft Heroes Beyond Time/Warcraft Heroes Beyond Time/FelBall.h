@@ -51,6 +51,8 @@ private:
 	FelBallInfo* toData = nullptr;
 	float timer = 0.0f;
 	bool destroyTheBall = false;
+	bool slowSpeed = false;
+	float timeSlowed = 0.0f;
 	enum class FelAnimations
 	{
 		no_anim = -1,

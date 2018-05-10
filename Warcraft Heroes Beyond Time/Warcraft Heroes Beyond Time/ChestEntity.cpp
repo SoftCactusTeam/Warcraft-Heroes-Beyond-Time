@@ -40,6 +40,7 @@ ChestEntity::ChestEntity(fPoint coor, CHEST_TYPE type, SDL_Texture* texture) : S
 
 bool ChestEntity::Start()
 {
+
 	anim = &chest;
 
 	col = *App->colliders->AddCollider({ 9,31,20,20 }, Collider::ColliderType::ENTITY, this).lock();
@@ -103,7 +104,7 @@ void ChestEntity::OnCollision(Collider* yours, Collider* collideWith)
 
 bool ChestEntity::OpenChest()
 {
-	
+	App->scene->player->Walk(false);
 	chest.Start(12.0f);
 	opened = true;
 	return opened;

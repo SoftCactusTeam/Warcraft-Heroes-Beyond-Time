@@ -123,18 +123,18 @@ bool Scene::Start()
 				App->printer->Activate();
 				App->projectiles->Activate();
 
-				player = App->entities->AddPlayer({ ((float)App->map->sizeX / 2) * 46,((float)App->map->sizeY / 2) * 46 }, THRALL, playerStats);
+				player = App->entities->AddPlayer({ (float)App->map->begginingNode->pos.x * 46, (float)App->map->begginingNode->pos.y * 46 }, THRALL, playerStats);
 				player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
 
 				App->path->LoadPathMap();
 
 				std::list<SDL_Rect>::iterator it = App->map->archers.begin();
 				std::advance(it, lvlIndex);
-				
+
 				int numberArchers = 0;
 				do
 				{
-					int randomNumber = rand() % 100;
+					int randomNumber = rand() % (100 - 1 + 1) + 1;
 					if (randomNumber <= (*it).y)
 					{
 						iPoint enemyPos = App->map->GetRandomValidPoint();
@@ -144,7 +144,7 @@ bool Scene::Start()
 							continue;
 					}
 
-					randomNumber = rand() % 100;
+					randomNumber = rand() % (100 - 1 + 1) + 1;
 					if (randomNumber <= (*it).w)
 					{
 						iPoint enemyPos = App->map->GetRandomValidPoint();
@@ -154,7 +154,7 @@ bool Scene::Start()
 							continue;
 					}
 
-					randomNumber = rand() % 100;
+					randomNumber = rand() % (100 - 1 + 1) + 1;
 					if (randomNumber <= (*it).h)
 					{
 						iPoint enemyPos = App->map->GetRandomValidPoint();
@@ -167,11 +167,8 @@ bool Scene::Start()
 				while (numberArchers < (*it).x);
 
 				App->items->Activate();
-
-				iPoint chestPos = App->map->GetRandomValidPointProxy(30, 5);
-
 				if (!App->items->isPoolEmpty())
-					lvlChest = App->entities->AddChest({ (float)chestPos.x * 46, (float)chestPos.y * 46 - 31 }, MID_CHEST);
+					lvlChest = App->entities->AddChest({ (float)App->map->chestNode->pos.x * 46 + 5, (float)App->map->chestNode->pos.y * 46 }, MID_CHEST);
 				else
 					lvlChest = nullptr;
 			}
@@ -254,6 +251,7 @@ bool Scene::Update(float dt)
 			{
 				App->audio->PauseFX();
 				paused = true;
+				player->Walk(false);
 				currentPercentAudio = App->audio->MusicVolumePercent;
 				uint tmpAudio = (uint)(currentPercentAudio * 0.3f);
 				if (tmpAudio == 0)
@@ -266,6 +264,7 @@ bool Scene::Update(float dt)
 			{
 				App->audio->ResumeFX();
 				paused = false;
+				player->Walk(true);
 				// Decreasing audio when pause game
 				App->audio->setMusicVolume(currentPercentAudio);
 				App->gui->DestroyElem(PauseMenu);
@@ -303,7 +302,7 @@ bool Scene::PostUpdate()
 		{
 			App->transitions->StartTransition(this, this, 2.0f, fades::slider_fade);
 		}
-		
+
 		if ((actual_scene == Stages::MAIN_MENU && next_scene == Stages::SETTINGS) ||
 			(actual_scene == Stages::SETTINGS && next_scene == Stages::MAIN_MENU))
 		{
@@ -356,6 +355,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 			{
 				case UIEvents::MOUSE_ENTER:
 				{
+					App->audio->HaltFX(App->audio->ButtonHovered);
 					App->audio->PlayFx(App->audio->ButtonHovered);
 					button->atlasRect = Button1MouseHover;
 					break;
@@ -425,6 +425,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 							if (!App->transitions->IsFading())
 							{
 								paused = false;
+								player->Walk(true);
 								App->audio->ResumeFX();
 								App->gui->DestroyElem(PauseMenu);
 								App->audio->setMusicVolume(currentPercentAudio);
@@ -444,7 +445,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 void Scene::CreateMainMenuScreen()
 {
 	GUIWindow* window = (GUIWindow*)App->gui->CreateGUIWindow({ 0,0 }, { 0,0,0,0 }, nullptr, nullptr);
-
+	
 	//LOGO
 	GUIImage* logo = (GUIImage*)App->gui->CreateGUIImage({ 100,25 }, { 624, 21, 448, 129 }, nullptr);
 

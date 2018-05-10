@@ -208,26 +208,30 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture, EntitySystem
 	attackUpLeft.speedFactor = 15.0f;
 	attackUpLeft.loop = false;
 
-	skill.PushBack({ 13 ,933,61,67 }, { 16,21 });
-	skill.PushBack({ 102,933,61,67 }, { 16,21 });
-	skill.PushBack({ 191,933,61,67 }, { 16,21 });
-	skill.PushBack({ 280,933,61,67 }, { 16,21 });
-	skill.PushBack({ 370,933,61,67 }, { 15,21 });
-	skill.PushBack({ 459,933,61,67 }, { 15,21 });
-	skill.PushBack({ 548,933,61,67 }, { 15,21 });
-	skill.PushBack({ 637,933,61,67 }, { 15,21 });
-	skill.PushBack({ 13,1006,61,67 }, { 16,19 });
-	skill.speedFactor = 20.0f;
+	skill.PushBack({ 0  ,928 ,200,200 }, { 87,92 });
+	skill.PushBack({ 0  ,1128,200,200 }, { 87,92 });
+	skill.PushBack({ 0  ,1328,200,200 }, { 87,92 });
+	skill.PushBack({ 0  ,1528,200,200 }, { 87,92 });
+	skill.PushBack({ 200,928 ,200,200 }, { 87,92 });
+	skill.PushBack({ 200,1128,200,200 }, { 87,92 });
+	skill.PushBack({ 200,1328,200,200 }, { 87,92 });
+	skill.PushBack({ 200,1528,200,200 }, { 87,92 });
+	skill.PushBack({ 400,928 ,200,200 }, { 87,92 });
+	skill.PushBack({ 400,1128,200,200 }, { 87,92 });
+	skill.PushBack({ 400,1328,200,200 }, { 87,92 });
+	skill.PushBack({ 400,1528,200,200 }, { 87,92 });
+	skill.speedFactor = 9.0f;
+	skill.loop = false;
 
-	deadUpRight.PushBack({ 119, 1022, 29,39 });
-	deadUpRight.PushBack({ 206, 1025,37,36 });
-	deadUpRight.PushBack({ 300,1031,45,30 });
+	deadUpRight.PushBack({ 650, 942, 29,39 });
+	deadUpRight.PushBack({ 651, 1004,37,36 });
+	deadUpRight.PushBack({ 649,1068,45,30 });
 	deadUpRight.speedFactor = 3.0f;
 	deadUpRight.loop = false;
 
-	deadDownRight.PushBack({ 386, 1030, 32, 31 });
-	deadDownRight.PushBack({ 467, 1027, 41, 34 });
-	deadDownRight.PushBack({ 564, 1015, 35, 46 });
+	deadDownRight.PushBack({ 653, 1125, 32, 31 });
+	deadDownRight.PushBack({ 647, 1185, 41, 34 });
+	deadDownRight.PushBack({ 660, 1243, 35, 46 });
 	deadDownRight.speedFactor = 3.0f;
 	deadDownRight.loop = false;
 
@@ -245,7 +249,6 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture, EntitySystem
 
 bool Thrall::Update(float dt)
 {
-
 	PlayerStates(dt);
 
 	float percentage = 1.0f;
@@ -278,13 +281,23 @@ bool Thrall::PostUpdate()
 			attackCollider = nullptr;
 		}
 	}
-
-	if (anim == &skill)
+	
+	else if (anim == &skill)
 	{
 		if (anim->Finished())
 		{
 			skillOn = false;
 			App->colliders->deleteCollider(skillCollider);
+		}
+	}
+
+	else
+	{
+		if (state != states::PL_ATTACK && (attacking || attackCollider))
+		{
+			attacking = false;
+			App->colliders->deleteCollider(attackCollider);
+			attackCollider = nullptr;
 		}
 	}
 
@@ -307,7 +320,10 @@ void Thrall::OnCollision(Collider* yours, Collider* collideWith)
 				EnemyAttack* attack = (EnemyAttack*)collideWith;
 				int a = attack->damage;
 				if (state != states::PL_DASH && state != states::PL_SKILL)
+				{
 					SetDamage(attack->damage, true);
+					App->items->newEvent(ModuleItems::ItemEvent::PLAYER_HITTED);
+				}
 			}
 			
 			break;
@@ -344,6 +360,7 @@ void Thrall::OnCollision(Collider* yours, Collider* collideWith)
 					{
 						IncreaseEnergy(numStats.energyPercentbyHit);
 						App->audio->PlayFx(App->audio->Thrall_Hit_FX);
+						App->items->newEvent(ModuleItems::ItemEvent::PLAYER_HIT);
 					}
 				}	
 			break;
@@ -557,7 +574,7 @@ void Thrall::UpdateSkillCollider()
 {
 	if (anim == &skill)
 	{
-		if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 459,933,61,67 })))
+		if (SDL_RectEquals(&anim->GetCurrentRect(), &SDL_Rect({ 0,928,200,200 })))
 		{
 			skillCollider->rectArea = { -70 - 15, -70 - 15, 200,200 };
 		}

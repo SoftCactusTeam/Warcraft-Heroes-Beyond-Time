@@ -45,7 +45,9 @@ public:
 		FREEZEBALL_ITEM,
 		FEARBALL_ITEM,
 		SKILL,
-		DAMAGESHIT_ITEM
+		DAMAGESHIT_ITEM,
+		PROJECTILESLOWSHIT_ITEM,
+		ENEMYSLOWSHIT_ITEM
 
 	} pattacktype = P_Attack_Type::NO_TYPE;
 
@@ -98,12 +100,15 @@ public:
 	void deleteCollider(Collider* col);
 	void deleteColliderbyOwner(void* owner);
 
-	bool CheckIfCollides(Collider* col1, Collider* col2) const;
-	bool CollisionEnabled(Collider* col1, Collider* col2) const;
-	bool wereColliding(Collider* col1, Collider* col2) const;
+	
 	void PrintColliders() const;
 
 private:
+
+	bool AreNearEnough(Collider* col1, Collider* col2) const;
+	bool CheckIfCollides(Collider* col1, Collider* col2) const;
+	bool CollisionEnabled(Collider* col1, Collider* col2) const;
+	bool wereColliding(Collider* col1, Collider* col2) const;
 
 private:
 	std::list<std::shared_ptr<Collider*>> colliderList;
