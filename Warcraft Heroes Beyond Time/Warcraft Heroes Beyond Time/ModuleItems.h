@@ -16,7 +16,9 @@ public:
 	{
 		NO_EVENT,
 		UPDATE,
-		PLAYER_DIED
+		PLAYER_DIED,
+		PLAYER_HIT,
+		PLAYER_HITTED
 	};
 
 	ModuleItems()
@@ -51,6 +53,8 @@ public:
 		return availableItems.empty();
 	}
 
+	void newEvent(ItemEvent event);
+
 private:
 	void loadItemsPull();
 
@@ -63,6 +67,7 @@ public:
 	static float frozenBallChance;
 	static float slowShitSeconds;
 	static float slowShitPercent;
+	static float stealhp;
 
 private:
 	

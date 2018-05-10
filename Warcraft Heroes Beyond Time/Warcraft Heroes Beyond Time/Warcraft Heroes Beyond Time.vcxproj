@@ -154,6 +154,7 @@
     <ClCompile Include="Guldan.cpp" />
     <ClCompile Include="InputBox.cpp" />
     <ClCompile Include="ItemContainer.cpp" />
+    <ClCompile Include="LifeStealItem.cpp" />
     <ClCompile Include="ModuleEffects.cpp" />
     <ClCompile Include="ModuleItems.cpp" />
     <ClCompile Include="ModulePrinter.cpp" />
@@ -221,6 +222,7 @@
     <ClInclude Include="InputBox.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemContainer.h" />
+    <ClInclude Include="LifeStealItem.h" />
     <ClInclude Include="ModuleEffects.h" />
     <ClInclude Include="ModuleItems.h" />
     <ClInclude Include="ModulePrinter.h" />

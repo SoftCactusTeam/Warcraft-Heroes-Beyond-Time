@@ -181,6 +181,9 @@
     <ClCompile Include="RingItem.cpp">
       <Filter>Items</Filter>
     </ClCompile>
+    <ClCompile Include="LifeStealItem.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -381,6 +384,9 @@
       <Filter>Items</Filter>
     </ClInclude>
     <ClInclude Include="RingItem.h">
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="LifeStealItem.h">
       <Filter>Items</Filter>
     </ClInclude>
   </ItemGroup>
