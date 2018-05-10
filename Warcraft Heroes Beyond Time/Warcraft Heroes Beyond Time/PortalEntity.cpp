@@ -1,6 +1,7 @@
 #include "PortalEntity.h"
 #include "StaticEntity.h"
 #include "Application.h"
+#include "ModulePrinter.h"
 #include "Scene.h"
 #include "ModuleAudio.h"
 
@@ -18,6 +19,7 @@ PortalEntity::PortalEntity(fPoint coor, STATIC_ENTITY_TYPE type, SDL_Texture * t
 	portal.PushBack({ 148,50,48,48 });
 	portal.PushBack({ 198,50,48,48 });
 	portal.speedFactor = 20.0f;
+
 }
 
 bool PortalEntity::Start()
@@ -60,4 +62,13 @@ bool PortalEntity::PlayerNear(fPoint pos)
 		return true;
 	else
 		return false;
+}
+
+bool PortalEntity::Draw()
+{
+	bool ret = true;
+
+	ret = App->printer->PrintSprite(iPoint(pos.x, pos.y), texture, anim->GetCurrentFrame(), -1, ModulePrinter::Pivots::CUSTOM_PIVOT, anim->GetCurrentPivot());
+
+	return ret;
 }
