@@ -209,7 +209,16 @@ void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 		{
 			case PlayerAttack::P_Attack_Type::NORMAL_ATTACK:
 			case PlayerAttack::P_Attack_Type::SKILL:
-				initDash();
+			{
+				App->audio->PlayFx(App->audio->ArcherDamaged);
+				numStats.hp -= attack->damage;
+				if (numStats.hp <= 0)
+				{
+					if (state != ARCHER_STATE::ARCHER_DIE)
+						initDie();
+				}
+				break;
+			}
 			case PlayerAttack::P_Attack_Type::DMGBALL_ITEM:
 			{
 				App->audio->PlayFx(App->audio->ArcherDamaged);
