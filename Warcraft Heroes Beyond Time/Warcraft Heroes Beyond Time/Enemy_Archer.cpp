@@ -90,8 +90,7 @@ bool Enemy_Archer::Update(float dt)
 	}
 
 	UpdateEffects();
-
-	if (!GetConcreteEffect(ARCHER_EFFECT_FREEZE) && !GetConcreteEffect(ARCHER_EFFECT_FEAR))
+	if ((!GetConcreteEffect(ARCHER_EFFECT_FREEZE) && !GetConcreteEffect(ARCHER_EFFECT_FEAR)) || state == ARCHER_STATE::ARCHER_DIE)
 	switch (state)
 	{
 	case ARCHER_STATE::ARCHER_IDLE:
@@ -267,7 +266,10 @@ void Enemy_Archer::OnCollisionContinue(Collider* yours, Collider* collideWith)
 				numStats.hp -= attack->damage;
 				if (numStats.hp <= 0)
 					if (state != ARCHER_STATE::ARCHER_DIE)
+					{
+						cleanEffects();
 						initDie();
+					}
 			}
 		}
 	}
@@ -649,6 +651,9 @@ void Enemy_Archer::doFreeze(float dt)
 
 void Enemy_Archer::AddEffect(ARCHER_EFFECTS effect, int time)
 {
+	if (state == ARCHER_STATE::ARCHER_DIE)
+		return;
+
 	archerEffectStruct* aux = new archerEffectStruct();
 	aux->effect = effect;
 	aux->time = time + SDL_GetTicks();
@@ -703,10 +708,10 @@ void Enemy_Archer::AddEffect(ARCHER_EFFECTS effect, int time)
 			arrowsShooted = 0;
 			cooldownToReLittleMove = LITTLEMOVEMENT_COOLDOWN + SDL_GetTicks();
 		}
-		else
-		{
-			initBackJump();
-		}
+		//else
+		//{
+		//	initBackJump();
+		//}
 	}
 		break;
 	case ARCHER_EFFECT_NONE:
@@ -733,6 +738,8 @@ void Enemy_Archer::UpdateEffects()
 				break;
 			case ARCHER_EFFECT_FEAR:
 			{
+				if (state == ARCHER_STATE::ARCHER_DIE)
+					break;
 				if (pathVector.isEmpty())
 				{
 					int randomX = 0;
@@ -775,10 +782,10 @@ void Enemy_Archer::UpdateEffects()
 						arrowsShooted = 0;
 						cooldownToReLittleMove = LITTLEMOVEMENT_COOLDOWN + SDL_GetTicks();
 					}
-					else
-					{
-						initBackJump();
-					}
+					//else
+					//{
+					//	initBackJump();
+					//}
 				}
 				iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x + (anim->GetCurrentRect().w / 2), (int)pos.y + (anim->GetCurrentRect().h / 2)));
 				this->pos += fPoint((float)move.x * numStats.speed, (float)move.y * numStats.speed);
@@ -826,6 +833,16 @@ bool Enemy_Archer::GetConcreteEffect(ARCHER_EFFECTS effect)
 		if ((*it)->effect == effect)
 			return true;
 	return false;
+}
+
+void Enemy_Archer::cleanEffects()
+{
+	std::list<archerEffectStruct*>::iterator itDEL = effectsList.begin();
+	for (; itDEL != effectsList.end(); itDEL++)
+	{
+		effectsList.remove(*itDEL);
+		delete (*itDEL);
+	}
 }
 
 void Enemy_Archer::ShootArrow(fPoint objective, fPoint desviation)
