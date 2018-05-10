@@ -48,6 +48,8 @@ protected:
 	Collider* wallCol = nullptr;
 	Collider* damageCol = nullptr;
 
+public:
+
 	enum class states
 	{
 		PL_NON_STATE,
@@ -84,7 +86,7 @@ public:
 	void PlayerStates(float dt);
 	void KeyboardStates(float dt);
 	void JoyconStates(float dt);
-	bool getConcretePlayerStates(int stat);
+	bool GetConcretePlayerStates(int stat);
 	void CheckIddleStates();
 
 	void CheckMapLimits();

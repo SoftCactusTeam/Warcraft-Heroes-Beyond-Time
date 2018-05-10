@@ -96,7 +96,7 @@ void ArcherArrow::OnCollision(Collider* yours, Collider* collideWith)
 			{
 				PlayerEntity* plaOwner = (PlayerEntity*)collideWith->owner;
 				if (plaOwner->GetDamageCollider() == collideWith)
-					if (!plaOwner->getConcretePlayerStates(11))	// el num 11 es el dash, es una guarrada per mira ... no tinc temps ...
+					if (!plaOwner->GetConcretePlayerStates(11))	// el num 11 es el dash, es una guarrada per mira ... no tinc temps ...
 					// AIXO SI L'ALTRE ES UN PLAYER
 						deleteArrow = true;
 			}

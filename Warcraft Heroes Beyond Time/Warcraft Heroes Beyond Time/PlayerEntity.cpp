@@ -1117,7 +1117,7 @@ void PlayerEntity::JoyconStates(float dt)
 	}
 }
 
-bool PlayerEntity::getConcretePlayerStates(int stat)
+bool PlayerEntity::GetConcretePlayerStates(int stat)
 {
 	if (stat == (int)state)
 		return true;
