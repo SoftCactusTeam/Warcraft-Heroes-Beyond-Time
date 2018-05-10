@@ -1108,12 +1108,20 @@ void Guldan::OnCollision(Collider* yours, Collider* collideWith)
 		if (attack->pattacktype == PlayerAttack::P_Attack_Type::NORMAL_ATTACK)
 		{
 			if (anim != &teleport || anim != &inverseTeleport)
+			{
 				numStats.hp -= attack->damage;
+				if (numStats.hp <= 0.0f)
+					numStats.hp = 0.0f;
+			}
 		}
 		else if (attack->pattacktype == PlayerAttack::P_Attack_Type::DMGBALL_ITEM)
 		{
 			if (anim != &teleport || anim != &inverseTeleport)
+			{
 				numStats.hp -= attack->damage;
+				if (numStats.hp <= 0.0f)
+					numStats.hp = 0.0f;
+			}
 		}
 		break;
 	}	
@@ -1130,7 +1138,11 @@ void Guldan::OnCollisionContinue(Collider* yours, Collider* collideWith)
 		if (attack->pattacktype == PlayerAttack::P_Attack_Type::DAMAGESHIT_ITEM)
 		{
 			if (anim != &teleport || anim != &inverseTeleport)
+			{
 				numStats.hp -= attack->damage;
+				if (numStats.hp <= 0.0f)
+					numStats.hp = 0.0f;
+			}
 		}
 
 		break;
