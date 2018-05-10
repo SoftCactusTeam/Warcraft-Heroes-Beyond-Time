@@ -109,8 +109,9 @@ void PlayerEntity::PlayerStates(float dt)
 		else
 			JoyconStates(dt);
 
-		CheckMapLimits();
+		//CheckMapLimits();
 		CheckCulling();
+
 		if (drawFZ)
 			App->printer->PrintQuad(freeZone, { 255, 0, 0, 50 }, true, true);
 	}
@@ -814,6 +815,10 @@ void PlayerEntity::JoyconStates(float dt)
 
 	case states::PL_DASH:
 	{
+		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_X) == KEY_DOWN)
+		{
+			attackWhileDash = true;
+		}
 		if (t <= 1.0f && t >= 0.0f)
 		{
 			if (animBefore == &idleRight)
@@ -887,7 +892,38 @@ void PlayerEntity::JoyconStates(float dt)
 		}
 		else
 		{
-			if (App->input->InsideDeadZone())
+			if (attackWhileDash)
+			{
+				state = states::PL_ATTACK;
+				attackWhileDash = false;
+
+				if (anim == &dashRight)
+					animBefore = &idleRight;
+				else if (anim == &dashDown)
+					animBefore = &idleDown;
+				else if (anim == &dashUpRight)
+					animBefore = &idleUpRight;
+				else if (anim == &dashDownLeft)
+					animBefore = &idleDownLeft;
+				else if (anim == &dashDownRight)
+					animBefore = &idleDownRight;
+				else if (anim == &dashUpRight)
+					animBefore = &idleUpRight;
+				else if (anim == &dashLeft)
+					animBefore = &idleLeft;
+				else if (anim == &dashUpLeft)
+					animBefore = &idleUpLeft;
+				else if (anim == &dashUp)
+					animBefore = &idleUp;
+				
+				
+				Attack();
+				DashCD = DashConfigCD;
+				t = 0.0f;
+				break;
+
+			}
+			else if (App->input->InsideDeadZone())
 			{
 				state = states::PL_IDLE;
 
@@ -1117,7 +1153,7 @@ void PlayerEntity::JoyconStates(float dt)
 	}
 }
 
-bool PlayerEntity::getConcretePlayerStates(int stat)
+bool PlayerEntity::GetConcretePlayerStates(int stat)
 {
 	if (stat == (int)state)
 		return true;

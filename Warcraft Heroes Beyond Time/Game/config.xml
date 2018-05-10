@@ -11,7 +11,7 @@
     <lvl> <!-- First level -->
       <sizeGrid x ="50" y ="50"/>
       <sizeDungeon iterations ="100"/>
-      <archers quantity ="5">     
+      <archers quantity ="3">     
         <tier3 percentage="100"/>
         <tier2 percentage="0"/>
         <tier1 percentage="0"/>
@@ -20,7 +20,7 @@
     <lvl> <!-- Second level -->
       <sizeGrid x ="100" y ="100"/>
       <sizeDungeon iterations ="200"/>
-      <archers quantity ="10">
+      <archers quantity ="6">
         <tier3 percentage="90"/>
         <tier2 percentage="10"/>
         <tier1 percentage="0"/>
@@ -29,7 +29,7 @@
     <lvl> <!-- Third level -->
       <sizeGrid x ="150" y ="150"/>
       <sizeDungeon iterations ="300"/>
-      <archers quantity ="15">
+      <archers quantity ="8">
         <tier3 percentage="70"/>
         <tier2 percentage="20"/>
         <tier1 percentage="10"/>
@@ -38,7 +38,7 @@
     <lvl> <!-- Forth level -->
       <sizeGrid x ="200" y ="200"/>
       <sizeDungeon iterations ="400"/>
-      <archers quantity ="20">
+      <archers quantity ="10">
         <tier3 percentage="60"/>
         <tier2 percentage="20"/>
         <tier1 percentage="20"/>
@@ -47,10 +47,10 @@
     <lvl> <!-- Fifth level -->
       <sizeGrid x ="250" y ="250"/>
       <sizeDungeon iterations ="500"/>
-      <archers quantity ="25">
-        <tier3 percentage="40"/>
+      <archers quantity ="10">
+        <tier3 percentage="30"/>
         <tier2 percentage="30"/>
-        <tier1 percentage="30"/>
+        <tier1 percentage="40"/>
       </archers>
     </lvl> 
   </map>
@@ -93,7 +93,7 @@
     <slowShit time_slowed = "7" slow_percent = "80"/>
     <dmgShit damage_by_dt = "1"/>
     <StealLife amount="5"/>
-    <Lexro EnergyWhenHitted="1"/>
+    <Lexro EnergyWhenHitted="4"/>
   </items>
   
   

@@ -249,7 +249,6 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture, EntitySystem
 
 bool Thrall::Update(float dt)
 {
-
 	PlayerStates(dt);
 
 	float percentage = 1.0f;

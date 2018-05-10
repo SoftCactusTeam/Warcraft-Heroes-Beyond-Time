@@ -81,7 +81,7 @@ public:
 	void AddEffect(ARCHER_EFFECTS effect, int time);
 	void UpdateEffects();
 	bool GetConcreteEffect(ARCHER_EFFECTS effect);
-
+	void cleanEffects();
 	// ~~~~~~~~~~~~~~~~~~ STATE MACHINE
 
 	void LoadAnimations();
