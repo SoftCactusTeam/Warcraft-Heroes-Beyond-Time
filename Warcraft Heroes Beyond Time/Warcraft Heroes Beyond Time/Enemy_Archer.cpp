@@ -239,10 +239,12 @@ void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 				if (numStats.hp <= 0)
 					if (state != ARCHER_STATE::ARCHER_DIE)
 						initDie();
-
-				// aixo sera la caca ralentitzadora
+			}
+			case PlayerAttack::P_Attack_Type::ENEMYSLOWSHIT_ITEM:
+			{
 				numStats.speed = 1;
 			}
+			break;
 		}
 
 		if (attack->damage > 0)
@@ -279,7 +281,7 @@ void Enemy_Archer::OnCollisionLeave(Collider* yours, Collider* collideWith)
 
 		switch (attack->pattacktype)
 		{
-		case PlayerAttack::P_Attack_Type::DAMAGESHIT_ITEM:
+		case PlayerAttack::P_Attack_Type::ENEMYSLOWSHIT_ITEM:
 		{
 			numStats.speed = originalSpeed;
 		}

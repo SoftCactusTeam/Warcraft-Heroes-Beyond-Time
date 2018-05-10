@@ -92,7 +92,7 @@
     <frozenBall seconds_frozen = "1"/>
     <slowShit time_slowed = "7" slow_percent = "80"/>
     <dmgShit damage_by_dt = "1"/>
-    <StealLife amount="10"/>
+    <StealLife amount="5"/>
     <Lexro EnergyWhenHitted="1"/>
   </items>
   
