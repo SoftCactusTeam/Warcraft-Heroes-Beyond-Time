@@ -202,7 +202,7 @@ void PlayerEntity::KeyboardStates(float dt)
 					pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
 
 					anim = &dashRight;
-					float x = 0.05f / dt;
+					float x = 0.1f / dt;
 					t += (x * dt);
 				}
 				else if (animBefore == &idleLeft || animBefore == &left)
@@ -210,7 +210,7 @@ void PlayerEntity::KeyboardStates(float dt)
 					pos.x = startPos.x - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
 
 					anim = &dashLeft;
-					float x = 0.05f / dt;
+					float x = 0.1f / dt;
 					t += (x * dt);
 				}
 				else if (animBefore == &idleUp || animBefore == &up)
@@ -218,7 +218,7 @@ void PlayerEntity::KeyboardStates(float dt)
 					pos.y = startPos.y - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
 
 					anim = &dashUp;
-					float x = 0.05f / dt;
+					float x = 0.1f / dt;
 					t += (x * dt);
 				}
 				else if (animBefore == &idleDown || animBefore == &down)
@@ -226,7 +226,7 @@ void PlayerEntity::KeyboardStates(float dt)
 					pos.y = startPos.y + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
 
 					anim = &dashDown;
-					float x = 0.05f / dt;
+					float x = 0.1f / dt;
 					t += (x * dt);
 				}
 				else if (animBefore == &idleUpRight || animBefore == &upRight)
@@ -237,7 +237,7 @@ void PlayerEntity::KeyboardStates(float dt)
 					pos.y = startPos.y - dashDistance * 0.75f * bezierPoint.y;
 
 					anim = &dashUpRight;
-					float x = 0.05f / dt;
+					float x = 0.1f / dt;
 					t += (x * dt);
 				}
 				else if (animBefore == &idleDownRight || animBefore == &downRight)
@@ -248,7 +248,7 @@ void PlayerEntity::KeyboardStates(float dt)
 					pos.y = startPos.y + dashDistance * 0.75f * bezierPoint.y;
 
 					anim = &dashDownRight;
-					float x = 0.05f / dt;
+					float x = 0.1f / dt;
 					t += (x * dt);
 				}
 				else if (animBefore == &idleDownLeft || animBefore == &downLeft)
@@ -259,7 +259,7 @@ void PlayerEntity::KeyboardStates(float dt)
 					pos.y = startPos.y + dashDistance * 0.75f * bezierPoint.y;
 
 					anim = &dashDownLeft;
-					float x = 0.05f / dt;
+					float x = 0.1f / dt;
 					t += (x * dt);
 				}
 				else if (animBefore == &idleUpLeft || animBefore == &upLeft)
@@ -270,7 +270,7 @@ void PlayerEntity::KeyboardStates(float dt)
 					pos.y = startPos.y - dashDistance * 0.75f * bezierPoint.y;
 
 					anim = &dashUpLeft;
-					float x = 0.05f / dt;
+					float x = 0.1f / dt;
 					t += (x * dt);
 				}
 			}
@@ -881,7 +881,7 @@ void PlayerEntity::JoyconStates(float dt)
 				anim = GetAnimFromAngle(angle, true);
 			}
 
-			float x = 0.05f / dt;
+			float x = 0.1f / dt;
 			t += (x * dt);
 
 		}
