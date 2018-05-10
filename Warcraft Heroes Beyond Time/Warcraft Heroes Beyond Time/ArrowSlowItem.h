@@ -16,8 +16,7 @@ public:
 	~Arrow_Slow_Shit();
 	iPoint pos;
 private:
-	Collider * arrow_slow_collider;
-
+	Collider* arrow_slow_collider;
 };
 
 class ArrowSlowItem :

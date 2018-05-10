@@ -100,6 +100,9 @@ void ModuleItems::loadItemsPull()
 
 	FEARBallItem* Fearball_Item = new FEARBallItem();
 	availableItems.push_back(Fearball_Item);
+
+	ArrowSlowItem* projectileslowitem = new ArrowSlowItem();
+	availableItems.push_back(projectileslowitem);
 }
 
 bool ModuleItems::equipItem(Item* item)
