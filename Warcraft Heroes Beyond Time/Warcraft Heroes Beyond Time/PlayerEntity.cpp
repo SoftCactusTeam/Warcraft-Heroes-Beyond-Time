@@ -13,6 +13,7 @@
 #include "ModuleItems.h"
 #include "GUIWindow.h"
 #include "GUIImage.h"
+#include "ModuleTransitions.h"
 
 PlayerEntity::PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : DynamicEntity(coor, texture, DynamicType::PLAYER), type(type)
 {
@@ -101,7 +102,7 @@ void PlayerEntity::ResetDash()
 
 void PlayerEntity::PlayerStates(float dt)
 {
-	if (move)
+	if (move && !App->transitions->IsFading())
 	{
 		if (App->input->IsKeyboardAvailable())
 			KeyboardStates(dt);
@@ -113,7 +114,7 @@ void PlayerEntity::PlayerStates(float dt)
 		if (drawFZ)
 			App->printer->PrintQuad(freeZone, { 255, 0, 0, 50 }, true, true);
 	}
-	else
+	else if(!App->transitions->IsFading())
 	{
 		CheckIddleStates();
 		if (drawFZ)

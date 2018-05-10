@@ -251,6 +251,7 @@ bool Scene::Update(float dt)
 			{
 				App->audio->PauseFX();
 				paused = true;
+				player->Walk(false);
 				currentPercentAudio = App->audio->MusicVolumePercent;
 				uint tmpAudio = (uint)(currentPercentAudio * 0.3f);
 				if (tmpAudio == 0)
@@ -263,6 +264,7 @@ bool Scene::Update(float dt)
 			{
 				App->audio->ResumeFX();
 				paused = false;
+				player->Walk(true);
 				// Decreasing audio when pause game
 				App->audio->setMusicVolume(currentPercentAudio);
 				App->gui->DestroyElem(PauseMenu);
@@ -423,6 +425,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 							if (!App->transitions->IsFading())
 							{
 								paused = false;
+								player->Walk(true);
 								App->audio->ResumeFX();
 								App->gui->DestroyElem(PauseMenu);
 								App->audio->setMusicVolume(currentPercentAudio);

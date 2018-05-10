@@ -15,6 +15,12 @@
 #include "PlayerEntity.h"
 #include "StaticEntity.h"
 
+
+
+
+static const float MINIMAL_DISTANCE_TO_COLLIDE = 60;
+
+
 class ConsoleColliders : public ConsoleOrder
 {
 	std::string orderName() { return "colliders"; }
@@ -58,7 +64,7 @@ bool ModuleColliders::Update(float dt)
 		for (col2 = colliderList.begin(); col2 != colliderList.end(); ++col2)
 		{
 			Collider* collider2 = **col2;
-			if (collider1 == collider2 || !CollisionEnabled(collider1, collider2))
+			if (collider1 == collider2 || !CollisionEnabled(collider1, collider2) || !AreNearEnough(collider1, collider2))
 				continue;
 
 			if (CheckIfCollides(collider1, collider2))			//If collides
@@ -290,6 +296,64 @@ bool ModuleColliders::CheckIfCollides(Collider* col1, Collider* col2) const
 			rect1.y < rect2.y + rect2.h && rect1.y + rect1.h > rect2.y);
 
 }
+
+bool ModuleColliders::AreNearEnough(Collider* col1, Collider* col2) const
+{
+	bool ret = false;
+
+	iPoint pos1 = { col1->rectArea.x, col1->rectArea.y };
+
+	if (col1->owner != nullptr)
+	{
+		switch (col1->colType)
+		{
+			case Collider::ColliderType::ENEMY_ATTACK:
+			{
+				Projectile* owner = (Projectile*)col1->owner;
+				float x, y;
+				owner->getPos(x, y);
+				pos1.x += x;
+				pos1.y += y;
+				break;
+			}
+			default:
+			{
+				Entity* owner = (Entity*)col1->owner;
+				pos1.x += owner->pos.x;
+				pos1.y += owner->pos.y;
+				break;
+			}
+		}
+	}
+
+	iPoint pos2 = { col2->rectArea.x, col2->rectArea.y };
+	if (col2->owner != nullptr)
+	{
+		switch (col2->colType)
+		{
+			case Collider::ColliderType::ENEMY_ATTACK:
+			{
+				Projectile* owner = (Projectile*)col2->owner;
+				float x, y;
+				owner->getPos(x, y);
+				pos2.x += x;
+				pos2.y += y;
+				break;
+			}
+			default:
+			{
+				Entity* owner = (Entity*)col2->owner;
+				pos2.x += owner->pos.x;
+				pos2.y += owner->pos.y;
+				break;
+			}
+		}
+	}
+
+
+	return sqrt(pow(pos2.x - pos1.x, 2) + pow(pos2.y - pos1.y, 2)) <= MINIMAL_DISTANCE_TO_COLLIDE;
+}
+
 
 bool ModuleColliders::CollisionEnabled(Collider* col1, Collider* col2) const 
 {
