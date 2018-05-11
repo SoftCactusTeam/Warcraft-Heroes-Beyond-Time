@@ -6,8 +6,7 @@
 #define HOLY_SHIT_ICON {67,117,32,28}
 
 
-class HolyShitItem :
-	public Item
+class HolyShitItem : public Item
 {
 public:
 	HolyShitItem();
@@ -17,6 +16,9 @@ public:
 	bool Act(ModuleItems::ItemEvent event, float dt = App->dt);
 	bool Draw();
 	bool printIconOnScreen(iPoint pos);
+
+private:
+	SDL_Texture* text = nullptr;
 };
 
 

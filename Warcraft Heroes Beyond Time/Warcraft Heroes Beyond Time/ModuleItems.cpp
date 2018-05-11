@@ -23,6 +23,8 @@ float ModuleItems::slowShitSeconds = 0.0f;
 float ModuleItems::dmgShitDamage = 0.0f;
 float ModuleItems::stealhp = 0.0f;
 float ModuleItems::energywhenHitted = 0.0f;
+float ModuleItems::HolyShitExtraDamage = 0.0f;
+float ModuleItems::HolyShitExtraHP = 0.0f;
 
 bool ModuleItems::Awake(pugi::xml_node& itemsNode)
 {
@@ -36,6 +38,9 @@ bool ModuleItems::Awake(pugi::xml_node& itemsNode)
 	dmgShitDamage = itemsNode.child("dmgShit").attribute("damage_by_dt").as_float();
 	stealhp = itemsNode.child("StealLife").attribute("amount").as_float();
 	energywhenHitted = itemsNode.child("Lexro").attribute("EnergyWhenHitted").as_uint();
+	HolyShitExtraDamage = itemsNode.child("HolyShit").attribute("extraDamage").as_float();
+	HolyShitExtraHP = itemsNode.child("HolyShit").attribute("extraHP").as_float();
+
 
 	return true;
 }
