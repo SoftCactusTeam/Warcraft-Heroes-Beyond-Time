@@ -71,6 +71,8 @@ public:
 	static float slowShitPercent;
 	static float stealhp;
 	static float energywhenHitted;
+	static float HolyShitExtraHP;
+	static float HolyShitExtraDamage;
 
 private:
 
