@@ -45,8 +45,8 @@
       </archers>
     </lvl>
     <lvl> <!-- Fifth level -->
-      <sizeGrid x ="250" y ="250"/>
-      <sizeDungeon iterations ="500"/>
+      <sizeGrid x ="200" y ="200"/>
+      <sizeDungeon iterations ="400"/>
       <archers quantity ="10">
         <tier3 percentage="30"/>
         <tier2 percentage="30"/>
@@ -73,10 +73,10 @@
 
   <entitySystem>
     <enemies>
-      <archer_tier1  speed ="4" damage = "50" hp = "200" arrows_speed= "10" arrows_life = "2500" time_between_attacks = "100" time_stunned_after_attack=".5" chance_powerful_attack="50"  vision_range = "250" attack_range ="90" minimal_distance_with_player="250" dropping_chance ="10" pre_attac ="500" tiles_to_littlemove ="4" distance_to_scape ="50" attacCone_probability="0" attacFast_probability="0" timeStunedAfterHit="300" velocityDashHit="500" timingDashHit="50"/>
-      <archer_tier2  speed ="2" damage = "40" hp = "150" arrows_speed= "5" arrows_life = "2500" time_between_attacks = "100" time_stunned_after_attack=".5" chance_powerful_attack="0"   vision_range = "250" attack_range ="200" minimal_distance_with_player="0" dropping_chance ="10"  pre_attac ="300" tiles_to_littlemove ="4" distance_to_scape ="50" attacCone_probability="0" attacFast_probability="0" timeStunedAfterHit="300" velocityDashHit="500" timingDashHit="50"/>
-      <archer_tier3  speed ="2" damage = "30" hp = "100" arrows_speed= "10" arrows_life = "2500" time_between_attacks = "10" time_stunned_after_attack=".5" chance_powerful_attack="0"   vision_range = "250" attack_range ="90" minimal_distance_with_player="500" dropping_chance ="10"  pre_attac ="500" tiles_to_littlemove ="4" distance_to_scape ="50" attacCone_probability="0" attacFast_probability="0" timeStunedAfterHit="300" velocityDashHit="500" timingDashHit="50"/>
-      <archer_tier4  speed ="4" damage = "20" hp = "100" arrows_speed= "1" arrows_life = "2500" time_between_attacks = "10" time_stunned_after_attack=".5" chance_powerful_attack="0"   vision_range = "250" attack_range ="90" minimal_distance_with_player="500" dropping_chance ="10"  pre_attac ="500" tiles_to_littlemove ="4" distance_to_scape ="50" attacCone_probability="0" attacFast_probability="0" timeStunedAfterHit="300" velocityDashHit="500" timingDashHit="50"/>
+      <archer_tier1  speed ="4" damage = "50" hp = "100" arrows_speed= "10" arrows_life = "2500" time_between_attacks = "100" time_stunned_after_attack=".5" chance_powerful_attack="50"  vision_range = "250" attack_range ="90" minimal_distance_with_player="250" dropping_chance ="10" pre_attac ="500" tiles_to_littlemove ="4" distance_to_scape ="50" attacCone_probability="0" attacFast_probability="0" timeStunedAfterHit="300" velocityDashHit="500" timingDashHit="50"/>
+      <archer_tier2  speed ="2" damage = "40" hp = "150" arrows_speed= "5" arrows_life = "2500" time_between_attacks = "100" time_stunned_after_attack=".5" chance_powerful_attack="0"   vision_range = "250" attack_range ="200" minimal_distance_with_player="20" dropping_chance ="10"  pre_attac ="300" tiles_to_littlemove ="4" distance_to_scape ="50" attacCone_probability="0" attacFast_probability="0" timeStunedAfterHit="300" velocityDashHit="500" timingDashHit="50"/>
+      <archer_tier3  speed ="2" damage = "30" hp = "150" arrows_speed= "10" arrows_life = "2500" time_between_attacks = "100" time_stunned_after_attack=".5" chance_powerful_attack="0"   vision_range = "250" attack_range ="90" minimal_distance_with_player="300" dropping_chance ="10"  pre_attac ="500" tiles_to_littlemove ="4" distance_to_scape ="50" attacCone_probability="0" attacFast_probability="0" timeStunedAfterHit="300" velocityDashHit="500" timingDashHit="50"/>
+      <archer_tier4  speed ="4" damage = "20" hp = "100" arrows_speed= "7" arrows_life = "2500" time_between_attacks = "10" time_stunned_after_attack=".5" chance_powerful_attack="0"   vision_range = "250" attack_range ="90" minimal_distance_with_player="500" dropping_chance ="10"  pre_attac ="500" tiles_to_littlemove ="4" distance_to_scape ="50" attacCone_probability="0" attacFast_probability="0" timeStunedAfterHit="300" velocityDashHit="500" timingDashHit="50"/>
     </enemies>
 
     <players>
@@ -87,14 +87,14 @@
   </entitySystem>
 
   <items>
-    <dmgBall damage = "5f"/>
+    <dmgBall damage = "50f"/>
     <fearBall seconds_fear = "2"/>
-    <frozenBall seconds_frozen = "1"/>
+    <frozenBall seconds_frozen = "2"/>
     <slowShit time_slowed = "7" slow_percent = "80"/>
-    <dmgShit damage_by_dt = "1"/>
-    <StealLife amount="5"/>
-    <Lexro EnergyWhenHitted="4"/>
-    <HolyShit extraDamage="10" extraHP ="100"/>
+    <dmgShit damage_by_dt = "2"/>
+    <StealLife amount="10"/>
+    <Lexro EnergyWhenHitted="10"/>
+    <HolyShit extraDamage="20" extraHP ="200"/>
   </items>
   
   
