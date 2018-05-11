@@ -608,9 +608,9 @@ void Scene::CreateItemSelectionScreen(Item* item1, Item* item2, Item* item3)
 	ItemSelection->blackBackground = true;
 	ItemSelection->vertical = false;
 
-	App->gui->CreateItemContainer({ 30+85,50+121 }, item1, ItemSelection);
-	App->gui->CreateItemContainer({ 230+85,50+121 }, item2, ItemSelection);
-	App->gui->CreateItemContainer({ 430+85,50+121 }, item3, ItemSelection);
+	App->gui->CreateItemContainer({ 30+85,50+121 }, item1, ItemSelection, this);
+	App->gui->CreateItemContainer({ 230+85,50+121 }, item2, ItemSelection, this);
+	App->gui->CreateItemContainer({ 430+85,50+121 }, item3, ItemSelection, this);
 	//App->gui->CreateItemContainer({})
 }
 

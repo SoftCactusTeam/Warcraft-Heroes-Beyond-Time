@@ -18,6 +18,7 @@ public:
 	bool Update(float dt);
 	bool Draw();
 	bool HandleInput(float dt);
+	bool MouseHover() const;
 
 	void Focus()
 	{

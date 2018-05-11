@@ -41,7 +41,7 @@ bool ItemContainer::Update(float dt)
 	{
 		if (anim == &grow_anim && anim->Finished())
 			anim = &focused_anim;
-		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_DOWN && item != nullptr)
+		if ((App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_DOWN || App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && item != nullptr)
 		{
 			if (!selected)
 				selected = true;
@@ -61,6 +61,24 @@ bool ItemContainer::Update(float dt)
 		selected = false;
 
 	return true;
+}
+
+bool ItemContainer::MouseHover() const
+{
+	int x, y;
+	App->input->GetMousePosition(x, y);
+
+	bool result = false;
+
+	//if collides
+	if (!(x < screenPos.x-171/2 ||
+		x > screenPos.x + 171/2 ||
+		y < screenPos.y-242/2 ||
+		y > screenPos.y + 242/2))
+	{
+		result = true;
+	}
+	return result;
 }
 
 bool ItemContainer::HandleInput(float dt)
