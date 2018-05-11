@@ -216,6 +216,10 @@ void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 					if (state != ARCHER_STATE::ARCHER_DIE)
 						initDie();
 				}
+				else
+				{
+					initDash();
+				}
 				break;
 			}
 			case PlayerAttack::P_Attack_Type::DMGBALL_ITEM:
