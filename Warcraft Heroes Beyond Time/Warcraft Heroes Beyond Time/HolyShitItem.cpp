@@ -36,8 +36,8 @@ bool HolyShitItem::Draw()
 {
 	if (text != nullptr)
 		SDL_DestroyTexture(text);
-	text = App->transitions->GetTexturebyRadius({ (int)App->scene->player->pos.x + 10 + App->render->camera.x,(int)App->scene->player->pos.y + 10 + App->render->camera.y },100, 640,360);
-	App->printer->PrintSprite({ 0 - App->render->camera.x, 0 - App->render->camera.y}, text, {0,0,640,360}, 10);
+	text = App->transitions->GetTexturebyRadius({ (int)App->scene->player->pos.x + 10 + 20 + App->render->camera.x,(int)App->scene->player->pos.y + 10 + 20 + App->render->camera.y },100, 680,400);
+	App->printer->PrintSprite({ -20 - App->render->camera.x, -20 - App->render->camera.y}, text, {0,0,680,400}, 10);
 	return true;
 }
 
