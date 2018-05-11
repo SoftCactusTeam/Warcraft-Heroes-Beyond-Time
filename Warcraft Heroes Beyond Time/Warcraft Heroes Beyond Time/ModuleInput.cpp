@@ -212,6 +212,7 @@ bool Input::PreUpdate()
 				jButtons[event.cbutton.button] = KEY_UP;
 
 		case SDL_TEXTINPUT:
+			kbAvailable = true;
 			inputText = event.text.text;
 			textReady = true;
 			break;
