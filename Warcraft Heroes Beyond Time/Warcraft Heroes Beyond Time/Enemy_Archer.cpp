@@ -235,8 +235,8 @@ void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 			}
 			case PlayerAttack::P_Attack_Type::FREEZEBALL_ITEM:
 			{
-				if (App->entities->GetRandomNumber(10) < 5 && !GetConcreteEffect(ARCHER_EFFECT_FREEZE))	// superar tirada 50%
-					AddEffect(ARCHER_EFFECTS::ARCHER_EFFECT_FREEZE, 2000);
+				if (App->entities->GetRandomNumber(100) < ModuleItems::frozenBallChance && !GetConcreteEffect(ARCHER_EFFECT_FREEZE))	// superar tirada X%
+					AddEffect(ARCHER_EFFECTS::ARCHER_EFFECT_FREEZE, ModuleItems::frozenBallSeconds*1000);
 				break;
 			}
 			case PlayerAttack::P_Attack_Type::FEARBALL_ITEM:
