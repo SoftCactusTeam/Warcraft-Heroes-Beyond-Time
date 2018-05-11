@@ -81,6 +81,14 @@ bool ItemContainer::MouseHover() const
 	return result;
 }
 
+bool ItemContainer::AreYouPicking()
+{
+	if (anim == &select_anim)
+		return true;
+	else
+		return false;
+}
+
 bool ItemContainer::HandleInput(float dt)
 {
 	bool ret = true;

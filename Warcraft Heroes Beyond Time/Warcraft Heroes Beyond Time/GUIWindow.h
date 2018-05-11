@@ -31,6 +31,7 @@ private:
 	void FocusPrevChild();
 	bool checkVerticalInputs(float dt);
 	bool checkHorizontalInputs(float dt);
+	GUIElem* getTheFocused()const;
 
 private:
 	SDL_Rect background;

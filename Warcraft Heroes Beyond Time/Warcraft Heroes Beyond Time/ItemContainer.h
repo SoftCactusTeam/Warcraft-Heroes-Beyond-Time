@@ -19,6 +19,8 @@ public:
 	bool Draw();
 	bool HandleInput(float dt);
 	bool MouseHover() const;
+	bool AreYouPicking() override;
+
 
 	void Focus()
 	{
