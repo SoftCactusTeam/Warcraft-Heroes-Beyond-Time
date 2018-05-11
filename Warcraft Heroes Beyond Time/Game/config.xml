@@ -106,7 +106,7 @@
   </input>
 
   <renderer>
-    <vsync active = "true"/>
+    <vsync active = "false"/>
   </renderer>
 
   <textures>
@@ -119,7 +119,7 @@
     <fullscreen active = "false"/>
     <borderless active = "false"/>
     <resizable active = "true"/>
-    <fullscreen_window active = "true"/>
+    <fullscreen_window active = "false"/>
   </window>
 
 </Game> 

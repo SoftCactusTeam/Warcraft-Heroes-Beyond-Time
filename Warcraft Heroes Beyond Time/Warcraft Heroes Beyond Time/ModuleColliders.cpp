@@ -18,7 +18,7 @@
 
 
 
-static const float MINIMAL_DISTANCE_TO_COLLIDE = 60;
+static const float MINIMAL_DISTANCE_TO_COLLIDE = 200;
 
 
 class ConsoleColliders : public ConsoleOrder
