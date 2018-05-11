@@ -187,6 +187,9 @@
     <ClCompile Include="EnergyItem.cpp">
       <Filter>Items</Filter>
     </ClCompile>
+    <ClCompile Include="HolyShitItem.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -393,6 +396,9 @@
       <Filter>Items</Filter>
     </ClInclude>
     <ClInclude Include="EnergyItem.h">
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="HolyShitItem.h">
       <Filter>Items</Filter>
     </ClInclude>
   </ItemGroup>
