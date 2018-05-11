@@ -574,7 +574,7 @@ void Scene::GeneratePortal()
 {
 	if (portal == nullptr && App->entities->spritesheetsEntities.size() > 0)
 	{
-		iPoint position = App->map->GetRandomValidPointProxy(20, 5);
+		iPoint position = App->map->GetRandomValidPointProxyForThisPos(5, 2, { (int)player->pos.x, (int)player->pos.y });
 		portal = (PortalEntity*)App->entities->AddStaticEntity({ (float)position.x * 46, (float)position.y * 46 }, PORTAL);
 	}
 }

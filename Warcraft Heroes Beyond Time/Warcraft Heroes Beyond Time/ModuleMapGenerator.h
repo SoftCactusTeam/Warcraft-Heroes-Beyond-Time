@@ -67,6 +67,7 @@ public:
 	bool CleanUp();
 	iPoint GetRandomValidPoint();
 	iPoint GetRandomValidPointProxy(int distance, int proxyDistance);
+	iPoint GetRandomValidPointProxyForThisPos(int distance, int proxyDistance, iPoint pos);
 	iPoint GetRandomBossPoint();
 
 
