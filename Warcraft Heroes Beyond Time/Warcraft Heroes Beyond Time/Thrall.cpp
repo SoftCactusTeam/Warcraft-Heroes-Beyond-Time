@@ -118,28 +118,28 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture, EntitySystem
 
 	// ------- Dash animations -------
 
-	dashUp.PushBack({ 206,298,43,41 }, { 0,1 });
+	dashUp.PushBack({ 12,1724,37,45 }, { 0,1 });
 	dashUp.speed = 0.2f;
 
-	dashUpRight.PushBack({ 558,301,47,41 }, { 5,1 });
+	dashUpRight.PushBack({ 53,1723,51,45 }, { 5,1 });
 	dashUpRight.speed = 0.2f;
 
-	dashRight.PushBack({ 207,372,40,44 }, { 6, 0 });
+	dashRight.PushBack({ 106,1724,51,45 }, { 6, 0 });
 	dashRight.speed = 0.2f;
 
-	dashDownRight.PushBack({ 561,371,36,40 }, { 8, 0 });
+	dashDownRight.PushBack({ 161,1725,36,45 }, { 8, 0 });
 	dashDownRight.speed = 0.2f;
 
-	dashDown.PushBack({ 193,447,48,39 }, { 16,2 });
+	dashDown.PushBack({ 208,1725,41,45 }, { 16,2 });
 	dashDown.speed = 0.2f;
 
-	dashDownLeft.PushBack({ 555,446,41,33 }, { 10, 2 });
+	dashDownLeft.PushBack({ 250,1725,48,45 }, { 10, 2 });
 	dashDownRight.speed = 0.2f;
 
-	dashLeft.PushBack({ 198,512,40,36 }, { 10,0 });
+	dashLeft.PushBack({ 300,1730,46,40 }, { 10,0 });
 	dashLeft.speed = 0.2f;
 
-	dashUpLeft.PushBack({ 557,513,49,36 }, { 9,0 });
+	dashUpLeft.PushBack({ 348,1730,35,40 }, { 9,0 });
 	dashUpLeft.speed = 0.2f;
 
 	// ---- attack animation ----
