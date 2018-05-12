@@ -318,7 +318,12 @@ bool Scene::PostUpdate()
 bool Scene::CleanUp()
 {
 	if (player)
+	{
 		playerStats = player->numStats;
+		uint quantityToHeal = (playerStats.maxhp - playerStats.hp) * playerStats.hpRecover / 100;
+		playerStats.hp = playerStats.hp + quantityToHeal > playerStats.maxhp ? playerStats.maxhp : playerStats.hp + quantityToHeal;
+	}
+		
 
 	App->gui->DeActivate();
 	App->map->DeActivate();
