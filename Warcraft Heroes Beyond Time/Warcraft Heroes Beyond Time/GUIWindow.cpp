@@ -230,6 +230,8 @@ bool GUIWindow::checkVerticalInputs(float dt)
 
 bool GUIWindow::checkHorizontalInputs(float dt)
 {
+	GUIElem* elemfocused = getTheFocused();
+
 	if (App->input->GetAxis((int)Axis::RIGHT) == KeyState::KEY_DOWN || App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_DOWN)
 	{
 		if (!AnyChildFocused())
@@ -237,13 +239,13 @@ bool GUIWindow::checkHorizontalInputs(float dt)
 			childs.front()->Focus();
 		}
 
-		else if (App->input->GetAxis((int)Axis::RIGHT) == KeyState::KEY_DOWN && !getTheFocused()->AreYouPicking())
+		else if (App->input->GetAxis((int)Axis::RIGHT) == KeyState::KEY_DOWN && !elemfocused->AreYouPicking())
 		{
 			FocusNextChild();
 		}
 	}
 
-	else if (App->input->GetAxis((int)Axis::RIGHT) == KeyState::KEY_REPEAT && !getTheFocused()->AreYouPicking())
+	else if (App->input->GetAxis((int)Axis::RIGHT) == KeyState::KEY_REPEAT && elemfocused && !elemfocused->AreYouPicking())
 	{
 		counter += dt;
 		if (counter > 0.4)
@@ -270,7 +272,7 @@ bool GUIWindow::checkHorizontalInputs(float dt)
 		}
 	}
 
-	else if (App->input->GetAxis((int)Axis::LEFT) == KeyState::KEY_REPEAT && !getTheFocused()->AreYouPicking())
+	else if (App->input->GetAxis((int)Axis::LEFT) == KeyState::KEY_REPEAT && elemfocused && !elemfocused->AreYouPicking())
 	{
 		counter += dt;
 		if (counter > 0.4)
