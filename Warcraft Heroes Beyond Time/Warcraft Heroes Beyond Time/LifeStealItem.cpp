@@ -23,6 +23,7 @@ bool LifeStealItem::Act(ModuleItems::ItemEvent event, float dt)
 	switch (event)
 	{
 	case ModuleItems::ItemEvent::PLAYER_HIT:
+
 		App->scene->player->Heal(ModuleItems::stealhp);
 		break;
 	}

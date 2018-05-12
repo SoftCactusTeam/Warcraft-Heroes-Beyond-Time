@@ -4,19 +4,21 @@
 #include "BossEntity.h"
 
 #define GULDAN_BASE { 14 * 48 + 10,4 * 48 }
-#define TIME_RESTORING_ENERGY 6.0f
-#define TIME_BETWEEN_THUNDERS 0.1f
-#define NUMBER_BALLS_ODD_EVEN 4
-#define NUMBER_BALLS_COMPLETE_CIRCLE 5
-#define NUMBER_BALLS_HEXAGON 36
+#define TIME_RESTORING_ENERGY 3.0f
+#define TIME_BETWEEN_THUNDERS 0.2f
+#define NUMBER_BALLS_ODD_EVEN 3
+#define NUMBER_BALLS_COMPLETE_CIRCLE 3
+#define NUMBER_BALLS_HEXAGON 10
 #define NUMBER_BALLS_SPIRAL 20
-#define RADIUS_BALLS 40
+#define RADIUS_BALLS 20
 #define LIFE_BALLS 1000
 #define TIME_BETWEEN_BALLS_ODD_EVEN 0.2f
-#define TIME_BETWEEN_BALLS_COMPLETE_CIRCLE 0.8f
-#define TIME_BETWEEN_BALLS_HEXAGON 0.2f
+#define TIME_BETWEEN_BALLS_COMPLETE_CIRCLE 1.8f
+#define TIME_BETWEEN_BALLS_HEXAGON 0.5f
 #define TIME_BETWEEN_BALLS_SPIRAL 0.1f
 #define BOSS_CENTER { pos.x + 34, pos.y + 34 }
+#define LAZINESS_LEVEL 2
+#define BOSS_HP 3000.0f
 
 #define OFFSET_TIME_SPIRAL_RECOVERY 5.0f
 
@@ -31,6 +33,9 @@ private:
 
 	Collider* guldanCollider = nullptr;
 	Collider* wallGuldanCollider = nullptr;
+
+	//BOSS STATE VARIABLE
+	int randState = 0;
 
 	// GENERATING BALLS VARIABLES
 	int contBalls = 0;

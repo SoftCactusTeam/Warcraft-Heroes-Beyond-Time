@@ -8,6 +8,8 @@
 #include "Guldan.h"
 #include "ModuleInput.h"
 
+#define BALL_DMG 10
+
 FelBall::FelBall(const FelBallInfo* info, Projectile_type type) : Projectile(info, type)
 {
 	felAnims[(uint)FelAnimations::moving_anim].PushBack({ 21,33,14,14 });
@@ -29,7 +31,7 @@ FelBall::FelBall(const FelBallInfo* info, Projectile_type type) : Projectile(inf
 
 	actualAnim = &felAnims[(uint)FelAnimations::moving_anim];
 
-	projCollider = *App->colliders->AddEnemyAttackCollider({ -7, -7, 14, 14 }, this, 50, EnemyAttack::E_Attack_Type::GULDAN_BALL).lock();
+	projCollider = *App->colliders->AddEnemyAttackCollider({ -7, -7, 14, 14 }, this, BALL_DMG, EnemyAttack::E_Attack_Type::GULDAN_BALL).lock();
 
 	toData = (FelBallInfo*)info;
 }

@@ -130,7 +130,7 @@ Guldan::Guldan(fPoint coor, BossType type, SDL_Texture* texture) : BossEntity(co
 
 	numStats = App->entities->guldanstats;
 
-	numStats.hp = numStats.maxhp = 2000.0f;
+	numStats.hp = numStats.maxhp = BOSS_HP;
 
 	isGuldan = true;
 }
@@ -220,7 +220,7 @@ bool Guldan::Update(float dt)
 			break;
 		}
 
-		if (tired >= 3)
+		if (tired >= LAZINESS_LEVEL)
 		{
 			anim = &restoreEnergy;
 			statesBoss = BossStates::RESTORING_ENERGY;
@@ -239,17 +239,16 @@ bool Guldan::Update(float dt)
 			GeneratGeyser(GeyserType::STOP_IN_POS);
 			break;
 		}
-		int randState;
-
-		if (numStats.hp <= numStats.maxhp / 2)
+		/*if (numStats.hp <= numStats.maxhp / 2)
 			randState = rand() % 6;
 		else
-			randState = rand() % 5;	
+			randState = rand() % 5;	*/
 
 		if (randState == 0)
 		{
 			statesBoss = BossStates::TELEPORT;
 			anim = &teleport;
+			randState = 2;
 			break;
 		}
 
@@ -260,6 +259,7 @@ bool Guldan::Update(float dt)
 			letsGoThunders = true;
 			anim = &teleport;
 			tired += 1;
+			randState = 4;
 			break;
 		}
 
@@ -269,6 +269,7 @@ bool Guldan::Update(float dt)
 			next_movement_type = FellBallsTypes::ODD_EVEN_TYPE;
 			anim = &startGeneratingBalls;
 			tired += 1;
+			randState = 3;
 			break;
 		}
 
@@ -278,6 +279,7 @@ bool Guldan::Update(float dt)
 			next_movement_type = FellBallsTypes::COMPLETE_CIRCLE;
 			anim = &startGeneratingBalls;
 			tired += 1;
+			randState = 1;
 			break;
 		}
 
@@ -287,6 +289,10 @@ bool Guldan::Update(float dt)
 			next_movement_type = FellBallsTypes::HEXAGON_TYPE;
 			anim = &startGeneratingBalls;
 			tired += 1;
+			if ((numStats.hp <= numStats.maxhp / 2))
+				randState = 5;
+			else
+				randState = 0;
 			break;
 		}
 
@@ -298,6 +304,7 @@ bool Guldan::Update(float dt)
 			timeToComeBackSpiral = 0.0f;
 			anim = &startGeneratingBalls;
 			tired += 1;
+			randState = 0;
 			break;
 		}
 
@@ -361,7 +368,7 @@ bool Guldan::Update(float dt)
 					startTimeBetweenM = true;
 				}
 
-				if (repeat >= 3)
+				if (repeat >= 1)
 				{
 					anim = &generatingBallsInverse;
 					repeat = 0;
