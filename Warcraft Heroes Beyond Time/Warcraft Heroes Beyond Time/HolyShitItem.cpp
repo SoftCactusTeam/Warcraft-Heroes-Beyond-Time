@@ -24,6 +24,8 @@ bool HolyShitItem::Start()
 	App->scene->player->numStats.maxhp += ModuleItems::HolyShitExtraHP;
 	App->scene->player->numStats.damage += ModuleItems::HolyShitExtraDamage;
 
+	text = App->transitions->GetTexturebyRadius({640, 360}, 100, 640 * 2, 360 * 2);
+
 	return true;
 }
 
@@ -34,10 +36,7 @@ bool HolyShitItem::Act(ModuleItems::ItemEvent event, float dt)
 
 bool HolyShitItem::Draw()
 {
-	if (text != nullptr)
-		SDL_DestroyTexture(text);
-	text = App->transitions->GetTexturebyRadius({ (int)App->scene->player->pos.x + 10 + 20 + App->render->camera.x,(int)App->scene->player->pos.y + 10 + 20 + App->render->camera.y },100, 680,400);
-	App->printer->PrintSprite({ -20 - App->render->camera.x, -20 - App->render->camera.y}, text, {0,0,680,400}, 10);
+	App->printer->PrintSprite({ (int)(App->scene->player->pos.x - 640 + 15), (int)(App->scene->player->pos.y - 360 + 10)}, text, {0,0,640*2,360*2}, 10);
 	return true;
 }
 
