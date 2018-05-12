@@ -238,10 +238,10 @@ char* ModuleGUI::getVersion() const
 
 void ModuleGUI::Save(pugi::xml_node& guiNode)
 {
-	guiNode.append_attribute("saved?").set_value("YES!");
+	guiNode.append_attribute("saved").set_value("YES!");
 }
 
 void ModuleGUI::Load(const pugi::xml_node& guiNode)
 {
-
+	char* result = (char*)guiNode.attribute("saved").as_string();
 }

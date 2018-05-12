@@ -234,6 +234,7 @@
     <ClInclude Include="ModulePrinter.h" />
     <ClInclude Include="ModuleTransitions.h" />
     <ClInclude Include="OneShotItem.h" />
+    <ClInclude Include="PhysFS\include\physfs.h" />
     <ClInclude Include="PlayerHPBar.h" />
     <ClInclude Include="PortalEntity.h" />
     <ClInclude Include="ModuleProjectiles.h" />
