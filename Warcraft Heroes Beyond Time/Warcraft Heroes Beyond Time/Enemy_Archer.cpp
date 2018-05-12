@@ -241,8 +241,8 @@ void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 			}
 			case PlayerAttack::P_Attack_Type::FEARBALL_ITEM:
 			{
-				if (!GetConcreteEffect(ARCHER_EFFECT_FEAR))
-					AddEffect(ARCHER_EFFECTS::ARCHER_EFFECT_FEAR, 2000);
+				if (App->entities->GetRandomNumber(100) < ModuleItems::fearBallChance && !GetConcreteEffect(ARCHER_EFFECT_FEAR))
+					AddEffect(ARCHER_EFFECTS::ARCHER_EFFECT_FEAR, ModuleItems::fearBallSeconds*1000);
 				break;
 			}
 			case PlayerAttack::P_Attack_Type::DAMAGESHIT_ITEM:
