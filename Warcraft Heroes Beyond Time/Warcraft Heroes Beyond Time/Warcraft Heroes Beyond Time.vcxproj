@@ -165,6 +165,7 @@
     <ClCompile Include="PlayerHPBar.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="RingItem.cpp" />
+    <ClCompile Include="ShieldBallItem.cpp" />
     <ClCompile Include="Slider.cpp" />
     <ClCompile Include="ModuleMapGenerator.cpp" />
     <ClCompile Include="ModuleColliders.cpp" />
@@ -236,6 +237,7 @@
     <ClInclude Include="ModuleProjectiles.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="RingItem.h" />
+    <ClInclude Include="ShieldBallItem.h" />
     <ClInclude Include="Slider.h" />
     <ClInclude Include="ModuleMapGenerator.h" />
     <ClInclude Include="ModuleColliders.h" />

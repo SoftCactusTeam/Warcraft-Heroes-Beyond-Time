@@ -54,13 +54,6 @@ bool ModuleItems::Start()
 	loadItemsPull();
 
 	itemsTexture = App->textures->Load("sprites/all_items.png");
-
-
-
-	ShieldBallItem* shield_ball = new ShieldBallItem();
-	equipedItems.push_back(shield_ball);
-	shield_ball->Start();
-
 	return true;
 }
 
@@ -148,6 +141,9 @@ void ModuleItems::loadItemsPull()
 
 	HolyShitItem* holyshit = new HolyShitItem();
 	availableItems.push_back(holyshit);
+
+	ShieldBallItem* shield_ball = new ShieldBallItem();
+	availableItems.push_back(shield_ball);
 }
 
 bool ModuleItems::equipItem(Item* item)
