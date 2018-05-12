@@ -5,13 +5,13 @@
   <App>
     <fps_cap value = "60"/>
   </App>
-  
+
   <map>
     <seed value ="0"/>
     <lvl> <!-- First level -->
       <sizeGrid x ="50" y ="50"/>
       <sizeDungeon iterations ="100"/>
-      <archers quantity ="3">     
+      <archers quantity ="3">
         <tier3 percentage="100"/>
         <tier2 percentage="0"/>
         <tier1 percentage="0"/>
@@ -52,7 +52,7 @@
         <tier2 percentage="30"/>
         <tier1 percentage="40"/>
       </archers>
-    </lvl> 
+    </lvl>
   </map>
 
   <console>
@@ -60,11 +60,11 @@
   </console>
 
   <file_system>
-    
+
   </file_system>
 
   <fonts>
-    
+
   </fonts>
 
   <audio>
@@ -81,13 +81,13 @@
 
     <players>
       <cds dash = "0" deadinfloor = "2" invulpostdamaged = "1"/>
-      <thrall hp = "200" speed = "200" damage = "50" energy_percent_hit = "5" skill_multiplier="10"/>
+      <thrall hp = "200" speed = "200" damage = "50" energy_percent_hit = "5" skill_multiplier="10" hpRecover="10"/>
     </players>
 
   </entitySystem>
 
   <items>
-    <dmgBall damage = "50f"/>
+    <dmgBall damage = "100"/>
     <fearBall seconds_fear = "2" chance ="80"/>
     <frozenBall seconds_frozen = "2" chance ="80"/>
     <slowShit time_slowed = "7" slow_percent = "80"/>
@@ -96,8 +96,8 @@
     <Lexro EnergyWhenHitted="10"/>
     <HolyShit extraDamage="20" extraHP ="200"/>
   </items>
-  
-  
+
+
   <GUI>
     <version string="Warcraft-Heroes-Beyond-Time-RELEASE-v0.7"/>
   </GUI>
@@ -113,9 +113,9 @@
   <textures>
 
   </textures>
-  
+
   <window>
-    
+
     <size w = "640" h = "360"/>
     <fullscreen active = "false"/>
     <borderless active = "false"/>
@@ -123,4 +123,4 @@
     <fullscreen_window active = "false"/>
   </window>
 
-</Game> 
+</Game>

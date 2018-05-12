@@ -23,7 +23,6 @@ public:
 	struct PlayerStats
 	{
 		uint skillMultiplier = 0;
-
 		float maxhp = 0.0f;
 		float hp = 0.0f;
 		uint armor = 0u;
@@ -32,6 +31,7 @@ public:
 		uint energy = 0u;
 		uint energyPercentbyHit = 0u;
 		uint critChance = 0u;
+		uint hpRecover = 0u;
 
 		bool isEmpty()
 		{
