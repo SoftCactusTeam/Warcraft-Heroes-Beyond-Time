@@ -11,6 +11,7 @@
 #include "LifeStealItem.h"
 #include "EnergyItem.h"
 #include "HolyShitItem.h"
+#include "ShieldBallItem.h"
 
 #include <time.h>
 
@@ -51,10 +52,14 @@ bool ModuleItems::Start()
 {
 	//Load Items' pull
 	loadItemsPull();
-	
+
 	itemsTexture = App->textures->Load("sprites/all_items.png");
 
 
+
+	ShieldBallItem* shield_ball = new ShieldBallItem();
+	equipedItems.push_back(shield_ball);
+	shield_ball->Start();
 
 	return true;
 }
