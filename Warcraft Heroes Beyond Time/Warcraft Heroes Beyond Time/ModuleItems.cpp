@@ -2,8 +2,8 @@
 #include "WCItem.h"
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
-
 #include "DMGBallItem.h"
+#include "OneShotItem.h"
 #include "FreezeBallItem.h"
 #include "FEARBallItem.h"
 #include "ArrowSlowItem.h"
@@ -144,6 +144,9 @@ void ModuleItems::loadItemsPull()
 
 	ShieldBallItem* shield_ball = new ShieldBallItem();
 	availableItems.push_back(shield_ball);
+
+	OneShotItem* One_Shot_Item = new OneShotItem();
+	availableItems.push_back(One_Shot_Item);
 }
 
 bool ModuleItems::equipItem(Item* item)

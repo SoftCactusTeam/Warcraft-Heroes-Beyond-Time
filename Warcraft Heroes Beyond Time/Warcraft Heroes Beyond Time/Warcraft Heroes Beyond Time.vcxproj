@@ -162,6 +162,7 @@
     <ClCompile Include="ModulePrinter.cpp" />
     <ClCompile Include="ModuleProjectiles.cpp" />
     <ClCompile Include="ModuleTransitions.cpp" />
+    <ClCompile Include="OneShotItem.cpp" />
     <ClCompile Include="PlayerHPBar.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="RingItem.cpp" />
@@ -232,6 +233,7 @@
     <ClInclude Include="ModuleItems.h" />
     <ClInclude Include="ModulePrinter.h" />
     <ClInclude Include="ModuleTransitions.h" />
+    <ClInclude Include="OneShotItem.h" />
     <ClInclude Include="PlayerHPBar.h" />
     <ClInclude Include="PortalEntity.h" />
     <ClInclude Include="ModuleProjectiles.h" />

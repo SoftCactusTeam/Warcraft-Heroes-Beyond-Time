@@ -724,7 +724,6 @@ void PlayerEntity::KeyboardStates(float dt)
 				// PlayFX, Go to the main menu.
 				if (deadinfloorcd > deadinfloorConfigCD)
 				{
-					anim->Reset();
 					deadinfloorcd = 0.0f;
 					App->scene->GoMainMenu();
 				}
@@ -1101,7 +1100,6 @@ void PlayerEntity::JoyconStates(float dt)
 			// PlayFX, Go to the main menu.
 			if (deadinfloorcd > deadinfloorConfigCD)
 			{
-				anim->Reset();
 				deadinfloorcd = 0.0f;
 				App->scene->GoMainMenu();
 			}
