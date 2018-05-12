@@ -16,8 +16,10 @@ bool OneShotItem::Act(ModuleItems::ItemEvent event, float dt)
 	switch (event)
 	{
 	case ModuleItems::ItemEvent::UPDATE:
-		App->scene->player->numStats.hp = item_hp;
-		App->scene->player->numStats.damage = item_damage;
+		if(App->scene->player->numStats.hp > 0.1)
+			App->scene->player->numStats.hp = 0.1;
+		App->scene->player->numStats.damage = std::numeric_limits<float>::max();
+		break;
 	}
 	return true;
 }

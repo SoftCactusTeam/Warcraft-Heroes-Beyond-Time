@@ -18,10 +18,6 @@ public:
 	bool Act(ModuleItems::ItemEvent event, float dt = App->dt);
 	bool Draw();
 	bool printIconOnScreen(iPoint pos);
-
-private:
-	float item_damage = 100000.0f;
-	float item_hp = 1.0f;
 };
 
 #endif

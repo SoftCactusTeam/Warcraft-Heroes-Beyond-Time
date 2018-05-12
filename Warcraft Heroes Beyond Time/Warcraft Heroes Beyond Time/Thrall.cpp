@@ -243,6 +243,8 @@ Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture, EntitySystem
 	wallCol = *App->colliders->AddCollider({ 7, 0, 15, 23 }, Collider::ColliderType::ENTITY, this).lock();
 	damageCol = *App->colliders->AddCollider({ 7, 0, 15, 23 }, Collider::ColliderType::ENTITY, this).lock();
 
+	deadDownRight.Reset();
+
 	state = states::PL_IDLE;			   
 	anim = &idleDown;					   
 }

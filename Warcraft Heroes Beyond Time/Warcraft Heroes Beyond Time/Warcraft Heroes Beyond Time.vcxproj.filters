@@ -193,6 +193,9 @@
     <ClCompile Include="ShieldBallItem.cpp">
       <Filter>Items</Filter>
     </ClCompile>
+    <ClCompile Include="OneShotItem.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -405,6 +408,9 @@
       <Filter>Items</Filter>
     </ClInclude>
     <ClInclude Include="ShieldBallItem.h">
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="OneShotItem.h">
       <Filter>Items</Filter>
     </ClInclude>
   </ItemGroup>
