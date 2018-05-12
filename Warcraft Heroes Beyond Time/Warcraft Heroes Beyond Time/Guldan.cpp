@@ -527,9 +527,11 @@ bool Guldan::Update(float dt)
 		break;
 
 	case BossStates::DEAD:
-
-		
-
+		anim = &dead;
+		if (anim->Finished())
+		{
+			App->scene->player->Win();
+		}
 
 		break;
 	}
@@ -1102,29 +1104,21 @@ void Guldan::OnCollision(Collider* yours, Collider* collideWith)
 {
 	switch (collideWith->colType)
 	{
-	case Collider::ColliderType::PLAYER_ATTACK:
-	{
-		PlayerAttack* attack = (PlayerAttack*)collideWith;
-		if (attack->pattacktype == PlayerAttack::P_Attack_Type::NORMAL_ATTACK || attack->pattacktype == PlayerAttack::P_Attack_Type::SKILL)
+		case Collider::ColliderType::PLAYER_ATTACK:
 		{
+			PlayerAttack* attack = (PlayerAttack*)collideWith;
+		
 			if (anim != &teleport || anim != &inverseTeleport)
 			{
 				numStats.hp -= attack->damage;
 				if (numStats.hp <= 0.0f)
+				{
 					numStats.hp = 0.0f;
+					statesBoss = BossStates::DEAD;
+				}	
 			}
-		}
-		else if (attack->pattacktype == PlayerAttack::P_Attack_Type::DMGBALL_ITEM)
-		{
-			if (anim != &teleport || anim != &inverseTeleport)
-			{
-				numStats.hp -= attack->damage;
-				if (numStats.hp <= 0.0f)
-					numStats.hp = 0.0f;
-			}
-		}
-		break;
-	}	
+			break;
+		}	
 	}
 }
 
@@ -1141,7 +1135,10 @@ void Guldan::OnCollisionContinue(Collider* yours, Collider* collideWith)
 			{
 				numStats.hp -= attack->damage;
 				if (numStats.hp <= 0.0f)
+				{
 					numStats.hp = 0.0f;
+					statesBoss = BossStates::DEAD;
+				}
 			}
 		}
 

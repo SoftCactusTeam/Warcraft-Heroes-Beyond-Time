@@ -137,10 +137,13 @@ public:
 	//Win
 	void Win()
 	{
-		App->audio->PlayMusic(App->audio->WinBSO.data(), 0.5);
-		win = true;
-		state = states::PL_WIN;
-		anim = &idleDown;
+		if (!win)
+		{
+			App->audio->PlayMusic(App->audio->WinBSO.data(), 0.5);
+			win = true;
+			state = states::PL_WIN;
+			anim = &idleDown;
+		}
 	}
 
 	

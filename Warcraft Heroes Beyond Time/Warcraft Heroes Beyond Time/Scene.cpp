@@ -590,15 +590,21 @@ void Scene::GoMainMenu()
 
 void Scene::CreateGratitudeScreen()
 {
-	GUIWindow* window = (GUIWindow*)App->gui->CreateGUIWindow({ 0,0 }, { 0,0,0,0 }, nullptr, nullptr);
-	window->blackBackground = true;
-	gratitudeON = true;
-	LabelInfo gratitude;
-	gratitude.color = White;
-	gratitude.fontName = "LifeCraft90";
-	gratitude.multilabelWidth = 1000;
-	gratitude.text = "                    Victory! \n Thanks for playing the demo. Your support means a lot ^^ \n More at: @SoftCactus_Team";
-	App->gui->CreateLabel({ 160, 130 }, gratitude, window, nullptr);
+	static bool alreadyCreated = false;
+
+	if(!alreadyCreated)
+	{
+		GUIWindow* window = (GUIWindow*)App->gui->CreateGUIWindow({ 0,0 }, { 0,0,0,0 }, nullptr, nullptr);
+		window->blackBackground = true;
+		gratitudeON = true;
+		LabelInfo gratitude;
+		gratitude.color = White;
+		gratitude.fontName = "LifeCraft90";
+		gratitude.multilabelWidth = 1000;
+		gratitude.text = "                    Victory! \n Thanks for playing the demo. Your support means a lot ^^ \n More at: @SoftCactus_Team";
+		App->gui->CreateLabel({ 160, 130 }, gratitude, window, nullptr);
+	}
+	alreadyCreated = true;
 }
 
 void Scene::CreateItemSelectionScreen(Item* item1, Item* item2, Item* item3)
