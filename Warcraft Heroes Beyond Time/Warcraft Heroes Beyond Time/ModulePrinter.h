@@ -106,6 +106,11 @@ class ModulePrinter : public Module
 {
 public:
 
+	ModulePrinter()
+	{
+		name = "printer";
+	}
+
 	bool Awake(pugi::xml_node&);
 	bool Start();
 	bool PreUpdate();

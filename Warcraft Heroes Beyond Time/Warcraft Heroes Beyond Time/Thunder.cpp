@@ -8,14 +8,20 @@ Thunder::Thunder(const ThunderInfo* info, Projectile_type type) : Projectile(inf
 {
 
 	toData = (ThunderInfo*)info;
-	thunderAnims[(uint)ThunderAnimations::cast].PushBack({ 5,236,37,131 });
-	thunderAnims[(uint)ThunderAnimations::cast].PushBack({ 37,236,37,131 });
-	thunderAnims[(uint)ThunderAnimations::cast].PushBack({ 69,236,37,131 });
-	thunderAnims[(uint)ThunderAnimations::cast].PushBack({ 104,236,37,131 });
-	thunderAnims[(uint)ThunderAnimations::cast].PushBack({ 143,236,37,131 });
-	thunderAnims[(uint)ThunderAnimations::cast].PushBack({ 172,236,37,131 });
-	thunderAnims[(uint)ThunderAnimations::cast].PushBack({ 209,236,37,131 });
-	thunderAnims[(uint)ThunderAnimations::cast].speedFactor = 4.5f;
+	thunderAnims[(uint)ThunderAnimations::cast].PushBack({ 0,237,34,130 });
+	thunderAnims[(uint)ThunderAnimations::cast].PushBack({ 34, 237,34,130 });
+	thunderAnims[(uint)ThunderAnimations::cast].PushBack({ 69, 237,34,130 });
+	thunderAnims[(uint)ThunderAnimations::cast].PushBack({ 104,237,34,130 });
+	thunderAnims[(uint)ThunderAnimations::cast].PushBack({ 139,237,34,130 });
+	thunderAnims[(uint)ThunderAnimations::cast].PushBack({ 174,237,34,130 });
+	thunderAnims[(uint)ThunderAnimations::cast].PushBack({ 209,237,34,130 });
+	thunderAnims[(uint)ThunderAnimations::cast].PushBack({ 244,237,34,130 });
+	thunderAnims[(uint)ThunderAnimations::cast].PushBack({ 279,237,34,130 });
+	thunderAnims[(uint)ThunderAnimations::cast].PushBack({ 314,237,34,130 });
+	thunderAnims[(uint)ThunderAnimations::cast].PushBack({ 349,237,34,130 });
+	thunderAnims[(uint)ThunderAnimations::cast].PushBack({ 384,237,34,130 });
+	thunderAnims[(uint)ThunderAnimations::cast].PushBack({ 419,237,34,130 });
+	thunderAnims[(uint)ThunderAnimations::cast].speedFactor = 9.0f;
 	thunderAnims[(uint)ThunderAnimations::cast].loop = false;
 
 	actualAnim = &thunderAnims[(uint)ThunderAnimations::cast];

@@ -37,13 +37,13 @@ public:
 		IMAGE,
 
 		STAT,
-		PLAYER_HP_BAR, 
+		PLAYER_HP_BAR,
 		BOSS_HP_BAR,
 		ITEM_CONTAINER
 	};
-	
+
 protected:
-	GUIElem* parent = nullptr;
+	GUIElem * parent = nullptr;
 	std::list<GUIElem*> childs;
 
 	bool focused = false;
@@ -51,7 +51,7 @@ protected:
 	fPoint localPos = { 0.0f, 0.0f };
 	fPoint screenPos = { 0.0f, 0.0f };
 
-	
+
 	Module* listener = nullptr;
 public:
 	GUIElemType type = GUIElemType::NO_ELEMTYPE;
@@ -76,6 +76,12 @@ public:
 	{
 		focused = false;
 	}
+
+	virtual bool AreYouPicking()
+	{
+		return false;
+	}
+
 	virtual void UnFocusChilds() {}
 
 	virtual bool Update(float dt);

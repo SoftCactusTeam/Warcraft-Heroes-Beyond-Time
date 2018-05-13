@@ -50,7 +50,7 @@ bool FileSystem::Awake(pugi::xml_node& fsNode)
 		LOG("File System error while creating write dir: %s\n", PHYSFS_getLastError());
 	else
 	{
-		// We add the writing directory as a reading directory too with speacial mount point
+		// We add the writing directory as a reading directory too with special mount point
 		LOG("Writing directory is %s\n", write_path);
 		AddPath(write_path, "Saves");
 	}
@@ -121,11 +121,11 @@ unsigned int FileSystem::Load(const char* file, char** buffer) const
 		if(size > 0)
 		{
 			*buffer = new char[(uint)size];
-			PHYSFS_sint64 readed = PHYSFS_read(fs_file, *buffer, 1, (PHYSFS_sint32)size);
+			PHYSFS_sint64 readed = PHYSFS_readBytes(fs_file, *buffer, (PHYSFS_sint64)size);
 			if(readed != size)
 			{
 				LOG("File System error while reading from file %s: %s\n", file, PHYSFS_getLastError());
-				RELEASE(buffer);
+				RELEASE(*buffer);
 			}
 			else
 				ret = (uint)readed;
@@ -174,7 +174,7 @@ unsigned int FileSystem::Save(const char* file, const char* buffer, unsigned int
 
 	if(fs_file != NULL)
 	{
-		PHYSFS_sint64 written = PHYSFS_write(fs_file, (const void*)buffer, 1, size);
+		PHYSFS_sint64 written = PHYSFS_writeBytes(fs_file, (const void*)buffer, size);
 		if(written != size)
 			LOG("File System error while writing to file %s: %s\n", file, PHYSFS_getLastError());
 		else

@@ -41,7 +41,7 @@ bool ItemContainer::Update(float dt)
 	{
 		if (anim == &grow_anim && anim->Finished())
 			anim = &focused_anim;
-		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_DOWN && item != nullptr)
+		if ((App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_DOWN || App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && item != nullptr)
 		{
 			if (!selected)
 				selected = true;
@@ -61,6 +61,32 @@ bool ItemContainer::Update(float dt)
 		selected = false;
 
 	return true;
+}
+
+bool ItemContainer::MouseHover() const
+{
+	int x, y;
+	App->input->GetMousePosition(x, y);
+
+	bool result = false;
+
+	//if collides
+	if (!(x < screenPos.x-171/2 ||
+		x > screenPos.x + 171/2 ||
+		y < screenPos.y-242/2 ||
+		y > screenPos.y + 242/2))
+	{
+		result = true;
+	}
+	return result;
+}
+
+bool ItemContainer::AreYouPicking()
+{
+	if (anim == &select_anim)
+		return true;
+	else
+		return false;
 }
 
 bool ItemContainer::HandleInput(float dt)
@@ -146,7 +172,7 @@ bool ItemContainer::Draw()
 		App->render->Blit(App->gui->getAtlas(), localPos.x - anim->GetCurrentPivot().x, localPos.y - anim->GetCurrentPivot().y, &anim->GetCurrentFrame(App->dt), 1, 0);
 
 	if (item != nullptr && (anim == &grow_anim && anim->Finished() || anim != &grow_anim))
-		item->printIconOnScreen({ (int)localPos.x,(int)localPos.y });
+		item->printYourStuff({ (int)localPos.x - 171/2,(int)localPos.y - 242/2 });
 	
 	if (anim == &select_anim)
 		App->render->Blit(App->gui->getAtlas(), localPos.x - anim->GetCurrentPivot().x, localPos.y - anim->GetCurrentPivot().y, &anim->GetCurrentFrame(App->dt), 1, 0);

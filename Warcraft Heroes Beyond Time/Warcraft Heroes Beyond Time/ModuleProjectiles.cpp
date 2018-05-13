@@ -13,6 +13,7 @@
 
 ModuleProjectiles::ModuleProjectiles()
 {
+	name = "projectiles";
 }
 
 ModuleProjectiles::~ModuleProjectiles()

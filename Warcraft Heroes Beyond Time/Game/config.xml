@@ -5,13 +5,13 @@
   <App>
     <fps_cap value = "60"/>
   </App>
-  
+
   <map>
     <seed value ="0"/>
     <lvl> <!-- First level -->
       <sizeGrid x ="50" y ="50"/>
       <sizeDungeon iterations ="100"/>
-      <archers quantity ="3">     
+      <archers quantity ="3">
         <tier3 percentage="100"/>
         <tier2 percentage="0"/>
         <tier1 percentage="0"/>
@@ -45,14 +45,14 @@
       </archers>
     </lvl>
     <lvl> <!-- Fifth level -->
-      <sizeGrid x ="250" y ="250"/>
-      <sizeDungeon iterations ="500"/>
+      <sizeGrid x ="200" y ="200"/>
+      <sizeDungeon iterations ="400"/>
       <archers quantity ="10">
         <tier3 percentage="30"/>
         <tier2 percentage="30"/>
         <tier1 percentage="40"/>
       </archers>
-    </lvl> 
+    </lvl>
   </map>
 
   <console>
@@ -60,11 +60,11 @@
   </console>
 
   <file_system>
-    
+
   </file_system>
 
   <fonts>
-    
+
   </fonts>
 
   <audio>
@@ -73,32 +73,33 @@
 
   <entitySystem>
     <enemies>
-      <archer_tier1  speed ="4" damage = "50" hp = "200" arrows_speed= "10" arrows_life = "2500" time_between_attacks = "100" time_stunned_after_attack=".5" chance_powerful_attack="50"  vision_range = "250" attack_range ="90" minimal_distance_with_player="250" dropping_chance ="10" pre_attac ="500" tiles_to_littlemove ="4" distance_to_scape ="50" attacCone_probability="0" attacFast_probability="0" timeStunedAfterHit="300" velocityDashHit="500" timingDashHit="50"/>
-      <archer_tier2  speed ="2" damage = "40" hp = "150" arrows_speed= "5" arrows_life = "2500" time_between_attacks = "100" time_stunned_after_attack=".5" chance_powerful_attack="0"   vision_range = "250" attack_range ="200" minimal_distance_with_player="0" dropping_chance ="10"  pre_attac ="300" tiles_to_littlemove ="4" distance_to_scape ="50" attacCone_probability="0" attacFast_probability="0" timeStunedAfterHit="300" velocityDashHit="500" timingDashHit="50"/>
-      <archer_tier3  speed ="2" damage = "30" hp = "100" arrows_speed= "10" arrows_life = "2500" time_between_attacks = "10" time_stunned_after_attack=".5" chance_powerful_attack="0"   vision_range = "250" attack_range ="90" minimal_distance_with_player="500" dropping_chance ="10"  pre_attac ="500" tiles_to_littlemove ="4" distance_to_scape ="50" attacCone_probability="0" attacFast_probability="0" timeStunedAfterHit="300" velocityDashHit="500" timingDashHit="50"/>
-      <archer_tier4  speed ="4" damage = "20" hp = "100" arrows_speed= "1" arrows_life = "2500" time_between_attacks = "10" time_stunned_after_attack=".5" chance_powerful_attack="0"   vision_range = "250" attack_range ="90" minimal_distance_with_player="500" dropping_chance ="10"  pre_attac ="500" tiles_to_littlemove ="4" distance_to_scape ="50" attacCone_probability="0" attacFast_probability="0" timeStunedAfterHit="300" velocityDashHit="500" timingDashHit="50"/>
+      <archer_tier1  speed ="4" damage = "50" hp = "100" arrows_speed= "10" arrows_life = "2500" time_between_attacks = "100" time_stunned_after_attack=".5" chance_powerful_attack="50"  vision_range = "250" attack_range ="90" minimal_distance_with_player="250" dropping_chance ="10" pre_attac ="500" tiles_to_littlemove ="4" distance_to_scape ="50" attacCone_probability="0" attacFast_probability="0" timeStunedAfterHit="300" velocityDashHit="500" timingDashHit="50"/>
+      <archer_tier2  speed ="2" damage = "40" hp = "150" arrows_speed= "5" arrows_life = "2500" time_between_attacks = "100" time_stunned_after_attack=".5" chance_powerful_attack="0"   vision_range = "250" attack_range ="200" minimal_distance_with_player="20" dropping_chance ="10"  pre_attac ="300" tiles_to_littlemove ="4" distance_to_scape ="50" attacCone_probability="0" attacFast_probability="0" timeStunedAfterHit="300" velocityDashHit="500" timingDashHit="50"/>
+      <archer_tier3  speed ="2" damage = "30" hp = "150" arrows_speed= "10" arrows_life = "2500" time_between_attacks = "100" time_stunned_after_attack=".5" chance_powerful_attack="0"   vision_range = "250" attack_range ="90" minimal_distance_with_player="300" dropping_chance ="10"  pre_attac ="500" tiles_to_littlemove ="4" distance_to_scape ="50" attacCone_probability="0" attacFast_probability="0" timeStunedAfterHit="300" velocityDashHit="500" timingDashHit="50"/>
+      <archer_tier4  speed ="4" damage = "20" hp = "100" arrows_speed= "7" arrows_life = "2500" time_between_attacks = "10" time_stunned_after_attack=".5" chance_powerful_attack="0"   vision_range = "250" attack_range ="90" minimal_distance_with_player="500" dropping_chance ="10"  pre_attac ="500" tiles_to_littlemove ="4" distance_to_scape ="50" attacCone_probability="0" attacFast_probability="0" timeStunedAfterHit="300" velocityDashHit="500" timingDashHit="50"/>
     </enemies>
 
     <players>
       <cds dash = "0" deadinfloor = "2" invulpostdamaged = "1"/>
-      <thrall hp = "200" speed = "200" damage = "50" energy_percent_hit = "5" skill_multiplier="10"/>
+      <thrall hp = "200" speed = "200" damage = "50" energy_percent_hit = "5" skill_multiplier="10" hpRecover="20"/>
     </players>
 
   </entitySystem>
 
   <items>
-    <dmgBall damage = "5f"/>
-    <fearBall seconds_fear = "2"/>
-    <frozenBall seconds_frozen = "1"/>
+    <dmgBall damage = "50"/>
+    <fearBall seconds_fear = "2" chance ="80"/>
+    <frozenBall seconds_frozen = "2" chance ="80"/>
     <slowShit time_slowed = "7" slow_percent = "80"/>
-    <dmgShit damage_by_dt = "1"/>
+    <dmgShit damage_by_dt = "2"/>
     <StealLife amount="5"/>
-    <Lexro EnergyWhenHitted="4"/>
+    <Lexro EnergyWhenHitted="20"/>
+    <HolyShit extraDamage="20" extraHP ="200"/>
   </items>
-  
-  
+
+
   <GUI>
-    <version string="Warcraft-Heroes-Beyond-Time-RELEASE-v0.7"/>
+    <version string="Warcraft-Heroes-Beyond-Time-RELEASE-v0.9"/>
   </GUI>
 
   <input>
@@ -106,15 +107,15 @@
   </input>
 
   <renderer>
-    <vsync active = "true"/>
+    <vsync active = "false"/>
   </renderer>
 
   <textures>
 
   </textures>
-  
+
   <window>
-    
+
     <size w = "640" h = "360"/>
     <fullscreen active = "false"/>
     <borderless active = "false"/>
@@ -122,4 +123,4 @@
     <fullscreen_window active = "true"/>
   </window>
 
-</Game> 
+</Game>

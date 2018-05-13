@@ -9,7 +9,7 @@ EffectsElem::EffectsElem(fPoint pos, TimeBasedAnimation effectAnim) : pos(pos), 
 bool EffectsElem::DrawEffects()
 {
 	bool ret = true;
-	ret = App->printer->PrintSprite({ (int)pos.x, (int)pos.y }, App->effects->GetAtlas(), effectAnim.GetCurrentFrame(App->dt), -1);
+	ret = App->printer->PrintSprite({ (int)pos.x, (int)pos.y }, App->effects->GetAtlas(), effectAnim.GetCurrentFrame(App->dt), 2);
 
 	return ret;
 }

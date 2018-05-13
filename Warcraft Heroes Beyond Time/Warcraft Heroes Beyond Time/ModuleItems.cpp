@@ -2,19 +2,24 @@
 #include "WCItem.h"
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
-
 #include "DMGBallItem.h"
+#include "OneShotItem.h"
+#include "AngelsGuardItem.h"
+
 #include "FreezeBallItem.h"
 #include "FEARBallItem.h"
 #include "ArrowSlowItem.h"
 #include "RingItem.h"
 #include "LifeStealItem.h"
 #include "EnergyItem.h"
+#include "HolyShitItem.h"
+#include "ShieldBallItem.h"
 
 #include <time.h>
 
 float ModuleItems::dmgBallDamage = 0.0f;
 float ModuleItems::fearBallSeconds = 0.0f;
+float ModuleItems::fearBallChance = 0.0f;
 float ModuleItems::frozenBallSeconds = 0.0f;
 float ModuleItems::frozenBallChance = 0.0f;
 float ModuleItems::slowShitPercent = 0.0f;
@@ -22,19 +27,26 @@ float ModuleItems::slowShitSeconds = 0.0f;
 float ModuleItems::dmgShitDamage = 0.0f;
 float ModuleItems::stealhp = 0.0f;
 float ModuleItems::energywhenHitted = 0.0f;
+float ModuleItems::HolyShitExtraDamage = 0.0f;
+float ModuleItems::HolyShitExtraHP = 0.0f;
+
 
 bool ModuleItems::Awake(pugi::xml_node& itemsNode)
 {
 	//Read stats from config.xml
 	dmgBallDamage = itemsNode.child("dmgBall").attribute("damage").as_float();
 	fearBallSeconds = itemsNode.child("fearBall").attribute("seconds_fear").as_float();
+	fearBallChance = itemsNode.child("fearBall").attribute("chance").as_float();
 	frozenBallSeconds = itemsNode.child("frozenBall").attribute("seconds_frozen").as_float();
-	frozenBallChance = itemsNode.child("frozenBall").attribute("percent_chance").as_float();
+	frozenBallChance = itemsNode.child("frozenBall").attribute("chance").as_float();
 	slowShitSeconds = itemsNode.child("slowShit").attribute("time_slowed").as_float();
 	slowShitPercent = itemsNode.child("slowShit").attribute("slow_percent").as_float();
 	dmgShitDamage = itemsNode.child("dmgShit").attribute("damage_by_dt").as_float();
 	stealhp = itemsNode.child("StealLife").attribute("amount").as_float();
 	energywhenHitted = itemsNode.child("Lexro").attribute("EnergyWhenHitted").as_uint();
+	HolyShitExtraDamage = itemsNode.child("HolyShit").attribute("extraDamage").as_float();
+	HolyShitExtraHP = itemsNode.child("HolyShit").attribute("extraHP").as_float();
+
 
 	return true;
 }
@@ -43,11 +55,8 @@ bool ModuleItems::Start()
 {
 	//Load Items' pull
 	loadItemsPull();
-	
+
 	itemsTexture = App->textures->Load("sprites/all_items.png");
-
-
-
 	return true;
 }
 
@@ -82,6 +91,8 @@ bool ModuleItems::PostUpdate()
 	{
 		ret = (*it)->Draw();
 	}
+
+	DestroyItems();
 
 	return ret;
 }
@@ -121,6 +132,7 @@ void ModuleItems::loadItemsPull()
 	FEARBallItem* Fearball_Item = new FEARBallItem();
 	availableItems.push_back(Fearball_Item);
 
+
 	ArrowSlowItem* projectileslowitem = new ArrowSlowItem();
 	availableItems.push_back(projectileslowitem);
 
@@ -132,6 +144,18 @@ void ModuleItems::loadItemsPull()
 
 	EnergyItem* energyitem = new EnergyItem();
 	availableItems.push_back(energyitem);
+
+	HolyShitItem* holyshit = new HolyShitItem();
+	availableItems.push_back(holyshit);
+
+	ShieldBallItem* shield_ball = new ShieldBallItem();
+	availableItems.push_back(shield_ball);
+
+	OneShotItem* One_Shot_Item = new OneShotItem();
+	availableItems.push_back(One_Shot_Item);
+
+	AngelsGuardItem* Angels_Guard_Item = new AngelsGuardItem();
+	availableItems.push_back(Angels_Guard_Item);
 }
 
 bool ModuleItems::equipItem(Item* item)
@@ -150,6 +174,24 @@ bool ModuleItems::equipItem(Item* item)
 		}
 	}
 	return ret;
+}
+
+bool ModuleItems::unequipItem(Item* item)
+{
+	itemsToUnEquip.push_back(item);
+	return true;
+}
+
+void ModuleItems::DestroyItems()
+{
+	std::list<Item*>::iterator it;
+	
+	for(it = itemsToUnEquip.begin(); it != itemsToUnEquip.end(); ++it)
+	{
+		equipedItems.remove(*it);
+		delete *it;
+	}
+	itemsToUnEquip.clear();
 }
 
 bool ModuleItems::getThreeRandomItems(Item** items)

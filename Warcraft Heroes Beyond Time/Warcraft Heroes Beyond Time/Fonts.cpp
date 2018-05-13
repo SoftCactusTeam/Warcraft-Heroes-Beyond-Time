@@ -43,6 +43,7 @@ bool Fonts::Awake(pugi::xml_node& fontsNode)
 		
 		Load("fonts/LifeCraft_Font.ttf", "LifeCraft46", 46);
 		Load("fonts/LifeCraft_Font.ttf", "LifeCraft80", 80);
+		Load("fonts/LifeCraft_Font.ttf", "LifeCraft20", 20);
 		Load("fonts/LifeCraft_Font.ttf", "LifeCraft90", 90);
 		
 

@@ -154,6 +154,7 @@ bool EntitySystem::Awake(pugi::xml_node& entitiesNode)
 	thrallstats.damage = thrall.attribute("damage").as_uint(0);
 	thrallstats.energyPercentbyHit = thrall.attribute("energy_percent_hit").as_uint(20);
 	thrallstats.skillMultiplier = thrall.attribute("skill_multiplier").as_uint(3);
+	thrallstats.hpRecover = thrall.attribute("hpRecover").as_uint();
 
 	pugi::xml_node archerT1 = entitiesNode.child("enemies").child("archer_tier1");
 	archerT1stats.maxhp =						archerT1.attribute("hp").as_uint(0);

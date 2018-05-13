@@ -14,19 +14,19 @@
 
 #define MINDISTANCE 10
 
-#define VOID { 192,1056,48,48 }
-#define FLOOR { 0,1104,48,48 }
-#define FLOOR2 { 48,1104,48,48 }
-#define FLOOR3 { 98,1104,48,48 }
-#define FLOOR4 { 144,1104,48,48 }
-#define FLOOR5 { 192,1104,48,48 }
-#define FLOOR6 { 0,1152,48,48 }
-#define FLOOR7 { 48,1152,48,48 }
-#define FLOOR8 { 96,1152,48,48 }
-#define WALL1 { 0,1056,48,48 }
-#define WALL2 { 48,1056,48,48 }
-#define WALL3 { 96,1056,48,48 }
-#define WALL4 { 144,1056,48,48 }
+#define VOID { 196,1078,48,48 }
+#define FLOOR { 0,1127,48,48 }
+#define FLOOR2 { 49,1127,48,48 }
+#define FLOOR3 { 98,1127,48,48 }
+#define FLOOR4 { 147,1127,48,48 }
+#define FLOOR5 { 196,1127,48,48 }
+#define FLOOR6 { 0,1176,48,48 }
+#define FLOOR7 { 49,1176,48,48 }
+#define FLOOR8 { 98,1176,48,48 }
+#define WALL1 { 0,1078,48,48 }
+#define WALL2 { 49,1078,48,48 }
+#define WALL3 { 98,1078,48,48 }
+#define WALL4 { 147,1078,48,48 }
 
 MapGenerator::MapGenerator()
 {
@@ -103,6 +103,17 @@ iPoint MapGenerator::GetRandomValidPointProxy(int distance, int proxyDistance)
 	return nodes[randNum]->pos;
 }
 
+iPoint MapGenerator::GetRandomValidPointProxyForThisPos(int distance, int proxyDistance, iPoint pos)
+{
+	int randNum = 0;
+	iPoint mapPos = {pos.x / (tileSize-2), pos.y/(tileSize-2)};
+	do
+		randNum = rand() % ((nodes.size() - 1) + 1);
+	while (nodes[randNum]->layerBelow != -2 || nodes[randNum]->InvalidForMap || nodes[randNum]->pos.DistanceTo(mapPos) > distance || nodes[randNum]->pos.DistanceTo(mapPos) < proxyDistance);
+
+	return nodes[randNum]->pos;
+}
+
 iPoint MapGenerator::GetRandomBossPoint()
 {
 	int randNum = 0;
@@ -132,12 +143,12 @@ bool MapGenerator::DrawMap() const
 			int x = index_x * (tileSize - 2);
 			int y = index_y * (tileSize - 2);
 
-			if (x >= (-1 * App->render->camera.x) - tileSize &&
-				y >= (-1 * App->render->camera.y) - tileSize &&
-				x < -App->render->camera.x + App->render->camera.w + tileSize &&
-				y < -App->render->camera.y + App->render->camera.h + tileSize)
+			if (x >= ((-1 * App->render->camera.x) - tileSize) &&
+				y >= ((-1 * App->render->camera.y) - tileSize) &&
+				x < (-App->render->camera.x + App->render->camera.w + tileSize) &&
+				y < (-App->render->camera.y + App->render->camera.h + tileSize))
 			
-				ret = App->printer->PrintSprite({ x, y }, mapTexture, nodes[index_x + index_y * sizeX]->whatToBlit, nodes[index_x + index_y * sizeX]->layerBelow);
+				ret = App->printer->PrintSprite({ x+1, y+1 }, mapTexture, nodes[index_x + index_y * sizeX]->whatToBlit, nodes[index_x + index_y * sizeX]->layerBelow);
 
 		}
 	}
@@ -150,10 +161,10 @@ SDL_Rect MapGenerator::GetTileRect(int id) const
 	int relative_id = id - 1;
 
 	SDL_Rect rect;
-	rect.w = tileSize;
-	rect.h = tileSize;
-	rect.x = ((rect.w) * (relative_id % 10));
-	rect.y = ((rect.h) * (relative_id / 10));
+	rect.w = 48;
+	rect.h = 48;
+	rect.x = ((rect.w + 1) * (relative_id % 10));
+	rect.y = ((rect.h + 1) * (relative_id / 10));
 
 	return rect;
 }

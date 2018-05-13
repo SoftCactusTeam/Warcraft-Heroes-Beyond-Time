@@ -130,7 +130,7 @@ Guldan::Guldan(fPoint coor, BossType type, SDL_Texture* texture) : BossEntity(co
 
 	numStats = App->entities->guldanstats;
 
-	numStats.hp = numStats.maxhp = 2000.0f;
+	numStats.hp = numStats.maxhp = BOSS_HP;
 
 	isGuldan = true;
 }
@@ -146,6 +146,10 @@ bool Guldan::Start()
 	guldanCollider = *App->colliders->AddCollider({ 0,0,68,68 }, Collider::ColliderType::ENTITY, this).lock();
 
 	wallGuldanCollider = *App->colliders->AddCollider({ (int)pos.x, (int)pos.y, 68,68}, Collider::ColliderType::WALL, nullptr).lock();
+
+	//SOUNDS RESTARTED FROM THE BEGINING OF GULDAN
+	angry_sound_played_once = false;
+	dead_sound_played_once = false;
 
 	return true;
 }
@@ -168,6 +172,13 @@ bool Guldan::Update(float dt)
 			info.pos = { 16 * 48 - 4, 13 * 48 };
 			App->projectiles->AddProjectile(&info, Projectile_type::block);
 			anim = &hello;
+
+			//ENCOUNTER AUDIO
+			if (play_this_audio_once)
+			{
+				App->audio->PlayFx(App->audio->GuldanEncounterFX);
+				play_this_audio_once = false;
+			}
 		}
 
 		if (anim == &hello && anim->Finished())
@@ -176,7 +187,9 @@ bool Guldan::Update(float dt)
 			statesBoss = BossStates::TELEPORT;
 			anim = &teleport;
 			teleportCenter = true;
+			App->audio->PlayFx(App->audio->GuldanTPFX);
 			App->gui->CreateBossHPBar((BossEntity*)this, { 640 / 2 - 312 / 2,320 });
+			play_this_audio_once = true;
 			break;
 		}
 
@@ -208,6 +221,7 @@ bool Guldan::Update(float dt)
 		{
 			statesBoss = BossStates::TELEPORT;
 			anim = &teleport;
+			App->audio->PlayFx(App->audio->GuldanTPFX);
 			break;
 		}
 
@@ -220,7 +234,7 @@ bool Guldan::Update(float dt)
 			break;
 		}
 
-		if (tired >= 3)
+		if (tired >= LAZINESS_LEVEL)
 		{
 			anim = &restoreEnergy;
 			statesBoss = BossStates::RESTORING_ENERGY;
@@ -239,17 +253,17 @@ bool Guldan::Update(float dt)
 			GeneratGeyser(GeyserType::STOP_IN_POS);
 			break;
 		}
-		int randState;
-
-		if (numStats.hp <= numStats.maxhp / 2)
+		/*if (numStats.hp <= numStats.maxhp / 2)
 			randState = rand() % 6;
 		else
-			randState = rand() % 5;	
+			randState = rand() % 5;	*/
 
 		if (randState == 0)
 		{
 			statesBoss = BossStates::TELEPORT;
 			anim = &teleport;
+			App->audio->PlayFx(App->audio->GuldanTPFX);
+			randState = 2;
 			break;
 		}
 
@@ -260,6 +274,8 @@ bool Guldan::Update(float dt)
 			letsGoThunders = true;
 			anim = &teleport;
 			tired += 1;
+			App->audio->PlayFx(App->audio->GuldanTPFX);
+			randState = 4;
 			break;
 		}
 
@@ -269,6 +285,8 @@ bool Guldan::Update(float dt)
 			next_movement_type = FellBallsTypes::ODD_EVEN_TYPE;
 			anim = &startGeneratingBalls;
 			tired += 1;
+			App->audio->PlayFx(App->audio->GuldanOddBallFX);
+			randState = 3;
 			break;
 		}
 
@@ -278,6 +296,7 @@ bool Guldan::Update(float dt)
 			next_movement_type = FellBallsTypes::COMPLETE_CIRCLE;
 			anim = &startGeneratingBalls;
 			tired += 1;
+			randState = 1;
 			break;
 		}
 
@@ -287,6 +306,10 @@ bool Guldan::Update(float dt)
 			next_movement_type = FellBallsTypes::HEXAGON_TYPE;
 			anim = &startGeneratingBalls;
 			tired += 1;
+			if ((numStats.hp <= numStats.maxhp / 2))
+				randState = 5;
+			else
+				randState = 0;
 			break;
 		}
 
@@ -298,6 +321,8 @@ bool Guldan::Update(float dt)
 			timeToComeBackSpiral = 0.0f;
 			anim = &startGeneratingBalls;
 			tired += 1;
+			App->audio->PlayFx(App->audio->GuldanSpiralFX);
+			randState = 0;
 			break;
 		}
 
@@ -319,19 +344,20 @@ bool Guldan::Update(float dt)
 		{
 			timeBetweenBalls += 1.0f * dt;
 
-			if (next_movement_type == FellBallsTypes::ODD_EVEN_TYPE)
-			{
-				if (numStats.hp <= numStats.maxhp / 2)
+				if (numStats.hp <= numStats.maxhp / 2 && next_movement_type != FellBallsTypes::SPIRAL_TYPE)
 				{
 					timeGeysersFollowingPlayerM += 1 * dt;
 
-					if (timeGeysersFollowingPlayerM >= 1.0f)
+					if (timeGeysersFollowingPlayerM >= 3.0f)
 					{
 						GeneratGeyser(GeyserType::FOLLOW_PLAYER);
+						App->audio->PlayFx(App->audio->GuldanMeteoriteTarget);
 						timeGeysersFollowingPlayerM = 0.0f;
 					}
 				}
 
+			if (next_movement_type == FellBallsTypes::ODD_EVEN_TYPE)
+			{
 				if (startTimeBetweenM)
 				{
 					timeBetweenM += 1.0f * dt;
@@ -361,7 +387,7 @@ bool Guldan::Update(float dt)
 					startTimeBetweenM = true;
 				}
 
-				if (repeat >= 3)
+				if (repeat >= 1)
 				{
 					anim = &generatingBallsInverse;
 					repeat = 0;
@@ -369,11 +395,18 @@ bool Guldan::Update(float dt)
 			}
 			else if (next_movement_type == FellBallsTypes::COMPLETE_CIRCLE)
 			{
+				if (play_this_audio_once) 
+				{
+					App->audio->PlayFx(App->audio->GuldanCircle);
+					play_this_audio_once = false;
+				}
+
 				if (timeBetweenBalls >= TIME_BETWEEN_BALLS_COMPLETE_CIRCLE)
 				{
 					GenerateFelBalls(FellBallsTypes::COMPLETE_CIRCLE, 0.0f);
 					timeBetweenBalls = 0.0f;
 					contBalls += 1;
+					play_this_audio_once = true;
 				}
 				
 				if (contBalls >= NUMBER_BALLS_COMPLETE_CIRCLE)
@@ -391,6 +424,7 @@ bool Guldan::Update(float dt)
 					hexagonAngle += 10.0f;
 					timeBetweenBalls = 0.0f;
 					contBalls += 1;
+					App->audio->PlayFx(App->audio->GuldanHexBall);
 				}
 				// ----------------------------
 
@@ -465,6 +499,7 @@ bool Guldan::Update(float dt)
 					pos = GULDAN_BASE;
 
 					anim = &inverseTeleport;
+					App->audio->PlayFx(App->audio->GuldanTPFX);
 			}
 		}
 		else
@@ -483,6 +518,13 @@ bool Guldan::Update(float dt)
 
 	case BossStates::THUNDER_CAST:
 	{
+		if (play_this_audio_once)
+		{
+			App->audio->PlayFx(App->audio->GuldanThunderFX);
+			//App->audio->PlayFx(App->audio->GuldanTPFX);
+			play_this_audio_once = false;
+		}
+
 		timeBetweenSteps += 1.0f * dt;
 
 		if (timeBetweenSteps >= TIME_BETWEEN_THUNDERS)
@@ -500,6 +542,7 @@ bool Guldan::Update(float dt)
 			step = 0;
 			statesBoss = BossStates::IDLE;
 			anim = &idle;
+			play_this_audio_once = true;
 			break;
 		}
 
@@ -515,6 +558,11 @@ bool Guldan::Update(float dt)
 			break;
 		}
 
+		if (timeRestoring == 0.0f)
+		{
+			App->audio->PlayFx(App->audio->GuldanChargingPower);
+		}
+
 		timeRestoring += 1 * dt;
 
 		if (timeRestoring >= TIME_RESTORING_ENERGY)
@@ -527,9 +575,18 @@ bool Guldan::Update(float dt)
 		break;
 
 	case BossStates::DEAD:
+		anim = &dead;
+		if (!dead_sound_played_once)
+		{
+			App->audio->PlayFx(App->audio->GuldanDieFX);
+			dead_sound_played_once = true;
+		}
 
-		
-
+		if (anim->Finished())
+		{
+			App->audio->PauseFX(App->audio->GuldanFireSecondPhase); // I DON'T KNOW IF THIS IS GOOD PLS REVISE
+			App->scene->player->Win();
+		}
 
 		break;
 	}
@@ -542,6 +599,14 @@ bool Guldan::Update(float dt)
 		{
 			timeBetweenGeyser = 0.0f;
 			GeneratGeyser(GeyserType::STOP_IN_POS);
+
+			//SECOND PHASE SOUNDS
+			if (numStats.hp <= numStats.maxhp / 2 && !angry_sound_played_once)
+			{
+				App->audio->PlayFx(App->audio->GuldanSecondPhase);
+				App->audio->PlayFx(App->audio->GuldanFireSecondPhase, -1);
+				angry_sound_played_once = true;
+			}
 		}
 	}
 
@@ -1102,29 +1167,21 @@ void Guldan::OnCollision(Collider* yours, Collider* collideWith)
 {
 	switch (collideWith->colType)
 	{
-	case Collider::ColliderType::PLAYER_ATTACK:
-	{
-		PlayerAttack* attack = (PlayerAttack*)collideWith;
-		if (attack->pattacktype == PlayerAttack::P_Attack_Type::NORMAL_ATTACK || attack->pattacktype == PlayerAttack::P_Attack_Type::SKILL)
+		case Collider::ColliderType::PLAYER_ATTACK:
 		{
+			PlayerAttack* attack = (PlayerAttack*)collideWith;
+		
 			if (anim != &teleport || anim != &inverseTeleport)
 			{
 				numStats.hp -= attack->damage;
 				if (numStats.hp <= 0.0f)
+				{
 					numStats.hp = 0.0f;
+					statesBoss = BossStates::DEAD;
+				}	
 			}
-		}
-		else if (attack->pattacktype == PlayerAttack::P_Attack_Type::DMGBALL_ITEM)
-		{
-			if (anim != &teleport || anim != &inverseTeleport)
-			{
-				numStats.hp -= attack->damage;
-				if (numStats.hp <= 0.0f)
-					numStats.hp = 0.0f;
-			}
-		}
-		break;
-	}	
+			break;
+		}	
 	}
 }
 
@@ -1141,7 +1198,10 @@ void Guldan::OnCollisionContinue(Collider* yours, Collider* collideWith)
 			{
 				numStats.hp -= attack->damage;
 				if (numStats.hp <= 0.0f)
+				{
 					numStats.hp = 0.0f;
+					statesBoss = BossStates::DEAD;
+				}
 			}
 		}
 

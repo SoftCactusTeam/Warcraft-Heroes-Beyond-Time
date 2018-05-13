@@ -7,6 +7,8 @@
 #include "Scene.h"
 #include "PlayerEntity.h"
 
+#define GEY_DMG 30
+
 Geyser::Geyser(const GeyserInfo* info, Projectile_type type) : Projectile(info, type)
 {
 	geyAnims[(uint)GeyserAnimations::explosion].PushBack({ 297,3,49,74 });
@@ -83,7 +85,7 @@ bool Geyser::Update(float dt)
 			{
 				data->layer = 5;
 				actualAnim = &geyAnims[(uint)GeyserAnimations::explosion];
-				projCollider = *App->colliders->AddEnemyAttackCollider({ -49/2, -74/2, 49, 74 }, this, 50, EnemyAttack::E_Attack_Type::GULDAN_BALL).lock();
+				projCollider = *App->colliders->AddEnemyAttackCollider({ -49/2, -74/2, 49, 74 }, this, GEY_DMG, EnemyAttack::E_Attack_Type::GULDAN_BALL).lock();
 				geyser_state = state::explosion;
 			}
 

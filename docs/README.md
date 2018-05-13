@@ -9,7 +9,7 @@ This project has been done by seven students of CITM - UPC (Terrasa, Spain).
 
 ## About the game  
 
-The goal of this demo is to beat the boss Guld'an. First you have to defeat all the archers in the first room. You can pick the item from the chest to leave a trace behind you that will hurt the enemies. Once you defeat all the archers a portal will appear on the map and will teleport you to the boss room to fight Gul'dan. If you beat him you win the game.
+The goal of this demo is to beat the boss Guld'an. First you have to defeat all the archers in the rooms (5) to go through the portals and beat Gul'dan. You can pick a item from 3 options in a chest that will appear in a small room at the beginning of each map. If you beat him you win the game.
 
 ## Installation instructions  
 
@@ -22,19 +22,17 @@ _IMPORTANT: do not modify, change or add any folder or file as you might not be 
 ### Gamepad
 - LEFT STICK: move
 - A BUTTON: dash
-- X BUTTON: attack
+- X BUTTON: attack and open chest
 - Y BUTTON: skill
-- B BUTTON: pick item, open chest and go through portal
 - START: pause game
 
 ### Mouse and keyboard
 - LEFT CLICK: select in menus
 - WASD: move
-- J: attack
+- J: attack and open chest
 - K: skill
 - SPACE: dash
 - ESC: pause
-- E: open chest / pick item.
 - F1: Go to Guldan's room.
 
 

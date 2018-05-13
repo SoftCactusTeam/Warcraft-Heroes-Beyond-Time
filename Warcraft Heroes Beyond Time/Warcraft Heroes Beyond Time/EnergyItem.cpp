@@ -36,8 +36,12 @@ bool EnergyItem::Draw()
 	return true;
 }
 
-bool EnergyItem::printIconOnScreen(iPoint pos)
+bool EnergyItem::printYourStuff(iPoint pos)
 {
 	//The GUI uses this method, fill it in all the items.
-	return App->render->Blit(App->items->getItemsTexture(), pos.x, pos.y, &SDL_Rect(ENERGY_ITEM), 1, 0);
+	iPoint iconPos = { 171 / 2 - 31 / 2 ,50 };
+	App->render->Blit(App->items->getItemsTexture(), pos.x + iconPos.x, pos.y + iconPos.y, &SDL_Rect(ENERGY_ITEM), 1, 0);
+	printMyString((char*)Title.data(), { 171 / 2 + pos.x, 100 + pos.y }, true);
+	printMyString((char*)softDescription.data(), { 171 / 2 + pos.x, 150 + pos.y });
+	return true;
 }

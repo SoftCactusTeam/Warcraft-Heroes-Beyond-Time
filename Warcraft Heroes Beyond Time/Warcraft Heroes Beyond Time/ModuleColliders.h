@@ -44,6 +44,8 @@ public:
 		DMGBALL_ITEM,
 		FREEZEBALL_ITEM,
 		FEARBALL_ITEM,
+		SHIELDBALL_ITEM,
+
 		SKILL,
 		DAMAGESHIT_ITEM,
 		PROJECTILESLOWSHIT_ITEM,
@@ -100,7 +102,7 @@ public:
 	void deleteCollider(Collider* col);
 	void deleteColliderbyOwner(void* owner);
 
-	
+
 	void PrintColliders() const;
 
 private:

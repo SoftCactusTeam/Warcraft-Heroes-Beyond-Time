@@ -212,6 +212,7 @@ bool Input::PreUpdate()
 				jButtons[event.cbutton.button] = KEY_UP;
 
 		case SDL_TEXTINPUT:
+			kbAvailable = true;
 			inputText = event.text.text;
 			textReady = true;
 			break;
@@ -353,8 +354,12 @@ bool Input::PreUpdate()
 				else axis[(int)Axis::UP] = KeyState::KEY_IDLE;
 			}
 		}
+
+		if (xAxis != 0 || yAxis != 0)
+			kbAvailable = false;
 	}
 	
+
 
 	//Check if controller has been connected to the system
 	if (controller == nullptr && joystick == nullptr && SDL_NumJoysticks() > 0)

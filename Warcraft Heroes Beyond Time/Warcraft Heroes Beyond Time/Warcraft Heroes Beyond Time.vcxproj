@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{2781B1EC-1D8B-4816-86D8-8A9200ECBEFC}</ProjectGuid>
     <RootNamespace>Warcraft Heroes Beyond Time</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -126,6 +126,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AngelsGuardItem.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="ArcherArrow.cpp" />
     <ClCompile Include="ArrowSlowItem.cpp" />
@@ -153,6 +154,7 @@
     <ClCompile Include="Geyser.cpp" />
     <ClCompile Include="GUIImage.cpp" />
     <ClCompile Include="Guldan.cpp" />
+    <ClCompile Include="HolyShitItem.cpp" />
     <ClCompile Include="InputBox.cpp" />
     <ClCompile Include="ItemContainer.cpp" />
     <ClCompile Include="LifeStealItem.cpp" />
@@ -161,9 +163,11 @@
     <ClCompile Include="ModulePrinter.cpp" />
     <ClCompile Include="ModuleProjectiles.cpp" />
     <ClCompile Include="ModuleTransitions.cpp" />
+    <ClCompile Include="OneShotItem.cpp" />
     <ClCompile Include="PlayerHPBar.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="RingItem.cpp" />
+    <ClCompile Include="ShieldBallItem.cpp" />
     <ClCompile Include="Slider.cpp" />
     <ClCompile Include="ModuleMapGenerator.cpp" />
     <ClCompile Include="ModuleColliders.cpp" />
@@ -191,6 +195,7 @@
     <ClCompile Include="WCItem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AngelsGuardItem.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="ArcherArrow.h" />
@@ -221,6 +226,7 @@
     <ClInclude Include="GUIElem.h" />
     <ClInclude Include="GUIImage.h" />
     <ClInclude Include="Guldan.h" />
+    <ClInclude Include="HolyShitItem.h" />
     <ClInclude Include="InputBox.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemContainer.h" />
@@ -229,11 +235,14 @@
     <ClInclude Include="ModuleItems.h" />
     <ClInclude Include="ModulePrinter.h" />
     <ClInclude Include="ModuleTransitions.h" />
+    <ClInclude Include="OneShotItem.h" />
+    <ClInclude Include="PhysFS\include\physfs.h" />
     <ClInclude Include="PlayerHPBar.h" />
     <ClInclude Include="PortalEntity.h" />
     <ClInclude Include="ModuleProjectiles.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="RingItem.h" />
+    <ClInclude Include="ShieldBallItem.h" />
     <ClInclude Include="Slider.h" />
     <ClInclude Include="ModuleMapGenerator.h" />
     <ClInclude Include="ModuleColliders.h" />

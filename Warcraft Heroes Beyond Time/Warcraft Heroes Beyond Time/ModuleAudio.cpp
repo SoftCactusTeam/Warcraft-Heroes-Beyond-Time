@@ -67,6 +67,7 @@ void Audio::InitAudio()
 	Thrall_Hit_FX = LoadFx("audio/fx/thrall/T_hit_fx.ogg");
 	Thrall_AttackFX = LoadFx("audio/fx/thrall/T_attack_fx.ogg");
 	Thrall_SkillFX = LoadFx("audio/fx/thrall/T_skill_fx.ogg");
+	Thrall_Revive = LoadFx("audio/fx/thrall/T_Revive.ogg");
 	ArcherDamaged = LoadFx("audio/fx/enemies/ArcherDeath.ogg");
 	GuldanEncounterFX = LoadFx("audio/fx/guldan/guldan_first_encounter_fx.ogg");
 	GuldanTPFX = LoadFx("audio/fx/guldan/guldan_tp_fx.ogg");
@@ -77,6 +78,17 @@ void Audio::InitAudio()
 	UnlockPortalFX = LoadFx("audio/fx/others/portal_unlocked_fx.ogg");
 	GuldanBalls_Ori = LoadFx("audio/fx/guldan/guldan_fireball_fx.ogg");
 	Throw_BallsFX = LoadFx("audio/fx/guldan/throw_balls_fx.ogg");
+	Enemy_freezedFX = LoadFx("audio/fx/enemies/freezed_fx.ogg");
+	Enemy_fearedFX = LoadFx("audio/fx/enemies/fear_fx.ogg");
+	GuldanCircle = LoadFx("audio/fx/guldan/circleballs_explosion_fx.ogg");
+	GuldanOddBallFX = LoadFx("audio/fx/guldan/espiral_fx.ogg");
+	GuldanChargingPower = LoadFx("audio/fx/guldan/charging_power_fx.ogg");
+	GuldanThunderFX = LoadFx("audio/fx/guldan/G_thunder.ogg");
+	GuldanHexBall = LoadFx("audio/fx/guldan/G_hex_generate.ogg");
+	GuldanMeteoriteTarget = LoadFx("audio/fx/guldan/meteorite_fx.ogg");
+	GuldanSecondPhase = LoadFx("audio/fx/guldan/red_balls_fx.ogg");
+	GuldanFireSecondPhase = LoadFx("audio/fx/guldan/G_fire_fx.ogg");
+	GuldanSpiralFX = LoadFx("audio/fx/guldan/G_spiral.ogg");
 	//---------------------------------------Load Music----------------------------
 	MainMenuBSO = "audio/BSO's/Warcraft HBT - Main Menu.ogg";
 	InGameBSO = "audio/BSO's/Warcraft HBT - Level.ogg";

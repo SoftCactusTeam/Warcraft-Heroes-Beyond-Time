@@ -80,6 +80,17 @@ bool GUIWindow::AnyChildFocused()
 	return false;
 }
 
+GUIElem* GUIWindow::getTheFocused() const
+{
+	std::list<GUIElem*>::const_iterator focusedIt;
+	for (focusedIt = childs.begin(); focusedIt != childs.end(); ++focusedIt)
+	{
+		if ((*focusedIt)->IsFocused())
+			return *focusedIt;
+	}
+	return nullptr;
+}
+
 void GUIWindow::FocusNextChild()
 {
 	GUIElem* focused = nullptr;
@@ -219,6 +230,8 @@ bool GUIWindow::checkVerticalInputs(float dt)
 
 bool GUIWindow::checkHorizontalInputs(float dt)
 {
+	GUIElem* elemfocused = getTheFocused();
+
 	if (App->input->GetAxis((int)Axis::RIGHT) == KeyState::KEY_DOWN || App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_DOWN)
 	{
 		if (!AnyChildFocused())
@@ -226,13 +239,13 @@ bool GUIWindow::checkHorizontalInputs(float dt)
 			childs.front()->Focus();
 		}
 
-		else if (App->input->GetAxis((int)Axis::RIGHT) == KeyState::KEY_DOWN)
+		else if (App->input->GetAxis((int)Axis::RIGHT) == KeyState::KEY_DOWN && !elemfocused->AreYouPicking())
 		{
 			FocusNextChild();
 		}
 	}
 
-	else if (App->input->GetAxis((int)Axis::RIGHT) == KeyState::KEY_REPEAT)
+	else if (App->input->GetAxis((int)Axis::RIGHT) == KeyState::KEY_REPEAT && elemfocused && !elemfocused->AreYouPicking())
 	{
 		counter += dt;
 		if (counter > 0.4)
@@ -253,13 +266,13 @@ bool GUIWindow::checkHorizontalInputs(float dt)
 			childs.back()->Focus();
 		}
 
-		else
+		else if(!getTheFocused()->AreYouPicking())
 		{
 			FocusPrevChild();
 		}
 	}
 
-	else if (App->input->GetAxis((int)Axis::LEFT) == KeyState::KEY_REPEAT)
+	else if (App->input->GetAxis((int)Axis::LEFT) == KeyState::KEY_REPEAT && elemfocused && !elemfocused->AreYouPicking())
 	{
 		counter += dt;
 		if (counter > 0.4)

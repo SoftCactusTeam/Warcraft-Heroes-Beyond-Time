@@ -318,7 +318,12 @@ bool Scene::PostUpdate()
 bool Scene::CleanUp()
 {
 	if (player)
+	{
 		playerStats = player->numStats;
+		uint quantityToHeal = (playerStats.maxhp - playerStats.hp) * playerStats.hpRecover / 100;
+		playerStats.hp = playerStats.hp + quantityToHeal > playerStats.maxhp ? playerStats.maxhp : playerStats.hp + quantityToHeal;
+	}
+		
 
 	App->gui->DeActivate();
 	App->map->DeActivate();
@@ -445,7 +450,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 void Scene::CreateMainMenuScreen()
 {
 	GUIWindow* window = (GUIWindow*)App->gui->CreateGUIWindow({ 0,0 }, { 0,0,0,0 }, nullptr, nullptr);
-	
+
 	//LOGO
 	GUIImage* logo = (GUIImage*)App->gui->CreateGUIImage({ 100,25 }, { 624, 21, 448, 129 }, nullptr);
 
@@ -574,7 +579,7 @@ void Scene::GeneratePortal()
 {
 	if (portal == nullptr && App->entities->spritesheetsEntities.size() > 0)
 	{
-		iPoint position = App->map->GetRandomValidPointProxy(20, 5);
+		iPoint position = App->map->GetRandomValidPointProxyForThisPos(5, 2, { (int)player->pos.x, (int)player->pos.y });
 		portal = (PortalEntity*)App->entities->AddStaticEntity({ (float)position.x * 46, (float)position.y * 46 }, PORTAL);
 	}
 }
@@ -582,6 +587,7 @@ void Scene::GeneratePortal()
 void Scene::GoMainMenu()
 {
 	if (actual_scene == Stages::INGAME)
+		App->audio->PauseFX(App->audio->GuldanFireSecondPhase); // I DON'T KNOW IF THIS IS GOOD PLS REVISE
 		App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0.5f);
 	next_scene = Stages::MAIN_MENU;
 	restart = true;
@@ -590,15 +596,21 @@ void Scene::GoMainMenu()
 
 void Scene::CreateGratitudeScreen()
 {
-	GUIWindow* window = (GUIWindow*)App->gui->CreateGUIWindow({ 0,0 }, { 0,0,0,0 }, nullptr, nullptr);
-	window->blackBackground = true;
-	gratitudeON = true;
-	LabelInfo gratitude;
-	gratitude.color = White;
-	gratitude.fontName = "LifeCraft90";
-	gratitude.multilabelWidth = 1000;
-	gratitude.text = "                    Victory! \n Thanks for playing the demo. Your support means a lot ^^ \n More at: @SoftCactus_Team";
-	App->gui->CreateLabel({ 160, 130 }, gratitude, window, nullptr);
+	static bool alreadyCreated = false;
+
+	if(!alreadyCreated)
+	{
+		GUIWindow* window = (GUIWindow*)App->gui->CreateGUIWindow({ 0,0 }, { 0,0,0,0 }, nullptr, nullptr);
+		window->blackBackground = true;
+		gratitudeON = true;
+		LabelInfo gratitude;
+		gratitude.color = White;
+		gratitude.fontName = "LifeCraft90";
+		gratitude.multilabelWidth = 1500;
+		gratitude.text = "                         Victory! \n Thanks for playing this alpha release. \n       Your support means a lot ^^ \n       More at: @SoftCactus_Team";
+		App->gui->CreateLabel({ 150, 130 }, gratitude, window, nullptr);
+	}
+	alreadyCreated = true;
 }
 
 void Scene::CreateItemSelectionScreen(Item* item1, Item* item2, Item* item3)
@@ -608,9 +620,9 @@ void Scene::CreateItemSelectionScreen(Item* item1, Item* item2, Item* item3)
 	ItemSelection->blackBackground = true;
 	ItemSelection->vertical = false;
 
-	App->gui->CreateItemContainer({ 30+85,50+121 }, item1, ItemSelection);
-	App->gui->CreateItemContainer({ 230+85,50+121 }, item2, ItemSelection);
-	App->gui->CreateItemContainer({ 430+85,50+121 }, item3, ItemSelection);
+	App->gui->CreateItemContainer({ 30+85,50+121 }, item1, ItemSelection, this);
+	App->gui->CreateItemContainer({ 230+85,50+121 }, item2, ItemSelection, this);
+	App->gui->CreateItemContainer({ 430+85,50+121 }, item3, ItemSelection, this);
 	//App->gui->CreateItemContainer({})
 }
 

@@ -368,7 +368,7 @@ bool Application::SaveNow() const
 	std::ostringstream os;
 	savedgame.save(os, "\r\n\r\n");
 
-	return fs->Save("savedgame.xml", os.str().data(), os.str().size()) == 1;
+	return fs->Save("savedgame.xml", (char*)os.str().data(), os.str().size()) == 1;
 }
 
 bool Application::LoadNow()
@@ -379,12 +379,13 @@ bool Application::LoadNow()
 	size = fs->Load("Saves/savedgame.xml", &buffer);
 
 	pugi::xml_document doc;
+
 	if (!doc.load_buffer(buffer, size))
 	{
 		LOG("Error loading xmldocument from buffer\n");
-		return true;
+		return false;
 	}
-
+	
 	pugi::xml_node game = doc.first_child();
 
 	std::list<Module*>::const_iterator it;
