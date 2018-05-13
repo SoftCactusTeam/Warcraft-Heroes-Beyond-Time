@@ -91,6 +91,9 @@ public:
 	uint Throw_BallsFX = 0u;
 	uint Enemy_freezedFX = 0u;
 	uint Enemy_fearedFX = 0u;
+	uint GuldanSecondPhase = 0u;
+	uint GuldanFireSecondPhase = 0u;
+	uint GuldanSpiralFX = 0u;
 
 	//std::string BSO's
 	std::string MainMenuBSO;

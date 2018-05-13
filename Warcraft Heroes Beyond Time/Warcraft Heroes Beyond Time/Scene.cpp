@@ -587,6 +587,7 @@ void Scene::GeneratePortal()
 void Scene::GoMainMenu()
 {
 	if (actual_scene == Stages::INGAME)
+		App->audio->PauseFX(App->audio->GuldanFireSecondPhase); // I DON'T KNOW IF THIS IS GOOD PLS REVISE
 		App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0.5f);
 	next_scene = Stages::MAIN_MENU;
 	restart = true;

@@ -81,7 +81,9 @@ private:
 	int tired = 0;
 
 	//AUDIOS
-	bool play_circle_balls_audio = true;
+	bool play_this_audio_once = true;
+	bool angry_sound_played_once = false;
+	bool dead_sound_played_once = false;
 
 	enum class BossStates
 	{
