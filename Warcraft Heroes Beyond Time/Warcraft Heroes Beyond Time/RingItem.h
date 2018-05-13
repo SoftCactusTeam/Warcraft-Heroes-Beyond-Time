@@ -38,7 +38,7 @@ public:
 	std::list<Slow_Shit*> slow_shit_list;
 
 private:
-	std::string softDescription = "\"Relax...don't do it...\"";
+	std::string softDescription = "\"Relax... Don't do it...\"";
 	std::string Title = "Sorvolo Gaunt";
 };
 

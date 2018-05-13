@@ -28,8 +28,8 @@ private:
 	float angle = 0.0f;
 	float angular_vel = 0.0f;
 
-	std::string softDescription = "\"Wait... Ok now you can shoot\"";
-	std::string Title = "Cryisis Nanosuit";
+	std::string softDescription = "\"You can't die if they never reach you\"";
+	std::string Title = "Nanosuit";
 };
 
 #endif

@@ -19,7 +19,7 @@ public:
 	bool printYourStuff(iPoint pos);
 
 private:
-	std::string softDescription = "\"Item for noobs\"";
+	std::string softDescription = "\"Difficulty levels decreasing\"";
 	std::string Title = "Ric's Sword";
 
 };

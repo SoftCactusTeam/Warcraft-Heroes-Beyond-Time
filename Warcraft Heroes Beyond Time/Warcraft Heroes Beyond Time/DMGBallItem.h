@@ -28,7 +28,7 @@ private:
 	float angle = 0.0f;
 	float angular_vel = 0.0f;
 
-	std::string softDescription = "\"3,1416...painfull maths\"";
+	std::string softDescription = "\"Thrallcentrism\"";
 	std::string Title = "Blossom";
 };
 

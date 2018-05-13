@@ -20,7 +20,7 @@ public:
 private:
 	SDL_Texture* text = nullptr;
 
-	std::string softDescription = "\"Feel like a myopic Bear\"";
+	std::string softDescription = "\"Feel like a short-sighted Bear\"";
 	std::string Title = "Holy Shit";
 };
 
