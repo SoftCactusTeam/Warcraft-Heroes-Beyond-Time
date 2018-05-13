@@ -20,7 +20,7 @@ public:
 	bool printYourStuff(iPoint pos);
 
 private:
-	std::string softDescription = "\"Blessed\"";
+	std::string softDescription = "\"One more chance...\"";
 	std::string Title = "Angel's sword";
 };
 

@@ -38,8 +38,8 @@ public:
 	std::list<Slow_Shit*> slow_shit_list;
 
 private:
-	std::string softDescription = "\"You are too slow for me\"";
-	std::string Title = "Im an item";
+	std::string softDescription = "\"Relax...don't do it...\"";
+	std::string Title = "Sorvolo Gaunt";
 };
 
 #endif

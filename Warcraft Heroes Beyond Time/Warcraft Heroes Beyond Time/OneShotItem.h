@@ -20,7 +20,7 @@ public:
 	bool printYourStuff(iPoint pos);
 
 private:
-	std::string softDescription = "\"Kill or die\"";
+	std::string softDescription = "\"Kill or die. Literally\"";
 	std::string Title = "GlassCannon";
 };
 

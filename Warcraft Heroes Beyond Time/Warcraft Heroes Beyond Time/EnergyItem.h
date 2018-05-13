@@ -19,7 +19,7 @@ public:
 
 private:
 	std::string softDescription = "\"You will enjoy the pain\"";
-	std::string Title = "I am an item";
+	std::string Title = "Surprise bag";
 };
 
 #endif 

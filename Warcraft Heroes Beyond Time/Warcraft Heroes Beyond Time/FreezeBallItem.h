@@ -29,8 +29,8 @@ private:
 	float angle = 0.0f;
 	float angular_vel = 0.0f;
 
-	std::string softDescription = "\"Stop there!\"";
-	std::string Title = "Im an item";
+	std::string softDescription = "\"Perfect for summer\"";
+	std::string Title = "Bubbles";
 };
 
 #endif

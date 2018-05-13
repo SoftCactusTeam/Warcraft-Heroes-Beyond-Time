@@ -19,8 +19,8 @@ public:
 	bool printYourStuff(iPoint pos);
 
 private:
-	std::string softDescription = "\"Murderer\"";
-	std::string Title = "Im an item";
+	std::string softDescription = "\"Item for noobs\"";
+	std::string Title = "Ric's Sword";
 
 };
 
