@@ -176,6 +176,7 @@ bool Guldan::Update(float dt)
 			statesBoss = BossStates::TELEPORT;
 			anim = &teleport;
 			teleportCenter = true;
+			App->audio->PlayFx(App->audio->GuldanTPFX);
 			App->gui->CreateBossHPBar((BossEntity*)this, { 640 / 2 - 312 / 2,320 });
 			break;
 		}
@@ -208,6 +209,7 @@ bool Guldan::Update(float dt)
 		{
 			statesBoss = BossStates::TELEPORT;
 			anim = &teleport;
+			App->audio->PlayFx(App->audio->GuldanTPFX);
 			break;
 		}
 
@@ -329,19 +331,20 @@ bool Guldan::Update(float dt)
 		{
 			timeBetweenBalls += 1.0f * dt;
 
-			if (next_movement_type == FellBallsTypes::ODD_EVEN_TYPE)
-			{
-				if (numStats.hp <= numStats.maxhp / 2)
+				if (numStats.hp <= numStats.maxhp / 2 && next_movement_type != FellBallsTypes::SPIRAL_TYPE)
 				{
 					timeGeysersFollowingPlayerM += 1 * dt;
 
-					if (timeGeysersFollowingPlayerM >= 1.0f)
+					if (timeGeysersFollowingPlayerM >= 3.0f)
 					{
 						GeneratGeyser(GeyserType::FOLLOW_PLAYER);
+						App->audio->PlayFx(App->audio->GuldanMeteoriteTarget);
 						timeGeysersFollowingPlayerM = 0.0f;
 					}
 				}
 
+			if (next_movement_type == FellBallsTypes::ODD_EVEN_TYPE)
+			{
 				if (startTimeBetweenM)
 				{
 					timeBetweenM += 1.0f * dt;
@@ -402,18 +405,13 @@ bool Guldan::Update(float dt)
 			}
 			else if (next_movement_type == FellBallsTypes::HEXAGON_TYPE)
 			{
-				//if (play_circle_balls_audio)
-				//{
-				//	//App->audio->PlayFx(App->audio->GuldanTPFX);
-				//	play_circle_balls_audio = false;
-				//}
-
 				if (timeBetweenBalls >= TIME_BETWEEN_BALLS_HEXAGON)
 				{
 					GenerateFelBalls(FellBallsTypes::HEXAGON_TYPE, 0.0f);
 					hexagonAngle += 10.0f;
 					timeBetweenBalls = 0.0f;
 					contBalls += 1;
+					App->audio->PlayFx(App->audio->GuldanHexBall);
 				}
 				// ----------------------------
 
@@ -424,7 +422,6 @@ bool Guldan::Update(float dt)
 					//anim = &generatingBallsInverse;
 					hexagonAngle = 0.0f;
 					contBalls = 0;
-					//play_circle_balls_audio = true;
 				}
 			}
 			else if (next_movement_type == FellBallsTypes::SPIRAL_TYPE)
@@ -489,6 +486,7 @@ bool Guldan::Update(float dt)
 					pos = GULDAN_BASE;
 
 					anim = &inverseTeleport;
+					App->audio->PlayFx(App->audio->GuldanTPFX);
 			}
 		}
 		else

@@ -83,6 +83,8 @@ void Audio::InitAudio()
 	GuldanOddBallFX = LoadFx("audio/fx/guldan/espiral_fx.ogg");
 	GuldanChargingPower = LoadFx("audio/fx/guldan/charging_power_fx.ogg");
 	GuldanThunderFX = LoadFx("audio/fx/guldan/G_thunder.ogg");
+	GuldanHexBall = LoadFx("audio/fx/guldan/G_hex_generate.ogg");
+	GuldanMeteoriteTarget = LoadFx("audio/fx/guldan/meteorite_fx.ogg");
 	//---------------------------------------Load Music----------------------------
 	MainMenuBSO = "audio/BSO's/Warcraft HBT - Main Menu.ogg";
 	InGameBSO = "audio/BSO's/Warcraft HBT - Level.ogg";
