@@ -73,10 +73,13 @@ bool FEARBallItem::Draw()
 	return true;
 }
 
-bool FEARBallItem::printIconOnScreen(iPoint pos)
+bool FEARBallItem::printYourStuff(iPoint pos)
 {
 	//The GUI uses this method, fill it in all the items.
-	return App->render->Blit(App->items->getItemsTexture(), pos.x, pos.y, &SDL_Rect(STICK_ITEM), 1, 0);
+	iPoint iconPos = { 171 / 2 - 16 / 2 ,50 };
+	App->render->Blit(App->items->getItemsTexture(), pos.x + iconPos.x, pos.y + iconPos.y, &SDL_Rect(STICK_ITEM), 1, 0);
+	printMyString((char*)softDescription.data(), { 171 / 2 + pos.x, 200 + pos.y });
+	return true;
 }
 
 void FEARBallItem::go_up()

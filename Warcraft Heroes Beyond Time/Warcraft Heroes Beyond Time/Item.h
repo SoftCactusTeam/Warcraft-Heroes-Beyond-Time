@@ -4,6 +4,8 @@
 #include "ModuleItems.h"
 #include "p2Point.h"
 #include "Application.h"
+#include "ModuleRender.h"
+#include "Fonts.h"
 
 class Item
 {
@@ -27,8 +29,19 @@ public:
 		return true;
 	}
 
-	virtual bool printIconOnScreen(iPoint pos) 
+	virtual bool printYourStuff(iPoint pos) 
 	{
+		return true;
+	}
+
+protected:
+	inline virtual bool printMyString(char* customString, iPoint halfPos)
+	{
+		SDL_Texture* string = App->fonts->Print(customString, White, App->fonts->getFontbyName("LifeCraft80"), 500);
+		int w, h;
+		SDL_QueryTexture(string, NULL, NULL, &w, &h);
+		App->render->Blit(string, halfPos.x - w*0.3 / 2, halfPos.y, nullptr, 0.3, 0, 0, 0, 0, true);
+		SDL_DestroyTexture(string);
 		return true;
 	}
 };

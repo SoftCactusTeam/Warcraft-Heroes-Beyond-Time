@@ -4,6 +4,7 @@
 #include "Item.h"
 #include "p2Point.h"
 #include "ModuleColliders.h"
+#include <string>
 
 #define SHEEP_ICON {1,51,31,31} //The rect from the texture of your gui icon
 #define ARROW_SLOW_ITEM {99,87,31,29}
@@ -30,12 +31,15 @@ public:
 	bool Start();
 	bool Act(ModuleItems::ItemEvent event, float dt = App->dt);
 	bool Draw();
-	bool printIconOnScreen(iPoint pos);
+	bool printYourStuff(iPoint pos);
 
 	float time = 0;
 	int cont = 0;
 
 	std::list<Arrow_Slow_Shit*> arrow_slow_shit_list;
+private:
+	std::string softDescription = "Your arrows will never reach me";
+	std::string hardDescription;
 };
 
 #endif

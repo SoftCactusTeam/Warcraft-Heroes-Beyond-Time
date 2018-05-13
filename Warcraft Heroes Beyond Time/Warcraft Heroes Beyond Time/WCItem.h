@@ -28,12 +28,16 @@ public:
 	bool Start();
 	bool Act(ModuleItems::ItemEvent event, float dt = App->dt);
 	bool Draw();
-	bool printIconOnScreen(iPoint pos);
+	bool printYourStuff(iPoint pos);
 
 	float time = 0;
 	int cont = 0;
 
 	std::list<Shit*> shit_list;
+
+private:
+	std::string softDescription;
+	std::string hardDescription;
 };
 
 #endif

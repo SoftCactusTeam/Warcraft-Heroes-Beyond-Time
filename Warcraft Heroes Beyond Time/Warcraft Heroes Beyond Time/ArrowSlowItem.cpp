@@ -72,10 +72,11 @@ bool ArrowSlowItem::Draw()
 }
 	
 
-bool ArrowSlowItem::printIconOnScreen(iPoint pos)
+bool ArrowSlowItem::printYourStuff(iPoint pos)
 {
-	return App->render->Blit(App->items->getItemsTexture(), pos.x, pos.y, &SDL_Rect(SHEEP_ICON), 1, 0);
-
+	iPoint iconPos = { 171 / 2 - 31 / 2 ,50 };
+	App->render->Blit(App->items->getItemsTexture(), pos.x + iconPos.x, pos.y + iconPos.y, &SDL_Rect(SHEEP_ICON), 1, 0);
+	printMyString((char*)softDescription.data(), { 171 / 2 + pos.x, 200 + pos.y });
 	return true;
 }
 

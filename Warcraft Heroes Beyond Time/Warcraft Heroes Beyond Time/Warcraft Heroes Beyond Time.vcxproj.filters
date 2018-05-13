@@ -90,9 +90,6 @@
     <ClCompile Include="Color.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="Fonts.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
     <ClCompile Include="Log.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
@@ -199,6 +196,9 @@
     <ClCompile Include="AngelsGuardItem.cpp">
       <Filter>Items</Filter>
     </ClCompile>
+    <ClCompile Include="Fonts.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -291,9 +291,6 @@
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="Animation.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="Fonts.h">
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="Globals.h">
@@ -421,6 +418,9 @@
     </ClInclude>
     <ClInclude Include="AngelsGuardItem.h">
       <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Fonts.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

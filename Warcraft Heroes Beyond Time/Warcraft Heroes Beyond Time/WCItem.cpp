@@ -57,10 +57,13 @@ bool WCItem::Draw()
 	return true;
 }
 
-bool WCItem::printIconOnScreen(iPoint pos)
+bool WCItem::printYourStuff(iPoint pos)
 {
 	//The GUI uses this method, fill it in all the items.
-	return App->render->Blit(App->items->getItemsTexture(), pos.x, pos.y, &SDL_Rect(WC_ICON), 1, 0);
+	iPoint iconPos = { 171 / 2 - 27 / 2 ,50 };
+	App->render->Blit(App->items->getItemsTexture(), pos.x + iconPos.x, pos.y + iconPos.y, &SDL_Rect(WC_ICON), 1, 0);
+	printMyString((char*)softDescription.data(), { 171 / 2 + pos.x, 200 + pos.y });
+	return true;
 }
 
 Shit::Shit(Collider* temp, iPoint pos) : paper_collider(temp), pos(pos)

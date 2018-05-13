@@ -43,9 +43,12 @@ bool DMGBallItem::Draw()
 	return true;
 }
 
-bool DMGBallItem::printIconOnScreen(iPoint pos)
+bool DMGBallItem::printYourStuff(iPoint pos)
 {
 	//The GUI uses this method, fill it in all the items.
-	return App->render->Blit(App->items->getItemsTexture(), pos.x, pos.y, &SDL_Rect(RED_BALL_ICON), 1, 0);
+	iPoint iconPos = { 171 / 2 - 16 / 2 ,50 };
+	App->render->Blit(App->items->getItemsTexture(), pos.x + iconPos.x, pos.y + iconPos.y, &SDL_Rect(RED_BALL_ICON), 1, 0);
+	printMyString((char*)softDescription.data(), { 171 / 2 + pos.x, 200 + pos.y });
+	return true;
 }
 

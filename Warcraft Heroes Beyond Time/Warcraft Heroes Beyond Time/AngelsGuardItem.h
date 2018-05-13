@@ -2,7 +2,7 @@
 #define _ANGELS_GUARDIAN_ITEM_
 
 #include "Item.h"
-#include <memory>
+#include <string>
 
 #define ANGEL_ICON {1,214,32,32} //The rect from the texture of your gui icon
 
@@ -17,10 +17,11 @@ public:
 	bool Start();
 	bool Act(ModuleItems::ItemEvent event, float dt = App->dt);
 	bool Draw();
-	bool printIconOnScreen(iPoint pos);
+	bool printYourStuff(iPoint pos);
 
 private:
-
+	std::string softDescription = "\"Blessed\"";
+	std::string Title = "Angel's sword";
 };
 
 #endif
