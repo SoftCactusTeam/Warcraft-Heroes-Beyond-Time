@@ -7,7 +7,6 @@
 
 bool AngelsGuardItem::Start()
 {
-	App->items->revived = false;
 	return true;
 }
 
@@ -16,12 +15,11 @@ bool AngelsGuardItem::Act(ModuleItems::ItemEvent event, float dt)
 	//Here you manage your item depending of the event you receive.
 	switch (event)
 	{
-	case ModuleItems::ItemEvent::UPDATE:
-		if (App->scene->player->numStats.hp < 1.0f && !App->items->revived)
+		case ModuleItems::ItemEvent::PLAYER_DIED:
 		{
-			App->scene->player->numStats.hp = App->scene->player->numStats.maxhp;
-			App->items->revived = true;
-			//FALTA HACER LA ANIMCIÓN DE REVIVIR
+			App->scene->player->state = PlayerEntity::states::PL_RELIVE;
+			App->items->unequipItem(this);
+			break;
 		}
 	}
 	return true;
@@ -30,7 +28,6 @@ bool AngelsGuardItem::Act(ModuleItems::ItemEvent event, float dt)
 bool AngelsGuardItem::Draw()
 {
 	//Use the ModulePrinter to print all the stuff.
-	//PRINT SOME PREETY AURA IF U WANT
 	return true;
 }
 

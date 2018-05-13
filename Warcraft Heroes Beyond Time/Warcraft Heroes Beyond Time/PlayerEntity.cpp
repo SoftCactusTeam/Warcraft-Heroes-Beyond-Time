@@ -758,6 +758,8 @@ void PlayerEntity::KeyboardStates(float dt)
 			{
 				state = states::PL_IDLE;
 				reliveCounter = 0.0f;
+				numStats.hp = numStats.maxhp;
+				App->audio->PlayMusic(App->audio->InGameBSO.data());
 			}
 
 			break;
@@ -1161,6 +1163,8 @@ void PlayerEntity::JoyconStates(float dt)
 		{
 			state = states::PL_IDLE;
 			reliveCounter = 0.0f;
+			numStats.hp = numStats.maxhp;
+			App->audio->PlayMusic(App->audio->InGameBSO.data());
 		}
 
 		break;

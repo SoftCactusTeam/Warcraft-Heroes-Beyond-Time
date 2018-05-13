@@ -196,6 +196,9 @@
     <ClCompile Include="OneShotItem.cpp">
       <Filter>Items</Filter>
     </ClCompile>
+    <ClCompile Include="AngelsGuardItem.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -415,6 +418,9 @@
     </ClInclude>
     <ClInclude Include="PhysFS\include\physfs.h">
       <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="AngelsGuardItem.h">
+      <Filter>Items</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

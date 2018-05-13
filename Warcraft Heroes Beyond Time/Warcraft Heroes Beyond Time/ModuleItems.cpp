@@ -30,7 +30,6 @@ float ModuleItems::energywhenHitted = 0.0f;
 float ModuleItems::HolyShitExtraDamage = 0.0f;
 float ModuleItems::HolyShitExtraHP = 0.0f;
 
-bool ModuleItems::revived = false;
 
 bool ModuleItems::Awake(pugi::xml_node& itemsNode)
 {
@@ -92,6 +91,8 @@ bool ModuleItems::PostUpdate()
 	{
 		ret = (*it)->Draw();
 	}
+
+	DestroyItems();
 
 	return ret;
 }
@@ -155,8 +156,6 @@ void ModuleItems::loadItemsPull()
 
 	AngelsGuardItem* Angels_Guard_Item = new AngelsGuardItem();
 	availableItems.push_back(Angels_Guard_Item);
-
-
 }
 
 bool ModuleItems::equipItem(Item* item)
@@ -175,6 +174,24 @@ bool ModuleItems::equipItem(Item* item)
 		}
 	}
 	return ret;
+}
+
+bool ModuleItems::unequipItem(Item* item)
+{
+	itemsToUnEquip.push_back(item);
+	return true;
+}
+
+void ModuleItems::DestroyItems()
+{
+	std::list<Item*>::iterator it;
+	
+	for(it = itemsToUnEquip.begin(); it != itemsToUnEquip.end(); ++it)
+	{
+		equipedItems.remove(*it);
+		delete *it;
+	}
+	itemsToUnEquip.clear();
 }
 
 bool ModuleItems::getThreeRandomItems(Item** items)

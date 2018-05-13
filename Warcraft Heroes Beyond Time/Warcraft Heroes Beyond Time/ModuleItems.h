@@ -40,10 +40,13 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
+	void DestroyItems();
+
 	bool getThreeRandomItems(Item** items);
 
 	//Returns false in failure or if the item was already equiped
 	bool equipItem(Item* item);
+	bool unequipItem(Item* item);
 
 	SDL_Texture* getItemsTexture() const
 	{
@@ -75,12 +78,11 @@ public:
 	static float HolyShitExtraHP;
 	static float HolyShitExtraDamage;
 
-	static bool revived;
-
 private:
 
 	std::vector<Item*> availableItems;
 	std::list<Item*> equipedItems;
+	std::list<Item*> itemsToUnEquip;
 	SDL_Texture* itemsTexture = nullptr;
 
 
