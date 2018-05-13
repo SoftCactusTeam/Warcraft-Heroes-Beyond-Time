@@ -75,6 +75,8 @@ public:
 	static float HolyShitExtraHP;
 	static float HolyShitExtraDamage;
 
+	static bool revived;
+
 private:
 
 	std::vector<Item*> availableItems;

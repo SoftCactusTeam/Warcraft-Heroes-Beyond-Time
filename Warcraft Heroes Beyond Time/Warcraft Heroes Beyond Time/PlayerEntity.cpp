@@ -16,6 +16,8 @@
 #include "ModuleTransitions.h"
 #include "EffectsElem.h"
 
+#include "AngelsGuardItem.h"
+
 PlayerEntity::PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : DynamicEntity(coor, texture, DynamicType::PLAYER), type(type)
 {
 	App->entities->LoadCDs(DashConfigCD, damagedConfigCD, deadinfloorConfigCD);
