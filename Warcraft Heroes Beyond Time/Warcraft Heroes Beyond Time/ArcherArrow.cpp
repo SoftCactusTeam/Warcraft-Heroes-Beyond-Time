@@ -110,12 +110,12 @@ void ArcherArrow::OnCollision(Collider* yours, Collider* collideWith)
 		switch (attack->pattacktype)
 		{
 		case PlayerAttack::P_Attack_Type::NORMAL_ATTACK:
+		case PlayerAttack::P_Attack_Type::SHIELDBALL_ITEM:
 			deleteArrow = true;
 			break;
 		case PlayerAttack::P_Attack_Type::PROJECTILESLOWSHIT_ITEM:
 			toData->speed = 2;
 			break;
-		case PlayerAttack::P_Attack_Type::FREEZEBALL_ITEM:
 			deleteArrow = true;
 			break;
 		}
