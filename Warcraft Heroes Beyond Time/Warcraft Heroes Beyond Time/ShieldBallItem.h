@@ -28,7 +28,7 @@ private:
 	float angle = 0.0f;
 	float angular_vel = 0.0f;
 
-	std::string softDescription = "\"You can't die if they never reach you\"";
+	std::string softDescription = "        \"You can't die \n if they never reach you\"";
 	std::string Title = "Nanosuit";
 };
 
