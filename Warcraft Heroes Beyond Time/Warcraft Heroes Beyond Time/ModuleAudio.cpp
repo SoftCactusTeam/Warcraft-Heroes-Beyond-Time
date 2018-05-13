@@ -67,6 +67,7 @@ void Audio::InitAudio()
 	Thrall_Hit_FX = LoadFx("audio/fx/thrall/T_hit_fx.ogg");
 	Thrall_AttackFX = LoadFx("audio/fx/thrall/T_attack_fx.ogg");
 	Thrall_SkillFX = LoadFx("audio/fx/thrall/T_skill_fx.ogg");
+	Thrall_Revive = LoadFx("audio/fx/thrall/T_Revive.ogg");
 	ArcherDamaged = LoadFx("audio/fx/enemies/ArcherDeath.ogg");
 	GuldanEncounterFX = LoadFx("audio/fx/guldan/guldan_first_encounter_fx.ogg");
 	GuldanTPFX = LoadFx("audio/fx/guldan/guldan_tp_fx.ogg");

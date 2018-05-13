@@ -73,6 +73,7 @@ public:
 	uint Thrall_EnergyMax_FX = 0u;
 	uint Thrall_AttackFX = 0u;
 	uint Thrall_SkillFX = 0u;
+	uint Thrall_Revive = 0u;
 	uint ArcherDamaged = 0u;
 	uint GuldanEncounterFX = 0u;
 	uint GuldanTPFX = 0u;
