@@ -14,6 +14,7 @@
 #include "GUIWindow.h"
 #include "GUIImage.h"
 #include "ModuleTransitions.h"
+#include "EffectsElem.h"
 
 PlayerEntity::PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture) : DynamicEntity(coor, texture, DynamicType::PLAYER), type(type)
 {
@@ -104,6 +105,8 @@ void PlayerEntity::PlayerStates(float dt)
 {
 	if (move && !App->transitions->IsFading())
 	{
+		if (App->input->GetKey(SDL_SCANCODE_8) == KeyState::KEY_DOWN)
+			state = states::PL_RELIVE;
 		if (App->input->IsKeyboardAvailable())
 			KeyboardStates(dt);
 		else
@@ -712,7 +715,7 @@ void PlayerEntity::KeyboardStates(float dt)
 
 		case states::PL_DEAD:
 		{
-			if (anim->Finished() && anim != &deadDownRight)
+			if (anim != &deadDownRight)
 			{
 				anim->Reset();
 				animBefore = anim;
@@ -720,14 +723,41 @@ void PlayerEntity::KeyboardStates(float dt)
 			}
 			else if (anim->Finished())
 			{
-				deadinfloorcd += dt;
-				// PlayFX, Go to the main menu.
-				if (deadinfloorcd > deadinfloorConfigCD)
+				App->items->newEvent(ModuleItems::ItemEvent::PLAYER_DIED);
+				if (state == states::PL_DEAD)
 				{
-					deadinfloorcd = 0.0f;
-					App->scene->GoMainMenu();
+					deadinfloorcd += dt;
+					// PlayFX, Go to the main menu.
+					if (deadinfloorcd > deadinfloorConfigCD)
+					{
+						deadinfloorcd = 0.0f;
+						App->scene->GoMainMenu();
+					}
 				}
+				else
+				{
+					deadDownRight.Reset();
+				}
+
 			}
+			break;
+		}
+
+		case states::PL_RELIVE:
+		{
+			if (reliveCounter == 0.0f)
+				App->effects->CreateEffect({ pos.x-10, pos.y - 100 }, timeReliving, App->effects->playerReliveAnim);
+
+			anim = &idleDown;
+
+			reliveCounter += dt;
+
+			if (reliveCounter > timeReliving)
+			{
+				state = states::PL_IDLE;
+				reliveCounter = 0.0f;
+			}
+
 			break;
 		}
 
@@ -1096,14 +1126,41 @@ void PlayerEntity::JoyconStates(float dt)
 		}
 		else if (anim->Finished())
 		{
-			deadinfloorcd += dt;
-			// PlayFX, Go to the main menu.
-			if (deadinfloorcd > deadinfloorConfigCD)
+			App->items->newEvent(ModuleItems::ItemEvent::PLAYER_DIED);
+			if (state == states::PL_DEAD)
 			{
-				deadinfloorcd = 0.0f;
-				App->scene->GoMainMenu();
+				deadinfloorcd += dt;
+				// PlayFX, Go to the main menu.
+				if (deadinfloorcd > deadinfloorConfigCD)
+				{
+					deadinfloorcd = 0.0f;
+					App->scene->GoMainMenu();
+				}
 			}
+			else
+			{
+				deadDownRight.Reset();
+			}
+			
 		}
+		break;
+	}
+
+	case states::PL_RELIVE:
+	{
+		if (reliveCounter == 0.0f)
+			App->effects->CreateEffect({ pos.x - 10, pos.y - 100 }, timeReliving, App->effects->playerReliveAnim);
+
+		anim = &idleDown;
+
+		reliveCounter += dt;
+
+		if (reliveCounter > timeReliving)
+		{
+			state = states::PL_IDLE;
+			reliveCounter = 0.0f;
+		}
+
 		break;
 	}
 

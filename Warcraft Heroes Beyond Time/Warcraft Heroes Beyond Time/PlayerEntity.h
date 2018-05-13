@@ -45,6 +45,9 @@ protected:
 	bool win = false;
 	float afterWinConfigCounter = 0.0f; //Wont be used for now
 	float afterWinCounter = 0.0f;
+	
+	float reliveCounter = 0.0f;
+	float timeReliving = 1.0f;
 
 	Collider* wallCol = nullptr;
 	Collider* damageCol = nullptr;
@@ -67,6 +70,7 @@ public:
 		PL_DASH,
 		PL_ATTACK,
 		PL_SKILL,
+		PL_RELIVE,
 		PL_DEAD,
 		PL_WIN
 

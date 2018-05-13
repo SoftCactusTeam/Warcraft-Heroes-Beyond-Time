@@ -15,6 +15,15 @@ ModuleEffects::ModuleEffects() : Module()
 	playerDustAnim.PushBack({ 0, 19, 24, 19 });
 	playerDustAnim.PushBack({ 24, 19, 24, 19 });
 	playerDustAnim.loop = false;
+
+	playerReliveAnim.PushBack({17,57,58,143});
+	playerReliveAnim.PushBack({78,57,58,143});
+	playerReliveAnim.PushBack({141,57,58,143});
+	playerReliveAnim.PushBack({204,57,58,143});
+	playerReliveAnim.PushBack({266,57,58,143});
+	playerReliveAnim.PushBack({329,57,58,143});
+	playerReliveAnim.PushBack({392,57,58,143});
+	playerReliveAnim.loop = false;
 }
 
 ModuleEffects::~ModuleEffects() {}
