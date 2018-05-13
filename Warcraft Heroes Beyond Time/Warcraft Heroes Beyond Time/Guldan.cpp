@@ -248,6 +248,7 @@ bool Guldan::Update(float dt)
 		{
 			statesBoss = BossStates::TELEPORT;
 			anim = &teleport;
+			App->audio->PlayFx(App->audio->GuldanTPFX);
 			randState = 2;
 			break;
 		}
@@ -259,6 +260,7 @@ bool Guldan::Update(float dt)
 			letsGoThunders = true;
 			anim = &teleport;
 			tired += 1;
+			App->audio->PlayFx(App->audio->GuldanTPFX);
 			randState = 4;
 			break;
 		}
@@ -269,6 +271,7 @@ bool Guldan::Update(float dt)
 			next_movement_type = FellBallsTypes::ODD_EVEN_TYPE;
 			anim = &startGeneratingBalls;
 			tired += 1;
+			App->audio->PlayFx(App->audio->GuldanOddBallFX);
 			randState = 3;
 			break;
 		}
@@ -376,11 +379,18 @@ bool Guldan::Update(float dt)
 			}
 			else if (next_movement_type == FellBallsTypes::COMPLETE_CIRCLE)
 			{
+				if(play_circle_balls_audio)
+				{
+					App->audio->PlayFx(App->audio->GuldanCircle);
+					play_circle_balls_audio = false;
+				}
+
 				if (timeBetweenBalls >= TIME_BETWEEN_BALLS_COMPLETE_CIRCLE)
 				{
 					GenerateFelBalls(FellBallsTypes::COMPLETE_CIRCLE, 0.0f);
 					timeBetweenBalls = 0.0f;
 					contBalls += 1;
+					play_circle_balls_audio = true;
 				}
 				
 				if (contBalls >= NUMBER_BALLS_COMPLETE_CIRCLE)
@@ -392,6 +402,12 @@ bool Guldan::Update(float dt)
 			}
 			else if (next_movement_type == FellBallsTypes::HEXAGON_TYPE)
 			{
+				//if (play_circle_balls_audio)
+				//{
+				//	//App->audio->PlayFx(App->audio->GuldanTPFX);
+				//	play_circle_balls_audio = false;
+				//}
+
 				if (timeBetweenBalls >= TIME_BETWEEN_BALLS_HEXAGON)
 				{
 					GenerateFelBalls(FellBallsTypes::HEXAGON_TYPE, 0.0f);
@@ -408,6 +424,7 @@ bool Guldan::Update(float dt)
 					//anim = &generatingBallsInverse;
 					hexagonAngle = 0.0f;
 					contBalls = 0;
+					//play_circle_balls_audio = true;
 				}
 			}
 			else if (next_movement_type == FellBallsTypes::SPIRAL_TYPE)
@@ -490,6 +507,13 @@ bool Guldan::Update(float dt)
 
 	case BossStates::THUNDER_CAST:
 	{
+		if (play_circle_balls_audio)
+		{
+			App->audio->PlayFx(App->audio->GuldanThunderFX);
+			//App->audio->PlayFx(App->audio->GuldanTPFX);
+			play_circle_balls_audio = false;
+		}
+
 		timeBetweenSteps += 1.0f * dt;
 
 		if (timeBetweenSteps >= TIME_BETWEEN_THUNDERS)
@@ -507,6 +531,7 @@ bool Guldan::Update(float dt)
 			step = 0;
 			statesBoss = BossStates::IDLE;
 			anim = &idle;
+			play_circle_balls_audio = true;
 			break;
 		}
 
@@ -520,6 +545,11 @@ bool Guldan::Update(float dt)
 			anim = &dead;
 			statesBoss = BossStates::DEAD;
 			break;
+		}
+
+		if (timeRestoring == 0.0f)
+		{
+			App->audio->PlayFx(App->audio->GuldanChargingPower);
 		}
 
 		timeRestoring += 1 * dt;

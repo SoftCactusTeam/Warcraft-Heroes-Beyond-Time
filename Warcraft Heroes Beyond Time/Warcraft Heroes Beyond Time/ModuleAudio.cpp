@@ -77,6 +77,12 @@ void Audio::InitAudio()
 	UnlockPortalFX = LoadFx("audio/fx/others/portal_unlocked_fx.ogg");
 	GuldanBalls_Ori = LoadFx("audio/fx/guldan/guldan_fireball_fx.ogg");
 	Throw_BallsFX = LoadFx("audio/fx/guldan/throw_balls_fx.ogg");
+	Enemy_freezedFX = LoadFx("audio/fx/enemies/freezed_fx.ogg");
+	Enemy_fearedFX = LoadFx("audio/fx/enemies/fear_fx.ogg");
+	GuldanCircle = LoadFx("audio/fx/guldan/circleballs_explosion_fx.ogg");
+	GuldanOddBallFX = LoadFx("audio/fx/guldan/espiral_fx.ogg");
+	GuldanChargingPower = LoadFx("audio/fx/guldan/charging_power_fx.ogg");
+	GuldanThunderFX = LoadFx("audio/fx/guldan/G_thunder.ogg");
 	//---------------------------------------Load Music----------------------------
 	MainMenuBSO = "audio/BSO's/Warcraft HBT - Main Menu.ogg";
 	InGameBSO = "audio/BSO's/Warcraft HBT - Level.ogg";

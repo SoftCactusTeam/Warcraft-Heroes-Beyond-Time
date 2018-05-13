@@ -79,10 +79,16 @@ public:
 	uint GuldanDieFX = 0u;
 	uint GuldanFireBallFX = 0u;
 	uint GuldanBalls_Ori = 0u;
+	uint GuldanCircle = 0u;
+	uint GuldanChargingPower = 0u;
+	uint GuldanOddBallFX = 0u;
+	uint GuldanThunderFX = 0u;
 	uint PaperItemFX = 0u;
 	uint OpeningChestFX = 0u;
 	uint UnlockPortalFX = 0u;
 	uint Throw_BallsFX = 0u;
+	uint Enemy_freezedFX = 0u;
+	uint Enemy_fearedFX = 0u;
 
 	//std::string BSO's
 	std::string MainMenuBSO;

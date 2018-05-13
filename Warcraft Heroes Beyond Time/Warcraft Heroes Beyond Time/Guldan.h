@@ -80,6 +80,9 @@ private:
 	// Tired
 	int tired = 0;
 
+	//AUDIOS
+	bool play_circle_balls_audio = true;
+
 	enum class BossStates
 	{
 		NON_STATE = -1,
@@ -129,7 +132,6 @@ public:
 	void OnCollisionContinue(Collider* yours, Collider* collideWith);
 
 	bool Draw();
-
 };
 
 #endif

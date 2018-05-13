@@ -95,6 +95,7 @@ void ChestEntity::OnCollision(Collider* yours, Collider* collideWith)
 			PlayerAttack* attack = (PlayerAttack*)collideWith;
 			if (!opened && attack->pattacktype == PlayerAttack::P_Attack_Type::NORMAL_ATTACK)
 			{
+				App->audio->PlayFx(App->audio->Thrall_Hit_FX);
 				OpenChest();
 			}
 			break;

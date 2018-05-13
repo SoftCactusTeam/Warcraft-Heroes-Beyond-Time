@@ -236,13 +236,17 @@ void Enemy_Archer::OnCollision(Collider* yours, Collider* collideWith)
 			case PlayerAttack::P_Attack_Type::FREEZEBALL_ITEM:
 			{
 				if (App->entities->GetRandomNumber(100) < ModuleItems::frozenBallChance && !GetConcreteEffect(ARCHER_EFFECT_FREEZE))	// superar tirada X%
-					AddEffect(ARCHER_EFFECTS::ARCHER_EFFECT_FREEZE, ModuleItems::frozenBallSeconds*1000);
+				{
+					AddEffect(ARCHER_EFFECTS::ARCHER_EFFECT_FREEZE, ModuleItems::frozenBallSeconds * 1000);
+					App->audio->PlayFx(App->audio->Enemy_freezedFX);
+				}
 				break;
 			}
 			case PlayerAttack::P_Attack_Type::FEARBALL_ITEM:
 			{
 				if (App->entities->GetRandomNumber(100) < ModuleItems::fearBallChance && !GetConcreteEffect(ARCHER_EFFECT_FEAR))
 					AddEffect(ARCHER_EFFECTS::ARCHER_EFFECT_FEAR, ModuleItems::fearBallSeconds*1000);
+					App->audio->PlayFx(App->audio->Enemy_fearedFX);
 				break;
 			}
 			case PlayerAttack::P_Attack_Type::DAMAGESHIT_ITEM:
@@ -685,6 +689,8 @@ void Enemy_Archer::AddEffect(ARCHER_EFFECTS effect, int time)
 		int randomY = 0;
 		int tileToMove = -1;
 
+		numStats.speed = 4;
+
 		for (int i = 0; i < 20 && tileToMove == -1; i++)
 		{
 			randomX = rand() % numStats.tilesToLittleMove + 1;
@@ -820,7 +826,7 @@ void Enemy_Archer::UpdateEffects()
 
 				break;
 			case ARCHER_EFFECT_FEAR:
-
+				numStats.speed = originalSpeed;
 				break;
 			case ARCHER_EFFECT_NONE:
 
