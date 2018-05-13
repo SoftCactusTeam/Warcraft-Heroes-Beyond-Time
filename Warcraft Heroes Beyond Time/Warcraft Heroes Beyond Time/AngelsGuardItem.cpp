@@ -19,6 +19,7 @@ bool AngelsGuardItem::Act(ModuleItems::ItemEvent event, float dt)
 		{
 			App->scene->player->state = PlayerEntity::states::PL_RELIVE;
 			App->items->unequipItem(this);
+			App->audio->PlayFx(App->audio->Thrall_Revive);
 			break;
 		}
 	}
