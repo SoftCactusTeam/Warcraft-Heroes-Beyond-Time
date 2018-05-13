@@ -168,6 +168,7 @@ bool Guldan::Update(float dt)
 			info.pos = { 16 * 48 - 4, 13 * 48 };
 			App->projectiles->AddProjectile(&info, Projectile_type::block);
 			anim = &hello;
+			App->audio->PlayFx(App->audio->GuldanEncounterFX);
 		}
 
 		if (anim == &hello && anim->Finished())
