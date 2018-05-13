@@ -20,8 +20,8 @@ public:
 private:
 	SDL_Texture* text = nullptr;
 
-	std::string softDescription;
-	std::string hardDescription;
+	std::string softDescription = "\"Darkness lover\"";
+	std::string Title = "Im an item";
 };
 
 

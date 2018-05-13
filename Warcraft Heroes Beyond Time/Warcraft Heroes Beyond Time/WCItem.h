@@ -36,8 +36,8 @@ public:
 	std::list<Shit*> shit_list;
 
 private:
-	std::string softDescription;
-	std::string hardDescription;
+	std::string softDescription = "\"Intoxicate them all\"";
+	std::string Title = "Im an item";
 };
 
 #endif

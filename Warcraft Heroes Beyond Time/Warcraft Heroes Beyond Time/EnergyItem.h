@@ -18,8 +18,8 @@ public:
 	bool printYourStuff(iPoint pos);
 
 private:
-	std::string softDescription;
-	std::string hardDescription;
+	std::string softDescription = "\"You will enjoy the pain\"";
+	std::string Title = "I am an item";
 };
 
 #endif 

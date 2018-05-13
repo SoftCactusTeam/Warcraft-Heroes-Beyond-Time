@@ -39,7 +39,8 @@ bool LifeStealItem::printYourStuff(iPoint pos)
 	//The GUI uses this method, fill it in all the items.
 	iPoint iconPos = { 171 / 2 - 31 / 2 ,50 };
 	App->render->Blit(App->items->getItemsTexture(), pos.x + iconPos.x, pos.y + iconPos.y, &SDL_Rect(LIFE_STEAL_ICON), 1, 0);
-	printMyString((char*)softDescription.data(), { 171 / 2 + pos.x, 200 + pos.y });
+	printMyString((char*)Title.data(), { 171 / 2 + pos.x, 100 + pos.y }, true);
+	printMyString((char*)softDescription.data(), { 171 / 2 + pos.x, 150 + pos.y });
 	return true;
 }
 

@@ -33,8 +33,8 @@ private:
 	float speed_growing_radius = 0.0f;
 	bool ball_away = false;
 
-	std::string softDescription;
-	std::string hardDescription;
+	std::string softDescription = "\"They seem to be afraid of me\"";
+	std::string Title = "I am an item";
 };
 
 #endif

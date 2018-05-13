@@ -38,8 +38,8 @@ public:
 
 	std::list<Arrow_Slow_Shit*> arrow_slow_shit_list;
 private:
-	std::string softDescription = "Your arrows will never reach me";
-	std::string hardDescription;
+	std::string softDescription = "\"The Slowest Arrows\"";
+	std::string Title = "I am an item";
 };
 
 #endif
