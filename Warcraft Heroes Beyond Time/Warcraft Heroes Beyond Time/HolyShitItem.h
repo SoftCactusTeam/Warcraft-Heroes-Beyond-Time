@@ -15,10 +15,13 @@ public:
 	bool Start();
 	bool Act(ModuleItems::ItemEvent event, float dt = App->dt);
 	bool Draw();
-	bool printIconOnScreen(iPoint pos);
+	bool printYourStuff(iPoint pos);
 
 private:
 	SDL_Texture* text = nullptr;
+
+	std::string softDescription = "\"Darkness lover\"";
+	std::string Title = "Im an item";
 };
 
 

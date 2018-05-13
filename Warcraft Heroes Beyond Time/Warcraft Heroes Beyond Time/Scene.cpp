@@ -606,9 +606,9 @@ void Scene::CreateGratitudeScreen()
 		LabelInfo gratitude;
 		gratitude.color = White;
 		gratitude.fontName = "LifeCraft90";
-		gratitude.multilabelWidth = 1000;
-		gratitude.text = "                    Victory! \n Thanks for playing the demo. Your support means a lot ^^ \n More at: @SoftCactus_Team";
-		App->gui->CreateLabel({ 160, 130 }, gratitude, window, nullptr);
+		gratitude.multilabelWidth = 1500;
+		gratitude.text = "                         Victory! \n Thanks for playing this alpha release. \n       Your support means a lot ^^ \n       More at: @SoftCactus_Team";
+		App->gui->CreateLabel({ 150, 130 }, gratitude, window, nullptr);
 	}
 	alreadyCreated = true;
 }

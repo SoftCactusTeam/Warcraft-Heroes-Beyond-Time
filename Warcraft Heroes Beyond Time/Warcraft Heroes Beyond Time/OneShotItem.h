@@ -17,7 +17,11 @@ public:
 	bool Start();
 	bool Act(ModuleItems::ItemEvent event, float dt = App->dt);
 	bool Draw();
-	bool printIconOnScreen(iPoint pos);
+	bool printYourStuff(iPoint pos);
+
+private:
+	std::string softDescription = "\"Kill or die\"";
+	std::string Title = "GlassCannon";
 };
 
 #endif

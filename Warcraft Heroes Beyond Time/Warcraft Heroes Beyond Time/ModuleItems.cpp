@@ -4,6 +4,8 @@
 #include "ModuleInput.h"
 #include "DMGBallItem.h"
 #include "OneShotItem.h"
+#include "AngelsGuardItem.h"
+
 #include "FreezeBallItem.h"
 #include "FEARBallItem.h"
 #include "ArrowSlowItem.h"
@@ -27,6 +29,7 @@ float ModuleItems::stealhp = 0.0f;
 float ModuleItems::energywhenHitted = 0.0f;
 float ModuleItems::HolyShitExtraDamage = 0.0f;
 float ModuleItems::HolyShitExtraHP = 0.0f;
+
 
 bool ModuleItems::Awake(pugi::xml_node& itemsNode)
 {
@@ -89,6 +92,8 @@ bool ModuleItems::PostUpdate()
 		ret = (*it)->Draw();
 	}
 
+	DestroyItems();
+
 	return ret;
 }
 
@@ -127,6 +132,7 @@ void ModuleItems::loadItemsPull()
 	FEARBallItem* Fearball_Item = new FEARBallItem();
 	availableItems.push_back(Fearball_Item);
 
+
 	ArrowSlowItem* projectileslowitem = new ArrowSlowItem();
 	availableItems.push_back(projectileslowitem);
 
@@ -147,6 +153,9 @@ void ModuleItems::loadItemsPull()
 
 	OneShotItem* One_Shot_Item = new OneShotItem();
 	availableItems.push_back(One_Shot_Item);
+
+	AngelsGuardItem* Angels_Guard_Item = new AngelsGuardItem();
+	availableItems.push_back(Angels_Guard_Item);
 }
 
 bool ModuleItems::equipItem(Item* item)
@@ -165,6 +174,24 @@ bool ModuleItems::equipItem(Item* item)
 		}
 	}
 	return ret;
+}
+
+bool ModuleItems::unequipItem(Item* item)
+{
+	itemsToUnEquip.push_back(item);
+	return true;
+}
+
+void ModuleItems::DestroyItems()
+{
+	std::list<Item*>::iterator it;
+	
+	for(it = itemsToUnEquip.begin(); it != itemsToUnEquip.end(); ++it)
+	{
+		equipedItems.remove(*it);
+		delete *it;
+	}
+	itemsToUnEquip.clear();
 }
 
 bool ModuleItems::getThreeRandomItems(Item** items)

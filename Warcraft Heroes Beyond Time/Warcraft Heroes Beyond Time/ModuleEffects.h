@@ -42,6 +42,7 @@ public:
 
 	//Here we have all animations charged
 	TimeBasedAnimation playerDustAnim;
+	TimeBasedAnimation playerReliveAnim;
 
 private:
 	SDL_Texture* effects_atlas = nullptr;

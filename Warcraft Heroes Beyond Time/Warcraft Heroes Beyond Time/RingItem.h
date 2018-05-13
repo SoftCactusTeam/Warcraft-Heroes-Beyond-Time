@@ -30,12 +30,16 @@ public:
 	bool Start();
 	bool Act(ModuleItems::ItemEvent event, float dt = App->dt);
 	bool Draw();
-	bool printIconOnScreen(iPoint pos);
+	bool printYourStuff(iPoint pos);
 
 	float time = 0;
 	int cont = 0;
 
 	std::list<Slow_Shit*> slow_shit_list;
+
+private:
+	std::string softDescription = "\"You are too slow for me\"";
+	std::string Title = "Im an item";
 };
 
 #endif

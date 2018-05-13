@@ -17,7 +17,7 @@ public:
 	bool Start();
 	bool Act(ModuleItems::ItemEvent event, float dt = App->dt);
 	bool Draw();
-	bool printIconOnScreen(iPoint pos);
+	bool printYourStuff(iPoint pos);
 
 	void go_up();
 	void go_down();
@@ -32,6 +32,9 @@ private:
 	float angular_vel = 0.0f;
 	float speed_growing_radius = 0.0f;
 	bool ball_away = false;
+
+	std::string softDescription = "\"They seem to be afraid of me\"";
+	std::string Title = "I am an item";
 };
 
 #endif
