@@ -26,6 +26,13 @@ _Warcraft: HBT_ is a roguelike video game based on Warcraft 2 where you will tak
 
 - About the game
 - The team
+    - Víctor Masó Garcia
+    - Guillem Costa Miquel
+    - Isaac Calvis Gil
+    - Oriol de Dios Miranda
+    - David Lozano Sánchez
+    - Jonatahn Molina-Prados Ciudad
+    - Arnau Morgado Expósito
 - Trailer
 - Gameplay video
 - Tools used
