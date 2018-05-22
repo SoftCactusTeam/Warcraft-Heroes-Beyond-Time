@@ -24,7 +24,7 @@ _Warcraft: HBT_ is a roguelike video game based on Warcraft 2 where you will tak
 
 ## **Index**
 
-- About the game
+- [About the game](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#about-the-game)
 - The team
     - Víctor Masó Garcia
     - Guillem Costa Miquel
