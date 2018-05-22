@@ -26,16 +26,16 @@ _Warcraft: HBT_ is a roguelike video game based on Warcraft 2 where you will tak
 
 - [About the game](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#about-the-game)
 - [The team](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#the-team)
-    - [Víctor Masó Garcia](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#víctor-masó-garcia)
-    - [Guillem Costa Miquel](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#guillem-costa-miquel)
-    - [Isaac Calvis Gil](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#isaac-calvis-gil)
-    - [Oriol de Dios Miranda](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#oriol-de-dios-miranda)
-    - [David Lozano Sánchez](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#david-lozano-sánchez)
-    - [Jonatahn Molina-Prados Ciudad](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#jonathan-molina---prados-ciudad)
-    - [Arnau Morgado Expósito](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#arnau-morgado-expósito)
+    - [Víctor Masó](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#víctor-masó)
+    - [Guillem Costa](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#guillem-costa)
+    - [Isaac Calvis](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#isaac-calvis)
+    - [Oriol de Dios](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#oriol-de-dios)
+    - [David Lozano](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#david-lozano)
+    - [Jonathan Molina](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#jonathan-molina)
+    - [Arnau Morgado](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#arnau-morgado)
 - [Trailer](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#trailer)
 - [Gameplay video](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#gameplay-video)
-- [Tools used](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#víctor-masó-garcia)
+- [Tools used](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#tools-used)
 
 ## **About the game**  
 
@@ -59,7 +59,7 @@ This project has been done by SoftCactus Team which is formed by seven students 
 ![team_photo](https://user-images.githubusercontent.com/25589509/40356493-7b4dbf6c-5db9-11e8-8229-431bc2018c91.jpeg)
 
 
-### Víctor Masó Garcia
+### Víctor Masó
 
 _Masó Garcia, Víctor's responsability and Github account_  
 
@@ -69,7 +69,7 @@ _Masó Garcia, Víctor's responsability and Github account_
 _individual contribution here_
 
 
-### Guillem Costa Miquel
+### Guillem Costa
 
 _Costa Miquel, Guillem's responsability and Github account_  
 
@@ -78,7 +78,7 @@ _Costa Miquel, Guillem's responsability and Github account_
 
 _individual contribution here_
 
-### Isaac Calvis Gil
+### Isaac Calvis
 
 _Calvis Gil, Isaac's responsability and Github account_  
 
@@ -88,7 +88,7 @@ _Calvis Gil, Isaac's responsability and Github account_
 _individual contribution here_
 
 
-### Oriol de Dios Miranda
+### Oriol de Dios
 
 _de Dios Miranda, Oriol's responsability and Github account_  
  
@@ -98,7 +98,7 @@ _de Dios Miranda, Oriol's responsability and Github account_
 _individual contribution here_
 
 
-### David Lozano Sánchez
+### David Lozano
 
 _Lozano Sánchez, David's responsability and Github account_  
 
@@ -108,7 +108,7 @@ _Lozano Sánchez, David's responsability and Github account_
 _individual contribution here_
 
 
-### Jonathan Molina - Prados Ciudad
+### Jonathan Molina
 
 _Molina-Prados Ciudad, Jonathan's responsability and Github account_  
 
@@ -118,7 +118,7 @@ _Molina-Prados Ciudad, Jonathan's responsability and Github account_
 _individual contribution here_
 
 
-### Arnau Morgado Expósito
+### Arnau Morgado
 
 _Morgado Expósito, Arnau's responsability and Github account_  
 
