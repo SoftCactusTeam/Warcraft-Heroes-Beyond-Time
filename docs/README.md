@@ -31,7 +31,7 @@ _Warcraft: HBT_ is a roguelike video game based on Warcraft 2 where you will tak
     - [Isaac Calvis Gil](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#isaac-calvis-gil)
     - [Oriol de Dios Miranda](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#oriol-de-dios-miranda)
     - [David Lozano Sánchez](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#david-lozano-sánchez)
-    - [Jonatahn Molina-Prados Ciudad](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#jonathan-molina---prados-ciudad)
+    - [Jonatahn Molina-Prados Ciudad](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#jonathan-molina--prados-ciudad)
     - [Arnau Morgado Expósito](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#arnau-morgado-expósito)
 - [Trailer](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#trailer)
 - [Gameplay video](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#gameplay-video)
