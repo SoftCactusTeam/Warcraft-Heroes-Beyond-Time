@@ -18,12 +18,9 @@ Link to the game website should contain:
 
 _Warcraft: HBT_ is a roguelike video game based on Warcraft 2 where you will take the role of the orc Thrall.
 
-This project has been done by seven students of CITM - UPC (Terrasa, Spain).  
-
 * [Github repository](https://github.com/SoftCactusTeam/Warcraft_Adventures)  
 * [Twitter](https://twitter.com/SoftCactus_Team)
-
-| Download the latest release [here]()
+> Download the latest release [here]()
 
 ## Index
 
@@ -50,12 +47,21 @@ That's it! Good luck :)
 
 ## The team
 
+This project has been done by SoftCactus Team which is formed by seven students of CITM - UPC (Terrasa, Spain). 
+
+![logo](https://user-images.githubusercontent.com/25589509/40356537-9b668072-5db9-11e8-9643-9f496d6dd02f.png)
+
+![team_photo](https://user-images.githubusercontent.com/25589509/40356493-7b4dbf6c-5db9-11e8-8229-431bc2018c91.jpeg)
+
+
 ### Víctor Masó Garcia
 
 _Masó Garcia, Víctor's responsability and Github account_  
 
 * Lead  
 * [Github account](https://github.com/nintervik)  
+
+_individual contribution here_
 
 
 ### Guillem Costa Miquel
@@ -65,6 +71,7 @@ _Costa Miquel, Guillem's responsability and Github account_
 * Code  
 * [Github account](https://github.com/DatBeQuiet)  
 
+_individual contribution here_
 
 ### Isaac Calvis Gil
 
@@ -72,6 +79,8 @@ _Calvis Gil, Isaac's responsability and Github account_
 
 * Management  
 * [Github account](https://github.com/isaaccalvis)  
+
+_individual contribution here_
 
 
 ### Oriol de Dios Miranda
@@ -81,6 +90,8 @@ _de Dios Miranda, Oriol's responsability and Github account_
 * Design  
 * [Github account](https://github.com/orioldedios)  
 
+_individual contribution here_
+
 
 ### David Lozano Sánchez
 
@@ -88,6 +99,8 @@ _Lozano Sánchez, David's responsability and Github account_
 
 * Art and audio  
 * [Github account](https://github.com/DavidTheMaaster)  
+
+_individual contribution here_
 
 
 ### Jonatahan Molina-Prados Ciudad
@@ -97,6 +110,8 @@ _Molina-Prados Ciudad, Jonathan's responsability and Github account_
 * UI  
 * [Github account](https://github.com/Jony635)  
 
+_individual contribution here_
+
 
 ### Arnau Morgado Expósito
 
@@ -104,6 +119,8 @@ _Morgado Expósito, Arnau's responsability and Github account_
 
 * QA  
 * [Github account](https://github.com/morgadoCV)  
+
+_individual contribution here_
 
 
 ## Tools used  
