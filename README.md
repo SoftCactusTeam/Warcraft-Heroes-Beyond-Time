@@ -99,7 +99,7 @@ _Morgado Expósito, Arnau's responsability and Github account_
 * Language: C++  
 * Graphics and audio: SDL 2.0  
 * Data: pugixml 1.8  
-* Filesystem: PhysiscsFS
+* Filesystem: PhysicsFS
 * Profiler: Brofiler  
 * Code repository: GitHub  
 * Art: Adobe Photoshop CS6, Aseprite, Paint.net and MS Paint 
