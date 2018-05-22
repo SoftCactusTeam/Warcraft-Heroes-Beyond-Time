@@ -108,7 +108,7 @@ _Lozano Sánchez, David's responsability and Github account_
 _individual contribution here_
 
 
-### Jonathan Molina-Prados Ciudad
+### Jonathan Molina - Prados Ciudad
 
 _Molina-Prados Ciudad, Jonathan's responsability and Github account_  
 
