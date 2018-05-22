@@ -26,9 +26,9 @@ _Warcraft: HBT_ is a roguelike video game based on Warcraft 2 where you will tak
 
 - About the game
 - The team
-- Tools used
 - Trailer
 - Gameplay video
+- Tools used
 
 ## About the game  
 
@@ -119,6 +119,12 @@ _Morgado Expósito, Arnau's responsability and Github account_
 * [Github account](https://github.com/morgadoCV)  
 
 _individual contribution here_
+
+
+## Trailer
+
+
+## Gameplay video
 
 
 ## Tools used  
