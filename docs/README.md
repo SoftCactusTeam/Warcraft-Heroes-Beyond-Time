@@ -2,6 +2,7 @@
 TODO:
 
 Link to the game website should contain:
+- Index
 - Description of the game
 - Name of each developer with link to their individual page
 - Team photo
