@@ -38,70 +38,58 @@ Items are barely explained so you'll need to figure out what they do with trial 
 
 That's it! Good luck :)
 
-## Changelog
 
-_To be added_
+## The team
 
-## Installation instructions  
-
-Download the zip file and unzip it. Open the folder, execute the .exe and enjoy!  
-
-_**IMPORTANT:** do not modify, change or add any folder or file as you might not be able to execute the game._  
-
-## Controls  
-
-### Gamepad
-- LEFT STICK: move
-- A BUTTON: dash and select
-- X BUTTON: attack and open chest
-- Y BUTTON: skill
-- B BUTTON: go back in menus
-- START: pause game
-
-### Mouse and keyboard
-- LEFT CLICK: select in menus
-- WASD: move
-- J: attack and open chest
-- K: skill
-- SPACE: dash
-- ESC: pause
-- F1: Go to Guldan's room.
-
-## Debug features
-
-_To be added_
-
-## Team members  
+### Víctor Masó Garcia
 
 _Masó Garcia, Víctor's responsability and Github account_  
 
 * Lead  
 * [Github account](https://github.com/nintervik)  
 
+
+### Guillem Costa Miquel
+
 _Costa Miquel, Guillem's responsability and Github account_  
 
 * Code  
 * [Github account](https://github.com/DatBeQuiet)  
+
+
+### Isaac Calvis Gil
 
 _Calvis Gil, Isaac's responsability and Github account_  
 
 * Management  
 * [Github account](https://github.com/isaaccalvis)  
 
+
+### Oriol de Dios Miranda
+
 _de Dios Miranda, Oriol's responsability and Github account_  
  
 * Design  
 * [Github account](https://github.com/orioldedios)  
+
+
+### David Lozano Sánchez
 
 _Lozano Sánchez, David's responsability and Github account_  
 
 * Art and audio  
 * [Github account](https://github.com/DavidTheMaaster)  
 
+
+### Jonatahan Molina-Prados Ciudad
+
 _Molina-Prados Ciudad, Jonathan's responsability and Github account_  
 
 * UI  
 * [Github account](https://github.com/Jony635)  
+
+
+### Arnau Morgado Expósito
 
 _Morgado Expósito, Arnau's responsability and Github account_  
 
