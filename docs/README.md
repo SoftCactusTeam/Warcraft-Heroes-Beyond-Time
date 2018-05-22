@@ -24,6 +24,8 @@ This project has been done by seven students of CITM - UPC (Terrasa, Spain).
 * [Website](https://softcactusteam.github.io/Warcraft_Adventures/)  
 * [Twitter](https://twitter.com/SoftCactus_Team)
 
+| Download the latest release [here]()
+
 ## About the game  
 
 You are Thrall and your goal is to beat the boss Guld'an without dying. If you beat the boss you win the game. But first you must defeat all the archers in the 5 random generated rooms.
