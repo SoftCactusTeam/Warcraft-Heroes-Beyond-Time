@@ -1,6 +1,6 @@
 ﻿# Warcraft: Heroes Beyond Time
 
-Rogue-like game based on Warcraft 2.
+_Warcraft: HBT_ is a roguelike video game based on Warcraft 2 where youi will take the role of the orc Thrall.
 
 This project has been done by seven students of CITM - UPC (Terrasa, Spain).  
 
@@ -10,7 +10,7 @@ This project has been done by seven students of CITM - UPC (Terrasa, Spain).
 
 ## About the game  
 
-The goal of this demo is to beat the boss Guld'an without dying. If you beat the boss you win the game. But first you must defeat all the archers in the 5 random generated rooms.
+You are Thrall and your goal is to beat the boss Guld'an without dying. If you beat the boss you win the game. But first you must defeat all the archers in the 5 random generated rooms.
 
 Archers have different colors (3 tiers in total) according to its difficulty (that will be increased as you approach to the boss room). When a room is cleared a portal appears near you and will take you to the next room. 
 
