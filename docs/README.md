@@ -14,7 +14,7 @@ Link to the game website should contain:
   visual as possible.
 
 
-# Warcraft: Heroes Beyond Time
+# **Warcraft: Heroes Beyond Time**
 
 _Warcraft: HBT_ is a roguelike video game based on Warcraft 2 where you will take the role of the orc Thrall.
 
@@ -22,7 +22,7 @@ _Warcraft: HBT_ is a roguelike video game based on Warcraft 2 where you will tak
 * [Twitter](https://twitter.com/SoftCactus_Team)
 > Download the latest release [here]()
 
-## Index
+## **Index**
 
 - About the game
 - The team
@@ -30,7 +30,7 @@ _Warcraft: HBT_ is a roguelike video game based on Warcraft 2 where you will tak
 - Gameplay video
 - Tools used
 
-## About the game  
+## **About the game**  
 
 You are Thrall and your goal is to beat the boss Guld'an without dying. If you beat the boss you win the game. But first you must defeat all the archers in the 5 random generated rooms.
 
@@ -45,7 +45,7 @@ Items are barely explained so you'll need to figure out what they do with trial 
 That's it! Good luck :)
 
 
-## The team
+## **The team**
 
 This project has been done by SoftCactus Team which is formed by seven students of CITM - UPC (Terrasa, Spain). 
 
@@ -121,30 +121,19 @@ _Morgado Expósito, Arnau's responsability and Github account_
 _individual contribution here_
 
 
-## Trailer
+## **Trailer**
 
 
-## Gameplay video
+## **Gameplay video**
 
 
-## Tools used  
+## **Tools used**  
 
-* IDE: Microsoft Visual Studio 2017  
-* Language: C++  
-* Graphics and audio: SDL 2.0  
-* Data: pugixml 1.8  
-* Filesystem: PhysicsFS
-* Profiler: Brofiler  
-* Code repository: GitHub  
-* Art: Adobe Photoshop CS6, Aseprite, Paint.net and MS Paint 
-
-## Credits for artwork, music/sound fx and fonts
-
-Sound fx:
-- https://freesound.org/people/jacobalcook/sounds/195568/
-- https://freesound.org/people/taren1965/sounds/132502/
-- https://freesound.org/people/alpharo/sounds/186696/
-- https://freesound.org/people/Robinhood76/sounds/221591/
-- https://freesound.org/people/D%20W/sounds/136696/
-- https://freesound.org/people/samararaine/sounds/186374/
-- https://freesound.org/people/spookymodem/sounds/202092/
+* **IDE:** Microsoft Visual Studio 2017  
+* **Language:** C++  
+* **Graphics and audio:** SDL 2.0  
+* **Data:** pugixml 1.8  
+* **Filesystem:** PhysicsFS
+* **Profiler:** Brofiler  
+* **Code repository:** GitHub  
+* **Art:** Adobe Photoshop CS6, Aseprite, Paint.net and MS Paint 
