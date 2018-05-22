@@ -49,8 +49,6 @@ That's it! Good luck :)
 
 This project has been done by SoftCactus Team which is formed by seven students of CITM - UPC (Terrasa, Spain). 
 
-![logo](https://user-images.githubusercontent.com/25589509/40356537-9b668072-5db9-11e8-9643-9f496d6dd02f.png)
-
 ![team_photo](https://user-images.githubusercontent.com/25589509/40356493-7b4dbf6c-5db9-11e8-8229-431bc2018c91.jpeg)
 
 
