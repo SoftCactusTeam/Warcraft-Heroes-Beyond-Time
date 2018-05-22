@@ -25,17 +25,17 @@ _Warcraft: HBT_ is a roguelike video game based on Warcraft 2 where you will tak
 ## **Index**
 
 - [About the game](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#about-the-game)
-- The team
-    - Víctor Masó Garcia
-    - Guillem Costa Miquel
-    - Isaac Calvis Gil
-    - Oriol de Dios Miranda
-    - David Lozano Sánchez
-    - Jonatahn Molina-Prados Ciudad
-    - Arnau Morgado Expósito
-- Trailer
-- Gameplay video
-- Tools used
+- [The team](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#the-team)
+    - [Víctor Masó Garcia](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#víctor-masó-garcia)
+    - [Guillem Costa Miquel](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#guillem-costa-miquel)
+    - [Isaac Calvis Gil](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#isaac-calvis-gil)
+    - [Oriol de Dios Miranda](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#oriol-de-dios-miranda)
+    - [David Lozano Sánchez](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#david-lozano-sánchez)
+    - [Jonatahn Molina-Prados Ciudad](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#jonathan-molina---prados-ciudad)
+    - [Arnau Morgado Expósito](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#arnau-morgado-expósito)
+- [Trailer](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#trailer)
+- [Gameplay video](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#gameplay-video)
+- [Tools used](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/#víctor-masó-garcia)
 
 ## **About the game**  
 
