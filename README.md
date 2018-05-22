@@ -36,9 +36,10 @@ _**IMPORTANT:** do not modify, change or add any folder or file as you might not
 
 ### Gamepad
 - LEFT STICK: move
-- A BUTTON: dash
+- A BUTTON: dash and select
 - X BUTTON: attack and open chest
 - Y BUTTON: skill
+- B BUTTON: go back in menus
 - START: pause game
 
 ### Mouse and keyboard
@@ -98,9 +99,10 @@ _Morgado Expósito, Arnau's responsability and Github account_
 * Language: C++  
 * Graphics and audio: SDL 2.0  
 * Data: pugixml 1.8  
+* Filesystem: PhysiscsFS
 * Profiler: Brofiler  
 * Code repository: GitHub  
-* Others: Adobe Photoshop CS6, Aseprite and MS Paint  
+* Art: Adobe Photoshop CS6, Aseprite, Paint.net and MS Paint 
 
 ## Credits for artwork, music/sound fx and fonts
 
