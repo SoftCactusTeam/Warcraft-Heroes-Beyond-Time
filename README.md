@@ -6,16 +6,31 @@ This project has been done by seven students of CITM - UPC (Terrasa, Spain).
 
 * [Github repository](https://github.com/SoftCactusTeam/Warcraft_Adventures)  
 * [Website](https://softcactusteam.github.io/Warcraft_Adventures/)  
+* [Twitter](https://twitter.com/SoftCactus_Team)
 
 ## About the game  
 
-The goal of this demo is to beat the boss Guld'an. First you have to defeat all the archers in the rooms (5) to go through the portals and beat Gul'dan. You can pick a item from 3 options in a chest that will appear in a small room at the beginning of each map. If you beat him you win the game.
+The goal of this demo is to beat the boss Guld'an without dying. If you beat the boss you win the game. But first you must defeat all the archers in the 5 random generated rooms.
+
+Archers have different colors (3 tiers in total) according to its difficulty (that will be increased as you approach to the boss room). When a room is cleared a portal appears near you and will take you to the next room. 
+
+You can pick a item from 3 options in a chest that will appear in a small room at the beginning of each map. 
+
+The player can move around, dash, use his melee attack, use his special skill and pick items. The skill is represented as a yellow bar on top left corner and it's charged when hitting enemies; it consists of an area attack that will affect enemies around you.
+
+Items are barely explained so you'll need to figure out what they do with trial and error.
+
+That's it! Good luck :)
+
+## Changelog
+
+_To be added_
 
 ## Installation instructions  
 
 Download the zip file and unzip it. Open the folder, execute the .exe and enjoy!  
 
-_IMPORTANT: do not modify, change or add any folder or file as you might not be able to execute the game._  
+_**IMPORTANT:** do not modify, change or add any folder or file as you might not be able to execute the game._  
 
 ## Controls  
 
@@ -35,6 +50,9 @@ _IMPORTANT: do not modify, change or add any folder or file as you might not be 
 - ESC: pause
 - F1: Go to Guldan's room.
 
+## Debug features
+
+_To be added_
 
 ## Team members  
 
@@ -75,6 +93,7 @@ _Morgado Expósito, Arnau's responsability and Github account_
 
 
 ## Tools used  
+
 * IDE: Microsoft Visual Studio 2017  
 * Language: C++  
 * Graphics and audio: SDL 2.0  
