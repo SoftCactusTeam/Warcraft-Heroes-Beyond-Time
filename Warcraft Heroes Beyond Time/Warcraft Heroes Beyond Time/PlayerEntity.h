@@ -32,6 +32,7 @@ protected:
 	bool move = true;
 	bool damaged = false;
 	bool attackWhileDash = false;
+	bool godMode = false;
 
 	float damagedConfigCD = 0.0f; //This will be the one loaded from config.xml
 	float damagedCD = 0.0f;
@@ -81,6 +82,8 @@ public:
 	PlayerEntity(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture);
 
 	EntitySystem::PlayerStats numStats;
+
+	void GodMode(bool state);
 
 	void Walk(bool);
 

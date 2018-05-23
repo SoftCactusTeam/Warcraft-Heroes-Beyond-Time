@@ -1371,6 +1371,11 @@ bool PlayerEntity::IsPlayerMoving()
 	return state == states::PL_MOVE;
 }
 
+void PlayerEntity::GodMode(bool state)
+{
+	godMode = state;
+}
+
 void PlayerEntity::Walk(bool can)
 {
 	this->move = can;

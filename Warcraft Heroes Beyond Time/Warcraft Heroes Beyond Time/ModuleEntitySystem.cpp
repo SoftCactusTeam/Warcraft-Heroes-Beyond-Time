@@ -112,16 +112,19 @@ class Player_ConsoleOrder : public ConsoleOrder
 	{
 		if (parameter == "energy")
 		{
-			//Set energy to parameterNumeric (not more than 100%).
+				//Set energy to parameterNumeric (not more than 100%).
 		}
+			
 		else if (parameter == "godmode" && parameterNumeric == 1)
 		{
 			//Activate Godmode
+			App->scene->player->GodMode(true);
 		}
 
-		else if (parameter == "godmode" && parameterNumeric == 1)
+		else if (parameter == "godmode" && parameterNumeric == 0)
 		{
 			//DeActivate Godmode
+			App->scene->player->GodMode(false);
 		}
 
 		else if (parameter == "freezone")
