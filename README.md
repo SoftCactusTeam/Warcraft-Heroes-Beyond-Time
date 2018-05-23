@@ -91,6 +91,48 @@ v0.2.7
 - Damage receiving, die animation and go back to the main menu implemented
 - Bugs fixing
 
+v0.2.7.1
+- Fixed framerate calculations
+- Attack, movement and dash pivots implemented
+- Added dash CD
+- Player Attack in all directions with attack colliders
+- Bugs Fixing
+
+v0.2.8
+- First item implemented
+- Gul'dan Boss implemented
+- All thrall pivots fixed + Skill and attacks working
+- Pausing game when console opened
+- Adding new feature in ModulePrinter: Color tint
+- Enemies and colliders optimized
+- Bug Fixing
+
+v0.2.8.1
+- Win condition implemented
+- Scene flow corrected
+- Boss hp bar working
+- Bug Fixing
+
+v0.2.8.2
+- Archer path fixed
+- Added new sounds
+- Item fixed
+- Win condition
+- Gamepad input
+- Minor bugs fixed
+
+v0.2.8.3
+- Guldan Balls new sound implemented
+- Labels with own multilabel
+- Win BSO Implemented
+- New final message + version in main menu
+- More FX
+- Item damage rebalanced
+- Portal fixed
+- Item fixed
+- Bug Fixing
+
+
 
 
 ## Installation instructions  
