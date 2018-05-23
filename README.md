@@ -240,7 +240,18 @@ _**IMPORTANT:** do not modify, change or add any folder or file as you might not
 
 ## Debug features
 
-_To be added_
+All debug features are accesed through the game console. To activate/deactivate the console just press the tilde key (next to 1).
+
+- Show colliders: colliders_print_1
+- Hide colliders: colliders_print_0
+- Spawn archer: spawn_archer_(tier number, up to 3)
+- Spawn another player: spawn_thrall
+- Show walkable tiles: map_printwalkables_1
+- Hide walkable tiles: map_printwalkables_0
+- Charge player energy: player_energy_(energy value, up to 100)
+- Damage the player: player_damage_(damage value, up to 100)
+- Activate god mode: player_godmode_1
+- Deactivate god mode: player_godmode_0
 
 ## Team members  
 
