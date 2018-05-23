@@ -117,6 +117,7 @@ class Player_ConsoleOrder : public ConsoleOrder
 		else if (parameter == "godmode" && parameterNumeric == 1)
 		{
 			//Activate Godmode
+			printf_s("sha enjegat");
 		}
 
 		else if (parameter == "godmode" && parameterNumeric == 1)
