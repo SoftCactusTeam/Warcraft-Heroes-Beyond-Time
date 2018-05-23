@@ -64,9 +64,8 @@ This project has been done by SoftCactus Team which is formed by seven students 
 _Masó Garcia, Víctor's responsability and Github account_  
 
 * Lead  
-* [Github account](https://github.com/nintervik)  
-
-_individual contribution here_
+* [Github account](https://github.com/nintervik)
+* [Contribution](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/victor_contribution)
 
 
 ### Guillem Costa
@@ -77,14 +76,14 @@ _Costa Miquel, Guillem's responsability and Github account_
 * [Github account](https://github.com/DatBeQuiet)  
 * [Contribution](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/guillem_contribution)
 
+
 ### Isaac Calvis
 
 _Calvis Gil, Isaac's responsability and Github account_  
 
 * Management  
-* [Github account](https://github.com/isaaccalvis)  
-
-_individual contribution here_
+* [Github account](https://github.com/isaaccalvis)
+* [Contribution](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/isaac_contribution)
 
 
 ### Oriol de Dios
@@ -93,8 +92,7 @@ _de Dios Miranda, Oriol's responsability and Github account_
  
 * Design  
 * [Github account](https://github.com/orioldedios)  
-
-_individual contribution here_
+* [Contribution](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/oriol_contribution)
 
 
 ### David Lozano
@@ -102,9 +100,8 @@ _individual contribution here_
 _Lozano Sánchez, David's responsability and Github account_  
 
 * Art and audio  
-* [Github account](https://github.com/DavidTheMaaster)  
-
-_individual contribution here_
+* [Github account](https://github.com/DavidTheMaaster) 
+* [Contribution](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/david_contribution)
 
 
 ### Jonathan Molina
@@ -113,8 +110,7 @@ _Molina-Prados Ciudad, Jonathan's responsability and Github account_
 
 * UI  
 * [Github account](https://github.com/Jony635)  
-
-_individual contribution here_
+* [Contribution](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/jonathan_contribution)
 
 
 ### Arnau Morgado
@@ -122,9 +118,8 @@ _individual contribution here_
 _Morgado Expósito, Arnau's responsability and Github account_  
 
 * QA  
-* [Github account](https://github.com/morgadoCV)  
-
-_individual contribution here_
+* [Github account](https://github.com/morgadoCV) 
+* [Contribution](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/jonathan_contribution)
 
 
 ## **Trailer**
