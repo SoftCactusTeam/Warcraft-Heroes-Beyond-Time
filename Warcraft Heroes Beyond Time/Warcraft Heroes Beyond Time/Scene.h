@@ -78,8 +78,6 @@ public:
 
 	GUIWindow* blood = nullptr;
 
-	int lvlIndex = 0;
-
 private:
 
 
@@ -87,6 +85,7 @@ private:
 	
 
 	bool restart = false;
+	int lvlIndex = 0;
 };
 
 #endif
