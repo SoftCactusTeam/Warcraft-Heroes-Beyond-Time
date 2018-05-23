@@ -119,7 +119,7 @@ _Morgado Expósito, Arnau's responsability and Github account_
 
 * QA  
 * [Github account](https://github.com/morgadoCV) 
-* [Contribution](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/jonathan_contribution)
+* [Contribution](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/arnau_contribution)
 
 
 ## **Trailer**
