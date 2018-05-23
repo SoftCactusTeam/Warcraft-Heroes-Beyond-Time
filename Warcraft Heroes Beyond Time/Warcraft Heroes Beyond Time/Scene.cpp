@@ -205,18 +205,6 @@ bool Scene::Update(float dt)
 		App->Load();
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN && !App->console->isWritting())
-	{
-		if (player != nullptr)
-			player->SetDamage(25, true);
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT && !paused)
-	{
-		if (player != nullptr)
-			player->IncreaseEnergy(100);
-	}
-
 	//GENERATE A NEW MAP
 	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN && actual_scene == Stages::INGAME && !App->console->isWritting())
 	{

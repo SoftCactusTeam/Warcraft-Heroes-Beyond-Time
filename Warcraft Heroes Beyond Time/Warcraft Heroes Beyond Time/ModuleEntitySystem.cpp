@@ -112,9 +112,14 @@ class Player_ConsoleOrder : public ConsoleOrder
 	{
 		if (parameter == "energy")
 		{
-				//Set energy to parameterNumeric (not more than 100%).
+			//Set energy to parameterNumeric (not more than 100%).
+
+			if (parameterNumeric >= 0 && parameterNumeric <= 100)
+				App->scene->player->IncreaseEnergy(parameterNumeric);
+			else if (parameterNumeric > 100)
+				App->scene->player->IncreaseEnergy(100);
 		}
-			
+
 		else if (parameter == "godmode" && parameterNumeric == 1)
 		{
 			//Activate Godmode
@@ -128,9 +133,10 @@ class Player_ConsoleOrder : public ConsoleOrder
 		}
 
 		else if (parameter == "freezone")
-		{
 			App->scene->player->DrawFreeZone((bool)parameterNumeric);
-		}
+
+		else if (parameter == "damage")
+			App->scene->player->SetDamage(parameterNumeric, true);
 
 	}
 };
