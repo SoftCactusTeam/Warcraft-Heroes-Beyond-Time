@@ -5,7 +5,7 @@ _Warcraft: HBT_ is a roguelike video game based on Warcraft 2 where you will tak
 This project has been done by seven students of CITM - UPC (Terrasa, Spain).  
 
 * [Github repository](https://github.com/SoftCactusTeam/Warcraft_Adventures)  
-* [Website](https://softcactusteam.github.io/Warcraft_Adventures/)  
+* [Website](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/)  
 * [Twitter](https://twitter.com/SoftCactus_Team)
 
 ## About the game  
