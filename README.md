@@ -24,7 +24,74 @@ That's it! Good luck :)
 
 ## Changelog
 
-_To be added_
+v0.1
+- FileSystem (Save/Load)
+- GUIModule + Labels / InputBoxes
+- EntitySystem
+- Console
+- Thrall Sprites
+- Terrain Sprites
+- Appveyor Integration
+
+v0.2
+- config.xml + some console commands
+- Logical resolution fixed
+- Player can move with controller too
+- Sliders and Buttons
+- Scene's Switching
+
+v0.2.1
+- Controller rumble implemented.
+- Map procedural generation (now with walls)
+- SDL libraries updated
+- Render resolution changed to 360p 16:9.
+- New player movement: Dash. (Press SPACEBAR / A (XBOX) ).
+
+v0.2.2
+- New ground and wall tiles art
+- Camera following
+- Player animation normalized
+- Player animations match movement speed
+- Dash and movement have now free angle (with gamepad)
+- Minor bugs fixed
+
+v0.2.3
+- Functional Pause Menu (without really pausing)
+- Random map generating with definitive tiles (Press G)
+- Pathfinding and first enemy
+- Colliders implemented
+- Controller Input Fixed
+- Thrall atack with controller implemented
+- Camera Culling fixed
+- Bugs fixing
+
+v0.2.5
+- Archer Enemy Implemented
+- New Printing Module: Now sprites are reordered for being printed in order on screen.
+- Real Pausing Implemented
+- Labels and fonts error fixed
+- Colliders Fixing
+- Pathfinding Fixing
+- Bugs Fixing
+- Memory Leaks Solving
+
+v0.2.6
+- Brofiler implemented
+- Rotating Sprites with ModulePrinter
+- Some BSO's and sound effects added
+- New console command: Print the player freezone.
+- Bugs Fixing
+
+v0.2.7
+- Using pivots to print sprites
+- Solving color lines in some resolutions
+- Colliders optimized and reworked
+- New health and energy bar
+- Collision with the environment implemented
+- Damage receiving, die animation and go back to the main menu implemented
+- Bugs fixing
+
+
 
 ## Installation instructions  
 
@@ -32,7 +99,7 @@ Download the zip file and unzip it. Open the folder, execute the .exe and enjoy!
 
 _**IMPORTANT:** do not modify, change or add any folder or file as you might not be able to execute the game._  
 
-## Controls  
+## Controls
 
 ### Gamepad
 - LEFT STICK: move
