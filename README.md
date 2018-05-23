@@ -132,8 +132,86 @@ v0.2.8.3
 - Item fixed
 - Bug Fixing
 
+v0.3
+- More audios
+- Dash FX halted when you stop dashing
+- Controller support in menues
+- Some archer fixes
+- Visual bugs solved
+- Bug Fixing
 
+v0.3.1
+- Some Guldan's audios fixed
+- Archers turning red when damaged
+- Different menues depending of if there is a controller connected to the device
 
+v0.3.1.1
+- Detecting controllers and audio devices during the game execution
+- Audio crashes solved
+- Version in xml
+- Bug Fixing
+
+v0.3.2
+- Map art reworked
+- Offset and pivots are different concepts in ModulePrinter
+- New collision system implemented
+- Basic navigation through menues with gamepad
+- New module for projectiles, not used for now
+
+v0.4
+- Map config depending of lvlIndex
+- New Guldan attacks, testing and implementing them for now
+- Items randomized and picked. Only 2 in the pool, gui has to improve more. Open chest attacking him
+- Damage Ball item implemented, new item structure
+- Module Effects implemented
+- Time Based animation implemented
+- New gui, still in progress
+
+v0.5
+- UI rework
+- Three archers tiers ready to use in xml
+- Solved several bugs on archers
+- Changed module colliders
+- Added projectile module
+- New art for boss room
+- Boss attacks implemented with two phases
+- Minor bugs fixed
+- Bug Fixing and Memory Leaks solved
+
+v0.6
+- Managing lvls generation + enemies spawning
+- Thrall inmortal when doing the skill
+- Thrall doesn't regenerate each lvl
+- Item selection with gamepad
+- GUI reworked
+- Some enemies fixing
+- Guldan has more attacks
+- Bug fixing
+
+v0.6.5
+- Sliders adjusted to the new graphics
+- Icons
+- Blood on screen when Thrall gets hit
+- Sliders feedback when focused
+- 4th archer
+- Some item effects implemented in archers
+- Arrow doesn't destroy when thrall is dashing
+
+v0.7
+- Picking items with mouse, cant focus another one when one of them is being picked
+- Thrall's skill artwork changed
+- Map tiles fixed
+- Guldan receives damage from the player skill
+- Enemies balancing
+- New items
+- Thrall doesn't move when the scene is fading
+- New initial room each lvl with a chest
+- Bug Fixing
+
+v0.9
+- More Items with their descriptions
+- Archers, Gul'dan and Thrall rebalancing
+- Bug Fixing
 
 ## Installation instructions  
 
