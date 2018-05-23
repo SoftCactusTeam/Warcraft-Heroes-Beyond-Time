@@ -153,7 +153,6 @@ bool Enemy_Archer::PostUpdate()
 		App->colliders->deleteColliderbyOwner(this);
 		col = nullptr;
 	}
-
 	return true;
 }
 
@@ -195,6 +194,7 @@ bool Enemy_Archer::Draw()
 		break;
 	}
 	
+	App->printer->PrintQuad({ (int)pos.x, (int)pos.y, 2, 2}, Blue, true, true);
 	return ret;
 }
 
@@ -452,6 +452,7 @@ void Enemy_Archer::initDash()
 	saveFirstAngle = LookAtPlayer();
 	dashTempo = 0;
 	dashMovement = transformFixedAngleTofPoint(App->scene->player->returnFixedAngle());
+	playerHitAngle = App->scene->player->returnFixedAngle();
 	//dashMovement = CaculateFPointAngle(fPoint(App->scene->player->pos.x + (App->scene->player->anim->GetCurrentRect().w / 3) , App->scene->player->pos.y + (App->scene->player->anim->GetCurrentRect().h / 3)), anim->GetCurrentRect().w / 2, anim->GetCurrentRect().h / 2);
 	dashMovement.x *= 1 * (numStats.velocityDashHit) / 3 * App->dt;
 	dashMovement.y *= 1 * (numStats.velocityDashHit) / 3 * App->dt;
@@ -572,8 +573,9 @@ void Enemy_Archer::doLittleMove()
 	{
 		initIdle();
 	}
-		iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x + (anim->GetCurrentRect().w / 2), (int)pos.y + (anim->GetCurrentRect().h / 2)));
-		this->pos += fPoint((float)move.x * numStats.speed, (float)move.y * numStats.speed);
+	// treure
+		//iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x + (anim->GetCurrentRect().w / 2), (int)pos.y + (anim->GetCurrentRect().h / 2)));
+		//this->pos += fPoint((float)move.x * numStats.speed, (float)move.y * numStats.speed);
 }
 
 void Enemy_Archer::doDash()
@@ -588,10 +590,10 @@ void Enemy_Archer::doDash()
 	else
 	{
 		// PER EVITAR QUE ES CAIGUI DEL MAPA
-		switch (saveFirstAngle)
+		switch (playerHitAngle/*saveFirstAngle*/)
 		{
 		case FIXED_ANGLE::UP:
-			if (App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w / 2 +  dashMovement.x) / App->map->getTileSize(), (pos.y + anim->GetCurrentRect().h + dashMovement.y) / App->map->getTileSize())) == -1)
+			if (App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w / 2 +  dashMovement.x) / App->map->getTileSize(), (pos.y /*+ anim->GetCurrentRect().h*/ + dashMovement.y) / App->map->getTileSize())) == -1)
 				dashTempo = numStats.timingDashHit;	// break
 			break;
 		case FIXED_ANGLE::UP_RIGHT:
@@ -599,7 +601,7 @@ void Enemy_Archer::doDash()
 				dashTempo = numStats.timingDashHit;	// break
 			break;
 		case FIXED_ANGLE::RIGHT:
-			if (App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w + dashMovement.x) / App->map->getTileSize(), (pos.y + anim->GetCurrentRect().h / 2 + dashMovement.y) / App->map->getTileSize())) == -1)
+			if (App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w + (int)dashMovement.x) / App->map->getTileSize(), (pos.y + anim->GetCurrentRect().h / 2 + (int)dashMovement.y) / App->map->getTileSize())) == -1)
 				dashTempo = numStats.timingDashHit;	// break
 			break;
 			case FIXED_ANGLE::DOWN_RIGHT:
@@ -623,7 +625,17 @@ void Enemy_Archer::doDash()
 					dashTempo = numStats.timingDashHit;	// break
 				break;
 		}
-		if (dashTempo != numStats.timingDashHit)
+		//int multipX = 1, multipY = 1;
+		//if (dashMovement.x < 0)
+		//	multipX = -1;
+		//if (dashMovement.y < 0)
+		//	multipY = -1;
+		//if (App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w / 2 + dashMovement.x + (anim->GetCurrentRect().w / 2 * multipX)) / App->map->getTileSize(), (pos.y + anim->GetCurrentRect().h / 2 + dashMovement.y + (anim->GetCurrentRect().h / 2 * multipY)) / App->map->getTileSize())) == -1)
+		//{
+		//	dashTempo = numStats.timingDashHit;	// break
+		//}
+			
+		if (dashTempo < numStats.timingDashHit)
 		{
 			pos += dashMovement;
 			dashTempo += App->dt;
@@ -649,8 +661,9 @@ void Enemy_Archer::Walk()
 	}
 	else
 	{
-		iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x + (anim->GetCurrentRect().w / 2), (int)pos.y + (anim->GetCurrentRect().h / 2)));
-		this->pos += fPoint((float)move.x * numStats.speed, (float)move.y * numStats.speed);
+		// TREURE
+		//iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x + (anim->GetCurrentRect().w / 2), (int)pos.y + (anim->GetCurrentRect().h / 2)));
+		//this->pos += fPoint((float)move.x * numStats.speed, (float)move.y * numStats.speed);
 	}
 
 }

@@ -103,5 +103,6 @@ fPoint DynamicEntity::transformFixedAngleTofPoint(FIXED_ANGLE angle)
 	case DOWN_LEFT: return fPoint(-2, 2); break;
 	case LEFT: return fPoint(-3, 0); break;
 	case UP_LEFT: return fPoint(-2, -2); break;
+	default: return fPoint(0,0); break;
 	}
 }

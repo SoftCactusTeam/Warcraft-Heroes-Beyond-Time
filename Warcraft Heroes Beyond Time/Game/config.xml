@@ -81,7 +81,7 @@
 
     <players>
       <cds dash = "0" deadinfloor = "2" invulpostdamaged = "1"/>
-      <thrall hp = "200" speed = "200" damage = "50" energy_percent_hit = "5" skill_multiplier="10" hpRecover="20"/>
+      <thrall hp = "200" speed = "200" damage = "1" energy_percent_hit = "5" skill_multiplier="10" hpRecover="20"/>
     </players>
 
   </entitySystem>
