@@ -75,8 +75,7 @@ _Costa Miquel, Guillem's responsability and Github account_
 
 * Code  
 * [Github account](https://github.com/DatBeQuiet)  
-
-_individual contribution here_
+* [Contribution](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/guillemcontribution.md)
 
 ### Isaac Calvis
 
