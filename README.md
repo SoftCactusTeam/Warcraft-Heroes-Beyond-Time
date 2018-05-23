@@ -240,7 +240,7 @@ _**IMPORTANT:** do not modify, change or add any folder or file as you might not
 
 ## Debug features
 
-All debug features are accesed through the game console. To activate/deactivate the console just press the tilde key (next to 1).
+Almost all debug features are accesed through the game console. To activate/deactivate the console just press the tilde key (next to 1).
 
 - Show colliders: colliders_print_1
 - Hide colliders: colliders_print_0
@@ -252,6 +252,8 @@ All debug features are accesed through the game console. To activate/deactivate 
 - Damage the player: player_damage_(damage value, up to 100)
 - Activate god mode: player_godmode_1
 - Deactivate god mode: player_godmode_0
+
+- Go to boss room: F1 key
 
 ## Team members  
 
