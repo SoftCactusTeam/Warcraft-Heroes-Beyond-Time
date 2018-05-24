@@ -23,6 +23,7 @@ bool ModuleVideo::Awake(pugi::xml_node &)
 
 bool ModuleVideo::CleanUp()
 {
+	
 	return true;
 }
 
@@ -88,7 +89,7 @@ bool ModuleVideo::GrabAVIFrame()
 
 	//TODO 7: Limit the change of the frame to one out of two times.
 	// Hint: We want to blit a diferent frame only when our counter, i, is an even number.
-	if (i % 1 == 0)
+	if (i % 2 == 0)
 	{
 		frame++;
 	}

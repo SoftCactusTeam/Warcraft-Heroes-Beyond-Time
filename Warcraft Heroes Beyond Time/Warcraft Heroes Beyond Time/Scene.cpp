@@ -23,6 +23,8 @@
 #include "ModuleProjectiles.h"
 #include "Guldan.h"
 #include "ModuleTransitions.h"
+#include "IntroVideo.h"
+#include "ModuleVideo.h"
 
 #include "Brofiler\Brofiler.h"
 #include "Label.h"
@@ -74,6 +76,12 @@ bool Scene::Start()
 
 	switch (actual_scene)
 	{
+		case Stages::INTRO_VIDEO:
+		{
+			App->introVideo->Activate();
+
+			break;
+		}
 		case Stages::MAIN_MENU:
 		{
 			CreateMainMenuScreen();
@@ -188,6 +196,13 @@ bool Scene::PreUpdate()
 bool Scene::Update(float dt)
 {
 	bool ret = true;
+
+	if (App->introVideo->isVideoFinished && actual_scene == Stages::INTRO_VIDEO)
+	{
+		restart = true;
+		next_scene = Stages::MAIN_MENU;
+	}
+
 	if (actual_scene == Stages::INGAME && lvlIndex < App->map->numberOfLevels && portal == nullptr && App->entities->enemiescount == 0)
 	{
 		GeneratePortal();
@@ -298,6 +313,15 @@ bool Scene::PostUpdate()
 			this->DeActivate();
 			this->Activate();
 		}
+
+		if (actual_scene == Stages::INTRO_VIDEO && next_scene == Stages::MAIN_MENU)
+		{
+			App->video->CloseAVI();
+	
+			App->introVideo->DeActivate();
+			App->video->DeActivate();
+			this->Start();
+		}
 	}
 
 	return ret;
@@ -326,6 +350,8 @@ bool Scene::CleanUp()
 	{
 		App->items->DeActivate();
 	}
+
+
 
 	player = nullptr;
 	lvlChest = nullptr;

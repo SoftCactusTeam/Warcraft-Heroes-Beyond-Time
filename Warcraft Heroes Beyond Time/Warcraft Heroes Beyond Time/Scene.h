@@ -52,11 +52,12 @@ public:
 	enum class Stages
 	{
 		NO_STAGE,
+		INTRO_VIDEO,
 		MAIN_MENU,
 		SETTINGS,
 		INGAME,
 
-	} actual_scene = Stages::MAIN_MENU, next_scene = Stages::MAIN_MENU;
+	} actual_scene = Stages::INTRO_VIDEO, next_scene = Stages::INTRO_VIDEO;
 
 	void SetScene(const Stages sceneTOSet)
 	{

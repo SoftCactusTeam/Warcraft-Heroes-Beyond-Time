@@ -36,7 +36,7 @@ bool IntroVideo::Start()
 	// TODO 1: Call the initialize function from the video module in the start of the scene.
 	App->video->Initialize("video/sample(good).avi");
 	// TODO 8: Play the music of the video using the audio module. 
-	App->audio->PlayMusic("video/sample.ogg", 0.0f);
+	//App->audio->PlayMusic("video/sample.ogg", 0.0f);
 
 	return true;
 }
@@ -56,7 +56,10 @@ bool IntroVideo::Update(float dt)
 
 	}
 	else
-		Mix_PauseMusic();
+	{
+		isVideoFinished = true;
+
+	}
 
 
 	if (App->input->GetKey(SDL_SCANCODE_1) && App->video->isVideoFinished) {
@@ -77,6 +80,6 @@ bool IntroVideo::PostUpdate()
 // Called before quitting
 bool IntroVideo::CleanUp()
 {
-	App->video->CloseAVI();
+	//App->video->CloseAVI();
 	return true;
 }

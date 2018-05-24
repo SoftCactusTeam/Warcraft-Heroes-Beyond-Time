@@ -35,6 +35,7 @@ public:
 
 public:
 	Timer introTime;
+	bool isVideoFinished = false;
 };
 
 #endif // __INTRO_VIDEO_H__
