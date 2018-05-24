@@ -1278,6 +1278,7 @@ Animation* PlayerEntity::GetAnimFromAngle(float angle, bool dashOn)
 			animToReturn = &up;
 		else
 			animToReturn = &dashUp;
+		lastFixedAnglePlayer = FIXED_ANGLE::UP;
 	}
 
 	else if (angle >= 67.5f && angle < 112.5f)
@@ -1286,6 +1287,7 @@ Animation* PlayerEntity::GetAnimFromAngle(float angle, bool dashOn)
 			animToReturn = &down;
 		else
 			animToReturn = &dashDown;
+		lastFixedAnglePlayer = FIXED_ANGLE::DOWN;
 	}
 
 	else if (((angle >= 337.5f && angle < 360.0f) || (angle >= 0 && angle < 22.5f) && !App->input->InsideDeadZone()))
@@ -1294,6 +1296,7 @@ Animation* PlayerEntity::GetAnimFromAngle(float angle, bool dashOn)
 			animToReturn = &right;
 		else
 			animToReturn = &dashRight;
+		lastFixedAnglePlayer = FIXED_ANGLE::RIGHT;
 	}
 
 	else if (angle >= 157.5f && angle < 202.5f) // to change
@@ -1302,6 +1305,7 @@ Animation* PlayerEntity::GetAnimFromAngle(float angle, bool dashOn)
 			animToReturn = &left;
 		else
 			animToReturn = &dashLeft;
+		lastFixedAnglePlayer = FIXED_ANGLE::LEFT;
 	}
 
 	else if (angle >= 292.5f && angle < 337.5f)
@@ -1310,6 +1314,7 @@ Animation* PlayerEntity::GetAnimFromAngle(float angle, bool dashOn)
 			animToReturn = &upRight;
 		else
 			animToReturn = &dashUpRight;
+		lastFixedAnglePlayer = FIXED_ANGLE::UP_RIGHT;
 	}
 
 	else if (angle >= 202.5f && angle < 247.5f) // to change
@@ -1318,6 +1323,7 @@ Animation* PlayerEntity::GetAnimFromAngle(float angle, bool dashOn)
 			animToReturn = &upLeft;
 		else
 			animToReturn = &dashUpLeft;
+		lastFixedAnglePlayer = FIXED_ANGLE::UP_LEFT;
 	}
 
 	else if (angle >= 112.5f && angle < 157.5f)
@@ -1326,6 +1332,7 @@ Animation* PlayerEntity::GetAnimFromAngle(float angle, bool dashOn)
 			animToReturn = &downLeft;
 		else
 			animToReturn = &dashDownLeft;
+		lastFixedAnglePlayer = FIXED_ANGLE::DOWN_LEFT;
 	}
 
 	else if (angle >= 22.5f && angle < 67.5f)
@@ -1334,6 +1341,7 @@ Animation* PlayerEntity::GetAnimFromAngle(float angle, bool dashOn)
 			animToReturn = &downRight;
 		else
 			animToReturn = &dashDownRight;
+		lastFixedAnglePlayer = FIXED_ANGLE::DOWN_RIGHT;
 	}
 	else
 	{
@@ -1346,24 +1354,24 @@ Animation* PlayerEntity::GetAnimFromAngle(float angle, bool dashOn)
 
 FIXED_ANGLE PlayerEntity::returnFixedAngle()
 {
-	if (angle >= 247.5f && angle < 292.5f)
-		return UP;
-	else if (angle >= 67.5f && angle < 112.5f)
-		return DOWN;
-	else if ((angle >= 337.5f && angle < 360.0f) || (angle >= 0 && angle < 22.5f))
-		return RIGHT;
-	else if (angle >= 157.5f && angle < 202.5f)
-		return LEFT;
-	else if (angle >= 292.5f && angle < 337.5f)
-		return UP_RIGHT;
-	else if (angle >= 202.5f && angle < 247.5f)
-		return UP_LEFT;
-	else if (angle >= 112.5f && angle < 157.5f)
-		return DOWN_LEFT;
-	else if (angle >= 22.5f && angle < 67.5f)
-		return DOWN_RIGHT;
-	else
-		return UP;
+	//if (angle >= 247.5f && angle < 292.5f)
+	//	lastFixedAnglePlayer = UP;
+	//else if (angle >= 67.5f && angle < 112.5f)
+	//	lastFixedAnglePlayer = DOWN;
+	//else if ((angle >= 337.5f && angle < 360.0f) || (angle >= 0 && angle < 22.5f))
+	//	lastFixedAnglePlayer = RIGHT;
+	//else if (angle >= 157.5f && angle < 202.5f)
+	//	lastFixedAnglePlayer = LEFT;
+	//else if (angle >= 292.5f && angle < 337.5f)
+	//	lastFixedAnglePlayer = UP_RIGHT;
+	//else if (angle >= 202.5f && angle < 247.5f)
+	//	lastFixedAnglePlayer = UP_LEFT;
+	//else if (angle >= 112.5f && angle < 157.5f)
+	//	lastFixedAnglePlayer = DOWN_LEFT;
+	//else if (angle >= 22.5f && angle < 67.5f)
+	//	lastFixedAnglePlayer = DOWN_RIGHT;
+
+	return lastFixedAnglePlayer;
 }
 
 bool PlayerEntity::IsPlayerMoving()

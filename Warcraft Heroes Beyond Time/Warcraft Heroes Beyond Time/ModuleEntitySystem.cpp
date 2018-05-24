@@ -124,6 +124,7 @@ class Player_ConsoleOrder : public ConsoleOrder
 		{
 			//Activate Godmode
 			App->scene->player->GodMode(true);
+
 		}
 
 		else if (parameter == "godmode" && parameterNumeric == 0)

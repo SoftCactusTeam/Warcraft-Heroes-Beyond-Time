@@ -113,6 +113,7 @@ public:
 
 	Animation* GetAnimFromAngle(float angle, bool dashOn = false);
 	FIXED_ANGLE returnFixedAngle();
+	FIXED_ANGLE lastFixedAnglePlayer = FIXED_ANGLE::NON_ANGLE;
 	bool IsPlayerMoving();
 
 	// Bezier/dash related variables
