@@ -573,9 +573,8 @@ void Enemy_Archer::doLittleMove()
 	{
 		initIdle();
 	}
-	// treure
-		//iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x + (anim->GetCurrentRect().w / 2), (int)pos.y + (anim->GetCurrentRect().h / 2)));
-		//this->pos += fPoint((float)move.x * numStats.speed, (float)move.y * numStats.speed);
+		iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x + (anim->GetCurrentRect().w / 2), (int)pos.y + (anim->GetCurrentRect().h / 2)));
+		this->pos += fPoint((float)move.x * numStats.speed, (float)move.y * numStats.speed);
 }
 
 void Enemy_Archer::doDash()
@@ -589,49 +588,53 @@ void Enemy_Archer::doDash()
 	}
 	else
 	{
-		// PER EVITAR QUE ES CAIGUI DEL MAPA
-		//switch (playerHitAngle/*saveFirstAngle*/)
-		//{
-		//case FIXED_ANGLE::UP:
-		//	if (App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w / 2 +  dashMovement.x) / App->map->getTileSize(), (pos.y /*+ anim->GetCurrentRect().h*/ + dashMovement.y) / App->map->getTileSize())) == -1)
-		//		dashTempo = numStats.timingDashHit;	// break
-		//	break;
-		//case FIXED_ANGLE::UP_RIGHT:
-		//	if (App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w + dashMovement.x) / App->map->getTileSize(), (pos.y + dashMovement.y) / App->map->getTileSize())) == -1)
-		//		dashTempo = numStats.timingDashHit;	// break
-		//	break;
-		//case FIXED_ANGLE::RIGHT:
-		//	if (App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w + (int)dashMovement.x) / App->map->getTileSize(), (pos.y + anim->GetCurrentRect().h / 2 + (int)dashMovement.y) / App->map->getTileSize())) == -1)
-		//		dashTempo = numStats.timingDashHit;	// break
-		//	break;
-		//	case FIXED_ANGLE::DOWN_RIGHT:
-		//	if (App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w + dashMovement.x) / App->map->getTileSize(), (pos.y + anim->GetCurrentRect().h + dashMovement.y) / App->map->getTileSize())) == -1)
-		//		dashTempo = numStats.timingDashHit;	// break
-		//	break;
-		//case FIXED_ANGLE::DOWN:
-		//	if (App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w / 2 + dashMovement.x) / App->map->getTileSize(), (pos.y + anim->GetCurrentRect().h + dashMovement.y) / App->map->getTileSize())) == -1)
-		//		dashTempo = numStats.timingDashHit;	// break
-		//	break;
-		//case FIXED_ANGLE::DOWN_LEFT:
-		//	if (App->path->ExistWalkableAtPos(iPoint((pos.x + dashMovement.x) / App->map->getTileSize(), (pos.y + anim->GetCurrentRect().h + dashMovement.y) / App->map->getTileSize())) == -1)
-		//		dashTempo = numStats.timingDashHit;	// break
-		//	break;
-		//case FIXED_ANGLE::LEFT:
-		//	if (App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w / 2 + dashMovement.x) / App->map->getTileSize(), (pos.y + dashMovement.y) / App->map->getTileSize())) == -1)
-		//		dashTempo = numStats.timingDashHit;	// break
-		//	break;
-		//case FIXED_ANGLE::UP_LEFT:
-		//		if (App->path->ExistWalkableAtPos(iPoint((pos.x + dashMovement.x) / App->map->getTileSize(), (pos.y + dashMovement.y) / App->map->getTileSize())) == -1)
-		//			dashTempo = numStats.timingDashHit;	// break
-		//		break;
-		//}
-		// intent 1,5 !!!!!
-		if (App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w / 2 + dashMovement.x) / App->map->getTileSize(), (pos.y /*+ anim->GetCurrentRect().h*/ + dashMovement.y) / App->map->getTileSize())) == -1||
-			App->path->ExistWalkableAtPos(iPoint((pos.x /*+ anim->GetCurrentRect().w / 2*/ + dashMovement.x) / App->map->getTileSize(), (pos.y + anim->GetCurrentRect().h + dashMovement.y) / App->map->getTileSize())) == -1 ||
-			App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w / 2 + dashMovement.x) / App->map->getTileSize(), (pos.y + anim->GetCurrentRect().h + dashMovement.y) / App->map->getTileSize())) == -1 ||
-			App->path->ExistWalkableAtPos(iPoint((pos.x /*+ anim->GetCurrentRect().w / 2*/ + dashMovement.x) / App->map->getTileSize(), (pos.y /*+ anim->GetCurrentRect().h*/ + dashMovement.y) / App->map->getTileSize())) == -1)
-			dashTempo = numStats.timingDashHit;	// break
+		int divisor = App->map->getTileSize() - 2;
 
+		// PER EVITAR QUE ES CAIGUI DEL MAPA
+		switch (playerHitAngle/*saveFirstAngle*/)
+		{
+		case FIXED_ANGLE::UP:
+			if (App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w / 2 +  dashMovement.x) / divisor, (pos.y /*+ anim->GetCurrentRect().h*/ + dashMovement.y) / divisor)) == -1)
+				dashTempo = numStats.timingDashHit;	// break
+			break;
+		case FIXED_ANGLE::UP_RIGHT:
+			if (App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w + dashMovement.x) / divisor, (pos.y + dashMovement.y) / divisor)) == -1)
+				dashTempo = numStats.timingDashHit;	// break
+			break;
+		case FIXED_ANGLE::RIGHT:
+			if (App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w + (int)dashMovement.x) / divisor, (pos.y + anim->GetCurrentRect().h / 2 + (int)dashMovement.y) / divisor)) == -1)
+				dashTempo = numStats.timingDashHit;	// break
+			break;
+			case FIXED_ANGLE::DOWN_RIGHT:
+			if (App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w + dashMovement.x) / divisor, (pos.y + anim->GetCurrentRect().h + dashMovement.y) / divisor)) == -1)
+				dashTempo = numStats.timingDashHit;	// break
+			break;
+		case FIXED_ANGLE::DOWN:
+			if (App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w / 2 + dashMovement.x) / divisor, (pos.y + anim->GetCurrentRect().h + dashMovement.y) / divisor)) == -1)
+				dashTempo = numStats.timingDashHit;	// break
+			break;
+		case FIXED_ANGLE::DOWN_LEFT:
+			if (App->path->ExistWalkableAtPos(iPoint((pos.x + dashMovement.x) / divisor, (pos.y + anim->GetCurrentRect().h + dashMovement.y) / divisor)) == -1)
+				dashTempo = numStats.timingDashHit;	// break
+			break;
+		case FIXED_ANGLE::LEFT:
+			if (App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w / 2 + dashMovement.x) / divisor, (pos.y + dashMovement.y) / divisor)) == -1)
+				dashTempo = numStats.timingDashHit;	// break
+			break;
+		case FIXED_ANGLE::UP_LEFT:
+				if (App->path->ExistWalkableAtPos(iPoint((pos.x + dashMovement.x) / divisor, (pos.y + dashMovement.y) / divisor)) == -1)
+					dashTempo = numStats.timingDashHit;	// break
+				break;
+		}
+		// intent 1,5 !!!!!
+		//if (App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w  + dashMovement.x) / divisor, (pos.y /*+ anim->GetCurrentRect().h*/ + dashMovement.y) / divisor)) == -1 ||
+		//	App->path->ExistWalkableAtPos(iPoint((pos.x /*+ anim->GetCurrentRect().w / 2*/ + dashMovement.x) / divisor, (pos.y + anim->GetCurrentRect().h + dashMovement.y) / divisor)) == -1 ||
+		//	App->path->ExistWalkableAtPos(iPoint((pos.x + anim->GetCurrentRect().w  + dashMovement.x) / divisor, (pos.y + anim->GetCurrentRect().h + dashMovement.y) / divisor)) == -1 ||
+		//	App->path->ExistWalkableAtPos(iPoint((pos.x /*+ anim->GetCurrentRect().w / 2*/ + dashMovement.x) / divisor, (pos.y /*+ anim->GetCurrentRect().h*/ + dashMovement.y) / divisor)) == -1)
+		//{
+		//	dashTempo = numStats.timingDashHit;	// break
+		//	printf_s("Break\n");
+		//}
 		// INTENT 2 !!!!!!!!
 		//int multipX = 1, multipY = 1;
 		//if (dashMovement.x < 0)
@@ -669,9 +672,8 @@ void Enemy_Archer::Walk()
 	}
 	else
 	{
-		// TREURE
-		//iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x + (anim->GetCurrentRect().w / 2), (int)pos.y + (anim->GetCurrentRect().h / 2)));
-		//this->pos += fPoint((float)move.x * numStats.speed, (float)move.y * numStats.speed);
+		iPoint move = pathVector.nextTileToMove(iPoint((int)pos.x + (anim->GetCurrentRect().w / 2), (int)pos.y + (anim->GetCurrentRect().h / 2)));
+		this->pos += fPoint((float)move.x * numStats.speed, (float)move.y * numStats.speed);
 	}
 
 }
