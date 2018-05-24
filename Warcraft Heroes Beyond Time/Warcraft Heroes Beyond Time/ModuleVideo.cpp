@@ -3,6 +3,7 @@
 #include "ModuleWindow.h"
 #include "ModuleTextures.h"
 #include "ModuleRender.h"
+#include "ModulePrinter.h"
 
 #include "ModuleVideo.h"
 
@@ -51,6 +52,8 @@ void ModuleVideo::OpenAVI(LPCSTR path)
 	AVIStreamInfo(pavi, &psi, sizeof(psi));					// Reads Information About The Stream Into psi
 	width = psi.rcFrame.right - psi.rcFrame.left;           // Width Is Right Side Of Frame Minus Left
 	height = psi.rcFrame.bottom - psi.rcFrame.top;          // Height Is Bottom Of Frame Minus Top
+
+	
 	lastFrame = AVIStreamLength(pavi);						// The Last Frame Of The Stream
 
 															// TODO 3.1: Use AVIStreamFrameOpen(...) to decompress video frames from the AVI file. On the second parameter you can pass AVIGETFRAMEF_BESTDISPLAYFMT to select the best display format.
@@ -80,12 +83,12 @@ bool ModuleVideo::GrabAVIFrame()
 	SDL_Texture* texture = App->textures->LoadSurface(surface);
 
 	//TODO 6.1: Blit the texture of the frame.
-	App->render->Blit(texture, 0, 0, NULL, SDL_FLIP_VERTICAL);
-
+	//App->render->Blit(texture, 0, 0, NULL, SDL_FLIP_VERTICAL);
+	App->printer->PrintSprite({ 0, 0 }, texture, { 0, 0, width, height }, 10000);
 
 	//TODO 7: Limit the change of the frame to one out of two times.
 	// Hint: We want to blit a diferent frame only when our counter, i, is an even number.
-	if (i % 2 == 0)
+	if (i % 1 == 0)
 	{
 		frame++;
 	}
