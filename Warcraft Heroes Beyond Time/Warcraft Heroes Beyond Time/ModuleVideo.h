@@ -1,5 +1,5 @@
-#ifndef __j1VIDEO_H__
-#define __j1VIDEO_H__
+#ifndef __VIDEO_H__
+#define __VIDEO_H__
 
 #include "Module.h"
 
@@ -49,4 +49,4 @@ private:
 	int i = 1;
 };
 
-#endif // __j1Video_H__
+#endif // __VIDEO_H__

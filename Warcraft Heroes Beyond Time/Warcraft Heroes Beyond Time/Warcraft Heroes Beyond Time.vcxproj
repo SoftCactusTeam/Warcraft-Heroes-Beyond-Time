@@ -156,6 +156,7 @@
     <ClCompile Include="Guldan.cpp" />
     <ClCompile Include="HolyShitItem.cpp" />
     <ClCompile Include="InputBox.cpp" />
+    <ClCompile Include="IntroVideo.cpp" />
     <ClCompile Include="ItemContainer.cpp" />
     <ClCompile Include="LifeStealItem.cpp" />
     <ClCompile Include="ModuleEffects.cpp" />
@@ -229,6 +230,7 @@
     <ClInclude Include="Guldan.h" />
     <ClInclude Include="HolyShitItem.h" />
     <ClInclude Include="InputBox.h" />
+    <ClInclude Include="IntroVideo.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemContainer.h" />
     <ClInclude Include="LifeStealItem.h" />

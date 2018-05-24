@@ -202,6 +202,7 @@
     <ClCompile Include="ModuleVideo.cpp">
       <Filter>Video</Filter>
     </ClCompile>
+    <ClCompile Include="IntroVideo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -428,6 +429,7 @@
     <ClInclude Include="ModuleVideo.h">
       <Filter>Video</Filter>
     </ClInclude>
+    <ClInclude Include="IntroVideo.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />
