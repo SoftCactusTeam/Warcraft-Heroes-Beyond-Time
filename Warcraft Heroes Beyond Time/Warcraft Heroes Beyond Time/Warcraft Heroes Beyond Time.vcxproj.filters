@@ -199,6 +199,9 @@
     <ClCompile Include="Fonts.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleVideo.cpp">
+      <Filter>Video</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -422,6 +425,9 @@
     <ClInclude Include="Fonts.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleVideo.h">
+      <Filter>Video</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />
@@ -459,6 +465,9 @@
     </Filter>
     <Filter Include="Entities\Dynamic Entites\Player">
       <UniqueIdentifier>{9580dc2a-cfc5-4c2d-a9f0-d70f90e119e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Video">
+      <UniqueIdentifier>{29e4205d-9ae2-415f-b314-0ae0e373353c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

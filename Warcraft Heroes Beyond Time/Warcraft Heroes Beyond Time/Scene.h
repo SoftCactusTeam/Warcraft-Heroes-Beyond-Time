@@ -82,7 +82,6 @@ private:
 
 
 	uint currentPercentAudio = 0u;
-	
 
 	bool restart = false;
 	int lvlIndex = 0;

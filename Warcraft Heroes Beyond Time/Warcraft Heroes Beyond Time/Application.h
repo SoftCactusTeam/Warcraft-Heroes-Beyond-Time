@@ -30,6 +30,7 @@ class ModuleItems;
 class ModuleProjectiles;
 class ModuleEffects;
 class ModuleTransitions;
+class ModuleVideo;
 
 class Application
 {
@@ -91,6 +92,7 @@ public:
 	ModuleProjectiles*		projectiles = nullptr;
 	ModuleEffects*			effects = nullptr;
 	ModuleTransitions*		transitions = nullptr;
+	ModuleVideo*			video = nullptr;
 
 public:
 

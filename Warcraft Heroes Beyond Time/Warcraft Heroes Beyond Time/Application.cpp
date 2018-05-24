@@ -25,6 +25,7 @@
 #include "ModuleProjectiles.h"
 #include "ModuleEffects.h"
 #include "ModuleTransitions.h"
+#include "ModuleVideo.h"
 
 #include "Brofiler\Brofiler.h"
 
@@ -49,6 +50,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	projectiles = new ModuleProjectiles();
 	effects = new ModuleEffects();
 	transitions = new ModuleTransitions();
+	video = new ModuleVideo();
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
 
@@ -76,7 +78,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(transitions);
 
 	AddModule(console);
-
+	AddModule(video);
 
 	// render last to swap buffer
 	AddModule(render);
