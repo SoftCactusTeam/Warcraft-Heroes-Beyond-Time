@@ -85,7 +85,10 @@ bool ModuleVideo::GrabAVIFrame()
 
 	//TODO 6.1: Blit the texture of the frame.
 	//App->render->Blit(texture, 0, 0, NULL, SDL_FLIP_VERTICAL);
-	App->printer->PrintSprite({ 0, 0 }, texture, { 0, 0, width, height }, 10000);
+	//App->printer->PrintSprite({ 0, 0 }, texture, { 0, 0, width, height }, 10000);
+	App->render->BlitVideo(texture, 0, 0, NULL, SDL_FLIP_VERTICAL, 0);
+
+
 
 	//TODO 7: Limit the change of the frame to one out of two times.
 	// Hint: We want to blit a diferent frame only when our counter, i, is an even number.
