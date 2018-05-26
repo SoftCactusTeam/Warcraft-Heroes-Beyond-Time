@@ -75,6 +75,8 @@ bool MapGenerator::CleanUp()
 
 	totalSize = 0u;
 
+	mapSeed = 0;
+
 	return nodes.size() <= 0 && visited.size() <= 0;
 }
 
@@ -294,11 +296,11 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 	LOG("Executing map Algorithm...");
 
 	if (seed != 0)
-		mapSeed = seed;
+		srand(seed);
 	else
-		mapSeed = time(NULL);
+		srand(time(NULL));
 
-	srand(mapSeed);
+	
 
 	MapNode* auxNode = startNode;
 
