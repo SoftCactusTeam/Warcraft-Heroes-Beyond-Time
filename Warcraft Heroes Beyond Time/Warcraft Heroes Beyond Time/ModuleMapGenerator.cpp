@@ -294,9 +294,11 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 	LOG("Executing map Algorithm...");
 
 	if (seed != 0)
-		srand(seed);
+		mapSeed = seed;
 	else
-		srand(time(NULL));
+		mapSeed = time(NULL);
+
+	srand(mapSeed);
 
 	MapNode* auxNode = startNode;
 
@@ -440,8 +442,6 @@ bool MapGenerator::GenerateChestMap()
 
 	return true;
 }
-
-
 
 SDL_Rect MapGenerator::randomTile(bool isFloor)
 {
