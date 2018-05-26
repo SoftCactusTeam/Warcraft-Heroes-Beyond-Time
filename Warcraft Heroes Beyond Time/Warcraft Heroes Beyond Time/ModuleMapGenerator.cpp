@@ -75,6 +75,8 @@ bool MapGenerator::CleanUp()
 
 	totalSize = 0u;
 
+	mapSeed = 0;
+
 	return nodes.size() <= 0 && visited.size() <= 0;
 }
 
@@ -298,6 +300,8 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 	else
 		srand(time(NULL));
 
+	
+
 	MapNode* auxNode = startNode;
 
 	for (uint i = 0u; i < iterations;)
@@ -440,8 +444,6 @@ bool MapGenerator::GenerateChestMap()
 
 	return true;
 }
-
-
 
 SDL_Rect MapGenerator::randomTile(bool isFloor)
 {

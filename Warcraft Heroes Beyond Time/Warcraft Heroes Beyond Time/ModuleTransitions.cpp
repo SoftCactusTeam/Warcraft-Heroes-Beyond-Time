@@ -65,10 +65,11 @@ bool ModuleTransitions::PostUpdate()
 }
 
 // Fade to black. At mid point deactivate one module, then activate the other
-bool ModuleTransitions::StartTransition(Module* module_off, Module* module_on, float time, fades kind_of_fade, bool cleanup_off, bool start_on)
+bool ModuleTransitions::StartTransition(Module* module_off, Module* module_on, float time, fades kind_of_fade, bool cleanup_off, bool start_on, bool loadTransition)
 {
 	bool ret = false;
 
+	this->loadTransition = loadTransition;
 	this->cleanup_off = cleanup_off;
 	this->start_on = start_on;
 
@@ -126,11 +127,15 @@ void ModuleTransitions::SliderFade()
 			if (cleanup_off) {
 				off->DeActivate();
 			}
+			if (loadTransition)
+			{
+				App->Load();
+				loadTransition = false;
+			}
 			if (start_on) {
 				App->scene->actual_scene = App->scene->next_scene;
 				on->Activate();
-				App->scene->paused = false;
-				
+				App->scene->paused = false;			
 			}
 
 			total_time += total_time;
@@ -172,11 +177,15 @@ void ModuleTransitions::CircularFade()
 			if (cleanup_off) {
 				off->DeActivate();
 			}
+			if (loadTransition)
+			{
+				App->Load();
+				loadTransition = false;
+			}
 			if (start_on) {
 				App->scene->actual_scene = App->scene->next_scene;
 				on->Activate();
-				App->scene->paused = false;
-				
+				App->scene->paused = false;			
 			}
 
 			total_time += total_time;

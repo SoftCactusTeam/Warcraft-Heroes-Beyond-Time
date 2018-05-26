@@ -1,7 +1,6 @@
 ## **Víctor Masó contribution**
 
 I am the lead of the team. Overall my main role has been organizing the team and the workflow, make sure everything is delivered on time and resolve team conflicts. Aside from the lead role I've mainly worked on the aristic part of the project and a bit of programming:
-- I did all the art related to the player Thrall. All animations (idle, walk, attack, dying).
-- 
--
--
+- I've done the art related to the player Thrall. All animations (idle, walk, attack, dying etc.).
+- I've done with Guillem the player movement and I've been in charge of the dash movment myself.
+- To be added
