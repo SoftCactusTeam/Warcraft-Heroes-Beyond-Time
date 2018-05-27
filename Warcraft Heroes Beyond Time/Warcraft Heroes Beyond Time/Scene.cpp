@@ -38,6 +38,8 @@
 
 
 
+
+
 class ConsoleMap : public ConsoleOrder
 {
 	std::string orderName() { return "map"; }
@@ -135,7 +137,9 @@ bool Scene::Start()
 				player = App->entities->AddPlayer({ (float)App->map->begginingNode->pos.x * 46, (float)App->map->begginingNode->pos.y * 46 }, THRALL, playerStats);
 				if (testEmitter == nullptr)
 				{
-					testEmitter = App->psystem->AddEmiter({ 250, 250 }, EMITTER_TYPE_DASH);
+					
+					fPoint a = player->pos;
+					testEmitter = App->psystem->AddEmiter({(player->pos.x - App->render->camera.x) / App->winScale, (player->pos.y - App->render->camera.y) / App->winScale }, EMITTER_TYPE_DASH);
 					testEmitter->StopEmission();
 				}
 				player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
@@ -205,13 +209,14 @@ bool Scene::Update(float dt)
 
 	if (testEmitter != nullptr)
 	{
-		//testEmitter->MoveEmitter(player->pos);
+		testEmitter->MoveEmitter({ ((player->pos.x + App->render->camera.x) / App->winScale) + 5, ((player->pos.y + App->render->camera.y) / App->winScale) + 15 });
 
 		if (actual_scene == Stages::INGAME && player->state == PlayerEntity::states::PL_DASH)
 		{
-			testEmitter->StartEmission(300);
+			testEmitter->StartEmission(100);
 		}
 	}
+
 
 
 	if (App->introVideo->isVideoFinished && actual_scene == Stages::INTRO_VIDEO)

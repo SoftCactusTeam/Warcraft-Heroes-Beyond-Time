@@ -145,6 +145,8 @@ bool Application::Start()
 			ret = (*item)->Start();
 	}
 
+	winScale = window->GetScale();
+
 	startup_time.Start();
 
 	return ret;

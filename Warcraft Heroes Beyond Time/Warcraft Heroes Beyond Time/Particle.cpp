@@ -66,7 +66,7 @@ void Particle::Draw()
 	// Color interpolation, only if the particle has enough life
 	SDL_Color resColor;
 
-	if (pState.pLive.startLife > MIN_LIFE_TO_INTERPOLATE)
+	if (pState.pLive.startLife >= MIN_LIFE_TO_INTERPOLATE)
 		resColor = RgbInterpolation(pState.pLive.startColor, pState.pLive.t, pState.pLive.endColor);
 
 	// Blitting particle on screen
@@ -74,7 +74,7 @@ void Particle::Draw()
 		//&pState.pLive.rectSize, resColor, pState.pLive.blendMode, 0.0f, pState.pLive.currentRotSpeed);
 
 	App->printer->PrintSprite({ (int)pState.pLive.pos.x, (int)pState.pLive.pos.y }, App->psystem->GetParticleAtlas(), pState.pLive.pRect, -1, ModulePrinter::Pivots::CENTER,
-		{ 0, 0 }, ModulePrinter::Pivots::CENTER, { 0, 0 }, pState.pLive.currentRotSpeed, resColor, pState.pLive.blendMode, pState.pLive.rectSize, 0.0f);
+		{ 0, 0 }, ModulePrinter::Pivots::UPPER_LEFT, { 0, 0 }, pState.pLive.currentRotSpeed, resColor, pState.pLive.blendMode, pState.pLive.rectSize, 0.0f);
 
 	// Calculating new rotation according to rotation speed
 	pState.pLive.currentRotSpeed += pState.pLive.startRotSpeed;

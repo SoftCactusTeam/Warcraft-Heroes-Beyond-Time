@@ -4,7 +4,7 @@
 #include "p2Point.h"
 #include "SDL/include/SDL.h"
 
-#define MIN_LIFE_TO_INTERPOLATE 15
+#define MIN_LIFE_TO_INTERPOLATE 10
 
 struct SDL_Texture;
 

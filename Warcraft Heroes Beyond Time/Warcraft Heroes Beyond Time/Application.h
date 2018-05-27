@@ -102,6 +102,7 @@ public:
 public:
 
 	float dt = 0.0f;
+	uint winScale = 0u;
 
 private:
 
