@@ -841,7 +841,7 @@ void Enemy_Archer::UpdateEffects()
 			switch ((*it)->effect)
 			{
 			case ARCHER_EFFECT_FREEZE:
-				anim->Start(9.0f);
+				anim = &animWalk[LookAtPlayer()];
 				break;
 			case ARCHER_EFFECT_BURNING:
 
