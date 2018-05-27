@@ -285,7 +285,7 @@ bool Scene::PostUpdate()
 	{
 		SDL_Rect back = { 0,0,640,360 };
 		//App->render->DrawQuad(back, 0, 205, 193, 255, true, false);
-		//App->render->DrawQuad(back, 64, 66, 159, 255, true, false);
+		App->render->DrawQuad(back, 64, 66, 159, 255, true, false);
 	}
 
 	if (App->path->printWalkables == true)

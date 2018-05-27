@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <emitters>
-    <particleAtlas name="textures/particles.png">
+    <particleAtlas name="sprites/particles.png">
       
       <emitter type ="fire">
         <angleRange min ="80" max ="110"/>
