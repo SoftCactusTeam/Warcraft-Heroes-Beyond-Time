@@ -139,6 +139,7 @@
     <ClCompile Include="DmgBallItem.cpp" />
     <ClCompile Include="DynamicEntity.cpp" />
     <ClCompile Include="EffectsElem.cpp" />
+    <ClCompile Include="Emitter.cpp" />
     <ClCompile Include="EnemyEntity.cpp" />
     <ClCompile Include="Enemy_Archer.cpp" />
     <ClCompile Include="Enemy_Footman.cpp" />
@@ -166,6 +167,10 @@
     <ClCompile Include="ModuleTransitions.cpp" />
     <ClCompile Include="ModuleVideo.cpp" />
     <ClCompile Include="OneShotItem.cpp" />
+    <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="ParticlePool.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
+    <ClCompile Include="PerfTimer.cpp" />
     <ClCompile Include="PlayerHPBar.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="RingItem.cpp" />
@@ -211,6 +216,7 @@
     <ClInclude Include="DMGBallItem.h" />
     <ClInclude Include="DynamicEntity.h" />
     <ClInclude Include="EffectsElem.h" />
+    <ClInclude Include="Emitter.h" />
     <ClInclude Include="EnemyEntity.h" />
     <ClInclude Include="Enemy_Archer.h" />
     <ClInclude Include="Enemy_Footman.h" />
@@ -240,6 +246,10 @@
     <ClInclude Include="ModuleTransitions.h" />
     <ClInclude Include="ModuleVideo.h" />
     <ClInclude Include="OneShotItem.h" />
+    <ClInclude Include="Particle.h" />
+    <ClInclude Include="ParticlePool.h" />
+    <ClInclude Include="ParticleSystem.h" />
+    <ClInclude Include="PerfTimer.h" />
     <ClInclude Include="PhysFS\include\physfs.h" />
     <ClInclude Include="PlayerHPBar.h" />
     <ClInclude Include="PortalEntity.h" />
