@@ -193,8 +193,6 @@ bool Enemy_Archer::Draw()
 
 		break;
 	}
-	
-	App->printer->PrintQuad({ (int)pos.x, (int)pos.y, 2, 2}, Blue, true, true);
 	return ret;
 }
 
