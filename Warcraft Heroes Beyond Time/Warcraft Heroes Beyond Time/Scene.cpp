@@ -474,8 +474,8 @@ void Scene::CreateMainMenuScreen()
 	LabelInfo defLabel;
 	defLabel.color = White;
 	defLabel.fontName = "LifeCraft80";
-	defLabel.text = "Start Demo";
-	App->gui->CreateLabel({ 33,11 }, defLabel, button, this);
+	defLabel.text = "Start";
+	App->gui->CreateLabel({ 53,11 }, defLabel, button, this);
 
 	//SETTINGS BUTTON
 	Button* button2 = (Button*)App->gui->CreateButton({ 241.0f , 215 }, BType::SETTINGS, this, window);
@@ -621,7 +621,7 @@ void Scene::CreateGratitudeScreen()
 		gratitude.color = White;
 		gratitude.fontName = "LifeCraft90";
 		gratitude.multilabelWidth = 1500;
-		gratitude.text = "                         Victory! \n Thanks for playing this alpha release. \n       Your support means a lot ^^ \n       More at: @SoftCactus_Team";
+		gratitude.text = "                         Victory! \n       Thanks for playing the game. \n       Your support means a lot ^^ \n       More at: @SoftCactus_Team";
 		App->gui->CreateLabel({ 150, 130 }, gratitude, window, nullptr);
 	}
 	alreadyCreated = true;

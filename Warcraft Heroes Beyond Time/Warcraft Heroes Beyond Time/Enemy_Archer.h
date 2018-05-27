@@ -96,6 +96,7 @@ public:
 	Animation animFrozen[NUMBER_OF_ORIENTATIONS];
 
 	Animation animSmoke;
+	Animation animFrezzed;
 
 	Collider* col = nullptr;
 

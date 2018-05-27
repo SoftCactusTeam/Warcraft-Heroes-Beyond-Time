@@ -193,8 +193,6 @@ bool Enemy_Archer::Draw()
 
 		break;
 	}
-	
-	App->printer->PrintQuad({ (int)pos.x, (int)pos.y, 2, 2}, Blue, true, true);
 	return ret;
 }
 
@@ -701,7 +699,7 @@ void Enemy_Archer::AddEffect(ARCHER_EFFECTS effect, int time)
 	switch (effect)		// INITIAL EFFECT
 	{
 	case ARCHER_EFFECT_FREEZE:
-		anim->Stop();
+		anim = &animFrezzed;
 		break;
 	case ARCHER_EFFECT_BURNING:
 
@@ -843,7 +841,7 @@ void Enemy_Archer::UpdateEffects()
 			switch ((*it)->effect)
 			{
 			case ARCHER_EFFECT_FREEZE:
-				anim->Start(9.0f);
+				anim = &animWalk[LookAtPlayer()];
 				break;
 			case ARCHER_EFFECT_BURNING:
 
@@ -1123,4 +1121,7 @@ void Enemy_Archer::LoadAnimations()
 	animSmoke.PushBack({ 1,77,52,42 });
 	animSmoke.speedFactor = 9.0f;
 	animSmoke.loop = true;
+
+	animFrezzed.PushBack({ 272,16,52,52 });
+	animFrezzed.loop = false;
 }
