@@ -110,7 +110,7 @@ void Render::ResetViewPort()
 	SDL_RenderSetViewport(renderer, &viewport);
 }
 
-bool Render::Blit(const SDL_Texture* texture, int x, int y, const SDL_Rect* section, float scale, float speed, double angle, int pivot_x, int pivot_y, bool areYouLabel) const
+bool Render::Blit(const SDL_Texture* texture, int x, int y, const SDL_Rect* section, float scale, float speed, double angle, int pivot_x, int pivot_y, bool areYouLabel, SDL_BlendMode blendMode, SDL_Rect rectSize) const
 {
 	bool ret = true;
 
@@ -126,7 +126,12 @@ bool Render::Blit(const SDL_Texture* texture, int x, int y, const SDL_Rect* sect
 		rect.x = (int)(camera.x * speed) + x * scale;
 		rect.y = (int)(camera.y * speed) + y * scale;
 	}
-
+	
+	if (SDL_RectEquals(&rectSize, &SDL_Rect({0, 0, 0, 0})))
+	{
+		rect.w = rectSize.w;
+		rect.h = rectSize.h;
+	}
 	if(section != NULL)
 	{
 		rect.w = section->w;
@@ -148,6 +153,12 @@ bool Render::Blit(const SDL_Texture* texture, int x, int y, const SDL_Rect* sect
 		pivot.x = pivot_x;
 		pivot.y = pivot_y;
 		p = &pivot;
+	}
+
+	if (blendMode != SDL_BLENDMODE_NONE)
+	{
+		if (SDL_SetTextureBlendMode((SDL_Texture*)texture, blendMode) != 0)
+			LOG("Cannot set texture blend mode. SDL_SetTextureBlendMode error: %s", SDL_GetError());
 	}
 
 	if(SDL_RenderCopyEx(renderer, (SDL_Texture*)texture, section, &rect, angle, p, SDL_FLIP_NONE) != 0)

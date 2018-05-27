@@ -25,7 +25,7 @@ public:
 
 	void SetViewPort(const SDL_Rect& rect);
 	void ResetViewPort();
-	bool Blit(const SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, float scale = 1.0f, float speed = 1.0f, double angle = 0, int pivot_x = INT_MAX, int pivot_y = INT_MAX, bool areYouLabel = false) const;
+	bool Blit(const SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, float scale = 1.0f, float speed = 1.0f, double angle = 0, int pivot_x = INT_MAX, int pivot_y = INT_MAX, bool areYouLabel = false, SDL_BlendMode blendMode = SDL_BLENDMODE_NONE, SDL_Rect rectSize = { 0, 0, 0, 0 }) const;
 	bool BlitParticle(SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, const SDL_Rect* rectSize = NULL, SDL_Color color = { 0, 0, 0, 0 }, SDL_BlendMode blendMode = SDL_BLENDMODE_NONE, float speed = 1.0f, double angle = 0, int pivot_x = INT_MAX, int pivot_y = INT_MAX) const;
 	bool BlitVideo(SDL_Texture* texture, int x, int y, const SDL_Rect* section = nullptr, SDL_RendererFlip rendererFlip = SDL_FLIP_NONE, float speed = 1.0f, double angle = 0, int pivot_x = 0, int pivot_y = 0) const;
 	bool DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, bool filled = true, bool use_camera = true) const;

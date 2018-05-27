@@ -25,6 +25,7 @@
 #include "ModuleTransitions.h"
 #include "IntroVideo.h"
 #include "ModuleVideo.h"
+#include "ParticleSystem.h"
 
 #include "Brofiler\Brofiler.h"
 #include "Label.h"
@@ -69,6 +70,8 @@ bool Scene::Start()
 	gratitudeON = false;
 	restart = false;
 	App->gui->Activate();
+
+	App->psystem->AddEmiter({ 200, 200 }, EMITTER_TYPE_FIRE);
 
 	currentPercentAudio = App->audio->MusicVolumePercent;
 
