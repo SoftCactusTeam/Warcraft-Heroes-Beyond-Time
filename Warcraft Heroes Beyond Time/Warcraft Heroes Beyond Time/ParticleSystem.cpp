@@ -50,6 +50,8 @@ bool ParticleSystem::Awake(pugi::xml_node& config)
 			LoadEmitterData(emitters, EmitterType::EMITTER_TYPE_BUBBLE);
 		else if (emitterType.compare("spark") == 0)
 			LoadEmitterData(emitters, EmitterType::EMITTER_TYPE_SPARK);
+		else if (emitterType.compare("thrall_dash") == 0)
+			LoadEmitterData(emitters, EmitterType::EMITTER_TYPE_DASH);
 	}
 	return ret;
 }

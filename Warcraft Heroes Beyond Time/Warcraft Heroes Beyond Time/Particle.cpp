@@ -70,8 +70,8 @@ void Particle::Draw()
 		resColor = RgbInterpolation(pState.pLive.startColor, pState.pLive.t, pState.pLive.endColor);
 
 	// Blitting particle on screen
-	App->render->BlitParticle(App->psystem->GetParticleAtlas(), (int)centerX, (int)centerY, &pState.pLive.pRect,
-		&pState.pLive.rectSize, resColor, pState.pLive.blendMode, 0.0f, pState.pLive.currentRotSpeed);
+	//App->render->BlitParticle(App->psystem->GetParticleAtlas(), (int)centerX, (int)centerY, &pState.pLive.pRect,
+		//&pState.pLive.rectSize, resColor, pState.pLive.blendMode, 0.0f, pState.pLive.currentRotSpeed);
 
 	App->printer->PrintSprite({ (int)pState.pLive.pos.x, (int)pState.pLive.pos.y }, App->psystem->GetParticleAtlas(), pState.pLive.pRect, -1, ModulePrinter::Pivots::CENTER,
 		{ 0, 0 }, ModulePrinter::Pivots::CENTER, { 0, 0 }, pState.pLive.currentRotSpeed, resColor, pState.pLive.blendMode, pState.pLive.rectSize, 0.0f);
