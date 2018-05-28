@@ -7,6 +7,8 @@ struct SDL_RWops;
 
 int close_sdl_rwops(SDL_RWops *rw);
 
+static const char* savesFolder = "Saves/";
+
 class FileSystem : public Module
 {
 public:
@@ -26,17 +28,18 @@ public:
 	bool AddPath(const char* path_or_zip, const char* mount_point = NULL);
 	bool Exists(const char* file) const;
 	bool IsDirectory(const char* file) const;
-	bool IsFileEmpty(const char* file) const; //LoadGame
 	const char* GetSaveDirectory() const
 	{
-		return "save/";
+		return savesFolder;
 	}
-	bool FreeFile(char* path); //SaveGame
+	bool deleteSavedGame();
+	bool isGameSaved();
 
 	// Open for Read/Write
 	unsigned int Load(const char* file, char** buffer) const;
 	SDL_RWops* Load(const char* file) const;
 
+	//Save a file into disk
 	unsigned int Save(const char* file, const char* buffer, unsigned int size) const;
 
 private:
