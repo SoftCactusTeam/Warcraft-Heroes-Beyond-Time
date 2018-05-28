@@ -60,7 +60,6 @@ Scene::~Scene() {}
 bool Scene::Awake(pugi::xml_node& sceneNode)
 {
 	App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
-
 	return true;
 }
 
@@ -197,18 +196,20 @@ bool Scene::Update(float dt)
 {
 	bool ret = true;
 
+	//CHECKING IF INTROVIDEO HAS FINISHED PLAYING
 	if (App->introVideo->isVideoFinished && actual_scene == Stages::INTRO_VIDEO)
 	{
 		restart = true;
 		next_scene = Stages::MAIN_MENU;
 	}
 
+	//PORTAL SPAWN
 	if (actual_scene == Stages::INGAME && lvlIndex < App->map->numberOfLevels && portal == nullptr && App->entities->enemiescount == 0)
 	{
 		GeneratePortal();
 	}
 
-	//TESTING SAVES
+	//TESTING SAVE
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && !App->console->isWritting())
 	{
 		App->Save();
@@ -226,21 +227,16 @@ bool Scene::Update(float dt)
 		restart = true;
 	}
 
+	//Q: GO TO THE NEXT LEVEL
 	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && actual_scene == Stages::INGAME && !App->console->isWritting())
 	{
 		GoNextLevel();
 	}
 
+	//F1: GO TO THE BOSS ROOM
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KeyState::KEY_DOWN && actual_scene == Stages::INGAME && !App->console->isWritting())
 	{
 		lvlIndex = 100;
-		restart = true;
-	}
-
-	if (actual_scene == Stages::MAIN_MENU && App->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN && !App->console->isWritting()) // DELETE THIS AFTER VERTICAL
-	{
-		App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
-		next_scene = Stages::INGAME;
 		restart = true;
 	}
 
@@ -281,6 +277,8 @@ bool Scene::Update(float dt)
 bool Scene::PostUpdate()
 {
 	bool ret = true;
+
+	//DRAWING THE BACKGROUND IN THE MAIN MENU
 	if (actual_scene == Stages::MAIN_MENU || actual_scene == Stages::SETTINGS)
 	{
 		SDL_Rect back = { 0,0,640,360 };
@@ -288,9 +286,11 @@ bool Scene::PostUpdate()
 		App->render->DrawQuad(back, 64, 66, 159, 255, true, false);
 	}
 
+	//PRINTING WALKABLE TILES (Idk why this is here)
 	if (App->path->printWalkables == true)
 		App->path->PrintWalkableTiles();
 
+	//SCENE RESET
 	BROFILER_CATEGORY("SceneRestart", Profiler::Color::Chocolate);
 	if (restart)
 	{
@@ -329,6 +329,8 @@ bool Scene::PostUpdate()
 
 bool Scene::CleanUp()
 {
+
+	//HEALING THE PLAYER AFTER FINISHING A LVL
 	if (player)
 	{
 		playerStats = player->numStats;
