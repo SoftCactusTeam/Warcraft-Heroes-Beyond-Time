@@ -5,6 +5,9 @@
 
 #include "SDL\include\SDL_gamecontroller.h"
 #include "SDL\include\SDL_scancode.h"
+#include "Log.h"
+
+#include <map>
 
 #define NUM_MOUSE_BUTTONS 5
 #define J_DEAD_ZONE 12000
@@ -23,6 +26,7 @@ enum EventWindow
 
 enum KeyState
 {
+	NON_VALID_STATE = -1,
 	KEY_IDLE = 0,
 	KEY_DOWN,
 	KEY_REPEAT,
@@ -54,6 +58,18 @@ public:
 	bool GetWindowEvent(EventWindow ev);
 	void InitController();
 
+	inline const char* toString(SDL_GameControllerButton b)
+	{
+		switch (b)
+		{
+			case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_A:   return "A";
+			case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_B:   return "B";
+			case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_X:   return "X";
+			case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_Y:   return "Y";
+			default:      return "[Unknown Button]";
+		}
+	}
+
 	KeyState GetKey(int id) const
 	{
 		return keyboard[id];
@@ -67,6 +83,23 @@ public:
 	KeyState GetPadButtonDown(int id) const
 	{
 		return jButtons[id];
+	}
+
+	KeyState GetAction(char* action)
+	{
+		uint enumValue = -1;
+		try
+		{
+			enumValue = bindingMap.at(action);
+		}
+			
+		catch (const std::out_of_range& oor)
+		{
+			LOG("Action not binded yet");
+			return KeyState::NON_VALID_STATE;
+		}
+
+		return GetPadButtonDown(enumValue);
 	}
 
 	float GetXAxis() const
@@ -125,6 +158,9 @@ private:
 	SDL_Joystick* joystick = NULL;
 	SDL_GameController* controller = NULL;
 	SDL_Haptic* controllerHaptic = NULL;
+
+	std::map<char*, uint> bindingMap;
+	std::map<char*, uint> DEFAULTbindingMap;
 
 	float xAxis = 0;
 	float yAxis = 0;

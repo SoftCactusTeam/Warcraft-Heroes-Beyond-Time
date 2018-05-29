@@ -572,7 +572,7 @@ void Scene::CreateSettingsScreen()
 	//MUSIC VOLUME SLIDER
 	SliderInfo sinfo;
 	sinfo.type = Slider::SliderType::MUSIC_VOLUME;
-	Slider* slider = (Slider*)App->gui->CreateSlider({ 183, 95 }, sinfo, this, window);
+	Slider* slider = (Slider*)App->gui->CreateSlider({ 50, 95 }, sinfo, this, window);
 
 	LabelInfo defLabel3;
 	defLabel3.color = White;
@@ -590,7 +590,7 @@ void Scene::CreateSettingsScreen()
 	//FX VOLUME SLIDER
 	SliderInfo sinfo2;
 	sinfo2.type = Slider::SliderType::FX_VOLUME;
-	Slider* slider2 = (Slider*)App->gui->CreateSlider({ 183, 190 }, sinfo2, this, window);
+	Slider* slider2 = (Slider*)App->gui->CreateSlider({ 50, 190 }, sinfo2, this, window);
 
 	LabelInfo defLabel4;
 	defLabel4.color = White;
@@ -605,8 +605,56 @@ void Scene::CreateSettingsScreen()
 	defLabel5.text = "FX Volume";
 	App->gui->CreateLabel({ 0,-35 }, defLabel5, slider2, this);
 
+	//ATTACK BINDING
+	LabelInfo defAttackLabel;
+	defAttackLabel.color = White;
+	defAttackLabel.fontName = "LifeCraft90";
+	defAttackLabel.text = "Attack";
+	Label* attackLabel = (Label*)App->gui->CreateLabel({ 400,93 }, defAttackLabel, window, this);
+
+	LabelInfo attackKey;
+	attackKey.color = White;
+	attackKey.fontName = "Arial80";
+	attackKey.text = "X";
+	Label* attackkeyLabel = (Label*)App->gui->CreateLabel({ 100, 0}, attackKey, attackLabel, this);
+
+	GUIImage* leftSymbolAttack = (GUIImage*)App->gui->CreateGUIImage({ -20, 0 }, SELECTION_SYMBOL, this, attackkeyLabel);
+	GUIImage* rightSymbolAttack = (GUIImage*)App->gui->CreateGUIImage({ 20, 0 }, SELECTION_SYMBOL, this, attackkeyLabel);
+
+	//SKILL BINDING
+	LabelInfo defSkillLabel;
+	defSkillLabel.color = White;
+	defSkillLabel.fontName = "LifeCraft90";
+	defSkillLabel.text = "Skill";
+	Label* skillLabel = (Label*)App->gui->CreateLabel({ 400,150 }, defSkillLabel, window, this);
+
+	LabelInfo skillKey;
+	skillKey.color = White;
+	skillKey.fontName = "Arial80";
+	skillKey.text = "Y";
+	Label* skillkeyLabel = (Label*)App->gui->CreateLabel({ 100, 0 }, skillKey, skillLabel, this);
+
+	GUIImage* leftSymbolSkill = (GUIImage*)App->gui->CreateGUIImage({ -20, 0 }, SELECTION_SYMBOL, this, skillkeyLabel);
+	GUIImage* rightSymbolSkill = (GUIImage*)App->gui->CreateGUIImage({ 20, 0 }, SELECTION_SYMBOL, this, skillkeyLabel);
+
+	//DASH BINDING
+	LabelInfo defDashLabel;
+	defDashLabel.color = White;
+	defDashLabel.fontName = "LifeCraft90";
+	defDashLabel.text = "Skill";
+	Label* dashLabel = (Label*)App->gui->CreateLabel({ 400,207 }, defDashLabel, window, this);
+
+	LabelInfo dashKey;
+	dashKey.color = White;
+	dashKey.fontName = "Arial80";
+	dashKey.text = "A";
+	Label* dashkeyLabel = (Label*)App->gui->CreateLabel({ 100, 0 }, dashKey, dashLabel, this);
+
+	GUIImage* leftSymbolDash = (GUIImage*)App->gui->CreateGUIImage({ -20, 0 }, SELECTION_SYMBOL, this, dashkeyLabel);
+	GUIImage* rightSymbolDash = (GUIImage*)App->gui->CreateGUIImage({ 20, 0 }, SELECTION_SYMBOL, this, dashkeyLabel);
+
 	//BACK BUTTON
-	Button* button3 = (Button*)App->gui->CreateButton({ 640 / 2 - 158 / 2, 250.0f }, BType::GO_MMENU, this, window);
+	Button* button3 = (Button*)App->gui->CreateButton({ 50/*640 / 2 - 158 / 2*/, 300 }, BType::GO_MMENU, this, window);
 
 	LabelInfo defLabel2;
 	defLabel2.color = White;

@@ -13,6 +13,8 @@
 #include "SDL/include/SDL.h"
 
 #define MAX_KEYS 300
+
+
 static const float axisCD = 0.3f;
 
 Input::Input() : Module()
@@ -89,8 +91,14 @@ void Input::InitController()
 			controller = SDL_GameControllerOpen(0);
 			if (controller == NULL)
 				LOG("Warning: Couldn't initialize the controller! SDL Error: %s", SDL_GetError());
-
-
+			else
+			{
+				DEFAULTbindingMap.insert(std::pair<char*, uint>("Attack", SDL_CONTROLLER_BUTTON_X));
+				DEFAULTbindingMap.insert(std::pair<char*, uint>("Dash", SDL_CONTROLLER_BUTTON_A));
+				DEFAULTbindingMap.insert(std::pair<char*, uint>("Skill", SDL_CONTROLLER_BUTTON_Y));
+				bindingMap = DEFAULTbindingMap;
+				bindingMap.find("Attack")->second = SDL_CONTROLLER_BUTTON_Y;
+			}
 		}
 	}
 }
@@ -204,6 +212,7 @@ bool Input::PreUpdate()
 			{
 				kbAvailable = false;
 				jButtons[event.cbutton.button] = KEY_DOWN;
+				//GUI RECEIVES THE FIRST BUTTON HERE WHEN BINDING
 			}
 			break;
 
