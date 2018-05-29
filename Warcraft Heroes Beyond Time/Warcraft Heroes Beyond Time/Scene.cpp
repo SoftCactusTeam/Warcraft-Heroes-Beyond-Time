@@ -208,7 +208,6 @@ bool Scene::Update(float dt)
 {
 	bool ret = true;
 
-<<<<<<< HEAD
 	if (testEmitter != nullptr)
 	{
 		testEmitter->MoveEmitter({ ((player->pos.x + App->render->camera.x) / App->winScale) + 5, ((player->pos.y + App->render->camera.y) / App->winScale) + 15 });
@@ -220,10 +219,8 @@ bool Scene::Update(float dt)
 	}
 
 
-
-=======
 	//CHECKING IF INTROVIDEO HAS FINISHED PLAYING
->>>>>>> master
+
 	if (App->introVideo->isVideoFinished && actual_scene == Stages::INTRO_VIDEO)
 	{
 		restart = true;
