@@ -364,7 +364,7 @@ bool Scene::CleanUp()
 
 	if (testEmitter != nullptr)
 	{
-		App->psystem->RemoveEmitter(*testEmitter);
+		App->psystem->RemoveEmitter(testEmitter);
 		testEmitter = nullptr;
 	}
 		

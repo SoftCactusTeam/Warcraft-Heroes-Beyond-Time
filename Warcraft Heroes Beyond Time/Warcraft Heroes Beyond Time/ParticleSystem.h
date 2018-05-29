@@ -62,6 +62,7 @@ class ParticleSystem : public Module
 private:
 
 	std::list<Emitter*> emittersList;
+	std::list<Emitter*> emittersToDestroy;
 	SDL_Texture* particleAtlas = nullptr;
 	std::string nameParticleAtlas;
 
@@ -95,7 +96,7 @@ public:
 
 	// Emitter methods
 	Emitter* AddEmiter(fPoint pos, EmitterType type);
-	bool RemoveEmitter(Emitter& emitter);
+	bool RemoveEmitter(Emitter* emitter);
 	bool RemoveAllEmitters();
 
 	SDL_Texture* GetParticleAtlas() const;

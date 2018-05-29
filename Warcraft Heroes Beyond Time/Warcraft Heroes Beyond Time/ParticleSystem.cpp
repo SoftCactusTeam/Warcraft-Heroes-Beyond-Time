@@ -83,7 +83,33 @@ bool ParticleSystem::Update(float dt)
 
 bool ParticleSystem::PostUpdate()
 {
-	std::list<Emitter*>::const_iterator it;
+	bool ret = true;
+
+ 	if (!emittersToDestroy.empty())
+	{
+		std::list<Emitter*>::const_iterator it;
+
+		for (it = emittersToDestroy.begin(); it != emittersToDestroy.end(); ++it)
+		{
+			emittersList.remove(*it);
+			delete (*it);
+		}
+
+		emittersToDestroy.clear();
+	}
+
+	ret = emittersToDestroy.size() <= 0;
+
+	if (ret)
+	{
+		std::list<Emitter*>::iterator it;
+
+		for (it = emittersList.begin(); it != emittersList.end() && ret; ++it)
+			(*it)->Draw(App->dt);		
+	}
+
+	return ret;
+	/*std::list<Emitter*>::const_iterator it;
 
 	for (it = emittersList.begin(); it != emittersList.end(); ++it)
 	{
@@ -94,7 +120,7 @@ bool ParticleSystem::PostUpdate()
 		}
 	}
 
-	return true;
+	return true*/
 }
 
 bool ParticleSystem::CleanUp()
@@ -124,9 +150,19 @@ Emitter* ParticleSystem::AddEmiter(fPoint pos, EmitterType type)
 	return tmp_emitter;
 }
 
-bool ParticleSystem::RemoveEmitter(Emitter & emitter)
+bool ParticleSystem::RemoveEmitter(Emitter* emitter)
 {
-	std::list<Emitter*>::const_iterator it;
+	bool ret = false;
+
+	if (emitter != nullptr && !emittersList.empty())
+	{
+		emittersToDestroy.push_back(emitter);
+		ret = true;
+	}
+
+	return ret;
+
+	/*std::list<Emitter*>::const_iterator it;
 
 	for (it = emittersList.begin(); it != emittersList.end(); ++it)
 	{
@@ -137,22 +173,35 @@ bool ParticleSystem::RemoveEmitter(Emitter & emitter)
 		}
 	}
 
-	return false;
+	return false;*/
 }
 
 bool ParticleSystem::RemoveAllEmitters()
 {
 	bool ret = false;
 
-	std::list<Emitter*>::const_iterator it;
-
-	for (it = emittersList.begin(); it != emittersList.end(); ++it)
+	if (!emittersList.empty())
 	{
-		if ((*it) != nullptr) (*it)->toDestroy = true;
-		ret = true;
+		std::list<Emitter*>::const_iterator it;
+
+		for (it = emittersList.begin(); it != emittersList.end(); ++it)
+		{
+			if ((*it) != nullptr)
+				emittersToDestroy.push_back(*it);
+			
+			ret = true;
+		}
 	}
 
 	return ret;
+
+	/*std::list<Emitter*>::const_iterator it;
+
+	for (it = emittersList.begin(); it != emittersList.end(); ++it)
+	{
+	if ((*it) != nullptr) (*it)->toDestroy = true;
+	ret = true;
+	}*/
 }
 
 SDL_Texture* ParticleSystem::GetParticleAtlas() const

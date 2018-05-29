@@ -1,4 +1,5 @@
 #include "Emitter.h"
+#include "Application.h"
 #include <time.h>
 
 
@@ -108,12 +109,16 @@ void Emitter::Update(float dt)
 			lifetime = 0.0f;
 		}
 	}
+}
 
+void Emitter::Draw(float dt)
+{
 	// Updating particles in the pool
 	/* NOTE: if lifetime is 0 and last particles have been updated
 	then the emitter is automatically destroyed */
 	if (!emitterPool->Update(dt) && lifetime == 0.0f)
-		toDestroy = true;
+		App->psystem->RemoveEmitter(this);
+
 }
 
 float Emitter::RangeRandomNum(float min, float max)
