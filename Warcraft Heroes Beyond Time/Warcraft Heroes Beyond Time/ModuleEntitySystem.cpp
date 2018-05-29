@@ -516,15 +516,10 @@ StaticEntity* EntitySystem::AddStaticEntity(fPoint coor, STATIC_ENTITY_TYPE type
 }
 
 void EntitySystem::Save(pugi::xml_node& eSystemNode)
-{
-	eSystemNode.append_attribute("Testing") = "True";
-}
+{}
 
 void EntitySystem::Load(const pugi::xml_node& eSystemNode)
-{
-
-	return;
-}
+{}
 
 void EntitySystem::AddCommands()
 {

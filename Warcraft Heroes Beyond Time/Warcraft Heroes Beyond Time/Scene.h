@@ -28,6 +28,11 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
+
+	void Save(pugi::xml_node&);
+	void Load(const pugi::xml_node&);
+	
+
 	void AddCommands();
 	void GeneratePortal();
 

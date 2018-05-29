@@ -192,6 +192,8 @@ bool Scene::Start()
 					lvlChest = nullptr;
 			}
 
+			//Saving each new lvl
+			App->Save();
 			break;
 		}
 	}
@@ -231,18 +233,6 @@ bool Scene::Update(float dt)
 	if (actual_scene == Stages::INGAME && lvlIndex < App->map->numberOfLevels && portal == nullptr && App->entities->enemiescount == 0)
 	{
 		GeneratePortal();
-	}
-
-	//TESTING SAVE
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && !App->console->isWritting())
-	{
-		App->Save();
-	}
-
-	//TESTING LOAD
-	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && !App->console->isWritting())
-	{
-		App->Load();
 	}
 
 	//GENERATE A NEW MAP
@@ -393,7 +383,34 @@ bool Scene::CleanUp()
 	return true;
 }
 
+void Scene::Save(pugi::xml_node& sceneNode)
+{
+	pugi::xml_node PlayerStats = sceneNode.append_child("PlayerStats");
+	PlayerStats.append_attribute("hp").set_value(playerStats.hp);
+	PlayerStats.append_attribute("maxhp").set_value(playerStats.maxhp);
+	PlayerStats.append_attribute("damage").set_value(playerStats.damage);
+	PlayerStats.append_attribute("energy").set_value(playerStats.energy);
+	PlayerStats.append_attribute("energypercentbyhit").set_value(playerStats.energyPercentbyHit);
+	PlayerStats.append_attribute("hpRecover").set_value(playerStats.hpRecover);
+	PlayerStats.append_attribute("skillMultiplier").set_value(playerStats.skillMultiplier);
+	PlayerStats.append_attribute("speed").set_value(playerStats.speed);
+}
+
+void Scene::Load(const pugi::xml_node& sceneNode)
+{
+	pugi::xml_node PlayerStats = sceneNode.child("PlayerStats");
+	playerStats.hp = PlayerStats.attribute("hp").as_float();
+	playerStats.maxhp = PlayerStats.attribute("maxhp").as_float();
+	playerStats.damage = PlayerStats.attribute("damage").as_float();
+	playerStats.energy = PlayerStats.attribute("energy").as_float();
+	playerStats.energyPercentbyHit = PlayerStats.attribute("energypercentbyhit").as_float();
+	playerStats.hpRecover = PlayerStats.attribute("hpRecover").as_float();
+	playerStats.skillMultiplier = PlayerStats.attribute("skillMultiplier").as_float();
+	playerStats.speed = PlayerStats.attribute("speed").as_float();
+}
+
 //-----------------------------------
+
 bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 {
 	bool ret = true;
@@ -453,6 +470,10 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 								playerStats = EntitySystem::PlayerStats();
 								App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
 								next_scene = Stages::INGAME;
+
+								//New game, delete saved one
+								App->fs->deleteSavedGame();
+
 								restart = true;
 							}
 							break;
@@ -498,7 +519,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 						case BType::CONTINUE:
 							if (!App->transitions->IsFading() && App->fs->isGameSaved())
 							{
-								//Call to the module transitions method to load the saved game
+								//Call to the module transitions method to load the saved game with App->Load()
 							}
 							break;
 					}
@@ -661,8 +682,10 @@ void Scene::GeneratePortal()
 void Scene::GoMainMenu()
 {
 	if (actual_scene == Stages::INGAME)
-		App->audio->PauseFX(App->audio->GuldanFireSecondPhase); // I DON'T KNOW IF THIS IS GOOD PLS REVISE
+	{
 		App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0.5f);
+	}
+		
 	next_scene = Stages::MAIN_MENU;
 	restart = true;
 	lvlIndex = 0;

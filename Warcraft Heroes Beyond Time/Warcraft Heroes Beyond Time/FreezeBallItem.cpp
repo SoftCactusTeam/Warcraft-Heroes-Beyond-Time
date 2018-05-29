@@ -51,3 +51,8 @@ bool FreezeBallItem::printYourStuff(iPoint pos)
 	return true;
 }
 
+const std::string FreezeBallItem::myNameIs() const
+{
+	return std::string(Title);
+}
+

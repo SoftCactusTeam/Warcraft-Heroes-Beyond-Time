@@ -7,6 +7,8 @@
 #include "ModuleRender.h"
 #include "Fonts.h"
 
+#include <string>
+
 class Item
 {
 public:
@@ -33,6 +35,9 @@ public:
 	{
 		return true;
 	}
+
+	virtual const std::string myNameIs() const = 0;
+	
 
 protected:
 	inline virtual bool printMyString(char* customString, iPoint halfPos, bool title = false)

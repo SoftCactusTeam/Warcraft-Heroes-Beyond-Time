@@ -28,6 +28,8 @@ private:
 	float angle = 0.0f;
 	float angular_vel = 0.0f;
 
+	virtual const std::string myNameIs() const override;
+
 	std::string softDescription = "        \"You can't die \n if they never reach you\"";
 	std::string Title = "Nanosuit";
 };

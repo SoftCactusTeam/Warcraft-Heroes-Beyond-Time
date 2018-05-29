@@ -28,6 +28,8 @@ private:
 	float angle = 0.0f;
 	float angular_vel = 0.0f;
 
+	virtual const std::string myNameIs() const override;
+
 	std::string softDescription = "\"Thrallcentrism\"";
 	std::string Title = "Blossom";
 };

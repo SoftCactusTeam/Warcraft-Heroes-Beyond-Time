@@ -20,6 +20,9 @@ public:
 	bool printYourStuff(iPoint pos);
 
 private:
+
+	virtual const std::string myNameIs() const override;
+
 	std::string softDescription = "\"Kill or die. Literally\"";
 	std::string Title = "GlassCannon";
 };

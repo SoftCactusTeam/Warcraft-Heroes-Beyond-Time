@@ -43,3 +43,8 @@ bool AngelsGuardItem::printYourStuff(iPoint pos)
 	return true;
 }
 
+const std::string AngelsGuardItem::myNameIs() const
+{
+	return std::string(Title);
+}
+

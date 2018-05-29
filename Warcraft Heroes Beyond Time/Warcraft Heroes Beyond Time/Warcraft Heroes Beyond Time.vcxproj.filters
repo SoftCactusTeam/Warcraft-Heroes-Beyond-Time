@@ -225,9 +225,6 @@
     <ClInclude Include="ModuleWindow.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Module.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleAudio.h">
       <Filter>Modules</Filter>
     </ClInclude>
@@ -445,6 +442,7 @@
       <Filter>Video</Filter>
     </ClInclude>
     <ClInclude Include="IntroVideo.h" />
+<<<<<<< HEAD
     <ClInclude Include="ParticleSystem.h">
       <Filter>Modules</Filter>
     </ClInclude>
@@ -460,6 +458,9 @@
     <ClInclude Include="PerfTimer.h">
       <Filter>Tools</Filter>
     </ClInclude>
+=======
+    <ClInclude Include="Module.h" />
+>>>>>>> master
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />

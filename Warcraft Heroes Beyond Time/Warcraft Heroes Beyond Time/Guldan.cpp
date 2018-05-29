@@ -584,7 +584,7 @@ bool Guldan::Update(float dt)
 
 		if (anim->Finished())
 		{
-			App->audio->PauseFX(App->audio->GuldanFireSecondPhase); // I DON'T KNOW IF THIS IS GOOD PLS REVISE
+			App->audio->HaltFX(App->audio->GuldanFireSecondPhase);
 			App->scene->player->Win();
 		}
 

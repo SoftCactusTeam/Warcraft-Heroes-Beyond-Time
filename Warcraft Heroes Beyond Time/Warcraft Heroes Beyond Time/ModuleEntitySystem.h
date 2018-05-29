@@ -25,12 +25,10 @@ public:
 		uint skillMultiplier = 0;
 		float maxhp = 0.0f;
 		float hp = 0.0f;
-		uint armor = 0u;
 		uint speed = 0u;
 		float damage = 0.0f;
 		uint energy = 0u;
 		uint energyPercentbyHit = 0u;
-		uint critChance = 0u;
 		uint hpRecover = 0u;
 
 		bool isEmpty()
