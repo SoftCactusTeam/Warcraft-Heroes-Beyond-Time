@@ -62,6 +62,7 @@ private:
 	bool LoadConfig(pugi::xml_document&);
 
 	bool SaveNow() const;
+public:
 	bool LoadNow();
 
 private:

@@ -65,11 +65,10 @@ bool ModuleTransitions::PostUpdate()
 }
 
 // Fade to black. At mid point deactivate one module, then activate the other
-bool ModuleTransitions::StartTransition(Module* module_off, Module* module_on, float time, fades kind_of_fade, bool cleanup_off, bool start_on, bool loadTransition)
+bool ModuleTransitions::StartTransition(Module* module_off, Module* module_on, float time, fades kind_of_fade, bool cleanup_off, bool start_on)
 {
 	bool ret = false;
 
-	this->loadTransition = loadTransition;
 	this->cleanup_off = cleanup_off;
 	this->start_on = start_on;
 
@@ -129,7 +128,7 @@ void ModuleTransitions::SliderFade()
 			}
 			if (loadTransition)
 			{
-				App->Load();
+				App->LoadNow();
 				loadTransition = false;
 			}
 			if (start_on) {

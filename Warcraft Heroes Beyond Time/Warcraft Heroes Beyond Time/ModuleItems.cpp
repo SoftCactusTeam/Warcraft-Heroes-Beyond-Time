@@ -54,7 +54,8 @@ bool ModuleItems::Awake(pugi::xml_node& itemsNode)
 bool ModuleItems::Start()
 {
 	//Load Items' pull
-	loadItemsPull();
+	if (availableItems.empty())
+		loadItemsPull();
 
 	itemsTexture = App->textures->Load("sprites/all_items.png");
 	return true;
@@ -243,6 +244,8 @@ void ModuleItems::Save(pugi::xml_node& itemsNode)
 void ModuleItems::Load(const pugi::xml_node& itemsNode)
 {
 	pugi::xml_node savedItems = itemsNode.child("SavedItems");
+
+	loadItemsPull();
 
 	std::list<std::string> savedItemsList;
 	for (pugi::xml_attribute item = savedItems.first_attribute(); item; item = item.next_attribute())

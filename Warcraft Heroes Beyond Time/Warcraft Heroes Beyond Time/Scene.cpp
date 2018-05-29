@@ -183,7 +183,8 @@ bool Scene::Start()
 			}
 
 			//Saving each new lvl
-			App->Save();
+			if (!App->transitions->loadTransition)
+				App->Save();
 			break;
 		}
 	}
@@ -330,7 +331,6 @@ bool Scene::CleanUp()
 		playerStats.hp = playerStats.hp + quantityToHeal > playerStats.maxhp ? playerStats.maxhp : playerStats.hp + quantityToHeal;
 	}
 		
-
 	App->gui->DeActivate();
 	App->map->DeActivate();
 	App->entities->DeActivate();
@@ -344,8 +344,6 @@ bool Scene::CleanUp()
 	{
 		App->items->DeActivate();
 	}
-
-
 
 	player = nullptr;
 	lvlChest = nullptr;
@@ -366,6 +364,9 @@ void Scene::Save(pugi::xml_node& sceneNode)
 	PlayerStats.append_attribute("hpRecover").set_value(playerStats.hpRecover);
 	PlayerStats.append_attribute("skillMultiplier").set_value(playerStats.skillMultiplier);
 	PlayerStats.append_attribute("speed").set_value(playerStats.speed);
+
+	pugi::xml_node MapStats = sceneNode.append_child("MapStats");
+	MapStats.append_attribute("lvlIndex").set_value(lvlIndex);
 }
 
 void Scene::Load(const pugi::xml_node& sceneNode)
@@ -379,6 +380,10 @@ void Scene::Load(const pugi::xml_node& sceneNode)
 	playerStats.hpRecover = PlayerStats.attribute("hpRecover").as_float();
 	playerStats.skillMultiplier = PlayerStats.attribute("skillMultiplier").as_float();
 	playerStats.speed = PlayerStats.attribute("speed").as_float();
+
+
+	pugi::xml_node MapStats = sceneNode.child("MapStats");
+	lvlIndex = MapStats.attribute("lvlIndex").as_int();
 }
 
 //-----------------------------------
@@ -492,6 +497,11 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 							if (!App->transitions->IsFading() && App->fs->isGameSaved())
 							{
 								//Call to the module transitions method to load the saved game with App->Load()
+								next_scene = Stages::INGAME;
+
+								App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
+								App->transitions->loadTransition = true;
+								restart = true;
 							}
 							break;
 					}

@@ -31,7 +31,7 @@ public:
 
 	bool Start();
 	bool PostUpdate();
-	bool StartTransition(Module* module_off, Module* module_on, float time = 1.0f, fades kind_of_fade = slider_fade, bool cleanup_off = true, bool start_on = true, bool loadTransition = false);
+	bool StartTransition(Module* module_off, Module* module_on, float time = 1.0f, fades kind_of_fade = slider_fade, bool cleanup_off = true, bool start_on = true);
 
 	bool IsFading() const;
 	fade_step GetStep() const;
@@ -59,6 +59,7 @@ private:
 	bool cleanup_off = true;
 	bool start_on = true;
 
+public:
 	bool loadTransition = false;
 };
 

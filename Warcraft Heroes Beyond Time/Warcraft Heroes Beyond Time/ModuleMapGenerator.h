@@ -74,6 +74,10 @@ public:
 	void getSize(uint& w, uint& h);
 	int getTileSize();
 
+
+	void Save(pugi::xml_node& sceneNode);
+	void Load(const pugi::xml_node& sceneNode);
+
 	std::vector<MapNode*> GetMapNodesAndInfo(uint& sizeX, uint& sizeY, uint& tileSize);
 
 	int UseYourPowerToGenerateMeThisNewMap(int lvlIndex);

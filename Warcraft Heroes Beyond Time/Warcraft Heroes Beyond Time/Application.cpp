@@ -187,11 +187,11 @@ bool Application::FinishUpdate()
 {
 	bool ret = true;
 
-	if (savegame && ret == true)
-		ret = SaveNow();
-
 	if (loadgame && ret == true)
 		ret = LoadNow();
+
+	if (savegame && ret == true)
+		ret = SaveNow();
 
 
 	// Framerate calculations --

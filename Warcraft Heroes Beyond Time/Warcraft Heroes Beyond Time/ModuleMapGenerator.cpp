@@ -37,8 +37,6 @@ MapGenerator::~MapGenerator() {}
 
 bool MapGenerator::Awake(pugi::xml_node& mapNode)
 {
-	mapSeed = mapNode.child("seed").attribute("value").as_int();
-
 	for (register pugi::xml_node aux_node = mapNode.child("lvl"); aux_node; aux_node = aux_node.next_sibling("lvl"))
 	{
 		pugi::xml_node actualNode = aux_node.child("sizeGrid");
@@ -296,11 +294,15 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 	LOG("Executing map Algorithm...");
 
 	if (seed != 0)
+	{
 		srand(seed);
+		mapSeed = seed;
+	}
 	else
-		srand(time(NULL));
-
-	
+	{
+		mapSeed = time(NULL);
+		srand(mapSeed);
+	}
 
 	MapNode* auxNode = startNode;
 
@@ -581,10 +583,23 @@ int MapGenerator::UseYourPowerToGenerateMeThisNewMap(int lvlIndex)
 	mapInfo.iterations = (*it_2);
 
 	mapInfo.tilesetPath = "maps/tiles_boss.png";
+
 	mapInfo.seed = mapSeed;
 
 	if (!App->map->GenerateMap(mapInfo))
 		return -1;
 
 	return lvlIndex + 1;
+}
+
+void MapGenerator::Save(pugi::xml_node& mapNode)
+{
+	pugi::xml_node MapStats = mapNode.append_child("MapStats");
+	MapStats.append_attribute("seed").set_value(mapSeed);	
+}
+
+void MapGenerator::Load(const pugi::xml_node& mapNode)
+{
+	pugi::xml_node MapStats = mapNode.child("MapStats");
+	mapSeed = MapStats.attribute("seed").as_int();
 }

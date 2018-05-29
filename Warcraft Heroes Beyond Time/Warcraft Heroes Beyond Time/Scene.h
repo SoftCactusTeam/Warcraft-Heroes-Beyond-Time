@@ -61,6 +61,7 @@ public:
 		MAIN_MENU,
 		SETTINGS,
 		INGAME,
+		LOAD_INGAME,
 
 	} actual_scene = Stages::INTRO_VIDEO, next_scene = Stages::INTRO_VIDEO;
 
