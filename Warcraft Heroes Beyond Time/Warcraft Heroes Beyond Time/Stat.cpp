@@ -34,13 +34,13 @@ bool Stat::Update(float dt)
 			newString = player->numStats.damage;
 			break;
 		case StatType::ARMOR:
-			newString = player->numStats.armor;
+			//newString = player->numStats.armor;
 			break;
 		case StatType::ENERGYBYHIT:
 			newString = player->numStats.energyPercentbyHit;
 			break;
 		case StatType::CRITCHANCE:
-			newString = player->numStats.critChance;
+			//newString = player->numStats.critChance;
 			break;
 		case StatType::SPEED:
 			newString = player->numStats.speed;

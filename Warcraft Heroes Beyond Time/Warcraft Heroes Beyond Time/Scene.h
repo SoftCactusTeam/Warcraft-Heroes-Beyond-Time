@@ -28,10 +28,9 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
-	virtual void Save(pugi::xml_node&)
-	{}
-	virtual void Load(const pugi::xml_node&)
-	{}
+	void Save(pugi::xml_node&);
+	void Load(const pugi::xml_node&);
+	
 
 	void AddCommands();
 	void GeneratePortal();

@@ -40,10 +40,8 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
-	virtual void Save(pugi::xml_node&)
-	{}
-	virtual void Load(const pugi::xml_node&)
-	{}
+	virtual void Save(pugi::xml_node&);
+	virtual void Load(const pugi::xml_node&);
 
 	void DestroyItems();
 
