@@ -77,7 +77,9 @@ bool Scene::Start()
 	{
 		case Stages::INTRO_VIDEO:
 		{
-			App->introVideo->Activate();
+			//App->introVideo->Activate();
+			next_scene = Stages::MAIN_MENU;
+			restart = true;
 
 			break;
 		}
@@ -375,34 +377,46 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 			switch (_event)
 			{
 				case UIEvents::MOUSE_ENTER:
-				{
-					App->audio->HaltFX(App->audio->ButtonHovered);
-					App->audio->PlayFx(App->audio->ButtonHovered);
-					button->atlasRect = Button1MouseHover;
+				{	if (button->btype != BType::CONTINUE || (button->btype == BType::CONTINUE && App->fs->isGameSaved()))
+					{
+						App->audio->HaltFX(App->audio->ButtonHovered);
+						App->audio->PlayFx(App->audio->ButtonHovered);
+						button->atlasRect = Button1MouseHover;
+					}
+					
 					break;
 				}
 				case UIEvents::MOUSE_RIGHT_UP:
 				{
-					button->atlasRect = Button1MouseHover;
+					if (button->btype != BType::CONTINUE || (button->btype == BType::CONTINUE && App->fs->isGameSaved()))
+						button->atlasRect = Button1MouseHover;
 					break;
 				}
 				case UIEvents::MOUSE_LEFT_CLICK:
 				{
-					App->audio->PlayFx(App->audio->ButtonClicked);
-					button->atlasRect = Button1Pressed;
-					button->MoveChilds({ 0.0f, 1.0f });
+					if (button->btype != BType::CONTINUE || (button->btype == BType::CONTINUE && App->fs->isGameSaved()))
+					{
+						App->audio->PlayFx(App->audio->ButtonClicked);
+						button->atlasRect = Button1Pressed;
+						button->MoveChilds({ 0.0f, 1.0f });
+					}
+					
 					break;
 				}
 				case UIEvents::MOUSE_LEAVE:
 				case UIEvents::NO_EVENT:
 				{
-					button->atlasRect = Button1;
+					if(button->btype != BType::CONTINUE || (button->btype == BType::CONTINUE && App->fs->isGameSaved()))
+						button->atlasRect = Button1;
 					break;
 				}
 				case UIEvents::MOUSE_LEFT_UP:
 				{
-					button->atlasRect = Button1MouseHover;
-					button->MoveChilds({ 0.0f, -1.0f });
+					if (button->btype != BType::CONTINUE || (button->btype == BType::CONTINUE && App->fs->isGameSaved()))
+					{
+						button->atlasRect = Button1MouseHover;
+						button->MoveChilds({ 0.0f, -1.0f });
+					}
 					switch (button->btype)
 					{
 						case BType::PLAY:
@@ -452,6 +466,13 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 								App->audio->setMusicVolume(currentPercentAudio);
 							}
 							break;
+
+						case BType::CONTINUE:
+							if (!App->transitions->IsFading() && App->fs->isGameSaved())
+							{
+								//Call to the module transitions method to load the saved game
+							}
+							break;
 					}
 					break;
 				}
@@ -469,18 +490,27 @@ void Scene::CreateMainMenuScreen()
 
 	//LOGO
 	GUIImage* logo = (GUIImage*)App->gui->CreateGUIImage({ 100,25 }, { 624, 21, 448, 129 }, nullptr);
+	
+	//CONTINUE BUTTON
+	Button* continueb = (Button*)App->gui->CreateButton({ 241.0f, 115 + 30 }, BType::CONTINUE, this, window);
 
-	//PLAY BUTTON
-	Button* button = (Button*)App->gui->CreateButton({ 241.0f , 165}, BType::PLAY, this, window);
+	LabelInfo defLabelcont;
+	defLabelcont.color = White;
+	defLabelcont.fontName = "LifeCraft80";
+	defLabelcont.text = "Continue";
+	App->gui->CreateLabel({ 41,11 }, defLabelcont, continueb, this);
+
+	//NEW GAME BUTTON
+	Button* button = (Button*)App->gui->CreateButton({ 241.0f , 165 + 30}, BType::PLAY, this, window);
 
 	LabelInfo defLabel;
 	defLabel.color = White;
 	defLabel.fontName = "LifeCraft80";
-	defLabel.text = "Start";
-	App->gui->CreateLabel({ 53,11 }, defLabel, button, this);
+	defLabel.text = "New Game";
+	App->gui->CreateLabel({ 35,11 }, defLabel, button, this);
 
 	//SETTINGS BUTTON
-	Button* button2 = (Button*)App->gui->CreateButton({ 241.0f , 215 }, BType::SETTINGS, this, window);
+	Button* button2 = (Button*)App->gui->CreateButton({ 241.0f , 215 + 30}, BType::SETTINGS, this, window);
 	LabelInfo defLabel2;
 	defLabel2.color = White;
 	defLabel2.fontName = "LifeCraft80";
@@ -488,7 +518,7 @@ void Scene::CreateMainMenuScreen()
 	App->gui->CreateLabel({ 42,10 }, defLabel2, button2, this);
 
 	//EXIT GAME BUTTON
-	Button* button3 = (Button*)App->gui->CreateButton({ 241.0f , 265 }, BType::EXIT_GAME, this, window);
+	Button* button3 = (Button*)App->gui->CreateButton({ 241.0f , 265 + 30}, BType::EXIT_GAME, this, window);
 	LabelInfo defLabel3;
 	defLabel3.color = White;
 	defLabel3.fontName = "LifeCraft80";
@@ -639,7 +669,6 @@ void Scene::CreateItemSelectionScreen(Item* item1, Item* item2, Item* item3)
 	App->gui->CreateItemContainer({ 30+85,50+121 }, item1, ItemSelection, this);
 	App->gui->CreateItemContainer({ 230+85,50+121 }, item2, ItemSelection, this);
 	App->gui->CreateItemContainer({ 430+85,50+121 }, item3, ItemSelection, this);
-	//App->gui->CreateItemContainer({})
 }
 
 void Scene::GoNextLevel()

@@ -24,6 +24,11 @@ public:
 	bool MouseHover() const;
 	void EditText(std::string text, SDL_Color color = {0,0,0,0});
 
+	inline const char* getText() const
+	{
+		return text.data();
+	}
+
 private:
 	std::string text;
 	TTF_Font* font = nullptr;

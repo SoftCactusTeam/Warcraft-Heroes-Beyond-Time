@@ -1,9 +1,14 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "Button.h"
+#include "Label.h"
+#include "FileSystem.h"
 
 
-Button::Button(fPoint localPos, BType btype, GUIElem* parent, Module* listener) : GUIElem(localPos, listener, Button1, GUIElemType::BUTTON, parent), btype(btype) {}
+Button::Button(fPoint localPos, BType btype, GUIElem* parent, Module* listener) : GUIElem(localPos, listener, Button1, GUIElemType::BUTTON, parent), btype(btype) 
+{
+	
+}
 
 Button::~Button()
 {
@@ -13,6 +18,17 @@ Button::~Button()
 bool Button::Update(float dt)
 {
 	bool result = true;
+
+	if (btype == BType::CONTINUE)
+	{
+		Label* continuelabel = (Label*)childs.front();
+
+		if (continuelabel)
+			if (App->fs->isGameSaved())
+				continuelabel->EditText(continuelabel->getText(), White);
+			else
+				continuelabel->EditText(continuelabel->getText(), Grey);
+	}
 
 	if(result)
 		result = UpdateChilds(dt);
