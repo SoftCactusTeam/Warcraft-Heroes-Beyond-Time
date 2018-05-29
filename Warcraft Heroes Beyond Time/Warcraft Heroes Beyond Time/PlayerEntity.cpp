@@ -15,6 +15,7 @@
 #include "GUIImage.h"
 #include "ModuleTransitions.h"
 #include "EffectsElem.h"
+#include "FileSystem.h"
 
 #include "AngelsGuardItem.h"
 
@@ -770,6 +771,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			afterWinCounter += dt;
 			if (afterWinCounter > 20)
 			{
+				App->fs->deleteSavedGame();
 				App->scene->GoMainMenu();
 			}
 			else if (afterWinCounter > 2)
