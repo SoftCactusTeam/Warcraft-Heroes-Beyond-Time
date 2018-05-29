@@ -820,7 +820,7 @@ void PlayerEntity::JoyconStates(float dt)
 			state = states::PL_MOVE;
 		}
 
-		else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN && t == 0.0f && DashCD == 0.0f)
+		else if (App->input->GetAction("Dash") == KEY_DOWN && t == 0.0f && DashCD == 0.0f)
 		{
 			App->audio->PlayFx(App->audio->Thrall_Dash_FX);
 			App->input->PlayJoyRumble(0.85f, 100);
@@ -829,14 +829,14 @@ void PlayerEntity::JoyconStates(float dt)
 			animBefore = anim;
 		}
 
-		else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_X) == KEY_DOWN)
+		else if (App->input->GetAction("Attack") == KEY_DOWN)
 		{
 			animBefore = anim;
 			state = states::PL_ATTACK;
 			Attack();
 		}
 
-		else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_Y) == KEY_DOWN && numStats.energy == 100)
+		else if (App->input->GetAction("Skill") == KEY_DOWN && numStats.energy == 100)
 		{
 			animBefore = anim;
 			anim = &skill;
@@ -850,7 +850,7 @@ void PlayerEntity::JoyconStates(float dt)
 
 	case states::PL_DASH:
 	{
-		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_X) == KEY_DOWN)
+		if (App->input->GetAction("Attack") == KEY_DOWN)
 		{
 			attackWhileDash = true;
 		}
@@ -996,7 +996,7 @@ void PlayerEntity::JoyconStates(float dt)
 
 	case states::PL_MOVE:
 	{
-		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN && t == 0.0f && DashCD == 0.0f)
+		if (App->input->GetAction("Dash") == KEY_DOWN && t == 0.0f && DashCD == 0.0f)
 		{
 			App->audio->PlayFx(App->audio->Thrall_Dash_FX);
 			App->input->PlayJoyRumble(0.75f, 100);
@@ -1048,7 +1048,7 @@ void PlayerEntity::JoyconStates(float dt)
 			break;
 		}
 
-		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_X) == KEY_DOWN)
+		if (App->input->GetAction("Attack") == KEY_DOWN)
 		{
 			animBefore = anim;
 			state = states::PL_ATTACK;
@@ -1056,7 +1056,7 @@ void PlayerEntity::JoyconStates(float dt)
 			break;
 		}
 
-		else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_Y) == KEY_DOWN && numStats.energy == 100)
+		else if (App->input->GetAction("Skill") == KEY_DOWN && numStats.energy == 100)
 		{
 			animBefore = anim;
 			anim = &skill;

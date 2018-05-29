@@ -7,12 +7,17 @@
 
 #include "Animation.h"
 
+#include "ModuleInput.h"
+
 class GUIWindow;
 class PlayerEntity;
 class ChestEntity;
 class PortalEntity;
 class Guldan;
 class Item;
+
+
+
 
 class Scene : public Module
 {
@@ -30,7 +35,6 @@ public:
 
 	void Save(pugi::xml_node&);
 	void Load(const pugi::xml_node&);
-	
 
 	void AddCommands();
 	void GeneratePortal();
