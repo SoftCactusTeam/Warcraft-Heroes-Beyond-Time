@@ -38,6 +38,9 @@ public:
 	std::list<Slow_Shit*> slow_shit_list;
 
 private:
+
+	virtual const std::string myNameIs() const override;
+
 	std::string softDescription = "\"Relax... Don't do it...\"";
 	std::string Title = "Sorvolo Gaunt";
 };

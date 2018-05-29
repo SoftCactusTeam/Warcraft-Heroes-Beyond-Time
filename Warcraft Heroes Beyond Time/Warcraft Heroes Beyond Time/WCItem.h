@@ -36,6 +36,9 @@ public:
 	std::list<Shit*> shit_list;
 
 private:
+
+	virtual const std::string myNameIs() const override;
+
 	std::string softDescription = "\"Clean it at the end please\"";
 	std::string Title = "Royal Parchment";
 };

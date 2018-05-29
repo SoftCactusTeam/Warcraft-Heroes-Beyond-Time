@@ -53,3 +53,9 @@ bool ShieldBallItem::printYourStuff(iPoint pos)
 	return true;
 }
 
+const std::string ShieldBallItem::myNameIs() const
+{
+	return std::string(Title);
+}
+
+

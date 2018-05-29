@@ -92,3 +92,8 @@ void FEARBallItem::go_down()
 {
 	radius -= speed_growing_radius * App->dt;
 }
+
+const std::string FEARBallItem::myNameIs() const
+{
+	return std::string(Title);
+}

@@ -89,3 +89,8 @@ Arrow_Slow_Shit::~Arrow_Slow_Shit()
 {
 	App->colliders->deleteCollider(arrow_slow_collider);
 }
+
+const std::string ArrowSlowItem::myNameIs() const
+{
+	return std::string(Title);
+}

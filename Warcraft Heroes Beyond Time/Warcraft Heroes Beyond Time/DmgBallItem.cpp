@@ -53,3 +53,8 @@ bool DMGBallItem::printYourStuff(iPoint pos)
 	return true;
 }
 
+const std::string DMGBallItem::myNameIs() const
+{
+	return std::string(Title);
+}
+

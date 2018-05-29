@@ -87,3 +87,8 @@ WCItem::~WCItem()
 
 	shit_list.clear();
 }
+
+const std::string WCItem::myNameIs() const
+{
+	return std::string(Title);
+}

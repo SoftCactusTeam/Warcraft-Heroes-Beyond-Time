@@ -20,6 +20,8 @@ public:
 private:
 	SDL_Texture* text = nullptr;
 
+	virtual const std::string myNameIs() const override;
+
 	std::string softDescription = "\"Feel like a short-sighted \n                      Bear\"";
 	std::string Title = "Holy Shit";
 };
