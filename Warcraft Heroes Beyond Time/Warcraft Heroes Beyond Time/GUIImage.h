@@ -1,6 +1,10 @@
 #ifndef __GUIIMAGE_H__
 #define __GUIIMAGE_H__
 
+#define SELECTION_SYMBOL { 206, 38, 16, 22 }
+
+
+
 #include "GUIElem.h"
 
 class GUIImage : public GUIElem

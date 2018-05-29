@@ -58,6 +58,18 @@ public:
 	bool GetWindowEvent(EventWindow ev);
 	void InitController();
 
+	inline const char* toString(SDL_GameControllerButton b)
+	{
+		switch (b)
+		{
+			case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_A:   return "A";
+			case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_B:   return "B";
+			case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_X:   return "X";
+			case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_Y:   return "Y";
+			default:      return "[Unknown Button]";
+		}
+	}
+
 	KeyState GetKey(int id) const
 	{
 		return keyboard[id];
