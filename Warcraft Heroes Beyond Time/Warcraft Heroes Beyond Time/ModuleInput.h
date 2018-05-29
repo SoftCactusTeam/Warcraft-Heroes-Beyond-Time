@@ -55,6 +55,10 @@ public:
 	bool PreUpdate();
 	bool CleanUp();
 
+	void Save(pugi::xml_node&);
+
+	void Load(const pugi::xml_node&);
+
 	bool GetWindowEvent(EventWindow ev);
 	void InitController();
 
@@ -66,8 +70,72 @@ public:
 			case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_B:   return "B";
 			case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_X:   return "X";
 			case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_Y:   return "Y";
+			case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_BACK:return "Back";
+			case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_DOWN: return "DDown";
+			case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_LEFT: return "DLeft";
+			case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_RIGHT: return "DRight";
+			case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_UP: return "DUp";
+			case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_GUIDE: return "Guide";
+			case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_LEFTSHOULDER: return "LB";
+			case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER: return "RB";
+			case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_LEFTSTICK: return "LStick";
+			case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSTICK: return "RStick";
+			case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_START: return "Start";
 			default:      return "[Unknown Button]";
 		}
+	}
+
+	inline const SDL_GameControllerButton toGameControllerButton(char* button)
+	{
+		if (strcmp(button, "A") == 0)
+			return SDL_CONTROLLER_BUTTON_A;
+		else if (strcmp(button, "B") == 0)
+			return SDL_CONTROLLER_BUTTON_B;
+		else if (strcmp(button, "X") == 0)
+			return SDL_CONTROLLER_BUTTON_X;
+		else if (strcmp(button, "Y") == 0)
+			return SDL_CONTROLLER_BUTTON_Y;
+		else if (strcmp(button, "Back") == 0)
+			return SDL_CONTROLLER_BUTTON_BACK;
+		else if (strcmp(button, "DDown") == 0)
+			return SDL_CONTROLLER_BUTTON_DPAD_DOWN;
+		else if (strcmp(button, "DUp") == 0)
+			return SDL_CONTROLLER_BUTTON_DPAD_UP;
+		else if (strcmp(button, "DRight") == 0)
+			return SDL_CONTROLLER_BUTTON_DPAD_RIGHT;
+		else if (strcmp(button, "DLeft") == 0)
+			return SDL_CONTROLLER_BUTTON_DPAD_LEFT;
+		else if (strcmp(button, "Guide") == 0)
+			return SDL_CONTROLLER_BUTTON_GUIDE;
+		else if (strcmp(button, "LB") == 0)
+			return SDL_CONTROLLER_BUTTON_LEFTSHOULDER;
+		else if (strcmp(button, "RB") == 0)
+			return SDL_CONTROLLER_BUTTON_RIGHTSHOULDER;
+		else if (strcmp(button, "LStick") == 0)
+			return SDL_CONTROLLER_BUTTON_LEFTSTICK;
+		else if (strcmp(button, "RStick") == 0)
+			return SDL_CONTROLLER_BUTTON_RIGHTSTICK;
+		else if (strcmp(button, "Start") == 0)
+			return SDL_CONTROLLER_BUTTON_START;
+		else
+			return SDL_CONTROLLER_BUTTON_INVALID;
+	}
+
+	const char* getBindingfromAction(char* action)
+	{
+		return toString((SDL_GameControllerButton)bindingMap.find(action)->second);
+	}
+
+	bool rebindAction(char* action, int newBinding)
+	{
+		bindingMap.find(action)->second = newBinding;
+		return true;
+	}
+
+	bool resetBinding()
+	{
+		bindingMap = DEFAULTbindingMap;
+		return true;
 	}
 
 	KeyState GetKey(int id) const

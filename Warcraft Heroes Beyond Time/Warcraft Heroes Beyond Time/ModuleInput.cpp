@@ -5,6 +5,7 @@
 
 #include "ModuleInput.h"
 #include "ModuleWindow.h"
+#include "Label.h"
 #include "ModuleGUI.h"
 
 #include "Console.h"
@@ -97,7 +98,6 @@ void Input::InitController()
 				DEFAULTbindingMap.insert(std::pair<char*, uint>("Dash", SDL_CONTROLLER_BUTTON_A));
 				DEFAULTbindingMap.insert(std::pair<char*, uint>("Skill", SDL_CONTROLLER_BUTTON_Y));
 				bindingMap = DEFAULTbindingMap;
-				bindingMap.find("Attack")->second = SDL_CONTROLLER_BUTTON_Y;
 			}
 		}
 	}
@@ -113,6 +113,8 @@ bool Input::Start()
 bool Input::PreUpdate()
 {
 	key_pressed = false;
+	Label::ButtonPressed = -1;
+
 
 	static SDL_Event event;
 
@@ -213,6 +215,7 @@ bool Input::PreUpdate()
 				kbAvailable = false;
 				jButtons[event.cbutton.button] = KEY_DOWN;
 				//GUI RECEIVES THE FIRST BUTTON HERE WHEN BINDING
+				Label::ButtonPressed = event.cbutton.button;
 			}
 			break;
 
@@ -468,4 +471,20 @@ void Input::ExternActionsAtKeyInput(const int key) {
 				App->console->SwitchWrittingState();
 		break;
 	}
+}
+
+void Input::Save(pugi::xml_node& inputNode)
+{
+	pugi::xml_node binding = inputNode.append_child("Binding");
+	binding.append_attribute("Attack").set_value(getBindingfromAction("Attack"));
+	binding.append_attribute("Skill").set_value(getBindingfromAction("Skill"));
+	binding.append_attribute("Dash").set_value(getBindingfromAction("Dash"));
+}
+
+void Input::Load(const pugi::xml_node& inputNode)
+{
+	pugi::xml_node binding = inputNode.child("Binding");
+	bindingMap.find("Attack")->second = App->input->toGameControllerButton((char*)binding.attribute("Attack").as_string());
+	bindingMap.find("Skill")->second = App->input->toGameControllerButton((char*)binding.attribute("Skill").as_string());
+	bindingMap.find("Dash")->second = App->input->toGameControllerButton((char*)binding.attribute("Dash").as_string());
 }

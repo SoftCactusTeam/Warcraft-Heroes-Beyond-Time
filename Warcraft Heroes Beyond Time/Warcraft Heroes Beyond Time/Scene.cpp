@@ -349,6 +349,9 @@ bool Scene::CleanUp()
 	lvlChest = nullptr;
 	portal = nullptr;
 	PauseMenu = nullptr;
+	dashBinding = nullptr;
+	skillBinding = nullptr;
+	attackBinding = nullptr;
 
 	return true;
 }
@@ -610,12 +613,12 @@ void Scene::CreateSettingsScreen()
 	defAttackLabel.color = White;
 	defAttackLabel.fontName = "LifeCraft90";
 	defAttackLabel.text = "Attack";
-	Label* attackLabel = (Label*)App->gui->CreateLabel({ 400,93 }, defAttackLabel, window, this);
+	Label* attackLabel = attackBinding = (Label*)App->gui->CreateLabel({ 400,93 }, defAttackLabel, window, this);
 
 	LabelInfo attackKey;
 	attackKey.color = White;
 	attackKey.fontName = "Arial80";
-	attackKey.text = "X";
+	attackKey.text = (char*)App->input->getBindingfromAction("Attack");
 	Label* attackkeyLabel = (Label*)App->gui->CreateLabel({ 100, 0}, attackKey, attackLabel, this);
 
 	GUIImage* leftSymbolAttack = (GUIImage*)App->gui->CreateGUIImage({ -20, 0 }, SELECTION_SYMBOL, this, attackkeyLabel);
@@ -626,12 +629,12 @@ void Scene::CreateSettingsScreen()
 	defSkillLabel.color = White;
 	defSkillLabel.fontName = "LifeCraft90";
 	defSkillLabel.text = "Skill";
-	Label* skillLabel = (Label*)App->gui->CreateLabel({ 400,150 }, defSkillLabel, window, this);
+	Label* skillLabel = skillBinding = (Label*)App->gui->CreateLabel({ 400,150 }, defSkillLabel, window, this);
 
 	LabelInfo skillKey;
 	skillKey.color = White;
 	skillKey.fontName = "Arial80";
-	skillKey.text = "Y";
+	skillKey.text = (char*)App->input->getBindingfromAction("Skill");
 	Label* skillkeyLabel = (Label*)App->gui->CreateLabel({ 100, 0 }, skillKey, skillLabel, this);
 
 	GUIImage* leftSymbolSkill = (GUIImage*)App->gui->CreateGUIImage({ -20, 0 }, SELECTION_SYMBOL, this, skillkeyLabel);
@@ -641,13 +644,13 @@ void Scene::CreateSettingsScreen()
 	LabelInfo defDashLabel;
 	defDashLabel.color = White;
 	defDashLabel.fontName = "LifeCraft90";
-	defDashLabel.text = "Skill";
-	Label* dashLabel = (Label*)App->gui->CreateLabel({ 400,207 }, defDashLabel, window, this);
+	defDashLabel.text = "Dash";
+	Label* dashLabel = dashBinding = (Label*)App->gui->CreateLabel({ 400,207 }, defDashLabel, window, this);
 
 	LabelInfo dashKey;
 	dashKey.color = White;
 	dashKey.fontName = "Arial80";
-	dashKey.text = "A";
+	dashKey.text = (char*)App->input->getBindingfromAction("Dash");
 	Label* dashkeyLabel = (Label*)App->gui->CreateLabel({ 100, 0 }, dashKey, dashLabel, this);
 
 	GUIImage* leftSymbolDash = (GUIImage*)App->gui->CreateGUIImage({ -20, 0 }, SELECTION_SYMBOL, this, dashkeyLabel);
@@ -735,7 +738,7 @@ void Scene::CreateGratitudeScreen()
 		gratitude.fontName = "LifeCraft90";
 		gratitude.multilabelWidth = 1500;
 		gratitude.text = "                         Victory! \n       Thanks for playing the game. \n       Your support means a lot ^^ \n       More at: @SoftCactus_Team";
-		App->gui->CreateLabel({ 150, 130 }, gratitude, window, nullptr);
+		App->gui->CreateLabel({ 150, 130 }, gratitude, nullptr, nullptr);
 	}
 	alreadyCreated = true;
 }

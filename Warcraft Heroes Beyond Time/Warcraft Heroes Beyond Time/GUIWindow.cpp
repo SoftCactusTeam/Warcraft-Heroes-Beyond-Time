@@ -106,7 +106,7 @@ void GUIWindow::FocusNextChild()
 			std::list<GUIElem*>::iterator toFocusIt = focusedIt;
 			while (toFocus == nullptr)
 			{
-				if (!(*toFocusIt)->IsFocused() && ((*toFocusIt)->type == GUIElemType::BUTTON || (*toFocusIt)->type == GUIElemType::SLIDER || (*toFocusIt)->type == GUIElemType::ITEM_CONTAINER))
+				if (!(*toFocusIt)->IsFocused() && ((*toFocusIt)->type == GUIElemType::BUTTON || (*toFocusIt)->type == GUIElemType::SLIDER || (*toFocusIt)->type == GUIElemType::ITEM_CONTAINER || (*toFocusIt)->type == GUIElemType::LABEL))
 					toFocus = *toFocusIt;
 				if (std::next(toFocusIt) == childs.end())
 					toFocusIt = childs.begin();
@@ -142,7 +142,7 @@ void GUIWindow::FocusPrevChild()
 			std::list<GUIElem*>::reverse_iterator toFocusIt = focusedIt;
 			while (toFocus == nullptr)
 			{
-				if (!(*toFocusIt)->IsFocused() && ((*toFocusIt)->type == GUIElemType::BUTTON || (*toFocusIt)->type == GUIElemType::SLIDER || (*toFocusIt)->type == GUIElemType::ITEM_CONTAINER))
+				if (!(*toFocusIt)->IsFocused() && ((*toFocusIt)->type == GUIElemType::BUTTON || (*toFocusIt)->type == GUIElemType::SLIDER || (*toFocusIt)->type == GUIElemType::ITEM_CONTAINER || (*toFocusIt)->type == GUIElemType::LABEL))
 					toFocus = *toFocusIt;
 				if (std::next(toFocusIt) == childs.rend())
 					toFocusIt = childs.rbegin();

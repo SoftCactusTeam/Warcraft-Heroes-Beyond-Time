@@ -28,8 +28,10 @@ public:
 	{
 		return text.data();
 	}
-
+	static int ButtonPressed;
 private:
+
+	
 	std::string text;
 	TTF_Font* font = nullptr;
 	SDL_Texture* texturetoBlit = nullptr;

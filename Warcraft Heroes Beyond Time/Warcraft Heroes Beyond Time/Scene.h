@@ -14,6 +14,7 @@ class ChestEntity;
 class PortalEntity;
 class Guldan;
 class Item;
+class Label;
 
 
 class Scene : public Module
@@ -46,7 +47,6 @@ public:
 	void CreateItemSelectionScreen(Item*, Item*, Item*);
 	bool gratitudeON = false;
 	void GoMainMenu();
-	void GoBossRoom();
 	void Restart()
 	{
 		restart = true;
@@ -85,6 +85,10 @@ public:
 	GUIWindow* PauseMenu = nullptr;
 
 	GUIWindow* blood = nullptr;
+
+	Label* attackBinding = nullptr;
+	Label* skillBinding = nullptr;
+	Label* dashBinding = nullptr;
 
 private:
 
