@@ -212,6 +212,7 @@ bool Input::PreUpdate()
 			{
 				kbAvailable = false;
 				jButtons[event.cbutton.button] = KEY_DOWN;
+				//GUI RECEIVES THE FIRST BUTTON HERE WHEN BINDING
 			}
 			break;
 

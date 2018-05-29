@@ -562,7 +562,7 @@ void Scene::CreateSettingsScreen()
 	//MUSIC VOLUME SLIDER
 	SliderInfo sinfo;
 	sinfo.type = Slider::SliderType::MUSIC_VOLUME;
-	Slider* slider = (Slider*)App->gui->CreateSlider({ 183, 95 }, sinfo, this, window);
+	Slider* slider = (Slider*)App->gui->CreateSlider({ 50, 95 }, sinfo, this, window);
 
 	LabelInfo defLabel3;
 	defLabel3.color = White;
@@ -580,7 +580,7 @@ void Scene::CreateSettingsScreen()
 	//FX VOLUME SLIDER
 	SliderInfo sinfo2;
 	sinfo2.type = Slider::SliderType::FX_VOLUME;
-	Slider* slider2 = (Slider*)App->gui->CreateSlider({ 183, 190 }, sinfo2, this, window);
+	Slider* slider2 = (Slider*)App->gui->CreateSlider({ 50, 190 }, sinfo2, this, window);
 
 	LabelInfo defLabel4;
 	defLabel4.color = White;
@@ -596,7 +596,7 @@ void Scene::CreateSettingsScreen()
 	App->gui->CreateLabel({ 0,-35 }, defLabel5, slider2, this);
 
 	//BACK BUTTON
-	Button* button3 = (Button*)App->gui->CreateButton({ 640 / 2 - 158 / 2, 250.0f }, BType::GO_MMENU, this, window);
+	Button* button3 = (Button*)App->gui->CreateButton({ 50/*640 / 2 - 158 / 2*/, 300 }, BType::GO_MMENU, this, window);
 
 	LabelInfo defLabel2;
 	defLabel2.color = White;
