@@ -72,14 +72,16 @@ Scene::Scene()
 	thrallShadowAnim.PushBack({ 445, 363, 214, 307 });
 	thrallShadowAnim.PushBack({ 667, 363, 214, 307 });
 
+
+	thrallShadowAnim.PushBack({ 6, 699, 214, 307 });
+	thrallShadowAnim.PushBack({ 224, 699, 214, 307 });
+	thrallShadowAnim.PushBack({ 445, 699, 214, 307 });
+	thrallShadowAnim.PushBack({ 667, 699, 214, 307 });
 	thrallShadowAnim.PushBack({ 6, 1019, 214, 307 });
 	thrallShadowAnim.PushBack({ 224, 1019, 214, 307 });
 	thrallShadowAnim.PushBack({ 445, 1019, 214, 307 });
 	thrallShadowAnim.PushBack({ 667, 1019, 214, 307 });
-	thrallShadowAnim.PushBack({ 6, 1019, 214, 307 });
-	thrallShadowAnim.PushBack({ 224, 1019, 214, 307 });
-	thrallShadowAnim.PushBack({ 445, 1019, 214, 307 });
-	thrallShadowAnim.PushBack({ 667, 1019, 214, 307 });
+
 
 	thrallShadowAnim.PushBack({ 6, 363, 214, 307 });
 	thrallShadowAnim.PushBack({ 224, 363, 214, 307 });
