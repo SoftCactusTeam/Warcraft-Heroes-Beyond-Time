@@ -167,7 +167,8 @@ bool Scene::Start()
 		{
 			// Loading BG texture
 		    textureBG = App->textures->Load("GUI/bg_menu.png");
-			App->psystem->AddEmiter({ 200.0f, 200.0f }, EmitterType::EMITTER_TYPE_PIXEL_SMOKE);
+			bgEmitter1 = App->psystem->AddEmiter({ 700.0f, 200.0f }, EmitterType::EMITTER_TYPE_PIXEL_SMOKE, -3, true);
+			bgEmitter2 = App->psystem->AddEmiter({ -150.0f, 200.0f }, EmitterType::EMITTER_TYPE_PIXEL_SMOKE, -3, true);
 			CreateMainMenuScreen();
 			lvlIndex = 0;
 
@@ -183,7 +184,6 @@ bool Scene::Start()
 		case Stages::INGAME:
 		{
 			BROFILER_CATEGORY("InGame Generation", Profiler::Color::Chocolate);
-			
 			int result = App->map->UseYourPowerToGenerateMeThisNewMap(lvlIndex);
 
 			if (result == -1)
@@ -217,13 +217,13 @@ bool Scene::Start()
 				App->projectiles->Activate();
 
 				player = App->entities->AddPlayer({ (float)App->map->begginingNode->pos.x * 46, (float)App->map->begginingNode->pos.y * 46 }, THRALL, playerStats);
+				
 				if (testEmitter == nullptr)
 				{
-					
-					fPoint a = player->pos;
-					testEmitter = App->psystem->AddEmiter({(player->pos.x - App->render->camera.x) / App->winScale, (player->pos.y - App->render->camera.y) / App->winScale }, EMITTER_TYPE_DASH);
+					testEmitter = App->psystem->AddEmiter({(player->pos.x - App->render->camera.x) / App->winScale, (player->pos.y - App->render->camera.y) / App->winScale }, EMITTER_TYPE_DASH, -1);
 					testEmitter->StopEmission();
 				}
+
 				player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
 
 				App->path->LoadPathMap();
@@ -429,7 +429,23 @@ bool Scene::PostUpdate()
 bool Scene::CleanUp()
 {
 	if (textureBG != nullptr)
+	{
 		App->textures->UnLoad(textureBG);
+		textureBG = nullptr;
+	}
+	
+	if (bgEmitter1 != nullptr)
+	{
+		App->psystem->RemoveEmitter(bgEmitter1);
+		bgEmitter1 = nullptr;
+	}
+
+	if (bgEmitter2 != nullptr)
+	{
+
+		App->psystem->RemoveEmitter(bgEmitter2);
+		bgEmitter2 = nullptr;
+	}
 	
 	//HEALING THE PLAYER AFTER FINISHING A LVL
 	if (player)

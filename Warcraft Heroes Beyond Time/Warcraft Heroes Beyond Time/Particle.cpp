@@ -7,7 +7,7 @@
 
 Particle::Particle() :life(0) { }
 
-void Particle::Init(fPoint pos, float startSpeed, float endSpeed, float angle, double rotSpeed, float startSize, float endSize, uint life, SDL_Rect textureRect, SDL_Color startColor, SDL_Color endColor, SDL_BlendMode blendMode, int layer)
+void Particle::Init(fPoint pos, float startSpeed, float endSpeed, float angle, double rotSpeed, float startSize, float endSize, uint life, SDL_Rect textureRect, SDL_Color startColor, SDL_Color endColor, SDL_BlendMode blendMode, int layer, bool useVortex)
 {
 	// Movement properties
 	pState.pLive.pos = pos;
@@ -31,9 +31,11 @@ void Particle::Init(fPoint pos, float startSpeed, float endSpeed, float angle, d
 	pState.pLive.pRect = pState.pLive.rectSize = textureRect;
 
 	pState.pLive.layer = layer;
+	pState.pLive.useVortex = useVortex;
 
 	// Add vortex to the system (optional and only one is allowed)
-	//AddVortex({ 250.0f, 200.0f }, 10.0f, 30.0f);
+	if (pState.pLive.useVortex)
+		AddVortex({ 300.0f, 200.0f }, 15.0f, 30.0f);
 }
 
 void Particle::Update(float dt)
@@ -75,7 +77,11 @@ void Particle::Draw()
 	//App->render->BlitParticle(App->psystem->GetParticleAtlas(), (int)centerX, (int)centerY, &pState.pLive.pRect,
 		//&pState.pLive.rectSize, resColor, pState.pLive.blendMode, 0.0f, pState.pLive.currentRotSpeed);
 
-	App->printer->PrintSprite({ (int)pState.pLive.pos.x, (int)pState.pLive.pos.y }, App->psystem->GetParticleAtlas(), pState.pLive.pRect, pState.pLive.layer, ModulePrinter::Pivots::CENTER,
+	if (pState.pLive.layer == -3)
+		App->render->BlitParticle(App->psystem->GetParticleAtlas(), (int)centerX, (int)centerY, &pState.pLive.pRect,
+		&pState.pLive.rectSize, resColor, pState.pLive.blendMode, 0.0f, pState.pLive.currentRotSpeed);
+	else
+		App->printer->PrintSprite({ (int)pState.pLive.pos.x, (int)pState.pLive.pos.y }, App->psystem->GetParticleAtlas(), pState.pLive.pRect, pState.pLive.layer, ModulePrinter::Pivots::CENTER,
 		{ 0, 0 }, ModulePrinter::Pivots::UPPER_LEFT, { 0, 0 }, pState.pLive.currentRotSpeed, resColor, pState.pLive.blendMode, pState.pLive.rectSize, 0.0f);
 
 	// Calculating new rotation according to rotation speed

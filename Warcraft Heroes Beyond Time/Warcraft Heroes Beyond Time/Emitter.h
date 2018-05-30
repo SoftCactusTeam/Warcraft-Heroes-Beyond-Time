@@ -61,6 +61,7 @@ private:
 	fPoint endSizeRand = { 0.0f, 0.0f };
 
 	int layer = 0;
+	bool useVortex = false;
 
 public:
 

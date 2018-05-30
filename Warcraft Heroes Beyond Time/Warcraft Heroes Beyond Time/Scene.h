@@ -99,7 +99,8 @@ private:
 	Animation boltAnim;
 
 	Emitter* testEmitter = nullptr;
-	Emitter* bgEmittter = nullptr;
+	Emitter* bgEmitter1 = nullptr;
+	Emitter* bgEmitter2 = nullptr;
 
 	uint currentPercentAudio = 0u;
 

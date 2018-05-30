@@ -46,6 +46,7 @@ private:
 			SDL_BlendMode blendMode;
 			float t;
 			int layer;
+			bool useVortex;
 
 			ParticleState() {}
 
@@ -65,7 +66,7 @@ public:
 	Particle();
 
 	// Initializes new generated particle
-	void Init(fPoint pos, float startSpeed, float endSpeed, float angle, double rotSpeed, float startSize, float endSize, uint life, SDL_Rect textureRect, SDL_Color startColor, SDL_Color endColor, SDL_BlendMode blendMode, int layer);
+	void Init(fPoint pos, float startSpeed, float endSpeed, float angle, double rotSpeed, float startSize, float endSize, uint life, SDL_Rect textureRect, SDL_Color startColor, SDL_Color endColor, SDL_BlendMode blendMode, int layer, bool useVortex);
 
 	// Generic methods
 	void Update(float dt);

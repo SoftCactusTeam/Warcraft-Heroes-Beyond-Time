@@ -139,9 +139,10 @@ bool ParticleSystem::CleanUp()
 	return true;
 }
 
-Emitter* ParticleSystem::AddEmiter(fPoint pos, EmitterType type, int layer)
+Emitter* ParticleSystem::AddEmiter(fPoint pos, EmitterType type, int layer, bool useVortex)
 {
-	vecEmitterData->layer = layer;
+	vecEmitterData[type].layer = layer;
+	vecEmitterData[type].useVortex = useVortex;
 
 	Emitter* tmp_emitter = new Emitter(pos, vecEmitterData[type]);
 

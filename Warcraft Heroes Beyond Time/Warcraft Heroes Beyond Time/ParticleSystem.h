@@ -56,6 +56,7 @@ struct EmitterData
 	fPoint endSizeRand = { 0.0f, 0.0f };
 
 	int layer = 0;
+	bool useVortex = false;
 };
 
 class ParticleSystem : public Module
@@ -97,7 +98,7 @@ public:
 	bool CleanUp();
 
 	// Emitter methods
-	Emitter* AddEmiter(fPoint pos, EmitterType type, int layer = -1);
+	Emitter* AddEmiter(fPoint pos, EmitterType type, int layer = -1, bool useVortex = false);
 	bool RemoveEmitter(Emitter* emitter);
 	bool RemoveAllEmitters();
 

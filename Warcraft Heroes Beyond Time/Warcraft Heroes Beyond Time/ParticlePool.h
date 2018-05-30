@@ -22,10 +22,11 @@ public:
 	virtual ~ParticlePool();
 
 	//Generates a new particle each time it's called
-	void Generate(fPoint pos, float startSpeed, float endSpeed, float angle, float rotSpeed, float startSize, float endSize, uint life, SDL_Rect textureRect, SDL_Color startColor, SDL_Color endColor, SDL_BlendMode blendMode, int layer);
+	void Generate(fPoint pos, float startSpeed, float endSpeed, float angle, float rotSpeed, float startSize, float endSize, uint life, SDL_Rect textureRect, SDL_Color startColor, SDL_Color endColor, SDL_BlendMode blendMode, int layer, bool useVortex);
 
 	// Update (move and draw) particles in the pool. If there are no particles alive returns false
 	bool Update(float dt);
+
 };
 
 #endif
