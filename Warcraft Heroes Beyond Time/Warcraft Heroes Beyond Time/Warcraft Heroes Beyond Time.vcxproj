@@ -291,6 +291,9 @@
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Game\psystem_config" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

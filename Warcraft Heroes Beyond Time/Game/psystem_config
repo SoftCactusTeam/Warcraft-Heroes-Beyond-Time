@@ -183,7 +183,7 @@
         <emitNumber value ="1"/>
         <emitVariance value ="0" randMin = "0" randMax ="1"/>
         <maxParticleLife value ="10" randMin = "1" randMax ="1"/>
-        <textureRect x="0" y="477" w="35" h="35"/>
+        <textureRect x="0" y="481" w="35" h="31"/>
         <startColor r ="48" g="28" b="212" a="125"/>
         <endColor r ="159" g="38" b="212" a ="0"/>
         <blendMode mode ="blend"/>

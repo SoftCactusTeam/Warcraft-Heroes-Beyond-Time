@@ -9,8 +9,6 @@ ParticleSystem::ParticleSystem() : Module()
 {
 	name = "psystem";
 
-	LOG("Loading Languages");
-
 }
 
 ParticleSystem::~ParticleSystem()

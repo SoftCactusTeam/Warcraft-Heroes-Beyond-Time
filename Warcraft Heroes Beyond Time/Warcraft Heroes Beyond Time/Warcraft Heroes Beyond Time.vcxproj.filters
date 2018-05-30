@@ -503,4 +503,9 @@
       <UniqueIdentifier>{9391c902-ebe5-4cfd-90a6-5b8e50b3bb6f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Game\psystem_config">
+      <Filter>Particle System</Filter>
+    </None>
+  </ItemGroup>
 </Project>
