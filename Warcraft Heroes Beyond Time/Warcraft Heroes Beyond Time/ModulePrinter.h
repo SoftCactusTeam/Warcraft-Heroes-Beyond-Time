@@ -47,10 +47,18 @@ public:
 	int distToFeet = 0;
 	SDL_Color color = { 0,0,0,0 };
 	iPoint offset = {0,0};
+	SDL_BlendMode blendMode = SDL_BLENDMODE_NONE;
+	SDL_Rect rectSize = { 0, 0, 0, 0 };
+	float speed = 1.0f;
 
 public:
 
-	Sprite(iPoint& pos, SDL_Texture* texture, SDL_Rect& SquaretoBlit, int layer, iPoint offset, iPoint pivot, float angle, SDL_Color color) : DrawingElem(DrawingElem::DElemType::SPRITE), pos(pos), texture(texture), SquaretoBlit(SquaretoBlit), distToFeet(distToFeet), layer(layer), offset(offset), pivot(pivot), angle(angle), color(color){}
+	Sprite(iPoint& pos, SDL_Texture* texture, SDL_Rect& SquaretoBlit, int layer, iPoint offset, iPoint pivot, float angle, float speed, SDL_Color color, SDL_BlendMode blendMode, SDL_Rect rectSize) : DrawingElem(DrawingElem::DElemType::SPRITE), pos(pos), texture(texture), SquaretoBlit(SquaretoBlit), distToFeet(distToFeet), layer(layer), offset(offset), pivot(pivot), angle(angle), color(color)
+	{
+		this->blendMode = blendMode;
+		this->rectSize = rectSize;
+		this->speed = speed;
+	}
 
 };
 
@@ -135,7 +143,7 @@ public:
 	};
 
 	//Note: Angle required is in degrees, in clockwise direction
-	bool PrintSprite(iPoint pos, SDL_Texture* texture, SDL_Rect SquaretoBlit, int layer = 0, Pivots OFFSET_MODE = Pivots::UPPER_LEFT, iPoint customOffset = { 0,0 }, Pivots PIVOT_MODE = Pivots::UPPER_LEFT, iPoint customPivot = { 0,0 }, float degangle = 0, SDL_Color color = { 255,255,255,255 });
+	bool PrintSprite(iPoint pos, SDL_Texture* texture, SDL_Rect SquaretoBlit, int layer = 0, Pivots OFFSET_MODE = Pivots::UPPER_LEFT, iPoint customOffset = { 0,0 }, Pivots PIVOT_MODE = Pivots::UPPER_LEFT, iPoint customPivot = { 0,0 }, float degangle = 0.0f, SDL_Color color = { 255,255,255,255 }, SDL_BlendMode blendMode = SDL_BLENDMODE_NONE, SDL_Rect rectSize = { 0, 0, 0, 0 }, float speed = 1.0f);
 	
 	bool PrintQuad(SDL_Rect rect, SDL_Color color, bool filled = false, bool use_camera = false);
 

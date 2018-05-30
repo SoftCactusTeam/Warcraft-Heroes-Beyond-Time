@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "p2Point.h"
 #include "ModuleEntitySystem.h"
+#include "Emitter.h"
 
 #include "Animation.h"
 
@@ -97,6 +98,7 @@ private:
 	Animation thrallShadowAnim;
 	Animation boltAnim;
 
+	Emitter* testEmitter = nullptr;
 
 	uint currentPercentAudio = 0u;
 

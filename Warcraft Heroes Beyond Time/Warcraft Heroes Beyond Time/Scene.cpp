@@ -25,6 +25,7 @@
 #include "ModuleTransitions.h"
 #include "IntroVideo.h"
 #include "ModuleVideo.h"
+#include "ParticleSystem.h"
 
 #include "Brofiler\Brofiler.h"
 #include "Label.h"
@@ -34,6 +35,8 @@
 #include "Slider.h"
 #include "GUIImage.h"
 #include "ItemContainer.h"
+
+
 
 
 
@@ -179,7 +182,7 @@ bool Scene::Start()
 		case Stages::INGAME:
 		{
 			BROFILER_CATEGORY("InGame Generation", Profiler::Color::Chocolate);
-
+			
 			int result = App->map->UseYourPowerToGenerateMeThisNewMap(lvlIndex);
 
 			if (result == -1)
@@ -198,7 +201,7 @@ bool Scene::Start()
 
 				portal = (PortalEntity*)App->entities->AddStaticEntity({ 15 * 46,17 * 46, }, PORTAL);
 				portal->locked = true;
-				player = App->entities->AddPlayer({ 15 * 46 + 10,16 * 46, }, THRALL, playerStats);
+				player = App->entities->AddPlayer({ 15 * 46 + 10,16 * 46}, THRALL, playerStats);
 				player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
 				guldan = (Guldan*)App->entities->AddBoss(GULDAN_BASE, BossType::GULDAN);
 			}
@@ -213,6 +216,13 @@ bool Scene::Start()
 				App->projectiles->Activate();
 
 				player = App->entities->AddPlayer({ (float)App->map->begginingNode->pos.x * 46, (float)App->map->begginingNode->pos.y * 46 }, THRALL, playerStats);
+				if (testEmitter == nullptr)
+				{
+					
+					fPoint a = player->pos;
+					testEmitter = App->psystem->AddEmiter({(player->pos.x - App->render->camera.x) / App->winScale, (player->pos.y - App->render->camera.y) / App->winScale }, EMITTER_TYPE_DASH);
+					testEmitter->StopEmission();
+				}
 				player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
 
 				App->path->LoadPathMap();
@@ -281,7 +291,19 @@ bool Scene::Update(float dt)
 {
 	bool ret = true;
 
+	if (testEmitter != nullptr)
+	{
+		testEmitter->MoveEmitter({ ((player->pos.x + App->render->camera.x) / App->winScale) + 5, ((player->pos.y + App->render->camera.y) / App->winScale) + 15 });
+
+		if (actual_scene == Stages::INGAME && player->state == PlayerEntity::states::PL_DASH)
+		{
+			testEmitter->StartEmission(100);
+		}
+	}
+
+
 	//CHECKING IF INTROVIDEO HAS FINISHED PLAYING
+
 	if (App->introVideo->isVideoFinished && actual_scene == Stages::INTRO_VIDEO)
 	{
 		restart = true;
@@ -414,6 +436,12 @@ bool Scene::CleanUp()
 		playerStats = player->numStats;
 		uint quantityToHeal = (playerStats.maxhp - playerStats.hp) * playerStats.hpRecover / 100;
 		playerStats.hp = playerStats.hp + quantityToHeal > playerStats.maxhp ? playerStats.maxhp : playerStats.hp + quantityToHeal;
+	}
+
+	if (testEmitter != nullptr)
+	{
+		App->psystem->RemoveEmitter(testEmitter);
+		testEmitter = nullptr;
 	}
 		
 	App->gui->DeActivate();

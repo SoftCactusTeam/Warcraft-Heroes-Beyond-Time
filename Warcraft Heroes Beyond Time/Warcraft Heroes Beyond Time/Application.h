@@ -32,6 +32,7 @@ class ModuleEffects;
 class ModuleTransitions;
 class ModuleVideo; 
 class IntroVideo;
+class ParticleSystem;
 
 class Application
 {
@@ -42,7 +43,7 @@ public:
 
 	bool Awake();
 	bool Start();
-	bool Update();
+	bool Update();	
 	bool CleanUp();
 
 	void AddModule(Module* module);
@@ -56,6 +57,7 @@ public:
 	void Load();
 
 	void AddCommands();
+	pugi::xml_node LoadEmitters(pugi::xml_document& psystem_file) const;
 
 private:
 
@@ -96,10 +98,12 @@ public:
 	ModuleTransitions*		transitions = nullptr;
 	ModuleVideo*			video = nullptr;
 	IntroVideo*				introVideo = nullptr;
+	ParticleSystem*			psystem = nullptr;
 
 public:
 
 	float dt = 0.0f;
+	uint winScale = 0u;
 
 private:
 
