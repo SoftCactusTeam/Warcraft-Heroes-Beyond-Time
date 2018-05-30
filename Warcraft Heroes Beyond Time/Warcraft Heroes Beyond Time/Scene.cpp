@@ -53,6 +53,83 @@ class ConsoleMap : public ConsoleOrder
 Scene::Scene()
 {
 	name = "scene";
+
+	// Shadow thrall animation
+	thrallShadowAnim.PushBack({ 6, 363, 214, 307 });
+	thrallShadowAnim.PushBack({ 224, 363, 214, 307 });
+	thrallShadowAnim.PushBack({ 445, 363, 214, 307 });
+	thrallShadowAnim.PushBack({ 667, 363, 214, 307 });
+	thrallShadowAnim.PushBack({ 6, 363, 214, 307 });
+	thrallShadowAnim.PushBack({ 224, 363, 214, 307 });
+	thrallShadowAnim.PushBack({ 445, 363, 214, 307 });
+	thrallShadowAnim.PushBack({ 667, 363, 214, 307 });
+	thrallShadowAnim.PushBack({ 6, 363, 214, 307 });
+	thrallShadowAnim.PushBack({ 224, 363, 214, 307 });
+	thrallShadowAnim.PushBack({ 445, 363, 214, 307 });
+	thrallShadowAnim.PushBack({ 667, 363, 214, 307 });
+	thrallShadowAnim.PushBack({ 6, 363, 214, 307 });
+	thrallShadowAnim.PushBack({ 224, 363, 214, 307 });
+	thrallShadowAnim.PushBack({ 445, 363, 214, 307 });
+	thrallShadowAnim.PushBack({ 667, 363, 214, 307 });
+
+	thrallShadowAnim.PushBack({ 6, 1019, 214, 307 });
+	thrallShadowAnim.PushBack({ 224, 1019, 214, 307 });
+	thrallShadowAnim.PushBack({ 445, 1019, 214, 307 });
+	thrallShadowAnim.PushBack({ 667, 1019, 214, 307 });
+	thrallShadowAnim.PushBack({ 6, 1019, 214, 307 });
+	thrallShadowAnim.PushBack({ 224, 1019, 214, 307 });
+	thrallShadowAnim.PushBack({ 445, 1019, 214, 307 });
+	thrallShadowAnim.PushBack({ 667, 1019, 214, 307 });
+
+	thrallShadowAnim.PushBack({ 6, 363, 214, 307 });
+	thrallShadowAnim.PushBack({ 224, 363, 214, 307 });
+	thrallShadowAnim.PushBack({ 445, 363, 214, 307 });
+	thrallShadowAnim.PushBack({ 667, 363, 214, 307 });
+	thrallShadowAnim.PushBack({ 6, 363, 214, 307 });
+	thrallShadowAnim.PushBack({ 224, 363, 214, 307 });
+	thrallShadowAnim.PushBack({ 445, 363, 214, 307 });
+	thrallShadowAnim.PushBack({ 667, 363, 214, 307 });
+
+	thrallShadowAnim.speed = 0.2f;
+	thrallShadowAnim.loop = true;
+
+	// Bolt animation
+	boltAnim.PushBack({ 640, 0, 157, 241 });
+	boltAnim.PushBack({ 640, 0, 157, 241 });
+	boltAnim.PushBack({ 640, 0, 157, 241 });
+	boltAnim.PushBack({ 640, 0, 157, 241 });
+	boltAnim.PushBack({ 640, 0, 157, 241 });
+	boltAnim.PushBack({ 640, 0, 157, 241 });
+	boltAnim.PushBack({ 640, 0, 157, 241 });
+	boltAnim.PushBack({ 640, 0, 157, 241 });
+	boltAnim.PushBack({ 640, 0, 157, 241 });
+	boltAnim.PushBack({ 640, 0, 157, 241 });
+	boltAnim.PushBack({ 640, 0, 157, 241 });
+	boltAnim.PushBack({ 640, 0, 157, 241 });
+	boltAnim.PushBack({ 640, 0, 157, 241 });
+	boltAnim.PushBack({ 640, 0, 157, 241 });
+	boltAnim.PushBack({ 640, 0, 157, 241 });
+	boltAnim.PushBack({ 640, 0, 157, 241 });
+	boltAnim.PushBack({ 640, 0, 157, 241 });
+	boltAnim.PushBack({ 640, 0, 157, 241 });
+	boltAnim.PushBack({ 640, 0, 157, 241 });
+	boltAnim.PushBack({ 640, 0, 157, 241 });
+	boltAnim.PushBack({ 640, 0, 157, 241 });
+
+	boltAnim.PushBack({ 14, 1344, 157, 241 });
+	boltAnim.PushBack({ 201, 1344, 157, 241 });
+	boltAnim.PushBack({ 640, 0, 157, 241 });
+	boltAnim.PushBack({ 395, 1344, 157, 241 });
+	boltAnim.PushBack({ 640, 0, 157, 241 });
+	boltAnim.PushBack({ 600, 1344, 157, 241 });
+	boltAnim.PushBack({ 798, 1344, 157, 241 });
+	boltAnim.PushBack({ 997, 1344, 157, 241 });
+	boltAnim.PushBack({ 1170, 1344, 157, 241 });
+	boltAnim.PushBack({ 1363, 1344, 157, 241 });
+	boltAnim.PushBack({ 1523, 1344, 157, 241 });
+
+	boltAnim.speed = 0.2f;
+	boltAnim.loop = true;
 }
 
 Scene::~Scene() {}
@@ -87,84 +164,6 @@ bool Scene::Start()
 		{
 			// Loading BG texture
 		    textureBG = App->textures->Load("GUI/bg_menu.png");
-
-			// Shadow thrall animation
-			thrallShadowAnim.PushBack({ 6, 363, 214, 307 });
-			thrallShadowAnim.PushBack({ 224, 363, 214, 307 });
-			thrallShadowAnim.PushBack({ 445, 363, 214, 307 });
-			thrallShadowAnim.PushBack({ 667, 363, 214, 307 });
-			thrallShadowAnim.PushBack({ 6, 363, 214, 307 });
-			thrallShadowAnim.PushBack({ 224, 363, 214, 307 });
-			thrallShadowAnim.PushBack({ 445, 363, 214, 307 });
-			thrallShadowAnim.PushBack({ 667, 363, 214, 307 });
-			thrallShadowAnim.PushBack({ 6, 363, 214, 307 });
-			thrallShadowAnim.PushBack({ 224, 363, 214, 307 });
-			thrallShadowAnim.PushBack({ 445, 363, 214, 307 });
-			thrallShadowAnim.PushBack({ 667, 363, 214, 307 });
-			thrallShadowAnim.PushBack({ 6, 363, 214, 307 });
-			thrallShadowAnim.PushBack({ 224, 363, 214, 307 });
-			thrallShadowAnim.PushBack({ 445, 363, 214, 307 });
-			thrallShadowAnim.PushBack({ 667, 363, 214, 307 });
-
-			thrallShadowAnim.PushBack({ 6, 1019, 214, 307 });
-			thrallShadowAnim.PushBack({ 224, 1019, 214, 307 });
-			thrallShadowAnim.PushBack({ 445, 1019, 214, 307 });
-			thrallShadowAnim.PushBack({ 667, 1019, 214, 307 });
-			thrallShadowAnim.PushBack({ 6, 1019, 214, 307 });
-			thrallShadowAnim.PushBack({ 224, 1019, 214, 307 });
-			thrallShadowAnim.PushBack({ 445, 1019, 214, 307 });
-			thrallShadowAnim.PushBack({ 667, 1019, 214, 307 });
-
-			thrallShadowAnim.PushBack({ 6, 363, 214, 307 });
-			thrallShadowAnim.PushBack({ 224, 363, 214, 307 });
-			thrallShadowAnim.PushBack({ 445, 363, 214, 307 });
-			thrallShadowAnim.PushBack({ 667, 363, 214, 307 });
-			thrallShadowAnim.PushBack({ 6, 363, 214, 307 });
-			thrallShadowAnim.PushBack({ 224, 363, 214, 307 });
-			thrallShadowAnim.PushBack({ 445, 363, 214, 307 });
-			thrallShadowAnim.PushBack({ 667, 363, 214, 307 });
-
-			thrallShadowAnim.speed = 0.2f;
-			thrallShadowAnim.loop = true;
-
-			// Bolt animation
-			boltAnim.PushBack({ 640, 0, 157, 241 });
-			boltAnim.PushBack({ 640, 0, 157, 241 });
-			boltAnim.PushBack({ 640, 0, 157, 241 });
-			boltAnim.PushBack({ 640, 0, 157, 241 });
-			boltAnim.PushBack({ 640, 0, 157, 241 });
-			boltAnim.PushBack({ 640, 0, 157, 241 });
-			boltAnim.PushBack({ 640, 0, 157, 241 });
-			boltAnim.PushBack({ 640, 0, 157, 241 });
-			boltAnim.PushBack({ 640, 0, 157, 241 });
-			boltAnim.PushBack({ 640, 0, 157, 241 });
-			boltAnim.PushBack({ 640, 0, 157, 241 });
-			boltAnim.PushBack({ 640, 0, 157, 241 });
-			boltAnim.PushBack({ 640, 0, 157, 241 });
-			boltAnim.PushBack({ 640, 0, 157, 241 });
-			boltAnim.PushBack({ 640, 0, 157, 241 });
-			boltAnim.PushBack({ 640, 0, 157, 241 });
-			boltAnim.PushBack({ 640, 0, 157, 241 });
-			boltAnim.PushBack({ 640, 0, 157, 241 });
-			boltAnim.PushBack({ 640, 0, 157, 241 });
-			boltAnim.PushBack({ 640, 0, 157, 241 });
-			boltAnim.PushBack({ 640, 0, 157, 241 });
-
-			boltAnim.PushBack({ 14, 1344, 157, 241 });
-			boltAnim.PushBack({ 201, 1344, 157, 241 });
-			boltAnim.PushBack({ 640, 0, 157, 241 });
-			boltAnim.PushBack({ 395, 1344, 157, 241 });
-			boltAnim.PushBack({ 640, 0, 157, 241 });
-			boltAnim.PushBack({ 600, 1344, 157, 241 });
-			boltAnim.PushBack({ 798, 1344, 157, 241 });
-			boltAnim.PushBack({ 997, 1344, 157, 241 });
-			boltAnim.PushBack({ 1170, 1344, 157, 241 });
-			boltAnim.PushBack({ 1363, 1344, 157, 241 });
-			boltAnim.PushBack({ 1523, 1344, 157, 241 });
-
-			boltAnim.speed = 0.2f;
-			boltAnim.loop = true;
-
 			CreateMainMenuScreen();
 			lvlIndex = 0;
 
@@ -172,6 +171,7 @@ bool Scene::Start()
 		}
 		case Stages::SETTINGS:
 		{
+			textureBG = App->textures->Load("GUI/bg_menu.png");
 			CreateSettingsScreen();
 
 			break;
@@ -670,7 +670,7 @@ void Scene::CreateSettingsScreen()
 	App->gui->CreateLabel({ 265,-4 }, defLabel3, slider, this);
 
 	LabelInfo defLabel;
-	defLabel.color = Black;
+	defLabel.color = White;
 	defLabel.fontName = "LifeCraft90";
 	defLabel.text = "Music Volume";
 	App->gui->CreateLabel({ 0,-35 }, defLabel, slider, this);
@@ -688,7 +688,7 @@ void Scene::CreateSettingsScreen()
 	App->gui->CreateLabel({ 265,-4 }, defLabel4, slider2, this);
 
 	LabelInfo defLabel5;
-	defLabel5.color = Black;
+	defLabel5.color = White;
 	defLabel5.fontName = "LifeCraft90";
 	defLabel5.text = "FX Volume";
 	App->gui->CreateLabel({ 0,-35 }, defLabel5, slider2, this);
