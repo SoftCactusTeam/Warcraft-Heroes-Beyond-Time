@@ -17,6 +17,6 @@ I have done a lot of different tasks, like:
 - All the camera following and camera culling system.
 - Items management.
 - Controller support and rebind.
-- Continually checking the code and fixing stuff, in order to minimize the possible bugs we get, in special the Scene switching workflow, also trying to evade memory leaks.
+- Continually checking the whole code and fixing stuff, in order to minimize the possible bugs we get, in special the Scene switching workflow, also trying to evade memory leaks.
 
 Along with other members, I've also done playtesting, some design decisions and bug fixing.
