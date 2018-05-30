@@ -91,6 +91,36 @@ bool Scene::Start()
 			thrallShadow.PushBack({ 224, 363, 214, 307 });
 			thrallShadow.PushBack({ 445, 363, 214, 307 });
 			thrallShadow.PushBack({ 667, 363, 214, 307 });
+			thrallShadow.PushBack({ 6, 363, 214, 307 });
+			thrallShadow.PushBack({ 224, 363, 214, 307 });
+			thrallShadow.PushBack({ 445, 363, 214, 307 });
+			thrallShadow.PushBack({ 667, 363, 214, 307 });
+			thrallShadow.PushBack({ 6, 363, 214, 307 });
+			thrallShadow.PushBack({ 224, 363, 214, 307 });
+			thrallShadow.PushBack({ 445, 363, 214, 307 });
+			thrallShadow.PushBack({ 667, 363, 214, 307 });
+			thrallShadow.PushBack({ 6, 363, 214, 307 });
+			thrallShadow.PushBack({ 224, 363, 214, 307 });
+			thrallShadow.PushBack({ 445, 363, 214, 307 });
+			thrallShadow.PushBack({ 667, 363, 214, 307 });
+			thrallShadow.PushBack({ 6, 363, 214, 307 });
+			thrallShadow.PushBack({ 224, 363, 214, 307 });
+			thrallShadow.PushBack({ 445, 363, 214, 307 });
+			thrallShadow.PushBack({ 667, 363, 214, 307 });
+			thrallShadow.PushBack({ 6, 363, 214, 307 });
+			thrallShadow.PushBack({ 224, 363, 214, 307 });
+			thrallShadow.PushBack({ 445, 363, 214, 307 });
+			thrallShadow.PushBack({ 667, 363, 214, 307 });
+
+			thrallShadow.PushBack({ 6, 1019, 214, 307 });
+			thrallShadow.PushBack({ 224, 1019, 214, 307 });
+			thrallShadow.PushBack({ 445, 1019, 214, 307 });
+			thrallShadow.PushBack({ 667, 1019, 214, 307 });
+			thrallShadow.PushBack({ 6, 1019, 214, 307 });
+			thrallShadow.PushBack({ 224, 1019, 214, 307 });
+			thrallShadow.PushBack({ 445, 1019, 214, 307 });
+			thrallShadow.PushBack({ 667, 1019, 214, 307 });
+
 			thrallShadow.speed = 0.2f;
 			
 			thrallShadow.loop = true;
