@@ -105,14 +105,6 @@ bool Scene::Start()
 			thrallShadowAnim.PushBack({ 224, 363, 214, 307 });
 			thrallShadowAnim.PushBack({ 445, 363, 214, 307 });
 			thrallShadowAnim.PushBack({ 667, 363, 214, 307 });
-			thrallShadowAnim.PushBack({ 6, 363, 214, 307 });
-			thrallShadowAnim.PushBack({ 224, 363, 214, 307 });
-			thrallShadowAnim.PushBack({ 445, 363, 214, 307 });
-			thrallShadowAnim.PushBack({ 667, 363, 214, 307 });
-			thrallShadowAnim.PushBack({ 6, 363, 214, 307 });
-			thrallShadowAnim.PushBack({ 224, 363, 214, 307 });
-			thrallShadowAnim.PushBack({ 445, 363, 214, 307 });
-			thrallShadowAnim.PushBack({ 667, 363, 214, 307 });
 
 			thrallShadowAnim.PushBack({ 6, 1019, 214, 307 });
 			thrallShadowAnim.PushBack({ 224, 1019, 214, 307 });
@@ -122,15 +114,55 @@ bool Scene::Start()
 			thrallShadowAnim.PushBack({ 224, 1019, 214, 307 });
 			thrallShadowAnim.PushBack({ 445, 1019, 214, 307 });
 			thrallShadowAnim.PushBack({ 667, 1019, 214, 307 });
+
+			thrallShadowAnim.PushBack({ 6, 363, 214, 307 });
+			thrallShadowAnim.PushBack({ 224, 363, 214, 307 });
+			thrallShadowAnim.PushBack({ 445, 363, 214, 307 });
+			thrallShadowAnim.PushBack({ 667, 363, 214, 307 });
+			thrallShadowAnim.PushBack({ 6, 363, 214, 307 });
+			thrallShadowAnim.PushBack({ 224, 363, 214, 307 });
+			thrallShadowAnim.PushBack({ 445, 363, 214, 307 });
+			thrallShadowAnim.PushBack({ 667, 363, 214, 307 });
 
 			thrallShadowAnim.speed = 0.2f;
 			thrallShadowAnim.loop = true;
 
 			// Bolt animation
+			boltAnim.PushBack({ 640, 0, 157, 241 });
+			boltAnim.PushBack({ 640, 0, 157, 241 });
+			boltAnim.PushBack({ 640, 0, 157, 241 });
+			boltAnim.PushBack({ 640, 0, 157, 241 });
+			boltAnim.PushBack({ 640, 0, 157, 241 });
+			boltAnim.PushBack({ 640, 0, 157, 241 });
+			boltAnim.PushBack({ 640, 0, 157, 241 });
+			boltAnim.PushBack({ 640, 0, 157, 241 });
+			boltAnim.PushBack({ 640, 0, 157, 241 });
+			boltAnim.PushBack({ 640, 0, 157, 241 });
+			boltAnim.PushBack({ 640, 0, 157, 241 });
+			boltAnim.PushBack({ 640, 0, 157, 241 });
+			boltAnim.PushBack({ 640, 0, 157, 241 });
+			boltAnim.PushBack({ 640, 0, 157, 241 });
+			boltAnim.PushBack({ 640, 0, 157, 241 });
+			boltAnim.PushBack({ 640, 0, 157, 241 });
+			boltAnim.PushBack({ 640, 0, 157, 241 });
+			boltAnim.PushBack({ 640, 0, 157, 241 });
+			boltAnim.PushBack({ 640, 0, 157, 241 });
+			boltAnim.PushBack({ 640, 0, 157, 241 });
+			boltAnim.PushBack({ 640, 0, 157, 241 });
+
 			boltAnim.PushBack({ 14, 1344, 157, 241 });
 			boltAnim.PushBack({ 201, 1344, 157, 241 });
-			boltAnim.speed = 0.2f;
+			boltAnim.PushBack({ 640, 0, 157, 241 });
+			boltAnim.PushBack({ 395, 1344, 157, 241 });
+			boltAnim.PushBack({ 640, 0, 157, 241 });
+			boltAnim.PushBack({ 600, 1344, 157, 241 });
+			boltAnim.PushBack({ 798, 1344, 157, 241 });
+			boltAnim.PushBack({ 997, 1344, 157, 241 });
+			boltAnim.PushBack({ 1170, 1344, 157, 241 });
+			boltAnim.PushBack({ 1363, 1344, 157, 241 });
+			boltAnim.PushBack({ 1523, 1344, 157, 241 });
 
+			boltAnim.speed = 0.2f;
 			boltAnim.loop = true;
 
 			CreateMainMenuScreen();
@@ -324,7 +356,7 @@ bool Scene::PostUpdate()
 	{
 		SDL_Rect back = { 0,0,640,360 };
 		//App->render->DrawQuad(back, 0, 205, 193, 255, true, false);
-		App->render->DrawQuad(back, 64, 66, 159, 255, true, false);
+		App->render->DrawQuad(back, 100, 66, 159, 255, true, false);
 		App->render->Blit(textureBG, 0, 0, &rectBG, 1.0f, 0.0f);
 		App->render->Blit(textureBG, 254, 0, &boltAnim.GetCurrentFrame(), 1.0f, 0.0f);
 		App->render->Blit(textureBG, 6, 53, &thrallShadowAnim.GetCurrentFrame(), 1.0f, 0.0f);
