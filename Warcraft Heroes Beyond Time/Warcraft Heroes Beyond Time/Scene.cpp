@@ -85,6 +85,16 @@ bool Scene::Start()
 		}
 		case Stages::MAIN_MENU:
 		{
+		    textureBG = App->textures->Load("GUI/bg_menu.png");
+
+			thrallShadow.PushBack({ 6, 363, 214, 307 });
+			thrallShadow.PushBack({ 224, 363, 214, 307 });
+			thrallShadow.PushBack({ 445, 363, 214, 307 });
+			thrallShadow.PushBack({ 667, 363, 214, 307 });
+			thrallShadow.speed = 0.2f;
+			
+			thrallShadow.loop = true;
+
 			CreateMainMenuScreen();
 			lvlIndex = 0;
 
@@ -277,6 +287,8 @@ bool Scene::PostUpdate()
 		SDL_Rect back = { 0,0,640,360 };
 		//App->render->DrawQuad(back, 0, 205, 193, 255, true, false);
 		App->render->DrawQuad(back, 64, 66, 159, 255, true, false);
+		App->render->Blit(textureBG, 0, 0, &rectBG, 1.0f, 0.0f);
+		App->render->Blit(textureBG, 6, 53, &thrallShadow.GetCurrentFrame(), 1.0f, 0.0f);
 	}
 
 	//PRINTING WALKABLE TILES (Idk why this is here)
@@ -322,7 +334,9 @@ bool Scene::PostUpdate()
 
 bool Scene::CleanUp()
 {
-
+	if (textureBG != nullptr)
+		App->textures->UnLoad(textureBG);
+	
 	//HEALING THE PLAYER AFTER FINISHING A LVL
 	if (player)
 	{

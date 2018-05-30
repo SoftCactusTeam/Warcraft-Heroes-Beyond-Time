@@ -92,7 +92,9 @@ public:
 
 private:
 
-
+	SDL_Texture * textureBG = nullptr;
+	SDL_Rect rectBG = { 0, 0, 640, 360 };
+	Animation thrallShadow;
 	uint currentPercentAudio = 0u;
 
 	bool restart = false;
