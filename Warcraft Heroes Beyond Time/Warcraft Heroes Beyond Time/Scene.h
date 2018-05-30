@@ -91,10 +91,13 @@ public:
 	Label* dashBinding = nullptr;
 
 private:
-
+	// BG stuff
 	SDL_Texture * textureBG = nullptr;
 	SDL_Rect rectBG = { 0, 0, 640, 360 };
-	Animation thrallShadow;
+	Animation thrallShadowAnim;
+	Animation boltAnim;
+
+
 	uint currentPercentAudio = 0u;
 
 	bool restart = false;
