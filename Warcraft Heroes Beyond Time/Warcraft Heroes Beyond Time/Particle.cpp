@@ -7,7 +7,7 @@
 
 Particle::Particle() :life(0) { }
 
-void Particle::Init(fPoint pos, float startSpeed, float endSpeed, float angle, double rotSpeed, float startSize, float endSize, uint life, SDL_Rect textureRect, SDL_Color startColor, SDL_Color endColor, SDL_BlendMode blendMode)
+void Particle::Init(fPoint pos, float startSpeed, float endSpeed, float angle, double rotSpeed, float startSize, float endSize, uint life, SDL_Rect textureRect, SDL_Color startColor, SDL_Color endColor, SDL_BlendMode blendMode, int layer)
 {
 	// Movement properties
 	pState.pLive.pos = pos;
@@ -29,6 +29,8 @@ void Particle::Init(fPoint pos, float startSpeed, float endSpeed, float angle, d
 	pState.pLive.endColor = endColor;
 	pState.pLive.blendMode = blendMode;
 	pState.pLive.pRect = pState.pLive.rectSize = textureRect;
+
+	pState.pLive.layer = layer;
 
 	// Add vortex to the system (optional and only one is allowed)
 	//AddVortex({ 250.0f, 200.0f }, 10.0f, 30.0f);
@@ -73,7 +75,7 @@ void Particle::Draw()
 	//App->render->BlitParticle(App->psystem->GetParticleAtlas(), (int)centerX, (int)centerY, &pState.pLive.pRect,
 		//&pState.pLive.rectSize, resColor, pState.pLive.blendMode, 0.0f, pState.pLive.currentRotSpeed);
 
-	App->printer->PrintSprite({ (int)pState.pLive.pos.x, (int)pState.pLive.pos.y }, App->psystem->GetParticleAtlas(), pState.pLive.pRect, -1, ModulePrinter::Pivots::CENTER,
+	App->printer->PrintSprite({ (int)pState.pLive.pos.x, (int)pState.pLive.pos.y }, App->psystem->GetParticleAtlas(), pState.pLive.pRect, pState.pLive.layer, ModulePrinter::Pivots::CENTER,
 		{ 0, 0 }, ModulePrinter::Pivots::UPPER_LEFT, { 0, 0 }, pState.pLive.currentRotSpeed, resColor, pState.pLive.blendMode, pState.pLive.rectSize, 0.0f);
 
 	// Calculating new rotation according to rotation speed

@@ -167,6 +167,7 @@ bool Scene::Start()
 		{
 			// Loading BG texture
 		    textureBG = App->textures->Load("GUI/bg_menu.png");
+			App->psystem->AddEmiter({ 200.0f, 200.0f }, EmitterType::EMITTER_TYPE_PIXEL_SMOKE);
 			CreateMainMenuScreen();
 			lvlIndex = 0;
 

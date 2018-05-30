@@ -60,6 +60,8 @@ private:
 	fPoint startSizeRand = { 0.0f, 0.0f };
 	fPoint endSizeRand = { 0.0f, 0.0f };
 
+	int layer = 0;
+
 public:
 
 	Emitter(fPoint pos, EmitterData data);

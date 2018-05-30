@@ -139,8 +139,10 @@ bool ParticleSystem::CleanUp()
 	return true;
 }
 
-Emitter* ParticleSystem::AddEmiter(fPoint pos, EmitterType type)
+Emitter* ParticleSystem::AddEmiter(fPoint pos, EmitterType type, int layer)
 {
+	vecEmitterData->layer = layer;
+
 	Emitter* tmp_emitter = new Emitter(pos, vecEmitterData[type]);
 
 	emittersList.push_back(tmp_emitter);
