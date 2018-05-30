@@ -475,16 +475,22 @@ void Input::ExternActionsAtKeyInput(const int key) {
 
 void Input::Save(pugi::xml_node& inputNode)
 {
-	pugi::xml_node binding = inputNode.append_child("Binding");
-	binding.append_attribute("Attack").set_value(getBindingfromAction("Attack"));
-	binding.append_attribute("Skill").set_value(getBindingfromAction("Skill"));
-	binding.append_attribute("Dash").set_value(getBindingfromAction("Dash"));
+	if (App->input->isControllerConnected())
+	{
+		pugi::xml_node binding = inputNode.append_child("Binding");
+		binding.append_attribute("Attack").set_value(getBindingfromAction("Attack"));
+		binding.append_attribute("Skill").set_value(getBindingfromAction("Skill"));
+		binding.append_attribute("Dash").set_value(getBindingfromAction("Dash"));
+	}
 }
 
 void Input::Load(const pugi::xml_node& inputNode)
 {
-	pugi::xml_node binding = inputNode.child("Binding");
-	bindingMap.find("Attack")->second = App->input->toGameControllerButton((char*)binding.attribute("Attack").as_string());
-	bindingMap.find("Skill")->second = App->input->toGameControllerButton((char*)binding.attribute("Skill").as_string());
-	bindingMap.find("Dash")->second = App->input->toGameControllerButton((char*)binding.attribute("Dash").as_string());
+	if (App->input->isControllerConnected())
+	{
+		pugi::xml_node binding = inputNode.child("Binding");
+		bindingMap.find("Attack")->second = App->input->toGameControllerButton((char*)binding.attribute("Attack").as_string());
+		bindingMap.find("Skill")->second = App->input->toGameControllerButton((char*)binding.attribute("Skill").as_string());
+		bindingMap.find("Dash")->second = App->input->toGameControllerButton((char*)binding.attribute("Dash").as_string());
+	}
 }

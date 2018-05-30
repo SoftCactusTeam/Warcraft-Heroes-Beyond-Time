@@ -608,54 +608,57 @@ void Scene::CreateSettingsScreen()
 	defLabel5.text = "FX Volume";
 	App->gui->CreateLabel({ 0,-35 }, defLabel5, slider2, this);
 
-	//ATTACK BINDING
-	LabelInfo defAttackLabel;
-	defAttackLabel.color = White;
-	defAttackLabel.fontName = "LifeCraft90";
-	defAttackLabel.text = "Attack";
-	Label* attackLabel = attackBinding = (Label*)App->gui->CreateLabel({ 400,93 }, defAttackLabel, window, this);
+	if (App->input->isControllerConnected())
+	{
+		//ATTACK BINDING
+		LabelInfo defAttackLabel;
+		defAttackLabel.color = White;
+		defAttackLabel.fontName = "LifeCraft90";
+		defAttackLabel.text = "Attack";
+		Label* attackLabel = attackBinding = (Label*)App->gui->CreateLabel({ 400,93 }, defAttackLabel, window, this);
 
-	LabelInfo attackKey;
-	attackKey.color = White;
-	attackKey.fontName = "Arial80";
-	attackKey.text = (char*)App->input->getBindingfromAction("Attack");
-	Label* attackkeyLabel = (Label*)App->gui->CreateLabel({ 100, 0}, attackKey, attackLabel, this);
+		LabelInfo attackKey;
+		attackKey.color = White;
+		attackKey.fontName = "Arial80";
+		attackKey.text = (char*)App->input->getBindingfromAction("Attack");
+		Label* attackkeyLabel = (Label*)App->gui->CreateLabel({ 100, 0 }, attackKey, attackLabel, this);
 
-	GUIImage* leftSymbolAttack = (GUIImage*)App->gui->CreateGUIImage({ -20, 0 }, SELECTION_SYMBOL, this, attackkeyLabel);
-	GUIImage* rightSymbolAttack = (GUIImage*)App->gui->CreateGUIImage({ 20, 0 }, SELECTION_SYMBOL, this, attackkeyLabel);
+		GUIImage* leftSymbolAttack = (GUIImage*)App->gui->CreateGUIImage({ -20, 0 }, SELECTION_SYMBOL, this, attackkeyLabel);
+		GUIImage* rightSymbolAttack = (GUIImage*)App->gui->CreateGUIImage({ 20, 0 }, SELECTION_SYMBOL, this, attackkeyLabel);
 
-	//SKILL BINDING
-	LabelInfo defSkillLabel;
-	defSkillLabel.color = White;
-	defSkillLabel.fontName = "LifeCraft90";
-	defSkillLabel.text = "Skill";
-	Label* skillLabel = skillBinding = (Label*)App->gui->CreateLabel({ 400,150 }, defSkillLabel, window, this);
+		//SKILL BINDING
+		LabelInfo defSkillLabel;
+		defSkillLabel.color = White;
+		defSkillLabel.fontName = "LifeCraft90";
+		defSkillLabel.text = "Skill";
+		Label* skillLabel = skillBinding = (Label*)App->gui->CreateLabel({ 400,150 }, defSkillLabel, window, this);
 
-	LabelInfo skillKey;
-	skillKey.color = White;
-	skillKey.fontName = "Arial80";
-	skillKey.text = (char*)App->input->getBindingfromAction("Skill");
-	Label* skillkeyLabel = (Label*)App->gui->CreateLabel({ 100, 0 }, skillKey, skillLabel, this);
+		LabelInfo skillKey;
+		skillKey.color = White;
+		skillKey.fontName = "Arial80";
+		skillKey.text = (char*)App->input->getBindingfromAction("Skill");
+		Label* skillkeyLabel = (Label*)App->gui->CreateLabel({ 100, 0 }, skillKey, skillLabel, this);
 
-	GUIImage* leftSymbolSkill = (GUIImage*)App->gui->CreateGUIImage({ -20, 0 }, SELECTION_SYMBOL, this, skillkeyLabel);
-	GUIImage* rightSymbolSkill = (GUIImage*)App->gui->CreateGUIImage({ 20, 0 }, SELECTION_SYMBOL, this, skillkeyLabel);
+		GUIImage* leftSymbolSkill = (GUIImage*)App->gui->CreateGUIImage({ -20, 0 }, SELECTION_SYMBOL, this, skillkeyLabel);
+		GUIImage* rightSymbolSkill = (GUIImage*)App->gui->CreateGUIImage({ 20, 0 }, SELECTION_SYMBOL, this, skillkeyLabel);
 
-	//DASH BINDING
-	LabelInfo defDashLabel;
-	defDashLabel.color = White;
-	defDashLabel.fontName = "LifeCraft90";
-	defDashLabel.text = "Dash";
-	Label* dashLabel = dashBinding = (Label*)App->gui->CreateLabel({ 400,207 }, defDashLabel, window, this);
+		//DASH BINDING
+		LabelInfo defDashLabel;
+		defDashLabel.color = White;
+		defDashLabel.fontName = "LifeCraft90";
+		defDashLabel.text = "Dash";
+		Label* dashLabel = dashBinding = (Label*)App->gui->CreateLabel({ 400,207 }, defDashLabel, window, this);
 
-	LabelInfo dashKey;
-	dashKey.color = White;
-	dashKey.fontName = "Arial80";
-	dashKey.text = (char*)App->input->getBindingfromAction("Dash");
-	Label* dashkeyLabel = (Label*)App->gui->CreateLabel({ 100, 0 }, dashKey, dashLabel, this);
+		LabelInfo dashKey;
+		dashKey.color = White;
+		dashKey.fontName = "Arial80";
+		dashKey.text = (char*)App->input->getBindingfromAction("Dash");
+		Label* dashkeyLabel = (Label*)App->gui->CreateLabel({ 100, 0 }, dashKey, dashLabel, this);
 
-	GUIImage* leftSymbolDash = (GUIImage*)App->gui->CreateGUIImage({ -20, 0 }, SELECTION_SYMBOL, this, dashkeyLabel);
-	GUIImage* rightSymbolDash = (GUIImage*)App->gui->CreateGUIImage({ 20, 0 }, SELECTION_SYMBOL, this, dashkeyLabel);
-
+		GUIImage* leftSymbolDash = (GUIImage*)App->gui->CreateGUIImage({ -20, 0 }, SELECTION_SYMBOL, this, dashkeyLabel);
+		GUIImage* rightSymbolDash = (GUIImage*)App->gui->CreateGUIImage({ 20, 0 }, SELECTION_SYMBOL, this, dashkeyLabel);
+	}
+	
 	//BACK BUTTON
 	Button* button3 = (Button*)App->gui->CreateButton({ 50/*640 / 2 - 158 / 2*/, 300 }, BType::GO_MMENU, this, window);
 
