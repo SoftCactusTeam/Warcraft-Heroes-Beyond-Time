@@ -3,7 +3,7 @@
 I am the manager of the team, i organize tasks documents, calendar and weekly work. Also I work as programmer.
 Things I made :
 
- - The entity system.
+ - Entity system
  - Pathfinding module
  - Enemy AI
      - Habilities
