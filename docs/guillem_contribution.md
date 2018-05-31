@@ -4,10 +4,10 @@ I am the lead coder of the team. My role in the project has been maintaining a g
 
 - Procedural map generation and all related stuff
   - Map generation
-  - Anexed room
+  - Annexed room
   - Enemies/chest/portal spawn
   - etc.
-- Load tiled maps from tmx (anexed room and boss map)
+- Load tiled maps from tmx (annexed room and boss map)
 - All boss implementation and related stuff
 - Module Projectiles
 - From player module:
