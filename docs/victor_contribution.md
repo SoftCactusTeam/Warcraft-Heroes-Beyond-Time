@@ -13,3 +13,5 @@ I am the lead of the team. Overall my main role has been organizing the team and
 - I've been in charge of the video module.
 
 Along with other members, I've also done playtesting, some design decisions and bug fixing.
+
+[Back to home page](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/)
