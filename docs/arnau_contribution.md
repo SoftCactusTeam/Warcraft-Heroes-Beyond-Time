@@ -1,6 +1,6 @@
 ## **Arnau Morgado contribution**
 
-Desription:
+Brief role description:
 
 - task 1
 - task 2
