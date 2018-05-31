@@ -8,7 +8,7 @@ I am the lead coder of the team. My role in the project has been maintaining a g
   - Enemies/chest/portal spawn
   - etc.
 - Load tiled maps from tmx (annexed room and boss map)
-- All boss implementation and related stuff
+- All boss implementation and related stuff (with Victor's help in design and attack)
 - Module Projectiles
 - From player module:
   - Basic states machine for keyboard and gamepad
