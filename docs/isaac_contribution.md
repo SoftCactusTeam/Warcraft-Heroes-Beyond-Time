@@ -1,3 +1,3 @@
-Isaac contribution
+## **Isaac Calvis contribution**
 
 I made all things related with enemies. I made the entities system, pathdinfing, enemies Artificial Inteligence and they're attacs, effectes, reactions ...
