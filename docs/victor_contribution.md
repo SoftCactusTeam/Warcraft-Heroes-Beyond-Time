@@ -10,6 +10,6 @@ I am the lead of the team. Overall my main role has been organizing the team and
 - I've been in charge of implementing the particle system.
 - I've drawn and animated all the background in the main menu / settings.
 - I've been in charge of some sound fx of the game.
-. I've been in charge of the video module.
+- I've been in charge of the video module.
 
 Along with other members, I've also done playtesting, some design decisions and bug fixing.
