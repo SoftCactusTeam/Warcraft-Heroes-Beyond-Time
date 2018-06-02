@@ -25,9 +25,9 @@ bool GUIWindow::Update(float dt)
 	if (menu)
 	{
 		if (vertical)
-			checkVerticalInputs(dt);
+			result = checkVerticalInputs(dt);
 		else
-			checkHorizontalInputs(dt);
+			result = checkHorizontalInputs(dt);
 	}
 	
 	if(result)
