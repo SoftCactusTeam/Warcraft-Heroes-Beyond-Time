@@ -461,7 +461,7 @@ bool Scene::PostUpdate()
 	{
 		SDL_Rect back = { 0,0,640,360 };
 		//App->render->DrawQuad(back, 0, 205, 193, 255, true, false);
-		App->render->DrawQuad(back, 100, 66, 159, 255, true, false);
+		//App->render->DrawQuad(back, 100, 66, 159, 255, true, false);
 		App->render->Blit(textureBG, 0, 0, &rectBG, 1.0f, 0.0f);
 		App->render->Blit(textureBG, 254, 0, &boltAnim.GetCurrentFrame(), 1.0f, 0.0f);
 		App->render->Blit(textureBG, 6, 53, &thrallShadowAnim.GetCurrentFrame(), 1.0f, 0.0f);
@@ -513,8 +513,7 @@ bool Scene::PostUpdate()
 		if (actual_scene == Stages::INTRO_VIDEO && next_scene == Stages::MAIN_MENU)
 		{
 			actual_scene = next_scene;
-			this->DeActivate();
-			this->Activate();
+			App->transitions->StartTransition(this, this, 1.0f, fades::slider_fade);
 		}
 	}
 
