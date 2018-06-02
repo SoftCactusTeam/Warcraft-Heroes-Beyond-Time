@@ -211,7 +211,6 @@ bool Input::PreUpdate()
 			mouse_motion_y = event.motion.yrel / scale;
 			mouse_x = event.motion.x / scale;
 			mouse_y = event.motion.y / scale;
-			kbAvailable = true;
 		}
 		break;
 
@@ -229,6 +228,7 @@ bool Input::PreUpdate()
 		case SDL_CONTROLLERBUTTONUP:
 			if (event.cbutton.which == 0)
 				jButtons[event.cbutton.button] = KEY_UP;
+			break;
 
 		case SDL_TEXTINPUT:
 			inputText = event.text.text;
