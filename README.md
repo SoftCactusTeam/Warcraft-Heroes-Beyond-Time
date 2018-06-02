@@ -254,6 +254,7 @@ Almost all debug features are accesed through the game console. To activate/deac
 - Deactivate god mode: player_godmode_0
 
 - Go to boss room: F1 key
+- Go to next level: Q key
 
 ## Team members  
 
