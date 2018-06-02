@@ -189,7 +189,7 @@ bool Scene::Start()
 
 	currentPercentAudio = App->audio->MusicVolumePercent;
 
-	SetScene(next_scene);
+	//SetScene(next_scene);
 
 	switch (actual_scene)
 	{
@@ -224,6 +224,7 @@ bool Scene::Start()
 				CreateMainMenuScreen();
 				menuAnimOn = true;
 			}
+			
 
 			lvlIndex = 0;
 
@@ -523,10 +524,17 @@ bool Scene::CleanUp()
 {
 	if ((actual_scene == Stages::INTRO_VIDEO && next_scene == Stages::MAIN_MENU)
 		|| (actual_scene == Stages::INGAME && next_scene == Stages::MAIN_MENU))
+	{
 		menuAnimOn = false;
+		menuAnimOff = false;
+	}
+		
 	
 	if (actual_scene == Stages::SETTINGS && next_scene == Stages::MAIN_MENU)
+	{
 		menuAnimOff = true;
+	}
+		
 
 	if (textureBG != nullptr)
 	{
