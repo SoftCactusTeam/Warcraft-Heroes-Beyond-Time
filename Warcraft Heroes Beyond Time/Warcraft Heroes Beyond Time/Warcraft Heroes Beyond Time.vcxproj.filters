@@ -202,7 +202,6 @@
     <ClCompile Include="ModuleVideo.cpp">
       <Filter>Video</Filter>
     </ClCompile>
-    <ClCompile Include="IntroVideo.cpp" />
     <ClCompile Include="Emitter.cpp">
       <Filter>Particle System</Filter>
     </ClCompile>
@@ -441,7 +440,6 @@
     <ClInclude Include="ModuleVideo.h">
       <Filter>Video</Filter>
     </ClInclude>
-    <ClInclude Include="IntroVideo.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="Emitter.h">
       <Filter>Particle System</Filter>

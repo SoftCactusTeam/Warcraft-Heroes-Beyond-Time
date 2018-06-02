@@ -10,6 +10,7 @@
 
 #include "Console.h"
 
+#include "FileSystem.h"
 
 #include "SDL/include/SDL.h"
 
@@ -58,6 +59,10 @@ bool Input::Awake(pugi::xml_node& inputNode)
 	}
 
 	InitController();
+
+	if(App->fs->isGameSaved())
+		App->LoadInput();
+
 
 	return ret;
 }
