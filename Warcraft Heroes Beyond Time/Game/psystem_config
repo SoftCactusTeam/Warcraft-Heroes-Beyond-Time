@@ -80,7 +80,7 @@
         <endSize value =" 1" randMin ="0" randMax ="1"/>
         <emitNumber value ="1"/>
         <emitVariance value ="0" randMin ="0" randMax ="1"/>
-        <maxParticleLife value ="500" randMin ="0" randMax ="1"/>
+        <maxParticleLife value ="700" randMin ="0" randMax ="1"/>
         <textureRect x="352" y="256" w="32" h="32"/>
         <startColor r ="255" g="255" b="255" a="255"/>
         <endColor r ="255" g="255" b="255" a ="0"/>
