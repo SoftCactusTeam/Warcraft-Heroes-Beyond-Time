@@ -9,7 +9,9 @@ bool ShieldBallItem::Start()
 {
 	angular_vel = 50.0f;
 	radius = 20;
-	ball_col = App->colliders->AddPlayerAttackCollider({ 0, 0, 25, 25 }, App->scene->player, 0, PlayerAttack::P_Attack_Type::SHIELDBALL_ITEM);
+
+	if (App->scene->player)
+		ball_col = App->colliders->AddPlayerAttackCollider({ 0, 0, 25, 25 }, App->scene->player, 0, PlayerAttack::P_Attack_Type::SHIELDBALL_ITEM);
 	return true;
 }
 

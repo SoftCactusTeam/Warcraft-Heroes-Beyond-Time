@@ -34,6 +34,7 @@ public:
 	}
 	bool deleteSavedGame();
 	bool isGameSaved();
+	bool isInputSettingSaved() const;
 
 	// Open for Read/Write
 	unsigned int Load(const char* file, char** buffer) const;

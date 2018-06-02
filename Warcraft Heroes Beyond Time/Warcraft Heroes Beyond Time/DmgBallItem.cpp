@@ -8,7 +8,8 @@
 bool DMGBallItem::Start()
 {
 	angular_vel = 250.0f;
-	ball_col = App->colliders->AddPlayerAttackCollider({ 0, 0, 20, 20 }, App->scene->player, ModuleItems::dmgBallDamage/100 * App->scene->player->numStats.damage, PlayerAttack::P_Attack_Type::DMGBALL_ITEM);
+	if(App->scene->player)
+		ball_col = App->colliders->AddPlayerAttackCollider({ 0, 0, 20, 20 }, App->scene->player, ModuleItems::dmgBallDamage/100 * App->scene->player->numStats.damage, PlayerAttack::P_Attack_Type::DMGBALL_ITEM);
 	return true;
 }
 

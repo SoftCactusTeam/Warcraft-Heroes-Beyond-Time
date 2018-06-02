@@ -285,7 +285,8 @@ bool Scene::Start()
 				Label* lvlLabel = (Label*)App->gui->CreateLabel({580, 20}, lvlInfo, nullptr, nullptr);
 
 				//Player
-				player = App->entities->AddPlayer({ (float)App->map->begginingNode->pos.x * 46, (float)App->map->begginingNode->pos.y * 46 }, THRALL, playerStats);
+				if(!player)
+					player = App->entities->AddPlayer({ (float)App->map->begginingNode->pos.x * 46, (float)App->map->begginingNode->pos.y * 46 }, THRALL, playerStats);
 				
 				//Dash Particles
 				if (testEmitter == nullptr)
@@ -613,7 +614,6 @@ void Scene::Load(const pugi::xml_node& sceneNode)
 	playerStats.hpRecover = PlayerStats.attribute("hpRecover").as_float();
 	playerStats.skillMultiplier = PlayerStats.attribute("skillMultiplier").as_float();
 	playerStats.speed = PlayerStats.attribute("speed").as_float();
-
 
 	pugi::xml_node MapStats = sceneNode.child("MapStats");
 	lvlIndex = MapStats.attribute("lvlIndex").as_int();

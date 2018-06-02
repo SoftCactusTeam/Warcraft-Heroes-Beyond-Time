@@ -448,10 +448,10 @@ void Application::LoadInput()
 
 bool Application::LoadInputNow()
 {
-	loadgame = false;
+	loadinput = false;
 	char* buffer;
 	uint size;
-	size = fs->Load("Saves/savedgame.xml", &buffer);
+	size = fs->Load("Saves/inputSettings.xml", &buffer);
 
 	pugi::xml_document doc;
 
@@ -479,7 +479,7 @@ bool Application::LoadInputNow()
 
 bool Application::SaveInputNow() const
 {
-	savegame = false;
+	saveinput = false;
 
 	pugi::xml_document savedgame;
 	pugi::xml_node game = savedgame.append_child("Game");
@@ -495,5 +495,5 @@ bool Application::SaveInputNow() const
 	std::ostringstream os;
 	savedgame.save(os, "\r\n\r\n");
 
-	return fs->Save("savedgame.xml", (char*)os.str().data(), os.str().size()) == 1;
+	return fs->Save("inputSettings.xml", (char*)os.str().data(), os.str().size()) == 1;
 }

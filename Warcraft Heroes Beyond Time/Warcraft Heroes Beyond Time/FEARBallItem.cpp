@@ -10,7 +10,9 @@ bool FEARBallItem::Start()
 	speed_growing_radius = 300.0f;
 	angular_vel = 100.0f;
 	radius = 50;
-	ball_col = App->colliders->AddPlayerAttackCollider({ 0, 0, 20, 20 }, App->scene->player, 0, PlayerAttack::P_Attack_Type::FEARBALL_ITEM);
+
+	if(App->scene->player)
+		ball_col = App->colliders->AddPlayerAttackCollider({ 0, 0, 20, 20 }, App->scene->player, 0, PlayerAttack::P_Attack_Type::FEARBALL_ITEM);
 	return true;
 }
 
