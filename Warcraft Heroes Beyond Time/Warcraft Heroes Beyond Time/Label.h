@@ -28,7 +28,10 @@ public:
 	{
 		return text.data();
 	}
+
+public:
 	static int ButtonPressed;
+	static bool waitingBindInput;
 private:
 
 	
