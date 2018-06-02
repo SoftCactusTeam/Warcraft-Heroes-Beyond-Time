@@ -31,7 +31,6 @@ class ModuleProjectiles;
 class ModuleEffects;
 class ModuleTransitions;
 class ModuleVideo; 
-class IntroVideo;
 class ParticleSystem;
 
 class Application
@@ -55,6 +54,8 @@ public:
 
 	void Save();
 	void Load();
+	void SaveInput();
+	void LoadInput();
 
 	void AddCommands();
 	pugi::xml_node LoadEmitters(pugi::xml_document& psystem_file) const;
@@ -62,10 +63,11 @@ public:
 private:
 
 	bool LoadConfig(pugi::xml_document&);
-
 	bool SaveNow() const;
+	bool SaveInputNow()const;
 public:
 	bool LoadNow();
+	bool LoadInputNow();
 
 private:
 
@@ -97,7 +99,6 @@ public:
 	ModuleEffects*			effects = nullptr;
 	ModuleTransitions*		transitions = nullptr;
 	ModuleVideo*			video = nullptr;
-	IntroVideo*				introVideo = nullptr;
 	ParticleSystem*			psystem = nullptr;
 
 public:
@@ -125,6 +126,9 @@ private:
 
 	mutable bool savegame = false;
 	bool loadgame = false;
+
+	mutable bool saveinput = false;
+	bool loadinput = false;
 };
 
 extern Application* App;

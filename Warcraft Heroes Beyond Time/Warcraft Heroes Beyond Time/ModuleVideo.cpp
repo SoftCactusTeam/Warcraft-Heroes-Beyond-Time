@@ -21,9 +21,22 @@ bool ModuleVideo::Awake(pugi::xml_node &)
 	return true;
 }
 
+bool ModuleVideo::Start()
+{
+	Initialize("video/sample(good).avi");
+	return true;
+}
+
+bool ModuleVideo::Update(float dt)
+{
+	if(!isVideoFinished)
+		App->video->GrabAVIFrame();
+	return true;
+}
+
 bool ModuleVideo::CleanUp()
 {
-	
+	CloseAVI();
 	return true;
 }
 

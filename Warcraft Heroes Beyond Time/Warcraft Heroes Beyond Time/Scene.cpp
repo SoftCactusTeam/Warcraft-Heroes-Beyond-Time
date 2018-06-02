@@ -23,7 +23,6 @@
 #include "ModuleProjectiles.h"
 #include "Guldan.h"
 #include "ModuleTransitions.h"
-#include "IntroVideo.h"
 #include "ModuleVideo.h"
 #include "ParticleSystem.h"
 #include "ModuleGUI.h"
@@ -196,9 +195,9 @@ bool Scene::Start()
 	{
 		case Stages::INTRO_VIDEO:
 		{
-			//App->introVideo->Activate();
-			next_scene = Stages::MAIN_MENU;
-			restart = true;
+			App->video->Activate();
+			/*next_scene = Stages::MAIN_MENU;
+			restart = true;*/
 
 			break;
 		}
@@ -379,7 +378,7 @@ bool Scene::Update(float dt)
 
 	//CHECKING IF INTROVIDEO HAS FINISHED PLAYING
 
-	if (App->introVideo->isVideoFinished && actual_scene == Stages::INTRO_VIDEO)
+	if (App->video->isVideoFinished && actual_scene == Stages::INTRO_VIDEO)
 	{
 		restart = true;
 		next_scene = Stages::MAIN_MENU;
@@ -510,11 +509,9 @@ bool Scene::PostUpdate()
 
 		if (actual_scene == Stages::INTRO_VIDEO && next_scene == Stages::MAIN_MENU)
 		{
-			App->video->CloseAVI();
-	
-			App->introVideo->DeActivate();
-			App->video->DeActivate();
-			this->Start();
+			actual_scene = next_scene;
+			this->DeActivate();
+			this->Activate();
 		}
 	}
 
@@ -571,6 +568,7 @@ bool Scene::CleanUp()
 	App->colliders->DeActivate();
 	App->effects->DeActivate();
 	App->projectiles->DeActivate();
+	App->video->DeActivate();
 
 	if (next_scene == Stages::MAIN_MENU)
 	{
@@ -711,10 +709,14 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 									App->audio->setMusicVolume(currentPercentAudio);
 									App->audio->HaltFX();
 								}
+								else if (actual_scene == Stages::SETTINGS)
+									App->SaveInput();
+
 								next_scene = Stages::MAIN_MENU;
 								lvlIndex = 0;
 								paused = false;
 								restart = true;
+								
 							}
 							break;
 						case BType::RESUME:

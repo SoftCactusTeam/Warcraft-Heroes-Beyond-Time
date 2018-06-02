@@ -26,7 +26,6 @@
 #include "ModuleEffects.h"
 #include "ModuleTransitions.h"
 #include "ModuleVideo.h"
-#include "IntroVideo.h"
 #include "ParticleSystem.h"
 
 #include "Brofiler\Brofiler.h"
@@ -53,7 +52,6 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	effects = new ModuleEffects();
 	transitions = new ModuleTransitions();
 	video = new ModuleVideo();
-	introVideo = new IntroVideo();
 	psystem = new ParticleSystem();
 
 	// Ordered for awake / Start / Update
@@ -76,6 +74,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(path);
 	AddModule(printer);
 
+	AddModule(video);
 	AddModule(scene);
 	AddModule(colliders);
 	AddModule(items);
@@ -84,8 +83,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(transitions);
 
 	AddModule(console);
-	AddModule(video);
-	AddModule(introVideo);
+	
 
 	// render last to swap buffer
 	AddModule(render);
@@ -198,6 +196,11 @@ bool Application::FinishUpdate()
 	if (savegame && ret == true)
 		ret = SaveNow();
 
+	if (loadinput && ret == true)
+		ret = LoadInputNow();
+
+	if (saveinput && ret == true)
+		ret == SaveInputNow();
 
 	// Framerate calculations --
 	if (last_sec_frame_time.Read() > 1000)
@@ -303,6 +306,9 @@ bool Application::CleanUp()
 
 	for (it = modules.rbegin(); it != modules.rend(); ++it)
 	{
+		if (!(*it)->isActive())
+			continue;
+
 		ret = (*it)->CleanUp();
 	}
 
@@ -366,6 +372,8 @@ pugi::xml_node Application::LoadEmitters(pugi::xml_document & psystem_file) cons
 	return ret;
 }
 
+
+
 void Application::Save()
 {
 	savegame = true;
@@ -386,6 +394,8 @@ bool Application::SaveNow() const
 	std::list<Module*>::const_iterator it;
 	for (it = modules.begin(); it != modules.end(); ++it)
 	{
+		if (*it == input)
+			continue;
 		(*it)->Save(game.append_child((*it)->name.data()));
 	}
 
@@ -415,10 +425,75 @@ bool Application::LoadNow()
 	std::list<Module*>::const_iterator it;
 	for (it = modules.begin(); it != modules.end(); ++it)
 	{
+		if (*it == input)
+			continue;
+
 		(*it)->Load(game.child((*it)->name.data()));
 	}
 
 	RELEASE(buffer);
 
 	return true;
+}
+
+void Application::SaveInput()
+{
+	saveinput = true;
+}
+
+void Application::LoadInput()
+{
+	loadinput = true;
+}
+
+bool Application::LoadInputNow()
+{
+	loadgame = false;
+	char* buffer;
+	uint size;
+	size = fs->Load("Saves/savedgame.xml", &buffer);
+
+	pugi::xml_document doc;
+
+	if (!doc.load_buffer(buffer, size))
+	{
+		LOG("Error loading xmldocument from buffer\n");
+		return false;
+	}
+
+	pugi::xml_node game = doc.first_child();
+
+	std::list<Module*>::const_iterator it;
+	for (it = modules.begin(); it != modules.end(); ++it)
+	{
+		if (*it != input)
+			continue;
+
+		(*it)->Load(game.child((*it)->name.data()));
+	}
+
+	RELEASE(buffer);
+
+	return true;
+}
+
+bool Application::SaveInputNow() const
+{
+	savegame = false;
+
+	pugi::xml_document savedgame;
+	pugi::xml_node game = savedgame.append_child("Game");
+
+	std::list<Module*>::const_iterator it;
+	for (it = modules.begin(); it != modules.end(); ++it)
+	{
+		if (*it != input)
+			continue;
+		(*it)->Save(game.append_child((*it)->name.data()));
+	}
+
+	std::ostringstream os;
+	savedgame.save(os, "\r\n\r\n");
+
+	return fs->Save("savedgame.xml", (char*)os.str().data(), os.str().size()) == 1;
 }
