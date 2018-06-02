@@ -499,7 +499,7 @@ bool Scene::PostUpdate()
 		else if ((actual_scene == Stages::MAIN_MENU && next_scene == Stages::INGAME) ||
 				(actual_scene == Stages::INGAME && next_scene == Stages::MAIN_MENU))
 		{
-			App->transitions->StartTransition(this, this, 2.0f, fades::slider_fade);
+			App->transitions->StartTransition(this, this, 0.7f, fades::slider_fade);
 		}
 
 		if ((actual_scene == Stages::MAIN_MENU && next_scene == Stages::SETTINGS) ||
@@ -513,7 +513,7 @@ bool Scene::PostUpdate()
 		if (actual_scene == Stages::INTRO_VIDEO && next_scene == Stages::MAIN_MENU)
 		{
 			actual_scene = next_scene;
-			App->transitions->StartTransition(this, this, 1.0f, fades::slider_fade);
+			App->transitions->StartTransition(this, this, 0.7f, fades::slider_fade);
 		}
 	}
 
