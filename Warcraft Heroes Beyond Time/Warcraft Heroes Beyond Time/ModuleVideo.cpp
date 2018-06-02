@@ -23,7 +23,7 @@ bool ModuleVideo::Awake(pugi::xml_node &)
 
 bool ModuleVideo::Start()
 {
-	Initialize("video/sample(good).avi");
+	Initialize("video/Intro_Soft_Cactus.avi");
 	return true;
 }
 

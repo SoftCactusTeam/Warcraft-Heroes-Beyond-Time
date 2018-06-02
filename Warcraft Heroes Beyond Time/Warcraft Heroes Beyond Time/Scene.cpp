@@ -177,7 +177,7 @@ Scene::~Scene() {}
 
 bool Scene::Awake(pugi::xml_node& sceneNode)
 {
-	App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
+	
 	return true;
 }
 
@@ -203,6 +203,7 @@ bool Scene::Start()
 		}
 		case Stages::MAIN_MENU:
 		{
+			App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0);
 			thrallShadowAnim.Reset();
 			boltAnim.Reset();
 			titleAnim.Reset();
