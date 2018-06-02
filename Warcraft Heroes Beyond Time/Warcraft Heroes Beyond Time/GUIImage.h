@@ -3,6 +3,8 @@
 
 #define SELECTION_SYMBOL { 206, 38, 16, 22 }
 
+#define SELECTION_DOUBLE_SYMBOL {479, 66, 114, 22}
+
 
 
 #include "GUIElem.h"
