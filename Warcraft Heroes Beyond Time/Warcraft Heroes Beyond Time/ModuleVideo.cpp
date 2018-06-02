@@ -4,6 +4,7 @@
 #include "ModuleTextures.h"
 #include "ModuleRender.h"
 #include "ModulePrinter.h"
+#include "ModuleAudio.h"
 
 #include "ModuleVideo.h"
 
@@ -24,13 +25,15 @@ bool ModuleVideo::Awake(pugi::xml_node &)
 bool ModuleVideo::Start()
 {
 	Initialize("video/Intro_Soft_Cactus.avi");
+	App->audio->PlayFx(App->audio->introVideoFX);
 	return true;
 }
 
 bool ModuleVideo::Update(float dt)
 {
-	if(!isVideoFinished)
+	if (!isVideoFinished)
 		App->video->GrabAVIFrame();
+
 	return true;
 }
 
@@ -42,7 +45,6 @@ bool ModuleVideo::CleanUp()
 
 void ModuleVideo::Initialize(char* path)
 {
-	App->window->SetTitle("Video Player");
 	OpenAVI(path);                  // Open The AVI File
 }
 

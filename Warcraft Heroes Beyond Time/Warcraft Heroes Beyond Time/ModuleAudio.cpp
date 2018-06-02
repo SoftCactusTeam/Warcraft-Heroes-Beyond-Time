@@ -89,6 +89,7 @@ void Audio::InitAudio()
 	GuldanSecondPhase = LoadFx("audio/fx/guldan/red_balls_fx.ogg");
 	GuldanFireSecondPhase = LoadFx("audio/fx/guldan/G_fire_fx.ogg");
 	GuldanSpiralFX = LoadFx("audio/fx/guldan/G_spiral.ogg");
+	introVideoFX = LoadFx("audio/fx/others/intro_video_fx.ogg");
 	//---------------------------------------Load Music----------------------------
 	MainMenuBSO = "audio/BSO's/Warcraft HBT - Main Menu.ogg";
 	InGameBSO = "audio/BSO's/Warcraft HBT - Level.ogg";

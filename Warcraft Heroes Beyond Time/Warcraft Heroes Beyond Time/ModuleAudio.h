@@ -95,6 +95,7 @@ public:
 	uint GuldanSecondPhase = 0u;
 	uint GuldanFireSecondPhase = 0u;
 	uint GuldanSpiralFX = 0u;
+	uint introVideoFX = 0u;
 
 	//std::string BSO's
 	std::string MainMenuBSO;
@@ -104,7 +105,7 @@ public:
 
 	//Volumes
 	uint MusicVolumePercent = 10;
-	uint FXVolumePercent = 10;
+	uint FXVolumePercent = 50;
 
 private:
 	
