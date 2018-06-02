@@ -60,6 +60,42 @@ Scene::Scene()
 {
 	name = "scene";
 
+	// Title animation
+	titleAnim.PushBack({ 0, 0, 16, 16 });
+	titleAnim.PushBack({ 0, 0, 16, 16 });
+	titleAnim.PushBack({ 0, 0, 16, 16 });
+	titleAnim.PushBack({ 0, 0, 16, 16 });
+	titleAnim.PushBack({ 0, 0, 16, 16 });
+	titleAnim.PushBack({ 0, 0, 16, 16 });
+	titleAnim.PushBack({ 0, 0, 16, 16 });
+	titleAnim.PushBack({ 0, 0, 16, 16 });
+	titleAnim.PushBack({ 0, 0, 16, 16 });
+	titleAnim.PushBack({ 0, 0, 16, 16 });
+	titleAnim.PushBack({ 0, 0, 16, 16 });
+	titleAnim.PushBack({ 0, 0, 16, 16 });
+	titleAnim.PushBack({ 0, 0, 16, 16 });
+	titleAnim.PushBack({ 0, 0, 16, 16 });
+	titleAnim.PushBack({ 0, 0, 16, 16 });
+	titleAnim.PushBack({ 0, 0, 16, 16 });
+	titleAnim.PushBack({ 0, 0, 16, 16 });
+	titleAnim.PushBack({ 0, 0, 16, 16 });
+	titleAnim.PushBack({ 0, 0, 16, 16 });
+	titleAnim.PushBack({ 0, 0, 16, 16 });
+	titleAnim.PushBack({ 0, 0, 16, 16 });
+	titleAnim.PushBack({ 624, 21, 448, 129 });
+	titleAnim.PushBack({ 0, 0, 16, 16 });
+	titleAnim.PushBack({ 624, 21, 448, 129 });
+	titleAnim.PushBack({ 0, 0, 16, 16 });
+	titleAnim.PushBack({ 624, 21, 448, 129 });
+	titleAnim.PushBack({ 624, 21, 448, 129 });
+	titleAnim.PushBack({ 624, 21, 448, 129 });
+	titleAnim.PushBack({ 624, 21, 448, 129 });
+	titleAnim.PushBack({ 624, 21, 448, 129 });
+	titleAnim.PushBack({ 624, 21, 448, 129 });
+	titleAnim.PushBack({ 624, 21, 448, 129 });
+	titleAnim.speed = 0.2f;
+	titleAnim.loop = false;
+
 	// Shadow thrall animation
 	thrallShadowAnim.PushBack({ 6, 363, 214, 307 });
 	thrallShadowAnim.PushBack({ 224, 363, 214, 307 });
@@ -172,6 +208,7 @@ bool Scene::Start()
 		    textureBG = App->textures->Load("GUI/bg_menu.png");
 			bgEmitter1 = App->psystem->AddEmiter({ 700.0f, 200.0f }, EmitterType::EMITTER_TYPE_PIXEL_SMOKE, -3, true);
 			bgEmitter2 = App->psystem->AddEmiter({ -150.0f, 200.0f }, EmitterType::EMITTER_TYPE_PIXEL_SMOKE, -3, true);
+
 			CreateMainMenuScreen();
 			lvlIndex = 0;
 
@@ -394,7 +431,18 @@ bool Scene::PostUpdate()
 	bool ret = true;
 
 	//DRAWING THE BACKGROUND IN THE MAIN MENU
-	if (actual_scene == Stages::MAIN_MENU || actual_scene == Stages::SETTINGS)
+	if (actual_scene == Stages::MAIN_MENU)
+	{
+		SDL_Rect back = { 0,0,640,360 };
+		//App->render->DrawQuad(back, 0, 205, 193, 255, true, false);
+		App->render->DrawQuad(back, 100, 66, 159, 255, true, false);
+		App->render->Blit(textureBG, 0, 0, &rectBG, 1.0f, 0.0f);
+		App->render->Blit(textureBG, 254, 0, &boltAnim.GetCurrentFrame(), 1.0f, 0.0f);
+		App->render->Blit(textureBG, 6, 53, &thrallShadowAnim.GetCurrentFrame(), 1.0f, 0.0f);
+		App->render->Blit(App->gui->getAtlas(), 100, 25, &titleAnim.GetCurrentFrame(), 1.0f, 0.0f);
+	
+	}
+	else if (actual_scene == Stages::SETTINGS)
 	{
 		SDL_Rect back = { 0,0,640,360 };
 		//App->render->DrawQuad(back, 0, 205, 193, 255, true, false);
@@ -672,8 +720,11 @@ void Scene::CreateMainMenuScreen()
 	GUIWindow* window = (GUIWindow*)App->gui->CreateGUIWindow({ 0,0 }, { 0,0,0,0 }, nullptr, nullptr);
 
 	//LOGO
-	GUIImage* logo = (GUIImage*)App->gui->CreateGUIImage({ 100,25 }, { 624, 21, 448, 129 }, nullptr);
+	//GUIImage* logo = (GUIImage*)App->gui->CreateGUIImage({ 100,25 }, titleAnim.GetCurrentFrame(), nullptr);
 	
+	// { 624, 21, 448, 129 }
+
+
 	//CONTINUE BUTTON
 	Button* continueb = (Button*)App->gui->CreateButton({ 241.0f, 115 + 30 }, BType::CONTINUE, this, window);
 

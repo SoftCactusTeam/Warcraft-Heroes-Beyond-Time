@@ -97,6 +97,7 @@ private:
 	SDL_Rect rectBG = { 0, 0, 640, 360 };
 	Animation thrallShadowAnim;
 	Animation boltAnim;
+	Animation titleAnim;
 
 	Emitter* testEmitter = nullptr;
 	Emitter* bgEmitter1 = nullptr;
