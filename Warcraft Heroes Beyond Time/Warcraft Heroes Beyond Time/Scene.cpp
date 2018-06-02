@@ -186,7 +186,6 @@ bool Scene::Start()
 {
 	gratitudeON = false;
 	restart = false;
-	printButtons = false;
 	App->gui->Activate();
 
 	currentPercentAudio = App->audio->MusicVolumePercent;
@@ -208,6 +207,7 @@ bool Scene::Start()
 			thrallShadowAnim.Reset();
 			boltAnim.Reset();
 			titleAnim.Reset();
+
 			// Loading BG texture
 		    textureBG = App->textures->Load("GUI/bg_menu.png");
 			bgEmitter1 = App->psystem->AddEmiter({ 700.0f, 200.0f }, EmitterType::EMITTER_TYPE_PIXEL_SMOKE, -3, true);
@@ -219,6 +219,13 @@ bool Scene::Start()
 			versionLabel.fontName = "Arial30";
 			versionLabel.text = App->gui->getVersion();
 			App->gui->CreateLabel({ 10,340 }, versionLabel);
+
+			if (menuAnimOff)
+			{
+				CreateMainMenuScreen();
+				menuAnimOn = true;
+			}
+
 			lvlIndex = 0;
 
 			break;
@@ -441,9 +448,9 @@ bool Scene::PostUpdate()
 {
 	bool ret = true;
 
-	if (actual_scene == Stages::MAIN_MENU && !printButtons && SDL_RectEquals(&boltAnim.GetCurrentRect(), &SDL_Rect({ 14, 1344, 157, 241 })))
+	if (actual_scene == Stages::MAIN_MENU && !menuAnimOn && SDL_RectEquals(&boltAnim.GetCurrentRect(), &SDL_Rect({ 14, 1344, 157, 241 })))
 	{
-		printButtons = true;
+		menuAnimOn = true;
 		CreateMainMenuScreen();
 	}
 
@@ -456,7 +463,11 @@ bool Scene::PostUpdate()
 		App->render->Blit(textureBG, 0, 0, &rectBG, 1.0f, 0.0f);
 		App->render->Blit(textureBG, 254, 0, &boltAnim.GetCurrentFrame(), 1.0f, 0.0f);
 		App->render->Blit(textureBG, 6, 53, &thrallShadowAnim.GetCurrentFrame(), 1.0f, 0.0f);
-		App->render->Blit(App->gui->getAtlas(), 100, 25, &titleAnim.GetCurrentFrame(), 1.0f, 0.0f);
+
+		if (!menuAnimOff)
+			App->render->Blit(App->gui->getAtlas(), 100, 25, &titleAnim.GetCurrentFrame(), 1.0f, 0.0f);
+		else
+			App->render->Blit(App->gui->getAtlas(), 100, 25, &SDL_Rect({ 624, 21, 448, 129 }), 1.0f, 0.0f);
 	
 	}
 	else if (actual_scene == Stages::SETTINGS)
@@ -492,8 +503,8 @@ bool Scene::PostUpdate()
 		if ((actual_scene == Stages::MAIN_MENU && next_scene == Stages::SETTINGS) ||
 			(actual_scene == Stages::SETTINGS && next_scene == Stages::MAIN_MENU))
 		{
-			actual_scene = next_scene;
 			this->DeActivate();
+			actual_scene = next_scene;
 			this->Activate();
 		}
 
@@ -512,6 +523,13 @@ bool Scene::PostUpdate()
 
 bool Scene::CleanUp()
 {
+	if ((actual_scene == Stages::INTRO_VIDEO && next_scene == Stages::MAIN_MENU)
+		|| (actual_scene == Stages::INGAME && next_scene == Stages::MAIN_MENU))
+		menuAnimOn = false;
+	
+	if (actual_scene == Stages::SETTINGS && next_scene == Stages::MAIN_MENU)
+		menuAnimOff = true;
+
 	if (textureBG != nullptr)
 	{
 		App->textures->UnLoad(textureBG);
