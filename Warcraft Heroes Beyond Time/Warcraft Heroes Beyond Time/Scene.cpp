@@ -204,6 +204,9 @@ bool Scene::Start()
 		}
 		case Stages::MAIN_MENU:
 		{
+			thrallShadowAnim.Reset();
+			boltAnim.Reset();
+			titleAnim.Reset();
 			// Loading BG texture
 		    textureBG = App->textures->Load("GUI/bg_menu.png");
 			bgEmitter1 = App->psystem->AddEmiter({ 700.0f, 200.0f }, EmitterType::EMITTER_TYPE_PIXEL_SMOKE, -3, true);
@@ -216,6 +219,8 @@ bool Scene::Start()
 		}
 		case Stages::SETTINGS:
 		{
+			thrallShadowAnim.Reset();
+			boltAnim.Reset();
 			textureBG = App->textures->Load("GUI/bg_menu.png");
 			bgEmitter1 = App->psystem->AddEmiter({ 700.0f, 200.0f }, EmitterType::EMITTER_TYPE_PIXEL_SMOKE, -3, true);
 			bgEmitter2 = App->psystem->AddEmiter({ -150.0f, 200.0f }, EmitterType::EMITTER_TYPE_PIXEL_SMOKE, -3, true);
