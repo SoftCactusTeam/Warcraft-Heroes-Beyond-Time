@@ -150,6 +150,17 @@ bool GUIElem::HandleInput(float dt)
 				}
 				break;
 			}
+			case Scene::Stages::MAIN_MENU:
+			{
+				if (button->btype == BType::EXIT_GAME)
+				{
+					parent->UnFocusChilds();
+					Focus();
+					UIevent = UIEvents::MOUSE_LEFT_CLICK;
+					listener->OnUIEvent(this, UIevent);
+				}
+				break;
+			}
 			default:
 			{
 				/*if (button->btype == BType::EXIT_GAME)

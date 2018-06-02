@@ -29,6 +29,11 @@ public:
 		return text.data();
 	}
 
+	inline const SDL_Texture* getTexturetoBlit() const
+	{
+		return texturetoBlit;
+	}
+
 public:
 	static int ButtonPressed;
 	static bool waitingBindInput;

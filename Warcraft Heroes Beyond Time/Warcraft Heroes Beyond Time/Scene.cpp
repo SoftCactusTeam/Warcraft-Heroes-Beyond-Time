@@ -822,9 +822,10 @@ void Scene::CreateSettingsScreen()
 		attackKey.fontName = "Arial80";
 		attackKey.text = (char*)App->input->getBindingfromAction("Attack");
 		Label* attackkeyLabel = (Label*)App->gui->CreateLabel({ 100, 0 }, attackKey, attackLabel, this);
+		
 
 		GUIImage* leftSymbolAttack = (GUIImage*)App->gui->CreateGUIImage({ -20, 0 }, SELECTION_SYMBOL, this, attackkeyLabel);
-		GUIImage* rightSymbolAttack = (GUIImage*)App->gui->CreateGUIImage({ 20, 0 }, SELECTION_SYMBOL, this, attackkeyLabel);
+		GUIImage* rightSymbolAttack = (GUIImage*)App->gui->CreateGUIImage({ 78, 0 }, SELECTION_SYMBOL, this, attackkeyLabel);
 
 		//SKILL BINDING
 		LabelInfo defSkillLabel;
@@ -840,7 +841,7 @@ void Scene::CreateSettingsScreen()
 		Label* skillkeyLabel = (Label*)App->gui->CreateLabel({ 100, 0 }, skillKey, skillLabel, this);
 
 		GUIImage* leftSymbolSkill = (GUIImage*)App->gui->CreateGUIImage({ -20, 0 }, SELECTION_SYMBOL, this, skillkeyLabel);
-		GUIImage* rightSymbolSkill = (GUIImage*)App->gui->CreateGUIImage({ 20, 0 }, SELECTION_SYMBOL, this, skillkeyLabel);
+		GUIImage* rightSymbolSkill = (GUIImage*)App->gui->CreateGUIImage({ 78, 0 }, SELECTION_SYMBOL, this, skillkeyLabel);
 
 		//DASH BINDING
 		LabelInfo defDashLabel;
@@ -856,7 +857,7 @@ void Scene::CreateSettingsScreen()
 		Label* dashkeyLabel = (Label*)App->gui->CreateLabel({ 100, 0 }, dashKey, dashLabel, this);
 
 		GUIImage* leftSymbolDash = (GUIImage*)App->gui->CreateGUIImage({ -20, 0 }, SELECTION_SYMBOL, this, dashkeyLabel);
-		GUIImage* rightSymbolDash = (GUIImage*)App->gui->CreateGUIImage({ 20, 0 }, SELECTION_SYMBOL, this, dashkeyLabel);
+		GUIImage* rightSymbolDash = (GUIImage*)App->gui->CreateGUIImage({ 78, 0 }, SELECTION_SYMBOL, this, dashkeyLabel);
 	}
 	
 	//BACK BUTTON
