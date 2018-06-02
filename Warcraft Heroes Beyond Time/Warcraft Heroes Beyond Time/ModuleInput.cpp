@@ -206,13 +206,15 @@ bool Input::PreUpdate()
 			mouse_motion_y = event.motion.yrel / scale;
 			mouse_x = event.motion.x / scale;
 			mouse_y = event.motion.y / scale;
+			kbAvailable = true;
 		}
 		break;
 
 		case SDL_CONTROLLERBUTTONDOWN:
+			kbAvailable = false;
 			if (event.cbutton.which == 0)
 			{
-				kbAvailable = false;
+				
 				jButtons[event.cbutton.button] = KEY_DOWN;
 				//GUI RECEIVES THE FIRST BUTTON HERE WHEN BINDING
 				Label::ButtonPressed = event.cbutton.button;
@@ -224,13 +226,11 @@ bool Input::PreUpdate()
 				jButtons[event.cbutton.button] = KEY_UP;
 
 		case SDL_TEXTINPUT:
-			kbAvailable = true;
 			inputText = event.text.text;
 			textReady = true;
 			break;
 		case SDL_JOYAXISMOTION:
-			if (event.jaxis.which == 0)
-				kbAvailable = false;
+			kbAvailable = false;
 			break;
 		}
 	}

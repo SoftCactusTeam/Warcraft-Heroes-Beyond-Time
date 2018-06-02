@@ -29,7 +29,7 @@ bool Label::Update(float dt)
 {
 	bool result = false;
 
-	if (focused)
+	if (focused && !childs.empty())
 		childs.front()->Focus();
 	else if (!childs.empty())
 		childs.front()->UnFocus();
@@ -38,7 +38,7 @@ bool Label::Update(float dt)
 	{
 		if (!childs.empty() && (this == App->scene->attackBinding || this == App->scene->dashBinding || this == App->scene->skillBinding))
 		{
-			Label* label = (Label*)childs.front();
+			Label* label = (Label*)childs.front()->getFirstChild();
 			label->EditText(App->input->toString((SDL_GameControllerButton)ButtonPressed), label->color);
 
 			if (this == App->scene->attackBinding)

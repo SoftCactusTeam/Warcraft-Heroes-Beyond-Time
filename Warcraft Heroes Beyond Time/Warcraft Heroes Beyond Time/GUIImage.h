@@ -16,12 +16,16 @@ public:
 	GUIImage(fPoint localPos, SDL_Rect atlasRect, Module* listener, GUIElem* parent = nullptr);
 	virtual ~GUIImage();
 
+	bool Update(float dt);
 	bool Draw();
 
 	inline void setOpacity(uint amount)
 	{
 		opacity = amount;
 	}
+
+public:
+	bool symbol = false;
 
 private:
 	Uint8 opacity = 255;
