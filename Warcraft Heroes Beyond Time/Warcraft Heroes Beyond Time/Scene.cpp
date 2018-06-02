@@ -26,6 +26,8 @@
 #include "IntroVideo.h"
 #include "ModuleVideo.h"
 #include "ParticleSystem.h"
+#include "ModuleGUI.h"
+
 
 #include "Brofiler\Brofiler.h"
 #include "Label.h"
@@ -35,6 +37,7 @@
 #include "Slider.h"
 #include "GUIImage.h"
 #include "ItemContainer.h"
+#include <string>
 
 
 
@@ -217,6 +220,14 @@ bool Scene::Start()
 				App->map->Activate();
 				App->printer->Activate();
 				App->projectiles->Activate();
+
+				LabelInfo lvlInfo;
+				lvlInfo.color = White;
+				lvlInfo.fontName = "LifeCraft80";
+				lvlInfo.multilabelWidth = 700;
+				std::string temp = std::string("Lvl: ") + std::to_string(lvlIndex + 1);
+				lvlInfo.text = (char*)temp.data();
+				Label* lvlLabel = (Label*)App->gui->CreateLabel({580, 20}, lvlInfo, nullptr, nullptr);
 
 				player = App->entities->AddPlayer({ (float)App->map->begginingNode->pos.x * 46, (float)App->map->begginingNode->pos.y * 46 }, THRALL, playerStats);
 				
