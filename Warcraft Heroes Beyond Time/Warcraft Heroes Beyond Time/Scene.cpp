@@ -854,6 +854,10 @@ void Scene::CreateSettingsScreen()
 		attackKey.text = (char*)App->input->getBindingfromAction("Attack");
 		Label* attackkeyLabel = (Label*)App->gui->CreateLabel({ 49, 0 }, attackKey, symbolAttack, this);
 
+		int w, h;
+		SDL_QueryTexture((SDL_Texture*)attackkeyLabel->getTexturetoBlit(), nullptr, nullptr, &w, &h);
+		attackkeyLabel->setLocalPos({ (float)(58 - ((w / 2) / 3)), -1 });
+
 		//SKILL BINDING
 		LabelInfo defSkillLabel;
 		defSkillLabel.color = White;
@@ -870,6 +874,10 @@ void Scene::CreateSettingsScreen()
 		skillKey.text = (char*)App->input->getBindingfromAction("Skill");
 		Label* skillkeyLabel = (Label*)App->gui->CreateLabel({ 49, 0 }, skillKey, symbolSkill, this);
 
+		SDL_QueryTexture((SDL_Texture*)skillkeyLabel->getTexturetoBlit(), nullptr, nullptr, &w, &h);
+		skillkeyLabel->setLocalPos({ (float)(58 - ((w / 2) / 3)), -1 });
+
+
 		//DASH BINDING
 		LabelInfo defDashLabel;
 		defDashLabel.color = White;
@@ -885,6 +893,10 @@ void Scene::CreateSettingsScreen()
 		dashKey.fontName = "Arial80";
 		dashKey.text = (char*)App->input->getBindingfromAction("Dash");
 		Label* dashkeyLabel = (Label*)App->gui->CreateLabel({ 49, 0 }, dashKey, symbolDash, this);
+
+		SDL_QueryTexture((SDL_Texture*)dashkeyLabel->getTexturetoBlit(), nullptr, nullptr, &w, &h);
+		dashkeyLabel->setLocalPos({ (float)(58 - ((w / 2) / 3)), -1 });
+
 	}
 	
 	//BACK BUTTON
