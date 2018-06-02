@@ -5,7 +5,7 @@
 
 Emitter::Emitter(fPoint pos, EmitterData data)
 {
-	srand(time(NULL));
+
 
 	// Particles size and movement
 	this->angleRange = data.angleRange;

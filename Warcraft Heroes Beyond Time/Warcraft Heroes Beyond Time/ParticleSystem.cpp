@@ -3,6 +3,7 @@
 #include "ParticleSystem.h"
 #include "Application.h"
 #include "ModuleTextures.h"
+#include <time.h>
 
 
 ParticleSystem::ParticleSystem() : Module()
@@ -19,7 +20,7 @@ ParticleSystem::~ParticleSystem()
 bool ParticleSystem::Awake(pugi::xml_node& config)
 {
 	bool ret = true;
-
+	srand(time(NULL));
 	pugi::xml_document	psystem_config;
 	pugi::xml_node* node = &App->LoadEmitters(psystem_config);
 	nameParticleAtlas = node->child("particleAtlas").attribute("name").as_string();
