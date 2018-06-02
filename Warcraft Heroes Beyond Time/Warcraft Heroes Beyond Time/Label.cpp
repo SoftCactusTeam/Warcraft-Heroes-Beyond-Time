@@ -8,6 +8,7 @@
 
 
 int Label::ButtonPressed = -1;
+bool Label::waitingBindInput = false;
 
 Label::Label(fPoint position, LabelInfo& info, GUIElem* parent, Module* listener) : GUIElem(position, listener, {}, GUIElemType::LABEL, parent)
 {
@@ -32,7 +33,7 @@ bool Label::Update(float dt)
 		childs.front()->Focus();
 	else if (!childs.empty())
 		childs.front()->UnFocus();
-
+	
 	if (focused && ButtonPressed != -1)
 	{
 		if (!childs.empty() && (this == App->scene->attackBinding || this == App->scene->dashBinding || this == App->scene->skillBinding))
@@ -51,10 +52,6 @@ bool Label::Update(float dt)
 	}
 
 	result = UpdateChilds(dt);
-
-	
-
-
 
 	return result;
 }

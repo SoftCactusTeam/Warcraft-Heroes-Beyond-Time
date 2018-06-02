@@ -3,6 +3,7 @@
 #include "ModuleRender.h"
 #include "ModuleInput.h"
 #include "GUIImage.h"
+#include "Label.h"
 
 GUIWindow::GUIWindow(fPoint localPos, SDL_Rect atlasRect, GUIElem* parent, Module* listener) : GUIElem(localPos, listener, atlasRect, GUIElemType::WINDOW, parent)
 {
@@ -118,12 +119,16 @@ void GUIWindow::FocusNextChild()
 
 	if (focused != nullptr)
 	{
+		if (focused->type == GUIElemType::LABEL)
+			Label::waitingBindInput = false;
 		focused->UnFocus();
 	}
 
 	if (toFocus != nullptr)
 	{
 		toFocus->Focus();
+		if (toFocus->type == GUIElemType::LABEL)
+			Label::waitingBindInput = true;
 	}
 }
 
@@ -154,12 +159,16 @@ void GUIWindow::FocusPrevChild()
 
 	if (focused != nullptr)
 	{
+		if (focused->type == GUIElemType::LABEL)
+			Label::waitingBindInput = false;
 		focused->UnFocus();
 	}
 
 	if (toFocus != nullptr)
 	{
 		toFocus->Focus();
+		if (toFocus->type == GUIElemType::LABEL)
+			Label::waitingBindInput = true;
 	}
 }
 

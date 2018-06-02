@@ -6,6 +6,7 @@
 #include "ModuleRender.h"
 #include "Button.h"
 #include "Scene.h"
+#include "Label.h"
 
 GUIElem::GUIElem(fPoint localPos, Module* listener, SDL_Rect atlasRect, GUIElemType type, GUIElem* parent) : localPos(localPos), listener(listener), atlasRect(atlasRect), type(type), parent(parent)
 {
@@ -140,7 +141,7 @@ bool GUIElem::HandleInput(float dt)
 			{
 			case Scene::Stages::SETTINGS:
 			{
-				if (button->btype == BType::GO_MMENU)
+				if (button->btype == BType::GO_MMENU && !Label::waitingBindInput)
 				{
 					parent->UnFocusChilds();
 					Focus();
