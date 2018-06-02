@@ -221,6 +221,7 @@ bool Scene::Start()
 				App->printer->Activate();
 				App->projectiles->Activate();
 
+				//Create lvlIndex Label
 				LabelInfo lvlInfo;
 				lvlInfo.color = White;
 				lvlInfo.fontName = "LifeCraft80";
@@ -229,18 +230,22 @@ bool Scene::Start()
 				lvlInfo.text = (char*)temp.data();
 				Label* lvlLabel = (Label*)App->gui->CreateLabel({580, 20}, lvlInfo, nullptr, nullptr);
 
+				//Player
 				player = App->entities->AddPlayer({ (float)App->map->begginingNode->pos.x * 46, (float)App->map->begginingNode->pos.y * 46 }, THRALL, playerStats);
 				
+				//Dash Particles
 				if (testEmitter == nullptr)
 				{
 					testEmitter = App->psystem->AddEmiter({(player->pos.x - App->render->camera.x) / App->winScale, (player->pos.y - App->render->camera.y) / App->winScale }, EMITTER_TYPE_DASH, -1);
 					testEmitter->StopEmission();
 				}
 
+				//Player HP Bar
 				player_HP_Bar = App->gui->CreateHPBar(player, { 10,5 });
 
 				App->path->LoadPathMap();
 
+				//Archers Generation
 				std::list<SDL_Rect>::iterator it = App->map->archers.begin();
 				std::advance(it, lvlIndex);
 
@@ -279,6 +284,7 @@ bool Scene::Start()
 				}
 				while (numberArchers < (*it).x);
 
+				//Chest Spawn
 				App->items->Activate();
 				if (!App->items->isPoolEmpty())
 					lvlChest = App->entities->AddChest({ (float)App->map->chestNode->pos.x * 46 + 5, (float)App->map->chestNode->pos.y * 46 }, MID_CHEST);
