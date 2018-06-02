@@ -106,6 +106,7 @@ private:
 	uint currentPercentAudio = 0u;
 
 	bool restart = false;
+	bool printButtons = false;
 	int lvlIndex = 0;
 };
 

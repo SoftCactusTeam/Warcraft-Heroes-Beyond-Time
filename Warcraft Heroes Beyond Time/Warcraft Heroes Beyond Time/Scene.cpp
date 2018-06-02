@@ -186,6 +186,7 @@ bool Scene::Start()
 {
 	gratitudeON = false;
 	restart = false;
+	printButtons = false;
 	App->gui->Activate();
 
 	currentPercentAudio = App->audio->MusicVolumePercent;
@@ -212,7 +213,12 @@ bool Scene::Start()
 			bgEmitter1 = App->psystem->AddEmiter({ 700.0f, 200.0f }, EmitterType::EMITTER_TYPE_PIXEL_SMOKE, -3, true);
 			bgEmitter2 = App->psystem->AddEmiter({ -150.0f, 200.0f }, EmitterType::EMITTER_TYPE_PIXEL_SMOKE, -3, true);
 
-			CreateMainMenuScreen();
+			//VERSION LABEL
+			LabelInfo versionLabel;
+			versionLabel.color = White;
+			versionLabel.fontName = "Arial30";
+			versionLabel.text = App->gui->getVersion();
+			App->gui->CreateLabel({ 10,340 }, versionLabel);
 			lvlIndex = 0;
 
 			break;
@@ -434,6 +440,12 @@ bool Scene::Update(float dt)
 bool Scene::PostUpdate()
 {
 	bool ret = true;
+
+	if (actual_scene == Stages::MAIN_MENU && !printButtons && SDL_RectEquals(&boltAnim.GetCurrentRect(), &SDL_Rect({ 14, 1344, 157, 241 })))
+	{
+		printButtons = true;
+		CreateMainMenuScreen();
+	}
 
 	//DRAWING THE BACKGROUND IN THE MAIN MENU
 	if (actual_scene == Stages::MAIN_MENU)
@@ -763,13 +775,6 @@ void Scene::CreateMainMenuScreen()
 	defLabel3.fontName = "LifeCraft80";
 	defLabel3.text = "Quit";
 	App->gui->CreateLabel({ 60,10 }, defLabel3, button3, this);
-
-	//VERSION LABEL
-	LabelInfo versionLabel;
-	versionLabel.color = White;
-	versionLabel.fontName = "Arial30";
-	versionLabel.text = App->gui->getVersion();
-	App->gui->CreateLabel({ 10,340 }, versionLabel);
 
 }
 
