@@ -104,7 +104,7 @@ public:
 	std::string WinBSO;
 
 	//Volumes
-	uint MusicVolumePercent = 10;
+	uint MusicVolumePercent = 20;
 	uint FXVolumePercent = 50;
 
 private:
