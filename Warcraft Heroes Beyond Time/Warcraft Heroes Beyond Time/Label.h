@@ -34,6 +34,12 @@ public:
 		return texturetoBlit;
 	}
 
+	inline void setLocalPos(fPoint newPos) 
+	{
+		localPos = {newPos.x != -1 ? newPos.x : localPos.x, newPos.y != -1 ? newPos.y : localPos.y };
+		calculateScreenPos();
+	}
+
 public:
 	static int ButtonPressed;
 	static bool waitingBindInput;

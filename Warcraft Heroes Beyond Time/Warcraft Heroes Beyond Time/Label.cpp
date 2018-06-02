@@ -41,9 +41,14 @@ bool Label::Update(float dt)
 			Label* label = (Label*)childs.front()->getFirstChild();
 			label->EditText(App->input->toString((SDL_GameControllerButton)ButtonPressed), label->color);
 
+			int w, h;
+			SDL_QueryTexture(label->texturetoBlit, nullptr, nullptr, &w, &h);
+			label->localPos = {(float)(58 - ((w / 2)/3)), label->localPos.y};
+			label->calculateScreenPos();
+
 			if (this == App->scene->attackBinding)
 				App->input->rebindAction("Attack", ButtonPressed);
-			else if (this == App->scene->attackBinding)
+			else if (this == App->scene->skillBinding)
 				App->input->rebindAction("Skill", ButtonPressed);
 			else if (this == App->scene->dashBinding)
 				App->input->rebindAction("Dash", ButtonPressed);
