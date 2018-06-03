@@ -374,7 +374,59 @@ bool Scene::Update(float dt)
 
 		if (actual_scene == Stages::INGAME && player->state == PlayerEntity::states::PL_DASH)
 		{
-			dashEmitter->StartEmission(100);
+			fPoint anglePoint;
+
+			if (player->anim == &player->dashUp)
+			{
+				dashEmitter->ChangeEmissionAngleRange(90.0f, 90.0f);
+				anglePoint.x = 90.0f;
+				anglePoint.y = 90.0f;
+			}			
+			else if (player->anim == &player->dashUpRight)
+			{
+				dashEmitter->ChangeEmissionAngleRange(45.0f, 45.0f);
+				anglePoint.x = 45.0f;
+				anglePoint.y = 45.0f;
+			}			
+			else if (player->anim == &player->dashRight)
+			{
+				dashEmitter->ChangeEmissionAngleRange(0.0f, 0.0f);
+				anglePoint.x = 0.0f;
+				anglePoint.y = 0.0f;
+			}			
+			else if (player->anim == &player->dashDownRight)
+			{
+				dashEmitter->ChangeEmissionAngleRange(315.0f, 315.0f);
+				anglePoint.x = 315.0f;
+				anglePoint.y = 315.0f;
+			}			
+			else if (player->anim == &player->dashDown)
+			{
+				dashEmitter->ChangeEmissionAngleRange(270.0f, 270.0f);
+				anglePoint.x = 270.0f;
+				anglePoint.y = 270.0f;
+			}				
+			else if (player->anim == &player->dashDownLeft)
+			{
+				dashEmitter->ChangeEmissionAngleRange(225.0f, 225.0f);
+				anglePoint.x = 225.0f;
+				anglePoint.y = 225.0f;
+			}				
+			else if (player->anim == &player->dashLeft)
+			{
+				dashEmitter->ChangeEmissionAngleRange(180.0f, 180.0f);
+				anglePoint.x = 180.0f;
+				anglePoint.y = 180.0f;
+			}
+			else if (player->anim == &player->dashUpLeft)
+			{
+				dashEmitter->ChangeEmissionAngleRange(135.0f, 135.0f);
+				anglePoint.x = 135.0f;
+				anglePoint.y = 135.0f;
+			}
+			
+			if (dashEmitter->GetEmitterAngleRange().x == anglePoint.x && dashEmitter->GetEmitterAngleRange().y == anglePoint.y)
+				dashEmitter->StartEmission(100);
 		}
 	}
 

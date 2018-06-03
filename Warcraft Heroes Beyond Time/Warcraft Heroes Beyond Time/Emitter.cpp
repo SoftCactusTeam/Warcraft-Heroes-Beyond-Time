@@ -173,3 +173,13 @@ void Emitter::ChangeEmissionAngleRange(float minDegAngle, float maxDegAngle)
 	angleRange.x = minDegAngle;
 	angleRange.y = maxDegAngle;
 }
+
+void Emitter::ChangeEmitterTextureRect(SDL_Rect textureRect)
+{
+	this->textureRect = textureRect;
+}
+
+fPoint Emitter::GetEmitterAngleRange()
+{
+	return angleRange;
+}
