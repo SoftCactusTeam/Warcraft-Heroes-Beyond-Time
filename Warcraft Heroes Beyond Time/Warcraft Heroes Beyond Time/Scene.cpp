@@ -291,10 +291,10 @@ bool Scene::Start()
 					player = App->entities->AddPlayer({ (float)App->map->begginingNode->pos.x * 46, (float)App->map->begginingNode->pos.y * 46 }, THRALL, playerStats);
 				
 				//Dash Particles
-				if (testEmitter == nullptr)
+				if (dashEmitter == nullptr)
 				{
-					testEmitter = App->psystem->AddEmiter({(player->pos.x - App->render->camera.x) / App->winScale, (player->pos.y - App->render->camera.y) / App->winScale }, EMITTER_TYPE_DASH, -1);
-					testEmitter->StopEmission();
+					dashEmitter = App->psystem->AddEmiter({(player->pos.x - App->render->camera.x) / App->winScale, (player->pos.y - App->render->camera.y) / App->winScale }, EMITTER_TYPE_DASH, -1);
+					dashEmitter->StopEmission();
 				}
 
 				//Player HP Bar
@@ -368,13 +368,13 @@ bool Scene::Update(float dt)
 {
 	bool ret = true;
 
-	if (testEmitter != nullptr)
+	if (dashEmitter != nullptr)
 	{
-		testEmitter->MoveEmitter({ ((player->pos.x + App->render->camera.x) / App->winScale) + 5, ((player->pos.y + App->render->camera.y) / App->winScale) + 15 });
+		dashEmitter->MoveEmitter({ ((player->pos.x + App->render->camera.x) / App->winScale) + 5, ((player->pos.y + App->render->camera.y) / App->winScale) + 15 });
 
 		if (actual_scene == Stages::INGAME && player->state == PlayerEntity::states::PL_DASH)
 		{
-			testEmitter->StartEmission(100);
+			dashEmitter->StartEmission(100);
 		}
 	}
 
@@ -563,10 +563,10 @@ bool Scene::CleanUp()
 		playerStats.hp = playerStats.hp + quantityToHeal > playerStats.maxhp ? playerStats.maxhp : playerStats.hp + quantityToHeal;
 	}
 
-	if (testEmitter != nullptr)
+	if (dashEmitter != nullptr)
 	{
-		App->psystem->RemoveEmitter(testEmitter);
-		testEmitter = nullptr;
+		App->psystem->RemoveEmitter(dashEmitter);
+		dashEmitter = nullptr;
 	}
 		
 	App->gui->DeActivate();

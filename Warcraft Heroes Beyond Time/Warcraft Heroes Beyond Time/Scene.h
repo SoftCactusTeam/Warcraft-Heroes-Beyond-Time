@@ -98,7 +98,7 @@ private:
 	Animation boltAnim;
 	Animation titleAnim;
 
-	Emitter* testEmitter = nullptr;
+	Emitter* dashEmitter = nullptr;
 	Emitter* bgEmitter1 = nullptr;
 	Emitter* bgEmitter2 = nullptr;
 

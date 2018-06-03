@@ -363,7 +363,7 @@ pugi::xml_node Application::LoadEmitters(pugi::xml_document & psystem_file) cons
 {
 	pugi::xml_node ret;
 
-	pugi::xml_parse_result result = psystem_file.load_file("psystem_config");
+	pugi::xml_parse_result result = psystem_file.load_file("psystem_config.xml");
 
 	if (result == NULL)
 		LOG("Could not load xml file config.xml. pugi error: %s", result.description());

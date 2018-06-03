@@ -167,3 +167,9 @@ fPoint Emitter::GetEmitterPos() const
 {
 	return pos;
 }
+
+void Emitter::ChangeEmissionAngleRange(float minDegAngle, float maxDegAngle)
+{
+	angleRange.x = minDegAngle;
+	angleRange.y = maxDegAngle;
+}
