@@ -574,6 +574,9 @@ bool Scene::CleanUp()
 	dashBinding = nullptr;
 	skillBinding = nullptr;
 	attackBinding = nullptr;
+	
+	alreadyCreated = false;
+
 
 	return true;
 }
@@ -962,8 +965,6 @@ void Scene::GoMainMenu()
 
 void Scene::CreateGratitudeScreen()
 {
-	static bool alreadyCreated = false;
-
 	if(!alreadyCreated)
 	{
 		GUIWindow* window = (GUIWindow*)App->gui->CreateGUIWindow({ 0,0 }, { 0,0,0,0 }, nullptr, nullptr);
@@ -976,7 +977,6 @@ void Scene::CreateGratitudeScreen()
 		gratitude.text = "                         Victory! \n       Thanks for playing the game. \n       Your support means a lot ^^ \n       More at: @SoftCactus_Team";
 		App->gui->CreateLabel({ 150, 130 }, gratitude, nullptr, nullptr);
 	}
-	alreadyCreated = true;
 }
 
 void Scene::CreateItemSelectionScreen(Item* item1, Item* item2, Item* item3)

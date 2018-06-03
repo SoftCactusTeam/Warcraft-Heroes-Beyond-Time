@@ -108,6 +108,8 @@ private:
 	bool restart = false;
 	bool menuAnimOn = false;
 	bool menuAnimOff = false;
+
+	bool alreadyCreated = false;
 	
 };
 
