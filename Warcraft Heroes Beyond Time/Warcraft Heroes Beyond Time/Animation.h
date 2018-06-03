@@ -41,6 +41,13 @@ public:
 		frames[last_frame++] = rect;
 	}
 
+	void clear()
+	{
+		last_frame = 0;
+		loops = 0;
+		current_frame = 0.0f;
+	}
+
 	SDL_Rect& GetCurrentFrame()
 	{
 		int prev_frame = (int)current_frame;

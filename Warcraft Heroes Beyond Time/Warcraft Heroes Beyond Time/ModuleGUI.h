@@ -9,6 +9,8 @@
 #include "SDL/include/SDL.h"
 #include "Fonts.h"
 
+#include "Animation.h"
+
 
 class GUIElem;
 class LabelInfo;
@@ -65,6 +67,15 @@ public:
 
 private:
 	SDL_Texture* atlas = nullptr;
+
+
+
+
+public: // VsShitCode
+	bool startVs = false;
+	bool finishedVs = false;
+	Animation vsAnim;
+	SDL_Texture* vsTexture = nullptr;
 };
 
 
