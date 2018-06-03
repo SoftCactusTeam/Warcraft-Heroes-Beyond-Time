@@ -15,4 +15,10 @@ I am the lead of the team. Overall my main role has been organizing the team and
 
 Along with other members, I've also done playtesting, some design decisions and bug fixing.
 
+Here's some of my work in the art part pof the project:
+
+![test](https://user-images.githubusercontent.com/25589509/40886314-b8f76266-6735-11e8-86e7-7d91a8c8e4f3.gif)
+
+
+
 [Back to home page](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/)
