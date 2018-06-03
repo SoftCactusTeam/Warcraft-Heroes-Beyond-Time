@@ -18,6 +18,8 @@ public:
 	bool printYourStuff(iPoint pos);
 
 private:
+	virtual const std::string myNameIs() const override;
+
 	std::string softDescription = "\"You will enjoy the pain\"";
 	std::string Title = "Surprise bag";
 };

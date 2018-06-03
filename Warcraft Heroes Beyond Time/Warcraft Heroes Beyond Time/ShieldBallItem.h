@@ -5,6 +5,7 @@
 #include <memory>
 
 #define CRYSIS_ITEM {34,51,32,32} //The rect from the texture of your gui icon
+#define CRYSIS_ITEM_INGAME {240,158,34,34}
 
 class Collider;
 
@@ -27,6 +28,8 @@ private:
 	float ball_counter = 0.0f;
 	float angle = 0.0f;
 	float angular_vel = 0.0f;
+
+	virtual const std::string myNameIs() const override;
 
 	std::string softDescription = "        \"You can't die \n if they never reach you\"";
 	std::string Title = "Nanosuit";

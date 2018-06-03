@@ -45,3 +45,8 @@ bool LifeStealItem::printYourStuff(iPoint pos)
 	return true;
 }
 
+const std::string LifeStealItem::myNameIs() const
+{
+	return std::string(Title);
+}
+

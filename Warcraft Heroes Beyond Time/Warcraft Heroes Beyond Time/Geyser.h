@@ -47,6 +47,7 @@ private:
 		no_anim = -1,
 		selection,
 		explosion,
+		following,
 		max_anim
 	};
 

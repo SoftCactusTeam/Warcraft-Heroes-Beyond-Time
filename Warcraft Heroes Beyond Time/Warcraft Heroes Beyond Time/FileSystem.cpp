@@ -60,18 +60,6 @@ bool FileSystem::Awake(pugi::xml_node& fsNode)
 	return ret;
 }
 
-//Frees a file from the writting directory
-bool FileSystem::FreeFile(char* file)
-{
-	return PHYSFS_openWrite(file);
-}
-
-bool FileSystem::IsFileEmpty(const char* path) const
-{
-	char* buffer;
-	return Load(path, &buffer) == 0;
-}
-
 // Called before quitting
 bool FileSystem::CleanUp()
 {
@@ -187,4 +175,34 @@ unsigned int FileSystem::Save(const char* file, const char* buffer, unsigned int
 		LOG("File System error while opening file %s: %s\n", file, PHYSFS_getLastError());
 
 	return ret == size;
+}
+
+bool FileSystem::deleteSavedGame()
+{
+	PHYSFS_File* file = PHYSFS_openWrite("savedgame.xml");
+	PHYSFS_flush(file);	
+
+	return PHYSFS_fileLength(file) == 0;
+}
+
+bool FileSystem::isGameSaved()
+{
+	std::string fileDir = savesFolder + std::string("savedgame.xml");
+	PHYSFS_File* file = PHYSFS_openRead(fileDir.data());
+
+	if (!file)
+		return false;
+
+	return PHYSFS_fileLength(file) != 0;
+}
+
+bool FileSystem::isInputSettingSaved() const
+{
+	std::string fileDir = savesFolder + std::string("inputSettings.xml");
+	PHYSFS_File* file = PHYSFS_openRead(fileDir.data());
+
+	if (!file)
+		return false;
+
+	return PHYSFS_fileLength(file) != 0;
 }

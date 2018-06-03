@@ -54,7 +54,8 @@ bool ModuleItems::Awake(pugi::xml_node& itemsNode)
 bool ModuleItems::Start()
 {
 	//Load Items' pull
-	loadItemsPull();
+	if (availableItems.empty())
+		loadItemsPull();
 
 	itemsTexture = App->textures->Load("sprites/all_items.png");
 	return true;
@@ -227,4 +228,42 @@ bool ModuleItems::getThreeRandomItems(Item** items)
 	items[2] = availableItems[id_3];
 
 	return true;
+}
+
+void ModuleItems::Save(pugi::xml_node& itemsNode)
+{
+	pugi::xml_node savedItems = itemsNode.append_child("SavedItems");
+
+	std::list<Item*>::iterator it;
+	for (it = equipedItems.begin(); it != equipedItems.end(); ++it)
+	{
+		savedItems.append_attribute("Item").set_value((*it)->myNameIs().data());
+	}
+}
+
+void ModuleItems::Load(const pugi::xml_node& itemsNode)
+{
+	pugi::xml_node savedItems = itemsNode.child("SavedItems");
+
+	loadItemsPull();
+
+	std::list<std::string> savedItemsList;
+	for (pugi::xml_attribute item = savedItems.first_attribute(); item; item = item.next_attribute())
+	{
+		savedItemsList.push_back(item.as_string());
+	}
+
+	std::list<std::string>::iterator nameIterator;
+	for (nameIterator = savedItemsList.begin(); nameIterator != savedItemsList.end(); ++nameIterator)
+	{
+		std::vector<Item*>::iterator availableItemsIterator;
+		for (availableItemsIterator = availableItems.begin(); availableItemsIterator != availableItems.end(); ++availableItemsIterator)
+		{
+			if ((*availableItemsIterator)->myNameIs() == (*nameIterator))
+			{
+				equipItem(*availableItemsIterator);
+				break;
+			}	
+		}
+	}
 }

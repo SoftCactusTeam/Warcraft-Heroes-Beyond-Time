@@ -110,7 +110,7 @@ void Render::ResetViewPort()
 	SDL_RenderSetViewport(renderer, &viewport);
 }
 
-bool Render::Blit(const SDL_Texture* texture, int x, int y, const SDL_Rect* section, float scale, float speed, double angle, int pivot_x, int pivot_y, bool areYouLabel) const
+bool Render::Blit(const SDL_Texture* texture, int x, int y, const SDL_Rect* section, float scale, float speed, double angle, int pivot_x, int pivot_y, bool areYouLabel, SDL_BlendMode blendMode, SDL_Rect rectSize) const
 {
 	bool ret = true;
 
@@ -126,7 +126,12 @@ bool Render::Blit(const SDL_Texture* texture, int x, int y, const SDL_Rect* sect
 		rect.x = (int)(camera.x * speed) + x * scale;
 		rect.y = (int)(camera.y * speed) + y * scale;
 	}
-
+	
+	if (SDL_RectEquals(&rectSize, &SDL_Rect({0, 0, 0, 0})))
+	{
+		rect.w = rectSize.w;
+		rect.h = rectSize.h;
+	}
 	if(section != NULL)
 	{
 		rect.w = section->w;
@@ -150,7 +155,109 @@ bool Render::Blit(const SDL_Texture* texture, int x, int y, const SDL_Rect* sect
 		p = &pivot;
 	}
 
+	if (blendMode != SDL_BLENDMODE_NONE)
+	{
+		if (SDL_SetTextureBlendMode((SDL_Texture*)texture, blendMode) != 0)
+			LOG("Cannot set texture blend mode. SDL_SetTextureBlendMode error: %s", SDL_GetError());
+	}
+
 	if(SDL_RenderCopyEx(renderer, (SDL_Texture*)texture, section, &rect, angle, p, SDL_FLIP_NONE) != 0)
+	{
+		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
+		ret = false;
+	}
+
+	return ret;
+}
+
+bool Render::BlitParticle(SDL_Texture * texture, int x, int y, const SDL_Rect * section, const SDL_Rect * rectSize, SDL_Color color, SDL_BlendMode blendMode, float speed, double angle, int pivot_x, int pivot_y) const
+{
+	bool ret = true;
+	uint scale = App->window->GetScale();
+
+	SDL_Rect rect;
+	rect.x = (int)(camera.x * speed) + x * scale;
+	rect.y = (int)(camera.y * speed) + y * scale;
+
+	if (rectSize != NULL)
+	{
+		rect.w = rectSize->w;
+		rect.h = rectSize->h;
+	}
+	else if (section != NULL)
+	{
+		rect.w = section->w;
+		rect.h = section->h;
+	}
+	else
+		SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
+
+	int px = rect.w / 2;
+	int py = rect.h / 2;
+
+	rect.w *= scale;
+	rect.h *= scale;
+
+	SDL_Point* p = NULL;
+	SDL_Point pivot;
+	pivot.x = px;
+	pivot.y = py;
+	p = &pivot;
+
+	if (SDL_SetTextureColorMod(texture, color.r, color.g, color.b) != 0)
+		LOG("Cannot set texture color mode. SDL_SetTextureColorMod error: %s", SDL_GetError());
+
+	if (SDL_SetTextureAlphaMod(texture, color.a) != 0)
+		LOG("Cannot set texture alpha mode. SDL_SetTextureAlphaMod error: %s", SDL_GetError());
+
+	if (SDL_SetTextureBlendMode(texture, blendMode) != 0)
+		LOG("Cannot set texture blend mode. SDL_SetTextureBlendMode error: %s", SDL_GetError());
+
+
+	if (SDL_RenderCopyEx(renderer, texture, section, &rect, angle, NULL, SDL_FLIP_NONE) != 0)
+	{
+		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
+		ret = false;
+	}
+
+	return ret;
+}
+
+// Blit to screen
+bool Render::BlitVideo(SDL_Texture* texture, int x, int y, const SDL_Rect* section, SDL_RendererFlip rendererFlip, float speed, double angle, int pivot_x, int pivot_y) const
+{
+	bool ret = true;
+	uint scale = App->window->GetScale();
+
+	SDL_Rect rect;
+	rect.x = (int)(camera.x * speed) + x * scale;
+	rect.y = (int)(camera.y * speed) + y * scale;
+
+	if (section != NULL)
+	{
+		rect.w = section->w;
+		rect.h = section->h;
+	}
+	else
+	{
+		SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
+	}
+
+	rect.w *= scale;
+	rect.h *= scale;
+
+	SDL_Point* p = NULL;
+	SDL_Point pivot = { 0,0 };
+
+	if (pivot_x != INT_MAX && pivot_y != INT_MAX)
+	{
+		pivot.x = pivot_x;
+		pivot.y = pivot_y;
+		p = &pivot;
+	}
+
+	//TODO 6.3: And use the flag on SDL_RenderCopyEx(...)
+	if (SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, rendererFlip) != 0)
 	{
 		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
 		ret = false;

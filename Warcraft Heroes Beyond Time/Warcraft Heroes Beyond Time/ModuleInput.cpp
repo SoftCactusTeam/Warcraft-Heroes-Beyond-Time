@@ -5,14 +5,18 @@
 
 #include "ModuleInput.h"
 #include "ModuleWindow.h"
+#include "Label.h"
 #include "ModuleGUI.h"
 
 #include "Console.h"
 
+#include "FileSystem.h"
 
 #include "SDL/include/SDL.h"
 
 #define MAX_KEYS 300
+
+
 static const float axisCD = 0.3f;
 
 Input::Input() : Module()
@@ -56,6 +60,10 @@ bool Input::Awake(pugi::xml_node& inputNode)
 
 	InitController();
 
+	if(App->fs->isInputSettingSaved())
+		App->LoadInput();
+
+
 	return ret;
 }
 
@@ -89,8 +97,13 @@ void Input::InitController()
 			controller = SDL_GameControllerOpen(0);
 			if (controller == NULL)
 				LOG("Warning: Couldn't initialize the controller! SDL Error: %s", SDL_GetError());
-
-
+			else
+			{
+				DEFAULTbindingMap.insert(std::pair<char*, uint>("Attack", SDL_CONTROLLER_BUTTON_X));
+				DEFAULTbindingMap.insert(std::pair<char*, uint>("Dash", SDL_CONTROLLER_BUTTON_A));
+				DEFAULTbindingMap.insert(std::pair<char*, uint>("Skill", SDL_CONTROLLER_BUTTON_Y));
+				bindingMap = DEFAULTbindingMap;
+			}
 		}
 	}
 }
@@ -105,6 +118,8 @@ bool Input::Start()
 bool Input::PreUpdate()
 {
 	key_pressed = false;
+	Label::ButtonPressed = -1;
+
 
 	static SDL_Event event;
 
@@ -200,25 +215,27 @@ bool Input::PreUpdate()
 		break;
 
 		case SDL_CONTROLLERBUTTONDOWN:
+			kbAvailable = false;
 			if (event.cbutton.which == 0)
 			{
-				kbAvailable = false;
+				
 				jButtons[event.cbutton.button] = KEY_DOWN;
+				//GUI RECEIVES THE FIRST BUTTON HERE WHEN BINDING
+				Label::ButtonPressed = event.cbutton.button;
 			}
 			break;
 
 		case SDL_CONTROLLERBUTTONUP:
 			if (event.cbutton.which == 0)
 				jButtons[event.cbutton.button] = KEY_UP;
+			break;
 
 		case SDL_TEXTINPUT:
-			kbAvailable = true;
 			inputText = event.text.text;
 			textReady = true;
 			break;
 		case SDL_JOYAXISMOTION:
-			if (event.jaxis.which == 0)
-				kbAvailable = false;
+			kbAvailable = false;
 			break;
 		}
 	}
@@ -458,5 +475,27 @@ void Input::ExternActionsAtKeyInput(const int key) {
 			if(App->console->isActive())
 				App->console->SwitchWrittingState();
 		break;
+	}
+}
+
+void Input::Save(pugi::xml_node& inputNode)
+{
+	if (App->input->isControllerConnected())
+	{
+		pugi::xml_node binding = inputNode.append_child("Binding");
+		binding.append_attribute("Attack").set_value(getBindingfromAction("Attack"));
+		binding.append_attribute("Skill").set_value(getBindingfromAction("Skill"));
+		binding.append_attribute("Dash").set_value(getBindingfromAction("Dash"));
+	}
+}
+
+void Input::Load(const pugi::xml_node& inputNode)
+{
+	if (App->input->isControllerConnected())
+	{
+		pugi::xml_node binding = inputNode.child("Binding");
+		bindingMap.find("Attack")->second = App->input->toGameControllerButton((char*)binding.attribute("Attack").as_string());
+		bindingMap.find("Skill")->second = App->input->toGameControllerButton((char*)binding.attribute("Skill").as_string());
+		bindingMap.find("Dash")->second = App->input->toGameControllerButton((char*)binding.attribute("Dash").as_string());
 	}
 }

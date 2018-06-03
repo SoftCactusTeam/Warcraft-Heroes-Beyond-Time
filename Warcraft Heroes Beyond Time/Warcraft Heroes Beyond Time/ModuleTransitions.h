@@ -58,6 +58,9 @@ private:
 	float rotationCont = 0.0f;
 	bool cleanup_off = true;
 	bool start_on = true;
+
+public:
+	bool loadTransition = false;
 };
 
 #endif

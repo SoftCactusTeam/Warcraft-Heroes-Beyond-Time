@@ -32,8 +32,9 @@ bool ModulePrinter::PostUpdate()
 			{
 				Sprite* sprite = (Sprite*)delem;
 				SDL_SetTextureColorMod(sprite->texture, sprite->color.r, sprite->color.g, sprite->color.b);
-				App->render->Blit(sprite->texture, sprite->pos.x - sprite->offset.x, sprite->pos.y - sprite->offset.y, &sprite->SquaretoBlit, 1, 1, sprite->angle, sprite->pivot.x, sprite->pivot.y);
-				SDL_SetTextureColorMod(sprite->texture, 255, 255, 255);
+				SDL_SetTextureAlphaMod(sprite->texture, sprite->color.a);
+				App->render->Blit(sprite->texture, sprite->pos.x - sprite->offset.x, sprite->pos.y - sprite->offset.y, &sprite->SquaretoBlit, 1, sprite->speed, sprite->angle, sprite->pivot.x, sprite->pivot.y, false, sprite->blendMode, sprite->rectSize);
+				//SDL_SetTextureColorMod(sprite->texture, 255, 255, 255);
 				break;
 			}
 			case DrawingElem::DElemType::QUAD:
@@ -60,7 +61,7 @@ bool ModulePrinter::CleanUp()
 	return DrawingQueue.empty();
 }
 
-bool ModulePrinter::PrintSprite(iPoint pos, SDL_Texture* texture, SDL_Rect SquaretoBlit, int layer, Pivots OFFSET_MODE, iPoint customOffset, Pivots PIVOT_MODE, iPoint customPivot, float degangle, SDL_Color color)
+bool ModulePrinter::PrintSprite(iPoint pos, SDL_Texture* texture, SDL_Rect SquaretoBlit, int layer, Pivots OFFSET_MODE, iPoint customOffset, Pivots PIVOT_MODE, iPoint customPivot, float degangle, SDL_Color color, SDL_BlendMode blendMode, SDL_Rect rectSize, float speed)
 {
 	iPoint offset;
 	iPoint pivot;
@@ -173,7 +174,7 @@ bool ModulePrinter::PrintSprite(iPoint pos, SDL_Texture* texture, SDL_Rect Squar
 	}
 
 
-	Sprite* sprite = new Sprite(pos, texture, SquaretoBlit, layer, offset, pivot, degangle, color);
+	Sprite* sprite = new Sprite(pos, texture, SquaretoBlit, layer, offset, pivot, degangle, speed, color, blendMode, rectSize);
 	DrawingQueue.push(sprite);
 
 	return true;

@@ -9,7 +9,9 @@ bool ShieldBallItem::Start()
 {
 	angular_vel = 50.0f;
 	radius = 20;
-	ball_col = App->colliders->AddPlayerAttackCollider({ 0, 0, 25, 25 }, App->scene->player, 0, PlayerAttack::P_Attack_Type::SHIELDBALL_ITEM);
+
+	if (App->scene->player)
+		ball_col = App->colliders->AddPlayerAttackCollider({ 0, 0, 25, 25 }, App->scene->player, 0, PlayerAttack::P_Attack_Type::SHIELDBALL_ITEM);
 	return true;
 }
 
@@ -39,7 +41,7 @@ bool ShieldBallItem::Draw()
 {
 	//Use the ModulePrinter to print all the stuff.
 	iPoint Draw_pos = { (int)(App->scene->player->pos.x + Ball_pos.x), (int)(App->scene->player->pos.y + Ball_pos.y) };
-	App->printer->PrintSprite(Draw_pos, App->items->getItemsTexture(), CRYSIS_ITEM, 0, ModulePrinter::Pivots::UPPER_LEFT, { 0,0 }, ModulePrinter::Pivots::CENTER, { 0,0 },angle);
+	App->printer->PrintSprite(Draw_pos, App->items->getItemsTexture(), CRYSIS_ITEM_INGAME, 0, ModulePrinter::Pivots::UPPER_LEFT, { 0,0 }, ModulePrinter::Pivots::CENTER, { 0,0 },angle);
 	return true;
 }
 
@@ -52,4 +54,10 @@ bool ShieldBallItem::printYourStuff(iPoint pos)
 	printMyString((char*)softDescription.data(), { 171 / 2 + pos.x + 15, 150 + pos.y });
 	return true;
 }
+
+const std::string ShieldBallItem::myNameIs() const
+{
+	return std::string(Title);
+}
+
 

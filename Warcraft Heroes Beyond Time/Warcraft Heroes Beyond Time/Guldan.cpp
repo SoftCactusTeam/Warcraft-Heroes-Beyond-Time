@@ -160,9 +160,9 @@ bool Guldan::Update(float dt)
 	{
 	case BossStates::HELLO:
 
-		if (pos.DistanceTo(App->scene->player->pos) <= 150.0f)
+		if (pos.DistanceTo(App->scene->player->pos) <= 150.0f && !App->gui->finishedVs)
 		{
-			App->input->PlayJoyRumble(0.9f, 100);
+			App->gui->startVs = true;
 			BlockInfo info;
 			info.layer = 1;
 			info.pos = { 14 * 48 - 1, 13 * 48 };
@@ -171,13 +171,25 @@ bool Guldan::Update(float dt)
 			App->projectiles->AddProjectile(&info, Projectile_type::block);
 			info.pos = { 16 * 48 - 4, 13 * 48 };
 			App->projectiles->AddProjectile(&info, Projectile_type::block);
-			anim = &hello;
+			App->scene->player->Walk(false);
 
-			//ENCOUNTER AUDIO
 			if (play_this_audio_once)
 			{
-				App->audio->PlayFx(App->audio->GuldanEncounterFX);
+				App->audio->PlayFx(App->audio->G_vs_T_fx);
 				play_this_audio_once = false;
+			}
+		}
+
+		if (App->gui->finishedVs)
+		{
+			App->scene->player->Walk(true);
+			App->input->PlayJoyRumble(0.9f, 100);
+			anim = &hello;
+			//ENCOUNTER AUDIO
+			if (!play_this_audio_once)
+			{
+				App->audio->PlayFx(App->audio->GuldanEncounterFX);
+				play_this_audio_once = true;
 			}
 		}
 
@@ -190,6 +202,7 @@ bool Guldan::Update(float dt)
 			App->audio->PlayFx(App->audio->GuldanTPFX);
 			App->gui->CreateBossHPBar((BossEntity*)this, { 640 / 2 - 312 / 2,320 });
 			play_this_audio_once = true;
+			App->gui->finishedVs = false;
 			break;
 		}
 
@@ -584,7 +597,7 @@ bool Guldan::Update(float dt)
 
 		if (anim->Finished())
 		{
-			App->audio->PauseFX(App->audio->GuldanFireSecondPhase); // I DON'T KNOW IF THIS IS GOOD PLS REVISE
+			App->audio->HaltFX(App->audio->GuldanFireSecondPhase);
 			App->scene->player->Win();
 		}
 

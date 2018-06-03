@@ -4,8 +4,10 @@
 #include "Module.h"
 #include "p2Point.h"
 #include "ModuleEntitySystem.h"
+#include "Emitter.h"
 
 #include "Animation.h"
+
 
 class GUIWindow;
 class PlayerEntity;
@@ -13,6 +15,8 @@ class ChestEntity;
 class PortalEntity;
 class Guldan;
 class Item;
+class Label;
+
 
 class Scene : public Module
 {
@@ -27,6 +31,10 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
+
+	void Save(pugi::xml_node&);
+	void Load(const pugi::xml_node&);
+
 	void AddCommands();
 	void GeneratePortal();
 
@@ -40,7 +48,6 @@ public:
 	void CreateItemSelectionScreen(Item*, Item*, Item*);
 	bool gratitudeON = false;
 	void GoMainMenu();
-	void GoBossRoom();
 	void Restart()
 	{
 		restart = true;
@@ -52,11 +59,12 @@ public:
 	enum class Stages
 	{
 		NO_STAGE,
+		INTRO_VIDEO,
 		MAIN_MENU,
 		SETTINGS,
-		INGAME,
+		INGAME
 
-	} actual_scene = Stages::MAIN_MENU, next_scene = Stages::MAIN_MENU;
+	} actual_scene = Stages::INTRO_VIDEO, next_scene = Stages::INTRO_VIDEO;
 
 	void SetScene(const Stages sceneTOSet)
 	{
@@ -78,14 +86,31 @@ public:
 
 	GUIWindow* blood = nullptr;
 
-private:
+	Label* attackBinding = nullptr;
+	Label* skillBinding = nullptr;
+	Label* dashBinding = nullptr;
 
+	int lvlIndex = 0;
+
+private:
+	// BG stuff
+	SDL_Texture * textureBG = nullptr;
+	SDL_Rect rectBG = { 0, 0, 640, 360 };
+	Animation thrallShadowAnim;
+	Animation boltAnim;
+	Animation titleAnim;
+
+	Emitter* bgEmitter1 = nullptr;
+	Emitter* bgEmitter2 = nullptr;
 
 	uint currentPercentAudio = 0u;
-	
 
 	bool restart = false;
-	int lvlIndex = 0;
+	bool menuAnimOn = false;
+	bool menuAnimOff = false;
+
+	bool alreadyCreated = false;
+	
 };
 
 #endif

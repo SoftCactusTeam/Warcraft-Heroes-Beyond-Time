@@ -80,3 +80,8 @@ Slow_Shit::~Slow_Shit()
 {
 	App->colliders->deleteCollider(slow_shit_collider);
 }
+
+const std::string RingItem::myNameIs() const
+{
+	return std::string(Title);
+}

@@ -2,6 +2,7 @@
 #define __BUTTON_H__
 
 #include "GUIElem.h"
+#include "FileSystem.h"
 
 //atlasRect defines---------------------------
 
@@ -16,6 +17,7 @@ class Label;
 enum class BType
 {
 	NO_BTYPE,
+	CONTINUE,
 	PLAY,
 	GO_MMENU,
 	SETTINGS,
@@ -43,17 +45,31 @@ public:
 	{
 		if (!focused)
 		{
-			focused = true;
-			atlasRect = Button1MouseHover;
+			if (btype != BType::CONTINUE || App->fs->isGameSaved())
+			{
+				focused = true;
+				atlasRect = Button1MouseHover;
+			}
 		}
 	}
 	void UnFocus()
 	{
 		if (focused)
 		{
-			focused = false;
-			atlasRect = Button1;
+			if (btype != BType::CONTINUE || App->fs->isGameSaved())
+			{
+				focused = false;
+				atlasRect = Button1;
+			}
 		}
+	}
+
+	virtual bool AreYouAContinueButton()
+	{
+		if (btype == BType::CONTINUE)
+			return true;
+
+		return false;
 	}
 };
 

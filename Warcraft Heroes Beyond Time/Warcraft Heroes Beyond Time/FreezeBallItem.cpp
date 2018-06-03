@@ -8,7 +8,9 @@
 bool FreezeBallItem::Start()
 {
 	angular_vel = -200.0f;
-	ball_col = App->colliders->AddPlayerAttackCollider({ 0, 0, 20, 20 }, App->scene->player, 0, PlayerAttack::P_Attack_Type::FREEZEBALL_ITEM);
+
+	if (App->scene->player)
+		ball_col = App->colliders->AddPlayerAttackCollider({ 0, 0, 20, 20 }, App->scene->player, 0, PlayerAttack::P_Attack_Type::FREEZEBALL_ITEM);
 	return true;
 }
 
@@ -49,5 +51,10 @@ bool FreezeBallItem::printYourStuff(iPoint pos)
 	printMyString((char*)Title.data(), { 171 / 2 + pos.x, 100 + pos.y }, true);
 	printMyString((char*)softDescription.data(), { 171 / 2 + pos.x, 150 + pos.y });
 	return true;
+}
+
+const std::string FreezeBallItem::myNameIs() const
+{
+	return std::string(Title);
 }
 

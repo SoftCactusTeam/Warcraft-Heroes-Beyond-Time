@@ -41,3 +41,8 @@ bool OneShotItem::printYourStuff(iPoint pos)
 	return true;
 }
 
+const std::string OneShotItem::myNameIs() const
+{
+	return std::string(Title);
+}
+

@@ -6,6 +6,7 @@
 #include "ModuleRender.h"
 #include "Button.h"
 #include "Scene.h"
+#include "Label.h"
 
 GUIElem::GUIElem(fPoint localPos, Module* listener, SDL_Rect atlasRect, GUIElemType type, GUIElem* parent) : localPos(localPos), listener(listener), atlasRect(atlasRect), type(type), parent(parent)
 {
@@ -140,7 +141,18 @@ bool GUIElem::HandleInput(float dt)
 			{
 			case Scene::Stages::SETTINGS:
 			{
-				if (button->btype == BType::GO_MMENU)
+				if (button->btype == BType::GO_MMENU && !Label::waitingBindInput)
+				{
+					parent->UnFocusChilds();
+					Focus();
+					UIevent = UIEvents::MOUSE_LEFT_CLICK;
+					listener->OnUIEvent(this, UIevent);
+				}
+				break;
+			}
+			case Scene::Stages::MAIN_MENU:
+			{
+				if (button->btype == BType::EXIT_GAME)
 				{
 					parent->UnFocusChilds();
 					Focus();
@@ -151,13 +163,13 @@ bool GUIElem::HandleInput(float dt)
 			}
 			default:
 			{
-				if (button->btype == BType::EXIT_GAME)
+				/*if (button->btype == BType::EXIT_GAME)
 				{
 					parent->UnFocusChilds();
 					Focus();
 					UIevent = UIEvents::MOUSE_LEFT_CLICK;
 					listener->OnUIEvent(this, UIevent);
-				}
+				}*/
 				break;
 			}
 			}

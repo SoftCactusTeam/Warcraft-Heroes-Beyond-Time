@@ -5,7 +5,7 @@
 #include "Item.h"
 #include "ModuleEntitySystem.h"
 #include "ModuleAudio.h"
-
+#include "Emitter.h"
 
 #include <list>
 
@@ -32,6 +32,7 @@ protected:
 	bool move = true;
 	bool damaged = false;
 	bool attackWhileDash = false;
+	bool godMode = false;
 
 	float damagedConfigCD = 0.0f; //This will be the one loaded from config.xml
 	float damagedCD = 0.0f;
@@ -51,6 +52,8 @@ protected:
 
 	Collider* wallCol = nullptr;
 	Collider* damageCol = nullptr;
+
+	Emitter* dashEmitter = nullptr;
 
 public:
 
@@ -82,6 +85,8 @@ public:
 
 	EntitySystem::PlayerStats numStats;
 
+	void GodMode(bool state);
+
 	void Walk(bool);
 
 	virtual bool Start();
@@ -105,11 +110,14 @@ public:
 	void IncreaseEnergy(int percent);
 	void Heal(float amount);
 
+	void GenerateDashParticles();
+
 	//This function calculates player position given a Bezier Curve
 	fPoint CalculatePosFromBezier(fPoint startPos, fPoint handleA, float t, fPoint handleB, fPoint endPos);
 
 	Animation* GetAnimFromAngle(float angle, bool dashOn = false);
 	FIXED_ANGLE returnFixedAngle();
+	FIXED_ANGLE lastFixedAnglePlayer = FIXED_ANGLE::NON_ANGLE;
 	bool IsPlayerMoving();
 
 	// Bezier/dash related variables

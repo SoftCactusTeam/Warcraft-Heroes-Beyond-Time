@@ -82,6 +82,16 @@ public:
 		return false;
 	}
 
+	virtual bool AreYouAContinueButton()
+	{
+		return false;
+	}
+
+	GUIElem* getFirstChild() const
+	{
+		return childs.front();
+	}
+
 	virtual void UnFocusChilds() {}
 
 	virtual bool Update(float dt);

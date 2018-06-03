@@ -308,6 +308,11 @@ bool Thrall::PostUpdate()
 
 bool Thrall::Finish()
 {
+	if (dashEmitter != nullptr)
+	{
+		App->psystem->RemoveEmitter(dashEmitter);
+		dashEmitter = nullptr;
+	}
 	return true;
 }
 
@@ -321,7 +326,7 @@ void Thrall::OnCollision(Collider* yours, Collider* collideWith)
 			{
 				EnemyAttack* attack = (EnemyAttack*)collideWith;
 				int a = attack->damage;
-				if (state != states::PL_DASH && state != states::PL_SKILL)
+				if (state != states::PL_DASH && state != states::PL_SKILL && godMode == false)
 				{
 					SetDamage(attack->damage, true);
 					App->items->newEvent(ModuleItems::ItemEvent::PLAYER_HITTED);
@@ -337,7 +342,7 @@ void Thrall::OnCollision(Collider* yours, Collider* collideWith)
 				PushOut(collideWith);
 				if (state == states::PL_DASH)
 				{
-					ResetDash();
+					//ResetDash();
 					App->audio->HaltFX(App->audio->Thrall_Dash_FX);
 				}
 			}
@@ -361,7 +366,21 @@ void Thrall::OnCollision(Collider* yours, Collider* collideWith)
 					if (attack->pattacktype == PlayerAttack::P_Attack_Type::NORMAL_ATTACK)
 					{
 						IncreaseEnergy(numStats.energyPercentbyHit);
-						App->audio->PlayFx(App->audio->Thrall_Hit_FX);
+						hit_state = rand() % 3 + 1;
+						switch (hit_state)
+						{
+						case Thrall::HIT_1:
+							App->audio->PlayFx(App->audio->Thrall_Hit1_FX);
+							break;
+						case Thrall::HIT_2:
+							App->audio->PlayFx(App->audio->Thrall_Hit2_FX);
+							break;
+						case Thrall::HIT_3:
+							App->audio->PlayFx(App->audio->Thrall_Hit3_FX);
+							break;
+						default:
+							break;
+						}
 						App->items->newEvent(ModuleItems::ItemEvent::PLAYER_HIT);
 					}
 				}	
@@ -381,7 +400,7 @@ void Thrall::OnCollisionContinue(Collider* yours, Collider* collideWith)
 				PushOut(collideWith);
 				if (state == states::PL_DASH)
 				{
-					ResetDash();
+					//ResetDash();
 					App->audio->HaltFX(App->audio->Thrall_Dash_FX);
 				}
 			}
@@ -494,12 +513,55 @@ void Thrall::UpdateCollider()
 		damageCol->rectArea.w = 17;
 		damageCol->rectArea.h = 23;
 	}
+	/*else if (anim == &dashUp)
+	{
+		wallCol->rectArea.x = 4;
+		wallCol->rectArea.y = 7;
+		wallCol->rectArea.w = 15;
+		wallCol->rectArea.h = 23;
+	}
+	else if (anim == &dashDown)
+	{
+		wallCol->rectArea.x = 5;
+		wallCol->rectArea.y = 0;
+		wallCol->rectArea.w = 17;
+		wallCol->rectArea.h = 23;
+	}
+	else if (anim == &dashRight)
+	{
+		wallCol->rectArea.x = 0;
+		wallCol->rectArea.y = 2;
+		wallCol->rectArea.w = 13;
+		wallCol->rectArea.h = 23;
+	}
+	else if (anim == &dashLeft)
+	{
+		wallCol->rectArea.x = 8;
+		wallCol->rectArea.y = 2;
+		wallCol->rectArea.w = 15;
+		wallCol->rectArea.h = 23;
+	}*/
+
 }
 
 void Thrall::Attack()
 {
 	if (!attacking)
-		App->audio->PlayFx(App->audio->Thrall_AttackFX);
+		attack_thrall_state = rand() % 3 + 1;
+	switch (attack_thrall_state)
+	{
+	case Thrall::ATTACK_STATE_1:
+		App->audio->PlayFx(App->audio->Thrall_Attack_1_FX);
+		break;
+	case Thrall::ATTACK_STATE_2:
+		App->audio->PlayFx(App->audio->Thrall_Attack_2_FX);
+		break;
+	case Thrall::ATTACK_STATE_3:
+		App->audio->PlayFx(App->audio->Thrall_Attack_3_FX);
+		break;
+	default:
+		break;
+	}
 	attacking = true;
 	attackCollider = *App->colliders->AddPlayerAttackCollider({ -1000000000, -1000000000,20,20 }, this, numStats.damage, PlayerAttack::P_Attack_Type::NORMAL_ATTACK).lock();
 }
@@ -582,3 +644,5 @@ void Thrall::UpdateSkillCollider()
 		}
 	}
 }
+
+

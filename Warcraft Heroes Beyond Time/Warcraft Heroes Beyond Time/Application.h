@@ -30,6 +30,8 @@ class ModuleItems;
 class ModuleProjectiles;
 class ModuleEffects;
 class ModuleTransitions;
+class ModuleVideo; 
+class ParticleSystem;
 
 class Application
 {
@@ -40,7 +42,7 @@ public:
 
 	bool Awake();
 	bool Start();
-	bool Update();
+	bool Update();	
 	bool CleanUp();
 
 	void AddModule(Module* module);
@@ -52,15 +54,20 @@ public:
 
 	void Save();
 	void Load();
+	void SaveInput();
+	void LoadInput();
 
 	void AddCommands();
+	pugi::xml_node LoadEmitters(pugi::xml_document& psystem_file) const;
 
 private:
 
 	bool LoadConfig(pugi::xml_document&);
-
 	bool SaveNow() const;
+	bool SaveInputNow()const;
+public:
 	bool LoadNow();
+	bool LoadInputNow();
 
 private:
 
@@ -91,10 +98,13 @@ public:
 	ModuleProjectiles*		projectiles = nullptr;
 	ModuleEffects*			effects = nullptr;
 	ModuleTransitions*		transitions = nullptr;
+	ModuleVideo*			video = nullptr;
+	ParticleSystem*			psystem = nullptr;
 
 public:
 
 	float dt = 0.0f;
+	uint winScale = 0u;
 
 private:
 
@@ -116,6 +126,9 @@ private:
 
 	mutable bool savegame = false;
 	bool loadgame = false;
+
+	mutable bool saveinput = false;
+	bool loadinput = false;
 };
 
 extern Application* App;

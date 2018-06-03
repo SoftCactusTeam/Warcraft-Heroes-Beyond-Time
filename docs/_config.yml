@@ -1,1 +1,5 @@
 theme: jekyll-theme-cayman
+
+title: [WARCRAFT - Heroes Beyond Time]
+description: [A roguelike game based on Warcraft 2]
+show_downloads: ["true"]

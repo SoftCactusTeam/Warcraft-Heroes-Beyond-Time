@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+
+<emitters>
+    <particleAtlas name="sprites/particles.png">
+
+      <emitter type ="pixel_smoke">
+        <angleRange min ="0" max ="359"/>
+        <rotSpeed value ="0" randMin ="-1" randMax ="1"/>
+        <startSpeed value ="120" randMin ="0" randMax ="1"/>
+        <endSpeed value ="50" randMin ="0" randMax ="1"/>
+        <startSize value ="3" randMin ="0" randMax ="1"/>
+        <endSize value =" 1" randMin ="0" randMax ="1"/>
+        <emitNumber value ="1"/>
+        <emitVariance value ="0" randMin ="0" randMax ="1"/>
+        <maxParticleLife value ="700" randMin ="0" randMax ="1"/>
+        <textureRect x="0" y="0" w="32" h="32"/>
+        <startColor r ="255" g="255" b="255" a="255"/>
+        <endColor r ="255" g="255" b="255" a ="0"/>
+        <blendMode mode ="blend"/>
+        <lifetime value ="-1"/>
+      </emitter>
+
+      <emitter type ="thrall_dash">
+        <angleRange min ="90" max ="90"/>
+        <rotSpeed value ="0" randMin = "-1" randMax ="1"/>
+        <startSpeed value ="-500" randMin = "1" randMax ="1"/>
+        <endSpeed value ="-200" randMin = "1" randMax ="1"/>
+        <startSize value ="140" randMin ="1" randMax ="1"/>
+        <endSize value =" 140" randMin ="1" randMax ="1"/>
+        <emitNumber value ="1"/>
+        <emitVariance value ="0" randMin = "0" randMax ="1"/>
+        <maxParticleLife value ="10" randMin = "1" randMax ="1"/>
+        <textureRect x="0" y="66" w="35" h="31"/>
+        <startColor r ="48" g="28" b="212" a="125"/>
+        <endColor r ="159" g="38" b="212" a ="0"/>
+        <blendMode mode ="blend"/>
+        <lifetime value ="-1"/>
+      </emitter>
+      
+    </particleAtlas>
+</emitters>

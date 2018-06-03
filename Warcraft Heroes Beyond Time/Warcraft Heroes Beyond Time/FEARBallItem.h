@@ -33,6 +33,8 @@ private:
 	float speed_growing_radius = 0.0f;
 	bool ball_away = false;
 
+	virtual const std::string myNameIs() const override;
+
 	std::string softDescription = "\"Makes you more ugly\"";
 	std::string Title = "Buttercup";
 };

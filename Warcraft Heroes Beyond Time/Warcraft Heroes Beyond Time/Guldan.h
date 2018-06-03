@@ -44,7 +44,7 @@ private:
 
 	// HEXAGON
 	float hexagonAngle = 0.0f;
-
+	bool startAfterVs = false;
 	// SPIRAL
 	float spiralAngle = 0.0f;
 	float spiralRadiusIncreasement = 0.0f;

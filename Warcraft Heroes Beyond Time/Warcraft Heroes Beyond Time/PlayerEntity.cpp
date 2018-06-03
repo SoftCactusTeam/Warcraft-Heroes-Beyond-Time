@@ -15,6 +15,8 @@
 #include "GUIImage.h"
 #include "ModuleTransitions.h"
 #include "EffectsElem.h"
+#include "FileSystem.h"
+#include "ParticleSystem.h"
 
 #include "AngelsGuardItem.h"
 
@@ -30,16 +32,27 @@ bool PlayerEntity::Start()
 
 	InitCulling();
 
+	if (dashEmitter == nullptr)
+	{
+		dashEmitter = App->psystem->AddEmiter({ (pos.x - App->render->camera.x) / App->winScale, (pos.y - App->render->camera.y) / App->winScale }, EMITTER_TYPE_DASH, -1);
+		dashEmitter->StopEmission();
+	}
+
 	return true;
 }
 
 bool PlayerEntity::Update(float dt)
 {
+	
+
+
 	return true;
 }
 
 bool PlayerEntity::Finish() 
 { 
+
+
 	return true; 
 }
 
@@ -131,6 +144,9 @@ void PlayerEntity::PlayerStates(float dt)
 
 void PlayerEntity::KeyboardStates(float dt)
 {
+	if (dashEmitter != nullptr && App->scene->player->state == PlayerEntity::states::PL_DASH)
+		GenerateDashParticles();
+
 	switch (state)
 	{
 		case states::PL_IDLE:
@@ -770,6 +786,7 @@ void PlayerEntity::KeyboardStates(float dt)
 			afterWinCounter += dt;
 			if (afterWinCounter > 20)
 			{
+				App->fs->deleteSavedGame();
 				App->scene->GoMainMenu();
 			}
 			else if (afterWinCounter > 2)
@@ -809,6 +826,9 @@ void PlayerEntity::KeyboardStates(float dt)
 
 void PlayerEntity::JoyconStates(float dt)
 {
+	if (dashEmitter != nullptr && App->scene->player->state == PlayerEntity::states::PL_DASH)
+		GenerateDashParticles();
+
 	switch (state)
 	{
 	case states::PL_IDLE:
@@ -818,7 +838,7 @@ void PlayerEntity::JoyconStates(float dt)
 			state = states::PL_MOVE;
 		}
 
-		else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN && t == 0.0f && DashCD == 0.0f)
+		else if (App->input->GetAction("Dash") == KEY_DOWN && t == 0.0f && DashCD == 0.0f)
 		{
 			App->audio->PlayFx(App->audio->Thrall_Dash_FX);
 			App->input->PlayJoyRumble(0.85f, 100);
@@ -827,14 +847,14 @@ void PlayerEntity::JoyconStates(float dt)
 			animBefore = anim;
 		}
 
-		else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_X) == KEY_DOWN)
+		else if (App->input->GetAction("Attack") == KEY_DOWN)
 		{
 			animBefore = anim;
 			state = states::PL_ATTACK;
 			Attack();
 		}
 
-		else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_Y) == KEY_DOWN && numStats.energy == 100)
+		else if (App->input->GetAction("Skill") == KEY_DOWN && numStats.energy == 100)
 		{
 			animBefore = anim;
 			anim = &skill;
@@ -848,7 +868,7 @@ void PlayerEntity::JoyconStates(float dt)
 
 	case states::PL_DASH:
 	{
-		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_X) == KEY_DOWN)
+		if (App->input->GetAction("Attack") == KEY_DOWN)
 		{
 			attackWhileDash = true;
 		}
@@ -994,7 +1014,7 @@ void PlayerEntity::JoyconStates(float dt)
 
 	case states::PL_MOVE:
 	{
-		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN && t == 0.0f && DashCD == 0.0f)
+		if (App->input->GetAction("Dash") == KEY_DOWN && t == 0.0f && DashCD == 0.0f)
 		{
 			App->audio->PlayFx(App->audio->Thrall_Dash_FX);
 			App->input->PlayJoyRumble(0.75f, 100);
@@ -1046,7 +1066,7 @@ void PlayerEntity::JoyconStates(float dt)
 			break;
 		}
 
-		if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_X) == KEY_DOWN)
+		if (App->input->GetAction("Attack") == KEY_DOWN)
 		{
 			animBefore = anim;
 			state = states::PL_ATTACK;
@@ -1054,7 +1074,7 @@ void PlayerEntity::JoyconStates(float dt)
 			break;
 		}
 
-		else if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_Y) == KEY_DOWN && numStats.energy == 100)
+		else if (App->input->GetAction("Skill") == KEY_DOWN && numStats.energy == 100)
 		{
 			animBefore = anim;
 			anim = &skill;
@@ -1278,6 +1298,7 @@ Animation* PlayerEntity::GetAnimFromAngle(float angle, bool dashOn)
 			animToReturn = &up;
 		else
 			animToReturn = &dashUp;
+		lastFixedAnglePlayer = FIXED_ANGLE::UP;
 	}
 
 	else if (angle >= 67.5f && angle < 112.5f)
@@ -1286,6 +1307,7 @@ Animation* PlayerEntity::GetAnimFromAngle(float angle, bool dashOn)
 			animToReturn = &down;
 		else
 			animToReturn = &dashDown;
+		lastFixedAnglePlayer = FIXED_ANGLE::DOWN;
 	}
 
 	else if (((angle >= 337.5f && angle < 360.0f) || (angle >= 0 && angle < 22.5f) && !App->input->InsideDeadZone()))
@@ -1294,6 +1316,7 @@ Animation* PlayerEntity::GetAnimFromAngle(float angle, bool dashOn)
 			animToReturn = &right;
 		else
 			animToReturn = &dashRight;
+		lastFixedAnglePlayer = FIXED_ANGLE::RIGHT;
 	}
 
 	else if (angle >= 157.5f && angle < 202.5f) // to change
@@ -1302,6 +1325,7 @@ Animation* PlayerEntity::GetAnimFromAngle(float angle, bool dashOn)
 			animToReturn = &left;
 		else
 			animToReturn = &dashLeft;
+		lastFixedAnglePlayer = FIXED_ANGLE::LEFT;
 	}
 
 	else if (angle >= 292.5f && angle < 337.5f)
@@ -1310,6 +1334,7 @@ Animation* PlayerEntity::GetAnimFromAngle(float angle, bool dashOn)
 			animToReturn = &upRight;
 		else
 			animToReturn = &dashUpRight;
+		lastFixedAnglePlayer = FIXED_ANGLE::UP_RIGHT;
 	}
 
 	else if (angle >= 202.5f && angle < 247.5f) // to change
@@ -1318,6 +1343,7 @@ Animation* PlayerEntity::GetAnimFromAngle(float angle, bool dashOn)
 			animToReturn = &upLeft;
 		else
 			animToReturn = &dashUpLeft;
+		lastFixedAnglePlayer = FIXED_ANGLE::UP_LEFT;
 	}
 
 	else if (angle >= 112.5f && angle < 157.5f)
@@ -1326,6 +1352,7 @@ Animation* PlayerEntity::GetAnimFromAngle(float angle, bool dashOn)
 			animToReturn = &downLeft;
 		else
 			animToReturn = &dashDownLeft;
+		lastFixedAnglePlayer = FIXED_ANGLE::DOWN_LEFT;
 	}
 
 	else if (angle >= 22.5f && angle < 67.5f)
@@ -1334,6 +1361,7 @@ Animation* PlayerEntity::GetAnimFromAngle(float angle, bool dashOn)
 			animToReturn = &downRight;
 		else
 			animToReturn = &dashDownRight;
+		lastFixedAnglePlayer = FIXED_ANGLE::DOWN_RIGHT;
 	}
 	else
 	{
@@ -1346,29 +1374,34 @@ Animation* PlayerEntity::GetAnimFromAngle(float angle, bool dashOn)
 
 FIXED_ANGLE PlayerEntity::returnFixedAngle()
 {
-	if (angle >= 247.5f && angle < 292.5f)
-		return UP;
-	else if (angle >= 67.5f && angle < 112.5f)
-		return DOWN;
-	else if ((angle >= 337.5f && angle < 360.0f) || (angle >= 0 && angle < 22.5f))
-		return RIGHT;
-	else if (angle >= 157.5f && angle < 202.5f)
-		return LEFT;
-	else if (angle >= 292.5f && angle < 337.5f)
-		return UP_RIGHT;
-	else if (angle >= 202.5f && angle < 247.5f)
-		return UP_LEFT;
-	else if (angle >= 112.5f && angle < 157.5f)
-		return DOWN_LEFT;
-	else if (angle >= 22.5f && angle < 67.5f)
-		return DOWN_RIGHT;
-	else
-		return UP;
+	//if (angle >= 247.5f && angle < 292.5f)
+	//	lastFixedAnglePlayer = UP;
+	//else if (angle >= 67.5f && angle < 112.5f)
+	//	lastFixedAnglePlayer = DOWN;
+	//else if ((angle >= 337.5f && angle < 360.0f) || (angle >= 0 && angle < 22.5f))
+	//	lastFixedAnglePlayer = RIGHT;
+	//else if (angle >= 157.5f && angle < 202.5f)
+	//	lastFixedAnglePlayer = LEFT;
+	//else if (angle >= 292.5f && angle < 337.5f)
+	//	lastFixedAnglePlayer = UP_RIGHT;
+	//else if (angle >= 202.5f && angle < 247.5f)
+	//	lastFixedAnglePlayer = UP_LEFT;
+	//else if (angle >= 112.5f && angle < 157.5f)
+	//	lastFixedAnglePlayer = DOWN_LEFT;
+	//else if (angle >= 22.5f && angle < 67.5f)
+	//	lastFixedAnglePlayer = DOWN_RIGHT;
+
+	return lastFixedAnglePlayer;
 }
 
 bool PlayerEntity::IsPlayerMoving()
 {
 	return state == states::PL_MOVE;
+}
+
+void PlayerEntity::GodMode(bool state)
+{
+	godMode = state;
 }
 
 void PlayerEntity::Walk(bool can)
@@ -1495,6 +1528,9 @@ void PlayerEntity::SetDamage(float damage, bool setStateDamage)
 			state = states::PL_DEAD;
 			App->audio->PauseMusic(0.5);
 			App->audio->PlayFx(App->audio->Thrall_Die_FX);
+
+			if(App->scene->lvlIndex != 100)
+				App->fs->deleteSavedGame();
 		}
 		else
 		{
@@ -1517,6 +1553,79 @@ void PlayerEntity::Heal(float amount)
 		numStats.hp = numStats.maxhp;
 	else
 		numStats.hp += amount;
+}
+
+void PlayerEntity::GenerateDashParticles()
+{
+	fPoint anglePoint;
+
+	if (anim == &dashUp)
+	{
+		dashEmitter->MoveEmitter({ ((pos.x + App->render->camera.x) / App->winScale) + 16, ((pos.y + App->render->camera.y) / App->winScale) + 15 });
+		dashEmitter->ChangeEmissionAngleRange(90.0f, 90.0f);
+		dashEmitter->ChangeEmitterTextureRect({ 108, 63, 32, 34 });
+		anglePoint.x = 90.0f;
+		anglePoint.y = 90.0f;
+	}
+	else if (anim == &dashUpRight)
+	{
+		dashEmitter->MoveEmitter({ ((pos.x + App->render->camera.x) / App->winScale) + 13, ((pos.y + App->render->camera.y) / App->winScale) + 15 });
+		dashEmitter->ChangeEmissionAngleRange(45.0f, 45.0f);
+		dashEmitter->ChangeEmitterTextureRect({ 0, 66, 35, 31 });
+		anglePoint.x = 45.0f;
+		anglePoint.y = 45.0f;
+	}
+	else if (anim == &dashRight)
+	{
+		dashEmitter->MoveEmitter({ ((pos.x + App->render->camera.x) / App->winScale) + 5, ((pos.y + App->render->camera.y) / App->winScale) + 15 });
+		dashEmitter->ChangeEmissionAngleRange(0.0f, 0.0f);
+		dashEmitter->ChangeEmitterTextureRect({ 95, 27, 45, 35 });
+		anglePoint.x = 0.0f;
+		anglePoint.y = 0.0f;
+	}
+	else if (anim == &dashDownRight)
+	{
+		dashEmitter->MoveEmitter({ ((pos.x + App->render->camera.x) / App->winScale) + 13, ((pos.y + App->render->camera.y) / App->winScale) + 15 });
+		dashEmitter->ChangeEmissionAngleRange(315.0f, 315.0f);
+		dashEmitter->ChangeEmitterTextureRect({ 70, 33, 25, 31 });
+		anglePoint.x = 315.0f;
+		anglePoint.y = 315.0f;
+	}
+	else if (anim == &dashDown)
+	{
+		dashEmitter->MoveEmitter({ ((pos.x + App->render->camera.x) / App->winScale) + 13, ((pos.y + App->render->camera.y) / App->winScale) + 15 });
+		dashEmitter->ChangeEmissionAngleRange(270.0f, 270.0f);
+		dashEmitter->ChangeEmitterTextureRect({ 75, 67, 32, 30 });
+		anglePoint.x = 270.0f;
+		anglePoint.y = 270.0f;
+	}
+	else if (anim == &dashDownLeft)
+	{
+		dashEmitter->MoveEmitter({ ((pos.x + App->render->camera.x) / App->winScale) + 13, ((pos.y + App->render->camera.y) / App->winScale) + 15 });
+		dashEmitter->ChangeEmissionAngleRange(225.0f, 225.0f);
+		dashEmitter->ChangeEmitterTextureRect({ 0, 33, 41, 32 });
+		anglePoint.x = 225.0f;
+		anglePoint.y = 225.0f;
+	}
+	else if (anim == &dashLeft)
+	{
+		dashEmitter->MoveEmitter({ ((pos.x + App->render->camera.x) / App->winScale) + 5, ((pos.y + App->render->camera.y) / App->winScale) + 15 });
+		dashEmitter->ChangeEmissionAngleRange(180.0f, 180.0f);
+		dashEmitter->ChangeEmitterTextureRect({ 37, 64, 37, 33 });
+		anglePoint.x = 180.0f;
+		anglePoint.y = 180.0f;
+	}
+	else if (anim == &dashUpLeft)
+	{
+		dashEmitter->MoveEmitter({ ((pos.x + App->render->camera.x) / App->winScale) + 13, ((pos.y + App->render->camera.y) / App->winScale) + 15 });
+		dashEmitter->ChangeEmissionAngleRange(135.0f, 135.0f);
+		dashEmitter->ChangeEmitterTextureRect({ 42, 35, 27, 29 });
+		anglePoint.x = 135.0f;
+		anglePoint.y = 135.0f;
+	}
+
+	if (dashEmitter->GetEmitterAngleRange().x == anglePoint.x && dashEmitter->GetEmitterAngleRange().y == anglePoint.y)
+		dashEmitter->StartEmission(100);
 }
 
 void PlayerEntity::DrawFreeZone(bool boolean)

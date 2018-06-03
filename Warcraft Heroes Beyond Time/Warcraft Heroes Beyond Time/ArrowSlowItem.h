@@ -38,6 +38,9 @@ public:
 
 	std::list<Arrow_Slow_Shit*> arrow_slow_shit_list;
 private:
+
+	virtual const std::string myNameIs() const override;
+
 	std::string softDescription = "\"Air density levels rising\"";
 	std::string Title = "Sheep's Head";
 };

@@ -8,7 +8,7 @@
 #include "Guldan.h"
 #include "ModuleInput.h"
 
-#define BALL_DMG 10
+#define BALL_DMG 50
 
 FelBall::FelBall(const FelBallInfo* info, Projectile_type type) : Projectile(info, type)
 {

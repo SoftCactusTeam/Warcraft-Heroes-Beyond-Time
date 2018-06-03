@@ -24,7 +24,28 @@ public:
 	bool MouseHover() const;
 	void EditText(std::string text, SDL_Color color = {0,0,0,0});
 
+	inline const char* getText() const
+	{
+		return text.data();
+	}
+
+	inline const SDL_Texture* getTexturetoBlit() const
+	{
+		return texturetoBlit;
+	}
+
+	inline void setLocalPos(fPoint newPos) 
+	{
+		localPos = {newPos.x != -1 ? newPos.x : localPos.x, newPos.y != -1 ? newPos.y : localPos.y };
+		calculateScreenPos();
+	}
+
+public:
+	static int ButtonPressed;
+	static bool waitingBindInput;
 private:
+
+	
 	std::string text;
 	TTF_Font* font = nullptr;
 	SDL_Texture* texturetoBlit = nullptr;

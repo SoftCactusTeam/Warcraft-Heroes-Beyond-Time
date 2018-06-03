@@ -45,3 +45,8 @@ bool EnergyItem::printYourStuff(iPoint pos)
 	printMyString((char*)softDescription.data(), { 171 / 2 + pos.x, 150 + pos.y });
 	return true;
 }
+
+const std::string EnergyItem::myNameIs() const
+{
+	return std::string(Title);
+}

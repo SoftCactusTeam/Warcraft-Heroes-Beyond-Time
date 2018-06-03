@@ -126,11 +126,15 @@ void ModuleTransitions::SliderFade()
 			if (cleanup_off) {
 				off->DeActivate();
 			}
+			if (loadTransition)
+			{
+				App->LoadNow();
+				loadTransition = false;
+			}
 			if (start_on) {
 				App->scene->actual_scene = App->scene->next_scene;
 				on->Activate();
-				App->scene->paused = false;
-				
+				App->scene->paused = false;			
 			}
 
 			total_time += total_time;
@@ -172,11 +176,15 @@ void ModuleTransitions::CircularFade()
 			if (cleanup_off) {
 				off->DeActivate();
 			}
+			if (loadTransition)
+			{
+				App->Load();
+				loadTransition = false;
+			}
 			if (start_on) {
 				App->scene->actual_scene = App->scene->next_scene;
 				on->Activate();
-				App->scene->paused = false;
-				
+				App->scene->paused = false;			
 			}
 
 			total_time += total_time;

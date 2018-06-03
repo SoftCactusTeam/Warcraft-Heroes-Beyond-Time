@@ -19,6 +19,9 @@ public:
 	bool printYourStuff(iPoint pos);
 
 private:
+
+	virtual const std::string myNameIs() const override;
+
 	std::string softDescription = "\"Difficulty levels decreasing\"";
 	std::string Title = "Ric's Sword";
 

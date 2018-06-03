@@ -43,10 +43,11 @@ bool ItemContainer::Update(float dt)
 			anim = &focused_anim;
 		if ((App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_A) == KeyState::KEY_DOWN || App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && item != nullptr)
 		{
-			if (!selected)
+			/*if (!selected)
 				selected = true;
-			else
+			else*/
 				anim = &select_anim;
+				App->audio->PlayFx(App->audio->Selection_Fx);
 		}
 		else if (anim == &select_anim && select_anim.Finished())
 		{

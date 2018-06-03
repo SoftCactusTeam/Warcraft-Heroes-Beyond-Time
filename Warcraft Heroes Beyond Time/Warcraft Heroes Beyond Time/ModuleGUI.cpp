@@ -94,6 +94,35 @@ bool ModuleGUI::PostUpdate()
 
 	}
 
+	// VS animation
+	if (startVs)
+	{
+		if (vsTexture == nullptr)
+		{
+			for (int i = 0; i < 6; ++i)
+			{
+				for (int j = 0; j < 5; ++j)
+				{
+					vsAnim.PushBack({ j * 640,i * 360,640,360 });
+				}
+
+			}
+			vsAnim.speedFactor = 14.0f;
+			vsAnim.loop = false;
+			vsTexture = App->textures->Load("GUI/vsTexture.png");
+		}
+		vsAnim.speed = vsAnim.speedFactor * App->dt;
+		App->render->Blit(vsTexture, -App->render->camera.x, -App->render->camera.y, &vsAnim.GetCurrentFrame());
+
+		if (vsAnim.Finished())
+		{
+			finishedVs = true;
+			startVs = false;
+			App->textures->UnLoad(vsTexture);
+			vsTexture = nullptr;
+			vsAnim.clear();
+		}
+	}
 	return ret;
 }
 		
@@ -237,11 +266,7 @@ char* ModuleGUI::getVersion() const
 }
 
 void ModuleGUI::Save(pugi::xml_node& guiNode)
-{
-	guiNode.append_attribute("saved").set_value("YES!");
-}
+{}
 
 void ModuleGUI::Load(const pugi::xml_node& guiNode)
-{
-	char* result = (char*)guiNode.attribute("saved").as_string();
-}
+{}

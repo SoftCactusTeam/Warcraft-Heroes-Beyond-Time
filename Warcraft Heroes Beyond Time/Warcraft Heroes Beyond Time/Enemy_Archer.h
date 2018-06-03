@@ -96,6 +96,7 @@ public:
 	Animation animFrozen[NUMBER_OF_ORIENTATIONS];
 
 	Animation animSmoke;
+	Animation animFrezzed;
 
 	Collider* col = nullptr;
 
@@ -119,6 +120,7 @@ private:
 	int cooldownToReLittleMove = 0;
 	// Dash variables
 	FIXED_ANGLE saveFirstAngle = FIXED_ANGLE::NON_ANGLE;
+	FIXED_ANGLE playerHitAngle = FIXED_ANGLE::NON_ANGLE;
 	fPoint dashMovement;
 	float dashTempo = 0.0f;
 	//Items variables
