@@ -87,6 +87,9 @@ public:
 	// Emitter move methods
 	void MoveEmitter(fPoint newPos);
 	fPoint GetEmitterPos() const;
+	void ChangeEmissionAngleRange(float degAngle, float maxDegAngle);
+	void ChangeEmitterTextureRect(SDL_Rect textureRect);
+	fPoint GetEmitterAngleRange();
 };
 
 #endif

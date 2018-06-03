@@ -38,6 +38,8 @@ public:
 	void AddCommands();
 	void GeneratePortal();
 
+	void GenerateDashParticles();
+
 public:
 
 	virtual bool OnUIEvent(GUIElem* UIelem, UIEvents _event);
@@ -98,7 +100,7 @@ private:
 	Animation boltAnim;
 	Animation titleAnim;
 
-	Emitter* testEmitter = nullptr;
+	Emitter* dashEmitter = nullptr;
 	Emitter* bgEmitter1 = nullptr;
 	Emitter* bgEmitter2 = nullptr;
 
