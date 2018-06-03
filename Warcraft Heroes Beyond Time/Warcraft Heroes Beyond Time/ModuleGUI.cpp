@@ -107,7 +107,7 @@ bool ModuleGUI::PostUpdate()
 				}
 
 			}
-			vsAnim.speedFactor = 16.0f;
+			vsAnim.speedFactor = 14.0f;
 			vsAnim.loop = false;
 			vsTexture = App->textures->Load("GUI/vsTexture.png");
 		}
