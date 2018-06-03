@@ -370,57 +370,71 @@ bool Scene::Update(float dt)
 
 	if (dashEmitter != nullptr)
 	{
-		dashEmitter->MoveEmitter({ ((player->pos.x + App->render->camera.x) / App->winScale) + 5, ((player->pos.y + App->render->camera.y) / App->winScale) + 15 });
-
 		if (actual_scene == Stages::INGAME && player->state == PlayerEntity::states::PL_DASH)
 		{
 			fPoint anglePoint;
 
 			if (player->anim == &player->dashUp)
 			{
+				dashEmitter->MoveEmitter({ ((player->pos.x + App->render->camera.x) / App->winScale) + 16, ((player->pos.y + App->render->camera.y) / App->winScale) + 15 });
 				dashEmitter->ChangeEmissionAngleRange(90.0f, 90.0f);
+				dashEmitter->ChangeEmitterTextureRect({108, 63, 32, 34});
 				anglePoint.x = 90.0f;
 				anglePoint.y = 90.0f;
 			}			
 			else if (player->anim == &player->dashUpRight)
 			{
+				dashEmitter->MoveEmitter({ ((player->pos.x + App->render->camera.x) / App->winScale) + 13, ((player->pos.y + App->render->camera.y) / App->winScale) + 15 });
 				dashEmitter->ChangeEmissionAngleRange(45.0f, 45.0f);
+				dashEmitter->ChangeEmitterTextureRect({ 0, 66, 35, 31 });
 				anglePoint.x = 45.0f;
 				anglePoint.y = 45.0f;
 			}			
 			else if (player->anim == &player->dashRight)
 			{
+				dashEmitter->MoveEmitter({ ((player->pos.x + App->render->camera.x) / App->winScale) + 5, ((player->pos.y + App->render->camera.y) / App->winScale) + 15 });
 				dashEmitter->ChangeEmissionAngleRange(0.0f, 0.0f);
+				dashEmitter->ChangeEmitterTextureRect({ 95, 27, 45, 35 });
 				anglePoint.x = 0.0f;
 				anglePoint.y = 0.0f;
 			}			
 			else if (player->anim == &player->dashDownRight)
 			{
+				dashEmitter->MoveEmitter({ ((player->pos.x + App->render->camera.x) / App->winScale) + 13, ((player->pos.y + App->render->camera.y) / App->winScale) + 15 });
 				dashEmitter->ChangeEmissionAngleRange(315.0f, 315.0f);
+				dashEmitter->ChangeEmitterTextureRect({ 70, 33, 25, 31 });
 				anglePoint.x = 315.0f;
 				anglePoint.y = 315.0f;
 			}			
 			else if (player->anim == &player->dashDown)
 			{
+				dashEmitter->MoveEmitter({ ((player->pos.x + App->render->camera.x) / App->winScale) + 13, ((player->pos.y + App->render->camera.y) / App->winScale) + 15 });
 				dashEmitter->ChangeEmissionAngleRange(270.0f, 270.0f);
+				dashEmitter->ChangeEmitterTextureRect({ 75, 67, 32, 30 });
 				anglePoint.x = 270.0f;
 				anglePoint.y = 270.0f;
 			}				
 			else if (player->anim == &player->dashDownLeft)
 			{
+				dashEmitter->MoveEmitter({ ((player->pos.x + App->render->camera.x) / App->winScale) + 13, ((player->pos.y + App->render->camera.y) / App->winScale) + 15 });
 				dashEmitter->ChangeEmissionAngleRange(225.0f, 225.0f);
+				dashEmitter->ChangeEmitterTextureRect({ 0, 33, 41, 32 });
 				anglePoint.x = 225.0f;
 				anglePoint.y = 225.0f;
 			}				
 			else if (player->anim == &player->dashLeft)
 			{
+				dashEmitter->MoveEmitter({ ((player->pos.x + App->render->camera.x) / App->winScale) + 5, ((player->pos.y + App->render->camera.y) / App->winScale) + 15 });
 				dashEmitter->ChangeEmissionAngleRange(180.0f, 180.0f);
+				dashEmitter->ChangeEmitterTextureRect({ 37, 64, 37, 33 });
 				anglePoint.x = 180.0f;
 				anglePoint.y = 180.0f;
 			}
 			else if (player->anim == &player->dashUpLeft)
 			{
+				dashEmitter->MoveEmitter({ ((player->pos.x + App->render->camera.x) / App->winScale) + 13, ((player->pos.y + App->render->camera.y) / App->winScale) + 15 });
 				dashEmitter->ChangeEmissionAngleRange(135.0f, 135.0f);
+				dashEmitter->ChangeEmitterTextureRect({ 42, 35, 27, 29 });
 				anglePoint.x = 135.0f;
 				anglePoint.y = 135.0f;
 			}
