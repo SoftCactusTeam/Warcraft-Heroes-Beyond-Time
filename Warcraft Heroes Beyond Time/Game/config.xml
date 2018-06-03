@@ -90,7 +90,7 @@
     <dmgBall damage = "50"/>
     <fearBall seconds_fear = "2" chance ="80"/>
     <frozenBall seconds_frozen = "2" chance ="80"/>
-    <slowShit time_slowed = "7" slow_percent = "80"/>
+    <slowShit time_slowed = "7" slow_percent = "90"/>
     <dmgShit damage_by_dt = "2"/>
     <StealLife amount="1"/>
     <Lexro EnergyWhenHitted="20"/>
