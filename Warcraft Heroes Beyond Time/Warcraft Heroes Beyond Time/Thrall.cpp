@@ -499,7 +499,7 @@ void Thrall::UpdateCollider()
 		damageCol->rectArea.w = 17;
 		damageCol->rectArea.h = 23;
 	}
-	else if (anim == &dashUp)
+	/*else if (anim == &dashUp)
 	{
 		wallCol->rectArea.x = 4;
 		wallCol->rectArea.y = 7;
@@ -513,6 +513,20 @@ void Thrall::UpdateCollider()
 		wallCol->rectArea.w = 17;
 		wallCol->rectArea.h = 23;
 	}
+	else if (anim == &dashRight)
+	{
+		wallCol->rectArea.x = 0;
+		wallCol->rectArea.y = 2;
+		wallCol->rectArea.w = 13;
+		wallCol->rectArea.h = 23;
+	}
+	else if (anim == &dashLeft)
+	{
+		wallCol->rectArea.x = 8;
+		wallCol->rectArea.y = 2;
+		wallCol->rectArea.w = 15;
+		wallCol->rectArea.h = 23;
+	}*/
 
 }
 
