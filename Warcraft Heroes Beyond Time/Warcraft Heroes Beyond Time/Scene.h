@@ -38,6 +38,8 @@ public:
 	void AddCommands();
 	void GeneratePortal();
 
+	void GenerateDashParticles();
+
 public:
 
 	virtual bool OnUIEvent(GUIElem* UIelem, UIEvents _event);
