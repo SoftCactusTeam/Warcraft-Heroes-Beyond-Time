@@ -90,6 +90,8 @@ public:
 	Label* skillBinding = nullptr;
 	Label* dashBinding = nullptr;
 
+	int lvlIndex = 0;
+
 private:
 	// BG stuff
 	SDL_Texture * textureBG = nullptr;
@@ -106,7 +108,7 @@ private:
 	bool restart = false;
 	bool menuAnimOn = false;
 	bool menuAnimOff = false;
-	int lvlIndex = 0;
+	
 };
 
 #endif

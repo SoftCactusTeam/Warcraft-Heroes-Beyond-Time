@@ -566,6 +566,7 @@ int MapGenerator::UseYourPowerToGenerateMeThisNewMap(int lvlIndex)
 {
 	if (lvlIndex >= numberOfLevels)
 	{
+		lvlIndex = 100;
 		if (!App->map->GenerateBossMap())
 			return -1;
 		return 0;

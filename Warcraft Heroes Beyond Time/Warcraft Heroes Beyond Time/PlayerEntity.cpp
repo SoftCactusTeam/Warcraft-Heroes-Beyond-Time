@@ -1528,6 +1528,9 @@ void PlayerEntity::SetDamage(float damage, bool setStateDamage)
 			state = states::PL_DEAD;
 			App->audio->PauseMusic(0.5);
 			App->audio->PlayFx(App->audio->Thrall_Die_FX);
+
+			if(App->scene->lvlIndex != 100)
+				App->fs->deleteSavedGame();
 		}
 		else
 		{
