@@ -40,6 +40,13 @@ Geyser::Geyser(const GeyserInfo* info, Projectile_type type) : Projectile(info, 
 	geyAnims[(uint)GeyserAnimations::selection].PushBack({ 444,155,49,74 });
 	geyAnims[(uint)GeyserAnimations::selection].speedFactor = 9.0f;
 
+	geyAnims[(uint)GeyserAnimations::following].PushBack({ 297,368,49,74 });
+	geyAnims[(uint)GeyserAnimations::following].PushBack({ 395,368,49,74 });
+	geyAnims[(uint)GeyserAnimations::following].PushBack({ 346,368,49,74 });
+	geyAnims[(uint)GeyserAnimations::following].PushBack({ 444,368,49,74 });
+	geyAnims[(uint)GeyserAnimations::following].speedFactor = 9.0f;
+
+
 	toData = (GeyserInfo*)info;
 
 	actualAnim = &geyAnims[(uint)GeyserAnimations::selection];
@@ -68,6 +75,7 @@ bool Geyser::Update(float dt)
 
 			data->pos = App->scene->player->pos;
 			timeUntilExplode += 1.0f * dt;
+			actualAnim = &geyAnims[(uint)GeyserAnimations::following];
 
 			if (timeUntilExplode >= TIMEFOLLOWINGPLAYER)
 			{

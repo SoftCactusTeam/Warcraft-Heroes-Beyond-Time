@@ -172,6 +172,12 @@ bool Guldan::Update(float dt)
 			info.pos = { 16 * 48 - 4, 13 * 48 };
 			App->projectiles->AddProjectile(&info, Projectile_type::block);
 			App->scene->player->Walk(false);
+
+			if (play_this_audio_once)
+			{
+				App->audio->PlayFx(App->audio->G_vs_T_fx);
+				play_this_audio_once = false;
+			}
 		}
 
 		if (App->gui->finishedVs)
@@ -180,10 +186,10 @@ bool Guldan::Update(float dt)
 			App->input->PlayJoyRumble(0.9f, 100);
 			anim = &hello;
 			//ENCOUNTER AUDIO
-			if (play_this_audio_once)
+			if (!play_this_audio_once)
 			{
 				App->audio->PlayFx(App->audio->GuldanEncounterFX);
-				play_this_audio_once = false;
+				play_this_audio_once = true;
 			}
 		}
 

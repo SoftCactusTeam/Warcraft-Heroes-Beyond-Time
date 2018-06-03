@@ -463,6 +463,7 @@ void Enemy_Archer::initDie()
 	anim = &animDeath[LookAtPlayer()];
 	anim->Reset();
 	pathVector.Clear();
+	App->audio->PlayFx(App->audio->ArcherDied);
 }
 
 // ---------------------------------------------------------------------------------

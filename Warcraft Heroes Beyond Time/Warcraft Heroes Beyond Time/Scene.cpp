@@ -244,6 +244,11 @@ bool Scene::Start()
 		}
 		case Stages::INGAME:
 		{
+			if (App->scene->lvlIndex != 0)
+			{
+				App->audio->PlayFx(App->audio->Sipin_hello_FX);
+			}
+
 			BROFILER_CATEGORY("InGame Generation", Profiler::Color::Chocolate);
 			int result = App->map->UseYourPowerToGenerateMeThisNewMap(lvlIndex);
 
@@ -1077,4 +1082,5 @@ void Scene::GoNextLevel()
 {
 	lvlIndex++;
 	restart = true;
+	App->audio->PlayFx(App->audio->Sipin_bye_FX);
 }

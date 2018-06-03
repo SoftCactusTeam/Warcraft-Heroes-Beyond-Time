@@ -30,6 +30,22 @@ private:
 	Collider* skillCollider = nullptr;
 	bool attacking = false;
 	bool skillOn = false;
+	uint hit_state = 0; //See thrall.cpp collider player attack
+	enum HIT_STATE
+	{
+		HIT_1 = 1,
+		HIT_2,
+		HIT_3,
+		MAX_HITS
+	};
+	uint attack_thrall_state = 0;
+	enum ATTACK_STATE
+	{
+		ATTACK_STATE_1 = 1,
+		ATTACK_STATE_2,
+		ATTACK_STATE_3,
+		MAX_ATTACKS
+	};
 };
 
 #endif

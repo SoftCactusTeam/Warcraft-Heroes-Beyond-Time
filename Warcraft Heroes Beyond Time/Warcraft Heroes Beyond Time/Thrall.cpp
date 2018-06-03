@@ -361,7 +361,21 @@ void Thrall::OnCollision(Collider* yours, Collider* collideWith)
 					if (attack->pattacktype == PlayerAttack::P_Attack_Type::NORMAL_ATTACK)
 					{
 						IncreaseEnergy(numStats.energyPercentbyHit);
-						App->audio->PlayFx(App->audio->Thrall_Hit_FX);
+						hit_state = rand() % 3 + 1;
+						switch (hit_state)
+						{
+						case Thrall::HIT_1:
+							App->audio->PlayFx(App->audio->Thrall_Hit1_FX);
+							break;
+						case Thrall::HIT_2:
+							App->audio->PlayFx(App->audio->Thrall_Hit2_FX);
+							break;
+						case Thrall::HIT_3:
+							App->audio->PlayFx(App->audio->Thrall_Hit3_FX);
+							break;
+						default:
+							break;
+						}
 						App->items->newEvent(ModuleItems::ItemEvent::PLAYER_HIT);
 					}
 				}	
@@ -499,7 +513,21 @@ void Thrall::UpdateCollider()
 void Thrall::Attack()
 {
 	if (!attacking)
-		App->audio->PlayFx(App->audio->Thrall_AttackFX);
+		attack_thrall_state = rand() % 3 + 1;
+	switch (attack_thrall_state)
+	{
+	case Thrall::ATTACK_STATE_1:
+		App->audio->PlayFx(App->audio->Thrall_Attack_1_FX);
+		break;
+	case Thrall::ATTACK_STATE_2:
+		App->audio->PlayFx(App->audio->Thrall_Attack_2_FX);
+		break;
+	case Thrall::ATTACK_STATE_3:
+		App->audio->PlayFx(App->audio->Thrall_Attack_3_FX);
+		break;
+	default:
+		break;
+	}
 	attacking = true;
 	attackCollider = *App->colliders->AddPlayerAttackCollider({ -1000000000, -1000000000,20,20 }, this, numStats.damage, PlayerAttack::P_Attack_Type::NORMAL_ATTACK).lock();
 }

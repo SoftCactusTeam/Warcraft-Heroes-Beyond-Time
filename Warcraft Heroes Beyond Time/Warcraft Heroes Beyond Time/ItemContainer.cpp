@@ -47,6 +47,7 @@ bool ItemContainer::Update(float dt)
 				selected = true;
 			else*/
 				anim = &select_anim;
+				App->audio->PlayFx(App->audio->Selection_Fx);
 		}
 		else if (anim == &select_anim && select_anim.Finished())
 		{
