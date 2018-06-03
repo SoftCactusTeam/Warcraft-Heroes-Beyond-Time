@@ -193,6 +193,9 @@ bool Enemy_Archer::Draw()
 
 		break;
 	}
+	// pintar l'ull
+	if (GetConcreteEffect(ARCHER_EFFECTS::ARCHER_EFFECT_FEAR))
+		App->printer->PrintSprite(iPoint(pos.x + 15, pos.y - 10), App->entities->spritesheetsEntities[WHITE_ARCHER], {272,72,17,10}, 0);
 	return ret;
 }
 

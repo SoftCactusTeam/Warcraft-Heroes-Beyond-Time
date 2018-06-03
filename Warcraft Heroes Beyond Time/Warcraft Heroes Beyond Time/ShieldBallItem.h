@@ -5,6 +5,7 @@
 #include <memory>
 
 #define CRYSIS_ITEM {34,51,32,32} //The rect from the texture of your gui icon
+#define CRYSIS_ITEM_INGAME {240,158,34,34}
 
 class Collider;
 
