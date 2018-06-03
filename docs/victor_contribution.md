@@ -17,11 +17,11 @@ Along with other members, I've also done playtesting, some design decisions and 
 
 Here's some of my work in the art part of the project:
 
-Background animation animation with particles in main menu:
+_Background animation animation with particles in main menu:_
 
 ![test](https://user-images.githubusercontent.com/25589509/40886314-b8f76266-6735-11e8-86e7-7d91a8c8e4f3.gif)
 
-Player animations:
+_Player animations:_
 
 ![8dir_idle_gif](https://user-images.githubusercontent.com/25589509/40886324-e3d55272-6735-11e8-8a62-2f88bbf2ae4c.gif)
 
