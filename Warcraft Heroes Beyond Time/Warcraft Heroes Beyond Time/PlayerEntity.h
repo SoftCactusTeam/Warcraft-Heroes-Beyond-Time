@@ -5,7 +5,7 @@
 #include "Item.h"
 #include "ModuleEntitySystem.h"
 #include "ModuleAudio.h"
-
+#include "Emitter.h"
 
 #include <list>
 
@@ -52,6 +52,8 @@ protected:
 
 	Collider* wallCol = nullptr;
 	Collider* damageCol = nullptr;
+
+	Emitter* dashEmitter = nullptr;
 
 public:
 
@@ -107,6 +109,8 @@ public:
 	void SetDamage(float damage, bool setStateDamage);
 	void IncreaseEnergy(int percent);
 	void Heal(float amount);
+
+	void GenerateDashParticles();
 
 	//This function calculates player position given a Bezier Curve
 	fPoint CalculatePosFromBezier(fPoint startPos, fPoint handleA, float t, fPoint handleB, fPoint endPos);

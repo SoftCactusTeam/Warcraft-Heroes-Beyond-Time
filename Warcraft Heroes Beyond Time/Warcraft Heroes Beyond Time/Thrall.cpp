@@ -308,6 +308,11 @@ bool Thrall::PostUpdate()
 
 bool Thrall::Finish()
 {
+	if (dashEmitter != nullptr)
+	{
+		App->psystem->RemoveEmitter(dashEmitter);
+		dashEmitter = nullptr;
+	}
 	return true;
 }
 
@@ -494,6 +499,21 @@ void Thrall::UpdateCollider()
 		damageCol->rectArea.w = 17;
 		damageCol->rectArea.h = 23;
 	}
+	else if (anim == &dashUp)
+	{
+		wallCol->rectArea.x = 4;
+		wallCol->rectArea.y = 7;
+		wallCol->rectArea.w = 15;
+		wallCol->rectArea.h = 23;
+	}
+	else if (anim == &dashDown)
+	{
+		wallCol->rectArea.x = 5;
+		wallCol->rectArea.y = 0;
+		wallCol->rectArea.w = 17;
+		wallCol->rectArea.h = 23;
+	}
+
 }
 
 void Thrall::Attack()
