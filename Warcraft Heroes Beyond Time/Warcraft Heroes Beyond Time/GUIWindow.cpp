@@ -4,6 +4,7 @@
 #include "ModuleInput.h"
 #include "GUIImage.h"
 #include "Label.h"
+#include "FileSystem.h"
 
 GUIWindow::GUIWindow(fPoint localPos, SDL_Rect atlasRect, GUIElem* parent, Module* listener) : GUIElem(localPos, listener, atlasRect, GUIElemType::WINDOW, parent)
 {
@@ -107,7 +108,7 @@ void GUIWindow::FocusNextChild()
 			std::list<GUIElem*>::iterator toFocusIt = focusedIt;
 			while (toFocus == nullptr)
 			{
-				if (!(*toFocusIt)->IsFocused() && ((*toFocusIt)->type == GUIElemType::BUTTON || (*toFocusIt)->type == GUIElemType::SLIDER || (*toFocusIt)->type == GUIElemType::ITEM_CONTAINER || (*toFocusIt)->type == GUIElemType::LABEL))
+				if (!(*toFocusIt)->IsFocused() && ( ((*toFocusIt)->type == GUIElemType::BUTTON && !(*toFocusIt)->AreYouAContinueButton()) || ((*toFocusIt)->type == GUIElemType::BUTTON && (*toFocusIt)->AreYouAContinueButton() && App->fs->isGameSaved())) || (*toFocusIt)->type == GUIElemType::SLIDER || (*toFocusIt)->type == GUIElemType::ITEM_CONTAINER || (*toFocusIt)->type == GUIElemType::LABEL)
 					toFocus = *toFocusIt;
 				if (std::next(toFocusIt) == childs.end())
 					toFocusIt = childs.begin();
@@ -147,7 +148,7 @@ void GUIWindow::FocusPrevChild()
 			std::list<GUIElem*>::reverse_iterator toFocusIt = focusedIt;
 			while (toFocus == nullptr)
 			{
-				if (!(*toFocusIt)->IsFocused() && ((*toFocusIt)->type == GUIElemType::BUTTON || (*toFocusIt)->type == GUIElemType::SLIDER || (*toFocusIt)->type == GUIElemType::ITEM_CONTAINER || (*toFocusIt)->type == GUIElemType::LABEL))
+				if (!(*toFocusIt)->IsFocused() && (((*toFocusIt)->type == GUIElemType::BUTTON && !(*toFocusIt)->AreYouAContinueButton()) || ((*toFocusIt)->type == GUIElemType::BUTTON && (*toFocusIt)->AreYouAContinueButton() && App->fs->isGameSaved())) || (*toFocusIt)->type == GUIElemType::SLIDER || (*toFocusIt)->type == GUIElemType::ITEM_CONTAINER || (*toFocusIt)->type == GUIElemType::LABEL)
 					toFocus = *toFocusIt;
 				if (std::next(toFocusIt) == childs.rend())
 					toFocusIt = childs.rbegin();
@@ -178,7 +179,13 @@ bool GUIWindow::checkVerticalInputs(float dt)
 	{
 		if (!AnyChildFocused())
 		{
-			childs.front()->Focus();
+			std::list<GUIElem*>::iterator it = childs.begin();
+			if (childs.front()->AreYouAContinueButton() && !App->fs->isGameSaved())
+			{
+				it++;
+			}
+
+			(*it)->Focus();
 		}
 
 		else if (App->input->GetAxis((int)Axis::DOWN) == KeyState::KEY_DOWN)

@@ -63,6 +63,14 @@ public:
 			}
 		}
 	}
+
+	virtual bool AreYouAContinueButton()
+	{
+		if (btype == BType::CONTINUE)
+			return true;
+
+		return false;
+	}
 };
 
 

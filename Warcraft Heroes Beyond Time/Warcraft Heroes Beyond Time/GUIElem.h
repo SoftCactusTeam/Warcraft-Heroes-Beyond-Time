@@ -82,6 +82,11 @@ public:
 		return false;
 	}
 
+	virtual bool AreYouAContinueButton()
+	{
+		return false;
+	}
+
 	GUIElem* getFirstChild() const
 	{
 		return childs.front();
