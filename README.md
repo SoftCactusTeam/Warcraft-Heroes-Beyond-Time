@@ -213,6 +213,19 @@ v0.9
 - Archers, Gul'dan and Thrall rebalancing
 - Bug Fixing
 
+v0.9.5
+- New animated menu background with particles
+- Gamepad rebinding available
+- New archer effects sprites
+- Rework art of items
+- New VS boss fight cinematic
+- Particles in player dash
+- New intro video at the beginning
+- Now the level number is shown in-game
+- Save and Load implemented
+- New sound FX
+- Bug fixing and minor improvements in GUI
+
 ## Installation instructions  
 
 Download the zip file and unzip it. Open the folder, execute the .exe and enjoy!  
