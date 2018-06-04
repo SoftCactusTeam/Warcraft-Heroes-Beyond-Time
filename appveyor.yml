@@ -20,7 +20,7 @@ for:
 
   after_build:
     - cmd: mkdir %APPVEYOR_BUILD_FOLDER%\Warcraft_Heroes_Beyond_Time
-    - cmd: copy "%APPVEYOR_BUILD_FOLDER%\Warcraft Heroes Beyond Time\Game\*.*" %APPVEYOR_BUILD_FOLDER%\Warcraft_Heroes_Beyond_Time
+    - cmd: XCOPY /E "%APPVEYOR_BUILD_FOLDER%\Warcraft Heroes Beyond Time\Game\*.*" %APPVEYOR_BUILD_FOLDER%\Warcraft_Heroes_Beyond_Time
     - cmd: copy "%APPVEYOR_BUILD_FOLDER%\Warcraft Heroes Beyond Time\Release\Warcraft Heroes Beyond Time.exe" %APPVEYOR_BUILD_FOLDER%\Warcraft_Heroes_Beyond_Time
     - cmd: move %APPVEYOR_BUILD_FOLDER%\README.md %APPVEYOR_BUILD_FOLDER%\Warcraft_Heroes_Beyond_Time
     - cmd: move "%APPVEYOR_BUILD_FOLDER%\LICENSE" %APPVEYOR_BUILD_FOLDER%\Warcraft_Heroes_Beyond_Time
