@@ -96,10 +96,9 @@ bool ItemContainer::HandleInput(float dt)
 	if (listener)
 		switch (UIevent)
 		{
-
 		case UIEvents::NO_EVENT:
 
-			if ((MouseHover() || focused))
+			if (((MouseHover() && App->input->IsKeyboardAvailable()) || focused))
 			{
 				parent->UnFocusChilds();
 				Focus();
