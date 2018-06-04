@@ -119,7 +119,7 @@ bool ModuleVideo::GrabAVIFrame()
 	}
 
 	// TODO 5.2: Unload the texture and free the surface after the blit.
-	App->textures->UnLoad(texture);
+	SDL_DestroyTexture(texture);
 	SDL_FreeSurface(surface);
 
 
