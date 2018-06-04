@@ -227,11 +227,11 @@ bool Render::BlitParticle(SDL_Texture * texture, int x, int y, const SDL_Rect * 
 bool Render::BlitVideo(SDL_Texture* texture, int x, int y, const SDL_Rect* section, SDL_RendererFlip rendererFlip, float speed, double angle, int pivot_x, int pivot_y) const
 {
 	bool ret = true;
-	uint scale = App->window->GetScale();
+	float scale = 0.3;
 
 	SDL_Rect rect;
-	rect.x = (int)(camera.x * speed) + x * scale;
-	rect.y = (int)(camera.y * speed) + y * scale;
+	rect.x = (int)(camera.x * speed) + x;
+	rect.y = (int)(camera.y * speed) + y;
 
 	if (section != NULL)
 	{
