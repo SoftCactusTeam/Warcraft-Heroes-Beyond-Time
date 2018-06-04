@@ -14,7 +14,7 @@ I am the designer of the team. My main role has been designing the gameplay and 
 - Test and balance enemies.
 - Test and balance player behaviour.
 - Test and balance boss combat.
-- Implement items.
+- Implement some items.
 - Browse, mix and implement all FX sounds.
 - Implement visual improvements.
 - Make the trailers of the game.
