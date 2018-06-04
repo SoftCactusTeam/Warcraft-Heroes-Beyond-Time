@@ -253,6 +253,7 @@
     <ClInclude Include="PortalEntity.h" />
     <ClInclude Include="ModuleProjectiles.h" />
     <ClInclude Include="Projectile.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="RingItem.h" />
     <ClInclude Include="ShieldBallItem.h" />
     <ClInclude Include="Slider.h" />
@@ -289,6 +290,12 @@
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />
     <Xml Include="..\Game\psystem_config.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Warcraft Heroes Beyond Time.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\icon\iconExe_ico.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

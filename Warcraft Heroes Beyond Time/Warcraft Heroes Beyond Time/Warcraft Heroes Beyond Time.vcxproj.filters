@@ -456,6 +456,7 @@
     <ClInclude Include="PerfTimer.h">
       <Filter>Tools</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />
@@ -503,5 +504,18 @@
     <Filter Include="Particle System">
       <UniqueIdentifier>{9391c902-ebe5-4cfd-90a6-5b8e50b3bb6f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="zzz_resources">
+      <UniqueIdentifier>{9130402c-24d2-4af6-8240-11d8a5f05080}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Warcraft Heroes Beyond Time.rc">
+      <Filter>zzz_resources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\icon\iconExe_ico.ico">
+      <Filter>zzz_resources</Filter>
+    </Image>
   </ItemGroup>
 </Project>
