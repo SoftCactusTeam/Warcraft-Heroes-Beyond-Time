@@ -15,6 +15,8 @@
 #include "HolyShitItem.h"
 #include "ShieldBallItem.h"
 
+
+#include "ModuleMapGenerator.h"
 #include <time.h>
 
 float ModuleItems::dmgBallDamage = 0.0f;
@@ -197,6 +199,8 @@ void ModuleItems::DestroyItems()
 
 bool ModuleItems::getThreeRandomItems(Item** items)
 {
+	srand(App->map->getSeed());
+
 	if (availableItems.size() < 1)
 		return false;
 
@@ -266,4 +270,6 @@ void ModuleItems::Load(const pugi::xml_node& itemsNode)
 			}	
 		}
 	}
+
+
 }

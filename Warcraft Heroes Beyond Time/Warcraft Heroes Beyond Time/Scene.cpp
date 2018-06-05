@@ -387,7 +387,7 @@ bool Scene::Update(float dt)
 	}
 
 	//Q: GO TO THE NEXT LEVEL
-	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && actual_scene == Stages::INGAME && !App->console->isWritting())
+	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && actual_scene == Stages::INGAME && !App->console->isWritting() && !App->transitions->IsFading())
 	{
 		GoNextLevel();
 	}

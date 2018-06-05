@@ -89,6 +89,13 @@ public:
 	MapNode* chestNode = nullptr;
 	uint sizeX = 0u;
 	uint sizeY = 0u;
+
+public:
+	int getSeed() const
+	{
+		return mapSeed;
+	}
+
 private:
 
 	uint totalSize = 0u;

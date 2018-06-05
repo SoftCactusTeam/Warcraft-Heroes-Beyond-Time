@@ -295,15 +295,15 @@ bool MapGenerator::ExecuteAlgorithm(MapNode* startNode, uint iterations, int see
 
 	if (seed != 0)
 	{
-		srand(seed);
 		mapSeed = seed;
 	}
 	else
 	{
 		mapSeed = time(NULL);
-		srand(mapSeed);
 	}
 
+	srand(mapSeed);
+	
 	MapNode* auxNode = startNode;
 
 	for (uint i = 0u; i < iterations;)
