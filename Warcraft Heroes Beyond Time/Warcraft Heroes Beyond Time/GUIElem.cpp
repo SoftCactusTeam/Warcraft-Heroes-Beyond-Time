@@ -7,6 +7,7 @@
 #include "Button.h"
 #include "Scene.h"
 #include "Label.h"
+#include "GUIWindow.h"
 
 GUIElem::GUIElem(fPoint localPos, Module* listener, SDL_Rect atlasRect, GUIElemType type, GUIElem* parent) : localPos(localPos), listener(listener), atlasRect(atlasRect), type(type), parent(parent)
 {
@@ -130,21 +131,7 @@ bool GUIElem::HandleInput(float dt)
 			App->SaveInput();
 			App->scene->Restart();
 		}	
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_R) == KeyState::KEY_DOWN)
-	{
-		if (App->scene->actual_scene == Scene::Stages::SETTINGS)
-		{
-			App->input->resetBinding();
-			if (App->scene->attackBinding)
-				App->scene->attackBinding->ResetRebind();
-			if (App->scene->dashBinding)
-				App->scene->dashBinding->ResetRebind();
-			if (App->scene->skillBinding)
-				App->scene->skillBinding->ResetRebind();
-		}
-			
-	}
+	} 
 
 	return ret;
 }

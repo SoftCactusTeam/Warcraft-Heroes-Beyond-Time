@@ -23,6 +23,7 @@ public:
 	Animation skill;
 	Animation deadUpRight, deadDownRight;
 
+	bool win = false;
 protected:
 
 	PLAYER_TYPE type = PLAYER_TYPE::NON_PLAYER;
@@ -43,7 +44,7 @@ protected:
 	float deadinfloorConfigCD = 0.0f;
 	float deadinfloorcd = 0.0f;
 
-	bool win = false;
+	
 	float afterWinConfigCounter = 0.0f; //Wont be used for now
 	float afterWinCounter = 0.0f;
 	

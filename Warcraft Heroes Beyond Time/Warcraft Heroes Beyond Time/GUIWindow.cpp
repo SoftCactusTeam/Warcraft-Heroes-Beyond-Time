@@ -5,6 +5,7 @@
 #include "GUIImage.h"
 #include "Label.h"
 #include "FileSystem.h"
+#include "Scene.h"
 
 GUIWindow::GUIWindow(fPoint localPos, SDL_Rect atlasRect, GUIElem* parent, Module* listener) : GUIElem(localPos, listener, atlasRect, GUIElemType::WINDOW, parent)
 {
@@ -31,6 +32,25 @@ bool GUIWindow::Update(float dt)
 			result = checkHorizontalInputs(dt);
 	}
 	
+	if (App->input->GetKey(SDL_SCANCODE_R) == KeyState::KEY_DOWN)
+	{
+		if (App->scene->actual_scene == Scene::Stages::SETTINGS)
+		{
+			if (this->type == GUIElemType::WINDOW)
+			{
+				this->UnFocusChilds();
+			}
+			App->input->resetBinding();
+			if (App->scene->attackBinding)
+				App->scene->attackBinding->ResetRebind();
+			if (App->scene->dashBinding)
+				App->scene->dashBinding->ResetRebind();
+			if (App->scene->skillBinding)
+				App->scene->skillBinding->ResetRebind();
+		}
+
+	}
+
 	if(result)
 		result = UpdateChilds(dt);
 
@@ -194,6 +214,7 @@ bool GUIWindow::checkVerticalInputs(float dt)
 			}
 
 			(*it)->Focus();
+			
 		}
 
 		else if (App->input->GetAxis((int)Axis::DOWN) == KeyState::KEY_DOWN)
@@ -221,6 +242,8 @@ bool GUIWindow::checkVerticalInputs(float dt)
 		if (!AnyChildFocused())
 		{
 			childs.back()->Focus();
+			if (childs.back()->type == GUIElemType::LABEL)
+				Label::waitingBindInput = true;
 		}
 
 		else
