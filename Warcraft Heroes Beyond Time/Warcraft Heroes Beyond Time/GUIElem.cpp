@@ -122,7 +122,7 @@ bool GUIElem::HandleInput(float dt)
 		}
 
 	//B button depending of the screen active
-	if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KeyState::KEY_DOWN || App->input->GetKey(SDL_SCANCODE_ESCAPE) == KeyState::KEY_DOWN)
+	if ((App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KeyState::KEY_DOWN || App->input->GetKey(SDL_SCANCODE_ESCAPE) == KeyState::KEY_DOWN) && !Label::waitingBindInput)
 	{
 		if (App->scene->actual_scene == Scene::Stages::SETTINGS)
 		{
