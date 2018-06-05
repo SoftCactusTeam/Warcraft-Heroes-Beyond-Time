@@ -122,48 +122,27 @@ bool GUIElem::HandleInput(float dt)
 		}
 
 	//B button depending of the screen active
-	if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KeyState::KEY_DOWN)
+	if (App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_B) == KeyState::KEY_DOWN || App->input->GetKey(SDL_SCANCODE_ESCAPE) == KeyState::KEY_DOWN)
 	{
-		if (type == GUIElemType::BUTTON)
+		if (App->scene->actual_scene == Scene::Stages::SETTINGS)
 		{
-			Button* button = (Button*)this;
-			switch (App->scene->actual_scene)
-			{
-			case Scene::Stages::SETTINGS:
-			{
-				if (button->btype == BType::GO_MMENU && !Label::waitingBindInput)
-				{
-					parent->UnFocusChilds();
-					Focus();
-					UIevent = UIEvents::MOUSE_LEFT_CLICK;
-					listener->OnUIEvent(this, UIevent);
-				}
-				break;
-			}
-			case Scene::Stages::MAIN_MENU:
-			{
-				if (button->btype == BType::EXIT_GAME)
-				{
-					parent->UnFocusChilds();
-					Focus();
-					UIevent = UIEvents::MOUSE_LEFT_CLICK;
-					listener->OnUIEvent(this, UIevent);
-				}
-				break;
-			}
-			default:
-			{
-				/*if (button->btype == BType::EXIT_GAME)
-				{
-					parent->UnFocusChilds();
-					Focus();
-					UIevent = UIEvents::MOUSE_LEFT_CLICK;
-					listener->OnUIEvent(this, UIevent);
-				}*/
-				break;
-			}
-			}
+			App->scene->next_scene = Scene::Stages::MAIN_MENU;
+			App->scene->Restart();
+		}	
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_R) == KeyState::KEY_DOWN)
+	{
+		if (App->scene->actual_scene == Scene::Stages::SETTINGS)
+		{
+			App->input->resetBinding();
+			if (App->scene->attackBinding)
+				App->scene->attackBinding->ResetRebind();
+			if (App->scene->dashBinding)
+				App->scene->dashBinding->ResetRebind();
+			if (App->scene->skillBinding)
+				App->scene->skillBinding->ResetRebind();
 		}
+			
 	}
 
 	return ret;

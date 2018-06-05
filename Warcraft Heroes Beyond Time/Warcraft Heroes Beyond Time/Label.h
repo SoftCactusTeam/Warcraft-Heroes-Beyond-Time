@@ -40,6 +40,8 @@ public:
 		calculateScreenPos();
 	}
 
+	void ResetRebind();
+
 public:
 	static int ButtonPressed;
 	static bool waitingBindInput;

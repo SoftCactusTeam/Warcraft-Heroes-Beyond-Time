@@ -34,6 +34,8 @@ bool GUIWindow::Update(float dt)
 	if(result)
 		result = UpdateChilds(dt);
 
+	HandleInput(dt);
+
 	return result;
 }
 

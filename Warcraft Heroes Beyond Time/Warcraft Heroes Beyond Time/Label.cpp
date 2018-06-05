@@ -56,6 +56,8 @@ bool Label::Update(float dt)
 		}
 	}
 
+	
+
 	result = UpdateChilds(dt);
 
 	return result;
@@ -107,6 +109,27 @@ void Label::EditText(std::string text, SDL_Color color)
 	
 	SDL_DestroyTexture(texturetoBlit);
 	texturetoBlit = App->fonts->Print(text.data(), (ColorEquals({0,0,0,0}, color) ? this->color : color), font, multilabelWidth);
+}
+
+void Label::ResetRebind()
+{
+	if (!childs.empty() && (this == App->scene->attackBinding || this == App->scene->dashBinding || this == App->scene->skillBinding))
+	{
+		Label* label = (Label*)childs.front()->getFirstChild();
+
+		if (this == App->scene->attackBinding)
+			label->EditText(App->input->getBindingfromAction("Attack"));
+		else if (this == App->scene->skillBinding)
+			label->EditText(App->input->getBindingfromAction("Skill"));
+		else if (this == App->scene->dashBinding)
+			label->EditText(App->input->getBindingfromAction("Dash"));
+
+		int w, h;
+		SDL_QueryTexture(label->texturetoBlit, nullptr, nullptr, &w, &h);
+		label->localPos = { (float)(58 - ((w / 2) / 3)), label->localPos.y };
+		label->calculateScreenPos();
+	}
+
 }
 
 

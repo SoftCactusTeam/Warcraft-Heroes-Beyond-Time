@@ -895,14 +895,30 @@ void Scene::CreateSettingsScreen()
 
 	}
 	
-	//BACK BUTTON
-	Button* button3 = (Button*)App->gui->CreateButton({ 50/*640 / 2 - 158 / 2*/, 300 }, BType::GO_MMENU, this, window);
+	////BACK BUTTON
+	//Button* button3 = (Button*)App->gui->CreateButton({ 50/*640 / 2 - 158 / 2*/, 300 }, BType::GO_MMENU, this, window);
 
-	LabelInfo defLabel2;
-	defLabel2.color = White;
-	defLabel2.fontName = "LifeCraft80";
-	defLabel2.text = "Back";
-	App->gui->CreateLabel({ 56,11 }, defLabel2, button3, this);
+	//LabelInfo defLabel2;
+	//defLabel2.color = White;
+	//defLabel2.fontName = "LifeCraft80";
+	//defLabel2.text = "Back";
+	//App->gui->CreateLabel({ 56,11 }, defLabel2, button3, this);
+
+	LabelInfo backinfo;
+	backinfo.color = White;
+	backinfo.fontName = "LifeCraft80";
+	backinfo.text = "(B)/(ESCAPE): Back";
+	backinfo.multilabelWidth = 1000;
+
+	Label* back = (Label*)App->gui->CreateLabel({50, 300}, backinfo, nullptr, nullptr);
+
+	LabelInfo resetinfo;
+	resetinfo.color = White;
+	resetinfo.fontName = "LifeCraft80";
+	resetinfo.text = "(R): Reset Controls";
+	resetinfo.multilabelWidth = 1000;
+
+	Label* reset = (Label*)App->gui->CreateLabel({ 400, 300 }, resetinfo, nullptr, nullptr);
 }
 
 void Scene::CreatePauseMenu()
