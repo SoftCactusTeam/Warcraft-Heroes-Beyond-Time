@@ -30,6 +30,7 @@ bool PlayerEntity::Start()
 	anim = &idleDown;
 	state = states::PL_IDLE;
 
+
 	InitCulling();
 
 	if (dashEmitter == nullptr)
@@ -120,8 +121,6 @@ void PlayerEntity::PlayerStates(float dt)
 {
 	if (move && !App->transitions->IsFading())
 	{
-		if (App->input->GetKey(SDL_SCANCODE_8) == KeyState::KEY_DOWN)
-			state = states::PL_RELIVE;
 		if (App->input->IsKeyboardAvailable())
 			KeyboardStates(dt);
 		else
@@ -838,7 +837,7 @@ void PlayerEntity::JoyconStates(float dt)
 			state = states::PL_MOVE;
 		}
 
-		else if (App->input->GetAction("Dash") == KEY_DOWN && t == 0.0f && DashCD == 0.0f)
+		else if (App->input->GetAction("Dash") == KEY_DOWN && t == 0.0f && DashCD == 0.0f && move)
 		{
 			App->audio->PlayFx(App->audio->Thrall_Dash_FX);
 			App->input->PlayJoyRumble(0.85f, 100);
@@ -1014,7 +1013,7 @@ void PlayerEntity::JoyconStates(float dt)
 
 	case states::PL_MOVE:
 	{
-		if (App->input->GetAction("Dash") == KEY_DOWN && t == 0.0f && DashCD == 0.0f)
+		if (App->input->GetAction("Dash") == KEY_DOWN && t == 0.0f && DashCD == 0.0f && move)
 		{
 			App->audio->PlayFx(App->audio->Thrall_Dash_FX);
 			App->input->PlayJoyRumble(0.75f, 100);
@@ -1282,6 +1281,10 @@ void PlayerEntity::CheckIddleStates()
 		state = states::PL_IDLE;
 		break;
 	case states::PL_ATTACK:
+		anim = &idleDown;
+		state = states::PL_IDLE;
+		break;
+	default:
 		anim = &idleDown;
 		state = states::PL_IDLE;
 		break;
