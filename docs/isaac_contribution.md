@@ -9,6 +9,7 @@ Things I made :
      - Abilities
      - Effects
      - Reactions
+ - Console inGame
  - Bug Fixing
  - Gantt document with all tasks to do among the project & other management stuff
  - Assign tasks at trello (weekly)
