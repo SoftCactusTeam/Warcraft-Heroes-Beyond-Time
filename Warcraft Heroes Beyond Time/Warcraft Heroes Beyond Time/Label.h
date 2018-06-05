@@ -4,6 +4,7 @@
 #include <string>
 #include "GUIElem.h"
 #include "Globals.h"
+#include "ModuleAudio.h"
 
 struct LabelInfo 
 {
@@ -47,7 +48,13 @@ public:
 	static bool waitingBindInput;
 private:
 
-	
+	void Focus()
+	{
+		focused = true;
+		App->audio->HaltFX(App->audio->ButtonHovered);
+		App->audio->PlayFx(App->audio->ButtonHovered);
+	}
+
 	std::string text;
 	TTF_Font* font = nullptr;
 	SDL_Texture* texturetoBlit = nullptr;

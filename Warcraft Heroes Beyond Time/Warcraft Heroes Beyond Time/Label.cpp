@@ -29,9 +29,9 @@ bool Label::Update(float dt)
 {
 	bool result = false;
 
-	if (focused && !childs.empty())
+	if (focused && !childs.empty() && !childs.front()->IsFocused())
 		childs.front()->Focus();
-	else if (!childs.empty())
+	else if (!focused && !childs.empty() && childs.front()->IsFocused())
 		childs.front()->UnFocus();
 	
 	if (focused && ButtonPressed != -1)

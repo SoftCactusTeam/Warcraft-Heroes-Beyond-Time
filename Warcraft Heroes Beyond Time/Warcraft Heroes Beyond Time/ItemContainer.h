@@ -3,6 +3,7 @@
 
 #include "GUIElem.h"
 #include "Animation.h"
+#include "ModuleAudio.h"
 
 class Item;
 class Module;
@@ -28,6 +29,7 @@ public:
 		{
 			focused = true;
 			//anim = &focused_anim;
+			App->audio->PlayFx(App->audio->ButtonHovered);
 		}
 	}
 	void UnFocus()

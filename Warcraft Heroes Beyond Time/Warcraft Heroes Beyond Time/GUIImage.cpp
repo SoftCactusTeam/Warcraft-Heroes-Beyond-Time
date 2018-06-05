@@ -12,9 +12,9 @@ GUIImage::~GUIImage()
 
 bool GUIImage::Update(float dt)
 {
-	if (focused && !childs.empty())
+	if (focused && !childs.empty() && !childs.front()->IsFocused())
 		childs.front()->Focus();
-	else if(!childs.empty())
+	else if(!focused && !childs.empty() && childs.front()->IsFocused())
 		childs.front()->UnFocus();
 
 

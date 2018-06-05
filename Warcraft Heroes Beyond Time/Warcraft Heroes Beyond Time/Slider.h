@@ -2,6 +2,7 @@
 #define __SLIDER_H__
 
 #include "GUIElem.h"
+#include "ModuleAudio.h"
 
 //atlasRect defines---------------------------
 
@@ -51,6 +52,13 @@ protected:
 	uint maxValue = 0;
 
 	float counter = 0;
+
+	void Focus()
+	{
+		focused = true;
+		App->audio->HaltFX(App->audio->ButtonHovered);
+		App->audio->PlayFx(App->audio->ButtonHovered);
+	}
 };
 
 struct SliderInfo
