@@ -127,6 +127,7 @@ bool GUIElem::HandleInput(float dt)
 		if (App->scene->actual_scene == Scene::Stages::SETTINGS)
 		{
 			App->scene->next_scene = Scene::Stages::MAIN_MENU;
+			App->SaveInput();
 			App->scene->Restart();
 		}	
 	}
