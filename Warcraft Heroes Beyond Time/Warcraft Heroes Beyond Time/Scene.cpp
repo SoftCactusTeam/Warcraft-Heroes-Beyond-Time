@@ -402,8 +402,8 @@ bool Scene::Update(float dt)
 	//PAUSE GAME
 	if (actual_scene == Stages::INGAME)
 	{
-		if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN ||
-			App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_START) == KEY_DOWN)
+		if ((App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN ||
+			App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_START) == KEY_DOWN) && !App->console->isWritting())
 		{
 			if (!paused)
 			{
@@ -426,6 +426,7 @@ bool Scene::Update(float dt)
 				// Decreasing audio when pause game
 				App->audio->setMusicVolume(currentPercentAudio);
 				App->gui->DestroyElem(PauseMenu);
+				PauseMenu = nullptr;
 			}
 		}
 	}
@@ -553,6 +554,10 @@ bool Scene::CleanUp()
 
 		
 	App->gui->DeActivate();
+	PauseMenu = nullptr;
+	dashBinding = nullptr;
+	skillBinding = nullptr;
+	attackBinding = nullptr;
 	App->map->DeActivate();
 	App->entities->DeActivate();
 	App->console->DeActivate();
@@ -570,10 +575,8 @@ bool Scene::CleanUp()
 	player = nullptr;
 	lvlChest = nullptr;
 	portal = nullptr;
-	PauseMenu = nullptr;
-	dashBinding = nullptr;
-	skillBinding = nullptr;
-	attackBinding = nullptr;
+	
+	
 	
 	alreadyCreated = false;
 
@@ -720,6 +723,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 								player->Walk(true);
 								App->audio->ResumeFX();
 								App->gui->DestroyElem(PauseMenu);
+								PauseMenu = nullptr;
 								App->audio->setMusicVolume(currentPercentAudio);
 							}
 							break;
