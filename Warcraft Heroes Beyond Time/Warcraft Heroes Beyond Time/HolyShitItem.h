@@ -19,6 +19,7 @@ public:
 
 private:
 	SDL_Texture* text = nullptr;
+	bool alreadyAppliedStats = false;
 
 	virtual const std::string myNameIs() const override;
 

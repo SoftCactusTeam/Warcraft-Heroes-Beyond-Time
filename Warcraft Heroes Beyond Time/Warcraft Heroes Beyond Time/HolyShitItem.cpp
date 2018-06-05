@@ -20,10 +20,6 @@ HolyShitItem::~HolyShitItem()
 
 bool HolyShitItem::Start()
 {
-	App->scene->player->numStats.hp += ModuleItems::HolyShitExtraHP;
-	App->scene->player->numStats.maxhp += ModuleItems::HolyShitExtraHP;
-	App->scene->player->numStats.damage += ModuleItems::HolyShitExtraDamage;
-
 	text = App->transitions->GetTexturebyRadius({640, 360}, 100, 640 * 2, 360 * 2);
 
 	return true;
@@ -31,6 +27,21 @@ bool HolyShitItem::Start()
 
 bool HolyShitItem::Act(ModuleItems::ItemEvent event, float dt)
 {
+	switch (event)
+	{
+		case ModuleItems::ItemEvent::UPDATE:
+		{
+			if (!alreadyAppliedStats && App->scene->player)
+			{
+				alreadyAppliedStats = true;
+				App->scene->player->numStats.hp += ModuleItems::HolyShitExtraHP;
+				App->scene->player->numStats.maxhp += ModuleItems::HolyShitExtraHP;
+				App->scene->player->numStats.damage += ModuleItems::HolyShitExtraDamage;
+			}
+			break;
+		}
+	}
+	
 	return true;
 }
 
