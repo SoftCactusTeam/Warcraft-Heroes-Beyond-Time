@@ -7,7 +7,6 @@ I have done a lot of different tasks, like:
 - All the audio playing system.
 - A fileSystem using PHYSFS library.
 - All the GUI module and its workflow, with the fonts system and the fixed labels for evade the blurry.
-- DeltaTime calculations and configuration from xml.
 - Fixing the Console, its workflow and the commands management.
 - Save and Load workflow.
 - The collision system, preventing the player to getting stuck in walls while dashing, etc.
