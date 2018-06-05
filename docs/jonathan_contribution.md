@@ -22,6 +22,6 @@ I have done a lot of different tasks, like:
 Along with other members, I've also done playtesting, some design decisions and bug fixing.
 
 ![menuandsettings](https://user-images.githubusercontent.com/11388662/40985050-83217b40-68e3-11e8-916a-cdb29acc7aa1.gif)
-
+![saveload_itemsselection](https://user-images.githubusercontent.com/11388662/40985415-5b3efc96-68e4-11e8-8f3f-0ec5c7eeaa1b.gif)
 
 [Back to home page](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/)
