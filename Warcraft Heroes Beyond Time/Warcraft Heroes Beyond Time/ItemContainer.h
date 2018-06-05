@@ -29,6 +29,7 @@ public:
 		{
 			focused = true;
 			//anim = &focused_anim;
+			App->audio->HaltFX(App->audio->ButtonHovered);
 			App->audio->PlayFx(App->audio->ButtonHovered);
 		}
 	}
