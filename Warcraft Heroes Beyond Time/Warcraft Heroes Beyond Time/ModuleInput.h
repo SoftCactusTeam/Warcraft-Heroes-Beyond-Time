@@ -234,7 +234,7 @@ private:
 	float yAxis = 0;
 	bool xDeadZone = false;
 	bool yDeadZone = false;
-	bool kbAvailable = false;
+	bool kbAvailable = true;
 };
 
 #endif
