@@ -1287,6 +1287,7 @@ void PlayerEntity::CheckIddleStates()
 	default:
 		anim = &idleDown;
 		state = states::PL_IDLE;
+		ResetDash();
 		break;
 	}
 }
