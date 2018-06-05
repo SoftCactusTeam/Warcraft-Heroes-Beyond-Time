@@ -456,7 +456,9 @@
     <ClInclude Include="PerfTimer.h">
       <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h" />
+    <ClInclude Include="resource.h">
+      <Filter>zzz_resources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />

@@ -151,7 +151,10 @@ void GUIWindow::FocusPrevChild()
 			std::list<GUIElem*>::reverse_iterator toFocusIt = focusedIt;
 			while (toFocus == nullptr)
 			{
-				if (!(*toFocusIt)->IsFocused() && (((*toFocusIt)->type == GUIElemType::BUTTON && !(*toFocusIt)->AreYouAContinueButton()) || ((*toFocusIt)->type == GUIElemType::BUTTON && (*toFocusIt)->AreYouAContinueButton() && App->fs->isGameSaved())) || (*toFocusIt)->type == GUIElemType::SLIDER || (*toFocusIt)->type == GUIElemType::ITEM_CONTAINER || (*toFocusIt)->type == GUIElemType::LABEL)
+				if (!(*toFocusIt)->IsFocused() &&  //Is not already focused
+					(((*toFocusIt)->type == GUIElemType::BUTTON && !(*toFocusIt)->AreYouAContinueButton()) || //You are a button but you are not a continue button
+					((*toFocusIt)->type == GUIElemType::BUTTON && (*toFocusIt)->AreYouAContinueButton() && App->fs->isGameSaved()) || //You are a continue button and game is saved
+						((*toFocusIt)->type == GUIElemType::SLIDER || (*toFocusIt)->type == GUIElemType::ITEM_CONTAINER || (*toFocusIt)->type == GUIElemType::LABEL))) //You are not a button but you are an slider, itemcontainer or label
 					toFocus = *toFocusIt;
 				if (std::next(toFocusIt) == childs.rend())
 					toFocusIt = childs.rbegin();
