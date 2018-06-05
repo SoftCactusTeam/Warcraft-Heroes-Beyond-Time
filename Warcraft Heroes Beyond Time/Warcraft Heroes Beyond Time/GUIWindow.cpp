@@ -194,6 +194,7 @@ bool GUIWindow::checkVerticalInputs(float dt)
 			}
 
 			(*it)->Focus();
+			
 		}
 
 		else if (App->input->GetAxis((int)Axis::DOWN) == KeyState::KEY_DOWN)
@@ -221,6 +222,8 @@ bool GUIWindow::checkVerticalInputs(float dt)
 		if (!AnyChildFocused())
 		{
 			childs.back()->Focus();
+			if (childs.back()->type == GUIElemType::LABEL)
+				Label::waitingBindInput = true;
 		}
 
 		else
