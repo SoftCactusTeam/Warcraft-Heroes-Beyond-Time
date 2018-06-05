@@ -405,7 +405,7 @@ bool Scene::Update(float dt)
 		if ((App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN ||
 			App->input->GetPadButtonDown(SDL_CONTROLLER_BUTTON_START) == KEY_DOWN) && !App->console->isWritting())
 		{
-			if (!paused && guldan == nullptr)
+			if (!paused && player && !player->win)
 			{
 				App->audio->PauseFX();
 				paused = true;
