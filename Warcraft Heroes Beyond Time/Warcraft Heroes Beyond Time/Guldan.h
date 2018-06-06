@@ -85,20 +85,6 @@ private:
 	bool angry_sound_played_once = false;
 	bool dead_sound_played_once = false;
 
-	enum class BossStates
-	{
-		NON_STATE = -1,
-		HELLO,
-		IDLE,
-		FEL_BALLS,
-		TELEPORT,
-		INVERSETELEPORT,
-		DEAD,
-		GENERATINGBALLS,
-		RESTORING_ENERGY,
-		THUNDER_CAST
-	} statesBoss = BossStates::NON_STATE;
-
 	enum class FellBallsTypes
 	{
 		NO_TYPE,
@@ -114,6 +100,20 @@ private:
 		FOLLOW_PLAYER,
 		STOP_IN_POS
 	};
+
+public:
+	enum class BossStates
+	{
+		NON_STATE = -1,
+		HELLO,
+		IDLE,
+		FEL_BALLS,
+		TELEPORT,
+		DEAD,
+		GENERATINGBALLS,
+		RESTORING_ENERGY,
+		THUNDER_CAST
+	} statesBoss = BossStates::NON_STATE;
 
 public:
 	Guldan(fPoint coor, BossType type, SDL_Texture* texture);

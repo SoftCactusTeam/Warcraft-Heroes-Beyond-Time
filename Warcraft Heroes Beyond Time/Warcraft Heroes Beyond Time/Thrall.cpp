@@ -11,6 +11,8 @@
 #include "PortalEntity.h"
 #include "ModuleItems.h"
 #include "ModuleEffects.h"
+#include "EnemyEntity.h"
+#include "Guldan.h"
 
 Thrall::Thrall(fPoint coor, PLAYER_TYPE type, SDL_Texture* texture, EntitySystem::PlayerStats& numStats) : PlayerEntity(coor, type, texture)
 {
@@ -363,6 +365,23 @@ void Thrall::OnCollision(Collider* yours, Collider* collideWith)
 				if (yours->colType == Collider::ColliderType::PLAYER_ATTACK && yours == this->attackCollider)
 				{
 					PlayerAttack* attack = (PlayerAttack*)yours;
+					if (entityOwner->entityType == Entity::EntityType::DYNAMIC_ENTITY)
+					{
+						DynamicEntity* dynOwner = (DynamicEntity*)entityOwner;
+						if (dynOwner->dynamicType == DynamicEntity::DynamicType::ENEMY)
+						{
+							EnemyEntity* enemyOwner = (EnemyEntity*)dynOwner;
+							if (enemyOwner->enemytype == ENEMY_TYPE::BOSS)
+							{
+								Guldan* guldanOwner = (Guldan*)enemyOwner;
+
+								if (guldanOwner->statesBoss == Guldan::BossStates::TELEPORT)
+									break;
+							}
+						}
+					}
+						
+
 					if (attack->pattacktype == PlayerAttack::P_Attack_Type::NORMAL_ATTACK)
 					{
 						IncreaseEnergy(numStats.energyPercentbyHit);
