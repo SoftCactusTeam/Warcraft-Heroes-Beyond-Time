@@ -975,7 +975,6 @@ void PlayerEntity::JoyconStates(float dt)
 			{
 				if (!vCollision)
 				{
-
 					anim = &dashUpRight;
 					SDL_Rect copyWallcol = wallCol->rectArea;
 					copyWallcol.x += pos.x;
@@ -1003,6 +1002,7 @@ void PlayerEntity::JoyconStates(float dt)
 
 				if (!hCollision)
 				{
+					anim = &dashUpRight;
 					SDL_Rect copyWallcol = wallCol->rectArea;
 					SDL_Rect otherCol;
 					float distance = (startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance) - pos.x;
@@ -1033,12 +1033,69 @@ void PlayerEntity::JoyconStates(float dt)
 			}
 			else if (animBefore == &idleUpLeft)
 			{
-				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+				if (!vCollision)
+				{
+					anim = &dashUpLeft;
+					SDL_Rect copyWallcol = wallCol->rectArea;
+					copyWallcol.x += pos.x;
+					copyWallcol.y += pos.y;
 
-				pos.x = startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(225.0f));
-				pos.y = startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(225.0f));
+					fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
 
-				anim = &dashUpLeft; //
+					SDL_Rect otherCol;
+					float distance = (CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance);
+
+					copyWallcol.y -= distance;
+
+					if (!App->colliders->collideWithWalls(copyWallcol, otherCol))
+					{
+
+						pos.y = startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(225.0f));
+					}
+					else
+					{
+						vCollision = true;
+						distance -= (otherCol.y + otherCol.h) - copyWallcol.y;
+						pos.y -= distance;
+					}
+				}
+
+				if (!hCollision)
+				{
+					anim = &dashUpLeft;
+					SDL_Rect copyWallcol = wallCol->rectArea;
+					copyWallcol.x += pos.x;
+					copyWallcol.y += pos.y;
+
+					fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+
+					SDL_Rect otherCol;
+					float distance = (CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance);
+
+					copyWallcol.x -= distance;
+
+					if (!App->colliders->collideWithWalls(copyWallcol, otherCol))
+					{
+
+						pos.x = startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(225.0f));
+					}
+					else
+					{
+						distance -= (otherCol.x + otherCol.w) - copyWallcol.x;
+						pos.x -= distance;
+						ResetDash();
+						break;
+					}
+				}
+
+				if (vCollision && hCollision)
+				{
+					ResetDash();
+					break;
+				}
+
+				// pos.x = startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(225.0f));
+			
 			}
 			else if (animBefore == &idleDownRight)
 			{
@@ -1100,6 +1157,7 @@ void PlayerEntity::JoyconStates(float dt)
 				Attack();
 				DashCD = DashConfigCD;
 				t = 0.0f;
+				//vCollision = hCollision = false;
 				break;
 
 			}
@@ -1133,6 +1191,7 @@ void PlayerEntity::JoyconStates(float dt)
 			}
 			DashCD = DashConfigCD;
 			animBefore = nullptr;
+			//vCollision = hCollision = false;
 			t = 0.0f;
 		}
 
