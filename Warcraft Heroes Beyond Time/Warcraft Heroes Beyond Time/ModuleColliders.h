@@ -98,12 +98,12 @@ public:
 	std::weak_ptr<Collider*> AddPlayerAttackCollider(SDL_Rect rectArea, void* owner, float damage, PlayerAttack::P_Attack_Type pattacktype);
 	std::weak_ptr<Collider*> AddEnemyAttackCollider(SDL_Rect rectArea, void* owner, float damage, EnemyAttack::E_Attack_Type eattacktype);
 
-
 	void deleteCollider(Collider* col);
 	void deleteColliderbyOwner(void* owner);
 
-
 	void PrintColliders() const;
+
+	bool collideWithWalls(SDL_Rect newPos, SDL_Rect& otherCol);
 
 private:
 

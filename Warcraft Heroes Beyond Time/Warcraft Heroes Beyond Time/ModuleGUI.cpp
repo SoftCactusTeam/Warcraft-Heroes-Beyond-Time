@@ -99,11 +99,14 @@ bool ModuleGUI::PostUpdate()
 	{
 		if (vsTexture == nullptr)
 		{
-			for (int i = 0; i < 7; ++i)
+			for (int i = 0; i < 8; ++i)
 			{
 				for (int j = 0; j < 5; ++j)
 				{
-					vsAnim.PushBack({ j * 640,i * 360,640,360 });
+					if (i >= 7)
+						vsAnim.PushBack({ j * 640,(i - 1) * 360,640,360 });
+					else
+						vsAnim.PushBack({ j * 640,i * 360,640,360 });
 				}
 
 			}

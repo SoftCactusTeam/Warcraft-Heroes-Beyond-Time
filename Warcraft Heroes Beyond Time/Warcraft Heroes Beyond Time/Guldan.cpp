@@ -980,10 +980,6 @@ void Guldan::GenerateInverseThunders(int numberXY)
 	}
 	else if (numberXY == 27)
 	{
-		info.pos = { 9.0f,10.0f };
-	}
-	else if (numberXY == 28)
-	{
 		info.pos = { 11.0f,12.0f };
 	}
 	else
