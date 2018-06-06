@@ -130,6 +130,8 @@ public:
 	float t = 0.0f;
 	fPoint startPos = { 0.0f, 0.0f };
 	void ResetDash();
+	bool vCollision = false;
+	bool hCollision = false;
 	
 
 
