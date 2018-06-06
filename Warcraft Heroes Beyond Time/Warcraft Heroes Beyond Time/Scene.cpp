@@ -252,6 +252,8 @@ bool Scene::Start()
 			BROFILER_CATEGORY("InGame Generation", Profiler::Color::Chocolate);
 			int result = App->map->UseYourPowerToGenerateMeThisNewMap(lvlIndex);
 
+			if (lvlIndex == 100)
+				App->audio->PauseMusic();
 			if (result == -1)
 				return false;
 			else if (result == 0)
@@ -732,7 +734,6 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 							{
 								//Call to the module transitions method to load the saved game with App->Load()
 								next_scene = Stages::INGAME;
-
 								App->audio->PlayMusic(App->audio->InGameBSO.data(), 1);
 								App->transitions->loadTransition = true;
 								restart = true;
