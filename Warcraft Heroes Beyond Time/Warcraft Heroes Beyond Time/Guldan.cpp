@@ -159,6 +159,7 @@ bool Guldan::Update(float dt)
 	switch (statesBoss)
 	{
 	case BossStates::HELLO:
+		App->audio->PlayMusic(App->audio->GuldanBSO.data(), 1);
 
 		if (pos.DistanceTo(App->scene->player->pos) <= 150.0f && !App->gui->finishedVs)
 		{

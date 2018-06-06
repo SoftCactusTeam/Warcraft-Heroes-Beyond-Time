@@ -264,7 +264,6 @@ bool Scene::Start()
 				App->printer->Activate();
 				App->projectiles->Activate();
 
-				App->audio->PlayMusic(App->audio->GuldanBSO.data(), 1);
 
 				portal = (PortalEntity*)App->entities->AddStaticEntity({ 15 * 46,17 * 46, }, PORTAL);
 				portal->locked = true;
