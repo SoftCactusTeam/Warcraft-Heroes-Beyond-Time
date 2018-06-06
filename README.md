@@ -25,6 +25,50 @@ Items are barely explained so you'll need to figure out what they do with trial 
 
 That's it! Good luck :)
 
+
+## Installation instructions  
+
+Download the zip file and unzip it. Open the folder, execute the .exe and enjoy!  
+
+_**IMPORTANT:** do not modify, change or add any folder or file as you might not be able to execute the game._  
+
+## Controls
+
+### Gamepad
+- LEFT STICK: move
+- A BUTTON: dash and select
+- X BUTTON: attack and open chest
+- Y BUTTON: skill
+- B BUTTON: go back in menus
+- START: pause game
+
+### Mouse and keyboard
+- LEFT CLICK: select in menus
+- WASD: move
+- J: attack and open chest
+- K: skill
+- SPACE: dash
+- ESC: pause
+- F1: Go to Guldan's room.
+
+## Debug features
+
+Almost all debug features are accesed through the game console. To activate/deactivate the console just press the tilde key (next to 1).
+
+- Show colliders: colliders_print_1
+- Hide colliders: colliders_print_0
+- Spawn archer: spawn_archer_(tier number, up to 3)
+- Spawn another player: spawn_thrall
+- Show walkable tiles: map_printwalkables_1
+- Hide walkable tiles: map_printwalkables_0
+- Charge player energy: player_energy_(energy value, up to 100)
+- Damage the player: player_damage_(damage value, up to 100)
+- Activate god mode: player_godmode_1
+- Deactivate god mode: player_godmode_0
+
+- Go to boss room: F1 key
+- Go to next level: Q key
+
 ## Changelog
 
 v0.1
@@ -244,49 +288,6 @@ v0.9.9
 v1.0
 - Dash with keyboard
 - Bug fixing
-
-## Installation instructions  
-
-Download the zip file and unzip it. Open the folder, execute the .exe and enjoy!  
-
-_**IMPORTANT:** do not modify, change or add any folder or file as you might not be able to execute the game._  
-
-## Controls
-
-### Gamepad
-- LEFT STICK: move
-- A BUTTON: dash and select
-- X BUTTON: attack and open chest
-- Y BUTTON: skill
-- B BUTTON: go back in menus
-- START: pause game
-
-### Mouse and keyboard
-- LEFT CLICK: select in menus
-- WASD: move
-- J: attack and open chest
-- K: skill
-- SPACE: dash
-- ESC: pause
-- F1: Go to Guldan's room.
-
-## Debug features
-
-Almost all debug features are accesed through the game console. To activate/deactivate the console just press the tilde key (next to 1).
-
-- Show colliders: colliders_print_1
-- Hide colliders: colliders_print_0
-- Spawn archer: spawn_archer_(tier number, up to 3)
-- Spawn another player: spawn_thrall
-- Show walkable tiles: map_printwalkables_1
-- Hide walkable tiles: map_printwalkables_0
-- Charge player energy: player_energy_(energy value, up to 100)
-- Damage the player: player_damage_(damage value, up to 100)
-- Activate god mode: player_godmode_1
-- Deactivate god mode: player_godmode_0
-
-- Go to boss room: F1 key
-- Go to next level: Q key
 
 ## Team members  
 
