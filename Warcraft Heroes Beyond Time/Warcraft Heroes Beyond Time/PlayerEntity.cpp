@@ -144,27 +144,6 @@ void PlayerEntity::PlayerStates(float dt)
 
 void PlayerEntity::KeyboardStates(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_7) == KEY_DOWN)
-	{
-		anim = &idleUpLeft;
-		state = states::PL_IDLE;
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_8) == KEY_DOWN)
-	{
-		anim = &idleUpRight;
-		state = states::PL_IDLE;
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN)
-	{
-		anim = &idleDownLeft;
-		state = states::PL_IDLE;
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)
-	{
-		anim = &idleDownRight;
-		state = states::PL_IDLE;
-	}
-
 
 	if (dashEmitter != nullptr && App->scene->player->state == PlayerEntity::states::PL_DASH)
 		GenerateDashParticles();
@@ -243,7 +222,24 @@ void PlayerEntity::KeyboardStates(float dt)
 			{
 				if (animBefore == &idleRight || animBefore == &right)
 				{
-					pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
+					SDL_Rect copyWallcol = wallCol->rectArea;
+					SDL_Rect otherCol;
+					float distance = (startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance) - pos.x;
+					copyWallcol.x += pos.x + distance;
+					copyWallcol.y += pos.y;
+
+					if (!App->colliders->collideWithWalls(copyWallcol, otherCol))
+					{
+						pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
+					}
+					else
+					{
+						distance -= (copyWallcol.x + copyWallcol.w) - otherCol.x;
+
+						pos.x += distance;
+						ResetDash();
+						break;
+					}
 
 					anim = &dashRight;
 					float x = 0.1f / dt;
@@ -251,7 +247,27 @@ void PlayerEntity::KeyboardStates(float dt)
 				}
 				else if (animBefore == &idleLeft || animBefore == &left)
 				{
-					pos.x = startPos.x - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
+					SDL_Rect copyWallcol = wallCol->rectArea;
+					copyWallcol.x += pos.x;
+					copyWallcol.y += pos.y;
+
+					SDL_Rect otherCol;
+					float distance = -((startPos.x - (CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance)) - pos.x);
+
+					copyWallcol.x -= distance;
+
+					if (!App->colliders->collideWithWalls(copyWallcol, otherCol))
+					{
+
+						pos.x -= distance;
+					}
+					else if (App->colliders->collideWithWalls(copyWallcol, otherCol))
+					{
+						distance -= (otherCol.x + otherCol.w) - copyWallcol.x;
+						pos.x -= distance;
+						ResetDash();
+						break;
+					}
 
 					anim = &dashLeft;
 					float x = 0.1f / dt;
@@ -259,7 +275,28 @@ void PlayerEntity::KeyboardStates(float dt)
 				}
 				else if (animBefore == &idleUp || animBefore == &up)
 				{
-					pos.y = startPos.y - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
+					anim = &dashUp;
+					SDL_Rect copyWallcol = wallCol->rectArea;
+					copyWallcol.x += pos.x;
+					copyWallcol.y += pos.y;
+
+					SDL_Rect otherCol;
+					float distance = -((startPos.y - (CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance)) - pos.y);
+
+					copyWallcol.y -= distance;
+
+					if (!App->colliders->collideWithWalls(copyWallcol, otherCol))
+					{
+
+						pos.y = startPos.y - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
+					}
+					else
+					{
+						distance -= (otherCol.y + otherCol.h) - copyWallcol.y;
+						pos.y -= distance;
+						ResetDash();
+						break;
+					}
 
 					anim = &dashUp;
 					float x = 0.1f / dt;
@@ -267,7 +304,25 @@ void PlayerEntity::KeyboardStates(float dt)
 				}
 				else if (animBefore == &idleDown || animBefore == &down)
 				{
-					pos.y = startPos.y + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
+					anim = &dashDown;
+					SDL_Rect copyWallcol = wallCol->rectArea;
+					SDL_Rect otherCol;
+					float distance = (startPos.y + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance) - pos.y;
+					copyWallcol.x += pos.x;
+					copyWallcol.y += pos.y + distance;
+
+					if (!App->colliders->collideWithWalls(copyWallcol, otherCol))
+					{
+						pos.y = startPos.y + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
+					}
+					else
+					{
+						distance -= (copyWallcol.y + copyWallcol.h) - otherCol.y;
+
+						pos.y += distance;
+						ResetDash();
+						break;
+					}
 
 					anim = &dashDown;
 					float x = 0.1f / dt;
@@ -275,10 +330,60 @@ void PlayerEntity::KeyboardStates(float dt)
 				}
 				else if (animBefore == &idleUpRight || animBefore == &upRight)
 				{
-					fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+					if (!vCollision)
+					{
+						anim = &dashUpRight;
+						SDL_Rect copyWallcol = wallCol->rectArea;
+						copyWallcol.x += pos.x;
+						copyWallcol.y += pos.y;
 
-					pos.x = startPos.x + dashDistance * 0.75f * bezierPoint.y;
-					pos.y = startPos.y - dashDistance * 0.75f * bezierPoint.y;
+						fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+
+						SDL_Rect otherCol;
+						float distance = abs(pos.y - (startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(315.0f))));
+
+						copyWallcol.y -= distance;
+
+						if (!App->colliders->collideWithWalls(copyWallcol, otherCol))
+						{
+
+							pos.y = startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(315.0f));
+						}
+						else
+						{
+							vCollision = true;
+							distance -= (otherCol.y + otherCol.h) - copyWallcol.y;
+							pos.y -= distance;
+						}
+					}
+
+					if (!hCollision)
+					{
+						anim = &dashUpRight;
+						SDL_Rect copyWallcol = wallCol->rectArea;
+						SDL_Rect otherCol;
+						fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+						float distance = abs(pos.x - (startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(315.0f))));
+						copyWallcol.x += pos.x + distance;
+						copyWallcol.y += pos.y;
+
+						if (!App->colliders->collideWithWalls(copyWallcol, otherCol))
+						{
+							pos.x = startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(315.0f));
+						}
+						else
+						{
+							distance -= (copyWallcol.x + copyWallcol.w) - otherCol.x;
+							hCollision = true;
+							pos.x += distance;
+						}
+					}
+
+					if (vCollision && hCollision)
+					{
+						ResetDash();
+						break;
+					}
 
 					anim = &dashUpRight;
 					float x = 0.1f / dt;
@@ -286,34 +391,190 @@ void PlayerEntity::KeyboardStates(float dt)
 				}
 				else if (animBefore == &idleDownRight || animBefore == &downRight)
 				{
-					fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
-
-					pos.x = startPos.x + dashDistance * 0.75f * bezierPoint.y;
-					pos.y = startPos.y + dashDistance * 0.75f * bezierPoint.y;
-
 					anim = &dashDownRight;
+
+					if (!vCollision)
+					{
+						SDL_Rect copyWallcol = wallCol->rectArea;
+						copyWallcol.x += pos.x;
+						copyWallcol.y += pos.y;
+
+						fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+
+						SDL_Rect otherCol;
+						float distance = abs(pos.y - (startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(45.0f))));
+
+						copyWallcol.y += distance;
+
+						if (!App->colliders->collideWithWalls(copyWallcol, otherCol))
+						{
+							pos.y = startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(45.0f));
+						}
+						else
+						{
+							vCollision = true;
+							distance -= (copyWallcol.y + copyWallcol.h) - otherCol.y;
+							pos.y += distance;
+						}
+					}
+
+					if (!hCollision)
+					{
+						SDL_Rect copyWallcol = wallCol->rectArea;
+						SDL_Rect otherCol;
+						fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+						float distance = abs(pos.x - (startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(45.0f))));
+						copyWallcol.x += pos.x + distance;
+						copyWallcol.y += pos.y;
+
+
+
+						if (!App->colliders->collideWithWalls(copyWallcol, otherCol))
+						{
+							pos.x = startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(45.0f));
+						}
+						else
+						{
+							distance -= (copyWallcol.x + copyWallcol.w) - otherCol.x;
+							hCollision = true;
+							pos.x += distance;
+						}
+					}
+
+					if (vCollision && hCollision)
+					{
+						ResetDash();
+						break;
+					}
 					float x = 0.1f / dt;
 					t += (x * dt);
 				}
 				else if (animBefore == &idleDownLeft || animBefore == &downLeft)
 				{
-					fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
-
-					pos.x = startPos.x - dashDistance * 0.75f * bezierPoint.y;
-					pos.y = startPos.y + dashDistance * 0.75f * bezierPoint.y;
-
 					anim = &dashDownLeft;
+
+					if (!vCollision)
+					{
+						SDL_Rect copyWallcol = wallCol->rectArea;
+						copyWallcol.x += pos.x;
+						copyWallcol.y += pos.y;
+
+						fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+
+						SDL_Rect otherCol;
+						float distance = abs(pos.y - (startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(135.0f))));
+
+						copyWallcol.y += distance;
+
+						if (!App->colliders->collideWithWalls(copyWallcol, otherCol))
+						{
+							pos.y = startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(135.0f));
+						}
+						else
+						{
+							vCollision = true;
+							distance -= (copyWallcol.y + copyWallcol.h) - otherCol.y;
+							pos.y += distance;
+						}
+					}
+
+					if (!hCollision)
+					{
+						SDL_Rect copyWallcol = wallCol->rectArea;
+						copyWallcol.x += pos.x;
+						copyWallcol.y += pos.y;
+						SDL_Rect otherCol;
+
+						fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+						float distance = abs(pos.x - (startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(135.0f))));
+						copyWallcol.x -= distance;
+
+						if (distance < 0)
+							int a = 0;
+
+						if (!App->colliders->collideWithWalls(copyWallcol, otherCol))
+						{
+							pos.x = startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(135.0f));
+						}
+						else
+						{
+							distance -= (otherCol.x + otherCol.w) - copyWallcol.x;
+							hCollision = true;
+							pos.x -= distance;
+						}
+					}
+
+					if (vCollision && hCollision)
+					{
+						ResetDash();
+						break;
+					}
+
 					float x = 0.1f / dt;
 					t += (x * dt);
 				}
 				else if (animBefore == &idleUpLeft || animBefore == &upLeft)
 				{
-					fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
-
-					pos.x = startPos.x - dashDistance * 0.75f * bezierPoint.y;
-					pos.y = startPos.y - dashDistance * 0.75f * bezierPoint.y;
-
 					anim = &dashUpLeft;
+
+					if (!vCollision)
+					{
+						SDL_Rect copyWallcol = wallCol->rectArea;
+						copyWallcol.x += pos.x;
+						copyWallcol.y += pos.y;
+
+						fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+
+						SDL_Rect otherCol;
+						float distance = abs(pos.y - (startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(225.0f))));
+
+						copyWallcol.y -= distance;
+
+						if (!App->colliders->collideWithWalls(copyWallcol, otherCol))
+						{
+
+							pos.y = startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(225.0f));
+						}
+						else
+						{
+							vCollision = true;
+							distance -= (otherCol.y + otherCol.h) - copyWallcol.y;
+							pos.y -= distance;
+						}
+					}
+
+					if (!hCollision)
+					{
+						SDL_Rect copyWallcol = wallCol->rectArea;
+						copyWallcol.x += pos.x;
+						copyWallcol.y += pos.y;
+						SDL_Rect otherCol;
+
+						fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+						float distance = abs(pos.x - (startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(225.0f))));
+						copyWallcol.x -= distance;
+
+						if (distance < 0)
+							int a = 0;
+
+						if (!App->colliders->collideWithWalls(copyWallcol, otherCol))
+						{
+							pos.x = startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(225.0f));
+						}
+						else
+						{
+							distance -= (otherCol.x + otherCol.w) - copyWallcol.x;
+							hCollision = true;
+							pos.x -= distance;
+						}
+					}
+
+					if (vCollision && hCollision)
+					{
+						ResetDash();
+						break;
+					}
+
 					float x = 0.1f / dt;
 					t += (x * dt);
 				}
