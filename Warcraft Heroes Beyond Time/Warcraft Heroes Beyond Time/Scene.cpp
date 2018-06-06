@@ -446,7 +446,7 @@ bool Scene::PostUpdate()
 	}
 
 	//DRAWING THE BACKGROUND IN THE MAIN MENU
-	if (actual_scene == Stages::MAIN_MENU)
+	if (actual_scene == Stages::MAIN_MENU && textureBG != nullptr)
 	{
 		SDL_Rect back = { 0,0,640,360 };
 		//App->render->DrawQuad(back, 0, 205, 193, 255, true, false);
@@ -461,7 +461,7 @@ bool Scene::PostUpdate()
 			App->render->Blit(App->gui->getAtlas(), 100, 25, &SDL_Rect({ 624, 21, 448, 129 }), 1.0f, 0.0f);
 	
 	}
-	else if (actual_scene == Stages::SETTINGS)
+	else if (actual_scene == Stages::SETTINGS && textureBG != nullptr)
 	{
 		SDL_Rect back = { 0,0,640,360 };
 		//App->render->DrawQuad(back, 0, 205, 193, 255, true, false);

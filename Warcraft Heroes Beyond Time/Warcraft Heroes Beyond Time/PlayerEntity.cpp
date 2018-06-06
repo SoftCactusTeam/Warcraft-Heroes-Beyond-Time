@@ -144,6 +144,28 @@ void PlayerEntity::PlayerStates(float dt)
 
 void PlayerEntity::KeyboardStates(float dt)
 {
+	if (App->input->GetKey(SDL_SCANCODE_7) == KEY_DOWN)
+	{
+		anim = &idleUpLeft;
+		state = states::PL_IDLE;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_8) == KEY_DOWN)
+	{
+		anim = &idleUpRight;
+		state = states::PL_IDLE;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN)
+	{
+		anim = &idleDownLeft;
+		state = states::PL_IDLE;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)
+	{
+		anim = &idleDownRight;
+		state = states::PL_IDLE;
+	}
+
+
 	if (dashEmitter != nullptr && App->scene->player->state == PlayerEntity::states::PL_DASH)
 		GenerateDashParticles();
 
@@ -829,6 +851,9 @@ void PlayerEntity::JoyconStates(float dt)
 	if (dashEmitter != nullptr && App->scene->player->state == PlayerEntity::states::PL_DASH)
 		GenerateDashParticles();
 
+	
+		
+
 	switch (state)
 	{
 	case states::PL_IDLE:
@@ -1033,9 +1058,10 @@ void PlayerEntity::JoyconStates(float dt)
 			}
 			else if (animBefore == &idleUpLeft)
 			{
+				anim = &dashUpLeft;
+
 				if (!vCollision)
 				{
-					anim = &dashUpLeft;
 					SDL_Rect copyWallcol = wallCol->rectArea;
 					copyWallcol.x += pos.x;
 					copyWallcol.y += pos.y;
@@ -1062,29 +1088,81 @@ void PlayerEntity::JoyconStates(float dt)
 
 				if (!hCollision)
 				{
-					anim = &dashUpLeft;
 					SDL_Rect copyWallcol = wallCol->rectArea;
-					copyWallcol.x += pos.x;
+					SDL_Rect otherCol;
+					float distance = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
+					copyWallcol.x += pos.x - distance;
 					copyWallcol.y += pos.y;
 
 					fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
 
-					SDL_Rect otherCol;
-					float distance = (CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance);
-
-					copyWallcol.x -= distance;
-
 					if (!App->colliders->collideWithWalls(copyWallcol, otherCol))
 					{
-
 						pos.x = startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(225.0f));
 					}
 					else
 					{
 						distance -= (otherCol.x + otherCol.w) - copyWallcol.x;
+						hCollision = true;
 						pos.x -= distance;
+					}
+				}
+
+				if (vCollision && hCollision)
+				{
+					ResetDash();
+					break;
+				}
+			
+			}
+			else if (animBefore == &idleDownRight)
+			{
+
+				if (!vCollision)
+				{
+					anim = &dashDownRight;
+					SDL_Rect copyWallcol = wallCol->rectArea;
+					SDL_Rect otherCol;
+					float distance = (startPos.y + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance) - pos.y;
+					copyWallcol.x += pos.x;
+					copyWallcol.y += pos.y + distance;
+					fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+
+					if (!App->colliders->collideWithWalls(copyWallcol, otherCol))
+					{
+						pos.y = startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(45.0f));
+					}
+					else
+					{
+						distance -= (copyWallcol.y + copyWallcol.h) - otherCol.y;
+
+						pos.y += distance;
 						ResetDash();
 						break;
+					}
+				}
+
+				if (!hCollision)
+				{
+					anim = &dashDownRight;
+
+					SDL_Rect copyWallcol = wallCol->rectArea;
+					SDL_Rect otherCol;
+					float distance = (startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance) - pos.x;
+					copyWallcol.x += pos.x + distance;
+					copyWallcol.y += pos.y;
+
+					fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+
+					if (!App->colliders->collideWithWalls(copyWallcol, otherCol))
+					{
+						pos.x = startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(45.0f));
+					}
+					else
+					{
+						distance -= (copyWallcol.x + copyWallcol.w) - otherCol.x;
+						hCollision = true;
+						pos.x += distance;
 					}
 				}
 
@@ -1094,17 +1172,7 @@ void PlayerEntity::JoyconStates(float dt)
 					break;
 				}
 
-				// pos.x = startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(225.0f));
-			
-			}
-			else if (animBefore == &idleDownRight)
-			{
-				fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
-
-				pos.x = startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(45.0f));
-				pos.y = startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(45.0f));
-
-				anim = &dashDownRight;
+				
 			}
 			else if (animBefore == &idleDownLeft)
 			{
@@ -1157,7 +1225,7 @@ void PlayerEntity::JoyconStates(float dt)
 				Attack();
 				DashCD = DashConfigCD;
 				t = 0.0f;
-				//vCollision = hCollision = false;
+				vCollision = hCollision = false;
 				break;
 
 			}
@@ -1191,7 +1259,7 @@ void PlayerEntity::JoyconStates(float dt)
 			}
 			DashCD = DashConfigCD;
 			animBefore = nullptr;
-			//vCollision = hCollision = false;
+			vCollision = hCollision = false;
 			t = 0.0f;
 		}
 
