@@ -124,7 +124,7 @@ Guldan::Guldan(fPoint coor, BossType type, SDL_Texture* texture) : BossEntity(co
 	restoreEnergy.PushBack({ 278,345,65,68 });
 	restoreEnergy.PushBack({ 348,345,65,68 });
 	restoreEnergy.PushBack({ 415,345,65,68 });
-	restoreEnergy.speedFactor = 9.0f;
+	restoreEnergy.speedFactor = 1.0f;
 
 	anim = &idle;
 
