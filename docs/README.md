@@ -8,7 +8,7 @@ _Warcraft: HBT_ is a roguelike video game based on Warcraft 2 where you will tak
 * [Facebook](https://www.facebook.com/SoftCactus-Team-486732635057713/)
 * [Youtube](https://www.youtube.com/channel/UCTguladN9y3OM1WT4KbRM5A)
 * [Instagram](https://www.instagram.com/softcactus_team/)
-> Download the latest release [here]()
+> Download the latest release [here](https://github.com/SoftCactusTeam/Warcraft-Heroes-Beyond-Time/releases/tag/Warcraft-Heroes-Beyond-Time-v1.0)
 
 ## **Index**
 
