@@ -560,6 +560,10 @@ bool Scene::CleanUp()
 	skillBinding = nullptr;
 	attackBinding = nullptr;
 	App->map->DeActivate();
+	if (next_scene == Stages::MAIN_MENU)
+	{
+		App->items->DeActivate();
+	}
 	App->entities->DeActivate();
 	App->console->DeActivate();
 	App->path->ClearMap();
@@ -568,10 +572,7 @@ bool Scene::CleanUp()
 	App->projectiles->DeActivate();
 	App->video->DeActivate();
 
-	if (next_scene == Stages::MAIN_MENU)
-	{
-		App->items->DeActivate();
-	}
+
 
 	player = nullptr;
 	lvlChest = nullptr;
