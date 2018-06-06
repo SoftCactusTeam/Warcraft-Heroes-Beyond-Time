@@ -108,11 +108,11 @@ _Morgado Expósito, Arnau's responsibility and Github account_
 
 
 ## **Trailer**
-
+<iframe width="560" height="315" src="https://www.youtube.com/embed/V5RyEadOXCY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ## **Gameplay video**
 
-
+<iframe width="560" height="315" src="https://www.youtube.com/embed/V5RyEadOXCY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 ## **Tools used**  
 
 * **IDE:** Microsoft Visual Studio 2017  
