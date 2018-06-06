@@ -85,28 +85,28 @@ Guldan::Guldan(fPoint coor, BossType type, SDL_Texture* texture) : BossEntity(co
 	dead.loop = false;
 	dead.speedFactor = 9.0f;
 
-	startGeneratingBalls.PushBack({ 484,1,68,68 });
-	startGeneratingBalls.PushBack({ 553,1,68,68 });
-	startGeneratingBalls.PushBack({ 623,1,68,68 });
-	startGeneratingBalls.PushBack({ 692,1,68,68 });
-	startGeneratingBalls.PushBack({ 760,1,68,68 });
-	startGeneratingBalls.PushBack({ 830,1,68,68 });
-	startGeneratingBalls.PushBack({ 898,1,68,68 });
-	generatingBalls.PushBack({ 830,1,68,68 });
-	generatingBalls.PushBack({ 898,1,68,68 });
+	startGeneratingBalls.PushBack({ 416,1,56,68 });
+	startGeneratingBalls.PushBack({ 485,1,56,68 });
+	startGeneratingBalls.PushBack({ 554,1,56,68 });
+	startGeneratingBalls.PushBack({ 623,1,56,68 });
+	startGeneratingBalls.PushBack({ 692,1,56,68 });
+	startGeneratingBalls.PushBack({ 761,1,56,68 });
+	generatingBalls.PushBack({ 830,1,56,68 });
+	generatingBalls.PushBack({ 899,1,56,68 });
+	generatingBalls.PushBack({ 2,70,56,68 });
+	generatingBalls.PushBack({ 71,70,56,68 });
 	startGeneratingBalls.loop = false;
 	generatingBalls.speedFactor = 9.0f;
 	startGeneratingBalls.speedFactor = 9.0f;
 
-	generatingBallsInverse.PushBack({ 898,1,68,68 });
-	generatingBallsInverse.PushBack({ 830,1,68,68 });
-	generatingBallsInverse.PushBack({ 898,1,68,68 });
-	generatingBallsInverse.PushBack({ 830,1,68,68 });
-	generatingBallsInverse.PushBack({ 760,1,68,68 });
-	generatingBallsInverse.PushBack({ 692,1,68,68 });
-	generatingBallsInverse.PushBack({ 623,1,68,68 });
-	generatingBallsInverse.PushBack({ 553,1,68,68 });
-	generatingBallsInverse.PushBack({ 484,1,68,68 });
+	generatingBallsInverse.PushBack({ 899,1,56,68 });
+	generatingBallsInverse.PushBack({ 830,1,56,68 });
+	generatingBallsInverse.PushBack({ 761,1,56,68 });
+	generatingBallsInverse.PushBack({ 692,1,56,68 });
+	generatingBallsInverse.PushBack({ 623,1,56,68 });
+	generatingBallsInverse.PushBack({ 554,1,56,68 });
+	generatingBallsInverse.PushBack({ 485,1,56,68 });
+	generatingBallsInverse.PushBack({ 416,1,56,68 });
 	generatingBallsInverse.loop = false;
 	generatingBallsInverse.speedFactor = 9.0f;
 
@@ -120,10 +120,10 @@ Guldan::Guldan(fPoint coor, BossType type, SDL_Texture* texture) : BossEntity(co
 	hello.loop = false;
 	hello.speedFactor = 9.0f;
 
-	restoreEnergy.PushBack({ 208,352,69,68 });
-	restoreEnergy.PushBack({ 276,352,68,68 });
-	restoreEnergy.PushBack({ 346,352,68,68 });
-	restoreEnergy.PushBack({ 415,352,68,68 });
+	restoreEnergy.PushBack({ 209,345,65,68 });
+	restoreEnergy.PushBack({ 278,345,65,68 });
+	restoreEnergy.PushBack({ 348,345,65,68 });
+	restoreEnergy.PushBack({ 415,345,65,68 });
 	restoreEnergy.speedFactor = 9.0f;
 
 	anim = &idle;
