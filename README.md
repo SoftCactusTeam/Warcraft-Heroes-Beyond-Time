@@ -226,6 +226,22 @@ v0.9.5
 - New sound FX
 - Bug fixing and minor improvements in GUI
 
+v0.9.9
+- Dash sliding with walls.
+- Intro video implemented.
+- Dash particles implemented.
+- Save y Load finished.
+- New settings.
+- New main menu.
+- New transition before Guldan's fight
+- FX Revision.
+- Multiple fixes.
+- Bug Fixing
+
+v1.0
+- Dash with keyboard
+- Bug fixing
+
 ## Installation instructions  
 
 Download the zip file and unzip it. Open the folder, execute the .exe and enjoy!  
