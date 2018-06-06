@@ -3,7 +3,11 @@
 _Warcraft: HBT_ is a roguelike video game based on Warcraft 2 where you will take the role of the orc Thrall.
 
 * [Github repository](https://github.com/SoftCactusTeam/Warcraft_Adventures)  
+* [Website](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/)  
 * [Twitter](https://twitter.com/SoftCactus_Team)
+* [Facebook](https://www.facebook.com/SoftCactus-Team-486732635057713/)
+* [Youtube](https://www.youtube.com/channel/UCTguladN9y3OM1WT4KbRM5A)
+* [Instagram](https://www.instagram.com/softcactus_team/)
 > Download the latest release [here]()
 
 ## **Index**
