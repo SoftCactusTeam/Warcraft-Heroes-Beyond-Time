@@ -24,6 +24,8 @@ I am the lead coder of the team. My role in the project has been maintaining a g
   - TDD
   - General analysis
 
+**Pics!**
+
 ![insta](https://user-images.githubusercontent.com/25582045/41034903-568c174a-698b-11e8-9e13-590872de13e5.gif)
 
 ![nt gif](https://user-images.githubusercontent.com/25582045/41034299-6e5088ea-6989-11e8-92a1-a69e18ea1508.gif)
