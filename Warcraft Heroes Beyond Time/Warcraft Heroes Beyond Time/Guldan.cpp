@@ -122,7 +122,7 @@ Guldan::Guldan(fPoint coor, BossType type, SDL_Texture* texture) : BossEntity(co
 
 	restoreEnergy.PushBack({ 209,345,65,68 });
 	restoreEnergy.PushBack({ 278,345,65,68 });
-	restoreEnergy.PushBack({ 348,345,65,68 });
+	restoreEnergy.PushBack({ 347,345,65,68 });
 	restoreEnergy.PushBack({ 415,345,65,68 });
 	restoreEnergy.speedFactor = 9.0f;
 
@@ -979,10 +979,6 @@ void Guldan::GenerateInverseThunders(int numberXY)
 		info.pos = { 13.0f,12.0f };
 	}
 	else if (numberXY == 27)
-	{
-		info.pos = { 9.0f,10.0f };
-	}
-	else if (numberXY == 28)
 	{
 		info.pos = { 11.0f,12.0f };
 	}
