@@ -928,16 +928,16 @@ void PlayerEntity::JoyconStates(float dt)
 				copyWallcol.y += pos.y;
 
 				SDL_Rect otherCol;
-				float distance = (CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance);
+				float distance = -((startPos.x - (CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance)) - pos.x);
 
 				copyWallcol.x -= distance;
 
 				if (!App->colliders->collideWithWalls(copyWallcol, otherCol) )
 				{
 					
-					pos.x = startPos.x - CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
+					pos.x -= distance;
 				}
-				else 
+				else if(App->colliders->collideWithWalls(copyWallcol, otherCol))
 				{
 					distance -= (otherCol.x + otherCol.w) - copyWallcol.x;
 					pos.x -= distance;        
@@ -954,7 +954,7 @@ void PlayerEntity::JoyconStates(float dt)
 				copyWallcol.y += pos.y;
 
 				SDL_Rect otherCol;
-				float distance = (CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance);
+				float distance = -((startPos.y - (CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance)) - pos.y);
 
 				copyWallcol.y -= distance;
 
@@ -1006,7 +1006,7 @@ void PlayerEntity::JoyconStates(float dt)
 					fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
 
 					SDL_Rect otherCol;
-					float distance = (CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance);
+					float distance = abs(pos.y - (startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(315.0f))));
 
 					copyWallcol.y -= distance;
 
@@ -1028,11 +1028,10 @@ void PlayerEntity::JoyconStates(float dt)
 					anim = &dashUpRight;
 					SDL_Rect copyWallcol = wallCol->rectArea;
 					SDL_Rect otherCol;
-					float distance = (startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance) - pos.x;
+					fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+					float distance = abs(pos.x - (startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(315.0f))));
 					copyWallcol.x += pos.x + distance;
 					copyWallcol.y += pos.y;
-
-					fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
 
 					if (!App->colliders->collideWithWalls(copyWallcol, otherCol))
 					{
@@ -1065,7 +1064,7 @@ void PlayerEntity::JoyconStates(float dt)
 					fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
 
 					SDL_Rect otherCol;
-					float distance = dashDistance * bezierPoint.y * sin(DEG_2_RAD(-225.0f));
+					float distance = abs(pos.y - (startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(225.0f))));
 
 					copyWallcol.y -= distance;
 
@@ -1090,7 +1089,7 @@ void PlayerEntity::JoyconStates(float dt)
 					SDL_Rect otherCol;
 
 					fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
-					float distance = -dashDistance * bezierPoint.y * cos(DEG_2_RAD(225.0f));
+					float distance = abs(pos.x - (startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(225.0f))));
 					copyWallcol.x -= distance;
 
 					if (distance < 0)
@@ -1128,7 +1127,7 @@ void PlayerEntity::JoyconStates(float dt)
 					fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
 
 					SDL_Rect otherCol;
-					float distance = dashDistance * bezierPoint.y * sin(DEG_2_RAD(45.0f));
+					float distance = abs(pos.y - (startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(45.0f))));
 
 					copyWallcol.y += distance;
 
@@ -1148,11 +1147,12 @@ void PlayerEntity::JoyconStates(float dt)
 				{
 					SDL_Rect copyWallcol = wallCol->rectArea;
 					SDL_Rect otherCol;
-					float distance = (startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance) - pos.x;
+					fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+					float distance = abs(pos.x - (startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(45.0f))));
 					copyWallcol.x += pos.x + distance;
 					copyWallcol.y += pos.y;
 
-					fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+					
 
 					if (!App->colliders->collideWithWalls(copyWallcol, otherCol))
 					{
@@ -1187,7 +1187,7 @@ void PlayerEntity::JoyconStates(float dt)
 					fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
 
 					SDL_Rect otherCol;
-					float distance = dashDistance * bezierPoint.y * sin(DEG_2_RAD(135.0f));
+					float distance = abs(pos.y - (startPos.y + dashDistance * bezierPoint.y * sin(DEG_2_RAD(135.0f))));
 
 					copyWallcol.y += distance;
 
@@ -1211,7 +1211,7 @@ void PlayerEntity::JoyconStates(float dt)
 					SDL_Rect otherCol;
 
 					fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
-					float distance = -dashDistance * bezierPoint.y * cos(DEG_2_RAD(135.0f));
+					float distance = abs(pos.x - (startPos.x + dashDistance * bezierPoint.y * cos(DEG_2_RAD(135.0f))));
 					copyWallcol.x -= distance;
 
 					if (distance < 0)
@@ -1243,7 +1243,7 @@ void PlayerEntity::JoyconStates(float dt)
 				{
 					SDL_Rect copyWallcol = wallCol->rectArea;
 					SDL_Rect otherCol;
-					float distance = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
+					float distance = abs(pos.x-(startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance * cos(DEG_2_RAD(angle))));
 					copyWallcol.x += pos.x + distance;
 					copyWallcol.y += pos.y;
 
@@ -1255,7 +1255,6 @@ void PlayerEntity::JoyconStates(float dt)
 					else
 					{
 						distance -= (copyWallcol.x + copyWallcol.w) - otherCol.x;
-
 						pos.x += distance;
 						ResetDash();
 						break;
@@ -1265,7 +1264,7 @@ void PlayerEntity::JoyconStates(float dt)
 				{
 					SDL_Rect copyWallcol = wallCol->rectArea;
 					SDL_Rect otherCol;
-					float distance = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
+					float distance = abs(pos.x - (startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance * cos(DEG_2_RAD(angle))));
 					copyWallcol.x += pos.x - distance;
 					copyWallcol.y += pos.y;
 
@@ -1287,7 +1286,7 @@ void PlayerEntity::JoyconStates(float dt)
 				{
 					SDL_Rect copyWallcol = wallCol->rectArea;
 					SDL_Rect otherCol;
-					float distance = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
+					float distance = abs(pos.y-(startPos.y + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance * sin(DEG_2_RAD(angle))));
 					copyWallcol.x += pos.x;
 					copyWallcol.y += pos.y - distance;
 
@@ -1309,7 +1308,7 @@ void PlayerEntity::JoyconStates(float dt)
 				{
 					SDL_Rect copyWallcol = wallCol->rectArea;
 					SDL_Rect otherCol;
-					float distance = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
+					float distance = abs(pos.y - (startPos.y + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance * sin(DEG_2_RAD(angle))));
 					copyWallcol.x += pos.x;
 					copyWallcol.y += pos.y + distance;
 
@@ -1338,7 +1337,7 @@ void PlayerEntity::JoyconStates(float dt)
 						fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
 
 						SDL_Rect otherCol;
-						float distance = dashDistance * bezierPoint.y * sin(DEG_2_RAD(-225.0f));
+						float distance = abs(pos.y - (startPos.y + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance * sin(DEG_2_RAD(angle))));
 
 						copyWallcol.y -= distance;
 
@@ -1362,7 +1361,7 @@ void PlayerEntity::JoyconStates(float dt)
 						SDL_Rect otherCol;
 
 						fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
-						float distance = -dashDistance * bezierPoint.y * cos(DEG_2_RAD(225.0f));
+						float distance = abs(pos.x - (startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance * cos(DEG_2_RAD(angle))));
 						copyWallcol.x -= distance;
 
 						if (distance < 0)
@@ -1398,7 +1397,7 @@ void PlayerEntity::JoyconStates(float dt)
 						fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
 
 						SDL_Rect otherCol;
-						float distance = (CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance);
+						float distance = abs(pos.y - (startPos.y + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance * sin(DEG_2_RAD(angle))));
 
 						copyWallcol.y -= distance;
 
@@ -1420,7 +1419,7 @@ void PlayerEntity::JoyconStates(float dt)
 						anim = &dashUpRight;
 						SDL_Rect copyWallcol = wallCol->rectArea;
 						SDL_Rect otherCol;
-						float distance = (startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance) - pos.x;
+						float distance = abs(pos.x - (startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance * cos(DEG_2_RAD(angle))));
 						copyWallcol.x += pos.x + distance;
 						copyWallcol.y += pos.y;
 
@@ -1455,7 +1454,7 @@ void PlayerEntity::JoyconStates(float dt)
 						fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
 
 						SDL_Rect otherCol;
-						float distance = dashDistance * bezierPoint.y * sin(DEG_2_RAD(45.0f));
+						float distance = abs(pos.y - (startPos.y + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance * sin(DEG_2_RAD(angle))));
 
 						copyWallcol.y += distance;
 
@@ -1475,7 +1474,7 @@ void PlayerEntity::JoyconStates(float dt)
 					{
 						SDL_Rect copyWallcol = wallCol->rectArea;
 						SDL_Rect otherCol;
-						float distance = (startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance) - pos.x;
+						float distance = abs(pos.x - (startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance * cos(DEG_2_RAD(angle))));
 						copyWallcol.x += pos.x + distance;
 						copyWallcol.y += pos.y;
 
@@ -1510,7 +1509,7 @@ void PlayerEntity::JoyconStates(float dt)
 						fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
 
 						SDL_Rect otherCol;
-						float distance = dashDistance * bezierPoint.y * sin(DEG_2_RAD(135.0f));
+						float distance = abs(pos.y - (startPos.y + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance * sin(DEG_2_RAD(angle))));
 
 						copyWallcol.y += distance;
 
@@ -1534,7 +1533,7 @@ void PlayerEntity::JoyconStates(float dt)
 						SDL_Rect otherCol;
 
 						fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
-						float distance = -dashDistance * bezierPoint.y * cos(DEG_2_RAD(135.0f));
+						float distance = abs(pos.x - (startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance * cos(DEG_2_RAD(angle))));
 						copyWallcol.x -= distance;
 
 						if (distance < 0)
