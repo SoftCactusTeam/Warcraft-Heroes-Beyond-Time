@@ -975,6 +975,7 @@ void Scene::GoMainMenu()
 {
 	if (actual_scene == Stages::INGAME)
 	{
+		App->audio->HaltFX();
 		App->audio->PlayMusic(App->audio->MainMenuBSO.data(), 0.5f);
 	}
 		

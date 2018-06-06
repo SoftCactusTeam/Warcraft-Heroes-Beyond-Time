@@ -156,6 +156,7 @@ public:
 			win = true;
 			state = states::PL_WIN;
 			anim = &idleDown;
+			App->audio->HaltFX();
 		}
 	}
 
