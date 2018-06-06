@@ -995,7 +995,7 @@ void Scene::CreateGratitudeScreen()
 		gratitude.color = White;
 		gratitude.fontName = "LifeCraft90";
 		gratitude.multilabelWidth = 1500;
-		gratitude.text = "                         Victory! \n       Thanks for playing the game. \n       Your support means a lot ^^ \n       More at: @SoftCactus_Team";
+		gratitude.text = "                         Victory! \n       Thanks for playing the game. \n       Your support means a lot ^^ \n       More at: @SoftCactus~Team";
 		App->gui->CreateLabel({ 150, 130 }, gratitude, nullptr, nullptr);
 	}
 }
