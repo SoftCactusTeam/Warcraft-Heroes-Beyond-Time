@@ -1051,8 +1051,6 @@ void PlayerEntity::JoyconStates(float dt)
 					ResetDash();
 					break;
 				}
-					
-
 			}
 			else if (animBefore == &idleUpLeft)
 			{
@@ -1327,6 +1325,64 @@ void PlayerEntity::JoyconStates(float dt)
 							distance -= (otherCol.x + otherCol.w) - copyWallcol.x;
 							hCollision = true;
 							pos.x -= distance;
+						}
+					}
+
+					if (vCollision && hCollision)
+					{
+						ResetDash();
+						break;
+					}
+				}
+				else if (anim == &dashUpRight)
+				{
+					if (!vCollision)
+					{
+						anim = &dashUpRight;
+						SDL_Rect copyWallcol = wallCol->rectArea;
+						copyWallcol.x += pos.x;
+						copyWallcol.y += pos.y;
+
+						fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+
+						SDL_Rect otherCol;
+						float distance = (CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance);
+
+						copyWallcol.y -= distance;
+
+						if (!App->colliders->collideWithWalls(copyWallcol, otherCol))
+						{
+
+							pos.y = startPos.y + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance * sin(DEG_2_RAD(angle));
+						}
+						else
+						{
+							vCollision = true;
+							distance -= (otherCol.y + otherCol.h) - copyWallcol.y;
+							pos.y -= distance;
+						}
+					}
+
+					if (!hCollision)
+					{
+						anim = &dashUpRight;
+						SDL_Rect copyWallcol = wallCol->rectArea;
+						SDL_Rect otherCol;
+						float distance = (startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance) - pos.x;
+						copyWallcol.x += pos.x + distance;
+						copyWallcol.y += pos.y;
+
+						fPoint bezierPoint = CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f });
+
+						if (!App->colliders->collideWithWalls(copyWallcol, otherCol))
+						{
+							pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance * cos(DEG_2_RAD(angle));
+						}
+						else
+						{
+							distance -= (copyWallcol.x + copyWallcol.w) - otherCol.x;
+							hCollision = true;
+							pos.x += distance;
 						}
 					}
 
