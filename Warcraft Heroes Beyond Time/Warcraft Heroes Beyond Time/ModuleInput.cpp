@@ -60,8 +60,8 @@ bool Input::Awake(pugi::xml_node& inputNode)
 
 	InitController();
 
-	if(App->fs->isInputSettingSaved())
-		App->LoadInput();
+	if(App->fs->AreSettingsSaved())
+		App->LoadSettings();
 
 
 	return ret;

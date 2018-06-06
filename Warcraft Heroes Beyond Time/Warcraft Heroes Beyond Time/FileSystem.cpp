@@ -196,7 +196,7 @@ bool FileSystem::isGameSaved()
 	return PHYSFS_fileLength(file) != 0;
 }
 
-bool FileSystem::isInputSettingSaved() const
+bool FileSystem::AreSettingsSaved() const
 {
 	std::string fileDir = savesFolder + std::string("inputSettings.xml");
 	PHYSFS_File* file = PHYSFS_openRead(fileDir.data());

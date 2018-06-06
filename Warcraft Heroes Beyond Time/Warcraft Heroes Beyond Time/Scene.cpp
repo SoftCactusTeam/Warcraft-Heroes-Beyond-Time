@@ -708,7 +708,7 @@ bool Scene::OnUIEvent(GUIElem* UIelem, UIEvents _event)
 									App->audio->HaltFX();
 								}
 								else if (actual_scene == Stages::SETTINGS)
-									App->SaveInput();
+									App->SaveSettings();
 
 								next_scene = Stages::MAIN_MENU;
 								lvlIndex = 0;

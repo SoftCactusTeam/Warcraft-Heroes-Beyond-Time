@@ -196,11 +196,11 @@ bool Application::FinishUpdate()
 	if (savegame && ret == true)
 		ret = SaveNow();
 
-	if (loadinput && ret == true)
-		ret = LoadInputNow();
+	if (loadsettings && ret == true)
+		ret = LoadSettingsNow();
 
-	if (saveinput && ret == true)
-		ret == SaveInputNow();
+	if (savesettings && ret == true)
+		ret == SaveSettingsNow();
 
 	// Framerate calculations --
 	if (last_sec_frame_time.Read() > 1000)
@@ -372,8 +372,6 @@ pugi::xml_node Application::LoadEmitters(pugi::xml_document & psystem_file) cons
 	return ret;
 }
 
-
-
 void Application::Save()
 {
 	savegame = true;
@@ -394,7 +392,7 @@ bool Application::SaveNow() const
 	std::list<Module*>::const_iterator it;
 	for (it = modules.begin(); it != modules.end(); ++it)
 	{
-		if (*it == input)
+		if (*it == input || *it == audio)
 			continue;
 		(*it)->Save(game.append_child((*it)->name.data()));
 	}
@@ -425,7 +423,7 @@ bool Application::LoadNow()
 	std::list<Module*>::const_iterator it;
 	for (it = modules.begin(); it != modules.end(); ++it)
 	{
-		if (*it == input)
+		if (*it == input || *it == audio)
 			continue;
 
 		(*it)->Load(game.child((*it)->name.data()));
@@ -436,19 +434,19 @@ bool Application::LoadNow()
 	return true;
 }
 
-void Application::SaveInput()
+void Application::SaveSettings()
 {
-	saveinput = true;
+	savesettings = true;
 }
 
-void Application::LoadInput()
+void Application::LoadSettings()
 {
-	loadinput = true;
+	loadsettings = true;
 }
 
-bool Application::LoadInputNow()
+bool Application::LoadSettingsNow()
 {
-	loadinput = false;
+	loadsettings = false;
 	char* buffer;
 	uint size;
 	size = fs->Load("Saves/inputSettings.xml", &buffer);
@@ -458,7 +456,7 @@ bool Application::LoadInputNow()
 	if (!doc.load_buffer(buffer, size))
 	{
 		LOG("Error loading xmldocument from buffer\n");
-		return false;
+		//return false;
 	}
 
 	pugi::xml_node game = doc.first_child();
@@ -466,7 +464,7 @@ bool Application::LoadInputNow()
 	std::list<Module*>::const_iterator it;
 	for (it = modules.begin(); it != modules.end(); ++it)
 	{
-		if (*it != input)
+		if (*it != input && *it != audio)
 			continue;
 
 		(*it)->Load(game.child((*it)->name.data()));
@@ -477,9 +475,9 @@ bool Application::LoadInputNow()
 	return true;
 }
 
-bool Application::SaveInputNow() const
+bool Application::SaveSettingsNow() const
 {
-	saveinput = false;
+	savesettings = false;
 
 	pugi::xml_document savedgame;
 	pugi::xml_node game = savedgame.append_child("Game");
@@ -487,7 +485,7 @@ bool Application::SaveInputNow() const
 	std::list<Module*>::const_iterator it;
 	for (it = modules.begin(); it != modules.end(); ++it)
 	{
-		if (*it != input)
+		if (*it != input && *it != audio)
 			continue;
 		(*it)->Save(game.append_child((*it)->name.data()));
 	}

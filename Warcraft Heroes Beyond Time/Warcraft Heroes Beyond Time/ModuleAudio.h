@@ -30,6 +30,11 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	//Save and Load
+	void Save(pugi::xml_node&);
+	void Load(const pugi::xml_node&);
+
+
 	// Play a music file
 	bool PlayMusic(const char* path, float fade_time = DEFAULT_MUSIC_FADE_TIME);
 

@@ -54,8 +54,8 @@ public:
 
 	void Save();
 	void Load();
-	void SaveInput();
-	void LoadInput();
+	void SaveSettings();
+	void LoadSettings();
 
 	void AddCommands();
 	pugi::xml_node LoadEmitters(pugi::xml_document& psystem_file) const;
@@ -64,10 +64,10 @@ private:
 
 	bool LoadConfig(pugi::xml_document&);
 	bool SaveNow() const;
-	bool SaveInputNow()const;
+	bool SaveSettingsNow()const;
 public:
 	bool LoadNow();
-	bool LoadInputNow();
+	bool LoadSettingsNow();
 
 private:
 
@@ -127,8 +127,8 @@ private:
 	mutable bool savegame = false;
 	bool loadgame = false;
 
-	mutable bool saveinput = false;
-	bool loadinput = false;
+	mutable bool savesettings = false;
+	bool loadsettings = false;
 };
 
 extern Application* App;

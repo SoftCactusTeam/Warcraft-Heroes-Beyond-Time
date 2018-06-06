@@ -149,6 +149,20 @@ bool Audio::CleanUp()
 	return true;
 }
 
+void Audio::Save(pugi::xml_node& audioNode)
+{
+	pugi::xml_node volumes = audioNode.append_child("Volumes");
+	volumes.append_attribute("Music_Volume").set_value(MusicVolumePercent);
+	volumes.append_attribute("FX_Volume").set_value(FXVolumePercent);
+}
+
+void Audio::Load(const pugi::xml_node& audioNode)
+{
+	pugi::xml_node volumes = audioNode.child("Volumes");
+	MusicVolumePercent = volumes.attribute("Music_Volume").as_int(MusicVolumePercent);
+	FXVolumePercent = volumes.attribute("FX_Volume").as_int(FXVolumePercent);
+}
+
 // Play a music file
 bool Audio::PlayMusic(const char* path, float fade_time)
 {
