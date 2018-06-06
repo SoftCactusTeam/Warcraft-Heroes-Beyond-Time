@@ -24,7 +24,6 @@ I am the lead coder of the team. My role in the project has been maintaining a g
   - TDD
   - General analysis
 
+![nt gif](https://user-images.githubusercontent.com/25582045/41034299-6e5088ea-6989-11e8-92a1-a69e18ea1508.gif)
 
 [Back to home page](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/)
-
-![8dir_walk_gif](https://user-images.githubusercontent.com/25589509/40886328-f749a7e0-6735-11e8-84ef-360d3b04e18d.gif)
