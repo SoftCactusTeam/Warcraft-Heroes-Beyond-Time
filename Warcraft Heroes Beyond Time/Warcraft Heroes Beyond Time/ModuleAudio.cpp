@@ -95,7 +95,7 @@ void Audio::InitAudio()
 	GuldanChargingPower = LoadFx("audio/fx/guldan/charging_power_fx.ogg");
 	GuldanThunderFX = LoadFx("audio/fx/guldan/G_thunder.ogg");
 	GuldanHexBall = LoadFx("audio/fx/guldan/G_hex_generate.ogg");
-	GuldanMeteoriteTarget = LoadFx("audio/fx/guldan/meteorite_fx.ogg");
+	GuldanMeteoriteTarget = LoadFx("audio/fx/guldan/firePreGeyser.ogg");
 	GuldanSecondPhase = LoadFx("audio/fx/guldan/red_balls_fx.ogg");
 	GuldanFireSecondPhase = LoadFx("audio/fx/guldan/G_fire_fx.ogg");
 	GuldanSpiralFX = LoadFx("audio/fx/guldan/G_spiral.ogg");

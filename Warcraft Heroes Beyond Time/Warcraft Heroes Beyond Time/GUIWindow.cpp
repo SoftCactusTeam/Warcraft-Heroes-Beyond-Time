@@ -6,6 +6,7 @@
 #include "Label.h"
 #include "FileSystem.h"
 #include "Scene.h"
+#include "ModuleTransitions.h"
 
 GUIWindow::GUIWindow(fPoint localPos, SDL_Rect atlasRect, GUIElem* parent, Module* listener) : GUIElem(localPos, listener, atlasRect, GUIElemType::WINDOW, parent)
 {
@@ -26,10 +27,13 @@ bool GUIWindow::Update(float dt)
 
 	if (menu)
 	{
-		if (vertical)
-			result = checkVerticalInputs(dt);
-		else
-			result = checkHorizontalInputs(dt);
+		if (!App->transitions->IsFading())
+		{
+			if (vertical)
+				result = checkVerticalInputs(dt);
+			else
+				result = checkHorizontalInputs(dt);
+		}
 	}
 	
 	if (App->input->GetKey(SDL_SCANCODE_R) == KeyState::KEY_DOWN)
