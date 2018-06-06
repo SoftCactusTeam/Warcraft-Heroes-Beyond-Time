@@ -1,19 +1,3 @@
-
-TODO:
-
-Link to the game website should contain:
-- Index
-- Description of the game
-- Name of each developer with link to their individual page
-- Team photo
-- Link to the facebook and twitter page
-- Link to the stable 1.0 Release for downloading
-- A trailer of 15-25 secs.
-- A Gameplay video of 1-2 min. that also shows debug features.
-- Individual page for each team member explaining their individual contribution. Be as
-  visual as possible.
-
-
 # **Warcraft: Heroes Beyond Time**
 
 _Warcraft: HBT_ is a roguelike video game based on Warcraft 2 where you will take the role of the orc Thrall.
@@ -123,10 +107,11 @@ _Morgado Expósito, Arnau's responsibility and Github account_
 
 
 ## **Trailer**
-
+<iframe width="854" height="480" src="https://www.youtube.com/embed/XEsfAWTrO4U" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ## **Gameplay video**
 
+<iframe width="854" height="480" src="https://www.youtube.com/embed/pwYtGFjUXfY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ## **Tools used**  
 
