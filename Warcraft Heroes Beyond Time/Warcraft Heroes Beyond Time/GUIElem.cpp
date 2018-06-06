@@ -58,7 +58,8 @@ bool GUIElem::HandleInput(float dt)
 
 			if (((MouseHover() && App->input->IsKeyboardAvailable()) || focused))
 			{
-				parent->UnFocusChilds();
+				if(parent)
+					parent->UnFocusChilds();
 				Focus();
 				UIevent = UIEvents::MOUSE_ENTER;
 				listener->OnUIEvent((GUIElem*)this, UIevent);

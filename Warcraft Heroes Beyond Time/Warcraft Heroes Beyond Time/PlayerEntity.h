@@ -122,8 +122,8 @@ public:
 	bool IsPlayerMoving();
 
 	// Bezier/dash related variables
-	fPoint handleA = { 0.4f, 0.35f };
-	fPoint handleB = { 0.5f, 0.8f };
+	fPoint handleA = { 0.0f, 1.0f };
+	fPoint handleB = { 0.0f, 1.0f };
 	fPoint endPos = { 0.0f, 0.0f };
 	float angle = 0.0f;
 	float dashDistance = 100.0f;
@@ -156,6 +156,7 @@ public:
 			win = true;
 			state = states::PL_WIN;
 			anim = &idleDown;
+			App->audio->HaltFX();
 		}
 	}
 
