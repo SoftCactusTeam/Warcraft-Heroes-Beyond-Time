@@ -26,3 +26,5 @@ I am the lead coder of the team. My role in the project has been maintaining a g
 
 
 [Back to home page](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/)
+
+![8dir_walk_gif](https://user-images.githubusercontent.com/25589509/40886328-f749a7e0-6735-11e8-84ef-360d3b04e18d.gif)
