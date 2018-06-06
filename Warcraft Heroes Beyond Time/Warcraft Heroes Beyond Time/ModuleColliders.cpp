@@ -502,6 +502,25 @@ void ModuleColliders::PrintColliders() const
 	}
 }
 
+bool ModuleColliders::collideWithWalls(SDL_Rect newPos, SDL_Rect& otherCol)
+{
+	std::list<std::shared_ptr<Collider*>>::iterator it;
+	for (it = colliderList.begin(); it != colliderList.end(); ++it)
+	{
+		Collider* col = **it;
+		if (col->owner != nullptr)
+			continue;
+		
+		SDL_Rect temp = col->rectArea;
+		otherCol = temp;
+		
+		if (newPos.x < otherCol.x + otherCol.w && newPos.x + newPos.w > otherCol.x &&
+			newPos.y < otherCol.y + otherCol.h && newPos.y + newPos.h > otherCol.y)
+			return true;
+	}
+	return false;
+}
+
 void ModuleColliders::AddCommands()
 {
 	ConsoleOrder* order = new ConsoleColliders();
