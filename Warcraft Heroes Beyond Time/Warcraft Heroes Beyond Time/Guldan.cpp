@@ -195,6 +195,7 @@ bool Guldan::Update(float dt)
 
 		if (anim == &hello && anim->Finished())
 		{
+			App->audio->PlayMusic(App->audio->GuldanBSO.data(), 1);
 			anim = &idle;
 			statesBoss = BossStates::TELEPORT;
 			anim = &teleport;

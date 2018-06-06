@@ -508,7 +508,7 @@ bool ModuleColliders::collideWithWalls(SDL_Rect newPos, SDL_Rect& otherCol)
 	for (it = colliderList.begin(); it != colliderList.end(); ++it)
 	{
 		Collider* col = **it;
-		if (col->owner != nullptr)
+		if (col->colType != Collider::ColliderType::WALL)
 			continue;
 		
 		SDL_Rect temp = col->rectArea;

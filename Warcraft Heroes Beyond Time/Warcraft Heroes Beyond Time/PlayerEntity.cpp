@@ -837,7 +837,7 @@ void PlayerEntity::JoyconStates(float dt)
 			state = states::PL_MOVE;
 		}
 
-		else if (App->input->GetAction("Dash") == KEY_DOWN && t == 0.0f && DashCD == 0.0f && move)
+		else if (App->input->GetAction("Dash") == KEY_DOWN && t == 0.0f && move)
 		{
 			App->audio->PlayFx(App->audio->Thrall_Dash_FX);
 			App->input->PlayJoyRumble(0.85f, 100);
@@ -875,8 +875,28 @@ void PlayerEntity::JoyconStates(float dt)
 		{
 			if (animBefore == &idleRight)
 			{
-				pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
 				anim = &dashRight;
+				SDL_Rect copyWallcol = wallCol->rectArea; // 4, 2, 13, 23
+				SDL_Rect otherCol;
+				float distance = (startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance) - pos.x;
+				copyWallcol.x += pos.x + distance;
+				copyWallcol.y += pos.y;
+
+				if (!App->colliders->collideWithWalls(copyWallcol, otherCol))
+				{
+					pos.x = startPos.x + CalculatePosFromBezier({ 0.0f, 0.0f }, handleA, t, handleB, { 1.0f, 1.0f }).y * dashDistance;
+				}
+				else
+				{
+					distance -= (copyWallcol.x + copyWallcol.w) - otherCol.x;
+					
+					pos.x += distance;
+					ResetDash();
+					break;
+				}
+
+				
+		
 
 			}
 			else if (animBefore == &idleLeft)
