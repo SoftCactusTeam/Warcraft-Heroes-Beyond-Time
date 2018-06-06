@@ -85,28 +85,28 @@ Guldan::Guldan(fPoint coor, BossType type, SDL_Texture* texture) : BossEntity(co
 	dead.loop = false;
 	dead.speedFactor = 9.0f;
 
-	startGeneratingBalls.PushBack({ 484,1,68,68 });
-	startGeneratingBalls.PushBack({ 553,1,68,68 });
-	startGeneratingBalls.PushBack({ 623,1,68,68 });
-	startGeneratingBalls.PushBack({ 692,1,68,68 });
-	startGeneratingBalls.PushBack({ 760,1,68,68 });
-	startGeneratingBalls.PushBack({ 830,1,68,68 });
-	startGeneratingBalls.PushBack({ 898,1,68,68 });
-	generatingBalls.PushBack({ 830,1,68,68 });
-	generatingBalls.PushBack({ 898,1,68,68 });
+	startGeneratingBalls.PushBack({ 416,1,56,68 });
+	startGeneratingBalls.PushBack({ 485,1,56,68 });
+	startGeneratingBalls.PushBack({ 554,1,56,68 });
+	startGeneratingBalls.PushBack({ 623,1,56,68 });
+	startGeneratingBalls.PushBack({ 692,1,56,68 });
+	startGeneratingBalls.PushBack({ 761,1,56,68 });
+	generatingBalls.PushBack({ 830,1,56,68 });
+	generatingBalls.PushBack({ 899,1,56,68 });
+	generatingBalls.PushBack({ 2,70,56,68 });
+	generatingBalls.PushBack({ 71,70,56,68 });
 	startGeneratingBalls.loop = false;
 	generatingBalls.speedFactor = 9.0f;
 	startGeneratingBalls.speedFactor = 9.0f;
 
-	generatingBallsInverse.PushBack({ 898,1,68,68 });
-	generatingBallsInverse.PushBack({ 830,1,68,68 });
-	generatingBallsInverse.PushBack({ 898,1,68,68 });
-	generatingBallsInverse.PushBack({ 830,1,68,68 });
-	generatingBallsInverse.PushBack({ 760,1,68,68 });
-	generatingBallsInverse.PushBack({ 692,1,68,68 });
-	generatingBallsInverse.PushBack({ 623,1,68,68 });
-	generatingBallsInverse.PushBack({ 553,1,68,68 });
-	generatingBallsInverse.PushBack({ 484,1,68,68 });
+	generatingBallsInverse.PushBack({ 899,1,56,68 });
+	generatingBallsInverse.PushBack({ 830,1,56,68 });
+	generatingBallsInverse.PushBack({ 761,1,56,68 });
+	generatingBallsInverse.PushBack({ 692,1,56,68 });
+	generatingBallsInverse.PushBack({ 623,1,56,68 });
+	generatingBallsInverse.PushBack({ 554,1,56,68 });
+	generatingBallsInverse.PushBack({ 485,1,56,68 });
+	generatingBallsInverse.PushBack({ 416,1,56,68 });
 	generatingBallsInverse.loop = false;
 	generatingBallsInverse.speedFactor = 9.0f;
 
@@ -120,10 +120,10 @@ Guldan::Guldan(fPoint coor, BossType type, SDL_Texture* texture) : BossEntity(co
 	hello.loop = false;
 	hello.speedFactor = 9.0f;
 
-	restoreEnergy.PushBack({ 208,352,69,68 });
-	restoreEnergy.PushBack({ 276,352,68,68 });
-	restoreEnergy.PushBack({ 346,352,68,68 });
-	restoreEnergy.PushBack({ 415,352,68,68 });
+	restoreEnergy.PushBack({ 209,345,65,68 });
+	restoreEnergy.PushBack({ 278,345,65,68 });
+	restoreEnergy.PushBack({ 348,345,65,68 });
+	restoreEnergy.PushBack({ 415,345,65,68 });
 	restoreEnergy.speedFactor = 9.0f;
 
 	anim = &idle;
@@ -550,7 +550,7 @@ bool Guldan::Update(float dt)
 			step += 1;
 		}
 
-		if (step >= 48)
+		if (step >= 29)
 		{
 			step = 0;
 			statesBoss = BossStates::IDLE;
@@ -747,198 +747,118 @@ void Guldan::GenerateThunders(int numberXY)
 	ThunderInfo info;
 	info.pos = { 10.0f,5.0f };
 
-	if (numberXY == 0)
-	{
-		info.pos = { 9.0f,6.0f };
-	}
-	else if (numberXY == 1)
-	{
-		info.pos = { 10.0f,5.0f };
-	}
-	else if (numberXY == 2)
-	{
-		info.pos = { 9.0f,8.0f };
-	}
-	else if (numberXY == 3)
-	{
-		info.pos = { 10.0f,7.0f };
-	}
-	else if (numberXY == 4)
-	{
-		info.pos = { 11.0f,6.0f };
-	}
-	else if (numberXY == 5)
-	{
-		info.pos = { 12.0f,5.0f };
-	}
-	else if (numberXY == 6)
-	{
-		info.pos = { 9.0f,10.0f };
-	}
-	else if (numberXY == 7)
-	{
-		info.pos = { 10.0f,9.0f };
-	}
-	else if (numberXY == 8)
+	info.layer = 10;
+
+	if (numberXY == 1)
 	{
 		info.pos = { 11.0f,8.0f };
 	}
-	else if (numberXY == 9)
+	else if (numberXY == 2)
 	{
 		info.pos = { 12.0f,7.0f };
 	}
-	else if (numberXY == 10)
-	{
-		info.pos = { 13.0f,6.0f };
-	}
-	else if (numberXY == 11)
-	{
-		info.pos = { 9.0f,10.0f };
-	}
-	else if (numberXY == 12)
-	{
-		info.pos = { 10.0f,11.0f };
-	}
-	else if (numberXY == 13)
+	else if (numberXY == 3)
 	{
 		info.pos = { 11.0f,10.0f };
 	}
-	else if (numberXY == 14)
+	else if (numberXY == 4)
 	{
 		info.pos = { 12.0f,9.0f };
 	}
-	else if (numberXY == 15)
+	else if (numberXY == 5)
 	{
 		info.pos = { 13.0f,8.0f };
 	}
-	else if (numberXY == 16)
+	else if (numberXY == 6)
 	{
 		info.pos = { 14.0f,7.0f };
 	}
-	else if (numberXY == 17)
+	else if (numberXY == 7)
 	{
 		info.pos = { 11.0f,12.0f };
 	}
-	else if (numberXY == 18)
+	else if (numberXY == 8)
 	{
 		info.pos = { 12.0f,11.0f };
 	}
-	else if (numberXY == 19)
+	else if (numberXY == 9)
 	{
 		info.pos = { 13.0f,10.0f };
 	}
-	else if (numberXY == 20)
+	else if (numberXY == 10)
 	{
 		info.pos = { 14.0f,9.0f };
 	}
-	else if (numberXY == 21)
+	else if (numberXY == 11)
 	{
 		info.pos = { 15.0f,8.0f };
 	}
-	else if (numberXY == 22)
+	else if (numberXY == 12)
 	{
 		info.pos = { 16.0f,7.0f };
 	}
-	else if (numberXY == 23)
-	{
-		info.pos = { 17.0f,6.0f };
-	}
-	else if (numberXY == 24)
-	{
-		info.pos = { 18.0f,5.0f };
-	}
-	else if (numberXY == 25)
+	else if (numberXY == 13)
 	{
 		info.pos = { 13.0f,12.0f };
 	}
-	else if (numberXY == 26)
+	else if (numberXY == 14)
 	{
 		info.pos = { 14.0f,11.0f };
 	}
-	else if (numberXY == 27)
+	else if (numberXY == 15)
 	{
 		info.pos = { 15.0f,10.0f };
 	}
-	else if (numberXY == 28)
+	else if (numberXY == 16)
 	{
 		info.pos = { 16.0f,9.0f };
 	}
-	else if (numberXY == 29)
+	else if (numberXY == 17)
 	{
 		info.pos = { 17.0f,8.0f };
 	}
-	else if (numberXY == 30)
+	else if (numberXY == 20)
 	{
 		info.pos = { 18.0f,7.0f };
 	}
-	else if (numberXY == 31)
-	{
-		info.pos = { 19.0f,6.0f };
-	}
-	else if (numberXY == 32)
-	{
-		info.pos = { 20.0f,5.0f };
-	}
-	else if (numberXY == 33)
+	else if (numberXY == 21)
 	{
 		info.pos = { 15.0f,12.0f };
 	}
-	else if (numberXY == 34)
+	else if (numberXY == 22)
 	{
 		info.pos = { 16.0f,11.0f };
 	}
-	else if (numberXY == 35)
+	else if (numberXY == 23)
 	{
 		info.pos = { 17.0f,10.0f };
 	}
-	else if (numberXY == 36)
+	else if (numberXY == 24)
 	{
 		info.pos = { 18.0f,9.0f };
 	}
-	else if (numberXY == 37)
+	else if (numberXY == 25)
 	{
 		info.pos = { 19.0f,8.0f };
 	}
-	else if (numberXY == 38)
-	{
-		info.pos = { 20.0f,7.0f };
-	}
-	else if (numberXY == 39)
-	{
-		info.pos = { 21.0f,6.0f };
-	}
-	else if (numberXY == 40)
+	else if (numberXY == 26)
 	{
 		info.pos = { 17.0f,12.0f };
 	}
-	else if (numberXY == 41)
+	else if (numberXY == 27)
 	{
 		info.pos = { 18.0f,11.0f };
 	}
-	else if (numberXY == 42)
+	else if (numberXY == 28)
 	{
 		info.pos = { 19.0f,10.0f };
 	}
-	else if (numberXY == 43)
-	{
-		info.pos = { 20.0f,9.0f };
-	}
-	else if (numberXY == 44)
-	{
-		info.pos = { 21.0f,8.0f };
-	}
-	else if (numberXY == 45)
+	else if (numberXY == 29)
 	{
 		info.pos = { 19.0f,12.0f };
 	}
-	else if (numberXY == 46)
-	{
-		info.pos = { 20.0f,11.0f };
-	}
-	else if (numberXY == 47)
-	{
-		info.pos = { 21.0f,10.0f };
-	}
+	else
+		return;
 
 	info.pos.x *= 48.0f;
 	info.pos.y *= 48.0f;
@@ -951,202 +871,123 @@ void Guldan::GenerateInverseThunders(int numberXY)
 	ThunderInfo info;
 	info.pos = { 10.0f,5.0f };
 
-	if (numberXY == 0)
-	{
-		info.pos = { 20.0f,5.0f };
-	}
-	else if (numberXY == 1)
-	{
-		info.pos = { 21.0f,6.0f };
-	}
-	else if (numberXY == 2)
-	{
-		info.pos = { 18.0f,5.0f };
-	}
-	else if (numberXY == 3)
-	{
-		info.pos = { 19.0f,6.0f };
-	}
-	else if (numberXY == 4)
-	{
-		info.pos = { 20.0f,7.0f };
-	}
-	else if (numberXY == 5)
-	{
-		info.pos = { 21.0f,8.0f };
-	}
-	else if (numberXY == 6)
-	{
-		info.pos = { 17.0f,6.0f };
-	}
-	else if (numberXY == 7)
+	info.layer = 10;
+
+	
+	if (numberXY == 1)
 	{
 		info.pos = { 18.0f,7.0f };
 	}
-	else if (numberXY == 8)
+	else if (numberXY == 2)
 	{
 		info.pos = { 19.0f,8.0f };
 	}
-	else if (numberXY == 9)
-	{
-		info.pos = { 20.0f,9.0f };
-	}
-	else if (numberXY == 10)
-	{
-		info.pos = { 21.0f,10.0f };
-	}
-	else if (numberXY == 11)
+	else if (numberXY == 3)
 	{
 		info.pos = { 16.0f,7.0f };
 	}
-	else if (numberXY == 12)
+	else if (numberXY == 4)
 	{
 		info.pos = { 17.0f,8.0f };
 	}
-	else if (numberXY == 13)
+	else if (numberXY == 5)
 	{
 		info.pos = { 18.0f,9.0f };
 	}
-	else if (numberXY == 14)
+	else if (numberXY == 6)
 	{
 		info.pos = { 19.0f,10.0f };
 	}
-	else if (numberXY == 15)
-	{
-		info.pos = { 20.0f,11.0f };
-	}
-	else if (numberXY == 16)
-	{
-		info.pos = { 21.0f,12.0f };
-	}
-	else if (numberXY == 17)
-	{
-		info.pos = { 12.0f,5.0f };
-	}
-	else if (numberXY == 18)
-	{
-		info.pos = { 13.0f,6.0f };
-	}
-	else if (numberXY == 19)
+	else if (numberXY == 7)
 	{
 		info.pos = { 14.0f,7.0f };
 	}
-	else if (numberXY == 20)
+	else if (numberXY == 8)
 	{
 		info.pos = { 15.0f,8.0f };
 	}
-	else if (numberXY == 21)
+	else if (numberXY == 9)
 	{
 		info.pos = { 16.0f,9.0f };
 	}
-	else if (numberXY == 22)
+	else if (numberXY == 10)
 	{
 		info.pos = { 17.0f,10.0f };
 	}
-	else if (numberXY == 23)
+	else if (numberXY == 11)
 	{
 		info.pos = { 18.0f,11.0f };
 	}
-	else if (numberXY == 24)
+	else if (numberXY == 12)
 	{
 		info.pos = { 19.0f,12.0f };
 	}
-	else if (numberXY == 25)
-	{
-		info.pos = { 10.0f,5.0f };
-	}
-	else if (numberXY == 26)
-	{
-		info.pos = { 11.0f,6.0f };
-	}
-	else if (numberXY == 27)
+	else if (numberXY == 13)
 	{
 		info.pos = { 12.0f,7.0f };
 	}
-	else if (numberXY == 28)
+	else if (numberXY == 14)
 	{
 		info.pos = { 13.0f,8.0f };
 	}
-	else if (numberXY == 29)
+	else if (numberXY == 15)
 	{
 		info.pos = { 14.0f,9.0f };
 	}
-	else if (numberXY == 30)
+	else if (numberXY == 16)
 	{
 		info.pos = { 15.0f,10.0f };
 	}
-	else if (numberXY == 31)
+	else if (numberXY == 17)
 	{
 		info.pos = { 16.0f,11.0f };
 	}
-	else if (numberXY == 32)
+	else if (numberXY == 18)
 	{
 		info.pos = { 17.0f,12.0f };
 	}
-	else if (numberXY == 33)
-	{
-		info.pos = { 9.0f,6.0f };
-	}
-	else if (numberXY == 34)
-	{
-		info.pos = { 10.0f,7.0f };
-	}
-	else if (numberXY == 35)
+	else if (numberXY == 19)
 	{
 		info.pos = { 11.0f,8.0f };
 	}
-	else if (numberXY == 36)
+	else if (numberXY == 20)
 	{
 		info.pos = { 12.0f,9.0f };
 	}
-	else if (numberXY == 37)
+	else if (numberXY == 21)
 	{
 		info.pos = { 13.0f,10.0f };
 	}
-	else if (numberXY == 38)
+	else if (numberXY == 22)
 	{
 		info.pos = { 14.0f,11.0f };
 	}
-	else if (numberXY == 39)
+	else if (numberXY == 23)
 	{
 		info.pos = { 15.0f,12.0f };
 	}
-	else if (numberXY == 40)
-	{
-		info.pos = { 9.0f,8.0f };
-	}
-	else if (numberXY == 41)
-	{
-		info.pos = { 10.0f,9.0f };
-	}
-	else if (numberXY == 42)
+	else if (numberXY == 24)
 	{
 		info.pos = { 11.0f,10.0f };
 	}
-	else if (numberXY == 43)
+	else if (numberXY == 25)
 	{
 		info.pos = { 12.0f,11.0f };
 	}
-	else if (numberXY == 44)
+	else if (numberXY == 26)
 	{
 		info.pos = { 13.0f,12.0f };
 	}
-	else if (numberXY == 45)
+	else if (numberXY == 27)
 	{
 		info.pos = { 9.0f,10.0f };
 	}
-	else if (numberXY == 46)
-	{
-		info.pos = { 10.0f,11.0f };
-	}
-	else if (numberXY == 47)
+	else if (numberXY == 28)
 	{
 		info.pos = { 11.0f,12.0f };
 	}
-	else if (numberXY == 47)
-	{
-		info.pos = { 9.0f,12.0f };
-	}
+	else
+		return;
 
 	info.pos.x *= 48.0f;
 	info.pos.y *= 48.0f;
@@ -1184,7 +1025,7 @@ void Guldan::OnCollision(Collider* yours, Collider* collideWith)
 		{
 			PlayerAttack* attack = (PlayerAttack*)collideWith;
 		
-			if (anim != &teleport || anim != &inverseTeleport)
+			if (anim != &teleport && anim != &inverseTeleport)
 			{
 				numStats.hp -= attack->damage;
 				if (numStats.hp <= 0.0f)
