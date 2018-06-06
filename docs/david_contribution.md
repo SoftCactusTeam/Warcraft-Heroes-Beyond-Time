@@ -16,19 +16,19 @@ Also I've been doing playtests and helping with the design of the game.
 
 Here you can see some of my work I've made during the project.
 
-** Versus Animation: **
+**_Versus Animation:_**
 
 ![sprite-0001](https://user-images.githubusercontent.com/26002028/41006636-a365f72a-6922-11e8-98ca-0bce1576312a.gif)
 
-** Gul'Dan's idle: **
+**_Gul'Dan's idle:_**
 
 ![gul dan animation](https://user-images.githubusercontent.com/26002028/41006688-eb13be18-6922-11e8-8bca-5f50295f981f.gif)
 
-** Gul'Dan's death **
+**_Gul'Dan's death_**
 
 ![gul dan death](https://user-images.githubusercontent.com/26002028/41006710-fc72b614-6922-11e8-9573-c0ebc0a14027.gif)
 
-** Item visual rework example **
+**_Item visual rework example_**
  
 ![rework items](https://user-images.githubusercontent.com/26002028/41006938-d08e6434-6923-11e8-9fd2-3d8338c06e69.png)
 
