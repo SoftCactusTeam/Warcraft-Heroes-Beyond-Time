@@ -1,6 +1,3 @@
-https://youtu.be/pwYtGFjUXfY
-
-https://youtu.be/XEsfAWTrO4U
 # **Warcraft: Heroes Beyond Time**
 
 _Warcraft: HBT_ is a roguelike video game based on Warcraft 2 where you will take the role of the orc Thrall.
