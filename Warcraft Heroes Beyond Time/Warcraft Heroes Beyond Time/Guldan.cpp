@@ -1184,7 +1184,7 @@ void Guldan::OnCollision(Collider* yours, Collider* collideWith)
 		{
 			PlayerAttack* attack = (PlayerAttack*)collideWith;
 		
-			if (anim != &teleport || anim != &inverseTeleport)
+			if (anim != &teleport && anim != &inverseTeleport)
 			{
 				numStats.hp -= attack->damage;
 				if (numStats.hp <= 0.0f)
