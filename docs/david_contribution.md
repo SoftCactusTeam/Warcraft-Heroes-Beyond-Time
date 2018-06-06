@@ -1,4 +1,4 @@
-## **David Lozano contribution** holaaaa
+## **David Lozano contribution**
 
 I am the lead artist of the team. Althoug I've been programming during the project, I've mostly being creating new art for the game. Most of the art you see in the game has been done by me and [Víctor Masó](https://softcactusteam.github.io/Warcraft-Heroes-Beyond-Time/victor_contribution).
 - I've done the main character of the game, Thrall which was later animated by Víctor.
