@@ -212,7 +212,7 @@ bool GUIWindow::checkVerticalInputs(float dt)
 		if (!AnyChildFocused())
 		{
 			std::list<GUIElem*>::iterator it = childs.begin();
-			if (childs.front()->AreYouAContinueButton() && !App->fs->isGameSaved())
+			if (!childs.empty() && childs.front()->AreYouAContinueButton() && !App->fs->isGameSaved())
 			{
 				it++;
 			}

@@ -991,6 +991,7 @@ void Scene::CreateGratitudeScreen()
 	{
 		GUIWindow* window = (GUIWindow*)App->gui->CreateGUIWindow({ 0,0 }, { 0,0,0,0 }, nullptr, nullptr);
 		window->blackBackground = true;
+		window->menu = false;
 		gratitudeON = true;
 		LabelInfo gratitude;
 		gratitude.color = White;

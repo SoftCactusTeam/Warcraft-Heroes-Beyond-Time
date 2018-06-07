@@ -31,13 +31,13 @@ bool HolyShitItem::Act(ModuleItems::ItemEvent event, float dt)
 	{
 		case ModuleItems::ItemEvent::UPDATE:
 		{
-			if (!alreadyAppliedStats && App->scene->player)
+			/*if (!alreadyAppliedStats && App->scene->player)
 			{
 				alreadyAppliedStats = true;
 				App->scene->player->numStats.hp += ModuleItems::HolyShitExtraHP;
 				App->scene->player->numStats.maxhp += ModuleItems::HolyShitExtraHP;
 				App->scene->player->numStats.damage += ModuleItems::HolyShitExtraDamage;
-			}
+			}*/
 			break;
 		}
 	}

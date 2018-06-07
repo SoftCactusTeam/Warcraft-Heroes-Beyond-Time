@@ -8,6 +8,7 @@
 #include "Scene.h"
 #include "Label.h"
 #include "GUIWindow.h"
+#include "PlayerEntity.h"
 
 GUIElem::GUIElem(fPoint localPos, Module* listener, SDL_Rect atlasRect, GUIElemType type, GUIElem* parent) : localPos(localPos), listener(listener), atlasRect(atlasRect), type(type), parent(parent)
 {

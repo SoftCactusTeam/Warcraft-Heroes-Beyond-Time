@@ -6,6 +6,7 @@
 #include "ModuleEntitySystem.h"
 #include "ModuleAudio.h"
 #include "Emitter.h"
+#include "FileSystem.h"
 
 #include <list>
 
@@ -159,6 +160,7 @@ public:
 			state = states::PL_WIN;
 			anim = &idleDown;
 			App->audio->HaltFX();
+			App->fs->deleteSavedGame();
 		}
 	}
 

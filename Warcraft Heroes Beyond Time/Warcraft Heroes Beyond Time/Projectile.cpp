@@ -29,7 +29,8 @@ bool Projectile::Draw() const
 {
 	bool ret = true;
 
-	ret = App->printer->PrintSprite({ (int)data->pos.x,(int)data->pos.y }, (SDL_Texture*)App->projectiles->GetProjectileAtlas(), actualAnim->GetCurrentFrame(), data->layer);
+	if(data)
+		ret = App->printer->PrintSprite({ (int)data->pos.x,(int)data->pos.y }, (SDL_Texture*)App->projectiles->GetProjectileAtlas(), actualAnim->GetCurrentFrame(), data->layer);
 
 	return ret;
 }
